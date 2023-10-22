@@ -1,0 +1,118 @@
+
+:root {
+  --secondary-text-color: #999;
+  --font-colour:hsla(0, 0%, 0%, 0.8);
+  --navbar-font-colour: hsl(0, 0%, 0%);
+  --background-color: hsl(0, 0%, 96%);
+  --link-color: hsl(211, 100%, 35%);
+  --link-background-color: hsl(211, 100%, 95%);
+
+  --marker-color: hsl(0, 0%, 72%);
+  --nav-border-color: hsl(0, 0%, 0%);
+}
+
+html * {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* wrap albums in a flexbox */
+.album-container, .photo-container {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 10px;
+}
+
+.photo {
+  margin: 5px;
+  cursor: pointer;
+}
+
+.photo-album {
+  margin: 10px;
+  cursor: pointer;
+}
+
+.photo-album-title {
+  margin: 4px 0px;
+  font-weight: bolder;
+}
+
+.photo-album-count {
+  color: var(--secondary-text-color);
+}
+
+/* basic style */
+
+li {
+  list-style: square;
+}
+
+li::marker {
+  font-size: 0.75em;
+  color: var(--marker-color);
+}
+
+body {
+  font-size: 1.2em;
+  color: var(--font-colour);
+  word-spacing: 0.27ex;
+  background-color: var(--background-color);
+}
+
+h1, h2 {
+  font-size: 2em;
+}
+
+h3, h4, h5, h6 {
+  font-size: 1.5em;
+}
+
+nav li {
+  list-style-type: none;
+}
+
+nav ul {
+  padding: 1px;
+  margin: 0px;
+  overflow: hidden;
+}
+
+nav {
+  margin-bottom: 1.5em;
+  padding: 15px 0px;
+  font-size: 1.5em;
+}
+
+nav li {
+  float: left;
+}
+
+a {
+  color: var(--link-color);
+}
+
+main a {
+  background-color: var(--link-background-color);
+}
+
+nav li a {
+  display: block;
+  color: var(--navbar-font-colour);
+  text-align: left;
+  padding: 4px 15px;
+  text-decoration: none;
+}
+
+.header-tick {
+  color: lightgrey;
+}
+
+h2 {
+  margin-top: 1.35em;
+}
+
+section {
+  margin-left: 1.35em;
+}
