@@ -9,6 +9,7 @@ export class PhotoAlbum extends LitElement {
     return {
       title: { type: String },
       url: { type: String },
+      date: { type: String },
       id: { type: Number },
       count: { type: Number }
     }
@@ -32,6 +33,7 @@ export class PhotoAlbum extends LitElement {
     <div class="photo-album">
       <img src="${this.url}" alt="${this.title} - Photo Album Thumbnail" @click=${this.broadcastClickAlbum}>
       <p class="photo-album-title">${this.title}</p>
+      <p class="photo-album-date">${this.date}</p>
       <p class="photo-album-count">${this.count} ${this.count === 1 ? 'photo' : 'photos'}</p>
     </div>
     `

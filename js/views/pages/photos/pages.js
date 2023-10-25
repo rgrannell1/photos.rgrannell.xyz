@@ -3,10 +3,13 @@ import { LitElement, html } from "../../../library/lit.js";
 
 import './components/photo.js';
 
+import albums from '../../../../../manifest.json' assert {type: 'json'};
+
 export class PhotosPage extends LitElement {
   static get properties () {
     return {
       title: { type: String },
+      folder: { type: String },
     }
   }
 
@@ -15,72 +18,14 @@ export class PhotosPage extends LitElement {
   }
 
   data() {
-    return [
-      {
+    const album = albums['/home/rg/Drive/Photos/2023/Bray Air Show']
+
+    return album.images.map(image => {
+      return {
         id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-      {
-        id: 1,
-        thumbnailUrl: 'https://picsum.photos/400/400',
-      },
-    ]
+        thumbnailUrl: image.thumbnail_url,
+      }
+    });
   }
 
   render() {

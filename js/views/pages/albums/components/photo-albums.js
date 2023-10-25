@@ -1,229 +1,27 @@
 
 import { LitElement, html } from "../../../../library/lit.js";
 
+import albums from '../../../../../manifest.json' assert {type: 'json'};
+
 export class PhotoAlbums extends LitElement {
   createRenderRoot() {
     return this;
   }
   data() {
-    return [
-      {
-        title: 'Cork',
-        url: 'https://picsum.photos/200/200',
-        id: 1,
-        count: 10
-      },
-      {
-        title: 'Dublin',
-        url: 'https://picsum.photos/200/200',
-        id: 2,
-        count: 20
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 310
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 3
-      },
-      {
-        title: 'Cork',
-        url: 'https://picsum.photos/200/200',
-        id: 1,
-        count: 11
-      },
-      {
-        title: 'Dublin',
-        url: 'https://picsum.photos/200/200',
-        id: 2,
-        count: 21
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 1
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Cork',
-        url: 'https://picsum.photos/200/200',
-        id: 1,
-        count: 10
-      },
-      {
-        title: 'Dublin',
-        url: 'https://picsum.photos/200/200',
-        id: 2,
-        count: 20
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
-      },
-      {
-        title: 'Galway',
-        url: 'https://picsum.photos/200/200',
-        id: 3,
-        count: 30
+    return Object.values(albums).map((album) => {
+      const { images } = album;
+      if (!images) {
+        return
       }
-    ];
+
+      return {
+        title: album.name,
+        date: '1970-01-01 — 1980-01-01',
+        url: images[1]?.thumbnail_url,
+        id: 0,
+        count: images.length
+      }
+    });
   }
 
   render() {
@@ -234,7 +32,7 @@ export class PhotoAlbums extends LitElement {
           return html`
           <photo-album
             title="${album.title}" url="${album.url}"
-            id="${album.id}" count="${album.count}"></photo-album>
+            id="${album.id}" count="${album.count}" date="${album.date}"></photo-album>
           `
         })
       }
