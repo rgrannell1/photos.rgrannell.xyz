@@ -1,3 +1,5 @@
 
 .vscode
-manifest.json
+
+# Local Netlify folder
+.netlify
