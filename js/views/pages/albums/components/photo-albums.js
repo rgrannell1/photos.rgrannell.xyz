@@ -32,19 +32,38 @@ export class PhotoAlbums extends LitElement {
     });
   }
 
+  imageCount() {
+    let count = 0;
+
+    for (const album of this.albums()) {
+      count += album.count;
+    }
+
+    return count
+  }
+
   render() {
     return html`
+    <section class="album-metadata">
+      <h1>Albums</h1>
+      <p class="photo-album-count">${this.imageCount()} photos</p>
+    </section>
+
     <section class="album-container">
       ${
-        this.albums().map((album) => {
-          return html`
-          <photo-album
-            title="${album.title}" url="${album.url}"
-            id="${album.id}" count="${album.count}"
-            minDate="${album.minDate}"
-            maxDate="${album.maxDate}"></photo-album>
-          `
-        })
+        this.albums()
+          .sort((album0, album1) => {
+            return album0.maxDate - album1.maxDate;
+          })
+          .map((album) => {
+            return html`
+            <photo-album
+              title="${album.title}" url="${album.url}"
+              id="${album.id}" count="${album.count}"
+              minDate="${album.minDate}"
+              maxDate="${album.maxDate}"></photo-album>
+            `
+          })
       }
     </section>
     `

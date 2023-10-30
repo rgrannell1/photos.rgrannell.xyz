@@ -28,6 +28,29 @@ export class PhotosPage extends LitElement {
     });
   }
 
+  dateRange(minDate, maxDate) {
+    if (!minDate && !maxDate) {
+      return 'unknown date';
+    }
+
+    const parsedMinDate = new Date(parseFloat(minDate));
+    const parsedMaxDate = new Date(parseFloat(maxDate));
+
+    const opts = {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    }
+    const from = parsedMinDate.toLocaleDateString('en-IE', opts);
+    const to = parsedMaxDate.toLocaleDateString('en-IE', opts);
+
+    if (from === to) {
+      return from;
+    }
+
+    return `${from} — ${to}`;
+  }
+
   album() {
     if (!albums.hasOwnProperty(this.id)) {
       return {}
@@ -37,11 +60,14 @@ export class PhotosPage extends LitElement {
   }
 
   render() {
+    const album = this.album();
+    const range = this.dateRange(album.min_date, album.max_date);
+
     return html`
     <div>
       <section class="photos-metadata">
         <h1>${this.title}</h1>
-        <p class="photo-album-date">${this.album().date}</p>
+        <p class="photo-album-date">${range}</p>
       </section>
 
       <section class="photo-container">

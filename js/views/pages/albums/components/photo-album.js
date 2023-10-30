@@ -45,6 +45,10 @@ export class PhotoAlbum extends LitElement {
     const from = minDate.toLocaleDateString('en-IE', opts);
     const to = maxDate.toLocaleDateString('en-IE', opts);
 
+    if (from === to) {
+      return from;
+    }
+
     return `${from} — ${to}`;
   }
 
