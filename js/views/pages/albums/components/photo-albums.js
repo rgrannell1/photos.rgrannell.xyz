@@ -7,7 +7,8 @@ export class PhotoAlbums extends LitElement {
   createRenderRoot() {
     return this;
   }
-  data() {
+
+  albums() {
     return Object.values(albums).map((album) => {
       const { images } = album;
       if (!images) {
@@ -22,7 +23,8 @@ export class PhotoAlbums extends LitElement {
 
       return {
         title: album.name,
-        date: album.date,
+        minDate: album.min_date,
+        maxDate: album.max_date,
         url,
         id: album.id,
         count: images.length
@@ -34,11 +36,13 @@ export class PhotoAlbums extends LitElement {
     return html`
     <section class="album-container">
       ${
-        this.data().map((album) => {
+        this.albums().map((album) => {
           return html`
           <photo-album
             title="${album.title}" url="${album.url}"
-            id="${album.id}" count="${album.count}" date="${album.date}"></photo-album>
+            id="${album.id}" count="${album.count}"
+            minDate="${album.minDate}"
+            maxDate="${album.maxDate}"></photo-album>
           `
         })
       }
