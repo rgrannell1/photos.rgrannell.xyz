@@ -14,11 +14,23 @@ export class PhotoAlbums extends LitElement {
         return
       }
 
+      const coverImage = images.find(image => {
+        return image.fpath === album.cover_image;
+      });
+
+      const url = coverImage?.thumbnail_url ?? images[0]?.thumbnail_url;
+
+      if (!coverImage) {
+        console.error('patch me')
+        console.log(album.cover_image)
+        console.log(album.images)
+      }
+
       return {
         title: album.name,
         date: '1970-01-01 — 1980-01-01',
-        url: images[1]?.thumbnail_url,
-        id: 0,
+        url,
+        id: album.id,
         count: images.length
       }
     });

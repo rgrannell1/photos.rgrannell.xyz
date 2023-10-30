@@ -10,7 +10,7 @@ export class PhotoAlbum extends LitElement {
       title: { type: String },
       url: { type: String },
       date: { type: String },
-      id: { type: Number },
+      id: { type: String },
       count: { type: Number }
     }
   }

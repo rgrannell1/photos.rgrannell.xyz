@@ -9,7 +9,7 @@ export class PhotosPage extends LitElement {
   static get properties () {
     return {
       title: { type: String },
-      folder: { type: String },
+      id: { type: String },
     }
   }
 
@@ -18,7 +18,11 @@ export class PhotosPage extends LitElement {
   }
 
   data() {
-    const album = albums['/home/rg/Drive/Photos/2023/Bray Air Show']
+    if (!albums.hasOwnProperty(this.id)) {
+      return []
+    }
+
+    const album = albums[this.id]
 
     return album.images.map(image => {
       return {

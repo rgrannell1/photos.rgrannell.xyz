@@ -80,7 +80,7 @@ nav ul {
 }
 
 nav {
-  margin-bottom: 1.5em;
+  margin-bottom: 5.5em;
   padding: 15px 0px;
   font-size: 1.5em;
 }
@@ -91,6 +91,12 @@ nav li {
 
 a {
   color: var(--link-color);
+}
+
+main {
+  width: 90%;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 
 main a {
