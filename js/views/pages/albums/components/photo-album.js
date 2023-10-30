@@ -37,10 +37,13 @@ export class PhotoAlbum extends LitElement {
     const minDate = new Date(parseFloat(this.minDate));
     const maxDate = new Date(parseFloat(this.maxDate));
 
-    const from = minDate.toLocaleDateString('en-IE');
-    const to = maxDate.toLocaleDateString('en-IE');
-
-    console.log(from)
+    const opts = {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    }
+    const from = minDate.toLocaleDateString('en-IE', opts);
+    const to = maxDate.toLocaleDateString('en-IE', opts);
 
     return `${from} — ${to}`;
   }
