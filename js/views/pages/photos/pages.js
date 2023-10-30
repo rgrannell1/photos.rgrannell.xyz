@@ -17,12 +17,8 @@ export class PhotosPage extends LitElement {
     return this;
   }
 
-  data() {
-    if (!albums.hasOwnProperty(this.id)) {
-      return []
-    }
-
-    const album = albums[this.id]
+  photos() {
+    const album = this.album();
 
     return album.images.map(image => {
       return {
@@ -32,14 +28,25 @@ export class PhotosPage extends LitElement {
     });
   }
 
+  album() {
+    if (!albums.hasOwnProperty(this.id)) {
+      return {}
+    }
+
+    return albums[this.id]
+  }
+
   render() {
     return html`
     <div>
-      <h1>${this.title}</h1>
+      <section class="photos-metadata">
+        <h1>${this.title}</h1>
+        <p class="photo-album-date">${this.album().date}</p>
+      </section>
 
       <section class="photo-container">
         ${
-          this.data().map((photo) => {
+          this.photos().map((photo) => {
             return html`<app-photo thumbnailUrl="${photo.thumbnailUrl}"></app-photo>`
           })
         }

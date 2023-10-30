@@ -20,15 +20,9 @@ export class PhotoAlbums extends LitElement {
 
       const url = coverImage?.thumbnail_url ?? images[0]?.thumbnail_url;
 
-      if (!coverImage) {
-        console.error('patch me')
-        console.log(album.cover_image)
-        console.log(album.images)
-      }
-
       return {
         title: album.name,
-        date: '1970-01-01 — 1980-01-01',
+        date: album.date,
         url,
         id: album.id,
         count: images.length
