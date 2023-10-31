@@ -152,11 +152,6 @@ photo-app {
   max-width: max(180px, 60vw);
 }
 
-.photo {
-  width: 400px;
-  height: 400px;
-}
-
 img {
   width: max(180px, min(60vw, 400px));
   max-width: max(180px, 60vw);
