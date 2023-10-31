@@ -22,8 +22,8 @@ export class PhotosPage extends LitElement {
 
     return album.images.map(image => {
       return {
-        id: 1,
         thumbnailUrl: image.thumbnail_url,
+        imageUrl: image.image_url,
       }
     });
   }
@@ -59,6 +59,10 @@ export class PhotosPage extends LitElement {
     return albums[this.id]
   }
 
+  imageCount() {
+    return this.album().images.length;
+  }
+
   render() {
     const album = this.album();
     const range = this.dateRange(album.min_date, album.max_date);
@@ -68,12 +72,15 @@ export class PhotosPage extends LitElement {
       <section class="photos-metadata">
         <h1>${this.title}</h1>
         <p class="photo-album-date">${range}</p>
+        <p class="photo-album-count">${this.imageCount()} photos</p>
       </section>
 
       <section class="photo-container">
         ${
           this.photos().map((photo) => {
-            return html`<app-photo thumbnailUrl="${photo.thumbnailUrl}"></app-photo>`
+            return html`<app-photo
+              thumbnailUrl="${photo.thumbnailUrl}"
+              imageUrl="${photo.imageUrl}"></app-photo>`
           })
         }
       </section>

@@ -30,6 +30,17 @@ export class PhotoApp extends LitElement {
     this.title = title;
   }
 
+  /*
+   * Open a photo
+   */
+  async receiveClickPhoto(event) {
+    const {
+      imageUrl
+    } = event.detail;
+
+
+  }
+
   renderPage() {
     if (!this.page || this.page === 'albums') {
       return html`
@@ -45,8 +56,8 @@ export class PhotoApp extends LitElement {
   }
   render() {
     return html`<div
-      @click-album=${this.receiveClickAlbum}>
-
+      @click-album=${this.receiveClickAlbum}
+      @click-photo=${this.receiveClickPhoto}>
       ${this.renderPage()}
     </div>`
   }

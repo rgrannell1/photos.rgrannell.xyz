@@ -17,7 +17,31 @@ html * {
   padding: 0;
 }
 
+/* Navbar */
+
+nav li {
+  list-style-type: none;
+}
+
+nav ul {
+  padding: 1px;
+  margin: 0px;
+  overflow: hidden;
+}
+
+nav {
+  margin-bottom: min(10vh, 100px);
+  padding: 15px 0px;
+  font-size: 1.5em;
+  border-bottom: 4px solid var(--nav-border-color);
+}
+
+nav li {
+  float: left;
+}
+
 /* wrap albums in a flexbox */
+
 .album-container, .photo-container {
   display: flex;
   flex-wrap: wrap;
@@ -74,27 +98,6 @@ h3, h4, h5, h6 {
   font-size: 1.5em;
 }
 
-nav li {
-  list-style-type: none;
-}
-
-nav ul {
-  padding: 1px;
-  margin: 0px;
-  overflow: hidden;
-}
-
-nav {
-  margin-bottom: min(10vh, 100px);
-  padding: 15px 0px;
-  font-size: 1.5em;
-  border-bottom: 4px solid var(--nav-border-color);
-}
-
-nav li {
-  float: left;
-}
-
 a {
   color: var(--link-color);
 }
@@ -130,7 +133,7 @@ section {
   margin-left: 1.35em;
 }
 
-/* resize for smaller*/
+/* resize images for smaller*/
 
 photo-app {
   width: max(180px, min(60vw, 400px));

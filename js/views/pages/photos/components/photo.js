@@ -4,9 +4,8 @@ import { LitElement, html } from "../../../../library/lit.js";
 export class AppPhoto extends LitElement {
   static get properties()  {
     return {
-      thumbnailUrl: { type: String },
-      fullUrl: { type: String },
-      id: { type: Number }
+      imageUrl: { type: String },
+      thumbnailUrl: { type: String }
     }
   }
   createRenderRoot() {
@@ -15,7 +14,7 @@ export class AppPhoto extends LitElement {
 
   broadcastClickPhoto() {
     const dispatched = new CustomEvent('click-photo', {
-      detail: { id: this.id },
+      detail: { imageUrl: this.imageUrl },
       bubbles: true,
       composed: true,
     });
@@ -26,7 +25,9 @@ export class AppPhoto extends LitElement {
   render() {
     return html`
     <div class="photo">
-      <img src="${this.thumbnailUrl}" @click=${this.broadcastClickPhoto}>
+      <img
+        src="${this.thumbnailUrl}"
+        @click=${this.broadcastClickPhoto}>
     </div>
     `
   }
