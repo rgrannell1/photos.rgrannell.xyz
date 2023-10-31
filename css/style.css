@@ -85,7 +85,7 @@ nav ul {
 }
 
 nav {
-  margin-bottom: 5.5em;
+  margin-bottom: min(10vh, 100px);
   padding: 15px 0px;
   font-size: 1.5em;
   border-bottom: 4px solid var(--nav-border-color);
@@ -130,14 +130,14 @@ section {
   margin-left: 1.35em;
 }
 
-/* resize for smaller screens*/
+/* resize for smaller*/
 
 photo-app {
-  width: min(60vw, 400px);
-  max-width: 60vw;
+  width: max(180px, min(60vw, 400px));
+  max-width: max(180px, 60vw);
 }
 
 img {
-  width: min(60vw, 400px);
-  max-width: 60vw;
+  width: max(180px, min(60vw, 400px));
+  max-width: max(180px, 60vw);
 }
