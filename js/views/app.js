@@ -38,7 +38,7 @@ export class PhotoApp extends LitElement {
       imageUrl
     } = event.detail;
 
-
+    window.open(imageUrl, '_blank');
   }
 
   renderPage() {
