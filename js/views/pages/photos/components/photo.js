@@ -26,6 +26,7 @@ export class AppPhoto extends LitElement {
     return html`
     <div class="photo">
       <img
+        class="photo"
         src="${this.thumbnailUrl}"
         @click=${this.broadcastClickPhoto}>
     </div>
