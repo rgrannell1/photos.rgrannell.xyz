@@ -1,6 +1,5 @@
 
 const resources = [
-  '/css/style.css',
   '/icons/android-chrome-192x192.png',
   '/icons/android-chrome-512x512.png',
   '/icons/apple-touch-icon.png',
