@@ -1,8 +1,12 @@
 
 import { LitElement, html } from '../library/lit.js';
 
+import { PageLocation } from '../services/location.js';
+
 import "./pages/albums/pages.js";
 import "./pages/photos/pages.js";
+
+import albums from '../../manifest.json'  assert {type: 'json'};
 
 export class PhotoApp extends LitElement {
   static get properties() {
@@ -16,6 +20,22 @@ export class PhotoApp extends LitElement {
   createRenderRoot() {
     return this;
   }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    const location = PageLocation.getUrl();
+
+    if (location?.type === 'album') {
+      this.page = 'photos';
+      this.id = location.id;
+      this.title = albums[location.id]?.name;
+
+    } else if (location?.type === 'photo') {
+      this.page = 'photos';
+      this.id = location.id;
+    }
+  }
   /*
    * Navigate to the album page
    */
@@ -28,6 +48,8 @@ export class PhotoApp extends LitElement {
     this.page = 'photos';
     this.id = id;
     this.title = title;
+
+    PageLocation.showAlbumUrl(id);
   }
 
   /*
