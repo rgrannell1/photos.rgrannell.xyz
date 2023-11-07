@@ -1,4 +1,5 @@
-import { html, LitElement } from "../library/lit.js";
+import { html } from "../library/lit.js";
+import { LitElem } from "../models/lit-element.js";
 
 import { PageLocation } from "../services/location.js";
 
@@ -10,16 +11,20 @@ import "./pages/locations/pages.js";
 import "./pages/photos/pages.js";
 import "./pages/stats/pages.js";
 import "./pages/tags/pages.js";
+import "./pages/metadata/pages.js";
 
 import albums from "../../manifest.json" assert { type: "json" };
 
-export class PhotoApp extends LitElement {
+export class PhotoApp extends LitElem {
   static get properties() {
     return {
       title: { type: String },
       page: { type: String },
-      id: { type: Number },
       sidebarVisible: { type: Boolean },
+      id: { type: Number },
+      tags: { type: Array },
+      imageUrl: { type: String },
+      thumbnailUrl: { type: String },
     };
   }
 
@@ -45,6 +50,11 @@ export class PhotoApp extends LitElement {
       this.page = "locations";
     } else if (location?.type === "stats") {
       this.page = "stats";
+    } else if (location?.type === "metadata") {
+      this.page = "metadata";
+      this.id = location.id;
+    } else {
+      this.page = "albums";
     }
   }
   /*
@@ -78,6 +88,23 @@ export class PhotoApp extends LitElement {
     this.sidebarVisible = !this.sidebarVisible;
   }
 
+  async receiveClickPhotoMetadata(event) {
+    const {
+      id,
+      imageUrl,
+      thumbnailUrl,
+      tags,
+    } = event.detail;
+
+    this.page = "metadata";
+    this.id = id;
+    this.imageUrl = imageUrl;
+    this.thumbnailUrl = thumbnailUrl;
+    this.tags = tags ?? [];
+
+    PageLocation.showMetadataUrl(id);
+  }
+
   async receiveNavigatePage(event) {
     this.page = event.detail.page;
 
@@ -91,6 +118,8 @@ export class PhotoApp extends LitElement {
       PageLocation.showStatsUrl();
     } else if (this.page === "photos") {
       PageLocation.showAlbumUrl(this.id);
+    } else if (this.page === "metadata") {
+      PageLocation.showMetadataUrl(this.id);
     } else {
       PageLocation.showAlbumsUrl();
     }
@@ -136,6 +165,17 @@ export class PhotoApp extends LitElement {
       <stats-page class="${classes.join(" ")}"></stats-page>
       `;
     }
+
+    if (this.page === "metadata") {
+      return html`
+      <metadata-page
+        id=${this.id}
+        tags=${this.tags}
+        imageUrl=${this.imageUrl}
+        thumbnailUrl=${this.thumbnailUrl}
+        class="${classes.join(" ")}"></metadata-page>
+      `;
+    }
   }
   render() {
     const classes = ["app-container"];
@@ -148,6 +188,7 @@ export class PhotoApp extends LitElement {
       @click-album=${this.receiveClickAlbum}
       @click-photo=${this.receiveClickPhoto}
       @click-burger-menu=${this.receiveClickBurgerMenu}
+      @click-photo-metadata=${this.receiveClickPhotoMetadata}
       @navigate-page=${this.receiveNavigatePage}>
         <photo-header></photo-header>
 

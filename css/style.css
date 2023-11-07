@@ -34,6 +34,14 @@ a {
   color: var(--link-color);
 }
 
+.long-url {
+  max-width: 500px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
 img {
   width: max(180px, min(60vw, 400px));
   max-width: max(180px, 60vw);
@@ -142,11 +150,38 @@ photo-app {
 .photo {
   margin: 5px;
   cursor: pointer;
+  position: relative; /* Set the position context for the absolutely positioned square */
+  display: inline-block; /* Ensures the container fits the size of the image */
+}
+
+.photo:hover {
+  filter: brightness(80%);
+}
+
+.photo-metadata-popover {
+  position: absolute;
+  padding: 0px 10px;
+  top: 0%;
+  right: 0%;
+  color: white;
+  z-index: 1;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 2em;
+  display: none;
+}
+
+.photo:hover .photo-metadata-popover {
+  display: block;
 }
 
 .photo-album {
   margin: 10px;
   cursor: pointer;
+}
+
+.photo-album:hover {
+  filter: brightness(80%);
 }
 
 .photo-album-title {
@@ -157,9 +192,6 @@ photo-app {
 .photo-album-count {
   color: var(--secondary-text-color);
 }
-
-
-
 
 /* metadata */
 

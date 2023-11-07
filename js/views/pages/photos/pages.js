@@ -21,8 +21,10 @@ export class PhotosPage extends LitElement {
 
     return album.images.map((image) => {
       return {
+        id: image.id,
         thumbnailUrl: image.thumbnail_url,
         imageUrl: image.image_url,
+        tags: image.tags,
       };
     });
   }
@@ -77,9 +79,12 @@ export class PhotosPage extends LitElement {
       <section class="photo-container">
         ${
       this.photos().map((photo) => {
-        return html`<app-photo
-              thumbnailUrl="${photo.thumbnailUrl}"
-              imageUrl="${photo.imageUrl}"></app-photo>`;
+        return html`
+        <app-photo
+          id="${photo.id}"
+          tags="${photo.tags}"
+          thumbnailUrl="${photo.thumbnailUrl}"
+          imageUrl="${photo.imageUrl}"></app-photo>`;
       })
     }
       </section>
