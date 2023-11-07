@@ -15,11 +15,17 @@
   --nav-border-color:     hsl(0, 0%, 0%);
 }
 
+@font-face {
+  font-family: 'Rubik';
+  src: url('/fonts/Rubik-Regular.ttf') format('truetype');
+}
+
+
 /*
  * ++++ ++++ ++++ ~~~~ Basic Styles ~~~~ ++++ ++++ ++++
  */
 html * {
-  font-family: sans-serif;
+  font-family: 'Rubik', sans-serif;
   margin: 0;
   padding: 0;
 }
