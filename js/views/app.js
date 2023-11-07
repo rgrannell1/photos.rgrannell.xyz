@@ -168,12 +168,7 @@ export class PhotoApp extends LitElem {
 
     if (this.page === "metadata") {
       return html`
-      <metadata-page
-        id=${this.id}
-        tags=${this.tags}
-        imageUrl=${this.imageUrl}
-        thumbnailUrl=${this.thumbnailUrl}
-        class="${classes.join(" ")}"></metadata-page>
+      <metadata-page id=${this.id} class="${classes.join(" ")}"></metadata-page>
       `;
     }
   }
