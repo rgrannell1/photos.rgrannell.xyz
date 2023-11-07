@@ -80,6 +80,7 @@ export class PhotoApp extends LitElement {
 
   async receiveNavigatePage(event) {
     this.page = event.detail.page;
+    this.sidebarVisible = false;
   }
 
   renderPage(sidebarVisible) {
