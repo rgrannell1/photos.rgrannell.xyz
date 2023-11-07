@@ -1,4 +1,3 @@
-
 export class PageLocation {
   static showAlbumUrl(id) {
     window.location.hash = `#/album/${id}`;
@@ -7,15 +6,15 @@ export class PageLocation {
     window.location.hash = `#/photo/${id}`;
   }
   static getUrl() {
-    if (window.location.hash.startsWith('#/album')) {
+    if (window.location.hash.startsWith("#/album")) {
       return {
-        type: 'album',
-        id: window.location.hash.split('/')[2]
+        type: "album",
+        id: window.location.hash.split("/")[2],
       };
-    } else if (window.location.hash.startsWith('#/photo')) {
+    } else if (window.location.hash.startsWith("#/photo")) {
       return {
-        type: 'photo',
-        id: window.location.hash.split('/')[2]
+        type: "photo",
+        id: window.location.hash.split("/")[2],
       };
     }
   }

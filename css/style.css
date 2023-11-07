@@ -1,45 +1,122 @@
 
+/*
+ * ++++ ++++ ++++ ~~~~ Global Variables ~~~~ ++++ ++++ ++++
+ */
 :root {
-  --secondary-text-color: #999;
-  --font-colour:hsla(0, 0%, 0%, 0.8);
-  --navbar-font-colour: hsl(0, 0%, 0%);
-  --background-color: hsl(0, 0%, 96%);
-  --link-color: hsl(211, 100%, 35%);
-  --brand-color: hsl(211, 100%, 35%);
-  --link-background-color: hsl(211, 100%, 95%);
-
-  --marker-color: hsl(0, 0%, 72%);
-  --nav-border-color: hsl(0, 0%, 0%);
+  --secondary-text-color:   #999;
+  --font-colour:            hsla(0, 0%, 0%, 0.8);
+  --navbar-font-colour:     hsl(0, 0%, 0%);
+  --background-color:       hsl(0, 0%, 96%);
+  --link-color:             hsl(211, 100%, 35%);
+  --brand-color:            hsl(211, 100%, 35%);
+  --link-background-color:  hsl(211, 100%, 95%);
+  --hover-background-color: hsl(210, 100%, 84%);
+  --marker-color:           hsl(0, 0%, 72%);
+  --nav-border-color:     hsl(0, 0%, 0%);
 }
 
+/*
+ * ++++ ++++ ++++ ~~~~ Basic Styles ~~~~ ++++ ++++ ++++
+ */
 html * {
   font-family: sans-serif;
   margin: 0;
   padding: 0;
 }
 
-/* Navbar */
-
-nav li {
-  list-style-type: none;
+a {
+  color: var(--link-color);
 }
 
-nav ul {
-  padding: 1px;
-  margin: 0px;
-  overflow: hidden;
+img {
+  width: max(180px, min(60vw, 400px));
+  max-width: max(180px, 60vw);
 }
 
-nav {
-  margin-bottom: min(6vh, 100px);
-  padding: 15px 0px;
+main a {
+  background-color: var(--link-background-color);
+}
+
+li {
+  list-style: square;
+}
+
+li::marker {
+  font-size: 0.75em;
+  color: var(--marker-color);
+}
+
+section {
+  margin-left: 1.35em;
+}
+
+body {
+  font-size: 1.2em;
+  color: var(--font-colour);
+  word-spacing: 0.27ex;
+  background-color: var(--background-color);
+}
+
+h1 {
+  font-size: 3em;
+  font-weight: lighter;
+}
+
+h2 {
+  font-size: 2em;
+  margin-top: 1.35em;
+}
+
+h3, h4, h5, h6 {
   font-size: 1.5em;
-  border-bottom: 4px solid var(--nav-border-color);
 }
 
-nav li {
+
+/*
+ * ++++ ++++ ++++ ~~~~ Navbar ~~~~ ++++ ++++ ++++
+ */
+
+.burger {
+  padding: 10px;
+}
+
+.header li a {
+  display: block;
+  color: var(--navbar-font-colour);
+  text-align: left;
+  padding: 4px 15px;
+  text-decoration: none;
+}
+
+.brand, .burger {
+ font-size: 0.75em;
+ color: var(--brand-color);
+ cursor: pointer;
+}
+
+.burger:hover {
+ background-color: var(--hover-background-color);
+ cursor: pointer;
+}
+
+.header {
+   margin-bottom: min(6vh, 100px);
+   padding: 15px 0px;
+   font-size: 1.5em;
+   border-bottom: 4px solid var(--nav-border-color);
+ }
+
+.header ul {
+   overflow: hidden;
+   padding: 1px;
+   margin: 0px;
+ }
+
+.header li {
+  list-style-type: none;
   float: left;
 }
+
 
 /* wrap albums in a flexbox */
 
@@ -68,76 +145,8 @@ nav li {
   color: var(--secondary-text-color);
 }
 
-/* basic style */
 
-li {
-  list-style: square;
-}
 
-li::marker {
-  font-size: 0.75em;
-  color: var(--marker-color);
-}
-
-body {
-  font-size: 1.2em;
-  color: var(--font-colour);
-  word-spacing: 0.27ex;
-  background-color: var(--background-color);
-}
-
-h1 {
-  font-size: 3em;
-  font-weight: lighter;
-}
-
-h2 {
-  font-size: 2em;
-}
-
-h3, h4, h5, h6 {
-  font-size: 1.5em;
-}
-
-.brand {
-  font-size: 0.75em;
-  color: var(--brand-color);
-}
-
-a {
-  color: var(--link-color);
-}
-
-main {
-  width: 90%;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-bottom: 10%
-}
-
-main a {
-  background-color: var(--link-background-color);
-}
-
-nav li a {
-  display: block;
-  color: var(--navbar-font-colour);
-  text-align: left;
-  padding: 4px 15px;
-  text-decoration: none;
-}
-
-.header-tick {
-  color: lightgrey;
-}
-
-h2 {
-  margin-top: 1.35em;
-}
-
-section {
-  margin-left: 1.35em;
-}
 
 /* metadata */
 
@@ -152,7 +161,79 @@ photo-app {
   max-width: max(180px, 60vw);
 }
 
-img {
-  width: max(180px, min(60vw, 400px));
-  max-width: max(180px, 60vw);
+
+
+/*
+ * ++++ ++++ ++++ ~~~~ Page Grid Layout ~~~~ ++++ ++++ ++++
+ */
+
+
+/* Small Devices */
+@media (max-width: 500px) {
+  photo-sidebar {
+    display: none;
+  }
+
+  photo-sidebar[visible="true"] {
+    display: block;
+  }
+
+  /* hide the photo-page when sidebar is visible */
+  .photo-page {
+    display: block;
+  }
+
+  .photo-page.sidebar-visible {
+    display: none;
+  }
+
+  .app-container {
+    display: grid;
+    grid-template-columns: 1fr 0px;
+  }
+
+  .app-container.sidebar-visible {
+    display: grid;
+    grid-template-columns: 0px 1fr;
+  }
+}
+
+@media (min-width: 501px) {
+  .app-container {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+  }
+
+  photo-sidebar {
+    display: none;
+  }
+
+  photo-sidebar[visible="true"] {
+    display: block;
+  }
+
+  .burger {
+    display: none;
+  }
+}
+
+photo-sidebar {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+photo-page {
+  grid-area: 1 / 2 / 2 / 3;
+}
+
+/*
+ * ++++ ++++ ++++ ~~~~ Sidebar Styling ~~~~ ++++ ++++ ++++
+ */
+
+.sidebar-item {
+  padding: 20px;
+}
+
+.sidebar-item:hover {
+  background-color: var(--hover-background-color);
+  cursor: pointer;
 }

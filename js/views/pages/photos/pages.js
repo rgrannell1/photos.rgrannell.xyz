@@ -1,16 +1,15 @@
+import { html, LitElement } from "../../../library/lit.js";
 
-import { LitElement, html } from "../../../library/lit.js";
+import "./components/photo.js";
 
-import './components/photo.js';
-
-import albums from '../../../../../manifest.json' assert {type: 'json'};
+import albums from "../../../../../manifest.json" assert { type: "json" };
 
 export class PhotosPage extends LitElement {
-  static get properties () {
+  static get properties() {
     return {
       title: { type: String },
       id: { type: String },
-    }
+    };
   }
 
   createRenderRoot() {
@@ -20,29 +19,29 @@ export class PhotosPage extends LitElement {
   photos() {
     const album = this.album();
 
-    return album.images.map(image => {
+    return album.images.map((image) => {
       return {
         thumbnailUrl: image.thumbnail_url,
         imageUrl: image.image_url,
-      }
+      };
     });
   }
 
   dateRange(minDate, maxDate) {
     if (!minDate && !maxDate) {
-      return 'unknown date';
+      return "unknown date";
     }
 
     const parsedMinDate = new Date(parseFloat(minDate));
     const parsedMaxDate = new Date(parseFloat(maxDate));
 
     const opts = {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    }
-    const from = parsedMinDate.toLocaleDateString('en-IE', opts);
-    const to = parsedMaxDate.toLocaleDateString('en-IE', opts);
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    const from = parsedMinDate.toLocaleDateString("en-IE", opts);
+    const to = parsedMaxDate.toLocaleDateString("en-IE", opts);
 
     if (from === to) {
       return from;
@@ -53,10 +52,10 @@ export class PhotosPage extends LitElement {
 
   album() {
     if (!albums.hasOwnProperty(this.id)) {
-      return {}
+      return {};
     }
 
-    return albums[this.id]
+    return albums[this.id];
   }
 
   imageCount() {
@@ -77,16 +76,16 @@ export class PhotosPage extends LitElement {
 
       <section class="photo-container">
         ${
-          this.photos().map((photo) => {
-            return html`<app-photo
+      this.photos().map((photo) => {
+        return html`<app-photo
               thumbnailUrl="${photo.thumbnailUrl}"
-              imageUrl="${photo.imageUrl}"></app-photo>`
-          })
-        }
+              imageUrl="${photo.imageUrl}"></app-photo>`;
+      })
+    }
       </section>
     </div>
-    `
+    `;
   }
 }
 
-customElements.define('photos-page', PhotosPage);
+customElements.define("photos-page", PhotosPage);

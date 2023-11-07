@@ -1,19 +1,18 @@
-
-import { LitElement, html } from "../../../../library/lit.js";
+import { html, LitElement } from "../../../../library/lit.js";
 
 export class AppPhoto extends LitElement {
-  static get properties()  {
+  static get properties() {
     return {
       imageUrl: { type: String },
-      thumbnailUrl: { type: String }
-    }
+      thumbnailUrl: { type: String },
+    };
   }
   createRenderRoot() {
     return this;
   }
 
   broadcastClickPhoto() {
-    const dispatched = new CustomEvent('click-photo', {
+    const dispatched = new CustomEvent("click-photo", {
       detail: { imageUrl: this.imageUrl },
       bubbles: true,
       composed: true,
@@ -30,8 +29,8 @@ export class AppPhoto extends LitElement {
         src="${this.thumbnailUrl}"
         @click=${this.broadcastClickPhoto}>
     </div>
-    `
+    `;
   }
 }
 
-customElements.define('app-photo', AppPhoto);
+customElements.define("app-photo", AppPhoto);

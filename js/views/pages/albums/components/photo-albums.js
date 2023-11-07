@@ -1,7 +1,6 @@
+import { html, LitElement } from "../../../../library/lit.js";
 
-import { LitElement, html } from "../../../../library/lit.js";
-
-import albums from '../../../../../manifest.json' assert {type: 'json'};
+import albums from "../../../../../manifest.json" assert { type: "json" };
 
 export class PhotoAlbums extends LitElement {
   createRenderRoot() {
@@ -12,10 +11,10 @@ export class PhotoAlbums extends LitElement {
     return Object.values(albums).map((album) => {
       const { images } = album;
       if (!images) {
-        return
+        return;
       }
 
-      const coverImage = images.find(image => {
+      const coverImage = images.find((image) => {
         return image.fpath === album.cover_image;
       });
 
@@ -27,8 +26,8 @@ export class PhotoAlbums extends LitElement {
         maxDate: album.max_date,
         url,
         id: album.id,
-        count: images.length
-      }
+        count: images.length,
+      };
     });
   }
 
@@ -39,7 +38,7 @@ export class PhotoAlbums extends LitElement {
       count += album.count;
     }
 
-    return count
+    return count;
   }
 
   render() {
@@ -51,23 +50,23 @@ export class PhotoAlbums extends LitElement {
 
     <section class="album-container">
       ${
-        this.albums()
-          .sort((album0, album1) => {
-            return album0.maxDate - album1.maxDate;
-          })
-          .map((album) => {
-            return html`
+      this.albums()
+        .sort((album0, album1) => {
+          return album0.maxDate - album1.maxDate;
+        })
+        .map((album) => {
+          return html`
             <photo-album
               title="${album.title}" url="${album.url}"
               id="${album.id}" count="${album.count}"
               minDate="${album.minDate}"
               maxDate="${album.maxDate}"></photo-album>
-            `
-          })
-      }
+            `;
+        })
+    }
     </section>
-    `
+    `;
   }
 }
 
-customElements.define('photo-albums', PhotoAlbums);
+customElements.define("photo-albums", PhotoAlbums);

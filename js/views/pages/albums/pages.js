@@ -1,8 +1,7 @@
+import { html, LitElement } from "../../../library/lit.js";
 
-import { LitElement, html } from "../../../library/lit.js";
-
-import './components/photo-album.js';
-import './components/photo-albums.js';
+import "./components/photo-album.js";
+import "./components/photo-albums.js";
 
 export class AlbumsPage extends LitElement {
   createRenderRoot() {
@@ -12,8 +11,8 @@ export class AlbumsPage extends LitElement {
   render() {
     return html`
     <photo-albums></photo-albums>
-    `
+    `;
   }
 }
 
-customElements.define('photo-album-page', AlbumsPage);
+customElements.define("photo-album-page", AlbumsPage);
