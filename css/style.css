@@ -195,15 +195,16 @@ photo-app {
 
   .app-container {
     display: grid;
-    grid-template-columns: 1fr 0px;
+    grid-template-columns: 0px 1fr;
   }
 
   .app-container.sidebar-visible {
     display: grid;
-    grid-template-columns: 0px 1fr;
+    grid-template-columns: 1fr 0px;
   }
 }
 
+/* Big Devices */
 @media (min-width: 501px) {
   .app-container {
     display: grid;
