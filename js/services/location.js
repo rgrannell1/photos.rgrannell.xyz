@@ -1,4 +1,7 @@
 export class PageLocation {
+  static showAlbumsUrl() {
+    window.location.hash = "#/albums";
+  }
   static showAlbumUrl(id) {
     window.location.hash = `#/album/${id}`;
   }
@@ -15,7 +18,11 @@ export class PageLocation {
     window.location.hash = "#/stats";
   }
   static getUrl() {
-    if (window.location.hash.startsWith("#/album")) {
+    if (window.location.hash.startsWith("#/albums")) {
+      return {
+        type: "albums",
+      };
+    } else if (window.location.hash.startsWith("#/album")) {
       return {
         type: "album",
         id: window.location.hash.split("/")[2],

@@ -80,6 +80,21 @@ export class PhotoApp extends LitElement {
 
   async receiveNavigatePage(event) {
     this.page = event.detail.page;
+
+    if (this.page === "albums") {
+      PageLocation.showAlbumsUrl();
+    } else if (this.page === "tags") {
+      PageLocation.showTagsUrl();
+    } else if (this.page === "locations") {
+      PageLocation.showLocationsUrl();
+    } else if (this.page === "stats") {
+      PageLocation.showStatsUrl();
+    } else if (this.page === "photos") {
+      PageLocation.showAlbumUrl(this.id);
+    } else {
+      PageLocation.showAlbumsUrl();
+    }
+
     this.sidebarVisible = false;
   }
 
