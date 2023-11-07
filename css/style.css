@@ -126,6 +126,13 @@ h3, h4, h5, h6 {
 
 /* wrap albums in a flexbox */
 
+/* resize images for smaller */
+
+photo-app {
+  width: max(180px, min(60vw, 400px));
+  max-width: max(180px, 60vw);
+}
+
 .album-container, .photo-container {
   display: flex;
   flex-wrap: wrap;
@@ -160,12 +167,6 @@ h3, h4, h5, h6 {
   margin-bottom: 25px;
 }
 
-/* resize images for smaller */
-
-photo-app {
-  width: max(180px, min(60vw, 400px));
-  max-width: max(180px, 60vw);
-}
 
 
 

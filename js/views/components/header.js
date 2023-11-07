@@ -1,25 +1,12 @@
-import { html, LitElement } from "../../library/lit.js";
+import { html } from "../../library/lit.js";
+import { LitElem } from "../../models/lit-element.js";
 
-export class Header extends LitElement {
-  createRenderRoot() {
-    return this;
-  }
-
-  broadcastBurgerMenu() {
-    const dispatched = new CustomEvent("click-burger-menu", {
-      detail: {},
-      bubbles: true,
-      composed: true,
-    });
-
-    this.dispatchEvent(dispatched);
-  }
-
+export class Header extends LitElem {
   render() {
     return html`
     <nav class="header">
       <ul>
-        <li @click=${this.broadcastBurgerMenu}><a><span class="burger">Ξ</span></a></li>
+        <li @click=${this.broadcast('click-burger-menu')}><a><span class="burger">Ξ</span></a></li>
         <li><a href="/"><span class="brand">photos.rgrannell.xyz</span></a></li>
         <li class="rss-tag" style="float: right">
           <a title="rss" href="/feed.xml">

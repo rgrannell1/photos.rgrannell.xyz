@@ -1,9 +1,7 @@
-import { html, LitElement } from "../../../../library/lit.js";
+import { html } from "../../../../library/lit.js";
+import { LitElem } from "../../../../models/lit-element.js";
 
-export class PhotoAlbum extends LitElement {
-  createRenderRoot() {
-    return this;
-  }
+export class PhotoAlbum extends LitElem {
   static get properties() {
     return {
       title: { type: String },
@@ -13,19 +11,6 @@ export class PhotoAlbum extends LitElement {
       id: { type: String },
       count: { type: Number },
     };
-  }
-
-  broadcastClickAlbum() {
-    const dispatched = new CustomEvent("click-album", {
-      detail: {
-        id: this.id,
-        title: this.title,
-      },
-      bubbles: true,
-      composed: true,
-    });
-
-    this.dispatchEvent(dispatched);
   }
 
   dateRange() {
@@ -54,7 +39,11 @@ export class PhotoAlbum extends LitElement {
   render() {
     return html`
     <div class="photo-album">
-      <img src="${this.url}" alt="${this.title} - Photo Album Thumbnail" @click=${this.broadcastClickAlbum}>
+      <img src="${this.url}" alt="${this.title} - Photo Album Thumbnail"
+        @click=${this.broadcast('click-album', {
+          id: this.id,
+          title: this.title,
+        })}>
       <p class="photo-album-title">${this.title}</p>
       <p class="photo-album-date">${this.dateRange()}</p>
       <p class="photo-album-count">${this.count} ${
