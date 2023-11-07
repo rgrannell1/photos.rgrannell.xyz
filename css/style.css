@@ -211,14 +211,6 @@ photo-app {
     grid-template-columns: 200px 1fr;
   }
 
-  photo-sidebar {
-    display: none;
-  }
-
-  photo-sidebar[visible="true"] {
-    display: block;
-  }
-
   .burger {
     display: none;
   }
