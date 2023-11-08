@@ -41,6 +41,19 @@ export class AlbumsPage extends LitElem {
     return count;
   }
 
+  loadingMode(idx) {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    const imageDimension = 400;
+    const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
+    const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
+
+    return idx > (maxImagesPerRow * maxRowsInFold)
+      ? 'lazy'
+      : 'eager'
+  }
+
   render() {
     return html`
     <section class="album-metadata">
@@ -54,13 +67,16 @@ export class AlbumsPage extends LitElem {
         .sort((album0, album1) => {
           return album1.maxDate - album0.maxDate;
         })
-        .map((album) => {
+        .map((album, idx) => {
+          const loading = this.loadingMode(idx);
+
           return html`
             <photo-album
               title="${album.title}" url="${album.url}"
               id="${album.id}" count="${album.count}"
               minDate="${album.minDate}"
-              maxDate="${album.maxDate}"></photo-album>
+              maxDate="${album.maxDate}"
+              loading=${loading}></photo-album>
             `;
         })
     }

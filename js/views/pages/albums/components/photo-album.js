@@ -10,6 +10,7 @@ export class PhotoAlbum extends LitElem {
       maxDate: { type: String },
       id: { type: String },
       count: { type: Number },
+      loading: { type: String },
     };
   }
 
@@ -37,10 +38,13 @@ export class PhotoAlbum extends LitElem {
   }
 
   render() {
+    console.log('album', this.loading)
+
     return html`
     <div class="photo-album">
       <img width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail"
-        @click=${this.broadcast('click-album', {
+      loading="${this.loading}"
+      @click=${this.broadcast('click-album', {
           id: this.id,
           title: this.title,
         })}>

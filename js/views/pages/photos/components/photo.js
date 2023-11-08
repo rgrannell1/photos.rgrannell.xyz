@@ -8,6 +8,7 @@ export class AppPhoto extends LitElem {
       imageUrl: { type: String },
       thumbnailUrl: { type: String },
       tags: { type: Array },
+      loading: { type: String },
     };
   }
 
@@ -27,6 +28,7 @@ export class AppPhoto extends LitElem {
       <img
         width="400" height="400"
         src="${this.thumbnailUrl}"
+        loading="${this.loading}"
         @click=${this.broadcast('click-photo', { imageUrl: this.imageUrl })}/>
     </div>
     `;

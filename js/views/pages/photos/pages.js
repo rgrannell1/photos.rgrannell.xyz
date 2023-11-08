@@ -64,6 +64,19 @@ export class PhotosPage extends LitElement {
     return this.album().images.length;
   }
 
+  loadingMode(idx) {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    const imageDimension = 400;
+    const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
+    const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
+
+    return idx > (maxImagesPerRow * maxRowsInFold)
+      ? 'lazy'
+      : 'eager'
+  }
+
   render() {
     const album = this.album();
     const range = this.dateRange(album.min_date, album.max_date);
@@ -78,11 +91,12 @@ export class PhotosPage extends LitElement {
 
       <section class="photo-container">
         ${
-      this.photos().map((photo) => {
+      this.photos().map((photo, idx) => {
         return html`
         <app-photo
           id="${photo.id}"
           tags="${photo.tags}"
+          loading="${this.loadingMode(idx)}"
           thumbnailUrl="${photo.thumbnailUrl}"
           imageUrl="${photo.imageUrl}"></app-photo>`;
       })
