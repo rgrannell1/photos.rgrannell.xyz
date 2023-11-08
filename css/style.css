@@ -17,7 +17,10 @@
 
 @font-face {
   font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 400;
   src: url('/fonts/Rubik-Regular.ttf') format('truetype');
+  font-display: swap
 }
 
 
@@ -34,17 +37,10 @@ a {
   color: var(--link-color);
 }
 
-.long-url {
-  max-width: 500px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: block;
-}
-
 img {
   width: max(180px, min(60vw, 400px));
   max-width: max(180px, 60vw);
+  height: auto;
 }
 
 main a {

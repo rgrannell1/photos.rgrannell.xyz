@@ -25,6 +25,7 @@ export class AppPhoto extends LitElem {
         @click=${this.broadcast('click-photo-metadata', photoMetadata)}
         class="photo-metadata-popover">🛈</div>
       <img
+        width="400" height="400"
         src="${this.thumbnailUrl}"
         @click=${this.broadcast('click-photo', { imageUrl: this.imageUrl })}/>
     </div>

@@ -39,7 +39,7 @@ export class PhotoAlbum extends LitElem {
   render() {
     return html`
     <div class="photo-album">
-      <img src="${this.url}" alt="${this.title} - Photo Album Thumbnail"
+      <img width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail"
         @click=${this.broadcast('click-album', {
           id: this.id,
           title: this.title,
