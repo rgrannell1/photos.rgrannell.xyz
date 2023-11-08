@@ -33,27 +33,20 @@ export class MetadataPage extends LitElem {
 
     return html`
     <section>
-      <h1>Metadata</h1>
+    <h1>Metadata</h1>
 
-      <img src="${photo.thumbnail_url}"/>
+    <img src="${photo.thumbnail_url}"/>
+
+      <p>
+        <a href="${photo.image_url}">[full image]</a>
+      </p>
 
       <h3>Tags</h3>
-      <ul>${tags}</ul>
-
-      <h3>URLs</h3>
-
-      <ul>
-        <li>
-          <a href="${photo.image_url}">Image URL</a>
-        </li>
-        <li>
-          <a href="${photo.thumbnail_url}">Thumbnail URL</a>
-        </li>
-      </ul>
+      <ul class="metadata-list">${tags}</ul>
 
       <h3>Exif</h3>
 
-      <ul>
+      <ul class="metadata-list">
         <li>
           <p>Date-Time: ${photo.exif.dateTime}</p>
         </li>

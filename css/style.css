@@ -283,6 +283,10 @@ photo-page {
   padding: 20px;
 }
 
+.metadata-list {
+  margin-left: 20px;
+}
+
 @media (hover: hover) {
   .sidebar-item:hover {
     background-color: var(--hover-background-color);
