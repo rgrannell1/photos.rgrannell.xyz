@@ -54,6 +54,11 @@ export class PageLocation {
       return {
         type: "stats",
       };
+    } else if (window.location.hash.startsWith("#/metadata")) {
+      return {
+        type: "metadata",
+        id: window.location.hash.split("/")[2],
+      };
     }
   }
 }
