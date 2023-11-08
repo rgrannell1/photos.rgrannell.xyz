@@ -44,21 +44,38 @@ export class MetadataPage extends LitElem {
 
       <ul>
         <li>
-          <a class="long-url" href="${photo.image_url}">Image URL</a>
+          <a href="${photo.image_url}">Image URL</a>
         </li>
         <li>
-          <a class="long-url" href="${photo.thumbnail_url}">Thumbnail URL</a>
+          <a href="${photo.thumbnail_url}">Thumbnail URL</a>
         </li>
       </ul>
 
       <h3>Exif</h3>
-      <p>Date-Time: ${photo.exif.dateTime}</p>
-      <p>Model: ${photo.exif.model}</p>
-      <p>Aparture: ${photo.exif.fNumber}</p>
-      <p>Focal Length: ${photo.exif.focalLength}</p>
-      <p>Width: ${photo.exif.width}</p>
-      <p>Height: ${photo.exif.height}</p>
-      <p>ISO: ${photo.exif.iso}</p>
+
+      <ul>
+        <li>
+          <p>Date-Time: ${photo.exif.dateTime}</p>
+        </li>
+        <li>
+          <p>Model: ${photo.exif.model}</p>
+        </li>
+        <li>
+          <p>Aparture: ${photo.exif.fNumber}</p>
+        </li>
+        <li>
+          <p>Focal Length: ${photo.exif.focalLength}</p>
+        </li>
+        <li>
+          <p>Width: ${photo.exif.width}</p>
+        </li>
+        <li>
+          <p>Height: ${photo.exif.height}</p>
+        </li>
+        <li>
+          <p>ISO: ${photo.exif.iso}</p>
+        </li>
+      </ul>
 
     </section>
     `;

@@ -81,6 +81,10 @@ h2 {
   margin-top: 1.35em;
 }
 
+h3 {
+  margin-top: 1.35em;
+}
+
 h3, h4, h5, h6 {
   font-size: 1.5em;
 }
@@ -108,9 +112,11 @@ h3, h4, h5, h6 {
  cursor: pointer;
 }
 
-.burger:hover {
- background-color: var(--hover-background-color);
- cursor: pointer;
+@media (hover: hover) {
+  .burger:hover {
+    background-color: var(--hover-background-color);
+    cursor: pointer;
+  }
 }
 
 .header {
@@ -150,12 +156,14 @@ photo-app {
 .photo {
   margin: 5px;
   cursor: pointer;
-  position: relative; /* Set the position context for the absolutely positioned square */
-  display: inline-block; /* Ensures the container fits the size of the image */
+  position: relative;
+  display: inline-block;
 }
 
-.photo:hover {
-  filter: brightness(80%);
+@media (hover: hover) {
+  .photo:hover {
+    filter: brightness(80%);
+  }
 }
 
 .photo-metadata-popover {
@@ -171,17 +179,27 @@ photo-app {
   display: none;
 }
 
-.photo:hover .photo-metadata-popover {
-  display: block;
-}
-
 .photo-album {
   margin: 10px;
   cursor: pointer;
 }
 
-.photo-album:hover {
-  filter: brightness(80%);
+/* On non-hover devices, just show a metadata overlay */
+@media (hover: none), (pointer: coarse) {
+  .photo .photo-metadata-popover {
+    display: block;
+  }
+}
+
+/* On hover devices, show a metadata overlay on hover */
+@media (hover: hover) {
+  .photo:hover .photo-metadata-popover {
+    display: block;
+  }
+
+  .photo-album:hover {
+    filter: brightness(80%);
+  }
 }
 
 .photo-album-title {
@@ -265,7 +283,9 @@ photo-page {
   padding: 20px;
 }
 
-.sidebar-item:hover {
-  background-color: var(--hover-background-color);
-  cursor: pointer;
+@media (hover: hover) {
+  .sidebar-item:hover {
+    background-color: var(--hover-background-color);
+    cursor: pointer;
+  }
 }
