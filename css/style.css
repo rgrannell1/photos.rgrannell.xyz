@@ -263,12 +263,14 @@ photo-app {
   }
 }
 
-photo-sidebar {
-  grid-area: 1 / 1 / 2 / 2;
+.photo-sidebar {
+  grid-row: 1;
+  grid-column: 1;
 }
 
-photo-page {
-  grid-area: 1 / 2 / 2 / 3;
+.photo-page {
+  grid-row: 1;
+  grid-column: 2;
 }
 
 /*
