@@ -57,7 +57,7 @@ export class MetadataPage extends LitElem {
           <p>Aparture: ${photo.exif.fNumber}</p>
         </li>
         <li>
-          <p>Focal Length: ${photo.exif.focalLength}</p>
+          <p>Focal Length: ${photo.exif.focalLength}mm Equivalent</p>
         </li>
         <li>
           <p>Width: ${photo.exif.width}</p>
