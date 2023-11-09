@@ -65,6 +65,7 @@ body {
   color: var(--font-colour);
   word-spacing: 0.27ex;
   background-color: var(--background-color);
+  margin-bottom: 100px;
 }
 
 h1 {
