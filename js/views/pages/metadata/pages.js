@@ -23,7 +23,7 @@ export class MetadataPage extends LitElem {
   renderLocation() {
     const photo = this.photo();
 
-    if (!photo.location.address) {
+    if (!photo.location?.address) {
       return html``;
     }
 
