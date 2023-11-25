@@ -4,7 +4,7 @@ import { LitElem } from "../../../models/lit-element.js";
 
 import "./components/photo-album.js";
 
-import albums from "../../../../manifest.json" assert { type: "json" };
+const albums = await (await fetch("/manifest.json")).json();
 
 export class AlbumsPage extends LitElem {
   albums() {

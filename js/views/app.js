@@ -13,7 +13,8 @@ import "./pages/stats/pages.js";
 import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
 
-import albums from "../../manifest.json" assert { type: "json" };
+//import albums from "../../manifest.json" with { type: "json" };
+const albums = await (await fetch("/manifest.json")).json();
 
 export class PhotoApp extends LitElem {
   static get properties() {

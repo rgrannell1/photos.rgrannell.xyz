@@ -2,7 +2,7 @@ import { html, LitElement } from "../../../library/lit.js";
 
 import "./components/photo.js";
 
-import albums from "../../../../../manifest.json" assert { type: "json" };
+const albums = await (await fetch("/manifest.json")).json();
 
 export class PhotosPage extends LitElement {
   static get properties() {

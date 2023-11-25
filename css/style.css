@@ -33,6 +33,12 @@ html * {
   padding: 0;
 }
 
+address {
+  display: inline-block;
+  font-style: normal;
+  text-decoration: underline;
+}
+
 a {
   color: var(--link-color);
 }
@@ -262,6 +268,14 @@ photo-app {
   .burger {
     display: none;
   }
+
+  locations-page {
+    margin-right: 200px;
+  }
+}
+
+#map {
+  height: 1000px;
 }
 
 .photo-sidebar {
