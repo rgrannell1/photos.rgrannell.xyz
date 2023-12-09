@@ -154,6 +154,7 @@ photo-app {
   display: flex;
   flex-wrap: wrap;
   column-gap: 10px;
+  justify-content: space-between;
 }
 
 .photo {
@@ -161,6 +162,7 @@ photo-app {
   cursor: pointer;
   position: relative;
   display: inline-block;
+  flex:content
 }
 
 @media (hover: hover) {
@@ -249,12 +251,12 @@ photo-app {
 
   .app-container {
     display: grid;
-    grid-template-columns: 0px 1fr;
+    grid-template-columns: 0px 1fr 0px;
   }
 
   .app-container.sidebar-visible {
     display: grid;
-    grid-template-columns: 1fr 0px;
+    grid-template-columns: 1fr 0px 0px;
   }
 }
 
@@ -262,7 +264,7 @@ photo-app {
 @media (min-width: 501px) {
   .app-container {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: 200px 1fr 200px;
   }
 
   .burger {
