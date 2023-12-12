@@ -14,6 +14,6 @@ export class LitElem extends LitElement {
       });
 
       this.dispatchEvent(dispatched);
-    }
+    };
   }
 }

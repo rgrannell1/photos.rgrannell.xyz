@@ -1,4 +1,3 @@
-
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 
@@ -49,9 +48,7 @@ export class AlbumsPage extends LitElem {
     const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
     const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
 
-    return idx > (maxImagesPerRow * maxRowsInFold)
-      ? 'lazy'
-      : 'eager'
+    return idx > (maxImagesPerRow * maxRowsInFold) ? "lazy" : "eager";
   }
 
   render() {

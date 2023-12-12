@@ -38,16 +38,18 @@ export class PhotoAlbum extends LitElem {
   }
 
   render() {
-    console.log('album', this.loading)
+    console.log("album", this.loading);
 
     return html`
     <div class="photo-album">
       <img width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail"
       loading="${this.loading}"
-      @click=${this.broadcast('click-album', {
-          id: this.id,
-          title: this.title,
-        })}>
+      @click=${
+      this.broadcast("click-album", {
+        id: this.id,
+        title: this.title,
+      })
+    }>
       <p class="photo-album-title">${this.title}</p>
       <p class="photo-album-date">${this.dateRange()}</p>
       <p class="photo-album-count">${this.count} ${

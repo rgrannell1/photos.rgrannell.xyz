@@ -5,7 +5,7 @@ const resources = [
   "/icons/favicon-16x16.png",
   "/icons/favicon-32x32.png",
   "/favicon.ico",
-  "/manifest.json"
+  "/manifest.json",
 ];
 
 self.addEventListener("install", function (event) {
@@ -22,7 +22,7 @@ self.addEventListener("fetch", function (event) {
       // special handling; we want to use the cached result for the manifest.json,
       // but also update where possible. Ideally we'll refresh the page in a future
       // version...
-      if (response?.url?.endsWith('manifest.json')) {
+      if (response?.url?.endsWith("manifest.json")) {
         fetch(event.request);
 
         return response;

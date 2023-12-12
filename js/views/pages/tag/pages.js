@@ -6,11 +6,10 @@ import { Photos } from "../../../services/photos.js";
 
 const albums = await (await fetch("/manifest.json")).json();
 
-export class PhotosPage extends LitElement {
+export class TagPage extends LitElement {
   static get properties() {
     return {
-      title: { type: String },
-      id: { type: String },
+      tag: { type: String },
     };
   }
 
@@ -19,38 +18,36 @@ export class PhotosPage extends LitElement {
   }
 
   photos() {
-    const album = this.album();
+    const images = [];
 
-    return album.images.map((image) => {
-      return {
-        id: image.id,
-        thumbnailUrl: image.thumbnail_url,
-        imageUrl: image.image_url,
-        tags: image.tags,
-      };
-    });
-  }
-
-  album() {
-    if (!albums.hasOwnProperty(this.id)) {
-      return {};
+    for (const album of Object.values(albums)) {
+      for (const image of album.images) {
+        if (!image.tags.includes(this.tag)) {
+          continue;
+        }
+        images.push({
+          id: image.id,
+          thumbnailUrl: image.thumbnail_url,
+          imageUrl: image.image_url,
+          tags: image.tags,
+        });
+      }
     }
 
-    return albums[this.id];
+    return images;
   }
 
   imageCount() {
-    return this.album().images.length;
+    return this.photos().length;
   }
 
   render() {
-    const album = this.album();
-    const range = Dates.dateRange(album.min_date, album.max_date);
+    const range = Dates.dateRange(0, 0); // TODO
 
     return html`
     <div>
       <section class="photos-metadata">
-        <h1>${this.title}</h1>
+        <h1>${this.tag}</h1>
         <p class="photo-album-date">${range}</p>
         <p class="photo-album-count">${this.imageCount()} photos</p>
       </section>
@@ -73,4 +70,4 @@ export class PhotosPage extends LitElement {
   }
 }
 
-customElements.define("photos-page", PhotosPage);
+customElements.define("tag-page", TagPage);

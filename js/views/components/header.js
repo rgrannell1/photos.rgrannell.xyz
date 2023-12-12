@@ -6,7 +6,9 @@ export class Header extends LitElem {
     return html`
     <nav class="header">
       <ul>
-        <li @click=${this.broadcast('click-burger-menu')}><a><span class="burger">Ξ</span></a></li>
+        <li @click=${
+      this.broadcast("click-burger-menu")
+    }><a><span class="burger">Ξ</span></a></li>
         <li><a href="/"><span class="brand">photos.rgrannell.xyz</span></a></li>
         <li class="rss-tag" style="float: right">
           <a title="rss" href="/feed.xml">

@@ -10,6 +10,7 @@ import "./pages/albums/pages.js";
 import "./pages/locations/pages.js";
 import "./pages/photos/pages.js";
 import "./pages/stats/pages.js";
+import "./pages/tag/pages.js";
 import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
 
@@ -85,6 +86,15 @@ export class PhotoApp extends LitElem {
     window.open(imageUrl, "_blank");
   }
 
+  async receiveClickTag(event) {
+    const { tagName } = event.detail;
+
+    this.page = "tag-album";
+    this.tag = tagName;
+
+    PageLocation.showTagAlbumUrl(tagName);
+  }
+
   async receiveClickBurgerMenu() {
     this.sidebarVisible = !this.sidebarVisible;
   }
@@ -149,6 +159,12 @@ export class PhotoApp extends LitElem {
       `;
     }
 
+    if (this.page === "tag-album") {
+      return html`
+      <tag-page tag=${this.tag} class="${classes.join(" ")}"></tag-page>
+      `;
+    }
+
     if (this.page === "tags") {
       return html`
       <tags-page class="${classes.join(" ")}"></tags-page>
@@ -183,6 +199,7 @@ export class PhotoApp extends LitElem {
     <div
       @click-album=${this.receiveClickAlbum}
       @click-photo=${this.receiveClickPhoto}
+      @click-tag=${this.receiveClickTag}
       @click-burger-menu=${this.receiveClickBurgerMenu}
       @click-photo-metadata=${this.receiveClickPhotoMetadata}
       @navigate-page=${this.receiveNavigatePage}>

@@ -27,6 +27,10 @@ export class PageLocation {
     window.location.hash = `#/metadata/${id}`;
     document.title = "Metadata - photos";
   }
+  static showTagAlbumUrl(tagName) {
+    window.location.hash = `#/metadata/${tagName}`;
+    document.title = "Tag - photos";
+  }
   static getUrl() {
     if (window.location.hash.startsWith("#/albums")) {
       return {
@@ -49,6 +53,10 @@ export class PageLocation {
     } else if (window.location.hash.startsWith("#/tags")) {
       return {
         type: "tags",
+      };
+    } else if (window.location.hash.startsWith("#/tag")) {
+      return {
+        type: "tag-album",
       };
     } else if (window.location.hash.startsWith("#/stats")) {
       return {

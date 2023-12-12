@@ -1,5 +1,5 @@
-import { html } from "../../../../library/lit.js";
-import { LitElem } from "../../../../models/lit-element.js";
+import { html } from "../../library/lit.js";
+import { LitElem } from "../../models/lit-element.js";
 
 export class AppPhoto extends LitElem {
   static get properties() {
@@ -23,13 +23,13 @@ export class AppPhoto extends LitElem {
     return html`
     <div class="photo">
       <div
-        @click=${this.broadcast('click-photo-metadata', photoMetadata)}
+        @click=${this.broadcast("click-photo-metadata", photoMetadata)}
         class="photo-metadata-popover">🛈</div>
       <img
         width="400" height="400"
         src="${this.thumbnailUrl}"
         loading="${this.loading}"
-        @click=${this.broadcast('click-photo', { imageUrl: this.imageUrl })}/>
+        @click=${this.broadcast("click-photo", { imageUrl: this.imageUrl })}/>
     </div>
     `;
   }

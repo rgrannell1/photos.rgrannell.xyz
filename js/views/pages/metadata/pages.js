@@ -6,7 +6,7 @@ const albums = await (await fetch("/manifest.json")).json();
 export class MetadataPage extends LitElem {
   static get properties() {
     return {
-      id: { type: Number }
+      id: { type: Number },
     };
   }
 
@@ -37,7 +37,7 @@ export class MetadataPage extends LitElem {
     </a>
     </div>
 
-    `
+    `;
   }
 
   render() {
@@ -96,4 +96,3 @@ export class MetadataPage extends LitElem {
 }
 
 customElements.define("metadata-page", MetadataPage);
-
