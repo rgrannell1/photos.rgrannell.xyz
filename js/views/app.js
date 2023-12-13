@@ -46,6 +46,9 @@ export class PhotoApp extends LitElem {
     } else if (location?.type === "photo") {
       this.page = "photos";
       this.id = location.id;
+    } else if (location?.type === "tag-album") {
+      this.page = "tag-album";
+      this.tag = location.tag;
     } else if (location?.type === "tags") {
       this.page = "tags";
     } else if (location?.type === "locations") {

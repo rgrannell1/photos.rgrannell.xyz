@@ -57,6 +57,7 @@ export class PageLocation {
     } else if (window.location.hash.startsWith("#/tag")) {
       return {
         type: "tag-album",
+        tag: decodeURIComponent(window.location.hash.split("/")[2]),
       };
     } else if (window.location.hash.startsWith("#/stats")) {
       return {

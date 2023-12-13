@@ -35,7 +35,7 @@ export class TagsPage extends LitElem {
     return html`
     <li>
       <a
-        href="#/tags/${encodedTagName}"
+        href="#/tag/${encodedTagName}"
         @click=${
       this.broadcast("click-tag", { tagName })
     }>${tagName}</a> (${count})
