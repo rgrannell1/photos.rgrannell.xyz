@@ -25,8 +25,14 @@ export class TagPage extends LitElement {
         if (!image.tags.includes(this.tag)) {
           continue;
         }
+
+        const parsedDate = image.exif.dateTime
+          ? Dates.parse(image.exif.dateTime)
+          : undefined;
+
         images.push({
           id: image.id,
+          dateTime: parsedDate,
           thumbnailUrl: image.thumbnail_url,
           imageUrl: image.image_url,
           tags: image.tags,
@@ -42,7 +48,11 @@ export class TagPage extends LitElement {
   }
 
   render() {
-    const range = Dates.dateRange(0, 0); // TODO
+    const [minDate, maxDate] = Dates.findRange(this.photos());
+
+    console.log(minDate, maxDate)
+
+    const range = Dates.dateRange(minDate, maxDate);
 
     return html`
     <div>
