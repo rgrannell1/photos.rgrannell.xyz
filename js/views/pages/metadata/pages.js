@@ -11,6 +11,9 @@ export class MetadataPage extends LitElem {
   }
 
   photo() {
+    if (!this.id) {
+      throw new Error('metadata: requires id')
+    }
     for (const album of Object.values(albums)) {
       for (const image of album.images) {
         if (parseInt(image.id) === this.id) {
@@ -43,13 +46,20 @@ export class MetadataPage extends LitElem {
   render() {
     const photo = this.photo();
 
-    const tags = (photo.tags ?? []).map((tag) => {
-      return html`
-      <li>
-        <a href="#/tag/${tag}">${tag}</a>
-      </li>
-      `;
-    });
+    const tags = (photo.tags ?? [])
+      .filter(tagName => {
+        return tagName !== "Published";
+      })
+      .map((tagName) => {
+        const encodedTagName = encodeURIComponent(tagName);
+        return html`
+        <li>
+          <a
+            @click=${ this.broadcast("click-tag", { tagName }) }
+            href="#/tag/${encodedTagName}">${tagName}</a>
+        </li>
+        `;
+      });
 
     return html`
     <section>

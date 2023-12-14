@@ -38,8 +38,6 @@ export class PhotoAlbum extends LitElem {
   }
 
   render() {
-    console.log("album", this.loading);
-
     return html`
     <div class="photo-album">
       <img width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail"

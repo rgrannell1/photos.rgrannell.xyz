@@ -34,9 +34,7 @@ export class PhotoApp extends LitElem {
     return this;
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-
+  setStateFromUrl() {
     const location = PageLocation.getUrl();
 
     if (location?.type === "album") {
@@ -61,7 +59,14 @@ export class PhotoApp extends LitElem {
     } else {
       this.page = "albums";
     }
+
+    this.requestUpdate();
   }
+
+  connectedCallback() {
+    super.connectedCallback();
+  }
+
   /*
    * Navigate to the album page
    */
