@@ -209,6 +209,7 @@ photo-app {
 .photo-album-title {
   margin: 4px 0px;
   font-weight: bolder;
+  max-width: max(180px, min(60vw, 400px));
 }
 
 .photo-album-count {
@@ -231,8 +232,17 @@ photo-app {
 
 /* Small Devices */
 @media (max-width: 500px) {
+
+  h1, .photo-album-count {
+    text-align: center;
+  }
+
   photo-sidebar {
     display: none;
+  }
+
+  .album-container, .photo-container {
+    justify-content: space-around;
   }
 
   photo-sidebar[visible="true"] {

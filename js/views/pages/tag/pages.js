@@ -50,8 +50,6 @@ export class TagPage extends LitElement {
   render() {
     const [minDate, maxDate] = Dates.findRange(this.photos());
 
-    console.log(minDate, maxDate)
-
     const range = Dates.dateRange(minDate, maxDate);
 
     return html`
