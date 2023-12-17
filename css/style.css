@@ -212,7 +212,7 @@ photo-app {
   max-width: max(180px, min(60vw, 400px));
 }
 
-.photo-album-count {
+.photo-album-count, .photo-count {
   color: var(--secondary-text-color);
 }
 
@@ -222,9 +222,6 @@ photo-app {
   margin-bottom: 25px;
 }
 
-
-
-
 /*
  * ++++ ++++ ++++ ~~~~ Page Grid Layout ~~~~ ++++ ++++ ++++
  */
@@ -233,7 +230,7 @@ photo-app {
 /* Small Devices */
 @media (max-width: 500px) {
 
-  h1, .photo-album-count {
+  h1, .photo-count {
     text-align: center;
   }
 

@@ -55,7 +55,7 @@ export class AlbumsPage extends LitElem {
     return html`
     <section class="album-metadata">
       <h1>Albums</h1>
-      <p class="photo-album-count">${this.imageCount()} photos</p>
+      <p class="photo-count">${this.imageCount()} photos</p>
     </section>
 
     <section class="album-container">
