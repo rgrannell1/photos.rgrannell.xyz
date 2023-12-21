@@ -5,7 +5,7 @@ const resources = [
   "/icons/favicon-16x16.png",
   "/icons/favicon-32x32.png",
   "/favicon.ico",
-  "/manifest.json",
+//  "/manifest.json",
 ];
 
 self.addEventListener("install", function (event) {
