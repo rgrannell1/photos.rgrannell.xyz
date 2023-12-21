@@ -47,7 +47,7 @@ export class MetadataPage extends LitElem {
   render() {
     const photo = this.photo();
 
-    const tags = (photo.tags ?? [])
+    const tags = (photo.tags.sort() ?? [])
       .filter(tagName => {
         return tagName !== "Published";
       })
