@@ -1,9 +1,10 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
+import { getAlbums } from "../../../services/albums.js";
 
 import "./components/photo-album.js";
 
-const albums = await (await fetch("/manifest.json")).json();
+const albums = getAlbums();
 
 export class AlbumsPage extends LitElem {
   albums() {

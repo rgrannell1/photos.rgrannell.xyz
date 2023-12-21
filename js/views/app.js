@@ -2,6 +2,7 @@ import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.js";
 
 import { PageLocation } from "../services/location.js";
+import { getAlbums } from "../services/albums.js";
 
 import "./components/sidebar.js";
 import "./components/header.js";
@@ -14,8 +15,7 @@ import "./pages/tag/pages.js";
 import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
 
-//import albums from "../../manifest.json" with { type: "json" };
-const albums = await (await fetch("/manifest.json")).json();
+const albums = getAlbums();
 
 export class PhotoApp extends LitElem {
   static get properties() {

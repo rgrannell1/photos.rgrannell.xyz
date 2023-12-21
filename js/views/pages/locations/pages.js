@@ -6,7 +6,8 @@ import {
   tileLayer,
 } from "../../../library/leaflet.js";
 
-const albums = await (await fetch("/manifest.json")).json();
+import { getAlbums } from "../../../services/albums.js";
+const albums = getAlbums();
 
 export class LocationsPage extends LitElement {
   createRenderRoot() {

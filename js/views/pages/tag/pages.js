@@ -3,8 +3,9 @@ import { html, LitElement } from "../../../library/lit.js";
 import "../../components/photo.js";
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
+import { getAlbums } from "../../../services/albums.js";
 
-const albums = await (await fetch("/manifest.json")).json();
+const albums = getAlbums();
 
 export class TagPage extends LitElement {
   static get properties() {
