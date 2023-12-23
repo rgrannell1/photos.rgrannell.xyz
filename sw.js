@@ -16,6 +16,10 @@ self.addEventListener("install", function (event) {
 });
 
 self.addEventListener("fetch", function (event) {
+  if (event.request.url.includes("manifest.json")) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(function (response) {
       return response || fetch(event.request);

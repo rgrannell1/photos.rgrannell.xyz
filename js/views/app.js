@@ -34,6 +34,12 @@ export class PhotoApp extends LitElem {
     return this;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+
+    this.setStateFromUrl();
+  }
+
   setStateFromUrl() {
     const location = PageLocation.getUrl();
 
