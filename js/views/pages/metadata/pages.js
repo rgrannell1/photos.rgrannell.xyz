@@ -1,6 +1,7 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { getAlbums } from "../../../services/albums.js";
+import "../../components/tag-link.js";
 
 const albums = getAlbums();
 
@@ -52,14 +53,7 @@ export class MetadataPage extends LitElem {
         return tagName !== "Published";
       })
       .map((tagName) => {
-        const encodedTagName = encodeURIComponent(tagName);
-        return html`
-        <li>
-          <a
-            @click=${ this.broadcast("click-tag", { tagName }) }
-            href="#/tag/${encodedTagName}">${tagName}</a>
-        </li>
-        `;
+        return html`<tag-link tagName="${ tagName }"></tag-link>`;
       });
 
     return html`
