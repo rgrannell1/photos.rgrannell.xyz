@@ -53,7 +53,7 @@ export class MetadataPage extends LitElem {
         return tagName !== "Published";
       })
       .map((tagName) => {
-        return html`<tag-link tagName="${ tagName }"></tag-link>`;
+        return html`<li><tag-link tagName="${ tagName }"></tag-link></li>`;
       });
 
     return html`
