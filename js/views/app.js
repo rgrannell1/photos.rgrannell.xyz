@@ -43,6 +43,18 @@ export class PhotoApp extends LitElem {
     this.setStateFromUrl();
     this.requestUpdate();
 
+    window.addEventListener("popstate", this.handlePopState.bind(this));
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+
+    window.removeEventListener("popstate", this.handlePopState.bind(this));
+  }
+
+  handlePopState() {
+    this.setStateFromUrl();
+    this.requestUpdate();
   }
 
   setStateFromUrl() {
