@@ -27,6 +27,9 @@ export class PhotoApp extends LitElem {
       tags: { type: Array },
       imageUrl: { type: String },
       thumbnailUrl: { type: String },
+      route: { type: String },
+      params: { type: Object },
+      query: { type: Object },
     };
   }
 
@@ -38,13 +41,15 @@ export class PhotoApp extends LitElem {
     super.connectedCallback();
 
     this.setStateFromUrl();
+    this.requestUpdate();
+
   }
 
   setStateFromUrl() {
     const location = PageLocation.getUrl();
 
     if (location?.type === "album") {
-      this.page = "albums";
+      this.page = "photos";
       this.id = location.id;
       this.title = albums[location.id]?.name;
     } else if (location?.type === "photo") {
@@ -65,12 +70,6 @@ export class PhotoApp extends LitElem {
     } else {
       this.page = "albums";
     }
-
-    this.requestUpdate();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
   }
 
   /*
