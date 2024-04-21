@@ -3,6 +3,10 @@
  * ++++ ++++ ++++ ~~~~ Global Variables ~~~~ ++++ ++++ ++++
  */
 :root {
+  color-scheme: dark light;
+}
+
+:root {
   --secondary-text-color:   #999;
   --font-colour:            hsla(0, 0%, 0%, 0.8);
   --navbar-font-colour:     hsl(0, 0%, 0%);
@@ -10,9 +14,26 @@
   --link-color:             hsl(211, 100%, 35%);
   --brand-color:            hsl(211, 100%, 35%);
   --link-background-color:  hsl(211, 100%, 95%);
+
+  /* hover over sidebar color */
   --hover-background-color: hsl(210, 100%, 84%);
+
+  /* the colour of list markers */
   --marker-color:           hsl(0, 0%, 72%);
-  --nav-border-color:     hsl(0, 0%, 0%);
+  --nav-border-color:       hsl(0, 0%, 0%);
+}
+
+.dark-mode {
+  --secondary-text-color:   rgb(168, 168, 168);
+  --font-colour:            rgb(255, 255, 255);
+  --navbar-font-colour:     rgb(255, 255, 255);
+  --background-color:       rgb(20, 20, 20);
+  --link-color:             hsl(211, 84%, 74%);
+  --brand-color:            hsl(211, 84%, 74%);
+  --link-background-color:  hsl(211, 87%, 62%);
+  --hover-background-color: hsl(211, 87%, 62%);
+  --marker-color:           rgb(255, 255, 255);
+  --nav-border-color:       rgb(255, 255, 255);
 }
 
 @font-face {
@@ -23,7 +44,6 @@
   font-display: swap
 }
 
-
 /*
  * ++++ ++++ ++++ ~~~~ Basic Styles ~~~~ ++++ ++++ ++++
  */
@@ -31,6 +51,11 @@ html * {
   font-family: 'Rubik', sans-serif;
   margin: 0;
   padding: 0;
+}
+
+/* this spaces the sidebar away from images */
+section {
+  margin-left: 1.35em;
 }
 
 address {
@@ -62,18 +87,6 @@ li::marker {
   color: var(--marker-color);
 }
 
-section {
-  margin-left: 1.35em;
-}
-
-body {
-  font-size: 1.2em;
-  color: var(--font-colour);
-  word-spacing: 0.27ex;
-  background-color: var(--background-color);
-  margin-bottom: 100px;
-}
-
 h1 {
   font-size: 3em;
   font-weight: lighter;
@@ -92,16 +105,32 @@ h3, h4, h5, h6 {
   font-size: 1.5em;
 }
 
+html, body {
+  height: auto;
+}
+
+.photos-app {
+  font-size: 1.2em;
+  color: var(--font-colour);
+  word-spacing: 0.27ex;
+  background-color: var(--background-color);
+  padding-bottom: 100px;
+  height: 100%;
+}
 
 /*
  * ++++ ++++ ++++ ~~~~ Navbar ~~~~ ++++ ++++ ++++
  */
 
+.dark-light-button-toggle {
+  cursor: pointer;
+}
+
 .burger {
   padding: 10px;
 }
 
-.header li a {
+.header li a, .header li .dark-light-button-toggle {
   display: block;
   color: var(--navbar-font-colour);
   text-align: left;
@@ -109,7 +138,7 @@ h3, h4, h5, h6 {
   text-decoration: none;
 }
 
-.brand, .burger {
+.brand, .burger, .dark-light-button-toggle {
  font-size: 0.75em;
  color: var(--brand-color);
  cursor: pointer;
@@ -119,6 +148,10 @@ h3, h4, h5, h6 {
   .burger:hover {
     background-color: var(--hover-background-color);
     cursor: pointer;
+  }
+
+  .dark-light-button-toggle:hover {
+    background-color: var(--hover-background-color);
   }
 }
 
@@ -222,6 +255,8 @@ photo-app {
   margin-bottom: 25px;
 }
 
+
+
 /*
  * ++++ ++++ ++++ ~~~~ Page Grid Layout ~~~~ ++++ ++++ ++++
  */
@@ -286,19 +321,21 @@ photo-app {
   height: 1000px;
 }
 
-.photo-sidebar {
-  grid-row: 1;
-  grid-column: 1;
-}
-
 .photo-page {
   grid-row: 1;
   grid-column: 2;
 }
 
 /*
- * ++++ ++++ ++++ ~~~~ Sidebar Styling ~~~~ ++++ ++++ ++++
- */
+* ++++ ++++ ++++ ~~~~ Sidebar Styling ~~~~ ++++ ++++ ++++
+*/
+
+@media (hover: hover) {
+  .sidebar-item:hover {
+    background-color: var(--hover-background-color);
+    cursor: pointer;
+  }
+}
 
 .sidebar-item {
   padding: 20px;
@@ -308,9 +345,11 @@ photo-app {
   margin-left: 20px;
 }
 
-@media (hover: hover) {
-  .sidebar-item:hover {
-    background-color: var(--hover-background-color);
-    cursor: pointer;
-  }
+.dark-light-button-toggle {
+  cursor: pointer;
+}
+
+.photo-sidebar {
+  grid-row: 1;
+  grid-column: 1;
 }

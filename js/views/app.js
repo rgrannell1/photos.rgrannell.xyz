@@ -30,6 +30,7 @@ export class PhotoApp extends LitElem {
       route: { type: String },
       params: { type: Object },
       query: { type: Object },
+      darkMode: { type: Boolean },
     };
   }
 
@@ -141,6 +142,14 @@ export class PhotoApp extends LitElem {
     PageLocation.showMetadataUrl(id);
   }
 
+  async receiveSwitchTheme(event) {
+    this.darkMode = !this.darkMode;
+
+    localStorage.setItem("darkMode", this.darkMode);
+
+    this.requestUpdate();
+  }
+
   async receiveNavigatePage(event) {
     this.page = event.detail.page;
 
@@ -214,27 +223,44 @@ export class PhotoApp extends LitElem {
       `;
     }
   }
+
+  loadDarkMode() {
+    if (typeof this.darkMode !== 'undefined') {
+      return this.darkMode;
+    }
+    return localStorage.getItem("darkMode") === 'true';
+  }
+
   render() {
     const classes = ["app-container"];
     if (this.sidebarVisible) {
       classes.push("sidebar-visible");
     }
 
-    return html`
-    <div
-      @click-album=${this.receiveClickAlbum}
-      @click-photo=${this.receiveClickPhoto}
-      @click-tag=${this.receiveClickTag}
-      @click-burger-menu=${this.receiveClickBurgerMenu}
-      @click-photo-metadata=${this.receiveClickPhotoMetadata}
-      @navigate-page=${this.receiveNavigatePage}>
-        <photo-header></photo-header>
+    const topLevelClasses = ['photos-app'];
+    if (this.darkMode) {
+      topLevelClasses.push("dark-mode");
+    }
 
-      <div class="${classes.join(" ")}">
-          <photo-sidebar visible=${this.sidebarVisible}></photo-sidebar>
-          ${this.renderPage(this.sidebarVisible)}
+    return html`
+    <body>
+      <div class="${ topLevelClasses.join(' ') }"
+        @click-album=${this.receiveClickAlbum}
+        @click-photo=${this.receiveClickPhoto}
+        @click-tag=${this.receiveClickTag}
+        @click-burger-menu=${this.receiveClickBurgerMenu}
+        @click-photo-metadata=${this.receiveClickPhotoMetadata}
+        @switch-theme=${this.receiveSwitchTheme}
+        @navigate-page=${this.receiveNavigatePage}>
+
+        <photo-header .darkMode=${this.loadDarkMode()}></photo-header>
+
+        <div class="${classes.join(" ")}">
+            <photo-sidebar visible=${this.sidebarVisible}></photo-sidebar>
+            ${this.renderPage(this.sidebarVisible)}
+        </div>
       </div>
-    </div>
+    </body>
     `;
   }
 }
