@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Roseate Tern — photos.rgrannell.xyz",
+  "title": "📷 photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
-  "feed_url": "https://photos.rgrannell.xyz/feeds/Roseate Tern.json",
-  "description": "📷 Roseate Tern — photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/index.json",
+  "description": "📷 photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {

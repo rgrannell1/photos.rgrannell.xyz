@@ -2,7 +2,7 @@
   "version": "https://jsonfeed.org/version/1",
   "title": "📷 Pilatus PC-9M — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
-  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Pilatus PC-9M.json",
   "description": "📷 Pilatus PC-9M — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",

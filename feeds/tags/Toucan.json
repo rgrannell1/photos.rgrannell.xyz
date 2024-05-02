@@ -2,7 +2,7 @@
   "version": "https://jsonfeed.org/version/1",
   "title": "📷 Toucan — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
-  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Toucan.json",
   "description": "📷 Toucan — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
