@@ -162,7 +162,7 @@ html, body {
 }
 
 .header {
-   margin-bottom: min(6vh, 100px);
+   margin-bottom: min(5vh, 80px);
    padding: 15px 0px;
    font-size: 1.5em;
    /* border-bottom: 4px solid var(--nav-border-color); */
