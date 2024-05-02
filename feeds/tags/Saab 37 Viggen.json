@@ -1,0 +1,47 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Saab 37 Viggen - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e6c61b424e29d836e66d7c40e7a6a4b2710ccca013115fc495c3bff812d791c3.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e6c61b424e29d836e66d7c40e7a6a4b2710ccca013115fc495c3bff812d791c3.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e6c61b424e29d836e66d7c40e7a6a4b2710ccca013115fc495c3bff812d791c3.webp",
+      "date_published": "2023-07-30T15:40:32Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f67ee24e629859bf5e6d778ee6c26ac934e1eec0dce247e7be74560fea2df5f5.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f67ee24e629859bf5e6d778ee6c26ac934e1eec0dce247e7be74560fea2df5f5.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f67ee24e629859bf5e6d778ee6c26ac934e1eec0dce247e7be74560fea2df5f5.webp",
+      "date_published": "2023-07-30T14:53:09Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fc1003295def6ae743f2a0196b5f633f4ac0161e8d9a95bd8e810f90c635d615.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fc1003295def6ae743f2a0196b5f633f4ac0161e8d9a95bd8e810f90c635d615.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fc1003295def6ae743f2a0196b5f633f4ac0161e8d9a95bd8e810f90c635d615.webp",
+      "date_published": "2023-07-30T14:47:09Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1447874ea3c2378b9ccdb04607c32f12fe180c988d61156bccd9f7f5b43353b1.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1447874ea3c2378b9ccdb04607c32f12fe180c988d61156bccd9f7f5b43353b1.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1447874ea3c2378b9ccdb04607c32f12fe180c988d61156bccd9f7f5b43353b1.webp",
+      "date_published": "2023-07-30T15:02:15Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/87b71d502cd4a407c621ab7e8ee2f1ce0e1f4ac899377ee961965d0ce10611df.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/87b71d502cd4a407c621ab7e8ee2f1ce0e1f4ac899377ee961965d0ce10611df.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/87b71d502cd4a407c621ab7e8ee2f1ce0e1f4ac899377ee961965d0ce10611df.webp",
+      "date_published": "2023-07-30T14:44:18Z"
+    }
+  ]
+}

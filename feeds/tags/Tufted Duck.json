@@ -1,0 +1,35 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Tufted Duck - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a57865eefb7087cdb0219635f7b0b57e6cebe60556cc9af5f4658168ae0b4e09.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a57865eefb7087cdb0219635f7b0b57e6cebe60556cc9af5f4658168ae0b4e09.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a57865eefb7087cdb0219635f7b0b57e6cebe60556cc9af5f4658168ae0b4e09.webp",
+      "date_published": "2023-01-12T15:18:07Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/924edb3b282880a5f85f80e056c845966ff87ea5c3909bed1f3334b67196ae48.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/924edb3b282880a5f85f80e056c845966ff87ea5c3909bed1f3334b67196ae48.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/924edb3b282880a5f85f80e056c845966ff87ea5c3909bed1f3334b67196ae48.webp",
+      "date_published": "2023-01-12T15:19:23Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4164acdab43500869e5a70283bd54dad6175a8c417ecd5f3561908a2cec86004.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4164acdab43500869e5a70283bd54dad6175a8c417ecd5f3561908a2cec86004.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4164acdab43500869e5a70283bd54dad6175a8c417ecd5f3561908a2cec86004.webp",
+      "date_published": "2023-01-12T14:51:53Z"
+    }
+  ]
+}

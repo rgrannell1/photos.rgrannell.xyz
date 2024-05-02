@@ -1,0 +1,29 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Chaffinch - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/da00e352fd4f09ee719132bd440a8317055b205631defc60460e6fbdd2d033d3.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/da00e352fd4f09ee719132bd440a8317055b205631defc60460e6fbdd2d033d3.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/da00e352fd4f09ee719132bd440a8317055b205631defc60460e6fbdd2d033d3.webp",
+      "date_published": "2021-10-03T07:46:23Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9b238b649923584c5da72c87f56ed38506ef177833bb006003a434f67bae32a0.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9b238b649923584c5da72c87f56ed38506ef177833bb006003a434f67bae32a0.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9b238b649923584c5da72c87f56ed38506ef177833bb006003a434f67bae32a0.webp",
+      "date_published": "2021-10-03T08:47:40Z"
+    }
+  ]
+}

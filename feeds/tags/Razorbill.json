@@ -1,0 +1,35 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Razorbill - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0a631daa02d110087983d94834688401aac6fdfece842c0bb2a6d78198db2522.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0a631daa02d110087983d94834688401aac6fdfece842c0bb2a6d78198db2522.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0a631daa02d110087983d94834688401aac6fdfece842c0bb2a6d78198db2522.webp",
+      "date_published": "2017-06-17T11:55:04Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/29550781bf130365ba48f1930a5de74e20a4364ccc3f2c743f68d51fd4291209.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/29550781bf130365ba48f1930a5de74e20a4364ccc3f2c743f68d51fd4291209.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/29550781bf130365ba48f1930a5de74e20a4364ccc3f2c743f68d51fd4291209.webp",
+      "date_published": "2017-06-17T12:47:42Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/318a5e97866a542e2a964a854f9f08e13cf60a6b1954079322f8e8f45eecfb69.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/318a5e97866a542e2a964a854f9f08e13cf60a6b1954079322f8e8f45eecfb69.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/318a5e97866a542e2a964a854f9f08e13cf60a6b1954079322f8e8f45eecfb69.webp",
+      "date_published": "2017-06-17T11:54:12Z"
+    }
+  ]
+}

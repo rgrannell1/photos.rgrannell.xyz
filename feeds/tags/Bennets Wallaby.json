@@ -1,0 +1,29 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Bennets Wallaby - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6d685c0868d0d6a0b5ae56c20326c438db34649e3ab9133d32632ad1499f4c15.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6d685c0868d0d6a0b5ae56c20326c438db34649e3ab9133d32632ad1499f4c15.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6d685c0868d0d6a0b5ae56c20326c438db34649e3ab9133d32632ad1499f4c15.webp",
+      "date_published": "2023-10-08T22:01:22Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0d7ccdc43eda047b396fd13e53e8f43d1385daa40f01c8af516236449eacffff.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0d7ccdc43eda047b396fd13e53e8f43d1385daa40f01c8af516236449eacffff.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0d7ccdc43eda047b396fd13e53e8f43d1385daa40f01c8af516236449eacffff.webp",
+      "date_published": "2023-10-08T23:06:21Z"
+    }
+  ]
+}

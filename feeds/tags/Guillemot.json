@@ -1,0 +1,23 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Guillemot - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9d900a813ed674b3943ba4c67bc6b073683cc29b7bd92ed9a81499b5f49a2fde.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9d900a813ed674b3943ba4c67bc6b073683cc29b7bd92ed9a81499b5f49a2fde.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9d900a813ed674b3943ba4c67bc6b073683cc29b7bd92ed9a81499b5f49a2fde.webp",
+      "date_published": "2017-06-17T11:45:33Z"
+    }
+  ]
+}

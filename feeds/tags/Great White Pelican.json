@@ -1,0 +1,23 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Great White Pelican - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/15a1a4201cbcca94696baba6a3632e12d0a275028b0e97519b4d76f49434ff18.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/15a1a4201cbcca94696baba6a3632e12d0a275028b0e97519b4d76f49434ff18.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/15a1a4201cbcca94696baba6a3632e12d0a275028b0e97519b4d76f49434ff18.webp",
+      "date_published": "2023-10-08T22:53:18Z"
+    }
+  ]
+}

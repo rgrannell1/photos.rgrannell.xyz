@@ -1,0 +1,23 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Galway Hooker - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ea607a4de4a98eb1c82062c43248365b8c83051041648bb2e0a2f4b6df117bc3.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ea607a4de4a98eb1c82062c43248365b8c83051041648bb2e0a2f4b6df117bc3.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ea607a4de4a98eb1c82062c43248365b8c83051041648bb2e0a2f4b6df117bc3.webp",
+      "date_published": "2017-05-25T19:35:09Z"
+    }
+  ]
+}

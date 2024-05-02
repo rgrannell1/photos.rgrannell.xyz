@@ -1,0 +1,35 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Ship - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/acda6e59b808b3bcc5c6775e18ea6c3af1056f78a8c66817a443db89cd120d12.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/acda6e59b808b3bcc5c6775e18ea6c3af1056f78a8c66817a443db89cd120d12.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/acda6e59b808b3bcc5c6775e18ea6c3af1056f78a8c66817a443db89cd120d12.webp",
+      "date_published": "2023-07-30T14:17:50Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c5a14f89cb7b0efbe74d4cd27c27cd9ed13589bac7acbc454092bdfdb6c42fcc.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c5a14f89cb7b0efbe74d4cd27c27cd9ed13589bac7acbc454092bdfdb6c42fcc.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c5a14f89cb7b0efbe74d4cd27c27cd9ed13589bac7acbc454092bdfdb6c42fcc.webp",
+      "date_published": "2023-07-30T13:13:15Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/921b6ce4ef09fdaeaf183bb72862fd24e1eedd63e44a90884d9a8ee2683f6dcb.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/921b6ce4ef09fdaeaf183bb72862fd24e1eedd63e44a90884d9a8ee2683f6dcb.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/921b6ce4ef09fdaeaf183bb72862fd24e1eedd63e44a90884d9a8ee2683f6dcb.webp",
+      "date_published": "2023-07-30T15:41:04Z"
+    }
+  ]
+}

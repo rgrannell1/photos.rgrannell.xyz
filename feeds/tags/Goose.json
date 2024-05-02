@@ -1,0 +1,59 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Goose - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/09ab57419aebd4881ea1c392621d0c68c93b3ccc880b21370a3c94e1d0b31a98.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/09ab57419aebd4881ea1c392621d0c68c93b3ccc880b21370a3c94e1d0b31a98.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/09ab57419aebd4881ea1c392621d0c68c93b3ccc880b21370a3c94e1d0b31a98.webp",
+      "date_published": "2018-03-09T17:37:33Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e9931796ec1331ce93007f6142738ea985a55adbfd5a283642e81880d1afb287.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e9931796ec1331ce93007f6142738ea985a55adbfd5a283642e81880d1afb287.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e9931796ec1331ce93007f6142738ea985a55adbfd5a283642e81880d1afb287.webp",
+      "date_published": "2017-02-11T17:31:20Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2983bffbf8003563c7447fe6a9f7245347db369190f53f402725af0b64c58b62.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2983bffbf8003563c7447fe6a9f7245347db369190f53f402725af0b64c58b62.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2983bffbf8003563c7447fe6a9f7245347db369190f53f402725af0b64c58b62.webp",
+      "date_published": "2017-02-11T18:11:05Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/826d2196937035ab8000fae1b5001fe0755ccd886f1cfe6999f1d1d52931a795.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/826d2196937035ab8000fae1b5001fe0755ccd886f1cfe6999f1d1d52931a795.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/826d2196937035ab8000fae1b5001fe0755ccd886f1cfe6999f1d1d52931a795.webp",
+      "date_published": "2022-10-15T10:12:26Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2e5d3bce287b7341d4f81c6b64bc5312b3c18f405bc7740cc4b61d33be50ce59.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2e5d3bce287b7341d4f81c6b64bc5312b3c18f405bc7740cc4b61d33be50ce59.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2e5d3bce287b7341d4f81c6b64bc5312b3c18f405bc7740cc4b61d33be50ce59.webp",
+      "date_published": "2022-10-15T10:19:17Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4cabfebfe93d0592cba503e775f307fec7386fb435c642d64e3f3e0b4c5b4e89.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4cabfebfe93d0592cba503e775f307fec7386fb435c642d64e3f3e0b4c5b4e89.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4cabfebfe93d0592cba503e775f307fec7386fb435c642d64e3f3e0b4c5b4e89.webp",
+      "date_published": "2022-10-15T13:28:16Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b9a51126673df163413cc5cf184d0204efdae1c690501383efebe937aa9a26b6.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b9a51126673df163413cc5cf184d0204efdae1c690501383efebe937aa9a26b6.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b9a51126673df163413cc5cf184d0204efdae1c690501383efebe937aa9a26b6.webp",
+      "date_published": "2022-10-15T10:35:07Z"
+    }
+  ]
+}

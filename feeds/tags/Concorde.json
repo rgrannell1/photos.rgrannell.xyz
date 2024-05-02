@@ -1,0 +1,35 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Concorde - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c09b604c335d7f983a64dcf459bbe49e67a5476d4ac381267bb1a0eec2928b63.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c09b604c335d7f983a64dcf459bbe49e67a5476d4ac381267bb1a0eec2928b63.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c09b604c335d7f983a64dcf459bbe49e67a5476d4ac381267bb1a0eec2928b63.webp",
+      "date_published": "2024-03-16T12:17:13Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5db2c523431b45cf3341e850fdeace07b1d696c6640f40df1196fd83f21c3ea1.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5db2c523431b45cf3341e850fdeace07b1d696c6640f40df1196fd83f21c3ea1.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5db2c523431b45cf3341e850fdeace07b1d696c6640f40df1196fd83f21c3ea1.webp",
+      "date_published": "2024-03-16T12:27:09Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f5da34f6e2b1f2883c605f0a48002549ed7f44d95a8378a5e2779000cbe2e407.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f5da34f6e2b1f2883c605f0a48002549ed7f44d95a8378a5e2779000cbe2e407.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f5da34f6e2b1f2883c605f0a48002549ed7f44d95a8378a5e2779000cbe2e407.webp",
+      "date_published": "2024-03-16T12:14:52Z"
+    }
+  ]
+}

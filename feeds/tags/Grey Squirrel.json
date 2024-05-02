@@ -1,0 +1,47 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Grey Squirrel - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e7936ebe292e6fe8b87a5eab70f0ff68ae33ba59ee32de8c64fe8f60b20b3e42.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e7936ebe292e6fe8b87a5eab70f0ff68ae33ba59ee32de8c64fe8f60b20b3e42.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e7936ebe292e6fe8b87a5eab70f0ff68ae33ba59ee32de8c64fe8f60b20b3e42.webp",
+      "date_published": "2019-12-07T18:10:21Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/74ff4ee0628b9f054d567f4109c8bd34bdf71fc199bfaad65064b749685fb7a5.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/74ff4ee0628b9f054d567f4109c8bd34bdf71fc199bfaad65064b749685fb7a5.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/74ff4ee0628b9f054d567f4109c8bd34bdf71fc199bfaad65064b749685fb7a5.webp",
+      "date_published": "2019-12-07T17:59:35Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c20fe6ec4cbbe7e06f2e05d886740382cb1cd5f4274d60b103851bed1b7671ee.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c20fe6ec4cbbe7e06f2e05d886740382cb1cd5f4274d60b103851bed1b7671ee.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c20fe6ec4cbbe7e06f2e05d886740382cb1cd5f4274d60b103851bed1b7671ee.webp",
+      "date_published": "2019-12-07T18:09:30Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/244de68ec4808e7f1f9115c53bf8ee20d9ec7bad4223bc6a6b65a712bf95cc16.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/244de68ec4808e7f1f9115c53bf8ee20d9ec7bad4223bc6a6b65a712bf95cc16.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/244de68ec4808e7f1f9115c53bf8ee20d9ec7bad4223bc6a6b65a712bf95cc16.webp",
+      "date_published": "2017-02-11T17:14:22Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a01cd5035d794a07cea18965465e81b0fadc9e46053d35348411e4d3afe8855b.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a01cd5035d794a07cea18965465e81b0fadc9e46053d35348411e4d3afe8855b.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a01cd5035d794a07cea18965465e81b0fadc9e46053d35348411e4d3afe8855b.webp",
+      "date_published": "2021-03-24T14:09:26Z"
+    }
+  ]
+}

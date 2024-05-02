@@ -1,0 +1,29 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Turkey - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7ba472233f4717a6906201720d1c4eb4599a474d2542579e00afe3333b1cb1b6.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7ba472233f4717a6906201720d1c4eb4599a474d2542579e00afe3333b1cb1b6.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7ba472233f4717a6906201720d1c4eb4599a474d2542579e00afe3333b1cb1b6.webp",
+      "date_published": "2019-12-07T18:04:58Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/448433ed1f19a2c8d4aa8f8967adbbfc89960beb3f97fe5362e8d3575d6a902e.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/448433ed1f19a2c8d4aa8f8967adbbfc89960beb3f97fe5362e8d3575d6a902e.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/448433ed1f19a2c8d4aa8f8967adbbfc89960beb3f97fe5362e8d3575d6a902e.webp",
+      "date_published": "2019-12-07T18:01:07Z"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Zurich - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e4b42399ebb692110ff573230dcbfe5a6fd3fdd46b57e8c8132e117cef16de34.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e4b42399ebb692110ff573230dcbfe5a6fd3fdd46b57e8c8132e117cef16de34.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e4b42399ebb692110ff573230dcbfe5a6fd3fdd46b57e8c8132e117cef16de34.webp",
+      "date_published": "2023-12-04T15:42:30Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e9444419b71e34ebcc65f98774ae82c9d9b110763adac2c06159c4bbf60f0fba.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e9444419b71e34ebcc65f98774ae82c9d9b110763adac2c06159c4bbf60f0fba.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e9444419b71e34ebcc65f98774ae82c9d9b110763adac2c06159c4bbf60f0fba.webp",
+      "date_published": "2023-12-05T15:04:25Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4fa7fce7b38fd19754d2bbe09bb8e5626b0d9f4847bf53f4cef359fec9b21f9e.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4fa7fce7b38fd19754d2bbe09bb8e5626b0d9f4847bf53f4cef359fec9b21f9e.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4fa7fce7b38fd19754d2bbe09bb8e5626b0d9f4847bf53f4cef359fec9b21f9e.webp",
+      "date_published": "2023-12-06T12:49:28Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/847d4629cb82b81197e9d277e3deb8f44691ecf2d3b5865a5dd8873c9869acd6.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/847d4629cb82b81197e9d277e3deb8f44691ecf2d3b5865a5dd8873c9869acd6.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/847d4629cb82b81197e9d277e3deb8f44691ecf2d3b5865a5dd8873c9869acd6.webp",
+      "date_published": "2023-12-05T12:45:53Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5a0e96fcb08a3042b65427e0ca8c17c16ed9b9a8e5c676a8efa13198547bbadd.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5a0e96fcb08a3042b65427e0ca8c17c16ed9b9a8e5c676a8efa13198547bbadd.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5a0e96fcb08a3042b65427e0ca8c17c16ed9b9a8e5c676a8efa13198547bbadd.webp",
+      "date_published": "2023-12-06T12:41:30Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3ee19fb65aa509def5fec5a863d4b703495ce39b3235a3e22b21089b4a1f150b.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3ee19fb65aa509def5fec5a863d4b703495ce39b3235a3e22b21089b4a1f150b.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3ee19fb65aa509def5fec5a863d4b703495ce39b3235a3e22b21089b4a1f150b.webp",
+      "date_published": "2023-12-06T12:44:19Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/05b1fd9ef02c65d1402fb158d05590791ba57bfe9280fbcd2858324e351c7ac0.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/05b1fd9ef02c65d1402fb158d05590791ba57bfe9280fbcd2858324e351c7ac0.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/05b1fd9ef02c65d1402fb158d05590791ba57bfe9280fbcd2858324e351c7ac0.webp",
+      "date_published": "2023-12-05T12:44:21Z"
+    }
+  ]
+}

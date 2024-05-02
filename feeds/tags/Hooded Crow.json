@@ -1,0 +1,29 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Hooded Crow - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db09854f83305a8a69735fe1614e9762b1d50e750719a11b9e2c434d15198812.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db09854f83305a8a69735fe1614e9762b1d50e750719a11b9e2c434d15198812.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db09854f83305a8a69735fe1614e9762b1d50e750719a11b9e2c434d15198812.webp",
+      "date_published": "2023-11-01T13:53:56Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e61a192912bbddbac846deed998f05f1b418026708be42ba88940310510d00ac.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e61a192912bbddbac846deed998f05f1b418026708be42ba88940310510d00ac.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e61a192912bbddbac846deed998f05f1b418026708be42ba88940310510d00ac.webp",
+      "date_published": "2021-03-24T13:14:34Z"
+    }
+  ]
+}

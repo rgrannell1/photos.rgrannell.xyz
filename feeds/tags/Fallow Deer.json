@@ -1,0 +1,35 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Fallow Deer - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/56ac346590fea770758d5f91b87b41911c4adcf2be96e1c383368e617955a11b.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/56ac346590fea770758d5f91b87b41911c4adcf2be96e1c383368e617955a11b.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/56ac346590fea770758d5f91b87b41911c4adcf2be96e1c383368e617955a11b.webp",
+      "date_published": "2021-10-17T14:29:27Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b97cb56d347618193846e91c47fc8228bacdf0c2b3472830d2659aeecb2b534d.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b97cb56d347618193846e91c47fc8228bacdf0c2b3472830d2659aeecb2b534d.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b97cb56d347618193846e91c47fc8228bacdf0c2b3472830d2659aeecb2b534d.webp",
+      "date_published": "2021-10-17T14:52:04Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/391ca31124ebb0ce10d6d7696c4545971732ab17e28873dc833474f4a76b3757.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/391ca31124ebb0ce10d6d7696c4545971732ab17e28873dc833474f4a76b3757.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/391ca31124ebb0ce10d6d7696c4545971732ab17e28873dc833474f4a76b3757.webp",
+      "date_published": "2021-10-17T14:32:07Z"
+    }
+  ]
+}

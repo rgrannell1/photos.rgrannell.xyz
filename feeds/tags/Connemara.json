@@ -1,0 +1,29 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Connemara - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9ef9cafb7e102fa4430c1c479ff0b3fd5a920351f0dfc7cfec0486ea4740dd9c.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9ef9cafb7e102fa4430c1c479ff0b3fd5a920351f0dfc7cfec0486ea4740dd9c.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9ef9cafb7e102fa4430c1c479ff0b3fd5a920351f0dfc7cfec0486ea4740dd9c.webp",
+      "date_published": "2019-07-14T13:33:25Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8f043a32f52b368688c657b0beafa28e3975e15f7a3fdd7cb0c367b405280977.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8f043a32f52b368688c657b0beafa28e3975e15f7a3fdd7cb0c367b405280977.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8f043a32f52b368688c657b0beafa28e3975e15f7a3fdd7cb0c367b405280977.webp",
+      "date_published": "2019-07-14T13:33:10Z"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Dalkey Island - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/073445b48d4524d7fc5a8167aad254f00a77f2f27d72c90b5809eb61c585abbe.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/073445b48d4524d7fc5a8167aad254f00a77f2f27d72c90b5809eb61c585abbe.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/073445b48d4524d7fc5a8167aad254f00a77f2f27d72c90b5809eb61c585abbe.webp",
+      "date_published": "2024-04-20T10:51:22Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fbf548918037cd271983c09194aaa73206246402db8f32dcc018ccca53ee4b9f.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fbf548918037cd271983c09194aaa73206246402db8f32dcc018ccca53ee4b9f.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fbf548918037cd271983c09194aaa73206246402db8f32dcc018ccca53ee4b9f.webp",
+      "date_published": "2024-04-20T12:39:29Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/98df86871f6e4500d9727061b6f003298247c15bfd0cc25c24777b1530ecd720.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/98df86871f6e4500d9727061b6f003298247c15bfd0cc25c24777b1530ecd720.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/98df86871f6e4500d9727061b6f003298247c15bfd0cc25c24777b1530ecd720.webp",
+      "date_published": "2024-04-20T10:33:47Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b6a70d3aa14e7b8e6e71bd3699343a69fc6b313c771017412e1fa1126a005cea.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b6a70d3aa14e7b8e6e71bd3699343a69fc6b313c771017412e1fa1126a005cea.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b6a70d3aa14e7b8e6e71bd3699343a69fc6b313c771017412e1fa1126a005cea.webp",
+      "date_published": "2024-04-20T12:12:15Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4057a0cf888f3a5403008b2be661cd7d6a14a5a11fdd4cfc3a91224acafaedc0.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4057a0cf888f3a5403008b2be661cd7d6a14a5a11fdd4cfc3a91224acafaedc0.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4057a0cf888f3a5403008b2be661cd7d6a14a5a11fdd4cfc3a91224acafaedc0.webp",
+      "date_published": "2024-04-20T12:30:51Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ec1a2bb39b70aa0b5a4e6138caf603f4bf70e3f1c29fcd57ad53364405ff30e5.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ec1a2bb39b70aa0b5a4e6138caf603f4bf70e3f1c29fcd57ad53364405ff30e5.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ec1a2bb39b70aa0b5a4e6138caf603f4bf70e3f1c29fcd57ad53364405ff30e5.webp",
+      "date_published": "2024-04-20T12:28:42Z"
+    }
+  ]
+}

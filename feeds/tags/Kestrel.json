@@ -1,0 +1,29 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Kestrel - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/381aad026bb75ee6c45dc488db17cc1bb36585b9190735aee79fdf1054a0e0e4.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/381aad026bb75ee6c45dc488db17cc1bb36585b9190735aee79fdf1054a0e0e4.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/381aad026bb75ee6c45dc488db17cc1bb36585b9190735aee79fdf1054a0e0e4.webp",
+      "date_published": "2022-10-30T10:48:37Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/86ee8bb61c1acc036085924465386730b1b135d170e754989ed12b7f2ce199f9.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/86ee8bb61c1acc036085924465386730b1b135d170e754989ed12b7f2ce199f9.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/86ee8bb61c1acc036085924465386730b1b135d170e754989ed12b7f2ce199f9.webp",
+      "date_published": "2022-10-30T10:46:13Z"
+    }
+  ]
+}

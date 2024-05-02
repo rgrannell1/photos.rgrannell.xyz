@@ -1,0 +1,29 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Amsterdam - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e18292f8a03eba1fe17af33b539f765ce3b9548c524cf1d7f98e4ccae01c72ab.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e18292f8a03eba1fe17af33b539f765ce3b9548c524cf1d7f98e4ccae01c72ab.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e18292f8a03eba1fe17af33b539f765ce3b9548c524cf1d7f98e4ccae01c72ab.webp",
+      "date_published": "2022-10-16T15:15:15Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fb8fd67c0da94e749c70984f4bcece48dd9d09115ea9de6839d20d5680339f1e.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fb8fd67c0da94e749c70984f4bcece48dd9d09115ea9de6839d20d5680339f1e.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fb8fd67c0da94e749c70984f4bcece48dd9d09115ea9de6839d20d5680339f1e.webp",
+      "date_published": "2022-10-16T13:14:33Z"
+    }
+  ]
+}

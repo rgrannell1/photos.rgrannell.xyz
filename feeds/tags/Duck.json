@@ -1,0 +1,35 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Duck - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bde069088ce9454f3a76b9ea9896e8d9bd6fefc8b7217e43c85992745ca2c5e7.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bde069088ce9454f3a76b9ea9896e8d9bd6fefc8b7217e43c85992745ca2c5e7.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bde069088ce9454f3a76b9ea9896e8d9bd6fefc8b7217e43c85992745ca2c5e7.webp",
+      "date_published": "2023-10-08T23:01:36Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bccafff830045b541860cfb59c6e30222ebe8ea82449b5d27ae68fbaaec9bca6.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bccafff830045b541860cfb59c6e30222ebe8ea82449b5d27ae68fbaaec9bca6.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bccafff830045b541860cfb59c6e30222ebe8ea82449b5d27ae68fbaaec9bca6.webp",
+      "date_published": "2021-03-24T13:38:26Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/60f95c9f314073dd0d8a7ef11cdb88e53857d493af18ca18a79009b60f06bf2f.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/60f95c9f314073dd0d8a7ef11cdb88e53857d493af18ca18a79009b60f06bf2f.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/60f95c9f314073dd0d8a7ef11cdb88e53857d493af18ca18a79009b60f06bf2f.webp",
+      "date_published": "2022-07-28T16:39:45Z"
+    }
+  ]
+}

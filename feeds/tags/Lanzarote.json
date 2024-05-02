@@ -1,0 +1,53 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Lanzarote - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/981903ebd67fe4e1dcc019f8b963395bc1f39caa1d1efaecfbf26165a02d4376.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/981903ebd67fe4e1dcc019f8b963395bc1f39caa1d1efaecfbf26165a02d4376.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/981903ebd67fe4e1dcc019f8b963395bc1f39caa1d1efaecfbf26165a02d4376.webp",
+      "date_published": "2023-08-06T23:23:42Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6c3d2c9975a72d8bf6e8b21ef3e10cf94bfdcee7c200953239d1d10abbbf5b2e.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6c3d2c9975a72d8bf6e8b21ef3e10cf94bfdcee7c200953239d1d10abbbf5b2e.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6c3d2c9975a72d8bf6e8b21ef3e10cf94bfdcee7c200953239d1d10abbbf5b2e.webp",
+      "date_published": "2023-08-06T23:05:14Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/935661d43adf08d4f7bcca83c4e420ddb2423058247c47f17b633e0c4b321b4f.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/935661d43adf08d4f7bcca83c4e420ddb2423058247c47f17b633e0c4b321b4f.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/935661d43adf08d4f7bcca83c4e420ddb2423058247c47f17b633e0c4b321b4f.webp",
+      "date_published": "2023-08-06T23:03:19Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b72c003d7a6e56aed5b30a23e221e70e0ee15f05b0fde29aaf4042075fdc6d80.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b72c003d7a6e56aed5b30a23e221e70e0ee15f05b0fde29aaf4042075fdc6d80.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b72c003d7a6e56aed5b30a23e221e70e0ee15f05b0fde29aaf4042075fdc6d80.webp",
+      "date_published": "2023-08-04T02:27:14Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dec9ebda17af7bf398232cdb439fcc624ab4e32e3b13f83406609d4cf46b0d0c.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dec9ebda17af7bf398232cdb439fcc624ab4e32e3b13f83406609d4cf46b0d0c.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dec9ebda17af7bf398232cdb439fcc624ab4e32e3b13f83406609d4cf46b0d0c.webp",
+      "date_published": "2023-08-06T23:03:22Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d0ddb0bcb544391327c82a265476614cb1c8853684babce505327c91d517ab15.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d0ddb0bcb544391327c82a265476614cb1c8853684babce505327c91d517ab15.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d0ddb0bcb544391327c82a265476614cb1c8853684babce505327c91d517ab15.webp",
+      "date_published": "2023-08-06T23:46:36Z"
+    }
+  ]
+}

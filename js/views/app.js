@@ -253,7 +253,7 @@ export class PhotoApp extends LitElem {
         @switch-theme=${this.receiveSwitchTheme}
         @navigate-page=${this.receiveNavigatePage}>
 
-        <photo-header .darkMode=${this.loadDarkMode()}></photo-header>
+        <photo-header .tag=${this.tag} .darkMode=${this.loadDarkMode()}></photo-header>
 
         <div class="${classes.join(" ")}">
             <photo-sidebar visible=${this.sidebarVisible}></photo-sidebar>

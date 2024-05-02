@@ -1,0 +1,35 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Treecreeper - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fb11b11ee02b66fc0f13836b4a67996251801fedee49bc2d46e0327f23f12eb8.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fb11b11ee02b66fc0f13836b4a67996251801fedee49bc2d46e0327f23f12eb8.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fb11b11ee02b66fc0f13836b4a67996251801fedee49bc2d46e0327f23f12eb8.webp",
+      "date_published": "2021-03-24T13:28:28Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d99a78e11c8062588fce98d453e820525c9a39ea4c76615f26ba405fbfc494fd.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d99a78e11c8062588fce98d453e820525c9a39ea4c76615f26ba405fbfc494fd.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d99a78e11c8062588fce98d453e820525c9a39ea4c76615f26ba405fbfc494fd.webp",
+      "date_published": "2021-03-24T13:27:32Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4f6fb67db13322d538259c10b284652be916e882bc23ad0013cce80a1eda8730.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4f6fb67db13322d538259c10b284652be916e882bc23ad0013cce80a1eda8730.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4f6fb67db13322d538259c10b284652be916e882bc23ad0013cce80a1eda8730.webp",
+      "date_published": "2021-03-24T13:28:44Z"
+    }
+  ]
+}

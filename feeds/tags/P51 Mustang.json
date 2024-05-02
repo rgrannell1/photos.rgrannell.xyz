@@ -1,0 +1,23 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "P51 Mustang - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5b18b465fcd7b0b9e0f9a0251c0868b889ceb3fe5659b2929bac2fdd5fd26683.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5b18b465fcd7b0b9e0f9a0251c0868b889ceb3fe5659b2929bac2fdd5fd26683.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5b18b465fcd7b0b9e0f9a0251c0868b889ceb3fe5659b2929bac2fdd5fd26683.webp",
+      "date_published": "2023-07-30T14:16:44Z"
+    }
+  ]
+}

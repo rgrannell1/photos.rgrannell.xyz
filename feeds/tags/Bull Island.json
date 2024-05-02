@@ -1,0 +1,59 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Bull Island - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/084c5187b51210bc36d803cf859a32e451c258dea3aac3b2342ebb6e8ba26604.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/084c5187b51210bc36d803cf859a32e451c258dea3aac3b2342ebb6e8ba26604.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/084c5187b51210bc36d803cf859a32e451c258dea3aac3b2342ebb6e8ba26604.webp",
+      "date_published": "2023-11-01T13:52:28Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/098d94473f9acd98befbd3235a7063e278955cc99ed4ad2140539d81cfc03624.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/098d94473f9acd98befbd3235a7063e278955cc99ed4ad2140539d81cfc03624.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/098d94473f9acd98befbd3235a7063e278955cc99ed4ad2140539d81cfc03624.webp",
+      "date_published": "2023-11-01T14:02:23Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3eacac55f24843167ceee3de9aa46574d44704e693db67ebcfc19a7c844e8047.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3eacac55f24843167ceee3de9aa46574d44704e693db67ebcfc19a7c844e8047.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3eacac55f24843167ceee3de9aa46574d44704e693db67ebcfc19a7c844e8047.webp",
+      "date_published": "2023-11-01T14:04:16Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a9647ebae0361ca4fd65ab60e3199f93a06b502bbb9025644415b189953ff0e1.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a9647ebae0361ca4fd65ab60e3199f93a06b502bbb9025644415b189953ff0e1.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a9647ebae0361ca4fd65ab60e3199f93a06b502bbb9025644415b189953ff0e1.webp",
+      "date_published": "2023-11-01T13:52:31Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/27287b3af8d43216487d5e726205684b97e2f6514dd4430405873328c35da766.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/27287b3af8d43216487d5e726205684b97e2f6514dd4430405873328c35da766.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/27287b3af8d43216487d5e726205684b97e2f6514dd4430405873328c35da766.webp",
+      "date_published": "2023-11-01T14:08:43Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5d2604df858a1955cf48938a171b7b1f98b8d8cdb80e5f7e395231f26e560b1c.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5d2604df858a1955cf48938a171b7b1f98b8d8cdb80e5f7e395231f26e560b1c.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5d2604df858a1955cf48938a171b7b1f98b8d8cdb80e5f7e395231f26e560b1c.webp",
+      "date_published": "2023-11-01T14:02:00Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db09854f83305a8a69735fe1614e9762b1d50e750719a11b9e2c434d15198812.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db09854f83305a8a69735fe1614e9762b1d50e750719a11b9e2c434d15198812.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db09854f83305a8a69735fe1614e9762b1d50e750719a11b9e2c434d15198812.webp",
+      "date_published": "2023-11-01T13:53:56Z"
+    }
+  ]
+}

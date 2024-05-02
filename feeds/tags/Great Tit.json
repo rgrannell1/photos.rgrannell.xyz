@@ -1,0 +1,35 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Great Tit - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c232cc70b46c9d77c0154d8c83deb3dbd3aff578ea79f96f34c4253958bcb742.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c232cc70b46c9d77c0154d8c83deb3dbd3aff578ea79f96f34c4253958bcb742.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c232cc70b46c9d77c0154d8c83deb3dbd3aff578ea79f96f34c4253958bcb742.webp",
+      "date_published": "2021-10-03T09:38:02Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8ef386cf10c444c22ba296ff0c1a7efba1052f583479bdf240699fbd385b5b64.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8ef386cf10c444c22ba296ff0c1a7efba1052f583479bdf240699fbd385b5b64.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8ef386cf10c444c22ba296ff0c1a7efba1052f583479bdf240699fbd385b5b64.webp",
+      "date_published": "2021-10-03T09:14:15Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/79256ef13ae5ce9b7af0bfeedc76b89f46dfebcb781cd26e78235882f2fc2abf.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/79256ef13ae5ce9b7af0bfeedc76b89f46dfebcb781cd26e78235882f2fc2abf.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/79256ef13ae5ce9b7af0bfeedc76b89f46dfebcb781cd26e78235882f2fc2abf.webp",
+      "date_published": "2021-10-03T08:29:27Z"
+    }
+  ]
+}

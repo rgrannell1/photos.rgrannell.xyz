@@ -1,0 +1,35 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Tiergarten - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/29e44004bfd58214f0121ad8992b141f34fb9130726620485849d510ddec70f0.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/29e44004bfd58214f0121ad8992b141f34fb9130726620485849d510ddec70f0.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/29e44004bfd58214f0121ad8992b141f34fb9130726620485849d510ddec70f0.webp",
+      "date_published": "2023-11-29T14:16:36Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cf37820ee3937718c31cadf785fa7df71d4a0b6bbc1cf2cdc9ae8296bc7f16a2.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cf37820ee3937718c31cadf785fa7df71d4a0b6bbc1cf2cdc9ae8296bc7f16a2.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cf37820ee3937718c31cadf785fa7df71d4a0b6bbc1cf2cdc9ae8296bc7f16a2.webp",
+      "date_published": "2023-11-28T11:33:54Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9cd0c458b90f998b72c0e27f48556e1158547f9f257bc1d183e6c3b14f794b33.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9cd0c458b90f998b72c0e27f48556e1158547f9f257bc1d183e6c3b14f794b33.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9cd0c458b90f998b72c0e27f48556e1158547f9f257bc1d183e6c3b14f794b33.webp",
+      "date_published": "2023-11-28T12:38:47Z"
+    }
+  ]
+}

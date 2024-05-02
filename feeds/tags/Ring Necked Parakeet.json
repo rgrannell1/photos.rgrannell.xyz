@@ -1,0 +1,47 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feed.json",
+  "description": "Ring Necked Parakeet - images",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e18292f8a03eba1fe17af33b539f765ce3b9548c524cf1d7f98e4ccae01c72ab.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e18292f8a03eba1fe17af33b539f765ce3b9548c524cf1d7f98e4ccae01c72ab.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e18292f8a03eba1fe17af33b539f765ce3b9548c524cf1d7f98e4ccae01c72ab.webp",
+      "date_published": "2022-10-16T15:15:15Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e7290f3b083dd638b7feba6dc9dfaef6a0dac0d2c38d96aa6ef497920f1b6e79.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e7290f3b083dd638b7feba6dc9dfaef6a0dac0d2c38d96aa6ef497920f1b6e79.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e7290f3b083dd638b7feba6dc9dfaef6a0dac0d2c38d96aa6ef497920f1b6e79.webp",
+      "date_published": "2022-10-16T15:52:12Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fa664fa131216b92620bacf808e0bb3452b2ce6e4a83cb3d14cec4c57cf002d9.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fa664fa131216b92620bacf808e0bb3452b2ce6e4a83cb3d14cec4c57cf002d9.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fa664fa131216b92620bacf808e0bb3452b2ce6e4a83cb3d14cec4c57cf002d9.webp",
+      "date_published": "2022-10-16T15:51:30Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a454d939085c14de3381bc6b49c359ca2b9a0b109d6297723c3613f8d7637b99.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a454d939085c14de3381bc6b49c359ca2b9a0b109d6297723c3613f8d7637b99.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a454d939085c14de3381bc6b49c359ca2b9a0b109d6297723c3613f8d7637b99.webp",
+      "date_published": "2022-10-16T15:55:30Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ff6c665e3d97c29e5d36dc2a12f9802f8a8cc94164551f4029442eb0d8ee9f2b.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ff6c665e3d97c29e5d36dc2a12f9802f8a8cc94164551f4029442eb0d8ee9f2b.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ff6c665e3d97c29e5d36dc2a12f9802f8a8cc94164551f4029442eb0d8ee9f2b.webp",
+      "date_published": "2022-10-16T15:15:45Z"
+    }
+  ]
+}
