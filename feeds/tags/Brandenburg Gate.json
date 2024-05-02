@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Brandenburg Gate — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Brandenburg Gate - images",
+  "description": "📷 Brandenburg Gate — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fc8fe3f249a43ff5ef7774dc07817436c51f782808effa0c3522b3af656b62eb.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fc8fe3f249a43ff5ef7774dc07817436c51f782808effa0c3522b3af656b62eb.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fc8fe3f249a43ff5ef7774dc07817436c51f782808effa0c3522b3af656b62eb.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bd336d10bc8cbc3ffa58c005801e7e06e6ec507358fcb1321fd30ac39bfd1527_thumbnail.webp",
       "date_published": "2023-11-27T14:51:43Z"
     }
   ]

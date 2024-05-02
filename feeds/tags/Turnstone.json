@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Turnstone — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Turnstone - images",
+  "description": "📷 Turnstone — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5738170abcd9e8781247cbb79c1b6f8df3112eccbe9e605941ce89c5f2159db6.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5738170abcd9e8781247cbb79c1b6f8df3112eccbe9e605941ce89c5f2159db6.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5738170abcd9e8781247cbb79c1b6f8df3112eccbe9e605941ce89c5f2159db6.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ec1c055856fdfb52796cec54b9441c05deb35b965f3e088aa23281940e0d0f6d_thumbnail.webp",
       "date_published": "2024-04-13T15:20:52Z"
     }
   ]

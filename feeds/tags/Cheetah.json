@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Cheetah — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Cheetah - images",
+  "description": "📷 Cheetah — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cd5fbe40e2a721fbbd5287656b43591ee5518de4ce1d58357f9422ffc971b7ca.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cd5fbe40e2a721fbbd5287656b43591ee5518de4ce1d58357f9422ffc971b7ca.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cd5fbe40e2a721fbbd5287656b43591ee5518de4ce1d58357f9422ffc971b7ca.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/eb1719d0037c45108eb35eb284ce3bc2d9ca2d715db9b87873dc228568ab8623_thumbnail.webp",
       "date_published": "2023-10-08T21:46:17Z"
     }
   ]

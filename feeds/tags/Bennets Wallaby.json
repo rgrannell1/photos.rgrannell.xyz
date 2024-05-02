@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Bennets Wallaby — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Bennets Wallaby - images",
+  "description": "📷 Bennets Wallaby — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,13 +16,13 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6d685c0868d0d6a0b5ae56c20326c438db34649e3ab9133d32632ad1499f4c15.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6d685c0868d0d6a0b5ae56c20326c438db34649e3ab9133d32632ad1499f4c15.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6d685c0868d0d6a0b5ae56c20326c438db34649e3ab9133d32632ad1499f4c15.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/501ea63fd1ed1ba52ff612bb8ba3b94a61e1a93c04677dfb38c803bc416ebc9f_thumbnail.webp",
       "date_published": "2023-10-08T22:01:22Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0d7ccdc43eda047b396fd13e53e8f43d1385daa40f01c8af516236449eacffff.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0d7ccdc43eda047b396fd13e53e8f43d1385daa40f01c8af516236449eacffff.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0d7ccdc43eda047b396fd13e53e8f43d1385daa40f01c8af516236449eacffff.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/299e59c7b3a0cb763b3232a93529d111dc7c191f1a2ded6d78ddfedfea9b2f08_thumbnail.webp",
       "date_published": "2023-10-08T23:06:21Z"
     }
   ]

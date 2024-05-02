@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Eurasian Jay — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Eurasian Jay - images",
+  "description": "📷 Eurasian Jay — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,19 +16,19 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/49607645c69270b695c090d699ed4b3766fbe9ae980eaa7af911195d8469cc38.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/49607645c69270b695c090d699ed4b3766fbe9ae980eaa7af911195d8469cc38.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/49607645c69270b695c090d699ed4b3766fbe9ae980eaa7af911195d8469cc38.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/887649c813a7404f96dc079e66a0b6e4766d0e7436442e029e73b450cf1edc48_thumbnail.webp",
       "date_published": "2021-10-03T09:13:04Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/12e98123a71480bd3b02cee1cf5a9a9067f17f9ec2946a97b5743088b2f46b8c.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/12e98123a71480bd3b02cee1cf5a9a9067f17f9ec2946a97b5743088b2f46b8c.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/12e98123a71480bd3b02cee1cf5a9a9067f17f9ec2946a97b5743088b2f46b8c.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f81b6e96e741a864c8e9dade71d6925cfd73274524c5d473ddc5324519bf418f_thumbnail.webp",
       "date_published": "2021-12-11T09:58:52Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b49fd86d08b3d87cea06eb096104f9c52343fe243b0773cbfcc1065ad199cf46.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b49fd86d08b3d87cea06eb096104f9c52343fe243b0773cbfcc1065ad199cf46.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b49fd86d08b3d87cea06eb096104f9c52343fe243b0773cbfcc1065ad199cf46.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/917b24d4e639c80d2deaf46756e4f6b9f148f56495b6298458aab1f79561a126_thumbnail.webp",
       "date_published": "2021-12-11T09:37:31Z"
     }
   ]

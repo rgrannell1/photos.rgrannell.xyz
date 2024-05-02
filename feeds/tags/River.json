@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 River — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "River - images",
+  "description": "📷 River — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,13 +16,13 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5d03edd3e50eb51965af65e41871cbb67eb4105323c1ab5756e2b859d4e9b319.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5d03edd3e50eb51965af65e41871cbb67eb4105323c1ab5756e2b859d4e9b319.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5d03edd3e50eb51965af65e41871cbb67eb4105323c1ab5756e2b859d4e9b319.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e603cf928adec9b814cd0095ccdf3befeebda7adb6708410fa8a4230ca2758b7_thumbnail.webp",
       "date_published": "2017-02-11T16:38:55Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7a03735813ca4a60de21bbaf132f1cde422a6cbea9b4370a712efa91275399e4.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7a03735813ca4a60de21bbaf132f1cde422a6cbea9b4370a712efa91275399e4.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7a03735813ca4a60de21bbaf132f1cde422a6cbea9b4370a712efa91275399e4.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c593f7f952b5e012a428ecc44855572fa23c4ac47382b6c16d0159fce0c40f61_thumbnail.webp",
       "date_published": "2024-01-05T09:48:25Z"
     }
   ]

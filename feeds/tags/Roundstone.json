@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Roundstone — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Roundstone - images",
+  "description": "📷 Roundstone — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,13 +16,13 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f0e48c24c289e7fc82b473267c3ab69bbe73300f365fd44aa399308692c95547.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f0e48c24c289e7fc82b473267c3ab69bbe73300f365fd44aa399308692c95547.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f0e48c24c289e7fc82b473267c3ab69bbe73300f365fd44aa399308692c95547.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a40edf2cbd6745d88417714dd8e3379094c1c2c222eb34d524b6adf4dfb65ecf_thumbnail.webp",
       "date_published": "2016-05-01T03:04:50Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/280b51bc5231ce205137306e746a250c2dbde795e0cd3d3e6ea44d51f9f1de5f.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/280b51bc5231ce205137306e746a250c2dbde795e0cd3d3e6ea44d51f9f1de5f.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/280b51bc5231ce205137306e746a250c2dbde795e0cd3d3e6ea44d51f9f1de5f.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cfff931eb358e3a935c5c9a57a53687f24bd5d1eb6b165a553cd2500352879c1_thumbnail.webp",
       "date_published": "2016-05-01T03:33:02Z"
     }
   ]

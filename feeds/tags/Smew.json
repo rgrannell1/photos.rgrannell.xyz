@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Smew — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Smew - images",
+  "description": "📷 Smew — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7a50c1d1c44692f4a0c099d42041ea3edee70f147bca33eb2e1b0b488963bd95.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7a50c1d1c44692f4a0c099d42041ea3edee70f147bca33eb2e1b0b488963bd95.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7a50c1d1c44692f4a0c099d42041ea3edee70f147bca33eb2e1b0b488963bd95.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/13701f919d1ecbfc744ab9676fc788e031899d10b8cc1dd4bce4bd8882e93424_thumbnail.webp",
       "date_published": "2023-01-12T14:28:57Z"
     }
   ]

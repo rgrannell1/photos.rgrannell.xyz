@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Frog — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Frog - images",
+  "description": "📷 Frog — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e835a0f3d9a5177eaa925ec341ff555b0e10b0d83b43175019e25408b3a1e414.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e835a0f3d9a5177eaa925ec341ff555b0e10b0d83b43175019e25408b3a1e414.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e835a0f3d9a5177eaa925ec341ff555b0e10b0d83b43175019e25408b3a1e414.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/24c625d9da1631cbd356d86830312cede1197d96f9be32db8e67a3f1318e87cd_thumbnail.webp",
       "date_published": "2019-12-07T20:34:30Z"
     }
   ]

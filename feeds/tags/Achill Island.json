@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Achill Island — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Achill Island - images",
+  "description": "📷 Achill Island — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,13 +16,13 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/180cdc0cd2fcffc520c2994722b1633ef291cceb2bfea68800259693682c86c5.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/180cdc0cd2fcffc520c2994722b1633ef291cceb2bfea68800259693682c86c5.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/180cdc0cd2fcffc520c2994722b1633ef291cceb2bfea68800259693682c86c5.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4f2b9073fa29e31970f2e6b23484f6aee4a8ee51e09a68c3b64fc60cc69fb645_thumbnail.webp",
       "date_published": "2019-07-13T16:35:23Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9476fb5ce61b5dbfa6335af2e0c4e6e75c0ac4a9a254253d6d7285b7c77e11eb.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9476fb5ce61b5dbfa6335af2e0c4e6e75c0ac4a9a254253d6d7285b7c77e11eb.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9476fb5ce61b5dbfa6335af2e0c4e6e75c0ac4a9a254253d6d7285b7c77e11eb.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5e98fcae9237334f465e8360b1164acacfb8c75227ca5e60d141d4cb3b7ffae7_thumbnail.webp",
       "date_published": "2019-07-13T17:19:13Z"
     }
   ]

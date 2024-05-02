@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Blackbird — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Blackbird - images",
+  "description": "📷 Blackbird — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/214bfc9b026f11e2c667c691a09258a35a856daa79827e56e47cf74bbb146879.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/214bfc9b026f11e2c667c691a09258a35a856daa79827e56e47cf74bbb146879.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/214bfc9b026f11e2c667c691a09258a35a856daa79827e56e47cf74bbb146879.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8fe2d97fd1423f536b61c8c0efcc659fcd06aa1a87d35518e5745d1acd904312_thumbnail.webp",
       "date_published": "2017-04-23T14:21:20Z"
     }
   ]

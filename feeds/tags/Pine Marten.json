@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Pine Marten — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Pine Marten - images",
+  "description": "📷 Pine Marten — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ecf34ac916be3cc7da41d60657cd4bb1d41305f7dd00737347018506f0c2307b.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ecf34ac916be3cc7da41d60657cd4bb1d41305f7dd00737347018506f0c2307b.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ecf34ac916be3cc7da41d60657cd4bb1d41305f7dd00737347018506f0c2307b.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d70e66232b7927b779e8a80ee99871d8c5e2c6c767784b414454db447c4ef28b_thumbnail.webp",
       "date_published": "2021-12-11T12:52:17Z"
     }
   ]

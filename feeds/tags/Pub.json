@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Pub — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Pub - images",
+  "description": "📷 Pub — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6561f3f611c6ed8e0a28479b0d31702503e4cf62cc40bc3d1ababd615ddd5833.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6561f3f611c6ed8e0a28479b0d31702503e4cf62cc40bc3d1ababd615ddd5833.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6561f3f611c6ed8e0a28479b0d31702503e4cf62cc40bc3d1ababd615ddd5833.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1dd5babf39d4d71118a710a2c3e82738a70e05d0cc0b4cd758b344d867550013_thumbnail.webp",
       "date_published": "2024-03-16T17:39:02Z"
     }
   ]

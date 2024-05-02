@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 David Hume — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "David Hume - images",
+  "description": "📷 David Hume — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c7fb87c0ea627314f4f9316a404fb23dae1347910fff9d2cf2f69ac287435373.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c7fb87c0ea627314f4f9316a404fb23dae1347910fff9d2cf2f69ac287435373.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c7fb87c0ea627314f4f9316a404fb23dae1347910fff9d2cf2f69ac287435373.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/47aad15983e32ab5187feaf3850b8575a48d6091d8ddc992fe3a4061691717fd_thumbnail.webp",
       "date_published": "2023-09-23T20:58:33Z"
     }
   ]

@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Rock of Cashel — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Rock of Cashel - images",
+  "description": "📷 Rock of Cashel — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1e4d01d75184e7f1ae19762cfead282018ebbcfb9c2fa3da1485e630ea9a7e97.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1e4d01d75184e7f1ae19762cfead282018ebbcfb9c2fa3da1485e630ea9a7e97.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1e4d01d75184e7f1ae19762cfead282018ebbcfb9c2fa3da1485e630ea9a7e97.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8259f3c2e9dc8f57fd6a91e6321483f08dc4c5d42777545ee59e9f4a3ef6e4cb_thumbnail.webp",
       "date_published": "2023-10-08T20:01:33Z"
     }
   ]

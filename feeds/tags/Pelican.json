@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Pelican — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Pelican - images",
+  "description": "📷 Pelican — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dba706e4cb520c9bbe0a8133c8c8d1c434bdc65ffdf747a675944188f5ac80c1.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dba706e4cb520c9bbe0a8133c8c8d1c434bdc65ffdf747a675944188f5ac80c1.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dba706e4cb520c9bbe0a8133c8c8d1c434bdc65ffdf747a675944188f5ac80c1.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d00d1968b285d0e37e3d271ca5dc0201f1ff5c9dc5e45f527291f937ce597ca3_thumbnail.webp",
       "date_published": "2018-03-23T12:37:04Z"
     }
   ]

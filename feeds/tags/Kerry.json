@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Kerry — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Kerry - images",
+  "description": "📷 Kerry — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/307f779c19e7c7afafa22d19307e434b579f4fbceca51f0af61b9e5fc87b26c1.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/307f779c19e7c7afafa22d19307e434b579f4fbceca51f0af61b9e5fc87b26c1.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/307f779c19e7c7afafa22d19307e434b579f4fbceca51f0af61b9e5fc87b26c1.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5864921648473b7874f63b824dc0a3bce12417d777fbc900224878531ee45969_thumbnail.webp",
       "date_published": "2018-06-29T09:36:22Z"
     }
   ]

@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Skitty Coot — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Skitty Coot - images",
+  "description": "📷 Skitty Coot — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,13 +16,13 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f487dc1cb2dfdc5fa244b10b816893f7313a5121f03c982afb2d8318cb25cb6d.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f487dc1cb2dfdc5fa244b10b816893f7313a5121f03c982afb2d8318cb25cb6d.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f487dc1cb2dfdc5fa244b10b816893f7313a5121f03c982afb2d8318cb25cb6d.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/edb9c32828cd377a2edcfe0205b5d73a1e8d7253a559375ee2e0f2d202544b4b_thumbnail.webp",
       "date_published": "2022-02-19T14:27:11Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7f106f84fb27fd1835ab370ef037bd521928c9fa3b3b8534d9a8b1496521d09d.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7f106f84fb27fd1835ab370ef037bd521928c9fa3b3b8534d9a8b1496521d09d.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7f106f84fb27fd1835ab370ef037bd521928c9fa3b3b8534d9a8b1496521d09d.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c0852a5910155a8ef27a76c32cc54e8288b8bc5df3c6d2497e585dab8f57d3c7_thumbnail.webp",
       "date_published": "2022-10-16T15:53:48Z"
     }
   ]

@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Gannet — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Gannet - images",
+  "description": "📷 Gannet — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/085b28e1d31ebcfe1b9015ab0292fcba534012f05491bb78e596157979fcbdc5.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/085b28e1d31ebcfe1b9015ab0292fcba534012f05491bb78e596157979fcbdc5.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/085b28e1d31ebcfe1b9015ab0292fcba534012f05491bb78e596157979fcbdc5.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ac013b18cb8852d07b5ef1929df660954e8beaeb244510444d25cdbce182a5b6_thumbnail.webp",
       "date_published": "2017-06-17T12:39:03Z"
     }
   ]

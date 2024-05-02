@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Dun Laoghaire — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Dun Laoghaire - images",
+  "description": "📷 Dun Laoghaire — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,19 +16,19 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e6a4333813151dfab01959cde78c40f179ed3874920cd245290514656b44e1d6.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e6a4333813151dfab01959cde78c40f179ed3874920cd245290514656b44e1d6.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e6a4333813151dfab01959cde78c40f179ed3874920cd245290514656b44e1d6.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/97a556f6e525ed098c2eb90b8aa8c3e91ec41c256a21bedb7ce2c77d91c9094c_thumbnail.webp",
       "date_published": "2024-04-13T15:36:40Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/752f8c6432d647e9e518510072a362f3b49ecde648c8862c0bb7142ff8c4042a.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/752f8c6432d647e9e518510072a362f3b49ecde648c8862c0bb7142ff8c4042a.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/752f8c6432d647e9e518510072a362f3b49ecde648c8862c0bb7142ff8c4042a.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f37e0e44327bcb4880cbd363148c2d9627ed36b2bdb85ce020b46dce2d04111f_thumbnail.webp",
       "date_published": "2024-04-13T14:54:37Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/71e3e1942839bfbede6dea28110af895dcd0764f6a7752139a9b822c586b484a.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/71e3e1942839bfbede6dea28110af895dcd0764f6a7752139a9b822c586b484a.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/71e3e1942839bfbede6dea28110af895dcd0764f6a7752139a9b822c586b484a.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/720c7ae2f76062a8c616c2cfb0c7207e5e1db7128bfb0602b36a6eed5df137ab_thumbnail.webp",
       "date_published": "2024-04-13T16:34:29Z"
     }
   ]

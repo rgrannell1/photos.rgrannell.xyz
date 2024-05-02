@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Grey Wagtail — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Grey Wagtail - images",
+  "description": "📷 Grey Wagtail — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,13 +16,13 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4ddb7cb385d68fbda9baac0a7aa5450465f5be2ff1c7228cdc4b73f70386ef12.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4ddb7cb385d68fbda9baac0a7aa5450465f5be2ff1c7228cdc4b73f70386ef12.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4ddb7cb385d68fbda9baac0a7aa5450465f5be2ff1c7228cdc4b73f70386ef12.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ab668d5ed894ba07246dee9c0a0a9f25b48ca3c80801e3559be5c45333d6e4c1_thumbnail.webp",
       "date_published": "2016-05-01T02:25:05Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fd0163cd1d27c9aeb8fe3478c3069f1319efb6cdc87a8583bd54af4fe28b4bc1.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fd0163cd1d27c9aeb8fe3478c3069f1319efb6cdc87a8583bd54af4fe28b4bc1.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fd0163cd1d27c9aeb8fe3478c3069f1319efb6cdc87a8583bd54af4fe28b4bc1.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e8dbc8b1a637acb2e6ef4a7d637d5b97195895aa3873480d1ad6e986589ec6fa_thumbnail.webp",
       "date_published": "2021-10-03T08:02:08Z"
     }
   ]

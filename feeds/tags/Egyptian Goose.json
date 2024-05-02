@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Egyptian Goose — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Egyptian Goose - images",
+  "description": "📷 Egyptian Goose — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b9a51126673df163413cc5cf184d0204efdae1c690501383efebe937aa9a26b6.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b9a51126673df163413cc5cf184d0204efdae1c690501383efebe937aa9a26b6.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b9a51126673df163413cc5cf184d0204efdae1c690501383efebe937aa9a26b6.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b6c5bc3f51121894d5c9eae00a4c8edebe0c58dcd6075ce5983898767c48f6f6_thumbnail.webp",
       "date_published": "2022-10-15T10:35:07Z"
     }
   ]

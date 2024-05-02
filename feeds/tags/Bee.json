@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Bee — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Bee - images",
+  "description": "📷 Bee — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0175419c7f3351686acd7a6bac42e6612056bd9c23588a6a626ea10a0f7b24fa.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0175419c7f3351686acd7a6bac42e6612056bd9c23588a6a626ea10a0f7b24fa.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0175419c7f3351686acd7a6bac42e6612056bd9c23588a6a626ea10a0f7b24fa.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0ff236615b554f388837d8351743822dd4e0a9760d21f5f89d5cad286275efc7_thumbnail.webp",
       "date_published": "2017-04-23T14:27:58Z"
     }
   ]

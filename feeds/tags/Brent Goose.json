@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Brent Goose — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Brent Goose - images",
+  "description": "📷 Brent Goose — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,13 +16,13 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/826d2196937035ab8000fae1b5001fe0755ccd886f1cfe6999f1d1d52931a795.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/826d2196937035ab8000fae1b5001fe0755ccd886f1cfe6999f1d1d52931a795.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/826d2196937035ab8000fae1b5001fe0755ccd886f1cfe6999f1d1d52931a795.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0ed89f18bbb13d94f39b7c61ebc7345d57d1b5ce33b49939ad23f9ecbdf18005_thumbnail.webp",
       "date_published": "2022-10-15T10:12:26Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4cabfebfe93d0592cba503e775f307fec7386fb435c642d64e3f3e0b4c5b4e89.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4cabfebfe93d0592cba503e775f307fec7386fb435c642d64e3f3e0b4c5b4e89.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4cabfebfe93d0592cba503e775f307fec7386fb435c642d64e3f3e0b4c5b4e89.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0d0948c0f2e2faf1f6f339f44dbabc221d9122ae859b68851989f3a75918e6bf_thumbnail.webp",
       "date_published": "2022-10-15T13:28:16Z"
     }
   ]

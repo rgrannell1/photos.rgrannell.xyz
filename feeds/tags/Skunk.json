@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Skunk — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Skunk - images",
+  "description": "📷 Skunk — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d71b028503ec8d037dbc223f2949846222ac88d7a40769266c9f5b7e20f2bbe4.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d71b028503ec8d037dbc223f2949846222ac88d7a40769266c9f5b7e20f2bbe4.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d71b028503ec8d037dbc223f2949846222ac88d7a40769266c9f5b7e20f2bbe4.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/75b9d9b3ed41f12e91493818cd8561d74043c93ddeb9993a4d10b2c7d32a110a_thumbnail.webp",
       "date_published": "2019-12-07T20:44:01Z"
     }
   ]

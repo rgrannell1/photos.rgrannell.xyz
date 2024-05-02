@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Graffiti — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Graffiti - images",
+  "description": "📷 Graffiti — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1ce315423845ac7d6c70f259a824d820108c6937d8e3b29c5715f449ab579615.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1ce315423845ac7d6c70f259a824d820108c6937d8e3b29c5715f449ab579615.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1ce315423845ac7d6c70f259a824d820108c6937d8e3b29c5715f449ab579615.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a0a3442f4bb5aa533e311c44052c786eef656a30bd926046325936c11677a06a_thumbnail.webp",
       "date_published": "2016-10-01T14:39:53Z"
     }
   ]

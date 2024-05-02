@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Concorde — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Concorde - images",
+  "description": "📷 Concorde — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,19 +16,19 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c09b604c335d7f983a64dcf459bbe49e67a5476d4ac381267bb1a0eec2928b63.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c09b604c335d7f983a64dcf459bbe49e67a5476d4ac381267bb1a0eec2928b63.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c09b604c335d7f983a64dcf459bbe49e67a5476d4ac381267bb1a0eec2928b63.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c11875b42aab2034274d3aa975eb477f0bcbb115653eab75a5454a2a9ffd3fa1_thumbnail.webp",
       "date_published": "2024-03-16T12:17:13Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5db2c523431b45cf3341e850fdeace07b1d696c6640f40df1196fd83f21c3ea1.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5db2c523431b45cf3341e850fdeace07b1d696c6640f40df1196fd83f21c3ea1.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5db2c523431b45cf3341e850fdeace07b1d696c6640f40df1196fd83f21c3ea1.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0057b6b7f1072686411b8f8baac15249f10b837c7fe8ec8b49e8460565027ae8_thumbnail.webp",
       "date_published": "2024-03-16T12:27:09Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f5da34f6e2b1f2883c605f0a48002549ed7f44d95a8378a5e2779000cbe2e407.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f5da34f6e2b1f2883c605f0a48002549ed7f44d95a8378a5e2779000cbe2e407.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f5da34f6e2b1f2883c605f0a48002549ed7f44d95a8378a5e2779000cbe2e407.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/244b0eb4b7755abc53613e7fdab2ac6400c71019cb137370c45070409b1100d9_thumbnail.webp",
       "date_published": "2024-03-16T12:14:52Z"
     }
   ]

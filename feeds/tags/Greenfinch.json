@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Greenfinch — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Greenfinch - images",
+  "description": "📷 Greenfinch — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,13 +16,13 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a44110f30e5fa1cdb2496e964c581264a88dfa164b3b1a41584edaf4a0bba19a.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a44110f30e5fa1cdb2496e964c581264a88dfa164b3b1a41584edaf4a0bba19a.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a44110f30e5fa1cdb2496e964c581264a88dfa164b3b1a41584edaf4a0bba19a.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a15c5c7c7574aa61258a0a087f295274bc29c0914039916c201385adfe92e962_thumbnail.webp",
       "date_published": "2021-10-03T07:43:19Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a51527387496659718313756bdf5a23549462f101653c4c02b360503107cf6c6.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a51527387496659718313756bdf5a23549462f101653c4c02b360503107cf6c6.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a51527387496659718313756bdf5a23549462f101653c4c02b360503107cf6c6.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d77de4f6d34e1e591aee7c74f5615fd12e8c46ecb8f2548802634a02703272b8_thumbnail.webp",
       "date_published": "2021-10-03T09:23:56Z"
     }
   ]

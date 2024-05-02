@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Checkpoint Charlie — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Checkpoint Charlie - images",
+  "description": "📷 Checkpoint Charlie — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/32cf2114ceb21098b9a039f68d771d96d3f1690ee0818081d05d555eb00738af.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/32cf2114ceb21098b9a039f68d771d96d3f1690ee0818081d05d555eb00738af.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/32cf2114ceb21098b9a039f68d771d96d3f1690ee0818081d05d555eb00738af.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6a0ca8395a18dff24a5631c498269565104377de6bce7d338afd75d4031f1de2_thumbnail.webp",
       "date_published": "2023-11-27T17:00:58Z"
     }
   ]

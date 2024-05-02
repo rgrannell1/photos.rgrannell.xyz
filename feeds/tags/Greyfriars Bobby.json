@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Greyfriars Bobby — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Greyfriars Bobby - images",
+  "description": "📷 Greyfriars Bobby — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4901b45ad1d67f1bc0db3b5fca7fa7433bef91197046d196e421ceb82a6b0010.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4901b45ad1d67f1bc0db3b5fca7fa7433bef91197046d196e421ceb82a6b0010.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4901b45ad1d67f1bc0db3b5fca7fa7433bef91197046d196e421ceb82a6b0010.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/957024a352f9ee76ad0a5ed259b969f1ec68369cdb2bd5cf3a342b3b5c97146f_thumbnail.webp",
       "date_published": "2023-09-23T21:21:37Z"
     }
   ]

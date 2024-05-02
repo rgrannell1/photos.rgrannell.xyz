@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Pilatus PC-9M — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Pilatus PC-9M - images",
+  "description": "📷 Pilatus PC-9M — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,13 +16,13 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/697c225597611cf4957a55eff86130c12ba6e3fd31f1bcebdb3e39a062f2a1f0.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/697c225597611cf4957a55eff86130c12ba6e3fd31f1bcebdb3e39a062f2a1f0.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/697c225597611cf4957a55eff86130c12ba6e3fd31f1bcebdb3e39a062f2a1f0.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f012ac02e6fb90906036d957a3cce0894cc1f50b297384b7c71b7af287e9149a_thumbnail.webp",
       "date_published": "2023-07-30T14:22:05Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8766fcd37120eb31ec4b71cd7ee80a923718c961c5ea71e2d6fded6dab6e182a.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8766fcd37120eb31ec4b71cd7ee80a923718c961c5ea71e2d6fded6dab6e182a.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8766fcd37120eb31ec4b71cd7ee80a923718c961c5ea71e2d6fded6dab6e182a.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e0ff4a817ae7c8a8b848126b38d48630495c8b09f8b14bf9e2b5f077a89bcea2_thumbnail.webp",
       "date_published": "2023-07-30T14:17:50Z"
     }
   ]

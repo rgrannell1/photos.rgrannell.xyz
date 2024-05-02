@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Red Arrow — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Red Arrow - images",
+  "description": "📷 Red Arrow — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/faf3f024cc08eaefa60420567e4b4cb981d2ba5d54aca43c29f7343d3efc865b.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/faf3f024cc08eaefa60420567e4b4cb981d2ba5d54aca43c29f7343d3efc865b.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/faf3f024cc08eaefa60420567e4b4cb981d2ba5d54aca43c29f7343d3efc865b.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3547125c41699a6bfc8af79bdd036e418e8ce036464554c7f123a14f324beb62_thumbnail.webp",
       "date_published": "2023-07-30T14:20:48Z"
     }
   ]

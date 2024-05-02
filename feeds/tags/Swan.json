@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Swan — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Swan - images",
+  "description": "📷 Swan — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7b8a7c3e20f8646c11945ec94b303e9224b2a1f06effb2d31b0b705e54ae9e53.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7b8a7c3e20f8646c11945ec94b303e9224b2a1f06effb2d31b0b705e54ae9e53.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7b8a7c3e20f8646c11945ec94b303e9224b2a1f06effb2d31b0b705e54ae9e53.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a5f248242d1078fcf3e59cc9043e0cf02b83984777bdd9037ba1a919692a5d4f_thumbnail.webp",
       "date_published": "2017-03-07T12:16:09Z"
     }
   ]

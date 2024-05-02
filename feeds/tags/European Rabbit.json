@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 European Rabbit — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "European Rabbit - images",
+  "description": "📷 European Rabbit — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8ede28e953055d720420e49196ae9eead9e0b429addd2c6a8dc6a80041ae20cb.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8ede28e953055d720420e49196ae9eead9e0b429addd2c6a8dc6a80041ae20cb.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8ede28e953055d720420e49196ae9eead9e0b429addd2c6a8dc6a80041ae20cb.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8cb8c9e8d7a5b09c54c37b7491f3ecbcd8f7920d76dfbb85c3376afd50830dcd_thumbnail.webp",
       "date_published": "2023-10-08T23:04:45Z"
     }
   ]

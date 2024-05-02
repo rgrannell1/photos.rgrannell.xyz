@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Turkey — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Turkey - images",
+  "description": "📷 Turkey — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,13 +16,13 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7ba472233f4717a6906201720d1c4eb4599a474d2542579e00afe3333b1cb1b6.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7ba472233f4717a6906201720d1c4eb4599a474d2542579e00afe3333b1cb1b6.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7ba472233f4717a6906201720d1c4eb4599a474d2542579e00afe3333b1cb1b6.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e442db712b93a55428dc0ed604bbdc1b6c75b434b753d09c6cae64ed600fc612_thumbnail.webp",
       "date_published": "2019-12-07T18:04:58Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/448433ed1f19a2c8d4aa8f8967adbbfc89960beb3f97fe5362e8d3575d6a902e.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/448433ed1f19a2c8d4aa8f8967adbbfc89960beb3f97fe5362e8d3575d6a902e.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/448433ed1f19a2c8d4aa8f8967adbbfc89960beb3f97fe5362e8d3575d6a902e.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/84098bf2c9944e0c53fdd8383dc83b67563c1780886b8a9e05cfb447215cb645_thumbnail.webp",
       "date_published": "2019-12-07T18:01:07Z"
     }
   ]

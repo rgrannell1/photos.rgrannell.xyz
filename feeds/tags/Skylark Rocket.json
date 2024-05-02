@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Skylark Rocket — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Skylark Rocket - images",
+  "description": "📷 Skylark Rocket — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a2ebba3117f3bb68853b95a2384ed8ea0601a69457e0f8c6b2e088dbdc08e67e.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a2ebba3117f3bb68853b95a2384ed8ea0601a69457e0f8c6b2e088dbdc08e67e.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a2ebba3117f3bb68853b95a2384ed8ea0601a69457e0f8c6b2e088dbdc08e67e.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ae7671c4c3c85d4be972db9366a3fa9d1165fabc0c8e0c51f0d27af4c5e3bbc3_thumbnail.webp",
       "date_published": "2024-03-16T12:02:42Z"
     }
   ]

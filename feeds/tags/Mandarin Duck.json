@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Mandarin Duck — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Mandarin Duck - images",
+  "description": "📷 Mandarin Duck — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/39377789adee79e64ac28ce608c4b98683897240d1c03eeeb5629f3ea9b4bfd7.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/39377789adee79e64ac28ce608c4b98683897240d1c03eeeb5629f3ea9b4bfd7.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/39377789adee79e64ac28ce608c4b98683897240d1c03eeeb5629f3ea9b4bfd7.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d9d1c6ddba03448aa87128011ccb12a0b73d73e1b90f99460f535ebaf72f25f5_thumbnail.webp",
       "date_published": "2021-03-24T14:14:15Z"
     }
   ]

@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Flamingo — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Flamingo - images",
+  "description": "📷 Flamingo — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7871730975fd141be13bbb19d2baa952fac5630eccd63b263125cf95b91bc4d4.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7871730975fd141be13bbb19d2baa952fac5630eccd63b263125cf95b91bc4d4.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7871730975fd141be13bbb19d2baa952fac5630eccd63b263125cf95b91bc4d4.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/706418135592f3e5167a644b2282dc3872154083ce2c092978799d09310f4f33_thumbnail.webp",
       "date_published": "2022-07-28T17:11:01Z"
     }
   ]

@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Boar — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Boar - images",
+  "description": "📷 Boar — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f2ed9c1ce089260b1a62cf3d0a11eac84b4cd6c3c187f7133fe6489e3e141a1e.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f2ed9c1ce089260b1a62cf3d0a11eac84b4cd6c3c187f7133fe6489e3e141a1e.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f2ed9c1ce089260b1a62cf3d0a11eac84b4cd6c3c187f7133fe6489e3e141a1e.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d298d582fe9197f2acef297d9aa31a3d0df3bbab61e6f81947b582a6cb872d98_thumbnail.webp",
       "date_published": "2023-11-28T12:56:03Z"
     }
   ]

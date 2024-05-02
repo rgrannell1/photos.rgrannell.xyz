@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Lake — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Lake - images",
+  "description": "📷 Lake — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e4b42399ebb692110ff573230dcbfe5a6fd3fdd46b57e8c8132e117cef16de34.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e4b42399ebb692110ff573230dcbfe5a6fd3fdd46b57e8c8132e117cef16de34.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e4b42399ebb692110ff573230dcbfe5a6fd3fdd46b57e8c8132e117cef16de34.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/962379eddcc96e9619f24473c4a07cc74b3fb31283a5c4b468120f7fb91b1064_thumbnail.webp",
       "date_published": "2023-12-04T15:42:30Z"
     }
   ]

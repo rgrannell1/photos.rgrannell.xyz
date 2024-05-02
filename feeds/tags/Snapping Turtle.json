@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Snapping Turtle — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Snapping Turtle - images",
+  "description": "📷 Snapping Turtle — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5ea743890ffb22fac42555c7ff1d72a7f0ca4ef17bb46d13ccb39a91c28d0e56.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5ea743890ffb22fac42555c7ff1d72a7f0ca4ef17bb46d13ccb39a91c28d0e56.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5ea743890ffb22fac42555c7ff1d72a7f0ca4ef17bb46d13ccb39a91c28d0e56.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/de3137f41992f2d8ae77b3f6afd977f8661b1d3479b4fc59f091cb9c9fdcc7cc_thumbnail.webp",
       "date_published": "2022-07-28T00:35:36Z"
     }
   ]

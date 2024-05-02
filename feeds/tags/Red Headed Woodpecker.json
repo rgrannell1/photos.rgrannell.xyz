@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Red Headed Woodpecker — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Red Headed Woodpecker - images",
+  "description": "📷 Red Headed Woodpecker — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/16e71e0b7a949d1890bb024f7f701d3fc4b9b6134aa2c4ac29153e0b7938c250.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/16e71e0b7a949d1890bb024f7f701d3fc4b9b6134aa2c4ac29153e0b7938c250.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/16e71e0b7a949d1890bb024f7f701d3fc4b9b6134aa2c4ac29153e0b7938c250.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/39b526b2e98a7883cfa5e6bf89a06b2a80e7d5823152cdb3b47348c6b6361f92_thumbnail.webp",
       "date_published": "2022-07-29T23:33:30Z"
     }
   ]

@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Bear — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Bear - images",
+  "description": "📷 Bear — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c94643eb9677cfc25a32dda2071382e009e053865eb517442802201fcf138d1a.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c94643eb9677cfc25a32dda2071382e009e053865eb517442802201fcf138d1a.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c94643eb9677cfc25a32dda2071382e009e053865eb517442802201fcf138d1a.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/959d2bc8659af39e9914522071207c7db9bb2605a278b6364cc7cf259f46a9cd_thumbnail.webp",
       "date_published": "2023-11-28T12:52:47Z"
     }
   ]

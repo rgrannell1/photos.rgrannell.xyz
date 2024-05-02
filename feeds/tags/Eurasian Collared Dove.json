@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Eurasian Collared Dove — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Eurasian Collared Dove - images",
+  "description": "📷 Eurasian Collared Dove — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b72c003d7a6e56aed5b30a23e221e70e0ee15f05b0fde29aaf4042075fdc6d80.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b72c003d7a6e56aed5b30a23e221e70e0ee15f05b0fde29aaf4042075fdc6d80.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b72c003d7a6e56aed5b30a23e221e70e0ee15f05b0fde29aaf4042075fdc6d80.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ffe1fc3631ae82f0dcdc83a07682456f39d99d8602158200d130fb5410d6e0d2_thumbnail.webp",
       "date_published": "2023-08-04T02:27:14Z"
     }
   ]

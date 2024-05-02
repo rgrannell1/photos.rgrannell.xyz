@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Hooded Crow — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Hooded Crow - images",
+  "description": "📷 Hooded Crow — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,13 +16,13 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db09854f83305a8a69735fe1614e9762b1d50e750719a11b9e2c434d15198812.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db09854f83305a8a69735fe1614e9762b1d50e750719a11b9e2c434d15198812.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db09854f83305a8a69735fe1614e9762b1d50e750719a11b9e2c434d15198812.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/af09ed49f213ec14a9b74453f40f2514ce3d17a8700590e5e6fc00df7532da06_thumbnail.webp",
       "date_published": "2023-11-01T13:53:56Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e61a192912bbddbac846deed998f05f1b418026708be42ba88940310510d00ac.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e61a192912bbddbac846deed998f05f1b418026708be42ba88940310510d00ac.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e61a192912bbddbac846deed998f05f1b418026708be42ba88940310510d00ac.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/28ca72c8796b2da54beca861c23154954c829d189324b5de13b2b35afed7320e_thumbnail.webp",
       "date_published": "2021-03-24T13:14:34Z"
     }
   ]

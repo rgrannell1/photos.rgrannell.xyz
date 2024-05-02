@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Building — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Building - images",
+  "description": "📷 Building — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,7 +16,7 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f31793c96ee83b97b55bb56d5d3b6264f55c883b691a60e915a4d2ef8b8a2a0b.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f31793c96ee83b97b55bb56d5d3b6264f55c883b691a60e915a4d2ef8b8a2a0b.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f31793c96ee83b97b55bb56d5d3b6264f55c883b691a60e915a4d2ef8b8a2a0b.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3160f21bbbc2b36d1ca1fb0e67570328a1e9ccf652cf3ed0b6c257512d53c578_thumbnail.webp",
       "date_published": "2022-10-14T16:58:52Z"
     }
   ]

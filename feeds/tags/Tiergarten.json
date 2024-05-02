@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Tiergarten — photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feed.json",
-  "description": "Tiergarten - images",
+  "description": "📷 Tiergarten — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
@@ -16,19 +16,19 @@
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/29e44004bfd58214f0121ad8992b141f34fb9130726620485849d510ddec70f0.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/29e44004bfd58214f0121ad8992b141f34fb9130726620485849d510ddec70f0.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/29e44004bfd58214f0121ad8992b141f34fb9130726620485849d510ddec70f0.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/49d2b81cfad246cfa19e14d442a4af0249c0e4a24c9f84dce41e5cdad1204430_thumbnail.webp",
       "date_published": "2023-11-29T14:16:36Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cf37820ee3937718c31cadf785fa7df71d4a0b6bbc1cf2cdc9ae8296bc7f16a2.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cf37820ee3937718c31cadf785fa7df71d4a0b6bbc1cf2cdc9ae8296bc7f16a2.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cf37820ee3937718c31cadf785fa7df71d4a0b6bbc1cf2cdc9ae8296bc7f16a2.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2e2266a6ad3765d481d89218c84153495748075b8b93c7a663ee86a048223081_thumbnail.webp",
       "date_published": "2023-11-28T11:33:54Z"
     },
     {
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9cd0c458b90f998b72c0e27f48556e1158547f9f257bc1d183e6c3b14f794b33.webp",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9cd0c458b90f998b72c0e27f48556e1158547f9f257bc1d183e6c3b14f794b33.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9cd0c458b90f998b72c0e27f48556e1158547f9f257bc1d183e6c3b14f794b33.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0acd752af1d9cc1e97330c50160bab1a014f1bf2027029b0bebab0d224ca29a9_thumbnail.webp",
       "date_published": "2023-11-28T12:38:47Z"
     }
   ]
