@@ -21,6 +21,7 @@
   /* the colour of list markers */
   --marker-color:           hsl(0, 0%, 72%);
   --nav-border-color:       hsl(0, 0%, 0%);
+  --image-placeholder-background-color: hsl(0, 0%, 69%);
 }
 
 .dark-mode {
@@ -34,6 +35,7 @@
   --hover-background-color: hsl(211, 87%, 62%);
   --marker-color:           rgb(255, 255, 255);
   --nav-border-color:       rgb(255, 255, 255);
+  --image-placeholder-background-color: rgb(63, 63, 63);
 }
 
 @font-face {
@@ -72,6 +74,7 @@ img {
   width: max(180px, min(60vw, 400px));
   max-width: max(180px, 60vw);
   height: auto;
+  background-color: var(--image-placeholder-background-color);
 }
 
 main a {
