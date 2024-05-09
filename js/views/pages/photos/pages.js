@@ -44,6 +44,10 @@ export class PhotosPage extends LitElement {
     return this.album().images.length;
   }
 
+  description() {
+    return this.album().description;
+  }
+
   render() {
     const album = this.album();
     const range = Dates.dateRange(album.min_date, album.max_date);
@@ -54,6 +58,7 @@ export class PhotosPage extends LitElement {
         <h1>${this.title}</h1>
         <p class="photo-album-date">${range}</p>
         <p class="photo-album-count">${this.imageCount()} photos</p>
+        <p class="photo-album-description">${this.description()}</p>
       </section>
 
       <section class="photo-container">
