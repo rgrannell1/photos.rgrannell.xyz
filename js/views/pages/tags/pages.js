@@ -3,7 +3,6 @@ import { LitElem } from "../../../models/lit-element.js";
 import { getAlbums } from "../../../services/albums.js";
 import "../../components/tag-link.js";
 import { Metadata } from "../../../services/tags.js";
-import { GraphData } from "../../../services/graph-data.js";
 
 const md = new Metadata();
 await md.init();
@@ -69,17 +68,6 @@ export class TagsPage extends LitElem {
     return html`<li>
       <tag-link tagName="${tag[0]}" count="${tag[1]}"></tag-link>
     </li>`
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-
-    GraphData.set({
-      title: `Tags - photos.rgrannell.xyz`,
-      description: "Tags - photos.rgrannell.xyz",
-      image: "",
-      url: window.location.href,
-    });
   }
 
   render() {
