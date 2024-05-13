@@ -4,6 +4,7 @@ import "../../components/photo.js";
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
 import { getAlbums } from "../../../services/albums.js";
+import { GraphData } from "../../../services/graph-data.js";
 
 const albums = getAlbums();
 
@@ -16,6 +17,24 @@ export class TagPage extends LitElement {
 
   createRenderRoot() {
     return this;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    const photos = this.photos();
+    if (!photos) {
+      return
+    }
+
+    const cover = photos[0];
+
+    GraphData.set({
+      title: `${this.tag} - photos.rgrannell.xyz`,
+      description: "Statistics - photos.rgrannell.xyz",
+      image: cover.thumbnailUrl,
+      url: window.location.href,
+    });
   }
 
   photos() {

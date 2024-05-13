@@ -1,6 +1,7 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { getAlbums } from "../../../services/albums.js";
+import { GraphData } from "../../../services/graph-data.js";
 
 import "./components/photo-album.js";
 
@@ -52,6 +53,27 @@ export class AlbumsPage extends LitElem {
     return idx > (maxImagesPerRow * maxRowsInFold) ? "lazy" : "eager";
   }
 
+  sortedAlbums() {
+    return this.albums().sort((album0, album1) => {
+      return album1.maxDate - album0.maxDate;
+    });
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    const latestAlbum = this.sortedAlbums()[0];
+    if (!latestAlbum) {
+      return;
+    }
+
+    GraphData.set({
+      title: this.title,
+      description: "Various photos",
+      image: latestAlbum.url,
+      url: window.location.href,
+    });
+  }
+
   render() {
     return html`
     <section class="album-metadata">
@@ -61,10 +83,7 @@ export class AlbumsPage extends LitElem {
 
     <section class="album-container">
       ${
-      this.albums()
-        .sort((album0, album1) => {
-          return album1.maxDate - album0.maxDate;
-        })
+      this.sortedAlbums()
         .map((album, idx) => {
           const loading = this.loadingMode(idx);
 

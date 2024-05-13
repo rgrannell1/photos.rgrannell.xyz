@@ -5,6 +5,8 @@ import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
 import { getAlbums } from "../../../services/albums.js";
 
+import { GraphData } from "../../../services/graph-data.js";
+
 const albums = getAlbums();
 
 export class PhotosPage extends LitElement {
@@ -46,6 +48,19 @@ export class PhotosPage extends LitElement {
 
   description() {
     return this.album().description;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    const album = this.album();
+
+    GraphData.set({
+      title: this.title,
+      description: this.description() ?? "Album - photos.rgrannell.xyz",
+      image: album.thumbnailUrl,
+      url: window.location.href,
+    });
   }
 
   render() {

@@ -2,6 +2,7 @@ import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { getAlbums } from "../../../services/albums.js";
 import "../../components/tag-link.js";
+import { GraphData } from "../../../services/graph-data.js";
 
 const albums = getAlbums();
 
@@ -43,6 +44,19 @@ export class MetadataPage extends LitElem {
     </div>
 
     `;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    const photo = this.photo();
+
+    GraphData.set({
+      title: this.title,
+      description: "Photo - photos.rgrannell.xyz",
+      image: photo.thumbnail_url,
+      url: window.location.href,
+    });
   }
 
   render() {

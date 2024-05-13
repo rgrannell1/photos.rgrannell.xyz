@@ -7,11 +7,24 @@ import {
 } from "../../../library/leaflet.js";
 
 import { getAlbums } from "../../../services/albums.js";
+import { GraphData } from "../../../services/graph-data.js";
+
 const albums = getAlbums();
 
 export class LocationsPage extends LitElement {
   createRenderRoot() {
     return this;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    GraphData.set({
+      title: this.title,
+      description: "Photo Locations",
+      image: "",
+      url: window.location.href,
+    });
   }
 
   firstUpdated() {
