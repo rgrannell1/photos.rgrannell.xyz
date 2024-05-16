@@ -7,7 +7,7 @@
 }
 
 :root {
-  --secondary-text-color:   #999;
+  --secondary-text-color:   hsl(0, 0%, 60%);
   --font-colour:            hsla(0, 0%, 0%, 0.8);
   --navbar-font-colour:     hsl(0, 0%, 0%);
   --background-color:       hsl(0, 0%, 96%);
@@ -22,20 +22,23 @@
   --marker-color:           hsl(0, 0%, 72%);
   --nav-border-color:       hsl(0, 0%, 0%);
   --image-placeholder-background-color: hsl(0, 0%, 69%);
+
+  /* photo width */
+  --photo-width: 400px;
 }
 
 .dark-mode {
-  --secondary-text-color:   rgb(168, 168, 168);
-  --font-colour:            rgb(255, 255, 255);
-  --navbar-font-colour:     rgb(255, 255, 255);
-  --background-color:       rgb(20, 20, 20);
+  --secondary-text-color:   hsl(0, 0%, 66%);
+  --font-colour:            hsl(0, 0%, 100%);
+  --navbar-font-colour:     hsl(0, 0%, 100%);
+  --background-color:       hsl(0, 0%, 8%);
   --link-color:             hsl(211, 84%, 74%);
   --brand-color:            hsl(211, 100%, 78%);
   --link-background-color:  hsl(211, 87%, 62%);
   --hover-background-color: hsl(211, 87%, 62%);
-  --marker-color:           rgb(255, 255, 255);
-  --nav-border-color:       rgb(255, 255, 255);
-  --image-placeholder-background-color: rgb(63, 63, 63);
+  --marker-color:           hsl(0, 0%, 100%);
+  --nav-border-color:       hsl(0, 0%, 100%);
+  --image-placeholder-background-color: hsl(0, 0%, 25%);
 }
 
 @font-face {
@@ -71,7 +74,7 @@ a {
 }
 
 img {
-  width: max(180px, min(60vw, 400px));
+  width: max(180px, min(60vw, var(--photo-width)));
   max-width: max(180px, 60vw);
   height: auto;
   background-color: var(--image-placeholder-background-color);
@@ -189,7 +192,7 @@ html, body {
 /* resize images for smaller */
 
 photo-app {
-  width: max(180px, min(60vw, 400px));
+  width: max(180px, min(60vw, var(--photo-width)));
   max-width: max(180px, 60vw);
 }
 
@@ -252,7 +255,11 @@ photo-app {
 .photo-album-title {
   margin: 4px 0px;
   font-weight: bolder;
-  max-width: max(180px, min(60vw, 400px));
+  max-width: max(180px, min(60vw, var(--photo-width)));
+}
+
+.photo-album-date {
+  max-width: max(180px, min(60vw, var(--photo-width)));
 }
 
 .photo-album-description {
@@ -315,8 +322,29 @@ photo-app {
   }
 }
 
-/* Big Devices */
+/*
+ * Medium Devices
+ *
+ * This reduces the right margin, so we can have more images alongside
+ * each other
+ */
 @media (min-width: 501px) {
+  .app-container {
+    display: grid;
+    grid-template-columns: 200px 1fr 10px;
+  }
+
+  .burger {
+    display: none;
+  }
+
+  locations-page {
+    margin-right: 0px;
+  }
+}
+
+/* Big Devices */
+@media (min-width: 1301px) {
   .app-container {
     display: grid;
     grid-template-columns: 200px 1fr 200px;
