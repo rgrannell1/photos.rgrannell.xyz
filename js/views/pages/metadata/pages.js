@@ -68,9 +68,12 @@ export class MetadataPage extends LitElem {
 
       ${this.renderLocation()}
 
+      ${
+        photo.description ? html`<br/><p>${photo.description}</p>` : html``
+      }
+
       <h3>Tags</h3>
       <ul class="metadata-list">${tags}</ul>
-
 
       <h3>Exif</h3>
 
