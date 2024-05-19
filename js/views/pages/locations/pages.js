@@ -6,8 +6,9 @@ import {
   tileLayer,
 } from "../../../library/leaflet.js";
 
-import { getAlbums } from "../../../services/albums.js";
-const albums = getAlbums();
+import { Vault } from "../../../models/vault.js";
+
+const albums = await (new Vault()).getAlbums();
 
 export class LocationsPage extends LitElement {
   createRenderRoot() {

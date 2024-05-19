@@ -1,8 +1,8 @@
 import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.js";
+import { Vault } from "../models/vault.js";
 
 import { PageLocation } from "../services/location.js";
-import { getAlbums } from "../services/albums.js";
 
 import "./components/sidebar.js";
 import "./components/header.js";
@@ -15,7 +15,7 @@ import "./pages/tag/pages.js";
 import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
 
-const albums = getAlbums();
+const albums = await (new Vault()).getAlbums();
 
 export class PhotoApp extends LitElem {
   static get properties() {

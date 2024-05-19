@@ -151,9 +151,9 @@ html, body {
 }
 
 .brand, .burger, .dark-light-button-toggle {
- font-size: 0.75em;
- color: var(--brand-color);
- cursor: pointer;
+  font-size: 0.75em;
+  color: var(--brand-color);
+  cursor: pointer;
 }
 
 @media (hover: hover) {
@@ -168,24 +168,23 @@ html, body {
 }
 
 .header {
-   margin-bottom: min(5vh, 80px);
-   padding: 15px 0px;
-   font-size: 1.5em;
-   padding-right:25px;
-   /* border-bottom: 4px solid var(--nav-border-color); */
+  margin-bottom: min(5vh, 80px);
+  padding: 15px 0px;
+  font-size: 1.5em;
+  padding-right:25px;
+  /* border-bottom: 4px solid var(--nav-border-color); */
+
+  ul {
+    overflow: hidden;
+    padding: 1px;
+    margin: 0px;
+  }
+
+  li {
+    list-style-type: none;
+    float: left;
+  }
  }
-
-.header ul {
-   overflow: hidden;
-   padding: 1px;
-   margin: 0px;
- }
-
-.header li {
-  list-style-type: none;
-  float: left;
-}
-
 
 /* wrap albums in a flexbox */
 
@@ -264,6 +263,7 @@ photo-app {
 
 .photo-album-description {
   margin-top: 1em;
+  max-width: 900px;
 }
 
 .photo-album-count, .photo-count {

@@ -1,9 +1,10 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
-import { getAlbums } from "../../../services/albums.js";
+import { Vault } from "../../../models/vault.js";
+
 import "../../components/tag-link.js";
 
-const albums = getAlbums();
+const albums = await (new Vault()).getAlbums();
 
 export class MetadataPage extends LitElem {
   static get properties() {

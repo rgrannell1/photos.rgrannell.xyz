@@ -1,17 +1,19 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
-import { getAlbums } from "../../../services/albums.js";
+import { Vault } from "../../../models/vault.js";
+
+
 import "../../components/tag-link.js";
 import { Metadata } from "../../../services/tags.js";
 
 const md = new Metadata();
 await md.init();
 
- /*
-   * Render additional information about the album
-   *
-   */
- function renderHighlight() {
+/*
+* Render additional information about the album
+*
+*/
+function renderHighlight() {
   const tags = new Set([]);
 
   for (const image of this.album().images) {
@@ -21,23 +23,23 @@ await md.init();
   }
 
   return html`<div>
-    <ul>
-    ${Array.from(tags)
-      .sort()
-      .filter(tag => {
-        return md.isChild("Animal", tag);
-      })
-      .map(tag => {
-        return html`<li>
-          <tag-link tagName="${tag}"></tag-link>
-        </li>`;
-      })}
+  <ul>
+  ${Array.from(tags)
+    .sort()
+    .filter(tag => {
+      return md.isChild("Animal", tag);
+    })
+    .map(tag => {
+      return html`<li>
+      <tag-link tagName="${tag}"></tag-link>
+      </li>`;
+    })}
     </ul>
-  </div>`;
-}
+    </div>`;
+  }
 
 
-const albums = getAlbums();
+const albums = await (new Vault()).getAlbums();
 
 export class TagsPage extends LitElem {
   createRenderRoot() {
@@ -73,14 +75,21 @@ export class TagsPage extends LitElem {
   render() {
     return html`
     <section>
-      <h1>Tags</h1>
+      <h2>Irish Species</h2>
 
+      <h2>Mammals</h2>
+
+      <h2>Birds</h2>
+
+
+      <br>
       <details>
         <summary>All Tags</summary>
         <ul>
           ${this.tags().map((tag) => this.renderTagLink(tag))}
         </ul>
       </details>
+
     </section>
     `;
   }
