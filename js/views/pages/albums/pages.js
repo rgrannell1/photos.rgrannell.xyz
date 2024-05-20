@@ -4,7 +4,7 @@ import { Vault } from "../../../models/vault.js";
 
 import "./components/photo-album.js";
 
-const albums = await (new Vault()).getAlbums();
+const albums = await (new Vault()).albums();
 
 export class AlbumsPage extends LitElem {
   albums() {

@@ -15,7 +15,7 @@ import "./pages/tag/pages.js";
 import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
 
-const albums = await (new Vault()).getAlbums();
+const albums = await (new Vault()).albums();
 
 export class PhotoApp extends LitElem {
   static get properties() {

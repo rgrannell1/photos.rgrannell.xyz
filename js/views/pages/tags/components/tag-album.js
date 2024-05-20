@@ -1,0 +1,32 @@
+import { html } from "../../../../library/lit.js";
+import { LitElem } from "../../../../models/lit-element.js";
+
+export class TagAlbum extends LitElem {
+  static get properties() {
+    return {
+      tagName: { type: String },
+      url: { type: String },
+      id: { type: String },
+      loading: { type: String },
+    };
+  }
+
+  render() {
+    const { tagName } = this;
+
+    return html`<div class="photo-album">
+      <img width="400" height="400" src="${this.url}" title="${tagName}" alt="${tagName} - Tag Photo Album Thumbnail"
+        @click=${
+          this.broadcast("click-tag", { tagName })
+        }
+        loading="${this.loading}"/>
+
+      <br>
+      <p>${tagName}</p>
+      <a href="">[wiki]</a>
+      <a href="">[birdwatch]</a>
+    </div>`
+  }
+}
+
+customElements.define("tag-album", TagAlbum);

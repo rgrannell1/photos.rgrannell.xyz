@@ -4,7 +4,7 @@ import { Vault } from "../../../models/vault.js";
 
 import "../../components/tag-link.js";
 
-const albums = await (new Vault()).getAlbums();
+const albums = await (new Vault()).albums();
 
 export class MetadataPage extends LitElem {
   static get properties() {
