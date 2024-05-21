@@ -6,7 +6,7 @@ export class TagAlbum extends LitElem {
     return {
       tagName: { type: String },
       url: { type: String },
-      id: { type: String },
+      links: { type: Object },
       loading: { type: String },
     };
   }
@@ -23,8 +23,14 @@ export class TagAlbum extends LitElem {
 
       <br>
       <p>${tagName}</p>
-      <a href="">[wiki]</a>
-      <a href="">[birdwatch]</a>
+
+      <!-- Add links to wikipedia and birdwatch -->
+      ${
+        this?.links?.wikipedia ? html`<a href="${this.links.wikipedia}">[wiki]</a>` : ""
+      }
+      ${
+        this?.links?.birdwatch ? html`<a href="${this.links.birdwatch}">[birdwatch]</a>` : ""
+      }
     </div>`
   }
 }

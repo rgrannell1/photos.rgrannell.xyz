@@ -1,13 +1,24 @@
 
 export class Vault {
-  _data;
+  loading=false
 
-  async read() {
-    if (!this._data) {
-      this._data = await (await fetch("/manifest.json")).json();
+  _dataPromise;
+  _metadataPromise;
+
+  async load() {
+    if(!this._dataPromise) {
+      this.loading = true;
+      this._dataPromise = (await fetch("/manifest.json")).json();
     }
 
-    return this._data;
+    if (!this._metadataPromise) {
+      this._metadataPromise = (await fetch("/metadata.json")).json();
+    }
+  }
+
+  async read() {
+    await this.load();
+    return await this._dataPromise;
   }
 
   /*
@@ -84,5 +95,13 @@ export class Vault {
     const { images } = await this.tag(tag);
 
     return images[0];
+  }
+
+  async tagLinks(tag) {
+    await this.read();
+
+    const metadata = await this._metadataPromise;
+
+    return metadata[tag]?.links;
   }
 }

@@ -75,9 +75,10 @@ export class TagsPage extends LitElem {
 
   async renderTagCover(tag) {
     const vault = new Vault();
-    const image = await vault.tagCover(tag)
+    const image = await vault.tagCover(tag);
+    const links = await vault.tagLinks(tag);
 
-    return html`<tag-album url="${image.thumbnail_url}" tagName=${tag}>`
+    return html`<tag-album url="${image.thumbnail_url}" tagName=${tag} .links=${links}>`
   }
 
   render() {
@@ -90,7 +91,6 @@ export class TagsPage extends LitElem {
 
       <section class="album-container">
 
-      ${until(this.renderTagCover('Deer'), html`<p>Temp Loading</p>`)}
       ${until(this.renderTagCover('Pine Marten'), html`<p>Temp Loading</p>`)}
       ${until(this.renderTagCover('European Rabbit'), html`<p>Temp Loading</p>`)}
       ${until(this.renderTagCover('Fallow Deer'), html`<p>Temp Loading</p>`)}
