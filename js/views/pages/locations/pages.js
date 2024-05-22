@@ -8,9 +8,12 @@ import {
 
 import { Vault } from "../../../models/vault.js";
 
-const albums = await (new Vault()).albums();
-
 export class LocationsPage extends LitElement {
+  static get properties() {
+    return {
+      vault: { type: Object },
+    };
+  }
   createRenderRoot() {
     return this;
   }

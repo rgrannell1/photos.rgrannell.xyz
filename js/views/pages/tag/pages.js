@@ -5,12 +5,11 @@ import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
 import { Vault } from "../../../models/vault.js";
 
-const albums = await (new Vault()).albums();
-
 export class TagPage extends LitElement {
   static get properties() {
     return {
       tag: { type: String },
+      vault: { type: Object },
     };
   }
 
@@ -20,6 +19,7 @@ export class TagPage extends LitElement {
 
   photos() {
     const images = [];
+    const albums = this.vault.albums();
 
     for (const album of Object.values(albums)) {
       for (const image of album.images) {

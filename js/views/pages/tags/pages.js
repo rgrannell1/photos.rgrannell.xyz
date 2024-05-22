@@ -2,7 +2,6 @@ import { html, until } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { Vault } from "../../../models/vault.js";
 
-
 import "../../components/tag-link.js";
 import "./components/tag-album.js";
 import { Metadata } from "../../../services/tags.js";
@@ -40,15 +39,21 @@ function renderHighlight() {
   }
 
 
-const albums = await (new Vault()).albums();
-
 export class TagsPage extends LitElem {
   createRenderRoot() {
     return this;
   }
 
+  static get properties() {
+    return {
+      vault: { type: Object },
+    };
+  }
+
   tags() {
     const tags = {};
+
+    const albums = this.vault.albums();
 
     for (const album of Object.values(albums)) {
       for (const image of album.images) {
@@ -73,10 +78,14 @@ export class TagsPage extends LitElem {
     </li>`
   }
 
-  async renderTagCover(tag) {
-    const vault = new Vault();
-    const image = await vault.tagCover(tag);
-    const links = await vault.tagLinks(tag);
+  renderTagCover(tag) {
+    const image = this.vault.tagCover(tag);
+    const links = this.vault.tagLinks(tag);
+
+    if (!image) {
+      console.error(`No cover image for tag: ${tag}`);
+      return;
+    }
 
     return html`<tag-album url="${image.thumbnail_url}" tagName=${tag} .links=${links}>`
   }
@@ -91,14 +100,14 @@ export class TagsPage extends LitElem {
 
       <section class="album-container">
 
-      ${until(this.renderTagCover('Pine Marten'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('European Rabbit'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Fallow Deer'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Goat'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Grey Squirrel'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Red Squirrel'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Red Deer'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Seal'), html`<p>Temp Loading</p>`)}
+      ${this.renderTagCover('Pine Marten')}
+      ${this.renderTagCover('European Rabbit')}
+      ${this.renderTagCover('Fallow Deer')}
+      ${this.renderTagCover('Goat')}
+      ${this.renderTagCover('Grey Squirrel')}
+      ${this.renderTagCover('Red Squirrel')}
+      ${this.renderTagCover('Red Deer')}
+      ${this.renderTagCover('Seal')}
 
       </section>
 
@@ -106,46 +115,46 @@ export class TagsPage extends LitElem {
 
       <section class="album-container">
 
-      ${until(this.renderTagCover('Barn Swallow'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Blackbird'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Brent Goose'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Chaffinch'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Coot'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Cormorant'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Coal Tit'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Duck'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Egyptian Goose'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Eurasian Collared Dove'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Eurasian Jay'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Fieldfare'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Gannet'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Great Tit'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Greenfinch'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Grey Wagtail'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Guillemot'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Heron'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Hooded Crow'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Jackdaw'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Kestrel'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Lapwing'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Little Egret'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Little Grebe'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Mandarin Duck'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Muscovy Duck'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Oystercatcher'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Pidgeon'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Pied Wagtail'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Puffin'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Red Kite'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Ring Necked Pheasant'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Roseate Tern'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Skitty Coot'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Smew'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Stonechat'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Treecreeper'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Tufted Duck'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Turnstone'), html`<p>Temp Loading</p>`)}
-      ${until(this.renderTagCover('Wren'), html`<p>Temp Loading</p>`)}
+      ${this.renderTagCover('Barn Swallow')}
+      ${this.renderTagCover('Blackbird')}
+      ${this.renderTagCover('Brent Goose')}
+      ${this.renderTagCover('Chaffinch')}
+      ${this.renderTagCover('Coot')}
+      ${this.renderTagCover('Cormorant')}
+      ${this.renderTagCover('Coal Tit')}
+      ${this.renderTagCover('Duck')}
+      ${this.renderTagCover('Egyptian Goose')}
+      ${this.renderTagCover('Eurasian Collared Dove')}
+      ${this.renderTagCover('Eurasian Jay')}
+      ${this.renderTagCover('Fieldfare')}
+      ${this.renderTagCover('Gannet')}
+      ${this.renderTagCover('Great Tit')}
+      ${this.renderTagCover('Greenfinch')}
+      ${this.renderTagCover('Grey Wagtail')}
+      ${this.renderTagCover('Guillemot')}
+      ${this.renderTagCover('Heron')}
+      ${this.renderTagCover('Hooded Crow')}
+      ${this.renderTagCover('Jackdaw')}
+      ${this.renderTagCover('Kestrel')}
+      ${this.renderTagCover('Lapwing')}
+      ${this.renderTagCover('Little Egret')}
+      ${this.renderTagCover('Little Grebe')}
+      ${this.renderTagCover('Mandarin Duck')}
+      ${this.renderTagCover('Muscovy Duck')}
+      ${this.renderTagCover('Oystercatcher')}
+      ${this.renderTagCover('Pigeon')}
+      ${this.renderTagCover('Pied Wagtail')}
+      ${this.renderTagCover('Puffin')}
+      ${this.renderTagCover('Red Kite')}
+      ${this.renderTagCover('Ring Necked Pheasant')}
+      ${this.renderTagCover('Roseate Tern')}
+      ${this.renderTagCover('Skitty Coot')}
+      ${this.renderTagCover('Smew')}
+      ${this.renderTagCover('Stonechat')}
+      ${this.renderTagCover('Treecreeper')}
+      ${this.renderTagCover('Tufted Duck')}
+      ${this.renderTagCover('Turnstone')}
+      ${this.renderTagCover('Wren')}
 
       </section>
 

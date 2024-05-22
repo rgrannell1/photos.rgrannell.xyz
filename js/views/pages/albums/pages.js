@@ -4,11 +4,14 @@ import { Vault } from "../../../models/vault.js";
 
 import "./components/photo-album.js";
 
-const albums = await (new Vault()).albums();
-
 export class AlbumsPage extends LitElem {
+  static get properties() {
+    return {
+      vault: { type: Object },
+    };
+  }
   albums() {
-    return Object.values(albums).map((album) => {
+    return Object.values(this.vault.albums()).map((album) => {
       const { images } = album;
       if (!images) {
         return;

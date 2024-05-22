@@ -5,13 +5,12 @@ import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
 import { Vault } from "../../../models/vault.js";
 
-const albums = await (new Vault()).albums();
-
 export class PhotosPage extends LitElement {
   static get properties() {
     return {
       title: { type: String },
       id: { type: String },
+      vault: { type: Object },
     };
   }
 
@@ -33,6 +32,8 @@ export class PhotosPage extends LitElement {
   }
 
   album() {
+    const albums = this.vault.albums();
+
     if (!albums.hasOwnProperty(this.id)) {
       return {};
     }

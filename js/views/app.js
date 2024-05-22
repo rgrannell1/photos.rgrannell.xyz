@@ -15,7 +15,8 @@ import "./pages/tag/pages.js";
 import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
 
-const albums = await (new Vault()).albums();
+const vault = new Vault();
+await vault.init();
 
 export class PhotoApp extends LitElem {
   static get properties() {
@@ -181,13 +182,13 @@ export class PhotoApp extends LitElem {
 
     if (!this.page || this.page === "albums") {
       return html`
-      <photo-album-page class="${classes.join(" ")}"></photo-album-page>
+      <photo-album-page .vault="${vault}" class="${classes.join(" ")}"></photo-album-page>
       `;
     }
 
     if (this.page === "photos") {
       return html`
-      <photos-page title=${this.title} id=${this.id} class="${
+      <photos-page .vault="${vault}" title=${this.title} id=${this.id} class="${
         classes.join(" ")
       }"></photos-page>
       `;
@@ -195,31 +196,31 @@ export class PhotoApp extends LitElem {
 
     if (this.page === "tag-album") {
       return html`
-      <tag-page tag=${this.tag} class="${classes.join(" ")}"></tag-page>
+      <tag-page .vault="${vault}" tag=${this.tag} class="${classes.join(" ")}"></tag-page>
       `;
     }
 
     if (this.page === "tags") {
       return html`
-      <tags-page class="${classes.join(" ")}"></tags-page>
+      <tags-page .vault="${vault}" class="${classes.join(" ")}"></tags-page>
       `;
     }
 
     if (this.page === "locations") {
       return html`
-      <locations-page class="${classes.join(" ")}"></locations-page>
+      <locations-page .vault="${vault}" class="${classes.join(" ")}"></locations-page>
       `;
     }
 
     if (this.page === "stats") {
       return html`
-      <stats-page class="${classes.join(" ")}"></stats-page>
+      <stats-page .vault="${vault}" class="${classes.join(" ")}"></stats-page>
       `;
     }
 
     if (this.page === "metadata") {
       return html`
-      <metadata-page id=${this.id} class="${classes.join(" ")}"></metadata-page>
+      <metadata-page .vault="${vault}" kid=${this.id} class="${classes.join(" ")}"></metadata-page>
       `;
     }
   }

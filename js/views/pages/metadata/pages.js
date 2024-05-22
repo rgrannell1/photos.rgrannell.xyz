@@ -4,12 +4,11 @@ import { Vault } from "../../../models/vault.js";
 
 import "../../components/tag-link.js";
 
-const albums = await (new Vault()).albums();
-
 export class MetadataPage extends LitElem {
   static get properties() {
     return {
       id: { type: Number },
+      vault: { type: Object },
     };
   }
 
@@ -17,7 +16,7 @@ export class MetadataPage extends LitElem {
     if (!this.id) {
       throw new Error('metadata: requires id')
     }
-    for (const album of Object.values(albums)) {
+    for (const album of Object.values(this.vault.albums())) {
       for (const image of album.images) {
         if (parseInt(image.id) === this.id) {
           return image;

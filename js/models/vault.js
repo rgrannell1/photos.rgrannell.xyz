@@ -1,31 +1,26 @@
 
 export class Vault {
-  loading=false
+  _data;
+  _metadata;
 
-  _dataPromise;
-  _metadataPromise;
+  async init() {
+    const [
+      data,
+      metadata
+    ] = await Promise.all([
+      (await fetch("/manifest.json")).json(),
+      (await fetch("/metadata.json")).json()
+    ]);
 
-  async load() {
-    if(!this._dataPromise) {
-      this.loading = true;
-      this._dataPromise = (await fetch("/manifest.json")).json();
-    }
-
-    if (!this._metadataPromise) {
-      this._metadataPromise = (await fetch("/metadata.json")).json();
-    }
-  }
-
-  async read() {
-    await this.load();
-    return await this._dataPromise;
+    this._data = data;
+    this._metadata = metadata;
   }
 
   /*
    * Returns all albums and their images
    */
-  async albums() {
-    const { domain, folders } = await this.read();
+  albums() {
+    const { domain, folders } = this._data;
 
     return Object.fromEntries(Object.entries(folders).map(([id, album]) => {
         const updatedImages = album.images.map((image) => {
@@ -47,9 +42,9 @@ export class Vault {
    * Returns tags and their counts
    *
    */
-  async tags() {
+  tags() {
     const tags = {};
-    const albums = await this.albums();
+    const albums = this.albums();
 
     for (const album of Object.values(albums)) {
       for (const image of album.images) {
@@ -72,8 +67,8 @@ export class Vault {
    * Get photographs by tag, and tag metadata
    *
    */
-  async tag(tag) {
-    const albums = await this.albums();
+  tag(tag) {
+    const albums = this.albums();
 
     const taggedImages = Object.values(albums).flatMap((album) => {
       return album.images.filter((image) => {
@@ -91,16 +86,14 @@ export class Vault {
    * Get tag cover
    *
    */
-  async tagCover(tag) {
-    const { images } = await this.tag(tag);
+  tagCover(tag) {
+    const { images } = this.tag(tag);
 
     return images[0];
   }
 
-  async tagLinks(tag) {
-    await this.read();
-
-    const metadata = await this._metadataPromise;
+  tagLinks(tag) {
+    const metadata = this._metadata;
 
     return metadata[tag]?.links;
   }
