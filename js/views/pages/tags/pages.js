@@ -40,6 +40,62 @@ function renderHighlight() {
 
 
 export class TagsPage extends LitElem {
+  static IRISH_ANIMALS = {
+    mammals: [
+      'Pine Marten',
+      'European Rabbit',
+      'Fallow Deer',
+      'Goat',
+      'Grey Squirrel',
+      'Red Squirrel',
+      'Red Deer',
+      'Seal'
+    ].sort(),
+    birds: [
+      'Barn Swallow',
+      'Blackbird',
+      'Brent Goose',
+      'Chaffinch',
+      'Coal Tit',
+      'Coot',
+      'Cormorant',
+      'Duck',
+      'Egyptian Goose',
+      'Eurasian Collared Dove',
+      'Eurasian Jay',
+      'Fieldfare',
+      'Gannet',
+      'Great Tit',
+      'Greenfinch',
+      'Grey Wagtail',
+      'Guillemot',
+      'Heron',
+      'Hooded Crow',
+      'Jackdaw',
+      'Kestrel',
+      'Lapwing',
+      'Little Egret',
+      'Little Grebe',
+      'Mandarin Duck',
+      'Muscovy Duck',
+      'Oystercatcher',
+      'Pied Wagtail',
+      'Pigeon',
+      'Puffin',
+      'Razorbill',
+      'Red Kite',
+      'Ring Necked Pheasant',
+      'Roseate Tern',
+      'Skitty Coot',
+      'Smew',
+      'Stonechat',
+      'Treecreeper',
+      'Tufted Duck',
+      'Turnstone',
+      'Wren'
+    ].sort()
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -91,7 +147,6 @@ export class TagsPage extends LitElem {
   }
 
   render() {
-
     return html`
     <section>
       <h2>Irish Species</h2>
@@ -100,62 +155,14 @@ export class TagsPage extends LitElem {
 
       <section class="album-container">
 
-      ${this.renderTagCover('Pine Marten')}
-      ${this.renderTagCover('European Rabbit')}
-      ${this.renderTagCover('Fallow Deer')}
-      ${this.renderTagCover('Goat')}
-      ${this.renderTagCover('Grey Squirrel')}
-      ${this.renderTagCover('Red Squirrel')}
-      ${this.renderTagCover('Red Deer')}
-      ${this.renderTagCover('Seal')}
+      ${TagsPage.IRISH_ANIMALS.mammals.map(this.renderTagCover.bind(this))}
 
       </section>
 
       <h2>Irish Birds</h2>
 
       <section class="album-container">
-
-      ${this.renderTagCover('Barn Swallow')}
-      ${this.renderTagCover('Blackbird')}
-      ${this.renderTagCover('Brent Goose')}
-      ${this.renderTagCover('Chaffinch')}
-      ${this.renderTagCover('Coot')}
-      ${this.renderTagCover('Cormorant')}
-      ${this.renderTagCover('Coal Tit')}
-      ${this.renderTagCover('Duck')}
-      ${this.renderTagCover('Egyptian Goose')}
-      ${this.renderTagCover('Eurasian Collared Dove')}
-      ${this.renderTagCover('Eurasian Jay')}
-      ${this.renderTagCover('Fieldfare')}
-      ${this.renderTagCover('Gannet')}
-      ${this.renderTagCover('Great Tit')}
-      ${this.renderTagCover('Greenfinch')}
-      ${this.renderTagCover('Grey Wagtail')}
-      ${this.renderTagCover('Guillemot')}
-      ${this.renderTagCover('Heron')}
-      ${this.renderTagCover('Hooded Crow')}
-      ${this.renderTagCover('Jackdaw')}
-      ${this.renderTagCover('Kestrel')}
-      ${this.renderTagCover('Lapwing')}
-      ${this.renderTagCover('Little Egret')}
-      ${this.renderTagCover('Little Grebe')}
-      ${this.renderTagCover('Mandarin Duck')}
-      ${this.renderTagCover('Muscovy Duck')}
-      ${this.renderTagCover('Oystercatcher')}
-      ${this.renderTagCover('Pigeon')}
-      ${this.renderTagCover('Pied Wagtail')}
-      ${this.renderTagCover('Puffin')}
-      ${this.renderTagCover('Red Kite')}
-      ${this.renderTagCover('Ring Necked Pheasant')}
-      ${this.renderTagCover('Roseate Tern')}
-      ${this.renderTagCover('Skitty Coot')}
-      ${this.renderTagCover('Smew')}
-      ${this.renderTagCover('Stonechat')}
-      ${this.renderTagCover('Treecreeper')}
-      ${this.renderTagCover('Tufted Duck')}
-      ${this.renderTagCover('Turnstone')}
-      ${this.renderTagCover('Wren')}
-
+        ${TagsPage.IRISH_ANIMALS.birds.map(this.renderTagCover.bind(this))}
       </section>
 
       <br>
