@@ -21,7 +21,7 @@ export class LocationsPage extends LitElement {
     super.firstUpdated();
     const $map = this.querySelector("#map");
 
-    let map = createMap($map).setView([51.505, -0.09], 13);
+    let map = createMap($map).setView([53.33306, -6.24889], 6);
 
     let urlTemplate = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
     map.addLayer(tileLayer(urlTemplate, { minZoom: 4 }));
@@ -30,7 +30,11 @@ export class LocationsPage extends LitElement {
     for (const album of Object.values(albums)) {
       const geolocation = album.geolocation;
 
-      geoJSON(geolocation).addTo(map);
+      geoJSON(geolocation, {
+        style: function (feature) {
+          return { color: "red" };
+        },
+      }).addTo(map);
 
       album.images.forEach((image) => {
         if (!image.location || !image.location.address) {
