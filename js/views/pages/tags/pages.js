@@ -40,6 +40,17 @@ function renderHighlight() {
 
 
 export class TagsPage extends LitElem {
+  static PLANES = [
+    'Boeing Stearman',
+    'Concorde',
+    'Consolidated PBY Catalina',
+    'EC135 P2',
+    'Harrier Jet',
+    'P51 Mustang',
+    'Pilatus PC-9M',
+    'Red Arrows',
+    'Saab 37 Viggen'
+  ]
   static IRISH_ANIMALS = {
     mammals: [
       'Pine Marten',
@@ -49,7 +60,8 @@ export class TagsPage extends LitElem {
       'Grey Squirrel',
       'Red Squirrel',
       'Red Deer',
-      'Seal'
+      'Harbour Seal',
+      'Grey Seal',
     ].sort(),
     birds: [
       'Barn Swallow',
@@ -149,9 +161,9 @@ export class TagsPage extends LitElem {
   render() {
     return html`
     <section>
-      <h2>Irish Species</h2>
+      <h2>Species</h2>
 
-      <h2>Irish Mammals</h2>
+      <h3>Mammals</h3>
 
       <section class="album-container">
 
@@ -159,10 +171,15 @@ export class TagsPage extends LitElem {
 
       </section>
 
-      <h2>Irish Birds</h2>
+      <h3>Birds</h3>
 
       <section class="album-container">
         ${TagsPage.IRISH_ANIMALS.birds.map(this.renderTagCover.bind(this))}
+      </section>
+
+      <h2>Planes</h2>
+      <section class="album-container">
+        ${TagsPage.PLANES.map(this.renderTagCover.bind(this))}
       </section>
 
       <br>
@@ -172,7 +189,6 @@ export class TagsPage extends LitElem {
           ${this.tags().map((tag) => this.renderTagLink(tag))}
         </ul>
       </details>
-
     </section>
     `;
   }
