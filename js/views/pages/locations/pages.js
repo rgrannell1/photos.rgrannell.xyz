@@ -2,11 +2,10 @@ import { html, LitElement } from "../../../library/lit.js";
 
 import {
   map as createMap,
+  geoJSON,
   marker,
   tileLayer,
 } from "../../../library/leaflet.js";
-
-import { Vault } from "../../../models/vault.js";
 
 export class LocationsPage extends LitElement {
   static get properties() {
@@ -27,15 +26,16 @@ export class LocationsPage extends LitElement {
     let urlTemplate = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
     map.addLayer(tileLayer(urlTemplate, { minZoom: 4 }));
 
+    const albums = this.vault.albums();
     for (const album of Object.values(albums)) {
+      const geolocation = album.geolocation;
+
+      geoJSON(geolocation).addTo(map);
+
       album.images.forEach((image) => {
         if (!image.location || !image.location.address) {
           return;
         }
-
-        console.log(image.location.latitude, image.location.longitude);
-
-        console.log(image.thumbnail_url);
 
         const mark = marker([image.location.latitude, image.location.longitude])
           .addTo(map);

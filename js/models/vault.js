@@ -23,7 +23,9 @@ export class Vault {
     const { domain, folders } = this._data;
 
     return Object.fromEntries(Object.entries(folders).map(([id, album]) => {
-        const updatedImages = album.images.map((image) => {
+      const geolocation = album.geolocation ? JSON.parse(atob(album.geolocation)) : null;
+
+      const updatedImages = album.images.map((image) => {
           return {
             ...image,
             thumbnail_url: `${domain}${image.thumbnail_url}`,
@@ -33,6 +35,7 @@ export class Vault {
 
         return [id, {
           ...album,
+          geolocation,
           images: updatedImages,
         }];
       }));

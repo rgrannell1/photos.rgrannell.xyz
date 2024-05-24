@@ -63,6 +63,8 @@ export class PhotoApp extends LitElem {
     const location = PageLocation.getUrl();
 
     if (location?.type === "album") {
+      const albums = vault.albums();
+
       this.page = "photos";
       this.id = location.id;
       this.title = albums[location.id]?.name;
