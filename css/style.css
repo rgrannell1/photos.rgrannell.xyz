@@ -73,7 +73,7 @@ a {
   color: var(--link-color);
 }
 
-img {
+.thumbnail-image  {
   width: max(180px, min(60vw, var(--photo-width)));
   max-width: max(180px, 60vw);
   height: auto;
@@ -366,6 +366,11 @@ photo-app {
 .photo-page {
   grid-row: 1;
   grid-column: 2;
+}
+
+.leaflet-marker-icon {
+  background-color: transparent;
+  border: none !important;
 }
 
 /*

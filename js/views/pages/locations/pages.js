@@ -1,4 +1,5 @@
-import { html, LitElement } from "../../../library/lit.js";
+import { html } from "../../../library/lit.js";
+import { LitElem } from "../../../models/lit-element.js";
 
 import {
   map as createMap,
@@ -7,14 +8,11 @@ import {
   tileLayer,
 } from "../../../library/leaflet.js";
 
-export class LocationsPage extends LitElement {
+export class LocationsPage extends LitElem {
   static get properties() {
     return {
       vault: { type: Object },
     };
-  }
-  createRenderRoot() {
-    return this;
   }
 
   firstUpdated() {
@@ -30,11 +28,25 @@ export class LocationsPage extends LitElement {
     for (const album of Object.values(albums)) {
       const geolocation = album.geolocation;
 
-      geoJSON(geolocation, {
-        style: function (feature) {
-          return { color: "red" };
-        },
-      }).addTo(map);
+      if (geolocation) {
+        geoJSON(geolocation, {
+          style: function () {
+            return { color: "red" };
+          },
+          onEachFeature: (feature, layer) => {
+            const popup = `
+            <section>
+              <h3>${album.name}</h3>
+              <div class="photo"
+                onclick="  "></img>
+              </div>
+            </section>
+            `;
+
+            layer.bindPopup(popup);
+          }
+        }).addTo(map);
+      }
 
       album.images.forEach((image) => {
         if (!image.location || !image.location.address) {

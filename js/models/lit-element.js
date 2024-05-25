@@ -17,3 +17,4 @@ export class LitElem extends LitElement {
     };
   }
 }
+http://127.0.0.1:5500/index.html#/album/4690730946347882343

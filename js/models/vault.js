@@ -33,9 +33,14 @@ export class Vault {
           };
         });
 
+        const cover = album.images.find(image => {
+          return image.fpath === album.cover_image;
+        });
+
         return [id, {
           ...album,
           geolocation,
+          cover_thumbnail: `${domain}${cover?.thumbnail_url}`,
           images: updatedImages,
         }];
       }));

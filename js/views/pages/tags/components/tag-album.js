@@ -15,7 +15,7 @@ export class TagAlbum extends LitElem {
     const { tagName } = this;
 
     return html`<div class="photo-album">
-      <img width="400" height="400" src="${this.url}" title="${tagName}" alt="${tagName} - Tag Photo Album Thumbnail"
+      <img class="thumbnail-image" width="400" height="400" src="${this.url}" title="${tagName}" alt="${tagName} - Tag Photo Album Thumbnail"
         @click=${
           this.broadcast("click-tag", { tagName })
         }
