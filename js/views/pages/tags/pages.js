@@ -104,7 +104,9 @@ export class TagsPage extends LitElem {
       'Treecreeper',
       'Tufted Duck',
       'Turnstone',
-      'Wren'
+      'Wren',
+      'Swift',
+      'House Martin'
     ].sort()
   }
 
