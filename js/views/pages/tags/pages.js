@@ -163,6 +163,16 @@ export class TagsPage extends LitElem {
   render() {
     return html`
     <section>
+      <h2>Ratings</h2>
+
+      <ul>
+        <li><tag-link tagName="⭐"></tag-link></li>
+        <li><tag-link tagName="⭐⭐"></tag-link></li>
+        <li><tag-link tagName="⭐⭐⭐"></tag-link></li>
+        <li><tag-link tagName="⭐⭐⭐⭐"></tag-link></li>
+        <li><tag-link tagName="⭐⭐⭐⭐⭐"></tag-link></li>
+      </ul>
+
       <h2>Species</h2>
 
       <h3>Mammals</h3>
