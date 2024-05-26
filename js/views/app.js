@@ -222,7 +222,7 @@ export class PhotoApp extends LitElem {
 
     if (this.page === "metadata") {
       return html`
-      <metadata-page .vault="${vault}" kid=${this.id} class="${classes.join(" ")}"></metadata-page>
+      <metadata-page .vault="${vault}" id=${this.id} class="${classes.join(" ")}"></metadata-page>
       `;
     }
   }

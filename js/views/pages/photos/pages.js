@@ -3,7 +3,6 @@ import { html, LitElement } from "../../../library/lit.js";
 import "../../components/photo.js";
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
-import { Vault } from "../../../models/vault.js";
 
 export class PhotosPage extends LitElement {
   static get properties() {
