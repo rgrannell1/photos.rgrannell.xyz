@@ -68,6 +68,7 @@ export class TagsPage extends LitElem {
       'Blackbird',
       'Brent Goose',
       'Chaffinch',
+      'Chough',
       'Coal Tit',
       'Coot',
       'Cormorant',
