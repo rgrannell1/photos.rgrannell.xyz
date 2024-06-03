@@ -75,6 +75,7 @@ export class TagsPage extends LitElem {
       'Duck',
       'Egyptian Goose',
       'Eurasian Collared Dove',
+      'European Robin',
       'Eurasian Jay',
       'Fieldfare',
       'Gannet',

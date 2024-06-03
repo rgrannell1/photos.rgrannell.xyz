@@ -9,6 +9,8 @@ export class StatsPage extends LitElement {
     return html`
     <section>
       <h1>Statistics</h1>
+
+
     </section>
     `;
   }
