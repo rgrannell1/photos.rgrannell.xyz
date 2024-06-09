@@ -17,7 +17,8 @@
       "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d84d3b83d70d1dce7f5f8cbaf64fbd79034d7fbc91300a10bd4a5ff11951d773.jpeg",
       "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d84d3b83d70d1dce7f5f8cbaf64fbd79034d7fbc91300a10bd4a5ff11951d773.jpeg",
       "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bb20d43fee7022c4779ced4f47158d416b975dea6d36e750a896ab72ad57dedb_thumbnail.jpeg",
-      "date_published": "2023-11-28T12:43:33Z"
+      "date_published": "2023-11-28T12:43:33Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bb20d43fee7022c4779ced4f47158d416b975dea6d36e750a896ab72ad57dedb_thumbnail.jpeg' alt='Photo'>"
     }
   ]
 }
