@@ -3,7 +3,6 @@ import { html, LitElement } from "../../../library/lit.js";
 import "../../components/photo.js";
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
-import { Vault } from "../../../models/vault.js";
 
 export class TagPage extends LitElement {
   static get properties() {
@@ -17,6 +16,22 @@ export class TagPage extends LitElement {
     return this;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    if (!this.tag) {
+      return;
+    }
+
+    const feedUrl = `/feeds/tags/${this.tag}.json`;
+    const $rss = document.getElementById("rss");
+
+    if (!$rss) {
+      return;
+    }
+
+    $rss.href = feedUrl;
+  }
+
   photos() {
     const images = [];
     const albums = this.vault.albums();
@@ -27,8 +42,8 @@ export class TagPage extends LitElement {
           continue;
         }
 
-        const parsedDate = image.exif.dateTime
-          ? Dates.parse(image.exif.dateTime)
+        const parsedDate = image.exif.date_time
+          ? Dates.parse(image.exif.date_time)
           : undefined;
 
         images.push({
