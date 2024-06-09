@@ -1,5 +1,6 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
+import { JSONFeed } from "../../../services/json-feed.js";
 
 import {
   map as createMap,
@@ -13,6 +14,12 @@ export class LocationsPage extends LitElem {
     return {
       vault: { type: Object },
     };
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    JSONFeed.setIndex();
   }
 
   firstUpdated() {

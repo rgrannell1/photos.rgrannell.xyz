@@ -1,6 +1,6 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
-import { Vault } from "../../../models/vault.js";
+import { JSONFeed } from "../../../services/json-feed.js";
 
 import "../../components/tag-link.js";
 
@@ -10,6 +10,12 @@ export class MetadataPage extends LitElem {
       id: { type: Number },
       vault: { type: Object },
     };
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    JSONFeed.setIndex();
   }
 
   photo() {

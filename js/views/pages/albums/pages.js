@@ -1,6 +1,6 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
-import { Vault } from "../../../models/vault.js";
+import { JSONFeed } from "../../../services/json-feed.js";
 
 import "./components/photo-album.js";
 
@@ -9,6 +9,11 @@ export class AlbumsPage extends LitElem {
     return {
       vault: { type: Object },
     };
+  }
+  connectedCallback() {
+    super.connectedCallback();
+
+    JSONFeed.setIndex();
   }
   albums() {
     return Object.values(this.vault.albums()).map((album) => {

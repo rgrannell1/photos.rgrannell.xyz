@@ -3,6 +3,7 @@ import { html, LitElement } from "../../../library/lit.js";
 import "../../components/photo.js";
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
+import { JSONFeed } from "../../../services/json-feed.js";
 
 export class PhotosPage extends LitElement {
   static get properties() {
@@ -15,6 +16,12 @@ export class PhotosPage extends LitElement {
 
   createRenderRoot() {
     return this;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    JSONFeed.setIndex();
   }
 
   photos() {

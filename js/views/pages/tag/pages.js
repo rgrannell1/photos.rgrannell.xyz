@@ -3,6 +3,7 @@ import { html, LitElement } from "../../../library/lit.js";
 import "../../components/photo.js";
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
+import { JSONFeed } from "../../../services/json-feed.js";
 
 export class TagPage extends LitElement {
   static get properties() {
@@ -18,18 +19,8 @@ export class TagPage extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    if (!this.tag) {
-      return;
-    }
 
-    const feedUrl = `/feeds/tags/${this.tag}.json`;
-    const $rss = document.getElementById("rss");
-
-    if (!$rss) {
-      return;
-    }
-
-    $rss.href = feedUrl;
+    JSONFeed.setTag(this.tag);
   }
 
   photos() {

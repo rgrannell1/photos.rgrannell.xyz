@@ -1,5 +1,6 @@
 import { html, until } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
+import { JSONFeed } from "../../../services/json-feed.js";
 
 import "../../components/tag-link.js";
 import "./components/tag-album.js";
@@ -42,6 +43,12 @@ export class TagsPage extends LitElem {
       vault: { type: Object },
       metadata: { state: true }
     };
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    JSONFeed.setIndex();
   }
 
   tags() {
