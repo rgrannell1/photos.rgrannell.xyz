@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Vehicle — photos.rgrannell.xyz",
+  "title": "📷 Vehicle — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Vehicle.json",
   "description": "📷 Vehicle — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9476fb5ce61b5dbfa6335af2e0c4e6e75c0ac4a9a254253d6d7285b7c77e11eb.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9476fb5ce61b5dbfa6335af2e0c4e6e75c0ac4a9a254253d6d7285b7c77e11eb.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5e98fcae9237334f465e8360b1164acacfb8c75227ca5e60d141d4cb3b7ffae7_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5996595f0f5a491c7b0e2e9c932e57e0415a6f62ad2102fb2c803285a49599c5.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5996595f0f5a491c7b0e2e9c932e57e0415a6f62ad2102fb2c803285a49599c5.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d955436342bfd974ee07e5dc9ef54d75e41af5a813b6e15dd73e6dfee818594f_thumbnail.jpeg",
       "date_published": "2019-07-13T17:19:13Z"
     }
   ]

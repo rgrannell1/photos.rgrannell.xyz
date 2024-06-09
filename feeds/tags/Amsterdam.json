@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Amsterdam — photos.rgrannell.xyz",
+  "title": "📷 Amsterdam — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Amsterdam.json",
   "description": "📷 Amsterdam — photos.rgrannell.xyz",
@@ -14,15 +14,15 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e18292f8a03eba1fe17af33b539f765ce3b9548c524cf1d7f98e4ccae01c72ab.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e18292f8a03eba1fe17af33b539f765ce3b9548c524cf1d7f98e4ccae01c72ab.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b938f7dc3e304e4103e4e060c93b1b83efe25e20638269c0a65029b869a27fba_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f2a0a52d9355716a6e5d9ff62f0216fce680266e040cb33c4161050e4713118b.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f2a0a52d9355716a6e5d9ff62f0216fce680266e040cb33c4161050e4713118b.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b1fdf30e8f3a392cfbc1a2fc5c27ceb053baab060188a42690a00d7a57cef8e3_thumbnail.jpeg",
       "date_published": "2022-10-16T15:15:15Z"
     },
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fb8fd67c0da94e749c70984f4bcece48dd9d09115ea9de6839d20d5680339f1e.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fb8fd67c0da94e749c70984f4bcece48dd9d09115ea9de6839d20d5680339f1e.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9c8a5a8535ddb40b7764c396d39fbcc4cbc402f33bcf74b0ea1cb3a688efd75d_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1366aa3ca3aa48e567e496c557232ea683fbbd08c31038bf755387db9dc87def.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1366aa3ca3aa48e567e496c557232ea683fbbd08c31038bf755387db9dc87def.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4943952ff3e99c15dc25f92dcbbaea5a4df4bb4dd0212b77206719fdae1c6040_thumbnail.jpeg",
       "date_published": "2022-10-16T13:14:33Z"
     }
   ]

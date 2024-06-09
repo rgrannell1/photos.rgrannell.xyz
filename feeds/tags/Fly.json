@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Fly — photos.rgrannell.xyz",
+  "title": "📷 Fly — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Fly.json",
   "description": "📷 Fly — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/65e6bb768304bb9d86e72b428d619f1ee895ca8df71504f47020dc44d3242983.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/65e6bb768304bb9d86e72b428d619f1ee895ca8df71504f47020dc44d3242983.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f9ca65c4fdf615a99931327d41c3c59dbbe293750f4df528e3ca2e98a4ce4fba_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f64c682c037a27137de6944816d332cb0fd5f9ddc1331be3b32c0659c8272a11.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f64c682c037a27137de6944816d332cb0fd5f9ddc1331be3b32c0659c8272a11.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/641b88ba86e9127002209c0d71d070697f093355fe9fde09a84fd32a98d04fa3_thumbnail.jpeg",
       "date_published": "2022-07-28T17:06:51Z"
     }
   ]

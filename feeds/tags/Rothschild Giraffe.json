@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Rothschild Giraffe — photos.rgrannell.xyz",
+  "title": "📷 Rothschild Giraffe — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Rothschild Giraffe.json",
   "description": "📷 Rothschild Giraffe — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0ff954c5f5e7b7aaeed41b7a5f2e4e835454dbe7d63b4125b1bb258541dbb6dc.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0ff954c5f5e7b7aaeed41b7a5f2e4e835454dbe7d63b4125b1bb258541dbb6dc.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e0ce0c6eeb8eded5a6aba0c5c5007cb99c09e75537cd3093ee7b761011547f42_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7e9112429f94b2c4a21872ba7a2b090ad2a4554cdb7c8a02598987a9fc1c4bf0.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7e9112429f94b2c4a21872ba7a2b090ad2a4554cdb7c8a02598987a9fc1c4bf0.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5f44480d1967c7a3cffdc92cf22e4f09c44fa5f710d5a5d58249e3747ca63a57_thumbnail.jpeg",
       "date_published": "2023-10-08T23:24:59Z"
     }
   ]

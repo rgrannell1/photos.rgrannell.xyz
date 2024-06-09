@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Lough Atalia — photos.rgrannell.xyz",
+  "title": "📷 Lough Atalia — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Lough Atalia.json",
   "description": "📷 Lough Atalia — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/452d628a6de441824d7f66a52225544292313117cb2fbbd57dadfc560eb7fa71.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/452d628a6de441824d7f66a52225544292313117cb2fbbd57dadfc560eb7fa71.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0942569ecbf598ce36914a7cab7805d927f6b4bd9d073dbfe39956a64041ebcb_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/67ec2dcfba6bea1c8c3b78c203ba9fcb414e577336ae2b9fc44a862bfdbd870d.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/67ec2dcfba6bea1c8c3b78c203ba9fcb414e577336ae2b9fc44a862bfdbd870d.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0bf622a1f827b07d0e868e9beb6694277490251a2c80d8b5978a1e3e6becd181_thumbnail.jpeg",
       "date_published": "2017-08-11T17:43:57Z"
     }
   ]

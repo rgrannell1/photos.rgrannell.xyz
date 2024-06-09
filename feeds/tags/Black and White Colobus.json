@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Black and White Colobus — photos.rgrannell.xyz",
+  "title": "📷 Black and White Colobus — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Black and White Colobus.json",
   "description": "📷 Black and White Colobus — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/766b726d6f6b65bca5f5ff27c393c3833adfc48c6262b6c05940c6b7ee68fa29.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/766b726d6f6b65bca5f5ff27c393c3833adfc48c6262b6c05940c6b7ee68fa29.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5a68f4d5a5e84a3c17a8eba09e34eba79be294df50c0934d7200baee9a538b63_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/99367ab2b6d2c3b7c9627d9ed1ae81befb924f6b203ec45fbbfa53c1dcba677d.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/99367ab2b6d2c3b7c9627d9ed1ae81befb924f6b203ec45fbbfa53c1dcba677d.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/36915e7fdea735ff2da9c17702098e93e83b8d4ed6b6a44d0b3a84e373c24f80_thumbnail.jpeg",
       "date_published": "2023-10-08T23:09:17Z"
     }
   ]

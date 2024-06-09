@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Dun Laoghaire — photos.rgrannell.xyz",
+  "title": "📷 Dun Laoghaire — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Dun Laoghaire.json",
   "description": "📷 Dun Laoghaire — photos.rgrannell.xyz",
@@ -14,21 +14,21 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e6a4333813151dfab01959cde78c40f179ed3874920cd245290514656b44e1d6.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e6a4333813151dfab01959cde78c40f179ed3874920cd245290514656b44e1d6.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/97a556f6e525ed098c2eb90b8aa8c3e91ec41c256a21bedb7ce2c77d91c9094c_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/345bb7ebab9ad5dbbbf4997eda37176d953b7f621cc7762c8fe0511e0bed64da.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/345bb7ebab9ad5dbbbf4997eda37176d953b7f621cc7762c8fe0511e0bed64da.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3f145ef1eb237d2a5d002ef3da031f498e8ba56c52d28e3a4bad7135ef847876_thumbnail.jpeg",
       "date_published": "2024-04-13T15:36:40Z"
     },
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/752f8c6432d647e9e518510072a362f3b49ecde648c8862c0bb7142ff8c4042a.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/752f8c6432d647e9e518510072a362f3b49ecde648c8862c0bb7142ff8c4042a.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f37e0e44327bcb4880cbd363148c2d9627ed36b2bdb85ce020b46dce2d04111f_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1b5f63525fad28de43257644c4b15d65055eea7ee5b7367b4c24a96a2e14d064.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1b5f63525fad28de43257644c4b15d65055eea7ee5b7367b4c24a96a2e14d064.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8bbe33b532f0cb27939e401a42a3d697f782bc1ce7b8ad9dc5448ee7b3834b1c_thumbnail.jpeg",
       "date_published": "2024-04-13T14:54:37Z"
     },
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/71e3e1942839bfbede6dea28110af895dcd0764f6a7752139a9b822c586b484a.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/71e3e1942839bfbede6dea28110af895dcd0764f6a7752139a9b822c586b484a.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/720c7ae2f76062a8c616c2cfb0c7207e5e1db7128bfb0602b36a6eed5df137ab_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/81e2188ee8f7ae49c79c773def4c019dbce7ba59c4aec6544e2537bd0294cc16.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/81e2188ee8f7ae49c79c773def4c019dbce7ba59c4aec6544e2537bd0294cc16.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/be0f285331d134661479915852d91997e73c6b07d3a651522506f23e78184096_thumbnail.jpeg",
       "date_published": "2024-04-13T16:34:29Z"
     }
   ]

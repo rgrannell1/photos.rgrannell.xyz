@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Clifton Suspension Bridge — photos.rgrannell.xyz",
+  "title": "📷 Clifton Suspension Bridge — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Clifton Suspension Bridge.json",
   "description": "📷 Clifton Suspension Bridge — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1c1075bbf66059c08abb01e5a51c1c7f2370fecdf2c80f60879eb3b091decba7.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1c1075bbf66059c08abb01e5a51c1c7f2370fecdf2c80f60879eb3b091decba7.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/70f6911e02e00fef21a1c056c0ba923dfc8af94b569acd0d6cfebd31aed0144f_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6e42dfec1759fa08936b29190685071c6c1d2ff8bfe70195e50859ec931b19ec.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6e42dfec1759fa08936b29190685071c6c1d2ff8bfe70195e50859ec931b19ec.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5893087d61511d549b5b8ed4a886a8e668ca7cd902957a4d14c386c690dc6db0_thumbnail.jpeg",
       "date_published": "2024-03-17T12:01:41Z"
     }
   ]

@@ -1,42 +1,9 @@
 import { html, until } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
-import { Vault } from "../../../models/vault.js";
 
 import "../../components/tag-link.js";
 import "./components/tag-album.js";
 import { Metadata } from "../../../services/tags.js";
-
-const md = new Metadata();
-await md.init();
-
-/*
-* Render additional information about the album
-*
-*/
-function renderHighlight() {
-  const tags = new Set([]);
-
-  for (const image of this.album().images) {
-    for (const tag of image.tags) {
-      tags.add(tag);
-    }
-  }
-
-  return html`<div>
-  <ul>
-  ${Array.from(tags)
-    .sort()
-    .filter(tag => {
-      return md.isChild("Animal", tag);
-    })
-    .map(tag => {
-      return html`<li>
-      <tag-link tagName="${tag}"></tag-link>
-      </li>`;
-    })}
-    </ul>
-    </div>`;
-  }
 
 
 export class TagsPage extends LitElem {
@@ -51,7 +18,7 @@ export class TagsPage extends LitElem {
     'Red Arrows',
     'Saab 37 Viggen'
   ]
-  static IRISH_ANIMALS = {
+  static ANIMALS = {
     mammals: [
       'Pine Marten',
       'European Rabbit',
@@ -119,7 +86,6 @@ export class TagsPage extends LitElem {
       'Turnstone',
       'Wren',
       'Swift',
-      'House Martin'
     ].sort()
   }
 
@@ -130,6 +96,7 @@ export class TagsPage extends LitElem {
   static get properties() {
     return {
       vault: { type: Object },
+      metadata: { state: true }
     };
   }
 
@@ -173,10 +140,21 @@ export class TagsPage extends LitElem {
     return html`<tag-album url="${image.thumbnail_url}" tagName=${tag} .links=${links}>`
   }
 
-  render() {
+  renderPlaceholder() {
     return html`
     <section>
-      <h2>Ratings</h2>
+      <p>Loading Photo Metadata</p>
+    </section>
+    `
+  }
+
+  async renderPage() {
+    const md = new Metadata();
+    await md.init();
+
+    return html`
+    <section>
+      <h2>By Ratings</h2>
 
       <ul>
         <li><tag-link tagName="⭐"></tag-link></li>
@@ -186,20 +164,20 @@ export class TagsPage extends LitElem {
         <li><tag-link tagName="⭐⭐⭐⭐⭐"></tag-link></li>
       </ul>
 
-      <h2>Species</h2>
+      <h2>By Species</h2>
 
       <h3>Mammals</h3>
 
       <section class="album-container">
 
-      ${TagsPage.IRISH_ANIMALS.mammals.map(this.renderTagCover.bind(this))}
+      ${TagsPage.ANIMALS.mammals.map(this.renderTagCover.bind(this))}
 
       </section>
 
       <h3>Birds</h3>
 
       <section class="album-container">
-        ${TagsPage.IRISH_ANIMALS.birds.map(this.renderTagCover.bind(this))}
+        ${md.metadata.Bird.children.map(this.renderTagCover.bind(this))}
       </section>
 
       <h2>Planes</h2>
@@ -216,6 +194,12 @@ export class TagsPage extends LitElem {
       </details>
     </section>
     `;
+  }
+
+  render() {
+    return html`${
+      until(this.renderPage(), this.renderPlaceholder())
+    }`
   }
 }
 

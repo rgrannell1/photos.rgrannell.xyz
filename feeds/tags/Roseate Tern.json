@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Roseate Tern — photos.rgrannell.xyz",
+  "title": "📷 Roseate Tern — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Roseate Tern.json",
   "description": "📷 Roseate Tern — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/98df86871f6e4500d9727061b6f003298247c15bfd0cc25c24777b1530ecd720.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/98df86871f6e4500d9727061b6f003298247c15bfd0cc25c24777b1530ecd720.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f44eb49ddfec351d29cfa6b657e34bcbff03a2fc3016c019ab622136ec5f78ba_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0c7039cf844921e2c05d075da4adfaad59e4c5336120bd0e0bb7a5546bfecfdd.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0c7039cf844921e2c05d075da4adfaad59e4c5336120bd0e0bb7a5546bfecfdd.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9744d3ddbdb2c6c6f74c4ec5471835b7e081468caaa73254cbe04ca6bec13311_thumbnail.jpeg",
       "date_published": "2024-04-20T10:33:47Z"
     }
   ]

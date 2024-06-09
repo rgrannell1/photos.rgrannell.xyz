@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Roundstone — photos.rgrannell.xyz",
+  "title": "📷 Roundstone — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Roundstone.json",
   "description": "📷 Roundstone — photos.rgrannell.xyz",
@@ -14,15 +14,15 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f0e48c24c289e7fc82b473267c3ab69bbe73300f365fd44aa399308692c95547.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f0e48c24c289e7fc82b473267c3ab69bbe73300f365fd44aa399308692c95547.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a40edf2cbd6745d88417714dd8e3379094c1c2c222eb34d524b6adf4dfb65ecf_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/316f632686bd716c0e3b18171a45ac991c70ba5201440695797ac480f7e2dcfc.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/316f632686bd716c0e3b18171a45ac991c70ba5201440695797ac480f7e2dcfc.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/722eb5f401b9c777019efe04819fc07cec2042fced4b34c7b9b84c8580252d64_thumbnail.jpeg",
       "date_published": "2016-05-01T03:04:50Z"
     },
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/280b51bc5231ce205137306e746a250c2dbde795e0cd3d3e6ea44d51f9f1de5f.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/280b51bc5231ce205137306e746a250c2dbde795e0cd3d3e6ea44d51f9f1de5f.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cfff931eb358e3a935c5c9a57a53687f24bd5d1eb6b165a553cd2500352879c1_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db4e27a874e3b5ed42f61e939e2a61a39c0d9c23e7784dcf4644dfd764291d86.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db4e27a874e3b5ed42f61e939e2a61a39c0d9c23e7784dcf4644dfd764291d86.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8bdaaeb8c4985fa9a6cf20dc1941efb11783fb5c6943e2efffdd829e625f250f_thumbnail.jpeg",
       "date_published": "2016-05-01T03:33:02Z"
     }
   ]

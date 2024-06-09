@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Oystercatcher — photos.rgrannell.xyz",
+  "title": "📷 Oystercatcher — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Oystercatcher.json",
   "description": "📷 Oystercatcher — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9f56156e84faed2f31ad92f1e88c9aadb7f4846d11172cf24aeb688b2c1d2f3d.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9f56156e84faed2f31ad92f1e88c9aadb7f4846d11172cf24aeb688b2c1d2f3d.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/444875c9577b501062b1d5b0751ccd02ac91401a57d56a7f8db9fa7b09a73abe_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9970c6efc45eb102d566ef9d071369d8fce064d78c258ab048bdc0e828473560.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9970c6efc45eb102d566ef9d071369d8fce064d78c258ab048bdc0e828473560.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5b9c2399fa37cd17a0427e0345117a2d965cb24b760152a1361c7450fc028f74_thumbnail.jpeg",
       "date_published": "2017-06-17T13:20:48Z"
     }
   ]

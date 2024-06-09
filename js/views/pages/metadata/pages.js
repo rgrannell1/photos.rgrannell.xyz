@@ -79,16 +79,19 @@ export class MetadataPage extends LitElem {
 
       <ul class="metadata-list">
         <li>
-          <p>Date-Time: ${photo.exif.dateTime}</p>
+          <p title="The variance of the image's laplacian; one measure of blur. Bigger is sharper.">Blur: ${photo.exif.blur}</p>
+        </li>
+        <li>
+          <p>Date-Time: ${photo.exif.date_time}</p>
         </li>
         <li>
           <p>Camera Model: ${photo.exif.model}</p>
         </li>
         <li>
-          <p>Aparture: ${photo.exif.fNumber}</p>
+          <p>Aparture: ${photo.exif.f_number}</p>
         </li>
         <li>
-          <p>Focal Length: ${photo.exif.focalLength}mm equiv.</p>
+          <p>Focal Length: ${photo.exif.focal_length}mm equiv.</p>
         </li>
         <li>
           <p>Dimensions: ${photo.exif.width} x  ${photo.exif.height}</p>

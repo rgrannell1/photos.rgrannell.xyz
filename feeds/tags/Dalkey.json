@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Dalkey — photos.rgrannell.xyz",
+  "title": "📷 Dalkey — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Dalkey.json",
   "description": "📷 Dalkey — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d23f3015d00cc394a9f887768ef8bea35dd4079e44518ecca9121d4c98eae5a4.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d23f3015d00cc394a9f887768ef8bea35dd4079e44518ecca9121d4c98eae5a4.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/55a484438dbc4ed5242ea75aa34737892e31f06937a7531be13b7b13f2fc0d07_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fde3ae77cb5351c98100a7d534fd3c59a2a9e388390866cf33246a13336ee12c.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fde3ae77cb5351c98100a7d534fd3c59a2a9e388390866cf33246a13336ee12c.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4b7db7f76ff59166e64272db3c301f6f76113ee4c064b70eb1b71545bcbdf7f6_thumbnail.jpeg",
       "date_published": "2024-04-13T13:04:02Z"
     }
   ]

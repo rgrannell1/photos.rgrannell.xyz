@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Alpaca — photos.rgrannell.xyz",
+  "title": "📷 Alpaca — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Alpaca.json",
   "description": "📷 Alpaca — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b5e204014608ac57f72725828a9a93473adc2d579a2927ea4e6949cc42bedb73.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b5e204014608ac57f72725828a9a93473adc2d579a2927ea4e6949cc42bedb73.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/75300293d5b012ca93e94918311faf08cb00faebb4f4e1f335110d96beefddd3_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/416cc066a0baf5dabe896f910753e583b49aa41b9d16fc20dbc466956c95646e.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/416cc066a0baf5dabe896f910753e583b49aa41b9d16fc20dbc466956c95646e.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2ca9c6a9dd4c9a3b0328154a2f30e98fd9f35c93cf86ba248388c302f590f115_thumbnail.jpeg",
       "date_published": "2019-12-07T20:56:53Z"
     }
   ]

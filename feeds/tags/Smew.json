@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Smew — photos.rgrannell.xyz",
+  "title": "📷 Smew — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Smew.json",
   "description": "📷 Smew — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7a50c1d1c44692f4a0c099d42041ea3edee70f147bca33eb2e1b0b488963bd95.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7a50c1d1c44692f4a0c099d42041ea3edee70f147bca33eb2e1b0b488963bd95.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/13701f919d1ecbfc744ab9676fc788e031899d10b8cc1dd4bce4bd8882e93424_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0bb826301fda1eb3a2ae98127d20c3656269857650200478808f757c7bbf1bf2.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0bb826301fda1eb3a2ae98127d20c3656269857650200478808f757c7bbf1bf2.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b79b8f5d46ca5bb0ef48954d62e13be0300b025c366ef857049757128795be71_thumbnail.jpeg",
       "date_published": "2023-01-12T14:28:57Z"
     }
   ]

@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Toucan — photos.rgrannell.xyz",
+  "title": "📷 Toucan — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Toucan.json",
   "description": "📷 Toucan — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d0ddb0bcb544391327c82a265476614cb1c8853684babce505327c91d517ab15.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d0ddb0bcb544391327c82a265476614cb1c8853684babce505327c91d517ab15.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0aa383cf68c3b4e0d26b7a78a06efb96b94f52284de10681776b8f7537edcab5_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6f67e1a8c8b9e6df93fbbaa23690082695c7b51baa0da5c09dc21277368223eb.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6f67e1a8c8b9e6df93fbbaa23690082695c7b51baa0da5c09dc21277368223eb.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0fa46fff66adb8cb6df7092f67b7f092b11af57eeb3e0af79590466c6977d13b_thumbnail.jpeg",
       "date_published": "2023-08-06T23:46:36Z"
     }
   ]

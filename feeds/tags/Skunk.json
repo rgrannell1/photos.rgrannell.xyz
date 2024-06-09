@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Skunk — photos.rgrannell.xyz",
+  "title": "📷 Skunk — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Skunk.json",
   "description": "📷 Skunk — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d71b028503ec8d037dbc223f2949846222ac88d7a40769266c9f5b7e20f2bbe4.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d71b028503ec8d037dbc223f2949846222ac88d7a40769266c9f5b7e20f2bbe4.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/75b9d9b3ed41f12e91493818cd8561d74043c93ddeb9993a4d10b2c7d32a110a_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/886791854af559d98588ebd86ae82882891fc278fbfc01b6f867d6cf14effb57.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/886791854af559d98588ebd86ae82882891fc278fbfc01b6f867d6cf14effb57.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/07bf10b865484df2fcf8a9743305b5285f15972a2626d5f84fce085aa28c40f5_thumbnail.jpeg",
       "date_published": "2019-12-07T20:44:01Z"
     }
   ]

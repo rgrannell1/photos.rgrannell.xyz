@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Black Crowned Night Heron — photos.rgrannell.xyz",
+  "title": "📷 Black Crowned Night Heron — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Black Crowned Night Heron.json",
   "description": "📷 Black Crowned Night Heron — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cf64091444e20c84c6739ff0121a2184ffa689884171a24929c75b4f5f22d35e.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cf64091444e20c84c6739ff0121a2184ffa689884171a24929c75b4f5f22d35e.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9764ba1f1544406fa3a36c01fde729b7fadc091b9098a25cc489cf5f1de7b881_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5c03c127f3beeb9e74e4c7c2a1c99c19547ea03f96a5e375d631e0fe7dcbd83c.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5c03c127f3beeb9e74e4c7c2a1c99c19547ea03f96a5e375d631e0fe7dcbd83c.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0361c18d36b7c694676f0e173f56662e5feb6d25699ddf9f30ca0c37671f5083_thumbnail.jpeg",
       "date_published": "2022-07-28T16:32:26Z"
     }
   ]

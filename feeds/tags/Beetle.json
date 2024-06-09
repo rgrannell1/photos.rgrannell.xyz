@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Beetle — photos.rgrannell.xyz",
+  "title": "📷 Beetle — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Beetle.json",
   "description": "📷 Beetle — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0175419c7f3351686acd7a6bac42e6612056bd9c23588a6a626ea10a0f7b24fa.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0175419c7f3351686acd7a6bac42e6612056bd9c23588a6a626ea10a0f7b24fa.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0ff236615b554f388837d8351743822dd4e0a9760d21f5f89d5cad286275efc7_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d49c91ca96a267d902ba95b342f39019f6c25d46e4c0df8d4e7dd9a0c832fa7f.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d49c91ca96a267d902ba95b342f39019f6c25d46e4c0df8d4e7dd9a0c832fa7f.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a2863ebff58fee6be77c49978ba99f53eeb369a4fef7871b9e8002456a5c426a_thumbnail.jpeg",
       "date_published": "2017-04-23T14:27:58Z"
     }
   ]

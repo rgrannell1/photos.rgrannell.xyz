@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Rose-Ringed Parakeet — photos.rgrannell.xyz",
+  "title": "📷 Rose-Ringed Parakeet — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Rose-Ringed Parakeet.json",
   "description": "📷 Rose-Ringed Parakeet — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f6827dda36ab3e9e315cf23e46c4899fb945938d949bc17296d7987201e71ea6.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f6827dda36ab3e9e315cf23e46c4899fb945938d949bc17296d7987201e71ea6.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/553ba8b2e8632102ccd733257057580fbed4b082addeec653fd7b1c801f40eef_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/50f2976d5e4076b96dfca922812016e792d07d3720b70dd52eb49a98b0f6278f.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/50f2976d5e4076b96dfca922812016e792d07d3720b70dd52eb49a98b0f6278f.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/206f70ff46beb88b434a323adec113f381dc800d8c531ef30e98d4568c28f05f_thumbnail.jpeg",
       "date_published": "2023-01-12T13:34:43Z"
     }
   ]

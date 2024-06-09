@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Grey Wagtail — photos.rgrannell.xyz",
+  "title": "📷 Grey Wagtail — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Grey Wagtail.json",
   "description": "📷 Grey Wagtail — photos.rgrannell.xyz",
@@ -14,15 +14,15 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4ddb7cb385d68fbda9baac0a7aa5450465f5be2ff1c7228cdc4b73f70386ef12.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4ddb7cb385d68fbda9baac0a7aa5450465f5be2ff1c7228cdc4b73f70386ef12.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ab668d5ed894ba07246dee9c0a0a9f25b48ca3c80801e3559be5c45333d6e4c1_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3174660c4191fdce3265085ca78fa0e1d6ab6113c3616547009ad4908c2db55c.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3174660c4191fdce3265085ca78fa0e1d6ab6113c3616547009ad4908c2db55c.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d2c7fd8224c24e1595b13fba8bec8b81e4bb417d0327702f4c645593240119c1_thumbnail.jpeg",
       "date_published": "2016-05-01T02:25:05Z"
     },
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fd0163cd1d27c9aeb8fe3478c3069f1319efb6cdc87a8583bd54af4fe28b4bc1.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fd0163cd1d27c9aeb8fe3478c3069f1319efb6cdc87a8583bd54af4fe28b4bc1.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e8dbc8b1a637acb2e6ef4a7d637d5b97195895aa3873480d1ad6e986589ec6fa_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8771207f5dadae46aba462ba6799d01adc40499b30e8aef5bd93f640c7c0acde.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8771207f5dadae46aba462ba6799d01adc40499b30e8aef5bd93f640c7c0acde.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/12b9029dc997006be3e5ff6aa42bd7325c555aef91445af187cefd6afd8d4a8e_thumbnail.jpeg",
       "date_published": "2021-10-03T08:02:08Z"
     }
   ]

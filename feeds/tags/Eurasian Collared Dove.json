@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Eurasian Collared Dove — photos.rgrannell.xyz",
+  "title": "📷 Eurasian Collared Dove — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Eurasian Collared Dove.json",
   "description": "📷 Eurasian Collared Dove — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b72c003d7a6e56aed5b30a23e221e70e0ee15f05b0fde29aaf4042075fdc6d80.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b72c003d7a6e56aed5b30a23e221e70e0ee15f05b0fde29aaf4042075fdc6d80.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ffe1fc3631ae82f0dcdc83a07682456f39d99d8602158200d130fb5410d6e0d2_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a6bd9e04596464c26bafe5e4a6b476da4699947eb83bc73957590d699a6c7e61.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a6bd9e04596464c26bafe5e4a6b476da4699947eb83bc73957590d699a6c7e61.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5da812f0f9ca60ac3e4a8b8c5be304c3adc73faf55d4a0348ce08712c995b73f_thumbnail.jpeg",
       "date_published": "2023-08-04T02:27:14Z"
     }
   ]

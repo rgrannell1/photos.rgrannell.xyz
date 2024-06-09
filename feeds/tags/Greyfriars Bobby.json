@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Greyfriars Bobby — photos.rgrannell.xyz",
+  "title": "📷 Greyfriars Bobby — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Greyfriars Bobby.json",
   "description": "📷 Greyfriars Bobby — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4901b45ad1d67f1bc0db3b5fca7fa7433bef91197046d196e421ceb82a6b0010.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4901b45ad1d67f1bc0db3b5fca7fa7433bef91197046d196e421ceb82a6b0010.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/957024a352f9ee76ad0a5ed259b969f1ec68369cdb2bd5cf3a342b3b5c97146f_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/36c61ed2c4450754e3d02c25e64a9482e295068e8e27eeca1187d87b85b6f5ca.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/36c61ed2c4450754e3d02c25e64a9482e295068e8e27eeca1187d87b85b6f5ca.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/44eb962296de3bd2ca134e27c55204dba001764e5bf059f0f375c1d8b8edf8d0_thumbnail.jpeg",
       "date_published": "2023-09-23T21:21:37Z"
     }
   ]

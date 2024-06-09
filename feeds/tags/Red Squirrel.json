@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Red Squirrel — photos.rgrannell.xyz",
+  "title": "📷 Red Squirrel — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Red Squirrel.json",
   "description": "📷 Red Squirrel — photos.rgrannell.xyz",
@@ -14,10 +14,22 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8e81368779a39b898a66bb10ea446bc286b0762ab1485d11fe5edbbab8715cb9.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8e81368779a39b898a66bb10ea446bc286b0762ab1485d11fe5edbbab8715cb9.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/33b207b0a8b824ad07b3907cee283175041a83e0e7fd39833041b42fee145be2_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6bee67445f8b7ad34efbe5e44223dc6e48b1bffc0109fd0293310a376b73123e.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6bee67445f8b7ad34efbe5e44223dc6e48b1bffc0109fd0293310a376b73123e.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1f26a949235019ea9a3f970af5aa9649787fceec9fdc00ef88cb317ba9eda471_thumbnail.jpeg",
       "date_published": "2021-12-11T09:45:12Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/45763aee99bd41cbe982e5a3f0e3590239c9c3ac2357f59926319d384966ab23.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/45763aee99bd41cbe982e5a3f0e3590239c9c3ac2357f59926319d384966ab23.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3b43271282ebc705d1f072bc131d05c4ef0a86372381fa56a1c65183837967fb_thumbnail.jpeg",
+      "date_published": "2024-05-12T13:39:21Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/af9503345bafb51aaf7a27d20da7d113f9a388b796993142980f6c84bfe1edfc.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/af9503345bafb51aaf7a27d20da7d113f9a388b796993142980f6c84bfe1edfc.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/728ecdcb85f942f2ccf437673a98c0430e673ba1d47e61b03fab27aacd4c034c_thumbnail.jpeg",
+      "date_published": "2020-05-28T18:33:27Z"
     }
   ]
 }

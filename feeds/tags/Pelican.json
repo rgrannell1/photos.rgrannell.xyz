@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Pelican — photos.rgrannell.xyz",
+  "title": "📷 Pelican — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Pelican.json",
   "description": "📷 Pelican — photos.rgrannell.xyz",
@@ -14,10 +14,16 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dba706e4cb520c9bbe0a8133c8c8d1c434bdc65ffdf747a675944188f5ac80c1.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dba706e4cb520c9bbe0a8133c8c8d1c434bdc65ffdf747a675944188f5ac80c1.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d00d1968b285d0e37e3d271ca5dc0201f1ff5c9dc5e45f527291f937ce597ca3_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/81d1e6addd6525ae25e7bbcba28c22ac2703fcce3cef564da15f54b510b74165.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/81d1e6addd6525ae25e7bbcba28c22ac2703fcce3cef564da15f54b510b74165.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9d188457f80a5f5ce61704a5a2126f64e8c7c503ccd835e1a0660a7f3db7c31c_thumbnail.jpeg",
       "date_published": "2018-03-23T12:37:04Z"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d7dcbd486eb93543c775f60fbb3354cc22cb0f2fca682f0093953a70aa1afd8f.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d7dcbd486eb93543c775f60fbb3354cc22cb0f2fca682f0093953a70aa1afd8f.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/106f0fc1ec3d8d13ceb1a166a30dcfab74be57bbcd5076b20c48a73fe30a8e77_thumbnail.jpeg",
+      "date_published": "2022-02-06T11:55:15Z"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Jackdaw — photos.rgrannell.xyz",
+  "title": "📷 Jackdaw — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Jackdaw.json",
   "description": "📷 Jackdaw — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6113c451ebc0c60c05831ddb92535562f04e0ec43307f3d3c85ac0f61bbcb9b0.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6113c451ebc0c60c05831ddb92535562f04e0ec43307f3d3c85ac0f61bbcb9b0.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6cc23e959edbee7d9f30110370b412528f60b6aee7c879cb90bbad1cbe5bb1f0_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/294baf12bf8bd4b04ef9ff9edcbfc1f219ef095262827fe620f8faefd511350c.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/294baf12bf8bd4b04ef9ff9edcbfc1f219ef095262827fe620f8faefd511350c.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bc738ba9e044686c72b868d987dc82a7f0125985dbaa17a7d96c23cf6099dba5_thumbnail.jpeg",
       "date_published": "2017-03-07T12:30:27Z"
     }
   ]

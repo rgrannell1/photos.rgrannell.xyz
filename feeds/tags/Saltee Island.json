@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Saltee Island — photos.rgrannell.xyz",
+  "title": "📷 Saltee Island — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Saltee Island.json",
   "description": "📷 Saltee Island — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d21deb60dbf424eff8006fee7c7d957c7fea6a14eb111208fecc8fbc7e8881f5.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d21deb60dbf424eff8006fee7c7d957c7fea6a14eb111208fecc8fbc7e8881f5.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3cf17e813121bdae90671148bffa587b9874cd1e442429896a9c2c2f00869044_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6c51517b5e71c01c7e07a9fbd31ed59c59c95b6548470a6d8da262df84b01160.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6c51517b5e71c01c7e07a9fbd31ed59c59c95b6548470a6d8da262df84b01160.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4786bb252c0d8db419dfa74e19232adbb34c7d369d0c093c4080de162d83602a_thumbnail.jpeg",
       "date_published": "2017-06-17T10:54:56Z"
     }
   ]

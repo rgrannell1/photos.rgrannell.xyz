@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Oughterard — photos.rgrannell.xyz",
+  "title": "📷 Oughterard — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Oughterard.json",
   "description": "📷 Oughterard — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4ddb7cb385d68fbda9baac0a7aa5450465f5be2ff1c7228cdc4b73f70386ef12.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4ddb7cb385d68fbda9baac0a7aa5450465f5be2ff1c7228cdc4b73f70386ef12.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ab668d5ed894ba07246dee9c0a0a9f25b48ca3c80801e3559be5c45333d6e4c1_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3174660c4191fdce3265085ca78fa0e1d6ab6113c3616547009ad4908c2db55c.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3174660c4191fdce3265085ca78fa0e1d6ab6113c3616547009ad4908c2db55c.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d2c7fd8224c24e1595b13fba8bec8b81e4bb417d0327702f4c645593240119c1_thumbnail.jpeg",
       "date_published": "2016-05-01T02:25:05Z"
     }
   ]

@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 David Hume — photos.rgrannell.xyz",
+  "title": "📷 David Hume — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/David Hume.json",
   "description": "📷 David Hume — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c7fb87c0ea627314f4f9316a404fb23dae1347910fff9d2cf2f69ac287435373.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c7fb87c0ea627314f4f9316a404fb23dae1347910fff9d2cf2f69ac287435373.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/47aad15983e32ab5187feaf3850b8575a48d6091d8ddc992fe3a4061691717fd_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4726824806215901589a43c05c7c94ecf83c65f9a1996120136b5506c3c0335d.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4726824806215901589a43c05c7c94ecf83c65f9a1996120136b5506c3c0335d.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ec8a8c0ed1346c5599d3e48fde81b476be06c2ea9323a9c315969389eca1f2bb_thumbnail.jpeg",
       "date_published": "2023-09-23T20:58:33Z"
     }
   ]

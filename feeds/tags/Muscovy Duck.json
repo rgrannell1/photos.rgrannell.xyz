@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Muscovy Duck — photos.rgrannell.xyz",
+  "title": "📷 Muscovy Duck — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Muscovy Duck.json",
   "description": "📷 Muscovy Duck — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/77fcfb4e0c46cda24c0f100fc8c4f9a6eb335abd54412aee681f36250b6fb06d.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/77fcfb4e0c46cda24c0f100fc8c4f9a6eb335abd54412aee681f36250b6fb06d.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b6716a69dcae76d45ec01fba74dff5ed75b9d578e950892ac9fea14e2b1bb0ad_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0c90dacbcf8799d2bab12dab273dfaa1513127e25d6b1b36d626d981b30cbd78.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0c90dacbcf8799d2bab12dab273dfaa1513127e25d6b1b36d626d981b30cbd78.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9ca596040c0296dc49c00d42b82f3d91c5bd11da2d35c387560fdf1879098260_thumbnail.jpeg",
       "date_published": "2021-03-24T14:11:22Z"
     }
   ]

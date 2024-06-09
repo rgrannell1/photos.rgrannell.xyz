@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Ring Tailed Lemur — photos.rgrannell.xyz",
+  "title": "📷 Ring Tailed Lemur — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Ring Tailed Lemur.json",
   "description": "📷 Ring Tailed Lemur — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b5d79bb2a24ef4790dd54d7aea8e71d4be153e0c3afe0a0f0da2704adee302f0.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b5d79bb2a24ef4790dd54d7aea8e71d4be153e0c3afe0a0f0da2704adee302f0.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a3de4b6c6db9f4f1c31e787870c7502a8bf7c49848eea9f65f29b3ea25a56173_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7a6e1028be00a128abe2bab9db11e4da9a603c7841e888ba32525f879a7666a2.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7a6e1028be00a128abe2bab9db11e4da9a603c7841e888ba32525f879a7666a2.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/93e909971c4099e0d250ba7f26c9f2bf98673f3cc08b3bda297cef78c4155757_thumbnail.jpeg",
       "date_published": "2023-10-08T22:49:59Z"
     }
   ]

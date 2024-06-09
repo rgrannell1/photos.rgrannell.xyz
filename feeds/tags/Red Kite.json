@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Red Kite — photos.rgrannell.xyz",
+  "title": "📷 Red Kite — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Red Kite.json",
   "description": "📷 Red Kite — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d366be0d31df81eb8292e69b2e201a035e1ff29bc68cd06158f6c3167f3f84df.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d366be0d31df81eb8292e69b2e201a035e1ff29bc68cd06158f6c3167f3f84df.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/089f17f4b409d958b82276d54277cab1f35aa45ba052ee35c9c142d9a47e2507_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a39f98f660ad4bc10568d1b3a1a3dda426ba2b23df1b5abd9225df807bbae7e9.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a39f98f660ad4bc10568d1b3a1a3dda426ba2b23df1b5abd9225df807bbae7e9.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0c42ceaa4239de448d7cb6ba717dab9f8f4c318c397cfa78338da52a482f5f14_thumbnail.jpeg",
       "date_published": "2022-10-15T09:56:29Z"
     }
   ]

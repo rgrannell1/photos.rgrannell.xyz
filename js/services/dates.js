@@ -11,16 +11,16 @@ export class Dates {
     let maximum = -Infinity;
 
     for (const image of images) {
-      if (!image.dateTime) {
+      if (!image.date_time) {
         continue;
       }
 
-      if (image.dateTime < minimum) {
-        minimum = image.dateTime;
+      if (image.date_time < minimum) {
+        minimum = image.date_time;
       }
 
-      if (image.dateTime > maximum) {
-        maximum = image.dateTime;
+      if (image.date_time > maximum) {
+        maximum = image.date_time;
       }
     }
 

@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Columbian Black Spider Monkey — photos.rgrannell.xyz",
+  "title": "📷 Columbian Black Spider Monkey — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Columbian Black Spider Monkey.json",
   "description": "📷 Columbian Black Spider Monkey — photos.rgrannell.xyz",
@@ -14,21 +14,21 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/22b1052fc50a103ae477884d2b5d0747a30085d5f1088da427e3501ba75eb2e4.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/22b1052fc50a103ae477884d2b5d0747a30085d5f1088da427e3501ba75eb2e4.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f42351808cd8a86e283316d76a41c01403cd275f166e4c0aad91a790b25fb11d_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e529d99c925b3777eeeac2e0f5e83efc9970b0cb7004b514c3c2eb9cbe533e52.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e529d99c925b3777eeeac2e0f5e83efc9970b0cb7004b514c3c2eb9cbe533e52.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8611d5cd2eb1a93bb6e77c9de1a421016320e8c58592596553445f532b77269e_thumbnail.jpeg",
       "date_published": "2023-10-08T22:56:45Z"
     },
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fdd2050ab5e4a28ea7ee582bc5661d872f06a194e5ba417d0cf953c000a3521b.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fdd2050ab5e4a28ea7ee582bc5661d872f06a194e5ba417d0cf953c000a3521b.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/745e11338b2d9914394588c565bd2296751eb6089a111d95f59bf7cf337cbac1_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7bcdbb5a2f126949f252a04b141e4acf2f19bf3f7e7b349468bc7c9382aecaa5.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7bcdbb5a2f126949f252a04b141e4acf2f19bf3f7e7b349468bc7c9382aecaa5.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0651fe4cf4b010034b8ac01f0fa8d2b358c3677ff3a2c789e71995961e87caad_thumbnail.jpeg",
       "date_published": "2023-10-08T22:56:33Z"
     },
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6ea24ae7147ef0a4d13d1e57ea8a7d36dfcd2baea9957281dbd09aaaf8c7c968.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6ea24ae7147ef0a4d13d1e57ea8a7d36dfcd2baea9957281dbd09aaaf8c7c968.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/37c86622887b86dad1607ef8d237f10e5ef1be399e270cba7d0a90f5926f5ce1_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9caa34fcacb59742fcf9c088ef499301be97054e3afe6bf7cdda350d5452797c.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9caa34fcacb59742fcf9c088ef499301be97054e3afe6bf7cdda350d5452797c.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6c2f302e7ca153ba159d4311347eac10d5bd1720894c2a7bcc2c1698a94fdef5_thumbnail.jpeg",
       "date_published": "2023-10-08T22:56:22Z"
     }
   ]

@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Bennets Wallaby — photos.rgrannell.xyz",
+  "title": "📷 Bennets Wallaby — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Bennets Wallaby.json",
   "description": "📷 Bennets Wallaby — photos.rgrannell.xyz",
@@ -14,15 +14,15 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6d685c0868d0d6a0b5ae56c20326c438db34649e3ab9133d32632ad1499f4c15.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6d685c0868d0d6a0b5ae56c20326c438db34649e3ab9133d32632ad1499f4c15.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/501ea63fd1ed1ba52ff612bb8ba3b94a61e1a93c04677dfb38c803bc416ebc9f_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f40a0835832a439490d1c11f1dfac25d2782ac6243c063e827b03b14cba37b85.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f40a0835832a439490d1c11f1dfac25d2782ac6243c063e827b03b14cba37b85.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2032eab86d4849aaebdf9ce803c0adbf2f04beb034ca200aa7120898b66fa61b_thumbnail.jpeg",
       "date_published": "2023-10-08T22:01:22Z"
     },
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0d7ccdc43eda047b396fd13e53e8f43d1385daa40f01c8af516236449eacffff.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0d7ccdc43eda047b396fd13e53e8f43d1385daa40f01c8af516236449eacffff.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/299e59c7b3a0cb763b3232a93529d111dc7c191f1a2ded6d78ddfedfea9b2f08_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1e211cb9b912340a7ceb28fc9888de0bfb4292390d891ddd43285313a3cf1024.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1e211cb9b912340a7ceb28fc9888de0bfb4292390d891ddd43285313a3cf1024.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d6ce982297ddcdfd6b938852a03b93ee1108741db5b489cbacb8264c25b41940_thumbnail.jpeg",
       "date_published": "2023-10-08T23:06:21Z"
     }
   ]

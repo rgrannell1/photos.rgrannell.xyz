@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Pine Marten — photos.rgrannell.xyz",
+  "title": "📷 Pine Marten — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Pine Marten.json",
   "description": "📷 Pine Marten — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ecf34ac916be3cc7da41d60657cd4bb1d41305f7dd00737347018506f0c2307b.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ecf34ac916be3cc7da41d60657cd4bb1d41305f7dd00737347018506f0c2307b.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d70e66232b7927b779e8a80ee99871d8c5e2c6c767784b414454db447c4ef28b_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0db6fcff466311a162cd28a2e8f3d769f883f0e1ed0cc070fe9c8eada3f33a0d.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0db6fcff466311a162cd28a2e8f3d769f883f0e1ed0cc070fe9c8eada3f33a0d.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b26f01794a9215de37d647108d9b32dea54f72499fd8ddeb8b839088a254b414_thumbnail.jpeg",
       "date_published": "2021-12-11T12:52:17Z"
     }
   ]

@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Stonechat — photos.rgrannell.xyz",
+  "title": "📷 Stonechat — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Stonechat.json",
   "description": "📷 Stonechat — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2d1cd8f248ab5ca946eb8b76b3cae84ab37b08601ecf61adeec29d151187a60e.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2d1cd8f248ab5ca946eb8b76b3cae84ab37b08601ecf61adeec29d151187a60e.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/feff3ba5bed5125b8629ca877f5291cf63532abc61171fed388d3141d6fdd298_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fd3c1ae025015f9dd192282befc16c0f2bbd23acfd367cfe66dadabc7dcbffa3.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fd3c1ae025015f9dd192282befc16c0f2bbd23acfd367cfe66dadabc7dcbffa3.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d97950b01ff1c44f098b14874318544b6538aa3fd74ed8653c0c47534521afd2_thumbnail.jpeg",
       "date_published": "2018-01-08T13:33:57Z"
     }
   ]

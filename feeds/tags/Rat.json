@@ -1,6 +1,6 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Rat — photos.rgrannell.xyz",
+  "title": "📷 Rat — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Rat.json",
   "description": "📷 Rat — photos.rgrannell.xyz",
@@ -14,9 +14,9 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d2f9a1eadaeb82dc7a37e58f54e2cc875fe3484acc7c7c461c1a33c2c4b980fd.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d2f9a1eadaeb82dc7a37e58f54e2cc875fe3484acc7c7c461c1a33c2c4b980fd.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/968fd85f4be48801a23ea95ecf1f8bfb07b661d2e97a26984ac3159a51c1989a_thumbnail.webp",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b804dc667210593ec3e0c6e128fc521e0bab2106ff5526a0f37461c7ef73deff.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b804dc667210593ec3e0c6e128fc521e0bab2106ff5526a0f37461c7ef73deff.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/12a5841a7fb79d1eaaab8560abf93e39ff02a06fd9ae193af10848a0d34e2b3e_thumbnail.jpeg",
       "date_published": "2021-10-03T08:08:37Z"
     }
   ]
