@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 House Martin — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/House Martin.json",
+  "description": "📷 House Martin — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8e9bede90de3866ed5af5db1747a20ddf3ae1cb805932adc1b9cb4eb1452cb28.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8e9bede90de3866ed5af5db1747a20ddf3ae1cb805932adc1b9cb4eb1452cb28.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a82bafbe1dc5ed4fb76abe06020170f8f5dfe8218c78decb5320ba48daa77f57_thumbnail.jpeg",
+      "date_published": "2024-05-26T11:49:53Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a82bafbe1dc5ed4fb76abe06020170f8f5dfe8218c78decb5320ba48daa77f57_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

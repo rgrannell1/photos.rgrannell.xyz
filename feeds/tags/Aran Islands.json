@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Aran Islands — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Aran Islands.json",
+  "description": "📷 Aran Islands — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7263823b02c836974ab02142c93fef894da7e2621114a57cc82fc5e32fcbf77e.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7263823b02c836974ab02142c93fef894da7e2621114a57cc82fc5e32fcbf77e.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0722c6749e818977b9dc44ef3407bf9877a9e0a34226286b5144ab0fb7b58a46_thumbnail.jpeg",
+      "date_published": "2015-04-13T12:18:34Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0722c6749e818977b9dc44ef3407bf9877a9e0a34226286b5144ab0fb7b58a46_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

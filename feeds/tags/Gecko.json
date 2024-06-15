@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Gecko — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Gecko.json",
+  "description": "📷 Gecko — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d55689e8a454d22d0c81f7c12cd9540a3337546d4726ccca8dde4c2edfb06b8e.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d55689e8a454d22d0c81f7c12cd9540a3337546d4726ccca8dde4c2edfb06b8e.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b1699ce47b8d7516fdfd75e6d9db5e9784bb1c9cce62e8aa1bc88eb7adc2e9a9_thumbnail.jpeg",
+      "date_published": "2021-12-06T17:47:02Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b1699ce47b8d7516fdfd75e6d9db5e9784bb1c9cce62e8aa1bc88eb7adc2e9a9_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

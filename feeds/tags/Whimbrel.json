@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Whimbrel — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Whimbrel.json",
+  "description": "📷 Whimbrel — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6ccfbd9a37d4cd6bb3fc9b9f29bf0ac9fbb514bc2d8fcfc8280ac568e67983bc.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6ccfbd9a37d4cd6bb3fc9b9f29bf0ac9fbb514bc2d8fcfc8280ac568e67983bc.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5def896a908c10ca66b86fb1cced59fafd78934b7059ad3af598c90588fde119_thumbnail.jpeg",
+      "date_published": "2016-05-01T05:20:09Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5def896a908c10ca66b86fb1cced59fafd78934b7059ad3af598c90588fde119_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

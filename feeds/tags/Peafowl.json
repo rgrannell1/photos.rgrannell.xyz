@@ -1,0 +1,31 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Peafowl — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Peafowl.json",
+  "description": "📷 Peafowl — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2e916c1dd7b050b9a5bddf57eeec8f220607336cee2507691151b0d40aaf3e83.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2e916c1dd7b050b9a5bddf57eeec8f220607336cee2507691151b0d40aaf3e83.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/81086c35a345f2f58341c0781465896d6c392f00da5c5dbc4e9f0b29b2458adc_thumbnail.jpeg",
+      "date_published": "2017-02-26T17:59:28Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/81086c35a345f2f58341c0781465896d6c392f00da5c5dbc4e9f0b29b2458adc_thumbnail.jpeg' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/32afad08e64c4da48995f71958f27e152fd2180dc7fdf773db2f35c769f04a4f.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/32afad08e64c4da48995f71958f27e152fd2180dc7fdf773db2f35c769f04a4f.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a87cc04b200ef7ae1a3d4737d1a0914fa4b6e1959c9983a0288dc1d55cc14eb7_thumbnail.jpeg",
+      "date_published": "2017-02-26T18:03:23Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a87cc04b200ef7ae1a3d4737d1a0914fa4b6e1959c9983a0288dc1d55cc14eb7_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

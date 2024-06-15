@@ -1,0 +1,31 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Rabbit — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Rabbit.json",
+  "description": "📷 Rabbit — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3f61ce8d96168301754d6b7b2f5bbe5e2ba7872be5defb8269302c79dff3c26a.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3f61ce8d96168301754d6b7b2f5bbe5e2ba7872be5defb8269302c79dff3c26a.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ee16d10f6605740d96a58c246de54462fafb8c86178e3d63c35528e645442e64_thumbnail.jpeg",
+      "date_published": "2024-05-12T13:35:01Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ee16d10f6605740d96a58c246de54462fafb8c86178e3d63c35528e645442e64_thumbnail.jpeg' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b6c8affd82b0daa038ad1e0a1de8d534bfb93ea213bdebc6fdc845f9cad95205.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b6c8affd82b0daa038ad1e0a1de8d534bfb93ea213bdebc6fdc845f9cad95205.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1796d768415e998f07e42a6b7bf42a04496aeff8cebb4368ed8ea6fa7e63c6a5_thumbnail.jpeg",
+      "date_published": "2023-05-20T12:47:14Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1796d768415e998f07e42a6b7bf42a04496aeff8cebb4368ed8ea6fa7e63c6a5_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

@@ -7,7 +7,7 @@
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
-    "name": "Róisín Grannell",
+    "name": "R* Grannell",
     "url": "https://rgrannell.xyz",
     "avatar": "https://rgrannell.xyz/me.png"
   },
@@ -19,6 +19,13 @@
       "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d97950b01ff1c44f098b14874318544b6538aa3fd74ed8653c0c47534521afd2_thumbnail.jpeg",
       "date_published": "2018-01-08T13:33:57Z",
       "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d97950b01ff1c44f098b14874318544b6538aa3fd74ed8653c0c47534521afd2_thumbnail.jpeg' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5e59ee6edf95f59ebdf7a9c993cba8d50a463765a75c4cd7f1d0847489210235.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5e59ee6edf95f59ebdf7a9c993cba8d50a463765a75c4cd7f1d0847489210235.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/348dcdb1444ac34f75f6544ea11935965e257db39219339ea787f177464f52ef_thumbnail.jpeg",
+      "date_published": "2021-10-16T14:28:22Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/348dcdb1444ac34f75f6544ea11935965e257db39219339ea787f177464f52ef_thumbnail.jpeg' alt='Photo'>"
     }
   ]
 }

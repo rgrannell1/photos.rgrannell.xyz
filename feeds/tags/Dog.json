@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Dog — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Dog.json",
+  "description": "📷 Dog — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a213785548d6c817f2a79e29f1b4245b3501da01238491e6799b8630020dde7e.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a213785548d6c817f2a79e29f1b4245b3501da01238491e6799b8630020dde7e.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7850d9b376711967c6cf1f0b3dd46bab2895b5482c70798a4622f5105efb747e_thumbnail.jpeg",
+      "date_published": "2023-03-25T14:40:04Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7850d9b376711967c6cf1f0b3dd46bab2895b5482c70798a4622f5105efb747e_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

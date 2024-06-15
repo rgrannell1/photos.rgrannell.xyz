@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Cinnabar Moth — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Cinnabar Moth.json",
+  "description": "📷 Cinnabar Moth — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/81c24acf401511c8abcf79f259a975a4037e02b170ed59654d3e1f8eddeaa30b.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/81c24acf401511c8abcf79f259a975a4037e02b170ed59654d3e1f8eddeaa30b.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4c6420cdd8790397e35b3332f2b404a28b1ba77c0cecb7a00fbe7ad91690fab0_thumbnail.jpeg",
+      "date_published": "2017-06-17T13:09:38Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4c6420cdd8790397e35b3332f2b404a28b1ba77c0cecb7a00fbe7ad91690fab0_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

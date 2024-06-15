@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Muskrat — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Muskrat.json",
+  "description": "📷 Muskrat — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ba103e0bc87e7f09390c29e304d63e774d410382e56511419b0e3ab35577c332.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ba103e0bc87e7f09390c29e304d63e774d410382e56511419b0e3ab35577c332.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1c1743868904861be216d7cb87f3f4a0e8c31e839e136106f66249b0183f1835_thumbnail.jpeg",
+      "date_published": "2021-12-03T22:04:00Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1c1743868904861be216d7cb87f3f4a0e8c31e839e136106f66249b0183f1835_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Sweden — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Sweden.json",
+  "description": "📷 Sweden — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4b2994d7747848e1bc60dab7e15094b6b408e83e9678af08b3ff6adbc817c36e.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4b2994d7747848e1bc60dab7e15094b6b408e83e9678af08b3ff6adbc817c36e.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/982b7d821e7333d6148dc6b1effff1c4d0ba7017a7f0738dd9c9cdab677f3d8e_thumbnail.jpeg",
+      "date_published": "2024-05-10T18:16:52Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/982b7d821e7333d6148dc6b1effff1c4d0ba7017a7f0738dd9c9cdab677f3d8e_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

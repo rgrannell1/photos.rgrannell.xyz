@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Red Tailed Hawk — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Red Tailed Hawk.json",
+  "description": "📷 Red Tailed Hawk — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ee844064b68d036ae43ed381c0a238626d22214f42f417943781478b25c21e52.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ee844064b68d036ae43ed381c0a238626d22214f42f417943781478b25c21e52.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3ffe743f45a5aa5c0a74e0033c4e505cd0f42ee294d161138d79b2a597c18c99_thumbnail.jpeg",
+      "date_published": "2021-12-03T21:07:32Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3ffe743f45a5aa5c0a74e0033c4e505cd0f42ee294d161138d79b2a597c18c99_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

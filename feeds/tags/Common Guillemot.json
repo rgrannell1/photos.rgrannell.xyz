@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Common Guillemot — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Common Guillemot.json",
+  "description": "📷 Common Guillemot — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c2a1842613b7b004df85f281210ea48949468b96686d6c64717cf3b61153c13c.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c2a1842613b7b004df85f281210ea48949468b96686d6c64717cf3b61153c13c.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/85e736635b8dea092dd52a7986f2e354256b0d6976d920cf8a0dcb8030702ee6_thumbnail.jpeg",
+      "date_published": "2021-11-14T12:58:19Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/85e736635b8dea092dd52a7986f2e354256b0d6976d920cf8a0dcb8030702ee6_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

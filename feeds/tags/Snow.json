@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Snow — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Snow.json",
+  "description": "📷 Snow — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/91cb5d6bad459a5054d3462898aface3dacb9a071db6286b09a3a726c92907b5.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/91cb5d6bad459a5054d3462898aface3dacb9a071db6286b09a3a726c92907b5.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2e26a61a5849f32985ca05d56a5ce0b2a8df0c6831e763da84d2e337d73160f5_thumbnail.jpeg",
+      "date_published": "2024-05-07T14:05:28Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2e26a61a5849f32985ca05d56a5ce0b2a8df0c6831e763da84d2e337d73160f5_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

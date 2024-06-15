@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Northern Ireland — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Northern Ireland.json",
+  "description": "📷 Northern Ireland — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c975a4e7f9293de4dcf44f7d900f5a5ec1e00aeb0ecd09c36d83679c5546b6c1.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c975a4e7f9293de4dcf44f7d900f5a5ec1e00aeb0ecd09c36d83679c5546b6c1.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6eed550bc84f150bb48240171ef11746a4fb0f3740a947ed7623a58e944e0c84_thumbnail.jpeg",
+      "date_published": "2024-02-05T16:51:20Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6eed550bc84f150bb48240171ef11746a4fb0f3740a947ed7623a58e944e0c84_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Shelduck — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Shelduck.json",
+  "description": "📷 Shelduck — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4b1071baf26d16c67cde78ec6afbe535f102cfeaeea02fbceb7757ca3b457619.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4b1071baf26d16c67cde78ec6afbe535f102cfeaeea02fbceb7757ca3b457619.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c18b50a793f1b211846ef128df2fff04fba2d0d6064a823fd1c07f65219c4402_thumbnail.jpeg",
+      "date_published": "2024-04-20T10:45:53Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c18b50a793f1b211846ef128df2fff04fba2d0d6064a823fd1c07f65219c4402_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

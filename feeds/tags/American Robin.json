@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 American Robin — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/American Robin.json",
+  "description": "📷 American Robin — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ed385fad320b482ddef07761c1d64cba4f2bb7ee75ee1c9c98d26460170bf6a0.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ed385fad320b482ddef07761c1d64cba4f2bb7ee75ee1c9c98d26460170bf6a0.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f429a4b517351562a66db72e387dfca49615058c3cd528a529273d76e97ea588_thumbnail.jpeg",
+      "date_published": "2021-12-02T21:23:36Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f429a4b517351562a66db72e387dfca49615058c3cd528a529273d76e97ea588_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

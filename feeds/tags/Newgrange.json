@@ -1,0 +1,31 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Newgrange — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Newgrange.json",
+  "description": "📷 Newgrange — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/60d892b674165d34d951ccfcf9c707d16bf7384f43197bb295315417c5648cf8.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/60d892b674165d34d951ccfcf9c707d16bf7384f43197bb295315417c5648cf8.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bc0b8399ab3e93f3d6c7601d1e9c000dd46b45d06bd6b496fc35d3ed8ba716ba_thumbnail.jpeg",
+      "date_published": "2023-05-20T12:00:30Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/bc0b8399ab3e93f3d6c7601d1e9c000dd46b45d06bd6b496fc35d3ed8ba716ba_thumbnail.jpeg' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1f0e0000c97af4a5de69c0185400cfa7934ed47a2bc74994ce0c38d72ced0cd0.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1f0e0000c97af4a5de69c0185400cfa7934ed47a2bc74994ce0c38d72ced0cd0.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/030196ff504ccaecc67b60eb31b3af606980d994a18e11a902c02352e225275e_thumbnail.jpeg",
+      "date_published": "2023-05-20T13:44:40Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/030196ff504ccaecc67b60eb31b3af606980d994a18e11a902c02352e225275e_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

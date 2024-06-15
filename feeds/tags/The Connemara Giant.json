@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 The Connemara Giant — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/The Connemara Giant.json",
+  "description": "📷 The Connemara Giant — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/316f632686bd716c0e3b18171a45ac991c70ba5201440695797ac480f7e2dcfc.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/316f632686bd716c0e3b18171a45ac991c70ba5201440695797ac480f7e2dcfc.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/722eb5f401b9c777019efe04819fc07cec2042fced4b34c7b9b84c8580252d64_thumbnail.jpeg",
+      "date_published": "2016-05-01T03:04:50Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/722eb5f401b9c777019efe04819fc07cec2042fced4b34c7b9b84c8580252d64_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

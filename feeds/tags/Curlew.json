@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Curlew — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Curlew.json",
+  "description": "📷 Curlew — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b644f93f75e62361ff86373f0fc04fcca29e22bd552a388b53f55d85cdbf93cd.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b644f93f75e62361ff86373f0fc04fcca29e22bd552a388b53f55d85cdbf93cd.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8c5969d51db3801bfaa76dd16632c91372e764b98ed6c0ad9e3c0e9096dd977b_thumbnail.jpeg",
+      "date_published": "2021-10-16T13:42:55Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8c5969d51db3801bfaa76dd16632c91372e764b98ed6c0ad9e3c0e9096dd977b_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

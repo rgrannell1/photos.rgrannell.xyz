@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Salamander — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Salamander.json",
+  "description": "📷 Salamander — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a8b3ec2ccd403ffd98b8b7b4c5609ac1ed7efbd2c08fee723c3f361cb819cb00.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a8b3ec2ccd403ffd98b8b7b4c5609ac1ed7efbd2c08fee723c3f361cb819cb00.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b28e4397a080c062f5032b80d142d01643dbad69ef2bc8b4a1765794120138f1_thumbnail.jpeg",
+      "date_published": "2022-04-01T15:19:55Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b28e4397a080c062f5032b80d142d01643dbad69ef2bc8b4a1765794120138f1_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

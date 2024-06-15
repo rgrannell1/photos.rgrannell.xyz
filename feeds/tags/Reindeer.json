@@ -1,0 +1,38 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Reindeer — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Reindeer.json",
+  "description": "📷 Reindeer — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db634e58123ae377002295df99ecf1cee23037dd40788f967ad10058f9aa07d0.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/db634e58123ae377002295df99ecf1cee23037dd40788f967ad10058f9aa07d0.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2ceec5f8603bbd57824fc8f4eb0502bdf0e55c480c53bb867e66d9a92b0c75b3_thumbnail.jpeg",
+      "date_published": "2024-05-12T14:09:36Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2ceec5f8603bbd57824fc8f4eb0502bdf0e55c480c53bb867e66d9a92b0c75b3_thumbnail.jpeg' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/20917332b1704019beba019843fe7c221cae4be7132b66222abcc2fe875544cb.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/20917332b1704019beba019843fe7c221cae4be7132b66222abcc2fe875544cb.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7655f9be1dd2429066b4c4105a578e97c3977d3432dcc0c5f0f38a01407e261a_thumbnail.jpeg",
+      "date_published": "2024-05-12T14:09:17Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7655f9be1dd2429066b4c4105a578e97c3977d3432dcc0c5f0f38a01407e261a_thumbnail.jpeg' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1d70fc5e29155d09ef72a450354094dc29dfe4e861959e794cc824f6b051269f.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1d70fc5e29155d09ef72a450354094dc29dfe4e861959e794cc824f6b051269f.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/23c36ab2d3ec6df24cfb407303c92e9ed37d804a566f83c9b8bb53016e2a2e6c_thumbnail.jpeg",
+      "date_published": "2024-05-12T14:15:52Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/23c36ab2d3ec6df24cfb407303c92e9ed37d804a566f83c9b8bb53016e2a2e6c_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

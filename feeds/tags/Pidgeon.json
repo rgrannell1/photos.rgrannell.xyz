@@ -1,29 +1,24 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 Pidgeon — photos.rgrannell.xyz",
+  "title": "📷 Pidgeon — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
   "feed_url": "https://photos.rgrannell.xyz/feeds/Pidgeon.json",
   "description": "📷 Pidgeon — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {
-    "name": "Róisín Grannell",
+    "name": "R* Grannell",
     "url": "https://rgrannell.xyz",
     "avatar": "https://rgrannell.xyz/me.png"
   },
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7cf3aa7832901d36e66cd828c78966bfaa361a271a0eb4c881f5488b2defb043.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7cf3aa7832901d36e66cd828c78966bfaa361a271a0eb4c881f5488b2defb043.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/edbfddb2609ebb0b251b37f5196719295f3c0a264b0c7799a8c998caa90e101c_thumbnail.webp",
-      "date_published": "2017-05-25T20:07:46Z"
-    },
-    {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d36789e215aa7ea76f7226dde6b6f2f74889f3d27757dd9587b0d53f930000f6.webp",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d36789e215aa7ea76f7226dde6b6f2f74889f3d27757dd9587b0d53f930000f6.webp",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/299a7ba1269ed9254fb3e4facb106b362cc93c474ee61c0f997a6c24e7b87eb7_thumbnail.webp",
-      "date_published": "2024-04-13T12:57:23Z"
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/67209da355a64f78dea4b59375c93eec6a133c89818d9aaefea6fb16224abf2e.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/67209da355a64f78dea4b59375c93eec6a133c89818d9aaefea6fb16224abf2e.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d7d8d62c933806b35f519fe836c0310f243a9f39e666b3d4c2d5803ddeb3640b_thumbnail.jpeg",
+      "date_published": "2021-10-16T13:44:54Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d7d8d62c933806b35f519fe836c0310f243a9f39e666b3d4c2d5803ddeb3640b_thumbnail.jpeg' alt='Photo'>"
     }
   ]
 }

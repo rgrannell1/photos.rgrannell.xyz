@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 European Robin — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/European Robin.json",
+  "description": "📷 European Robin — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/50cade252656625133aed69b02655f8334bb9802a994a7648a5b2b1460319ba4.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/50cade252656625133aed69b02655f8334bb9802a994a7648a5b2b1460319ba4.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/11685d3a012a97b352e93d3308ce8ce1d2ed739557dfb4d930c66331b6632cf4_thumbnail.jpeg",
+      "date_published": "2017-02-26T17:04:49Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/11685d3a012a97b352e93d3308ce8ce1d2ed739557dfb4d930c66331b6632cf4_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

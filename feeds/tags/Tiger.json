@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Tiger — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Tiger.json",
+  "description": "📷 Tiger — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7ee7fc133db00881e9a0b1fd8b4672fc09768e42adc1c4a631656ab929791c90.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7ee7fc133db00881e9a0b1fd8b4672fc09768e42adc1c4a631656ab929791c90.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4cbdf5e1f44118695313574133469a5e2f1f41bbf99318e5ef30966da7f703ac_thumbnail.jpeg",
+      "date_published": "2022-04-01T15:42:32Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4cbdf5e1f44118695313574133469a5e2f1f41bbf99318e5ef30966da7f703ac_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Sparrowhawk — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Sparrowhawk.json",
+  "description": "📷 Sparrowhawk — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dbdf9dc5e2fc69b8dc7d975821311298cf36ba99083cffff7c95f9d60ef1e556.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dbdf9dc5e2fc69b8dc7d975821311298cf36ba99083cffff7c95f9d60ef1e556.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/129e3bfc470873d4d1507b4127cf818f1e6b2a22527fa472a559d5aa7dc95ea3_thumbnail.jpeg",
+      "date_published": "2020-08-08T17:14:21Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/129e3bfc470873d4d1507b4127cf818f1e6b2a22527fa472a559d5aa7dc95ea3_thumbnail.jpeg' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/397a876adaf1905360944509993c291e814a27fd39be0b107196ad4d0363affc.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/397a876adaf1905360944509993c291e814a27fd39be0b107196ad4d0363affc.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/45f20f052e01eec2d507edf1dc56fe7fdfab81185d1a807545d0b4417471c6e1_thumbnail.jpeg",
+      "date_published": "2020-09-09T13:52:34Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/45f20f052e01eec2d507edf1dc56fe7fdfab81185d1a807545d0b4417471c6e1_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

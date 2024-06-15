@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Moose — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Moose.json",
+  "description": "📷 Moose — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4d1397fb939ddb2288b1a184a6a8583d44d35618fbd1cf4680990412d72c5b94.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4d1397fb939ddb2288b1a184a6a8583d44d35618fbd1cf4680990412d72c5b94.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/45f13d62be3857ee4c7eac6040dd2f47208c28b0b40d1b62cf394aaee96160db_thumbnail.jpeg",
+      "date_published": "2024-05-12T14:06:36Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/45f13d62be3857ee4c7eac6040dd2f47208c28b0b40d1b62cf394aaee96160db_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

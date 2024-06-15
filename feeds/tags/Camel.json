@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Camel — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Camel.json",
+  "description": "📷 Camel — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1d0fc45654a8c13188062067ea42524d35343612158846e3bc71ad184b7a9285.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1d0fc45654a8c13188062067ea42524d35343612158846e3bc71ad184b7a9285.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c6492dd396afa86e322df6338a007a94c27f4be9c9ad48450de6efc8464f4f3d_thumbnail.jpeg",
+      "date_published": "2022-04-01T15:41:41Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c6492dd396afa86e322df6338a007a94c27f4be9c9ad48450de6efc8464f4f3d_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Harbor Seal — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Harbor Seal.json",
+  "description": "📷 Harbor Seal — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "Róisín Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a11be089d0446b67e447a85a771113e79c4a128e8b2dcf6778074ec6d74ee187.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a11be089d0446b67e447a85a771113e79c4a128e8b2dcf6778074ec6d74ee187.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/57eb132f60daed36e49feb95b2637b883d166913ac8aff446fffb9ca4354e3ab_thumbnail.jpeg",
+      "date_published": "2018-06-29T14:03:52Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/57eb132f60daed36e49feb95b2637b883d166913ac8aff446fffb9ca4354e3ab_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

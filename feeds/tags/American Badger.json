@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 American Badger — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/American Badger.json",
+  "description": "📷 American Badger — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c91bce3b7508ba653bc999b4be89b4a5350c9dfd9c1c48cb324c596084380793.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c91bce3b7508ba653bc999b4be89b4a5350c9dfd9c1c48cb324c596084380793.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/de2a5b4c3154a7265397bdcb0408d063faad930a1353fdd30a8785808e48a347_thumbnail.jpeg",
+      "date_published": "2021-12-02T20:36:20Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/de2a5b4c3154a7265397bdcb0408d063faad930a1353fdd30a8785808e48a347_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

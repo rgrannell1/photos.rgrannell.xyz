@@ -1,0 +1,38 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 African Grey Parrot — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/African Grey Parrot.json",
+  "description": "📷 African Grey Parrot — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/362409fe3ee58324ac689f84f03fb3e72cd20cc619294c844e4adaae3bdb3176.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/362409fe3ee58324ac689f84f03fb3e72cd20cc619294c844e4adaae3bdb3176.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5bceaa2eaad4e1fb2406c2d950cebc013706a1e7ea37d9924777ed2cb5007bd6_thumbnail.jpeg",
+      "date_published": "2022-04-01T15:46:28Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/5bceaa2eaad4e1fb2406c2d950cebc013706a1e7ea37d9924777ed2cb5007bd6_thumbnail.jpeg' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0943a6aea0c29f9b48227e424068fe32f42d986540c60ea4f2fbb88880f6178b.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0943a6aea0c29f9b48227e424068fe32f42d986540c60ea4f2fbb88880f6178b.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0dfde75a0a8a82b010a7a8f891d6d5a511ff7b94fef032957e44251c868a6a78_thumbnail.jpeg",
+      "date_published": "2022-02-06T12:14:10Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0dfde75a0a8a82b010a7a8f891d6d5a511ff7b94fef032957e44251c868a6a78_thumbnail.jpeg' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/050c2870aa6f2c809a4b604bcf87324e47f3cdd13775ee65f83a35fa90ecce7f.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/050c2870aa6f2c809a4b604bcf87324e47f3cdd13775ee65f83a35fa90ecce7f.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/462e35fbc3502f248c8173d9c8bc3aa37afb624e880419fc6b01f9cbdb74a787_thumbnail.jpeg",
+      "date_published": "2022-02-06T12:16:05Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/462e35fbc3502f248c8173d9c8bc3aa37afb624e880419fc6b01f9cbdb74a787_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

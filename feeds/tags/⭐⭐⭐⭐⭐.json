@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 ⭐⭐⭐⭐⭐ — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/⭐⭐⭐⭐⭐.json",
+  "description": "📷 ⭐⭐⭐⭐⭐ — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/be579b5b33c5ef4fcaf3a19649bc329071174a2204b3735b1d82a4a314ebf04e.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/be579b5b33c5ef4fcaf3a19649bc329071174a2204b3735b1d82a4a314ebf04e.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/34807f9c106b868e3db52c17a5a2619ab918ae59288c91145b8c1e76f2581566_thumbnail.jpeg",
+      "date_published": "2024-05-12T13:51:23Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/34807f9c106b868e3db52c17a5a2619ab918ae59288c91145b8c1e76f2581566_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}
