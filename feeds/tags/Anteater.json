@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Anteater — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Anteater.json",
+  "description": "📷 Anteater — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e3795f28ab7390741e53a3476d1ff269bd785eac342f3a9697e3a1ad58431d66.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e3795f28ab7390741e53a3476d1ff269bd785eac342f3a9697e3a1ad58431d66.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/173ffcf7f571f37ec20445f149140048e3edd9fcc544721afb8c08add600b657_thumbnail.jpeg",
+      "date_published": "2021-09-16T14:50:30Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/173ffcf7f571f37ec20445f149140048e3edd9fcc544721afb8c08add600b657_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

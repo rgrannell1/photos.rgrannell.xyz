@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 African Wild Dog — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/African Wild Dog.json",
+  "description": "📷 African Wild Dog — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4df241c5eee611b906b5f4af50e0d78cc042a30f9cd76de0e108d83cd42d0122.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4df241c5eee611b906b5f4af50e0d78cc042a30f9cd76de0e108d83cd42d0122.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/61b6de5677000d8f0b54577356b52b86e69cd49ddc2329c10392f4248c86903a_thumbnail.jpeg",
+      "date_published": "2021-09-16T12:14:10Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/61b6de5677000d8f0b54577356b52b86e69cd49ddc2329c10392f4248c86903a_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Green Crested Lizard — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Green Crested Lizard.json",
+  "description": "📷 Green Crested Lizard — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d81a830540b12895c1a8592899ab9ec1b83dbd714a4cbb91d65d1754b1ed55ac.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d81a830540b12895c1a8592899ab9ec1b83dbd714a4cbb91d65d1754b1ed55ac.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dff621b33f352e2362f647731ea01639e2cc3d17cf57d64bb8440d0288043df7_thumbnail.jpeg",
+      "date_published": "2021-09-16T13:29:55Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dff621b33f352e2362f647731ea01639e2cc3d17cf57d64bb8440d0288043df7_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Great Spotted Woodpecker — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Great Spotted Woodpecker.json",
+  "description": "📷 Great Spotted Woodpecker — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/507c81a2b70955e8a19d98e6ff2ff83a7a828fdc9a1dc2986d1029685b2baa60.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/507c81a2b70955e8a19d98e6ff2ff83a7a828fdc9a1dc2986d1029685b2baa60.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fee168e808f8e6370e916c314ceec45cc62784b6755d6f5ee2530b958d7cf965_thumbnail.jpeg",
+      "date_published": "2023-04-10T07:27:49Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fee168e808f8e6370e916c314ceec45cc62784b6755d6f5ee2530b958d7cf965_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

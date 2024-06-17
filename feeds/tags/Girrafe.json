@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Girrafe — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Girrafe.json",
+  "description": "📷 Girrafe — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6c32e77399ab1377f0f91cc585f4f94d7a8e59d941f2da1c0426e7a01cb3376d.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6c32e77399ab1377f0f91cc585f4f94d7a8e59d941f2da1c0426e7a01cb3376d.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2f4a4192311480c8e7b3b0e3f83c7f5f902211231fddeb506d71e83df583717f_thumbnail.jpeg",
+      "date_published": "2021-09-16T16:01:55Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2f4a4192311480c8e7b3b0e3f83c7f5f902211231fddeb506d71e83df583717f_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

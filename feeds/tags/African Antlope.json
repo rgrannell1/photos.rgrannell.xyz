@@ -1,0 +1,31 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 African Antlope — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/African Antlope.json",
+  "description": "📷 African Antlope — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/46dac0d41cc6224d372786d4c77da2edae8b87c62095b4d645669b411a07ddcb.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/46dac0d41cc6224d372786d4c77da2edae8b87c62095b4d645669b411a07ddcb.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6734883ad18549d90631b12bd54994af170483a9d500c0cfb64b4241f85cc83d_thumbnail.jpeg",
+      "date_published": "2021-09-16T12:09:00Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6734883ad18549d90631b12bd54994af170483a9d500c0cfb64b4241f85cc83d_thumbnail.jpeg' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0e4f0503f93c0ded2e72534d6ad3e04166689e1339cfa81932eda745af0b4db0.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0e4f0503f93c0ded2e72534d6ad3e04166689e1339cfa81932eda745af0b4db0.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/93981125dd5ab9446194b0db8fed6234b2530e314613c8078a42037f22ea8bf4_thumbnail.jpeg",
+      "date_published": "2021-09-16T12:09:23Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/93981125dd5ab9446194b0db8fed6234b2530e314613c8078a42037f22ea8bf4_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Asian Glossy Starling — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Asian Glossy Starling.json",
+  "description": "📷 Asian Glossy Starling — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1f4b3321c2346659cfaf6a9dc638059b0ec7f25e6c4df7848553d8a5f0634f63.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/1f4b3321c2346659cfaf6a9dc638059b0ec7f25e6c4df7848553d8a5f0634f63.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d023c1050496de80a2da335a1704d767c177de21b8de3283d69d589ff9b58110_thumbnail.jpeg",
+      "date_published": "2021-09-16T12:58:13Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d023c1050496de80a2da335a1704d767c177de21b8de3283d69d589ff9b58110_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

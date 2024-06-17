@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Spectacled Bear — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Spectacled Bear.json",
+  "description": "📷 Spectacled Bear — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6926391e3c54d93386344474179b058547b842e6abe77add110f07b6524f27d9.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6926391e3c54d93386344474179b058547b842e6abe77add110f07b6524f27d9.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d2061ea0db4209d6daeb7a580c80893dd285ad08e85516cd14d1e5d26d558ebb_thumbnail.jpeg",
+      "date_published": "2021-09-16T14:48:55Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d2061ea0db4209d6daeb7a580c80893dd285ad08e85516cd14d1e5d26d558ebb_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}

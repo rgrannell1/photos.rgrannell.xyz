@@ -1,9 +1,9 @@
 {
   "version": "https://jsonfeed.org/version/1",
-  "title": "📷 photos.rgrannell.xyz",
+  "title": "📷 Forest — https://photos.rgrannell.xyz",
   "home_page_url": "https://photos.rgrannell.xyz",
-  "feed_url": "https://photos.rgrannell.xyz/feeds/index.json",
-  "description": "📷 photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Forest.json",
+  "description": "📷 Forest — photos.rgrannell.xyz",
   "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
   "favicon": "https://photos.rgrannell.xyz/favicon.ico",
   "author": {

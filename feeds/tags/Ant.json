@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Ant — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Ant.json",
+  "description": "📷 Ant — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/17b10009a946501a4cfc1bb3452dca333e89a84c1d847070bfc4f9c286f1b209.jpeg",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/17b10009a946501a4cfc1bb3452dca333e89a84c1d847070bfc4f9c286f1b209.jpeg",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/453013cc8696f74eea5330315f9698f7bf55789f7c8299606492b70a601e1174_thumbnail.jpeg",
+      "date_published": "2021-09-16T13:18:30Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/453013cc8696f74eea5330315f9698f7bf55789f7c8299606492b70a601e1174_thumbnail.jpeg' alt='Photo'>"
+    }
+  ]
+}
