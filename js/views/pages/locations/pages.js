@@ -44,8 +44,10 @@ export class LocationsPage extends LitElem {
             const popup = `
             <section>
               <h3>${album.name}</h3>
-              <div class="photo"
-                onclick="  "></img>
+              <div class="photo" onclick="">
+                <a href="#/album/${album.id}">
+                  <img width="170" height="170" src="${album.cover_thumbnail}"></img>
+                </a>
               </div>
             </section>
             `;
