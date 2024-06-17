@@ -23,7 +23,13 @@ export class Vault {
     const { domain, folders } = this._data;
 
     return Object.fromEntries(Object.entries(folders).map(([id, album]) => {
-      const geolocation = album.geolocation ? JSON.parse(atob(album.geolocation)) : null;
+      let geolocation = null;
+      try {
+        geolocation = album.geolocation ? JSON.parse(atob(album.geolocation)) : null;
+      } catch (err) {
+        console.error('failed to parse geolocation', album, album.geolocation)
+        console.error(err);
+      }
 
       const updatedImages = album.images.map((image) => {
           return {
