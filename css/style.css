@@ -278,6 +278,10 @@ photo-app {
 
 /* Small Devices */
 @media (max-width: 500px) {
+  h1 {
+    font-size: 2em;
+  }
+
   .thumbnail-image  {
     width: max(180px, min(80vw, var(--photo-width)));
     max-width: max(180px, 80vw);
@@ -287,7 +291,7 @@ photo-app {
     display: none;
   }
 
-  .photo-album-metadata p {
+  .photo-album-metadata p, .photo-album-description {
     font-size: 0.8em;
     padding: 2px;
   }
