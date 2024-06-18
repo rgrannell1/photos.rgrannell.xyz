@@ -60,7 +60,7 @@ html * {
 
 /* this spaces the sidebar away from images */
 section {
-  margin-left: 1.35em;
+  margin-left: 2em;
 }
 
 address {
@@ -286,17 +286,24 @@ photo-app {
 
 /* Small Devices */
 @media (max-width: 500px) {
-
-  h1, .photo-count {
-    text-align: center;
-  }
-
   photo-sidebar {
     display: none;
   }
 
-  .album-container, .photo-container {
-    justify-content: space-around;
+  .photo-album-metadata p {
+    font-size: 0.8em;
+    padding: 2px;
+  }
+
+  .photo-album .photo-album-metadata p {
+    color: white;
+    background-color: black;
+  }
+
+  .photo-album-metadata {
+    position: absolute;
+    transform: translate(10px, -100px);
+    z-index: 1;
   }
 
   photo-sidebar[visible="true"] {
@@ -335,6 +342,10 @@ photo-app {
     grid-template-columns: 200px 1fr 10px;
   }
 
+  .album-container, .photo-container {
+    justify-content: space-around;
+  }
+
   .burger {
     display: none;
   }
@@ -349,6 +360,10 @@ photo-app {
   .app-container {
     display: grid;
     grid-template-columns: 200px 1fr 10px;
+  }
+
+  .album-container, .photo-container {
+    justify-content: space-around;
   }
 
   .burger {

@@ -48,11 +48,13 @@ export class PhotoAlbum extends LitElem {
         title: this.title,
       })
     }>
-      <p class="photo-album-title">${this.title}</p>
-      <p class="photo-album-date">${this.dateRange()}</p>
-      <p class="photo-album-count">${this.count} ${
-      this.count === 1 ? "photo" : "photos"
-    }</p>
+      <div class="photo-album-metadata">
+        <p class="photo-album-title">${this.title}</p>
+        <p class="photo-album-date">${this.dateRange()}</p>
+        <p class="photo-album-count">${this.count} ${
+          this.count === 1 ? "photo" : "photos"
+        }</p>
+      </div>
     </div>
     `;
   }
