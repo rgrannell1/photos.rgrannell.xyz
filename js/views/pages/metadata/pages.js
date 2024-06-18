@@ -55,12 +55,12 @@ export class MetadataPage extends LitElem {
   }
 
   renderShare(url) {
-    if (!navigator.share) {
+    if (!navigator.share && false) {
       return html``;
     }
 
     return html`
-    <button @click=${ this.shareImage.bind(this, url) }>Share</button>
+    <a @click=${ this.shareImage.bind(this, url) }>[share]</a>
     `;
   }
 
@@ -83,10 +83,8 @@ export class MetadataPage extends LitElem {
 
       <p>
         <a href="${photo.image_url}">[full image]</a>
+        ${this.renderShare(photo.image_url)}
       </p>
-
-
-      ${this.renderShare(photo.image_url)}
 
       ${
         photo.description ? html`<br/><p>${photo.description}</p>` : html``
@@ -96,6 +94,10 @@ export class MetadataPage extends LitElem {
       <ul class="metadata-list">${tags}</ul>
 
       <h3>Exif</h3>
+
+      <dialog open>
+
+      </dialog>
 
       <ul class="metadata-list">
         <li>
