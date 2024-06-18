@@ -8,32 +8,6 @@ import { Metadata } from "../../../services/tags.js";
 
 
 export class TagsPage extends LitElem {
-  static PLANES = [
-    'Boeing Stearman',
-    'Concorde',
-    'Consolidated PBY Catalina',
-    'EC135 P2',
-    'Harrier Jet',
-    'P51 Mustang',
-    'Pilatus PC-9M',
-    'Red Arrows',
-    'Saab 37 Viggen'
-  ]
-  static ANIMALS = {
-    mammals: [
-      'Pine Marten',
-      'European Rabbit',
-      'Fallow Deer',
-      'Goat',
-      'Fox',
-      'Grey Squirrel',
-      'Red Squirrel',
-      'Red Deer',
-      'Harbour Seal',
-      'Grey Seal',
-    ].sort()
-  }
-
   createRenderRoot() {
     return this;
   }
@@ -121,7 +95,7 @@ export class TagsPage extends LitElem {
 
       <section class="album-container">
 
-      ${TagsPage.ANIMALS.mammals.map(this.renderTagCover.bind(this))}
+      ${md.metadata.Mammal.children.map(this.renderTagCover.bind(this))}
 
       </section>
 
@@ -133,7 +107,7 @@ export class TagsPage extends LitElem {
 
       <h2>Planes</h2>
       <section class="album-container">
-        ${TagsPage.PLANES.map(this.renderTagCover.bind(this))}
+        ${md.metadata.Plane.children.map(this.renderTagCover.bind(this))}
       </section>
 
       <br>

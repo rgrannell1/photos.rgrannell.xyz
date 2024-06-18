@@ -264,6 +264,7 @@ photo-app {
 .photo-album-description {
   margin-top: 1em;
   max-width: 900px;
+  word-spacing: normal;
 }
 
 .photo-album-count, .photo-count {

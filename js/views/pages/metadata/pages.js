@@ -31,23 +31,36 @@ export class MetadataPage extends LitElem {
     }
   }
 
-  renderLocation() {
-    const photo = this.photo();
+  /*
+   * Share an image using the Web Share API, if available.
+   *
+   * @param {string} url the url of the image to share
+   *
+   */
+  async shareImage(url) {
+    if (!navigator.share) {
+      console.error('navigator.share not available');
+    } else {
+      // note; cors might not work locally
+      const response = await fetch(url);
+      const resourceName = (new URL(url)).pathname;
 
-    if (!photo.location?.address) {
+      await navigator.share({
+        title: resourceName,
+        files: [new File([await response.blob()], resourceName, {
+          type: 'image/webp'
+        })]
+      });
+    }
+  }
+
+  renderShare(url) {
+    if (!navigator.share) {
       return html``;
     }
 
-    const { address, latitude, longitude } = photo.location;
-
     return html`
-    <br/>
-    <div>
-    Photographed near <a href="geo:${latitude},${longitude}">
-      <address>${address}</address>
-    </a>
-    </div>
-
+    <button @click=${ this.shareImage.bind(this, url) }>Share</button>
     `;
   }
 
@@ -72,7 +85,8 @@ export class MetadataPage extends LitElem {
         <a href="${photo.image_url}">[full image]</a>
       </p>
 
-      ${this.renderLocation()}
+
+      ${this.renderShare(photo.image_url)}
 
       ${
         photo.description ? html`<br/><p>${photo.description}</p>` : html``

@@ -245,6 +245,7 @@ export class PhotoApp extends LitElem {
       topLevelClasses.push("dark-mode");
     }
 
+    // events are mostly handled here
     return html`
     <body>
       <div class="${ topLevelClasses.join(' ') }"

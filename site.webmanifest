@@ -1,5 +1,8 @@
 {
   "name": "photos.rgrannell.xyz",
+  "description": "my personal photo gallery",
+  "lang": "en",
+  "categories": ["photo", "gallery", "personal"],
   "start_url": "/",
   "short_name": "photos",
   "icons": [
