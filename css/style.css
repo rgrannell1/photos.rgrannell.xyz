@@ -278,6 +278,11 @@ photo-app {
 
 /* Small Devices */
 @media (max-width: 500px) {
+  .thumbnail-image  {
+    width: max(180px, min(80vw, var(--photo-width)));
+    max-width: max(180px, 80vw);
+  }
+
   photo-sidebar {
     display: none;
   }
@@ -330,10 +335,6 @@ photo-app {
  * each other
  */
 @media (min-width: 501px) {
-  .thumbnail-image  {
-    width: max(180px, min(60vw, var(--photo-width)));
-    max-width: max(180px, 60vw);
-  }
 
   .app-container {
     display: grid;
@@ -351,10 +352,6 @@ photo-app {
 
 /* Big Devices */
 @media (min-width: 1301px) {
-  .thumbnail-image  {
-    width: max(180px, min(60vw, var(--photo-width)));
-    max-width: max(180px, 60vw);
-  }
 
   .app-container {
     display: grid;
