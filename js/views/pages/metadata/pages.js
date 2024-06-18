@@ -39,7 +39,7 @@ export class MetadataPage extends LitElem {
    */
   async shareImage(url) {
     if (!navigator.share) {
-      alert('navigator.share not available');
+      console.error('navigator.share not available');
     } else {
       // note; cors might not work locally
       const response = await fetch(url);
