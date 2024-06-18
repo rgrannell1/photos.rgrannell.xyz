@@ -1,5 +1,6 @@
 import { html } from "../../../../library/lit.js";
 import { LitElem } from "../../../../models/lit-element.js";
+import { Dates } from "../../../../services/dates.js";
 
 export class PhotoAlbum extends LitElem {
   static get properties() {
@@ -18,23 +19,9 @@ export class PhotoAlbum extends LitElem {
     if (!this.minDate && !this.maxDate) {
       return "unknown date";
     }
+    const mediaQuery = window.matchMedia('(max-width: 500px)')
 
-    const minDate = new Date(parseFloat(this.minDate));
-    const maxDate = new Date(parseFloat(this.maxDate));
-
-    const opts = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    };
-    const from = minDate.toLocaleDateString("en-IE", opts);
-    const to = maxDate.toLocaleDateString("en-IE", opts);
-
-    if (from === to) {
-      return from;
-    }
-
-    return `${from} — ${to}`;
+    return Dates.dateRange(this.minDate, this.maxDate, mediaQuery.matches);
   }
 
   render() {

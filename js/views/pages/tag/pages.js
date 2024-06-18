@@ -55,9 +55,11 @@ export class TagPage extends LitElement {
   }
 
   render() {
+    const mediaQuery = window.matchMedia('(max-width: 500px)')
+
     const [minDate, maxDate] = Dates.findRange(this.photos());
 
-    const range = Dates.dateRange(minDate, maxDate);
+    const range = Dates.dateRange(minDate, maxDate, mediaQuery.matches);
 
     return html`
     <div>
