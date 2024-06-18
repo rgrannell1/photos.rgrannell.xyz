@@ -49,6 +49,12 @@
   font-display: swap
 }
 
+button {
+  all: unset;
+  color: var(--link-color);
+  cursor: pointer;
+}
+
 /*
  * ++++ ++++ ++++ ~~~~ Basic Styles ~~~~ ++++ ++++ ++++
  */

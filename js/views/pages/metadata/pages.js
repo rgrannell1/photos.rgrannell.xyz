@@ -60,7 +60,7 @@ export class MetadataPage extends LitElem {
     }
 
     return html`
-    <a @click=${ this.shareImage.bind(this, url) }>[share]</a>
+    <button @click=${ this.shareImage.bind(this, url) }>[share]</button>
     `;
   }
 
