@@ -47,16 +47,25 @@ export class Dates {
       const from = parsedMinDate.toLocaleDateString("en-IE", optsShort);
       const to = parsedMaxDate.toLocaleDateString("en-IE", optsShort);
 
+      const minDay = parsedMinDate.toLocaleDateString("en-IE", { day: "numeric" });
+      const maxDay = parsedMaxDate.toLocaleDateString("en-IE", { day: "numeric" });
+
+      const minMonth = parsedMinDate.toLocaleDateString("en-IE", { month: "short" });
+      const maxMonth = parsedMaxDate.toLocaleDateString("en-IE", { month: "short" });
+
       const minYear = parsedMinDate.getFullYear()
-      const maxYear = parsedMinDate.getFullYear()
+      const maxYear = parsedMaxDate.getFullYear()
+
+      const monthsEqual = minMonth === maxMonth;
+      const yearsEqual = minYear === maxYear;
 
       if (from === to) {
         // e.g 22 Feb 2022
         return `${from} ${year}`;
-      } else if (parsedMinDate.getFullYear() === parsedMaxDate.getFullYear()) {
-        // e.g 22 Feb - 24 Feb 2022
+      } else if (monthsEqual && yearsEqual) {
+        // e.g 22 - 24 Feb 2022
 
-        return `${from} - ${to} ${minYear}`;
+        return `${minDay} - ${maxDay} ${maxMonth} ${minYear}`;
       } else {
         return `${from} ${minYear} - ${to} ${maxYear}`;
       }
