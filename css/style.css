@@ -63,19 +63,11 @@ section {
   margin-left: 2em;
 }
 
-address {
-  display: inline-block;
-  font-style: normal;
-  text-decoration: underline;
-}
-
 a {
   color: var(--link-color);
 }
 
 .thumbnail-image  {
-  width: max(180px, min(60vw, var(--photo-width)));
-  max-width: max(180px, 60vw);
   height: auto;
   background-color: var(--image-placeholder-background-color);
 }
@@ -300,6 +292,7 @@ photo-app {
     background-color: black;
   }
 
+  /* hover metadata over the album */
   .photo-album-metadata {
     position: absolute;
     transform: translate(10px, -100px);
@@ -337,13 +330,14 @@ photo-app {
  * each other
  */
 @media (min-width: 501px) {
+  .thumbnail-image  {
+    width: max(180px, min(60vw, var(--photo-width)));
+    max-width: max(180px, 60vw);
+  }
+
   .app-container {
     display: grid;
     grid-template-columns: 200px 1fr 10px;
-  }
-
-  .album-container, .photo-container {
-    justify-content: space-around;
   }
 
   .burger {
@@ -357,13 +351,14 @@ photo-app {
 
 /* Big Devices */
 @media (min-width: 1301px) {
+  .thumbnail-image  {
+    width: max(180px, min(60vw, var(--photo-width)));
+    max-width: max(180px, 60vw);
+  }
+
   .app-container {
     display: grid;
     grid-template-columns: 200px 1fr 10px;
-  }
-
-  .album-container, .photo-container {
-    justify-content: space-around;
   }
 
   .burger {
