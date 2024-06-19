@@ -20,7 +20,7 @@ export class MetadataPage extends LitElem {
 
   photo() {
     if (!this.id) {
-      throw new Error('metadata: requires id')
+      throw new Error("metadata: requires id");
     }
     for (const album of Object.values(this.vault.albums())) {
       for (const image of album.images) {
@@ -35,11 +35,10 @@ export class MetadataPage extends LitElem {
    * Share an image using the Web Share API, if available.
    *
    * @param {string} url the url of the image to share
-   *
    */
   async shareImage(url) {
     if (!navigator.share) {
-      console.error('navigator.share not available');
+      console.error("navigator.share not available");
     } else {
       // note; cors might not work locally
       const response = await fetch(url);
@@ -47,9 +46,11 @@ export class MetadataPage extends LitElem {
 
       await navigator.share({
         title: resourceName,
-        files: [new File([await response.blob()], resourceName, {
-          type: 'image/webp'
-        })]
+        files: [
+          new File([await response.blob()], resourceName, {
+            type: "image/webp",
+          }),
+        ],
       });
     }
   }
@@ -63,7 +64,7 @@ export class MetadataPage extends LitElem {
     }
 
     return html`
-    <button @click=${ this.shareImage.bind(this, url) }>[share]</button>
+    <button @click=${this.shareImage.bind(this, url)}>[share]</button>
     `;
   }
 
@@ -71,11 +72,11 @@ export class MetadataPage extends LitElem {
     const photo = this.photo();
 
     const tags = (photo.tags.sort() ?? [])
-      .filter(tagName => {
+      .filter((tagName) => {
         return tagName !== "Published";
       })
       .map((tagName) => {
-        return html`<li><tag-link tagName="${ tagName }"></tag-link></li>`;
+        return html`<li><tag-link tagName="${tagName}"></tag-link></li>`;
       });
 
     return html`
@@ -89,9 +90,7 @@ export class MetadataPage extends LitElem {
         ${this.renderShare(photo.image_url)}
       </p>
 
-      ${
-        photo.description ? html`<br/><p>${photo.description}</p>` : html``
-      }
+      ${photo.description ? html`<br/><p>${photo.description}</p>` : html``}
 
       <h3>Tags</h3>
       <ul class="metadata-list">${tags}</ul>

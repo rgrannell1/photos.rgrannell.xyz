@@ -1,5 +1,3 @@
-
-
 function isChild(metadata, parent, child) {
   if (!metadata.hasOwnProperty(parent)) {
     return false;
@@ -43,7 +41,6 @@ export class Metadata {
 
   /*
    * Return the subset of tags that are children of some particular parent
-   *
    */
   childrenOf(parent, candidates) {
     const tags = new Set([]);

@@ -3,8 +3,8 @@ import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 
 import {
-  map as createMap,
   geoJSON,
+  map as createMap,
   marker,
   tileLayer,
 } from "../../../library/leaflet.js";
@@ -53,7 +53,7 @@ export class LocationsPage extends LitElem {
             `;
 
             layer.bindPopup(popup);
-          }
+          },
         }).addTo(map);
       }
 

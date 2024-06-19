@@ -19,7 +19,7 @@ export class PhotoAlbum extends LitElem {
     if (!this.minDate && !this.maxDate) {
       return "unknown date";
     }
-    const mediaQuery = window.matchMedia('(max-width: 500px)')
+    const mediaQuery = window.matchMedia("(max-width: 500px)");
 
     return Dates.dateRange(this.minDate, this.maxDate, mediaQuery.matches);
   }
@@ -39,8 +39,8 @@ export class PhotoAlbum extends LitElem {
         <p class="photo-album-title">${this.title}</p>
         <p class="photo-album-date">${this.dateRange()}</p>
         <p class="photo-album-count">${this.count} ${
-          this.count === 1 ? "photo" : "photos"
-        }</p>
+      this.count === 1 ? "photo" : "photos"
+    }</p>
       </div>
     </div>
     `;

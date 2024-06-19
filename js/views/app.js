@@ -184,7 +184,9 @@ export class PhotoApp extends LitElem {
 
     if (!this.page || this.page === "albums") {
       return html`
-      <photo-album-page .vault="${vault}" class="${classes.join(" ")}"></photo-album-page>
+      <photo-album-page .vault="${vault}" class="${
+        classes.join(" ")
+      }"></photo-album-page>
       `;
     }
 
@@ -198,7 +200,9 @@ export class PhotoApp extends LitElem {
 
     if (this.page === "tag-album") {
       return html`
-      <tag-page .vault="${vault}" tag=${this.tag} class="${classes.join(" ")}"></tag-page>
+      <tag-page .vault="${vault}" tag=${this.tag} class="${
+        classes.join(" ")
+      }"></tag-page>
       `;
     }
 
@@ -210,7 +214,9 @@ export class PhotoApp extends LitElem {
 
     if (this.page === "locations") {
       return html`
-      <locations-page .vault="${vault}" class="${classes.join(" ")}"></locations-page>
+      <locations-page .vault="${vault}" class="${
+        classes.join(" ")
+      }"></locations-page>
       `;
     }
 
@@ -222,16 +228,18 @@ export class PhotoApp extends LitElem {
 
     if (this.page === "metadata") {
       return html`
-      <metadata-page .vault="${vault}" id=${this.id} class="${classes.join(" ")}"></metadata-page>
+      <metadata-page .vault="${vault}" id=${this.id} class="${
+        classes.join(" ")
+      }"></metadata-page>
       `;
     }
   }
 
   loadDarkMode() {
-    if (typeof this.darkMode !== 'undefined') {
+    if (typeof this.darkMode !== "undefined") {
       return this.darkMode;
     }
-    return localStorage.getItem("darkMode") === 'true';
+    return localStorage.getItem("darkMode") === "true";
   }
 
   render() {
@@ -240,7 +248,7 @@ export class PhotoApp extends LitElem {
       classes.push("sidebar-visible");
     }
 
-    const topLevelClasses = ['photos-app'];
+    const topLevelClasses = ["photos-app"];
     if (this.darkMode) {
       topLevelClasses.push("dark-mode");
     }
@@ -248,7 +256,7 @@ export class PhotoApp extends LitElem {
     // events are mostly handled here
     return html`
     <body>
-      <div class="${ topLevelClasses.join(' ') }"
+      <div class="${topLevelClasses.join(" ")}"
         @click-album=${this.receiveClickAlbum}
         @click-photo=${this.receiveClickPhoto}
         @click-tag=${this.receiveClickTag}

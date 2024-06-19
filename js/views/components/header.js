@@ -31,7 +31,7 @@ export class PhotoHeader extends LitElem {
   }
 
   render() {
-    const text = this.darkMode ? "☀️" : "🌙"
+    const text = this.darkMode ? "☀️" : "🌙";
 
     return html`
     <nav class="header">
@@ -51,7 +51,9 @@ export class PhotoHeader extends LitElem {
 
         <li style="float: right">
           <a>
-            <span @click=${ this.broadcast('switch-theme') } class="brand switch">${text}</span>
+            <span @click=${
+      this.broadcast("switch-theme")
+    } class="brand switch">${text}</span>
           </a>
         </li>
 

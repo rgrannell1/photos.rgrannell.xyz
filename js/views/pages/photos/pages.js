@@ -56,10 +56,14 @@ export class PhotosPage extends LitElement {
   }
 
   render() {
-    const mediaQuery = window.matchMedia('(max-width: 500px)')
+    const mediaQuery = window.matchMedia("(max-width: 500px)");
 
     const album = this.album();
-    const range = Dates.dateRange(album.min_date, album.max_date, mediaQuery.matches);
+    const range = Dates.dateRange(
+      album.min_date,
+      album.max_date,
+      mediaQuery.matches,
+    );
 
     return html`
     <div>

@@ -1,4 +1,3 @@
-
 export class JSONFeed {
   static getElement() {
     return document.getElementById("rss");

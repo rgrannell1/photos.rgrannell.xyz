@@ -1,7 +1,7 @@
 export class Dates {
   static parse(dateTime) {
-    let [date, time] = dateTime.split(' ');
-    date = date.replace(/:/g, '-');
+    let [date, time] = dateTime.split(" ");
+    date = date.replace(/:/g, "-");
 
     return new Date(`${date} ${time}`);
   }
@@ -47,14 +47,22 @@ export class Dates {
       const from = parsedMinDate.toLocaleDateString("en-IE", optsShort);
       const to = parsedMaxDate.toLocaleDateString("en-IE", optsShort);
 
-      const minDay = parsedMinDate.toLocaleDateString("en-IE", { day: "numeric" });
-      const maxDay = parsedMaxDate.toLocaleDateString("en-IE", { day: "numeric" });
+      const minDay = parsedMinDate.toLocaleDateString("en-IE", {
+        day: "numeric",
+      });
+      const maxDay = parsedMaxDate.toLocaleDateString("en-IE", {
+        day: "numeric",
+      });
 
-      const minMonth = parsedMinDate.toLocaleDateString("en-IE", { month: "short" });
-      const maxMonth = parsedMaxDate.toLocaleDateString("en-IE", { month: "short" });
+      const minMonth = parsedMinDate.toLocaleDateString("en-IE", {
+        month: "short",
+      });
+      const maxMonth = parsedMaxDate.toLocaleDateString("en-IE", {
+        month: "short",
+      });
 
-      const minYear = parsedMinDate.getFullYear()
-      const maxYear = parsedMaxDate.getFullYear()
+      const minYear = parsedMinDate.getFullYear();
+      const maxYear = parsedMaxDate.getFullYear();
 
       const monthsEqual = minMonth === maxMonth;
       const yearsEqual = minYear === maxYear;
@@ -84,6 +92,5 @@ export class Dates {
 
       return `${from} — ${to}`;
     }
-
   }
 }

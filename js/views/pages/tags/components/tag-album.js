@@ -16,9 +16,7 @@ export class TagAlbum extends LitElem {
 
     return html`<div class="photo-album">
       <img class="thumbnail-image" width="400" height="400" src="${this.url}" title="${tagName}" alt="${tagName} - Tag Photo Album Thumbnail"
-        @click=${
-          this.broadcast("click-tag", { tagName })
-        }
+        @click=${this.broadcast("click-tag", { tagName })}
         loading="${this.loading}"/>
 
       <br>
@@ -26,12 +24,16 @@ export class TagAlbum extends LitElem {
 
       <!-- Add links to wikipedia and birdwatch -->
       ${
-        this?.links?.wikipedia ? html`<a href="${this.links.wikipedia}">[wiki]</a>` : ""
-      }
+      this?.links?.wikipedia
+        ? html`<a href="${this.links.wikipedia}">[wiki]</a>`
+        : ""
+    }
       ${
-        this?.links?.birdwatch ? html`<a href="${this.links.birdwatch}">[birdwatch]</a>` : ""
-      }
-    </div>`
+      this?.links?.birdwatch
+        ? html`<a href="${this.links.birdwatch}">[birdwatch]</a>`
+        : ""
+    }
+    </div>`;
   }
 }
 

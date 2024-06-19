@@ -1,5 +1,3 @@
-
-
 const CACHE_NAME = "sw-cache";
 const THUMBNAIL_SUFFIX = "_thumbnail.webp";
 const CACHEABLE_RESOURCES = [
@@ -18,7 +16,9 @@ self.addEventListener("install", function (event) {
 
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
-      return Promise.all(CACHEABLE_RESOURCES.map((resource) => cache.add(resource)));
+      return Promise.all(
+        CACHEABLE_RESOURCES.map((resource) => cache.add(resource)),
+      );
     }),
   );
 });

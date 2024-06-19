@@ -1,4 +1,3 @@
-
 export class Vault {
   _data;
   _metadata;
@@ -6,10 +5,10 @@ export class Vault {
   async init() {
     const [
       data,
-      metadata
+      metadata,
     ] = await Promise.all([
       (await fetch("/manifest.json")).json(),
-      (await fetch("/metadata.json")).json()
+      (await fetch("/metadata.json")).json(),
     ]);
 
     this._data = data;
@@ -22,16 +21,23 @@ export class Vault {
   albums() {
     const { domain, folders } = this._data;
 
-    return Object.fromEntries(Object.entries(folders).map(([id, album]) => {
-      let geolocation = null;
-      try {
-        geolocation = album.geolocation ? JSON.parse(atob(album.geolocation)) : null;
-      } catch (err) {
-        console.error('failed to parse geolocation', album, album.geolocation)
-        console.error(err);
-      }
+    return Object.fromEntries(
+      Object.entries(folders).map(([id, album]) => {
+        let geolocation = null;
+        try {
+          geolocation = album.geolocation
+            ? JSON.parse(atob(album.geolocation))
+            : null;
+        } catch (err) {
+          console.error(
+            "failed to parse geolocation",
+            album,
+            album.geolocation,
+          );
+          console.error(err);
+        }
 
-      const updatedImages = album.images.map((image) => {
+        const updatedImages = album.images.map((image) => {
           return {
             ...image,
             thumbnail_url: `${domain}${image.thumbnail_url}`,
@@ -39,7 +45,7 @@ export class Vault {
           };
         });
 
-        const cover = album.images.find(image => {
+        const cover = album.images.find((image) => {
           return image.fpath === album.cover_image;
         });
 
@@ -49,12 +55,12 @@ export class Vault {
           cover_thumbnail: `${domain}${cover?.thumbnail_url}`,
           images: updatedImages,
         }];
-      }));
+      }),
+    );
   }
 
   /*
    * Returns tags and their counts
-   *
    */
   tags() {
     const tags = {};
@@ -79,7 +85,6 @@ export class Vault {
 
   /*
    * Get photographs by tag, and tag metadata
-   *
    */
   tag(tag) {
     const albums = this.albums();
@@ -98,7 +103,6 @@ export class Vault {
 
   /*
    * Get tag cover
-   *
    */
   tagCover(tag) {
     const { images } = this.tag(tag);

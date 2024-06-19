@@ -5,7 +5,7 @@ export class TagLink extends LitElem {
   static get properties() {
     return {
       tagName: { type: String },
-      count: { type: Number }
+      count: { type: Number },
     };
   }
 
@@ -16,16 +16,14 @@ export class TagLink extends LitElem {
     if (typeof count === "undefined") {
       return html`<a
         href="#/tag/${encodedTagName}"
-        @click=${
-          this.broadcast("click-tag", { tagName })
-        }>${tagName}</a>`;
+        @click=${this.broadcast("click-tag", { tagName })}>${tagName}</a>`;
     }
 
     return html`<a
       href="#/tag/${encodedTagName}"
       @click=${
-        this.broadcast("click-tag", { tagName })
-      }>${tagName}</a> (${count})`;
+      this.broadcast("click-tag", { tagName })
+    }>${tagName}</a> (${count})`;
   }
 }
 

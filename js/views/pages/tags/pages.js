@@ -6,7 +6,6 @@ import "../../components/tag-link.js";
 import "./components/tag-album.js";
 import { Metadata } from "../../../services/tags.js";
 
-
 export class TagsPage extends LitElem {
   createRenderRoot() {
     return this;
@@ -15,7 +14,7 @@ export class TagsPage extends LitElem {
   static get properties() {
     return {
       vault: { type: Object },
-      metadata: { state: true }
+      metadata: { state: true },
     };
   }
 
@@ -50,7 +49,7 @@ export class TagsPage extends LitElem {
   renderTagLink(tag) {
     return html`<li>
       <tag-link tagName="${tag[0]}" count="${tag[1]}"></tag-link>
-    </li>`
+    </li>`;
   }
 
   renderTagCover(tag) {
@@ -62,7 +61,7 @@ export class TagsPage extends LitElem {
       return;
     }
 
-    return html`<tag-album url="${image.thumbnail_url}" tagName=${tag} .links=${links}>`
+    return html`<tag-album url="${image.thumbnail_url}" tagName=${tag} .links=${links}>`;
   }
 
   renderPlaceholder() {
@@ -70,7 +69,7 @@ export class TagsPage extends LitElem {
     <section>
       <p>Loading Photo Metadata</p>
     </section>
-    `
+    `;
   }
 
   async renderPage() {
@@ -122,9 +121,7 @@ export class TagsPage extends LitElem {
   }
 
   render() {
-    return html`${
-      until(this.renderPage(), this.renderPlaceholder())
-    }`
+    return html`${until(this.renderPage(), this.renderPlaceholder())}`;
   }
 }
 
