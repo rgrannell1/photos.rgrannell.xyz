@@ -54,8 +54,11 @@ export class MetadataPage extends LitElem {
     }
   }
 
+  /*
+   * Render a share button if the Web Share API is available.
+   */
   renderShare(url) {
-    if (!navigator.share && false) {
+    if (!navigator.share) {
       return html``;
     }
 

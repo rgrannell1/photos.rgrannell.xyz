@@ -61,7 +61,7 @@ export class Dates {
 
       if (from === to) {
         // e.g 22 Feb 2022
-        return `${from} ${year}`;
+        return `${from} ${minYear}`;
       } else if (monthsEqual && yearsEqual) {
         // e.g 22 - 24 Feb 2022
 
