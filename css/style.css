@@ -288,6 +288,10 @@ photo-app {
     font-size: 2em;
   }
 
+  .photo-album {
+    margin-left: 0 !important;
+  }
+
   .thumbnail-image  {
     width: max(180px, min(80vw, var(--photo-width)));
     max-width: max(180px, 80vw);

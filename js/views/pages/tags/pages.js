@@ -4,7 +4,7 @@ import { JSONFeed } from "../../../services/json-feed.js";
 
 import "../../components/tag-link.js";
 import "./components/tag-album.js";
-import { Metadata } from "../../../services/tags.js";
+import { Metadata } from "../../../models/tags.js";
 
 export class TagsPage extends LitElem {
   createRenderRoot() {
@@ -94,19 +94,19 @@ export class TagsPage extends LitElem {
 
       <section class="album-container">
 
-      ${md.metadata.Mammal.children.map(this.renderTagCover.bind(this))}
+      ${md.metadata.Mammal.children.sort().map(this.renderTagCover.bind(this))}
 
       </section>
 
       <h3>Birds</h3>
 
       <section class="album-container">
-        ${md.metadata.Bird.children.map(this.renderTagCover.bind(this))}
+        ${md.metadata.Bird.children.sort().map(this.renderTagCover.bind(this))}
       </section>
 
       <h2>Planes</h2>
       <section class="album-container">
-        ${md.metadata.Plane.children.map(this.renderTagCover.bind(this))}
+        ${md.metadata.Plane.children.sort().map(this.renderTagCover.bind(this))}
       </section>
 
       <br>
