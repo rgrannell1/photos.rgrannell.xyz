@@ -50,9 +50,11 @@
 }
 
 button {
+  /*
   all: unset;
   color: var(--link-color);
   cursor: pointer;
+  */
 }
 
 /*
