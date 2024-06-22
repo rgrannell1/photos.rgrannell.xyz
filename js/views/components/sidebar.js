@@ -24,28 +24,28 @@ export class Sidebar extends LitElem {
         page: "albums",
       })
     }
-            id="albums-sidebar-link" class="sidebar-item">🖼️ Albums</li>
+            id="albums-sidebar-link" class="sidebar-item">ALBUMS</li>
           <li
             @click=${
       this.broadcast("navigate-page", {
         page: "tags",
       })
     }
-            id="tags-sidebar-link" class="sidebar-item">🏷️ Tags</li>
+            id="tags-sidebar-link" class="sidebar-item">TAGS</li>
           <li
             @click=${
       this.broadcast("navigate-page", {
         page: "locations",
       })
     }
-            id="locations-sidebar-link" class="sidebar-item">🌍 Locations</li>
+            id="locations-sidebar-link" class="sidebar-item">LOCATIONS</li>
           <li
             @click=${
       this.broadcast("navigate-page", {
         page: "stats",
       })
     }
-            id="stats-sidebar-link" class="sidebar-item">🧮 Stats</li>
+            id="stats-sidebar-link" class="sidebar-item">STATS</li>
       </nav>
     </aside>
     `;
