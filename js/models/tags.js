@@ -33,7 +33,7 @@ export class Metadata {
       return;
     }
 
-    console.error('fetching metadata')
+    console.info('fetching metadata')
 
     this.metadata = await (await fetch("/metadata.json")).json();
 

@@ -4,8 +4,9 @@ import "../../components/photo.js";
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
 import { JSONFeed } from "../../../services/json-feed.js";
+import { LitElem } from "../../../models/lit-element.js";
 
-export class TagPage extends LitElement {
+export class TagPage extends LitElem {
   static get properties() {
     return {
       tag: { type: String },

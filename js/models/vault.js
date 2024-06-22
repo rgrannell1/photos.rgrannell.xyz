@@ -18,7 +18,7 @@ export class Vault {
       return;
     }
 
-    console.error('fetching manifest and metadata')
+    console.info('fetching manifest and metadata')
 
     // let's just sync both in this case
     const [

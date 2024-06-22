@@ -248,10 +248,16 @@ export class PhotoApp extends LitElem {
       classes.push("sidebar-visible");
     }
 
+    const $html = document.documentElement;
     const topLevelClasses = ["photos-app"];
     if (this.darkMode) {
+
+      $html.classList.add("dark-mode");
       topLevelClasses.push("dark-mode");
+    } else {
+      $html.classList = [];
     }
+
 
     // events are mostly handled here
     return html`

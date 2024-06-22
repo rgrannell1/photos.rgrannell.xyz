@@ -110,7 +110,7 @@ h3, h4, h5, h6 {
 }
 
 html, body {
-  height: auto;
+  height: 100%;
   background-color: var(--background-color);
 }
 
@@ -120,7 +120,6 @@ html, body {
   word-spacing: 0.27ex;
   background-color: var(--background-color);
   padding-bottom: 100px;
-  height: 100%;
 }
 
 /*
