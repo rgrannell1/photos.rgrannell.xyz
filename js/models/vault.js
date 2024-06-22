@@ -1,8 +1,26 @@
+
+import { MANIFEST_SYMBOL, METADATA_SYMBOL } from "../constants.js";
+
 export class Vault {
   _data;
   _metadata;
 
   async init() {
+    // retrieve from the global scope if it exists
+    if (window[MANIFEST_SYMBOL]) {
+      this._data = window[MANIFEST_SYMBOL];
+    }
+    if (window[METADATA_SYMBOL]) {
+      this._metadata = window[METADATA_SYMBOL];
+    }
+
+    if (this._data && this._metadata) {
+      return;
+    }
+
+    console.error('fetching manifest and metadata')
+
+    // let's just sync both in this case
     const [
       data,
       metadata,
@@ -10,6 +28,9 @@ export class Vault {
       (await fetch("/manifest.json")).json(),
       (await fetch("/metadata.json")).json(),
     ]);
+
+    window[MANIFEST_SYMBOL] = data;
+    window[METADATA_SYMBOL] = metadata;
 
     this._data = data;
     this._metadata = metadata;

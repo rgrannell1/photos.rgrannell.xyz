@@ -1,3 +1,6 @@
+
+import { METADATA_SYMBOL } from "../constants.js";
+
 function isChild(metadata, parent, child) {
   if (!metadata.hasOwnProperty(parent)) {
     return false;
@@ -24,7 +27,18 @@ export class Metadata {
   }
 
   async init() {
+    if (window[METADATA_SYMBOL]) {
+      this.metadata = window[METADATA_SYMBOL];
+      this.loaded = true;
+      return;
+    }
+
+    console.error('fetching metadata')
+
     this.metadata = await (await fetch("/metadata.json")).json();
+
+    window[METADATA_SYMBOL] = this.metadata;
+
     this.loaded = true;
   }
 
