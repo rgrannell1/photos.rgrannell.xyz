@@ -412,6 +412,10 @@ photo-app {
 * ++++ ++++ ++++ ~~~~ Metadata Page ~~~~ ++++ ++++ ++++
 */
 
+.photo-share-button {
+  text-decoration: underline;
+}
+
 .photo-tag-list {
   padding-top: 8px;
   margin-left: 20px;

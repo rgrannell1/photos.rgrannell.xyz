@@ -64,7 +64,7 @@ export class MetadataPage extends LitElem {
     }
 
     return html`
-    <button @click=${this.shareImage.bind(this, url)}>[share]</button>
+    <button class="photo-share-button" @click=${this.shareImage.bind(this, url)}>[share]</button>
     `;
   }
 
