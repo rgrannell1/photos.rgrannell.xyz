@@ -213,12 +213,16 @@ photo-app {
   }
 }
 
+/* the icon */
+.photo-icon {
+  fill: white;
+}
+
 .photo-metadata-popover {
   position: absolute;
-  padding: 0px 10px;
+  padding: 6px 6px;
   top: 0%;
   right: 0%;
-  color: white;
   z-index: 1;
   text-align: center;
   vertical-align: middle;
