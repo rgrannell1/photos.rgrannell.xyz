@@ -93,37 +93,40 @@ export class MetadataPage extends LitElem {
       ${photo.description ? html`<br/><p>${photo.description}</p>` : html``}
 
       <h3>Tags</h3>
-      <ul class="metadata-list">${tags}</ul>
+      <ul class="photo-tag-list">${tags}</ul>
 
       <h3>Exif</h3>
 
-      <dialog open>
-
-      </dialog>
-
-      <ul class="metadata-list">
-        <li>
-          <p title="The variance of the image's laplacian; one measure of blur. Bigger is sharper.">Blur: ${photo.exif.blur}</p>
-        </li>
-        <li>
-          <p>Date-Time: ${photo.exif.date_time}</p>
-        </li>
-        <li>
-          <p>Camera Model: ${photo.exif.model}</p>
-        </li>
-        <li>
-          <p>Aparture: ${photo.exif.f_number}</p>
-        </li>
-        <li>
-          <p>Focal Length: ${photo.exif.focal_length}mm equiv.</p>
-        </li>
-        <li>
-          <p>Dimensions: ${photo.exif.width} x  ${photo.exif.height}</p>
-        </li>
-        <li>
-          <p>ISO: ${photo.exif.iso}</p>
-        </li>
-      </ul>
+    <table class="metadata-table">
+      <tr>
+        <th class="exif-heading" title="The variance of the image's laplacian; one measure of blur. Bigger is sharper.">Blur</th>
+        <td>${photo.exif.blur}</td>
+      </tr>
+      <tr>
+        <th class="exif-heading">Date-Time</th>
+        <td>${photo.exif.date_time}</td>
+      </tr>
+      <tr>
+        <th class="exif-heading">Camera Model</th>
+        <td>${photo.exif.model}</td>
+      </tr>
+      <tr>
+        <th class="exif-heading">Aperture</th>
+        <td>${photo.exif.f_number}</td>
+      </tr>
+      <tr>
+        <th class="exif-heading">Focal Length</th>
+        <td>${photo.exif.focal_length}mm equiv.</td>
+      </tr>
+      <tr>
+        <th class="exif-heading">Dimensions</th>
+        <td>${photo.exif.width} x ${photo.exif.height}</td>
+      </tr>
+      <tr>
+        <th class="exif-heading">ISO</th>
+        <td>${photo.exif.iso}</td>
+      </tr>
+    </table>
 
     </section>
     `;
