@@ -1,4 +1,8 @@
 export class Photos {
+  /*
+   * Determine whether a photo should be eagerly or lazily loaded
+   * depending on page position
+   */
   static loadingMode(idx) {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
