@@ -68,6 +68,11 @@ export class TagsPage extends LitElem {
     `;
   }
 
+  tagsFamily(md, name) {
+    const children = new Set(md.metadata[name].children);
+    return Array.from(children).sort()
+  }
+
   async renderPage() {
     const md = new Metadata();
     await md.init();
@@ -89,20 +94,18 @@ export class TagsPage extends LitElem {
       <h3>Mammals</h3>
 
       <section class="album-container">
-
-      ${md.metadata.Mammal.children.sort().map(this.renderTagCover.bind(this))}
-
+        ${this.tagsFamily(md, 'Mammal').sort().map(this.renderTagCover.bind(this))}
       </section>
 
       <h3>Birds</h3>
 
       <section class="album-container">
-        ${md.metadata.Bird.children.sort().map(this.renderTagCover.bind(this))}
+        ${this.tagsFamily(md, 'Bird').sort().map(this.renderTagCover.bind(this))}
       </section>
 
       <h2>Planes</h2>
       <section class="album-container">
-        ${md.metadata.Plane.children.sort().map(this.renderTagCover.bind(this))}
+        ${this.tagsFamily(md, 'Plane').sort().map(this.renderTagCover.bind(this))}
       </section>
 
       <br>
