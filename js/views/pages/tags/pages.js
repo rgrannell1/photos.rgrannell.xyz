@@ -7,10 +7,6 @@ import "./components/tag-album.js";
 import { Metadata } from "../../../models/tags.js";
 
 export class TagsPage extends LitElem {
-  createRenderRoot() {
-    return this;
-  }
-
   static get properties() {
     return {
       vault: { type: Object },

@@ -3,10 +3,6 @@ import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
 
 export class StatsPage extends LitElem {
-  createRenderRoot() {
-    return this;
-  }
-
   connectedCallback() {
     super.connectedCallback();
 

@@ -14,10 +14,6 @@ export class TagPage extends LitElem {
     };
   }
 
-  createRenderRoot() {
-    return this;
-  }
-
   connectedCallback() {
     super.connectedCallback();
 

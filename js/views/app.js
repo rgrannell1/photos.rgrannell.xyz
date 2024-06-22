@@ -35,10 +35,6 @@ export class PhotoApp extends LitElem {
     };
   }
 
-  createRenderRoot() {
-    return this;
-  }
-
   connectedCallback() {
     super.connectedCallback();
 

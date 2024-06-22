@@ -49,12 +49,6 @@
   font-display: swap
 }
 
-button {
-  all: unset;
-  color: var(--link-color);
-  cursor: pointer;
-}
-
 /*
  * ++++ ++++ ++++ ~~~~ Basic Styles ~~~~ ++++ ++++ ++++
  */
@@ -71,11 +65,6 @@ section {
 
 a {
   color: var(--link-color);
-}
-
-.thumbnail-image  {
-  height: auto;
-  background-color: var(--image-placeholder-background-color);
 }
 
 main a {
@@ -114,6 +103,12 @@ html, body {
   background-color: var(--background-color);
 }
 
+button {
+  all: unset;
+  color: var(--link-color);
+  cursor: pointer;
+}
+
 .photos-app {
   font-size: 1.2em;
   color: var(--font-colour);
@@ -126,16 +121,16 @@ html, body {
  * ++++ ++++ ++++ ~~~~ Navbar ~~~~ ++++ ++++ ++++
  */
 
-.dark-light-button-toggle {
-  cursor: pointer;
-}
-
 .burger {
   padding: 10px;
 }
 
 .brand {
   padding: 0px 20px;
+}
+
+.dark-light-button-toggle {
+  cursor: pointer;
 }
 
 .header li a, .header li .dark-light-button-toggle {
@@ -151,17 +146,6 @@ html, body {
   font-size: 0.75em;
   color: var(--brand-color);
   cursor: pointer;
-}
-
-@media (hover: hover) {
-  .burger:hover {
-    background-color: var(--hover-background-color);
-    cursor: pointer;
-  }
-
-  .dark-light-button-toggle:hover {
-    background-color: var(--hover-background-color);
-  }
 }
 
 .header {
@@ -181,15 +165,27 @@ html, body {
     list-style-type: none;
     float: left;
   }
- }
+}
 
-/* wrap albums in a flexbox */
+@media (hover: hover) {
+  .burger:hover {
+    background-color: var(--hover-background-color);
+    cursor: pointer;
+  }
 
-/* resize images for smaller */
+  .dark-light-button-toggle:hover {
+    background-color: var(--hover-background-color);
+  }
+}
 
 photo-app {
   width: max(180px, min(60vw, var(--photo-width)));
   max-width: max(180px, 60vw);
+}
+
+.thumbnail-image  {
+  height: auto;
+  background-color: var(--image-placeholder-background-color);
 }
 
 .album-container, .photo-container {
@@ -278,12 +274,9 @@ photo-app {
   margin-bottom: 25px;
 }
 
-
-
 /*
  * ++++ ++++ ++++ ~~~~ Page Grid Layout ~~~~ ++++ ++++ ++++
  */
-
 
 /* Small Devices */
 @media (max-width: 500px) {
@@ -352,7 +345,6 @@ photo-app {
  * each other
  */
 @media (min-width: 501px) {
-
   .app-container {
     display: grid;
     grid-template-columns: 200px 1fr 10px;
@@ -369,33 +361,9 @@ photo-app {
 
 /* Big Devices */
 @media (min-width: 1301px) {
-
-  .app-container {
-    display: grid;
-    grid-template-columns: 200px 1fr 10px;
-  }
-
-  .burger {
-    display: none;
-  }
-
   locations-page {
     margin-right: 200px;
   }
-}
-
-#map {
-  height: 1000px;
-}
-
-.photo-page {
-  grid-row: 1;
-  grid-column: 2;
-}
-
-.leaflet-marker-icon {
-  background-color: transparent;
-  border: none !important;
 }
 
 /*
@@ -413,14 +381,36 @@ photo-app {
   padding: 20px;
 }
 
-.dark-light-button-toggle {
-  cursor: pointer;
-}
-
 .photo-sidebar {
   grid-row: 1;
   grid-column: 1;
 }
+
+.dark-light-button-toggle {
+  cursor: pointer;
+}
+
+.photo-page {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+/*
+* ++++ ++++ ++++ ~~~~ Map Page ~~~~ ++++ ++++ ++++
+*/
+
+#map {
+  height: 1000px;
+}
+
+.leaflet-marker-icon {
+  background-color: transparent;
+  border: none !important;
+}
+
+/*
+* ++++ ++++ ++++ ~~~~ Metadata Page ~~~~ ++++ ++++ ++++
+*/
 
 .photo-tag-list {
   padding-top: 8px;

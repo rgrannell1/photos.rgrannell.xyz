@@ -3,3 +3,5 @@ bs/
 .netlify/
 tests/
 README.md
+package.json
+node_modules/
