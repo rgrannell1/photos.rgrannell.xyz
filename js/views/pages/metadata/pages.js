@@ -102,7 +102,7 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Focal Length</th>
-        <td>ƒ/${photo.focal_length}mm equiv.</td>
+        <td>${photo.focal_length}mm equiv.</td>
       </tr>
       <tr>
         <th class="exif-heading">Shutter Speed</th>
@@ -110,7 +110,7 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Aperture</th>
-        <td>${photo.f_number}</td>
+        <td>ƒ/${photo.f_number}</td>
       </tr>
       <tr>
         <th class="exif-heading">ISO</th>
