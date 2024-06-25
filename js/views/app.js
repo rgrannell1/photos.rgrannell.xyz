@@ -1,6 +1,6 @@
 import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.js";
-import { Vault } from "../models/vault.js";
+import { AlbumsArtifact, ImagesArtifact, MetadataArtifact } from "../models/vault.js";
 
 import { PageLocation } from "../services/location.js";
 
@@ -9,14 +9,28 @@ import "./components/header.js";
 
 import "./pages/albums/pages.js";
 import "./pages/locations/pages.js";
-import "./pages/photos/pages.js";
+import "./pages/album/pages.js";
 import "./pages/stats/pages.js";
 import "./pages/tag/pages.js";
 import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
 
-const vault = new Vault();
-await vault.init();
+const albums = new AlbumsArtifact();
+
+const images = new ImagesArtifact();
+
+// do not await this, as we don't want to block here for loading.
+// locking should be implemented to prevent double loading TODO
+// needed for some subpages though
+
+
+const metadata = new MetadataArtifact();
+
+await Promise.all([
+  albums.init(),
+  images.init(),
+  metadata.init()
+]);
 
 export class PhotoApp extends LitElem {
   static get properties() {
@@ -24,7 +38,7 @@ export class PhotoApp extends LitElem {
       title: { type: String },
       page: { type: String },
       sidebarVisible: { type: Boolean },
-      id: { type: Number },
+      id: { type: String },
       tags: { type: Array },
       imageUrl: { type: String },
       thumbnailUrl: { type: String },
@@ -59,11 +73,11 @@ export class PhotoApp extends LitElem {
     const location = PageLocation.getUrl();
 
     if (location?.type === "album") {
-      const albums = vault.albums();
+      // TODO const albums = vault.albums();
 
       this.page = "photos";
       this.id = location.id;
-      this.title = albums[location.id]?.name;
+      // TODO this.title = albums[location.id]?.name;
     } else if (location?.type === "photo") {
       this.page = "photos";
       this.id = location.id;
@@ -132,6 +146,7 @@ export class PhotoApp extends LitElem {
       tags,
     } = event.detail;
 
+
     this.page = "metadata";
     this.id = id;
     this.imageUrl = imageUrl;
@@ -180,53 +195,64 @@ export class PhotoApp extends LitElem {
 
     if (!this.page || this.page === "albums") {
       return html`
-      <photo-album-page .vault="${vault}" class="${
+      <photo-album-page .albums="${albums}" class="${
         classes.join(" ")
       }"></photo-album-page>
       `;
     }
 
     if (this.page === "photos") {
+      const album = albums.albums().find((album) => {
+        return album.id === this.id;
+      });
+
       return html`
-      <photos-page .vault="${vault}" title=${this.title} id=${this.id} class="${
-        classes.join(" ")
-      }"></photos-page>
+      <album-page
+        title=${album.album_name}
+        id=${this.id}
+        minDate=${album.min_date}
+        maxDate=${album.max_date}
+        imageCount=${album.image_count}
+        description=${album.description}
+        class="${classes.join(" ")}"></album-page>
       `;
     }
 
     if (this.page === "tag-album") {
       return html`
-      <tag-page .vault="${vault}" tag=${this.tag} class="${
-        classes.join(" ")
-      }"></tag-page>
+      <tag-page tag=${this.tag} .images=${images} class="${classes.join(" ")}"></tag-page>
       `;
     }
 
     if (this.page === "tags") {
       return html`
-      <tags-page .vault="${vault}" class="${classes.join(" ")}"></tags-page>
+      <tags-page class="${classes.join(' ')}" .metadata=${metadata} .images=${images}></tags-page>
       `;
     }
 
     if (this.page === "locations") {
       return html`
-      <locations-page .vault="${vault}" class="${
-        classes.join(" ")
-      }"></locations-page>
+      <locations-page .albums="${albums}" class="${classes.join(" ")}"></locations-page>
       `;
     }
 
     if (this.page === "stats") {
       return html`
-      <stats-page .vault="${vault}" class="${classes.join(" ")}"></stats-page>
+      <stats-page class="${classes.join(" ")}"></stats-page>
       `;
     }
 
     if (this.page === "metadata") {
+      const photo = images.images().find(image => {
+        return image.id === this.id;
+      });
+
+      if (!photo) {
+        console.error(`failed to find photo with id ${this.id}`);
+      }
+
       return html`
-      <metadata-page .vault="${vault}" id=${this.id} class="${
-        classes.join(" ")
-      }"></metadata-page>
+      <metadata-page .image=${photo} id=${this.id} class="${classes.join(" ")}"></metadata-page>
       `;
     }
   }
@@ -247,13 +273,11 @@ export class PhotoApp extends LitElem {
     const $html = document.documentElement;
     const topLevelClasses = ["photos-app"];
     if (this.darkMode) {
-
       $html.classList.add("dark-mode");
       topLevelClasses.push("dark-mode");
     } else {
       $html.classList = [];
     }
-
 
     // events are mostly handled here
     return html`

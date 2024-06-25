@@ -1,4 +1,3 @@
-
 import { METADATA_SYMBOL } from "../constants.js";
 
 function isChild(metadata, parent, child) {
@@ -33,7 +32,7 @@ export class Metadata {
       return;
     }
 
-    console.info('fetching metadata')
+    console.info("fetching metadata");
 
     this.metadata = await (await fetch("/metadata.json")).json();
 

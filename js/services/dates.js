@@ -15,12 +15,13 @@ export class Dates {
         continue;
       }
 
-      if (image.dateTime < minimum) {
-        minimum = image.dateTime;
+      const parsedDate = Dates.parse(image.dateTime);
+      if (parsedDate < minimum) {
+        minimum = parsedDate;
       }
 
-      if (image.dateTime > maximum) {
-        maximum = image.dateTime;
+      if (parsedDate > maximum) {
+        maximum = parsedDate;
       }
     }
 

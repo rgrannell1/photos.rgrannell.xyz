@@ -13,8 +13,6 @@ export class StatsPage extends LitElem {
     return html`
     <section>
       <h1>Statistics</h1>
-
-
     </section>
     `;
   }

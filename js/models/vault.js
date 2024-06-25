@@ -1,139 +1,121 @@
+import {
+  ALBUMS_SYMBOL,
+  IMAGES_SYMBOL,
+} from "../constants.js";
 
-import { MANIFEST_SYMBOL, METADATA_SYMBOL } from "../constants.js";
-
-export class Vault {
+export class ImagesArtifact {
   _data;
-  _metadata;
+
+  processImages(images) {
+    const headers = images[0];
+
+    const output = [];
+
+    for (const image of images.slice(1)) {
+      const data = {};
+
+      for (let idx = 0; idx < headers.length; idx++) {
+        data[headers[idx]] = image[idx];
+      }
+
+      output.push(data);
+    }
+
+    return output;
+  }
 
   async init() {
-    // retrieve from the global scope if it exists
-    if (window[MANIFEST_SYMBOL]) {
-      this._data = window[MANIFEST_SYMBOL];
-    }
-    if (window[METADATA_SYMBOL]) {
-      this._metadata = window[METADATA_SYMBOL];
+    if (window[IMAGES_SYMBOL]) {
+      this._data = window[IMAGES_SYMBOL];
     }
 
-    if (this._data && this._metadata) {
+    if (this._data || this.loading) {
       return;
     }
 
-    console.info('fetching manifest and metadata')
+    console.log("fetching images");
 
-    // let's just sync both in this case
-    const [
-      data,
-      metadata,
-    ] = await Promise.all([
-      (await fetch("/manifest.json")).json(),
-      (await fetch("/metadata.json")).json(),
-    ]);
+    const images = await (await fetch("/manifest/images.json")).json();
 
-    window[MANIFEST_SYMBOL] = data;
-    window[METADATA_SYMBOL] = metadata;
+    const processed = this.processImages(images);
+    window[IMAGES_SYMBOL] = processed;
 
-    this._data = data;
-    this._metadata = metadata;
+    this._data = processed;
   }
 
-  /*
-   * Returns all albums and their images
-   */
-  albums() {
-    const { domain, folders } = this._data;
-
-    return Object.fromEntries(
-      Object.entries(folders).map(([id, album]) => {
-        let geolocation = null;
-        try {
-          geolocation = album.geolocation
-            ? JSON.parse(atob(album.geolocation))
-            : null;
-        } catch (err) {
-          console.error(
-            "failed to parse geolocation",
-            album,
-            album.geolocation,
-          );
-          console.error(err);
-        }
-
-        const updatedImages = album.images.map((image) => {
-          return {
-            ...image,
-            thumbnail_url: `${domain}${image.thumbnail_url}`,
-            image_url: `${domain}${image.image_url}`,
-          };
-        });
-
-        const cover = album.images.find((image) => {
-          return image.fpath === album.cover_image;
-        });
-
-        return [id, {
-          ...album,
-          geolocation,
-          cover_thumbnail: `${domain}${cover?.thumbnail_url}`,
-          images: updatedImages,
-        }];
-      }),
-    );
+  images() {
+    return this._data.map((image) => {
+      return {
+        ...image,
+        tags: image.tags.split(",")
+          .filter((tag) => tag != "Published")
+          .map(tag => tag.trim()),
+      };
+    });
   }
+}
 
-  /*
-   * Returns tags and their counts
-   */
-  tags() {
-    const tags = {};
-    const albums = this.albums();
+export class AlbumsArtifact {
+  _data;
 
-    for (const album of Object.values(albums)) {
-      for (const image of album.images) {
-        for (const tag of image.tags) {
-          if (!tags[tag]) {
-            tags[tag] = 0;
-          }
+  processAlbums(albums) {
+    const headers = albums[0];
 
-          tags[tag]++;
-        }
+    const output = [];
+
+    for (const album of albums.slice(1)) {
+      const data = {};
+
+      for (let idx = 0; idx < headers.length; idx++) {
+        data[headers[idx]] = album[idx];
       }
+
+      output.push(data);
     }
 
-    return Object.entries(tags).toSorted((tag0, tag1) => {
-      return tag0[0].localeCompare(tag1[0]);
-    });
+    return output;
   }
 
-  /*
-   * Get photographs by tag, and tag metadata
-   */
-  tag(tag) {
-    const albums = this.albums();
+  async init() {
+    if (window[ALBUMS_SYMBOL]) {
+      this._data = window[ALBUMS_SYMBOL];
+    }
 
-    const taggedImages = Object.values(albums).flatMap((album) => {
-      return album.images.filter((image) => {
-        return image.tags.includes(tag);
-      });
-    });
+    if (this._data) {
+      return;
+    }
 
-    return {
-      tag,
-      images: taggedImages,
-    };
+    console.log("fetching albums");
+
+    const albums = await (await fetch("/manifest/albums.json")).json();
+
+    const processed = this.processAlbums(albums);
+    window[ALBUMS_SYMBOL] = processed;
+
+    this._data = processed;
   }
 
-  /*
-   * Get tag cover
-   */
-  tagCover(tag) {
-    const { images } = this.tag(tag);
+  albums() {
+    return this._data;
+  }
+}
 
-    return images[0];
+export class MetadataArtifact {
+  _data;
+
+  async init() {
+    if (this._data) {
+      return;
+    }
+
+    console.log("fetching metadata");
+
+    const metadata = await (await fetch("/metadata.json")).json();
+
+    this._data = metadata;
   }
 
-  tagLinks(tag) {
-    const metadata = this._metadata;
-
-    return metadata[tag]?.links;
+  metadata() {
+    return this._data;
   }
 }

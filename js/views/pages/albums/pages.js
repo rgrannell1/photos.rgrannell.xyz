@@ -7,7 +7,7 @@ import "./components/photo-album.js";
 export class AlbumsPage extends LitElem {
   static get properties() {
     return {
-      vault: { type: Object },
+      albums: { type: Object },
     };
   }
   connectedCallback() {
@@ -15,26 +15,21 @@ export class AlbumsPage extends LitElem {
 
     JSONFeed.setIndex();
   }
-  albums() {
-    return Object.values(this.vault.albums()).map((album) => {
-      const { images } = album;
-      if (!images) {
+  getAlbums() {
+    return Object.values(this.albums.albums()).map((album) => {
+      const { image_count } = album;
+      if (!image_count) {
         return;
       }
 
-      const coverImage = images.find((image) => {
-        return image.fpath === album.cover_image;
-      });
-
-      const url = coverImage?.thumbnail_url ?? images[0]?.thumbnail_url;
-
       return {
-        title: album.name,
+        title: album.album_name,
         minDate: album.min_date,
         maxDate: album.max_date,
-        url,
+        url: album.thumbnail_url,
+        thumbnailDataUrl: album.thumbnail_mosaic_url,
         id: album.id,
-        count: images.length,
+        count: image_count,
       };
     });
   }
@@ -42,7 +37,7 @@ export class AlbumsPage extends LitElem {
   imageCount() {
     let count = 0;
 
-    for (const album of this.albums()) {
+    for (const album of this.getAlbums()) {
       count += album.count;
     }
 
@@ -69,7 +64,7 @@ export class AlbumsPage extends LitElem {
 
     <section class="album-container">
       ${
-      this.albums()
+      this.getAlbums()
         .sort((album0, album1) => {
           return album1.maxDate - album0.maxDate;
         })
@@ -78,7 +73,9 @@ export class AlbumsPage extends LitElem {
 
           return html`
             <photo-album
-              title="${album.title}" url="${album.url}"
+              title="${album.title}"
+              url="${album.url}"
+              thumbnailDataUrl="${album.thumbnailDataUrl}"
               id="${album.id}" count="${album.count}"
               minDate="${album.minDate}"
               maxDate="${album.maxDate}"

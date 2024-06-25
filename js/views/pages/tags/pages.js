@@ -9,8 +9,8 @@ import { Metadata } from "../../../models/tags.js";
 export class TagsPage extends LitElem {
   static get properties() {
     return {
-      vault: { type: Object },
-      metadata: { state: true },
+      images: { type: Object },
+      metadata: { type: Object },
     };
   }
 
@@ -23,17 +23,13 @@ export class TagsPage extends LitElem {
   tags() {
     const tags = {};
 
-    const albums = this.vault.albums();
-
-    for (const album of Object.values(albums)) {
-      for (const image of album.images) {
-        for (const tag of image.tags) {
-          if (!tags[tag]) {
-            tags[tag] = 0;
-          }
-
-          tags[tag]++;
+    for (const image of this.images.images()) {
+      for (const tag of image.tags) {
+        if (!tags[tag]) {
+          tags[tag] = 0;
         }
+
+        tags[tag]++;
       }
     }
 
@@ -48,9 +44,21 @@ export class TagsPage extends LitElem {
     </li>`;
   }
 
+  tagCover(tag) {
+    const tagged = this.images.images().filter(image => {
+      return image.tags.includes(tag);
+    });
+
+    return tagged[0];
+  }
+
+  tagLinks(tag) {
+    return this.metadata[tag]?.links;
+  }
+
   renderTagCover(tag) {
-    const image = this.vault.tagCover(tag);
-    const links = this.vault.tagLinks(tag);
+    const image = this.tagCover(tag);
+    const links = this.tagLinks(tag);
 
     if (!image) {
       console.error(`No cover image for tag: ${tag}`);
@@ -70,7 +78,7 @@ export class TagsPage extends LitElem {
 
   tagsFamily(md, name) {
     const children = new Set(md.metadata[name].children);
-    return Array.from(children).sort()
+    return Array.from(children).sort();
   }
 
   async renderPage() {
@@ -94,18 +102,24 @@ export class TagsPage extends LitElem {
       <h3>Mammals</h3>
 
       <section class="album-container">
-        ${this.tagsFamily(md, 'Mammal').sort().map(this.renderTagCover.bind(this))}
+        ${
+      this.tagsFamily(md, "Mammal").sort().map(this.renderTagCover.bind(this))
+    }
       </section>
 
       <h3>Birds</h3>
 
       <section class="album-container">
-        ${this.tagsFamily(md, 'Bird').sort().map(this.renderTagCover.bind(this))}
+        ${
+      this.tagsFamily(md, "Bird").sort().map(this.renderTagCover.bind(this))
+    }
       </section>
 
       <h2>Planes</h2>
       <section class="album-container">
-        ${this.tagsFamily(md, 'Plane').sort().map(this.renderTagCover.bind(this))}
+        ${
+      this.tagsFamily(md, "Plane").sort().map(this.renderTagCover.bind(this))
+    }
       </section>
 
       <br>

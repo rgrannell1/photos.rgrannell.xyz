@@ -7,8 +7,8 @@ import "../../components/tag-link.js";
 export class MetadataPage extends LitElem {
   static get properties() {
     return {
-      id: { type: Number },
-      vault: { type: Object },
+      id: { type: String },
+      image: { type: Object }
     };
   }
 
@@ -16,19 +16,6 @@ export class MetadataPage extends LitElem {
     super.connectedCallback();
 
     JSONFeed.setIndex();
-  }
-
-  photo() {
-    if (!this.id) {
-      throw new Error("metadata: requires id");
-    }
-    for (const album of Object.values(this.vault.albums())) {
-      for (const image of album.images) {
-        if (parseInt(image.id) === this.id) {
-          return image;
-        }
-      }
-    }
   }
 
   /*
@@ -64,17 +51,16 @@ export class MetadataPage extends LitElem {
     }
 
     return html`
-    <button class="photo-share-button" @click=${this.shareImage.bind(this, url)}>[share]</button>
+    <button class="photo-share-button" @click=${
+      this.shareImage.bind(this, url)
+    }>[share]</button>
     `;
   }
 
   render() {
-    const photo = this.photo();
+    const photo = this.image;
 
     const tags = (photo.tags.sort() ?? [])
-      .filter((tagName) => {
-        return tagName !== "Published";
-      })
       .map((tagName) => {
         return html`<li><tag-link tagName="${tagName}"></tag-link></li>`;
       });
@@ -100,31 +86,31 @@ export class MetadataPage extends LitElem {
     <table class="metadata-table">
       <tr>
         <th class="exif-heading" title="The variance of the image's laplacian; one measure of blur. Bigger is sharper.">Blur</th>
-        <td>${photo.exif.blur}</td>
+        <td>${photo.blur}</td>
       </tr>
       <tr>
         <th class="exif-heading">Date-Time</th>
-        <td>${photo.exif.date_time}</td>
+        <td>${photo.date_time}</td>
       </tr>
       <tr>
         <th class="exif-heading">Camera Model</th>
-        <td>${photo.exif.model}</td>
+        <td>${photo.model}</td>
       </tr>
       <tr>
         <th class="exif-heading">Aperture</th>
-        <td>${photo.exif.f_number}</td>
+        <td>${photo.f_number}</td>
       </tr>
       <tr>
         <th class="exif-heading">Focal Length</th>
-        <td>${photo.exif.focal_length}mm equiv.</td>
+        <td>${photo.focal_length}mm equiv.</td>
       </tr>
       <tr>
         <th class="exif-heading">Dimensions</th>
-        <td>${photo.exif.width} x ${photo.exif.height}</td>
+        <td>${photo.width} x ${photo.height}</td>
       </tr>
       <tr>
         <th class="exif-heading">ISO</th>
-        <td>${photo.exif.iso}</td>
+        <td>${photo.iso}</td>
       </tr>
     </table>
 

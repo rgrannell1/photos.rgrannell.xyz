@@ -1,18 +1,6 @@
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.js";
-
-export class DarkModeButton extends LitElem {
-  static get properties() {
-    return {
-      darkMode: { type: Boolean },
-    };
-  }
-
-  render() {
-  }
-}
-
-customElements.define("dark-light-button", DarkModeButton);
+import { BRAND_TEXT } from "../../constants.js";
 
 export class PhotoHeader extends LitElem {
   static get properties() {
@@ -32,14 +20,15 @@ export class PhotoHeader extends LitElem {
 
   render() {
     const text = this.darkMode ? "☀️" : "🌙";
+    const brandText = BRAND_TEXT;
 
     return html`
-    <nav class="header">
+    <nav class="header" role="navigation">
       <ul>
-        <li @click=${
-      this.broadcast("click-burger-menu")
-    }><a><span class="burger">Ξ</span></a></li>
-        <li><a href="/"><span class="brand">photos.rgrannell.xyz</span></a></li>
+        <li @click=${this.broadcast("click-burger-menu")}>
+          <a><span class="burger">Ξ</span></a>
+        </li>
+        <li><a href="/"><span class="brand">${brandText}</span></a></li>
 
         <li class="rss-tag" style="float: right">
           <a id="rss" title="rss" href="${this.feedUrl()}">

@@ -1,18 +1,19 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
+import { LOCATION_LATITUDE, LOCATION_LONGITUDE, LOCATION_ZOOM } from "../../../constants.js";
 
 import {
   geoJSON,
   map as createMap,
-  marker,
   tileLayer,
 } from "../../../library/leaflet.js";
+// note: this is a large import
 
 export class LocationsPage extends LitElem {
   static get properties() {
     return {
-      vault: { type: Object },
+      albums: { type: Object },
     };
   }
 
@@ -26,12 +27,15 @@ export class LocationsPage extends LitElem {
     super.firstUpdated();
     const $map = this.querySelector("#map");
 
-    let map = createMap($map).setView([53.33306, -6.24889], 6);
+    let map = createMap($map).setView(
+      [LOCATION_LATITUDE, LOCATION_LONGITUDE],
+      LOCATION_ZOOM,
+    );
 
     let urlTemplate = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
     map.addLayer(tileLayer(urlTemplate, { minZoom: 4 }));
 
-    const albums = this.vault.albums();
+    const albums = this.albums.albums();
     for (const album of Object.values(albums)) {
       const geolocation = album.geolocation;
 
@@ -56,19 +60,6 @@ export class LocationsPage extends LitElem {
           },
         }).addTo(map);
       }
-
-      album.images.forEach((image) => {
-        if (!image.location || !image.location.address) {
-          return;
-        }
-
-        const mark = marker([image.location.latitude, image.location.longitude])
-          .addTo(map);
-        const popup = `
-        <img src="${image.thumbnail_url}" width="150px" />
-        `;
-        mark.bindPopup(popup);
-      });
     }
   }
 

@@ -10,7 +10,7 @@ export class TagPage extends LitElem {
   static get properties() {
     return {
       tag: { type: String },
-      vault: { type: Object },
+      images: { type: Object },
     };
   }
 
@@ -21,30 +21,9 @@ export class TagPage extends LitElem {
   }
 
   photos() {
-    const images = [];
-    const albums = this.vault.albums();
-
-    for (const album of Object.values(albums)) {
-      for (const image of album.images) {
-        if (!image.tags.includes(this.tag)) {
-          continue;
-        }
-
-        const parsedDate = image.exif.date_time
-          ? Dates.parse(image.exif.date_time)
-          : undefined;
-
-        images.push({
-          id: image.id,
-          dateTime: parsedDate,
-          thumbnailUrl: image.thumbnail_url,
-          imageUrl: image.image_url,
-          tags: image.tags,
-        });
-      }
-    }
-
-    return images;
+    return this.images.images().filter(image => {
+      return image.tags.includes(this.tag);
+    });
   }
 
   imageCount() {
@@ -68,14 +47,15 @@ export class TagPage extends LitElem {
 
       <section class="photo-container">
         ${
-      this.photos().map((photo, idx) => {
+      this.photos().map(photo => {
         return html`
         <app-photo
           id="${photo.id}"
           tags="${photo.tags}"
-          loading="${Photos.loadingMode(idx)}"
-          thumbnailUrl="${photo.thumbnailUrl}"
-          imageUrl="${photo.imageUrl}"></app-photo>`;
+          loading="${"lazy"}"
+          thumbnailUrl="${photo.thumbnail_url}"
+          mosaicUrl="${photo.thumbnail_data_url}"
+          imageUrl="${photo.image_url}"></app-photo>`;
       })
     }
       </section>

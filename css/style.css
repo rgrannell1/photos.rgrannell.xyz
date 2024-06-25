@@ -117,6 +117,11 @@ button {
   padding-bottom: 100px;
 }
 
+photo-app {
+  width: max(180px, min(60vw, var(--photo-width)));
+  max-width: max(180px, 60vw);
+}
+
 /*
  * ++++ ++++ ++++ ~~~~ Navbar ~~~~ ++++ ++++ ++++
  */
@@ -176,11 +181,6 @@ button {
   .dark-light-button-toggle:hover {
     background-color: var(--hover-background-color);
   }
-}
-
-photo-app {
-  width: max(180px, min(60vw, var(--photo-width)));
-  max-width: max(180px, 60vw);
 }
 
 .thumbnail-image  {
@@ -274,6 +274,10 @@ photo-app {
   margin-bottom: 25px;
 }
 
+.thumbnail-placeholder {
+  position: absolute;
+}
+
 /*
  * ++++ ++++ ++++ ~~~~ Page Grid Layout ~~~~ ++++ ++++ ++++
  */
@@ -288,7 +292,7 @@ photo-app {
     margin-left: 0 !important;
   }
 
-  .thumbnail-image  {
+  .thumbnail-image {
     width: max(180px, min(80vw, var(--photo-width)));
     max-width: max(180px, 80vw);
   }
