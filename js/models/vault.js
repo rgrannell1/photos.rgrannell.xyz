@@ -110,7 +110,7 @@ export class MetadataArtifact {
 
     console.log("fetching metadata");
 
-    const metadata = await (await fetch("/metadata.json")).json();
+    const metadata = await (await fetch("/manifest/metadata.json")).json();
 
     this._data = metadata;
   }

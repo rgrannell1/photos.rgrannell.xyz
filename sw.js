@@ -8,7 +8,13 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-32x32.png",
   "/favicon.ico",
   "/js/library/lit.js",
-  "/js/models/leaflet.js",
+  "/js/library/leaflet.js",
+];
+
+const UNCACHEABLE_RESOURCES = [
+  "/manifest/metdata.json",
+  "/manifest/images.json",
+  "/manifest/albums.json",
 ];
 
 self.addEventListener("install", function (event) {
@@ -23,9 +29,12 @@ self.addEventListener("install", function (event) {
   );
 });
 
+
 self.addEventListener("fetch", function (event) {
-  if (event.request.url.includes("manifest.json")) {
-    return;
+  for (const resource of UNCACHEABLE_RESOURCES) {
+    if (event.request.url.includes(resource)) {
+      return;
+    }
   }
 
   event.respondWith(
