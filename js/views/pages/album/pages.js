@@ -6,7 +6,7 @@ import { Photos } from "../../../services/photos.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
 
-import { ImagesArtifact } from "../../../models/vault.js";
+import { ImagesArtifact } from "../../../models/artifacts.js";
 
 const images = new ImagesArtifact();
 await images.init();

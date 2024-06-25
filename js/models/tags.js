@@ -32,9 +32,9 @@ export class Metadata {
       return;
     }
 
-    console.info("fetching metadata");
+    console.info("fetching metadata; this should be deprecated");
 
-    this.metadata = await (await fetch("/metadata.json")).json();
+    this.metadata = await (await fetch("/manifest/metadata.json")).json();
 
     window[METADATA_SYMBOL] = this.metadata;
 

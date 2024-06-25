@@ -1,6 +1,6 @@
 import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.js";
-import { AlbumsArtifact, ImagesArtifact, MetadataArtifact } from "../models/vault.js";
+import { AlbumsArtifact, ImagesArtifact, MetadataArtifact } from "../models/artifacts.js";
 
 import { PageLocation } from "../services/location.js";
 
@@ -16,14 +16,7 @@ import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
 
 const albums = new AlbumsArtifact();
-
 const images = new ImagesArtifact();
-
-// do not await this, as we don't want to block here for loading.
-// locking should be implemented to prevent double loading TODO
-// needed for some subpages though
-
-
 const metadata = new MetadataArtifact();
 
 await Promise.all([
