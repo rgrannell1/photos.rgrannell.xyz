@@ -95,6 +95,14 @@ export class MetadataPage extends LitElem {
       <tr>
         <th class="exif-heading">Camera Model</th>
         <td>${photo.model}</td>
+        </tr>
+      <tr>
+        <th class="exif-heading">Dimensions</th>
+        <td>${photo.width} x ${photo.height}</td>
+      </tr>
+      <tr>
+        <th class="exif-heading">Shutter Speed</th>
+        <td>1 / ${photo.shutter_speed ? Math.round(1 / photo.shutter_speed) : 'Unknown' }</td>
       </tr>
       <tr>
         <th class="exif-heading">Aperture</th>
@@ -103,10 +111,6 @@ export class MetadataPage extends LitElem {
       <tr>
         <th class="exif-heading">Focal Length</th>
         <td>${photo.focal_length}mm equiv.</td>
-      </tr>
-      <tr>
-        <th class="exif-heading">Dimensions</th>
-        <td>${photo.width} x ${photo.height}</td>
       </tr>
       <tr>
         <th class="exif-heading">ISO</th>
