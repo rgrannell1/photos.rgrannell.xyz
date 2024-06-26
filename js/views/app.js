@@ -19,11 +19,45 @@ const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
 const metadata = new MetadataArtifact();
 
-await Promise.all([
-  albums.init(),
-  images.init(),
-  metadata.init()
-]);
+class AppInitialiser {
+  static async init() {
+    const location = PageLocation.getUrl();
+
+    if (location?.type === "albums" || location?.type === "album") {
+      await albums.init();
+      images.init();
+      metadata.init();
+    } else if (location?.type === "photo" || location?.type === "photos") {
+      await images.init();
+      await albums.init();
+      metadata.init();
+    } else if (location?.type === "tag-album") {
+      await images.init();
+      albums.init();
+      metadata.init();
+    } else if (location?.type === "tags") {
+      await images.init();
+      albums.init();
+      metadata.init();
+    } else if (location?.type === "locations") {
+      await albums.init();
+      images.init();
+      metadata.init();
+    } else if (location?.type === "stats" || location?.type === "metadata") {
+      // load nothing for now
+    } else if (location?.type === "album") {
+      await images.init();
+      albums.init();
+      metadata.init();
+    } else {
+      await albums.init();
+      images.init();
+      metadata.init();
+    }
+  }
+}
+
+await AppInitialiser.init();
 
 export class PhotoApp extends LitElem {
   static get properties() {
@@ -66,11 +100,8 @@ export class PhotoApp extends LitElem {
     const location = PageLocation.getUrl();
 
     if (location?.type === "album") {
-      // TODO const albums = vault.albums();
-
       this.page = "photos";
       this.id = location.id;
-      // TODO this.title = albums[location.id]?.name;
     } else if (location?.type === "photo") {
       this.page = "photos";
       this.id = location.id;
@@ -202,7 +233,7 @@ export class PhotoApp extends LitElem {
 
       return html`
       <album-page
-
+        .images=${images}
         title=${album.album_name}
         id=${this.id}
         minDate=${album.min_date}

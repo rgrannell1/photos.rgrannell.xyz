@@ -6,11 +6,6 @@ import { Photos } from "../../../services/photos.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
 
-import { ImagesArtifact } from "../../../models/artifacts.js";
-
-const images = new ImagesArtifact();
-await images.init();
-
 export class AlbumPage extends LitElem {
   static get properties() {
     return {
@@ -20,6 +15,7 @@ export class AlbumPage extends LitElem {
       maxDate: { type: String },
       imageCount: { type: Number },
       description: { type: String },
+      images: { type: Object },
     };
   }
 
@@ -30,7 +26,7 @@ export class AlbumPage extends LitElem {
   }
 
   albumPhotos() {
-    return images.images().filter((image) => {
+    return this.images.images().filter((image) => {
       return image.album_id === this.id;
     });
   }
