@@ -9,7 +9,6 @@ export class TagAlbum extends LitElem {
       thumbnailDataUrl: { type: String },
       links: { type: Object },
       loading: { type: String },
-      cache: { type: Array },
     };
   }
 
@@ -24,30 +23,6 @@ export class TagAlbum extends LitElem {
 
   render() {
     const { tagName } = this;
-
-    if (this.cache.includes(this.url)) {
-        return html`<div class="photo-album">
-        <img
-          class="thumbnail-image" width="400" height="400" src="${this.url}" title="${tagName}" alt="${tagName} - Tag Photo Album Thumbnail"
-          @click=${this.broadcast("click-tag", { tagName })}
-          loading="${this.loading}"/>
-
-        <br>
-        <p>${tagName}</p>
-
-        <!-- Add links to wikipedia and birdwatch -->
-        ${
-        this?.links?.wikipedia
-          ? html`<a href="${this.links.wikipedia}">[wiki]</a>`
-          : ""
-      }
-        ${
-        this?.links?.birdwatch
-          ? html`<a href="${this.links.birdwatch}">[birdwatch]</a>`
-          : ""
-      }
-      </div>`;
-    }
 
     return html`<div class="photo-album">
       <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.thumbnailDataUrl}"/>

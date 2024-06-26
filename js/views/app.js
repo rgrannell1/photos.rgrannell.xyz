@@ -39,7 +39,6 @@ export class PhotoApp extends LitElem {
       params: { type: Object },
       query: { type: Object },
       darkMode: { type: Boolean },
-      cache: { type: Array },
     };
   }
 
@@ -48,8 +47,6 @@ export class PhotoApp extends LitElem {
 
     this.setStateFromUrl();
     this.requestUpdate();
-
-    this.cache = []
 
     window.addEventListener("popstate", this.handlePopState.bind(this));
   }
@@ -160,14 +157,6 @@ export class PhotoApp extends LitElem {
     this.requestUpdate();
   }
 
-  receivePhotoLoaded(event) {
-    const { url } = event.detail;
-
-    if (this.cache.includes(url)) {
-      return;
-    }
-    this.cache.push(url)
-  }
 
   receiveNavigatePage(event) {
     this.page = event.detail.page;
@@ -200,7 +189,7 @@ export class PhotoApp extends LitElem {
 
     if (!this.page || this.page === "albums") {
       return html`
-      <photo-album-page .cache="${this.cache}" .albums="${albums}" class="${
+      <photo-album-page .albums="${albums}" class="${
         classes.join(" ")
       }"></photo-album-page>
       `;
@@ -213,7 +202,7 @@ export class PhotoApp extends LitElem {
 
       return html`
       <album-page
-        .cache=${this.cache}
+
         title=${album.album_name}
         id=${this.id}
         minDate=${album.min_date}
@@ -226,13 +215,13 @@ export class PhotoApp extends LitElem {
 
     if (this.page === "tag-album") {
       return html`
-      <tag-page .cache=${this.cache} tag=${this.tag} .images=${images} class="${classes.join(" ")}"></tag-page>
+      <tag-page tag=${this.tag} .images=${images} class="${classes.join(" ")}"></tag-page>
       `;
     }
 
     if (this.page === "tags") {
       return html`
-      <tags-page .cache=${this.cache} class="${classes.join(' ')}" .metadata=${metadata} .images=${images}></tags-page>
+      <tags-page class="${classes.join(' ')}" .metadata=${metadata} .images=${images}></tags-page>
       `;
     }
 
@@ -289,7 +278,6 @@ export class PhotoApp extends LitElem {
     return html`
     <body>
       <div class="${topLevelClasses.join(" ")}"
-        @photo-loaded=${this.receivePhotoLoaded}
         @click-album=${this.receiveClickAlbum}
         @click-photo=${this.receiveClickPhoto}
         @click-tag=${this.receiveClickTag}

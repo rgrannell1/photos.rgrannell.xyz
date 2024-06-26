@@ -10,7 +10,6 @@ export class TagPage extends LitElem {
     return {
       tag: { type: String },
       images: { type: Object },
-      cache: { type: Array },
     };
   }
 
@@ -50,7 +49,6 @@ export class TagPage extends LitElem {
       this.photos().map(photo => {
         return html`
         <app-photo
-          .cache=${this.cache}
           id="${photo.id}"
           tags="${photo.tags}"
           loading="${"lazy"}"

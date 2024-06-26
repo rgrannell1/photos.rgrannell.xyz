@@ -8,7 +8,6 @@ export class AlbumsPage extends LitElem {
   static get properties() {
     return {
       albums: { type: Object },
-      cache: { type: Array },
     };
   }
   connectedCallback() {
@@ -74,7 +73,6 @@ export class AlbumsPage extends LitElem {
 
           return html`
             <photo-album
-              .cache=${this.cache}
               title="${album.title}"
               url="${album.url}"
               thumbnailDataUrl="${album.thumbnailDataUrl}"
