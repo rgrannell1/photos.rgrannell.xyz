@@ -13,6 +13,7 @@ export class PhotoAlbum extends LitElem {
       id: { type: String },
       count: { type: Number },
       loading: { type: String },
+      cache: { type: Array },
     };
   }
 
@@ -26,7 +27,7 @@ export class PhotoAlbum extends LitElem {
   }
 
   hidePlaceholder(event) {
-    this.broadcast("photo-loaded", { url: this.thumbnailUrl });
+    this.broadcast("photo-loaded", { url: this.url })();
 
     const $placeholder = event.target.parentNode.querySelector(
       ".thumbnail-placeholder",
@@ -35,6 +36,27 @@ export class PhotoAlbum extends LitElem {
   }
 
   render() {
+    if (this.cache.includes(this.url)) {
+      return html`
+      <div class="photo-album">
+        <img class="thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
+        @click=${
+        this.broadcast("click-album", {
+          id: this.id,
+          title: this.title,
+        })
+      }>
+        <div class="photo-album-metadata">
+          <p class="photo-album-title">${this.title}</p>
+          <p class="photo-album-date">${this.dateRange()}</p>
+          <p class="photo-album-count">${this.count} ${
+        this.count === 1 ? "photo" : "photos"
+      }</p>
+        </div>
+      </div>
+      `;
+    }
+
     return html`
     <div class="photo-album">
       <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.thumbnailDataUrl}"/>

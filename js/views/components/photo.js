@@ -10,6 +10,7 @@ export class AppPhoto extends LitElem {
       thumbnailUrl: { type: String },
       tags: { type: Array },
       loading: { type: String },
+      cache: { type: Array },
     };
   }
 
@@ -20,7 +21,7 @@ export class AppPhoto extends LitElem {
   }
 
   hidePlaceholder(event) {
-    this.broadcast("photo-loaded", { url: this.thumbnailUrl });
+    this.broadcast("photo-loaded", { url: this.thumbnailUrl })();
 
     const $placeholder = event.target.parentNode.querySelector(
       ".thumbnail-placeholder",
@@ -36,6 +37,24 @@ export class AppPhoto extends LitElem {
       thumbnailDataUrl: this.thumbnailDataUrl,
       tags: this.tags,
     };
+
+    if (this.cache.includes(this.url)) {
+      return html`
+      <div class="photo">
+        <div
+          @click=${this.broadcast("click-photo-metadata", photoMetadata)}
+          class="photo-metadata-popover">${this.renderIcon()}</div>
+
+        <img
+          class="thumbnail-image"
+          width="400"
+          height="400"
+          src="${this.thumbnailUrl}"
+          loading="${this.loading}"
+          @click=${this.broadcast("click-photo", { imageUrl: this.imageUrl })}/>
+      </div>
+      `;
+    }
 
     return html`
     <div class="photo">

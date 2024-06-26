@@ -20,6 +20,7 @@ export class AlbumPage extends LitElem {
       maxDate: { type: String },
       imageCount: { type: Number },
       description: { type: String },
+      cache: { type: Array },
     };
   }
 
@@ -46,6 +47,7 @@ export class AlbumPage extends LitElem {
     const photos = this.albumPhotos().map((photo, idx) => {
       return html`
       <app-photo
+        .cache=${this.cache}
         id=${photo.id}
         tags="${photo.tags}"
         loading="${Photos.loadingMode(idx)}"

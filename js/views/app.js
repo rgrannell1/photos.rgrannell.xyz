@@ -39,6 +39,7 @@ export class PhotoApp extends LitElem {
       params: { type: Object },
       query: { type: Object },
       darkMode: { type: Boolean },
+      cache: { type: Array },
     };
   }
 
@@ -47,6 +48,8 @@ export class PhotoApp extends LitElem {
 
     this.setStateFromUrl();
     this.requestUpdate();
+
+    this.cache = []
 
     window.addEventListener("popstate", this.handlePopState.bind(this));
   }
@@ -159,7 +162,11 @@ export class PhotoApp extends LitElem {
 
   receivePhotoLoaded(event) {
     const { url } = event.detail;
-    console.log("photo loaded", url);
+
+    if (this.cache.includes(url)) {
+      return;
+    }
+    this.cache.push(url)
   }
 
   receiveNavigatePage(event) {
@@ -193,7 +200,7 @@ export class PhotoApp extends LitElem {
 
     if (!this.page || this.page === "albums") {
       return html`
-      <photo-album-page .albums="${albums}" class="${
+      <photo-album-page .cache="${this.cache}" .albums="${albums}" class="${
         classes.join(" ")
       }"></photo-album-page>
       `;
@@ -206,6 +213,7 @@ export class PhotoApp extends LitElem {
 
       return html`
       <album-page
+        .cache=${this.cache}
         title=${album.album_name}
         id=${this.id}
         minDate=${album.min_date}
@@ -218,7 +226,7 @@ export class PhotoApp extends LitElem {
 
     if (this.page === "tag-album") {
       return html`
-      <tag-page tag=${this.tag} .images=${images} class="${classes.join(" ")}"></tag-page>
+      <tag-page .cache=${this.cache} tag=${this.tag} .images=${images} class="${classes.join(" ")}"></tag-page>
       `;
     }
 
