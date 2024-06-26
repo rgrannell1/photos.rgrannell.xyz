@@ -53,7 +53,7 @@ export class TagPage extends LitElem {
           tags="${photo.tags}"
           loading="${"lazy"}"
           thumbnailUrl="${photo.thumbnail_url}"
-          mosaicUrl="${photo.thumbnail_data_url}"
+          thumbnailDataUrl="${photo.thumbnail_data_url}"
           imageUrl="${photo.image_url}"></app-photo>`;
       })
     }
