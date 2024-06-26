@@ -1,8 +1,7 @@
-import { html, LitElement } from "../../../library/lit.js";
+import { html } from "../../../library/lit.js";
 
 import "../../components/photo.js";
 import { Dates } from "../../../services/dates.js";
-import { Photos } from "../../../services/photos.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
 

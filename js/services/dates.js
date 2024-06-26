@@ -11,11 +11,11 @@ export class Dates {
     let maximum = -Infinity;
 
     for (const image of images) {
-      if (!image.dateTime) {
+      if (!image.date_time) {
         continue;
       }
 
-      const parsedDate = Dates.parse(image.dateTime);
+      const parsedDate = Dates.parse(image.date_time);
       if (parsedDate < minimum) {
         minimum = parsedDate;
       }

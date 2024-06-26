@@ -12,6 +12,7 @@
   --navbar-font-colour:     hsl(0, 0%, 0%);
   --background-color:       hsl(0, 0%, 96%);
   --link-color:             hsl(211, 100%, 35%);
+  --disabled-link-color:    hsl(0, 0%, 38%);
   --brand-color:            hsl(211, 100%, 35%);
   --link-background-color:  hsl(211, 100%, 95%);
 
@@ -19,7 +20,7 @@
   --hover-background-color: hsl(210, 100%, 84%);
 
   /* the colour of list markers */
-  --marker-color:           hsl(0, 0%, 72%);
+  --marker-color:           hsl(0, 0%, 56%);
   --nav-border-color:       hsl(0, 0%, 0%);
   --image-placeholder-background-color: hsl(0, 0%, 69%);
 
@@ -33,6 +34,7 @@
   --navbar-font-colour:     hsl(0, 0%, 100%);
   --background-color:       hsl(0, 0%, 8%);
   --link-color:             hsl(211, 84%, 74%);
+  --disabled-link-color:    hsl(0, 0%, 60%);
   --brand-color:            hsl(211, 100%, 78%);
   --link-background-color:  hsl(211, 87%, 62%);
   --hover-background-color: hsl(211, 87%, 62%);
@@ -107,6 +109,10 @@ button {
   all: unset;
   color: var(--link-color);
   cursor: pointer;
+}
+
+button:disabled {
+  color: var(--disabled-link-color);
 }
 
 .photos-app {

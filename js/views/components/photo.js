@@ -20,6 +20,8 @@ export class AppPhoto extends LitElem {
   }
 
   hidePlaceholder(event) {
+    this.broadcast("photo-loaded", { url: this.thumbnailUrl });
+
     const $placeholder = event.target.parentNode.querySelector(
       ".thumbnail-placeholder",
     );

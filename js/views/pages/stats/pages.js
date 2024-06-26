@@ -1,4 +1,4 @@
-import { html, LitElement } from "../../../library/lit.js";
+import { html } from "../../../library/lit.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
 

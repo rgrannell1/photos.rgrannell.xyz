@@ -2,13 +2,15 @@ import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 
+import "./components/share-button.js";
 import "../../components/tag-link.js";
 
 export class MetadataPage extends LitElem {
   static get properties() {
     return {
       id: { type: String },
-      image: { type: Object }
+      image: { type: Object },
+      sharing: { state: true, type: Boolean }
     };
   }
 
@@ -18,49 +20,11 @@ export class MetadataPage extends LitElem {
     JSONFeed.setIndex();
   }
 
-  /*
-   * Share an image using the Web Share API, if available.
-   *
-   * @param {string} url the url of the image to share
-   */
-  async shareImage(url) {
-    if (!navigator.share) {
-      console.error("navigator.share not available");
-    } else {
-      // note; cors might not work locally
-      const response = await fetch(url);
-      const resourceName = (new URL(url)).pathname;
-
-      await navigator.share({
-        title: resourceName,
-        files: [
-          new File([await response.blob()], resourceName, {
-            type: "image/webp",
-          }),
-        ],
-      });
-    }
-  }
-
-  /*
-   * Render a share button if the Web Share API is available.
-   */
-  renderShare(url) {
-    if (!navigator.share) {
-      return html``;
-    }
-
-    return html`
-    <button class="photo-share-button" @click=${
-      this.shareImage.bind(this, url)
-    }>[share]</button>
-    `;
-  }
-
   render() {
     const photo = this.image;
-
     const tags = (photo.tags.sort() ?? [])
+      .filter(tag => tag !== 'Published')
+      .sort()
       .map((tagName) => {
         return html`<li><tag-link tagName="${tagName}"></tag-link></li>`;
       });
@@ -73,7 +37,7 @@ export class MetadataPage extends LitElem {
 
       <p>
         <a href="${photo.image_url}">[full image]</a>
-        ${this.renderShare(photo.image_url)}
+        <share-metadata-button format="image/webp" url=${photo.image_url}></share-metadata-button>
       </p>
 
       ${photo.description ? html`<br/><p>${photo.description}</p>` : html``}

@@ -149,7 +149,7 @@ export class PhotoApp extends LitElem {
     PageLocation.showMetadataUrl(id);
   }
 
-  async receiveSwitchTheme(event) {
+  receiveSwitchTheme(event) {
     this.darkMode = !this.darkMode;
 
     localStorage.setItem("darkMode", this.darkMode);
@@ -157,7 +157,12 @@ export class PhotoApp extends LitElem {
     this.requestUpdate();
   }
 
-  async receiveNavigatePage(event) {
+  receivePhotoLoaded(event) {
+    const { url } = event.detail;
+    console.log("photo loaded", url);
+  }
+
+  receiveNavigatePage(event) {
     this.page = event.detail.page;
 
     if (this.page === "albums") {
@@ -276,6 +281,7 @@ export class PhotoApp extends LitElem {
     return html`
     <body>
       <div class="${topLevelClasses.join(" ")}"
+        @photo-loaded=${this.receivePhotoLoaded}
         @click-album=${this.receiveClickAlbum}
         @click-photo=${this.receiveClickPhoto}
         @click-tag=${this.receiveClickTag}
