@@ -4,7 +4,6 @@ import { JSONFeed } from "../../../services/json-feed.js";
 
 import "../../components/tag-link.js";
 import "./components/tag-album.js";
-import { Metadata } from "../../../models/tags.js";
 
 export class TagsPage extends LitElem {
   static get properties() {
@@ -68,23 +67,12 @@ export class TagsPage extends LitElem {
     return html`<tag-album url="${image.thumbnail_url}" thumbnailDataUrl="${image.thumbnail_data_url}" tagName=${tag} .links=${links}>`;
   }
 
-  renderPlaceholder() {
-    return html`
-    <section>
-      <p>Loading Photo Metadata</p>
-    </section>
-    `;
-  }
-
   tagsFamily(md, name) {
-    const children = new Set(md.metadata[name].children);
+    const children = new Set(md._data[name].children);
     return Array.from(children).sort();
   }
 
-  async renderPage() {
-    const md = new Metadata();
-    await md.init();
-
+  render() {
     return html`
     <section>
       <h2>By Ratings</h2>
@@ -103,7 +91,7 @@ export class TagsPage extends LitElem {
 
       <section class="album-container">
         ${
-      this.tagsFamily(md, "Mammal").sort().map(this.renderTagCover.bind(this))
+      this.tagsFamily(this.metadata, "Mammal").sort().map(this.renderTagCover.bind(this))
     }
       </section>
 
@@ -111,14 +99,14 @@ export class TagsPage extends LitElem {
 
       <section class="album-container">
         ${
-      this.tagsFamily(md, "Bird").sort().map(this.renderTagCover.bind(this))
+      this.tagsFamily(this.metadata, "Bird").sort().map(this.renderTagCover.bind(this))
     }
       </section>
 
       <h2>Planes</h2>
       <section class="album-container">
         ${
-      this.tagsFamily(md, "Plane").sort().map(this.renderTagCover.bind(this))
+      this.tagsFamily(this.metadata, "Plane").sort().map(this.renderTagCover.bind(this))
     }
       </section>
 
@@ -131,10 +119,6 @@ export class TagsPage extends LitElem {
       </details>
     </section>
     `;
-  }
-
-  render() {
-    return html`${until(this.renderPage(), this.renderPlaceholder())}`;
   }
 }
 

@@ -1,6 +1,7 @@
 import {
   ALBUMS_SYMBOL,
   IMAGES_SYMBOL,
+  METADATA_SYMBOL
 } from "../constants.js";
 
 export class ImagesArtifact {
@@ -100,12 +101,34 @@ export class AlbumsArtifact {
   }
 }
 
+function isChild(metadata, parent, child) {
+  if (!metadata.hasOwnProperty(parent)) {
+    return false;
+  }
 
+  const children = metadata[parent];
+
+  if (children.includes(child)) {
+    return true;
+  }
+
+  for (const candidate of children) {
+    if (isChild(metadata, candidate, child)) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 export class MetadataArtifact {
   _data;
 
   async init() {
+    if (window[METADATA_SYMBOL]) {
+      this._data = window[METADATA_SYMBOL];
+    }
+
     if (this._data) {
       return;
     }
@@ -113,11 +136,34 @@ export class MetadataArtifact {
     console.log("fetching metadata");
 
     const metadata = await (await fetch("/manifest/metadata.json")).json();
+    window[METADATA_SYMBOL] = metadata;
 
     this._data = metadata;
   }
 
   metadata() {
     return this._data;
+  }
+
+  /*
+   * Check whether a tag is a child of another tag
+   */
+  isChild(parent, child) {
+    return isChild(this._data, parent, child);
+  }
+
+  /*
+   * Return the subset of tags that are children of some particular parent
+   */
+  childrenOf(parent, candidates) {
+    const tags = new Set([]);
+
+    for (const candidate of candidates) {
+      if (this.isChild(parent, candidate)) {
+        tags.add(candidate);
+      }
+    }
+
+    return tags;
   }
 }
