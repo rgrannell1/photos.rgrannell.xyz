@@ -1,4 +1,4 @@
-import { html, until } from "../../../library/lit.js";
+import { cache, html, until } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 
@@ -11,6 +11,7 @@ export class TagsPage extends LitElem {
     return {
       images: { type: Object },
       metadata: { type: Object },
+      cache: { type: Array },
     };
   }
 
@@ -65,7 +66,7 @@ export class TagsPage extends LitElem {
       return;
     }
 
-    return html`<tag-album url="${image.thumbnail_url}" tagName=${tag} .links=${links}>`;
+    return html`<tag-album .cache=${this.cache} url="${image.thumbnail_url}" thumbnailDataUrl="${image.thumbnail_data_url}" tagName=${tag} .links=${links}>`;
   }
 
   renderPlaceholder() {

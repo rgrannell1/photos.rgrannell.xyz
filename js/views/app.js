@@ -232,7 +232,7 @@ export class PhotoApp extends LitElem {
 
     if (this.page === "tags") {
       return html`
-      <tags-page class="${classes.join(' ')}" .metadata=${metadata} .images=${images}></tags-page>
+      <tags-page .cache=${this.cache} class="${classes.join(' ')}" .metadata=${metadata} .images=${images}></tags-page>
       `;
     }
 
