@@ -43,8 +43,10 @@ class AppInitialiser {
       await albums.init();
       images.init();
       metadata.init();
-    } else if (location?.type === "stats" || location?.type === "metadata") {
-      // load nothing for now
+    } else if (location?.type === "metadata") {
+      await images.init();
+    } else if (location?.type === "stats") {
+
     } else if (location?.type === "album") {
       await images.init();
       albums.init();

@@ -54,7 +54,9 @@ export class AlbumPage extends LitElem {
     <div>
       <section class="photos-metadata">
         <h1>${this.title}</h1>
-        <p class="photo-album-date">${range}</p>
+        <p class="photo-album-date">
+          <time>${range}</time>
+        </p>
         <p class="photo-album-count">${this.imageCount} photos</p>
         <p class="photo-album-description">${this.description}</p>
       </section>

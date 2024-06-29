@@ -49,7 +49,9 @@ export class PhotoAlbum extends LitElem {
     }>
       <div class="photo-album-metadata">
         <p class="photo-album-title">${this.title}</p>
-        <p class="photo-album-date">${this.dateRange()}</p>
+        <p class="photo-album-date">
+          <time>${this.dateRange()}</time>
+        </p>
         <p class="photo-album-count">${this.count} ${
       this.count === 1 ? "photo" : "photos"
     }</p>

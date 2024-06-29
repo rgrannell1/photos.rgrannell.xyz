@@ -54,7 +54,7 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Date-Time</th>
-        <td>${photo.date_time}</td>
+        <td><time>${photo.date_time}</time></td>
       </tr>
       <tr>
         <th class="exif-heading">Camera Model</th>
