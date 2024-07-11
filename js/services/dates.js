@@ -6,6 +6,15 @@ export class Dates {
     return new Date(`${date} ${time}`);
   }
 
+  static formatExifDate(dateTime) {
+    if (!dateTime) {
+      return dateTime;
+    }
+
+    const [date, time] = dateTime.split(' ');
+    return `${date.replace(/\:/g, '/')} ${time}`;
+  }
+
   static findRange(images) {
     let minimum = Infinity;
     let maximum = -Infinity;

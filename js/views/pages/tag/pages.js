@@ -20,7 +20,7 @@ export class TagPage extends LitElem {
   }
 
   photos() {
-    return this.images.images().filter(image => {
+    return this.images.images().filter((image) => {
       return image.tags.includes(this.tag);
     });
   }
@@ -46,7 +46,7 @@ export class TagPage extends LitElem {
 
       <section class="photo-container">
         ${
-      this.photos().map(photo => {
+      this.photos().map((photo) => {
         return html`
         <app-photo
           id="${photo.id}"

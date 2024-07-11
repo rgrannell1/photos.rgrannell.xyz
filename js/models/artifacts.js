@@ -1,8 +1,4 @@
-import {
-  ALBUMS_SYMBOL,
-  IMAGES_SYMBOL,
-  METADATA_SYMBOL
-} from "../constants.js";
+import { ALBUMS_SYMBOL, IMAGES_SYMBOL, METADATA_SYMBOL } from "../constants.js";
 
 export class ImagesArtifact {
   _data;
@@ -50,7 +46,7 @@ export class ImagesArtifact {
         ...image,
         tags: image.tags.split(",")
           .filter((tag) => tag != "Published")
-          .map(tag => tag.trim()),
+          .map((tag) => tag.trim()),
       };
     });
   }

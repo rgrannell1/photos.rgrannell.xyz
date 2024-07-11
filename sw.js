@@ -29,7 +29,6 @@ self.addEventListener("install", function (event) {
   );
 });
 
-
 self.addEventListener("fetch", function (event) {
   for (const resource of UNCACHEABLE_RESOURCES) {
     if (event.request.url.includes(resource)) {

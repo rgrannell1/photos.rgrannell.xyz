@@ -1,7 +1,11 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
-import { LOCATION_LATITUDE, LOCATION_LONGITUDE, LOCATION_ZOOM } from "../../../constants.js";
+import {
+  LOCATION_LATITUDE,
+  LOCATION_LONGITUDE,
+  LOCATION_ZOOM,
+} from "../../../constants.js";
 
 import {
   geoJSON,

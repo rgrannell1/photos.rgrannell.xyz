@@ -1,8 +1,16 @@
 import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.js";
-import { AlbumsArtifact, ImagesArtifact, MetadataArtifact } from "../models/artifacts.js";
+import {
+  AlbumsArtifact,
+  ImagesArtifact,
+  MetadataArtifact,
+} from "../models/artifacts.js";
 
 import { PageLocation } from "../services/location.js";
+import {
+  LoadMode,
+  Pages,
+} from "../constants.js";
 
 import "./components/sidebar.js";
 import "./components/header.js";
@@ -14,54 +22,118 @@ import "./pages/stats/pages.js";
 import "./pages/tag/pages.js";
 import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
+import "./pages/date/pages.js";
 
 const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
 const metadata = new MetadataArtifact();
 
+export const DEFAULT_DEPENDENCIES = [
+  [albums, LoadMode.EAGER],
+  [images, LoadMode.EAGER],
+  [metadata, LoadMode.EAGER],
+];
+/*
+ * The largest network requests will be for images.json,
+ * albums.json, and metadata.json. We should block the page until
+ * the critical resources FOR THAT page are loaded, but we can fire off
+ * the other requests in the background. If the user waits a few seconds
+ * before navigating to another page, it's likely the required data will
+ * already be cached in `window`
+ *
+ * The only difficulty is we need to track which resources are required
+ * for each page.
+ */
+export const PAGE_DEPENDECIES = {
+  [Pages.ALBUMS]: [
+    [albums, LoadMode.EAGER],
+    [images, LoadMode.LAZY],
+    [metadata, LoadMode.LAZY],
+  ],
+  [Pages.ALBUM]: [
+    [albums, LoadMode.EAGER],
+    [images, LoadMode.EAGER],
+    [metadata, LoadMode.LAZY],
+  ],
+  [Pages.PHOTO]: [
+    [albums, LoadMode.EAGER],
+    [images, LoadMode.EAGER],
+    [metadata, LoadMode.LAZY],
+  ],
+  [Pages.DATE]: [
+    [albums, LoadMode.EAGER],
+    [images, LoadMode.EAGER],
+    [metadata, LoadMode.LAZY],
+  ],
+  [Pages.PHOTOS]: [
+    [albums, LoadMode.EAGER],
+    [images, LoadMode.EAGER],
+    [metadata, LoadMode.LAZY],
+  ],
+  [Pages.TAG_ALBUM]: [
+    [albums, LoadMode.LAZY],
+    [images, LoadMode.EAGER],
+    [metadata, LoadMode.LAZY],
+  ],
+  [Pages.TAG]: [
+    [albums, LoadMode.LAZY],
+    [images, LoadMode.EAGER],
+    [metadata, LoadMode.LAZY],
+  ],
+  [Pages.LOCATIONS]: [
+    [albums, LoadMode.EAGER],
+    [images, LoadMode.LAZY],
+    [metadata, LoadMode.LAZY],
+  ],
+  [Pages.METADATA]: [
+    [albums, LoadMode.LAZY],
+    [images, LoadMode.EAGER],
+    [metadata, LoadMode.EAGER],
+  ],
+  [Pages.STATS]: [
+    [albums, LoadMode.LAZY],
+    [images, LoadMode.LAZY],
+    [metadata, LoadMode.LAZY],
+  ],
+};
+
 class AppInitialiser {
   static async init() {
     const location = PageLocation.getUrl();
+    console.log(`loading ${location?.type}`);
 
-    if (location?.type === "albums" || location?.type === "album") {
-      await albums.init();
-      images.init();
-      metadata.init();
-    } else if (location?.type === "photo" || location?.type === "photos") {
-      await images.init();
-      await albums.init();
-      metadata.init();
-    } else if (location?.type === "tag-album") {
-      await images.init();
-      albums.init();
-      metadata.init();
-    } else if (location?.type === "tags") {
-      await images.init();
-      albums.init();
-      metadata.init();
-    } else if (location?.type === "locations") {
-      await albums.init();
-      images.init();
-      metadata.init();
-    } else if (location?.type === "metadata") {
-      await images.init();
-    } else if (location?.type === "stats") {
+    const dependencies = PAGE_DEPENDECIES[location?.type] ??
+      DEFAULT_DEPENDENCIES;
+    const eagerlyLoaded = [];
 
-    } else if (location?.type === "album") {
-      await images.init();
-      albums.init();
-      metadata.init();
-    } else {
-      await albums.init();
-      images.init();
-      metadata.init();
+    for (const [artifact, loadMode] of dependencies) {
+      if (loadMode === LoadMode.EAGER) {
+        eagerlyLoaded.push(artifact.init());
+      } else if (loadMode === LoadMode.LAZY) {
+        // non-blocking load of this artifact
+        artifact.init();
+      }
     }
+
+    // block awaiting eagerly loaded artifacts
+    await Promise.all(eagerlyLoaded);
   }
 }
 
 await AppInitialiser.init();
 
 export class PhotoApp extends LitElem {
+  static DEFAULT_PAGE = Pages.ALBUMS;
+  static LOCATION_TYPE_TO_PAGE = {
+    "album": Pages.PHOTOS,
+    "photo": Pages.PHOTOS,
+    "date": Pages.DATE,
+    "tag-album": Pages.TAG_ALBUM,
+    "tags": Pages.TAGS,
+    "locations": Pages.LOCATIONS,
+    "stats": Pages.STATS,
+    "metadata": Pages.METADATA,
+  };
   static get properties() {
     return {
       title: { type: String },
@@ -98,34 +170,34 @@ export class PhotoApp extends LitElem {
     this.requestUpdate();
   }
 
+  /*
+   * Extract the page-type and other attributes from the URL
+   * and set the state accordingly
+   */
   setStateFromUrl() {
     const location = PageLocation.getUrl();
 
-    if (location?.type === "album") {
-      this.page = "photos";
-      this.id = location.id;
-    } else if (location?.type === "photo") {
-      this.page = "photos";
-      this.id = location.id;
-    } else if (location?.type === "tag-album") {
-      this.page = "tag-album";
-      this.tag = location.tag;
-    } else if (location?.type === "tags") {
-      this.page = "tags";
-    } else if (location?.type === "locations") {
-      this.page = "locations";
-    } else if (location?.type === "stats") {
-      this.page = "stats";
-    } else if (location?.type === "metadata") {
-      this.page = "metadata";
-      this.id = location.id;
+    if (PhotoApp.LOCATION_TYPE_TO_PAGE[location?.type]) {
+      this.page = PhotoApp.LOCATION_TYPE_TO_PAGE[location.type];
     } else {
-      this.page = "albums";
+      this.page = PhotoApp.DEFAULT_PAGE;
+    }
+
+    // set additional state from the url
+    if (this.page === Pages.PHOTOS || this.page === Pages.METADATA) {
+      this.id = location.id;
+    } else if (this.page === Pages.TAG_ALBUM) {
+      this.tag = location.tag;
+    } else if (this.page === Pages.METADATA) {
+      this.id = location.id;
+    } else if (this.page === Pages.DATE) {
+      this.date = location.date;
     }
   }
 
   /*
    * Navigate to the album page
+   *
    */
   receiveClickAlbum(event) {
     const {
@@ -133,7 +205,7 @@ export class PhotoApp extends LitElem {
       id,
     } = event.detail;
 
-    this.page = "photos";
+    this.page = Pages.PHOTOS;
     this.id = id;
     this.title = title;
 
@@ -141,7 +213,8 @@ export class PhotoApp extends LitElem {
   }
 
   /*
-   * Open a photo
+   * Open a photo in a new tab
+   *
    */
   async receiveClickPhoto(event) {
     const {
@@ -154,16 +227,23 @@ export class PhotoApp extends LitElem {
   async receiveClickTag(event) {
     const { tagName } = event.detail;
 
-    this.page = "tag-album";
+    this.page = Pages.TAG_ALBUM;
     this.tag = tagName;
 
     PageLocation.showTagAlbumUrl(tagName);
   }
 
+  /*
+   * When we click on the burger menu icon, toggle the sidebar
+   *
+   */
   async receiveClickBurgerMenu() {
     this.sidebarVisible = !this.sidebarVisible;
   }
 
+  /*
+   * When we click on a photo's info icon, navigate to the photo's metadata page
+   */
   async receiveClickPhotoMetadata(event) {
     const {
       id,
@@ -172,8 +252,7 @@ export class PhotoApp extends LitElem {
       tags,
     } = event.detail;
 
-
-    this.page = "metadata";
+    this.page = Pages.METADATA;
     this.id = id;
     this.imageUrl = imageUrl;
     this.thumbnailUrl = thumbnailUrl;
@@ -182,6 +261,9 @@ export class PhotoApp extends LitElem {
     PageLocation.showMetadataUrl(id);
   }
 
+  /*
+   * Toggle between light and dark mode
+   */
   receiveSwitchTheme(event) {
     this.darkMode = !this.darkMode;
 
@@ -190,29 +272,36 @@ export class PhotoApp extends LitElem {
     this.requestUpdate();
   }
 
-
+  /*
+   * On @navigate-page, update the URL
+   */
   receiveNavigatePage(event) {
     this.page = event.detail.page;
 
-    if (this.page === "albums") {
+    if (this.page === Pages.ALBUMS) {
       PageLocation.showAlbumsUrl();
-    } else if (this.page === "tags") {
+    } else if (this.page === Pages.TAGS) {
       PageLocation.showTagsUrl();
-    } else if (this.page === "locations") {
+    } else if (this.page === Pages.LOCATIONS) {
       PageLocation.showLocationsUrl();
-    } else if (this.page === "stats") {
+    } else if (this.page === Pages.STATS) {
       PageLocation.showStatsUrl();
-    } else if (this.page === "photos") {
+    } else if (this.page === Pages.PHOTOS) {
       PageLocation.showAlbumUrl(this.id);
-    } else if (this.page === "metadata") {
+    } else if (this.page === Pages.METADATA) {
       PageLocation.showMetadataUrl(this.id);
-    } else {
+    } else if (this.page === Pages.DATE) {
+      PageLocation.showDateUrl(this.date);
+    }else {
       PageLocation.showAlbumsUrl();
     }
 
     this.sidebarVisible = false;
   }
 
+  /*
+   * Render the subpage (e.g metadata, albums, photos, etc.)
+   */
   renderPage(sidebarVisible) {
     const classes = ["photo-page"];
 
@@ -228,7 +317,7 @@ export class PhotoApp extends LitElem {
       `;
     }
 
-    if (this.page === "photos") {
+    if (this.page === Pages.PHOTOS) {
       const album = albums.albums().find((album) => {
         return album.id === this.id;
       });
@@ -246,32 +335,45 @@ export class PhotoApp extends LitElem {
       `;
     }
 
-    if (this.page === "tag-album") {
+    if (this.page === Pages.DATE) {
+      console.log(this.date)
+      return html`<date-page
+        .images=${images} date="${this.date}"
+        ></date-page>`;
+    }
+
+    if (this.page === Pages.TAG_ALBUM) {
       return html`
-      <tag-page tag=${this.tag} .images=${images} class="${classes.join(" ")}"></tag-page>
+      <tag-page tag=${this.tag} .images=${images} class="${
+        classes.join(" ")
+      }"></tag-page>
       `;
     }
 
-    if (this.page === "tags") {
+    if (this.page === Pages.TAGS) {
       return html`
-      <tags-page class="${classes.join(' ')}" .metadata=${metadata} .images=${images}></tags-page>
+      <tags-page class="${
+        classes.join(" ")
+      }" .metadata=${metadata} .images=${images}></tags-page>
       `;
     }
 
-    if (this.page === "locations") {
+    if (this.page === Pages.LOCATIONS) {
       return html`
-      <locations-page .albums="${albums}" class="${classes.join(" ")}"></locations-page>
+      <locations-page .albums="${albums}" class="${
+        classes.join(" ")
+      }"></locations-page>
       `;
     }
 
-    if (this.page === "stats") {
+    if (this.page === Pages.STATS) {
       return html`
       <stats-page class="${classes.join(" ")}"></stats-page>
       `;
     }
 
     if (this.page === "metadata") {
-      const photo = images.images().find(image => {
+      const photo = images.images().find((image) => {
         return image.id === this.id;
       });
 
@@ -280,11 +382,17 @@ export class PhotoApp extends LitElem {
       }
 
       return html`
-      <metadata-page .image=${photo} id=${this.id} class="${classes.join(" ")}"></metadata-page>
+      <metadata-page .image=${photo} id=${this.id} class="${
+        classes.join(" ")
+      }"></metadata-page>
       `;
     }
   }
 
+  /*
+   * Check if dark mode is enabled by examining this component
+   * and localstorage.#
+   */
   loadDarkMode() {
     if (typeof this.darkMode !== "undefined") {
       return this.darkMode;

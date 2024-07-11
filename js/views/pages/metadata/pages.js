@@ -1,6 +1,7 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
+import { Dates } from "../../../services/dates.js"
 
 import "./components/share-button.js";
 import "../../components/tag-link.js";
@@ -10,7 +11,7 @@ export class MetadataPage extends LitElem {
     return {
       id: { type: String },
       image: { type: Object },
-      sharing: { state: true, type: Boolean }
+      sharing: { state: true, type: Boolean },
     };
   }
 
@@ -23,11 +24,13 @@ export class MetadataPage extends LitElem {
   render() {
     const photo = this.image;
     const tags = (photo.tags.sort() ?? [])
-      .filter(tag => tag !== 'Published')
+      .filter((tag) => tag !== "Published")
       .sort()
       .map((tagName) => {
         return html`<li><tag-link tagName="${tagName}"></tag-link></li>`;
       });
+
+    const dateHref = photo.date_time.split(" ")[0].replace(/\:/g, "-");
 
     return html`
     <section>
@@ -54,7 +57,9 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Date-Time</th>
-        <td><time>${photo.date_time}</time></td>
+        <td><time><a href="#/date/${dateHref}">
+        ${Dates.formatExifDate(photo.date_time)}
+        </a></time></td>
       </tr>
       <tr>
         <th class="exif-heading">Camera Model</th>
@@ -70,7 +75,9 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Shutter Speed</th>
-        <td>1 / ${photo.shutter_speed ? Math.round(1 / photo.shutter_speed) : 'Unknown' }</td>
+        <td>1 / ${
+      photo.shutter_speed ? Math.round(1 / photo.shutter_speed) : "Unknown"
+    }</td>
       </tr>
       <tr>
         <th class="exif-heading">Aperture</th>

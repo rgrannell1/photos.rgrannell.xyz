@@ -1,7 +1,6 @@
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.js";
 
-
 export class AppPhoto extends LitElem {
   static get properties() {
     return {
@@ -37,7 +36,6 @@ export class AppPhoto extends LitElem {
       thumbnailDataUrl: this.thumbnailDataUrl,
       tags: this.tags,
     };
-
 
     return html`
     <div class="photo">

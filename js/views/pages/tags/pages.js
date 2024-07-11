@@ -44,7 +44,7 @@ export class TagsPage extends LitElem {
   }
 
   tagCover(tag) {
-    const tagged = this.images.images().filter(image => {
+    const tagged = this.images.images().filter((image) => {
       return image.tags.includes(tag);
     });
 
@@ -91,7 +91,9 @@ export class TagsPage extends LitElem {
 
       <section class="album-container">
         ${
-      this.tagsFamily(this.metadata, "Mammal").sort().map(this.renderTagCover.bind(this))
+      this.tagsFamily(this.metadata, "Mammal").sort().map(
+        this.renderTagCover.bind(this),
+      )
     }
       </section>
 
@@ -99,14 +101,18 @@ export class TagsPage extends LitElem {
 
       <section class="album-container">
         ${
-      this.tagsFamily(this.metadata, "Bird").sort().map(this.renderTagCover.bind(this))
+      this.tagsFamily(this.metadata, "Bird").sort().map(
+        this.renderTagCover.bind(this),
+      )
     }
       </section>
 
       <h2>Planes</h2>
       <section class="album-container">
         ${
-      this.tagsFamily(this.metadata, "Plane").sort().map(this.renderTagCover.bind(this))
+      this.tagsFamily(this.metadata, "Plane").sort().map(
+        this.renderTagCover.bind(this),
+      )
     }
       </section>
 

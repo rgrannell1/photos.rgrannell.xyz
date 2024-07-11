@@ -48,7 +48,7 @@ export class AlbumPage extends LitElem {
         thumbnailUrl="${photo.thumbnail_url}"
         thumbnailDataUrl="${photo.thumbnail_data_url}"
         imageUrl="${photo.image_url}"></app-photo>`;
-    })
+    });
 
     return html`
     <div>

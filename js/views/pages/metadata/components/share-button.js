@@ -5,8 +5,8 @@ export class ShareButton extends LitElem {
   static get properties() {
     return {
       url: { type: String },
-      format: { type: String},
-      sharing: { state: true, type: Boolean }
+      format: { type: String },
+      sharing: { state: true, type: Boolean },
     };
   }
 
@@ -44,7 +44,7 @@ export class ShareButton extends LitElem {
       return html`<button class="photo-share-button" disabled>[sharing...]</button>`;
     } else {
       return html`
-      <button class="photo-share-button" ?disabled=${ !navigator.share } @click=${
+      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${
         this.shareImage.bind(this, this.url)
       }>[share]</button>
       `;

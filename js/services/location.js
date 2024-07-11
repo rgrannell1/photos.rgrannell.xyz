@@ -11,6 +11,10 @@ export class PageLocation {
     window.location.hash = `#/photo/${id}`;
     document.title = "Photo - photos";
   }
+  static showDateUrl(date) {
+    window.location.hash = `#/date/${date}`;
+    document.title = "Date - photos";
+  }
   static showLocationsUrl() {
     window.location.hash = "#/locations";
     document.title = "Locations - photos";
@@ -67,6 +71,11 @@ export class PageLocation {
       return {
         type: "metadata",
         id: window.location.hash.split("/")[2],
+      };
+    } else if (window.location.hash.startsWith("#/date")) {
+      return {
+        type: "date",
+        date: window.location.hash.split("/")[2],
       };
     }
   }
