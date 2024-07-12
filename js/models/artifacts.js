@@ -3,6 +3,10 @@ import { ALBUMS_SYMBOL, IMAGES_SYMBOL, METADATA_SYMBOL } from "../constants.js";
 export class ImagesArtifact {
   _data;
 
+  constructor(url="/manifest/images.json") {
+    this.url = url;
+  }
+
   processImages(images) {
     const headers = images[0];
 
@@ -32,7 +36,7 @@ export class ImagesArtifact {
 
     console.log("fetching images");
 
-    const images = await (await fetch("/manifest/images.json")).json();
+    const images = await (await fetch(this.url)).json();
 
     const processed = this.processImages(images);
     window[IMAGES_SYMBOL] = processed;
@@ -54,6 +58,10 @@ export class ImagesArtifact {
 
 export class AlbumsArtifact {
   _data;
+
+  constructor(url="/manifest/albums.json") {
+    this.url = url;
+  }
 
   processAlbums(albums) {
     const headers = albums[0];
@@ -84,7 +92,7 @@ export class AlbumsArtifact {
 
     console.log("fetching albums");
 
-    const albums = await (await fetch("/manifest/albums.json")).json();
+    const albums = await (await fetch(this.url)).json();
 
     const processed = this.processAlbums(albums);
     window[ALBUMS_SYMBOL] = processed;
@@ -120,6 +128,10 @@ function isChild(metadata, parent, child) {
 export class MetadataArtifact {
   _data;
 
+  constructor(url="/manifest/metadata.json") {
+    this.url = url;
+  }
+
   async init() {
     if (window[METADATA_SYMBOL]) {
       this._data = window[METADATA_SYMBOL];
@@ -131,7 +143,7 @@ export class MetadataArtifact {
 
     console.log("fetching metadata");
 
-    const metadata = await (await fetch("/manifest/metadata.json")).json();
+    const metadata = await (await fetch(this.url)).json();
     window[METADATA_SYMBOL] = metadata;
 
     this._data = metadata;
