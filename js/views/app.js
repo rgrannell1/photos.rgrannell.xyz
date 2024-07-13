@@ -15,6 +15,7 @@ import {
 import "./components/sidebar.js";
 import "./components/header.js";
 
+import "./pages/photos/pages.js";
 import "./pages/albums/pages.js";
 import "./pages/locations/pages.js";
 import "./pages/album/pages.js";
@@ -50,6 +51,11 @@ export const PAGE_DEPENDECIES = {
     [images, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
   ],
+  [Pages.PHOTOS]: [
+    [albums, LoadMode.EAGER],
+    [images, LoadMode.EAGER],
+    [metadata, LoadMode.LAZY],
+  ],
   [Pages.ALBUM]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
@@ -61,11 +67,6 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.LAZY],
   ],
   [Pages.DATE]: [
-    [albums, LoadMode.EAGER],
-    [images, LoadMode.EAGER],
-    [metadata, LoadMode.LAZY],
-  ],
-  [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
@@ -125,8 +126,8 @@ await AppInitialiser.init();
 export class PhotoApp extends LitElem {
   static DEFAULT_PAGE = Pages.ALBUMS;
   static LOCATION_TYPE_TO_PAGE = {
-    "album": Pages.PHOTOS,
-    "photo": Pages.PHOTOS,
+    "album": Pages.ALBUM,
+    "photos": Pages.PHOTOS,
     "date": Pages.DATE,
     "tag-album": Pages.TAG_ALBUM,
     "tags": Pages.TAGS,
@@ -180,11 +181,12 @@ export class PhotoApp extends LitElem {
     if (PhotoApp.LOCATION_TYPE_TO_PAGE[location?.type]) {
       this.page = PhotoApp.LOCATION_TYPE_TO_PAGE[location.type];
     } else {
+      console.error('did not match', location?.type)
       this.page = PhotoApp.DEFAULT_PAGE;
     }
 
     // set additional state from the url
-    if (this.page === Pages.PHOTOS || this.page === Pages.METADATA) {
+    if (this.page === Pages.METADATA) {
       this.id = location.id;
     } else if (this.page === Pages.TAG_ALBUM) {
       this.tag = location.tag;
@@ -278,7 +280,9 @@ export class PhotoApp extends LitElem {
   receiveNavigatePage(event) {
     this.page = event.detail.page;
 
-    if (this.page === Pages.ALBUMS) {
+    if (this.page === Pages.PHOTOS) {
+      PageLocation.showPhotosUrl();
+    } else if (this.page === Pages.ALBUMS) {
       PageLocation.showAlbumsUrl();
     } else if (this.page === Pages.TAGS) {
       PageLocation.showTagsUrl();
@@ -318,6 +322,10 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.PHOTOS) {
+      return html`<photos-page .images=${images}></photos-page>`;
+    }
+
+    if (this.page === Pages.ALBUM) {
       const album = albums.albums().find((album) => {
         return album.id === this.id;
       });

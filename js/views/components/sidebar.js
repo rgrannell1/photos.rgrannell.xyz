@@ -21,6 +21,14 @@ export class Sidebar extends LitElem {
           <li
             @click=${
       this.broadcast("navigate-page", {
+        page: "photos",
+      })
+    }
+            id="photos-sidebar-link" class="sidebar-item">PHOTOS</li>
+
+          <li
+            @click=${
+      this.broadcast("navigate-page", {
         page: "albums",
       })
     }

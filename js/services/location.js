@@ -3,6 +3,10 @@ export class PageLocation {
     window.location.hash = "#/albums";
     document.title = "Albums - photos";
   }
+  static showPhotosUrl() {
+    window.location.hash = "#/photos";
+    document.title = "Photos - photos";
+  }
   static showAlbumUrl(id) {
     window.location.hash = `#/album/${id}`;
     document.title = "Album - photos";
@@ -45,11 +49,6 @@ export class PageLocation {
         type: "album",
         id: window.location.hash.split("/")[2],
       };
-    } else if (window.location.hash.startsWith("#/photo")) {
-      return {
-        type: "photo",
-        id: window.location.hash.split("/")[2],
-      };
     } else if (window.location.hash.startsWith("#/locations")) {
       return {
         type: "locations",
@@ -76,6 +75,10 @@ export class PageLocation {
       return {
         type: "date",
         date: window.location.hash.split("/")[2],
+      };
+    } else if (window.location.hash.startsWith("#/photos")) {
+      return {
+        type: "photos",
       };
     }
   }
