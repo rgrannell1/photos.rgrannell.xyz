@@ -187,12 +187,10 @@ export class PhotoApp extends LitElem {
     }
 
     // set additional state from the url
-    if (this.page === Pages.METADATA) {
+    if (this.page === Pages.METADATA || this.page === Pages.ALBUM || this.page === Pages.METADATA) {
       this.id = location.id;
     } else if (this.page === Pages.TAG_ALBUM) {
       this.tag = location.tag;
-    } else if (this.page === Pages.METADATA) {
-      this.id = location.id;
     } else if (this.page === Pages.DATE) {
       this.date = location.date;
     }
