@@ -11,6 +11,8 @@ const CACHEABLE_RESOURCES = [
   "/js/library/leaflet.js",
 ];
 
+// let's not cache list of images / albums here. Netlify will cache them for us,
+// and we'll attach them to the window so they'll persist within a page load but not reloads.
 const UNCACHEABLE_RESOURCES = [
   "/manifest/metdata.json",
   "/manifest/images.json",
