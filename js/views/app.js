@@ -127,6 +127,7 @@ export class PhotoApp extends LitElem {
   static DEFAULT_PAGE = Pages.ALBUMS;
   static LOCATION_TYPE_TO_PAGE = {
     "album": Pages.ALBUM,
+    "albums": Pages.ALBUMS,
     "photos": Pages.PHOTOS,
     "date": Pages.DATE,
     "tag-album": Pages.TAG_ALBUM,
@@ -181,7 +182,7 @@ export class PhotoApp extends LitElem {
     if (PhotoApp.LOCATION_TYPE_TO_PAGE[location?.type]) {
       this.page = PhotoApp.LOCATION_TYPE_TO_PAGE[location.type];
     } else {
-      console.error('did not match', location?.type)
+      console.error('did not match pagetype', location?.type)
       this.page = PhotoApp.DEFAULT_PAGE;
     }
 
@@ -326,9 +327,17 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.ALBUM) {
+      if (!this.id) {
+        console.error("no album id provided");
+      }
+
       const album = albums.albums().find((album) => {
         return album.id === this.id;
       });
+
+      if (!album) {
+        console.error(`failed to find album with id ${this.id}`);
+      }
 
       return html`
       <album-page

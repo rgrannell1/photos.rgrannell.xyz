@@ -1,4 +1,4 @@
-import { html } from "../../../library/lit.js";
+import { html, unsafeHTML } from "../../../library/lit.js";
 
 import "../../components/photo.js";
 import { Dates } from "../../../services/dates.js";
@@ -58,7 +58,7 @@ export class AlbumPage extends LitElem {
           <time>${range}</time>
         </p>
         <p class="photo-album-count">${this.imageCount} photos</p>
-        <p class="photo-album-description">${this.description}</p>
+        <p class="photo-album-description">${unsafeHTML(this.description)}</p>
       </section>
 
       <section class="photo-container">

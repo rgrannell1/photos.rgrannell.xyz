@@ -1,4 +1,4 @@
-import { html } from "../../../library/lit.js";
+import { html, unsafeHTML } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { Dates } from "../../../services/dates.js"
@@ -43,7 +43,7 @@ export class MetadataPage extends LitElem {
         <share-metadata-button format="image/webp" url=${photo.image_url}></share-metadata-button>
       </p>
 
-      ${photo.description ? html`<br/><p>${photo.description}</p>` : html``}
+      ${photo.description ? html`<br/><p>${unsafeHTML(photo.description)}</p>` : html``}
 
       <h3>Tags</h3>
       <ul class="photo-tag-list">${tags}</ul>
