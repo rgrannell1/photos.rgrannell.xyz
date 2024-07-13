@@ -71,7 +71,11 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Focal Length</th>
-        <td>${photo.focal_length}mm equiv.</td>
+        ${
+          photo.focal_length === 'Unknown'
+            ? html`${photo.focal_length}`
+            : html`<td>${photo.focal_length}mm equiv.</td>`
+        }
       </tr>
       <tr>
         <th class="exif-heading">Shutter Speed</th>
