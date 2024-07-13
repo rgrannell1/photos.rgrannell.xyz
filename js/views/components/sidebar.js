@@ -40,20 +40,7 @@ export class Sidebar extends LitElem {
       })
     }
             id="tags-sidebar-link" class="sidebar-item">TAGS</li>
-          <li
-            @click=${
-      this.broadcast("navigate-page", {
-        page: "locations",
-      })
-    }
-            id="locations-sidebar-link" class="sidebar-item">LOCATIONS</li>
-          <li
-            @click=${
-      this.broadcast("navigate-page", {
-        page: "stats",
-      })
-    }
-            id="stats-sidebar-link" class="sidebar-item">STATS</li>
+
       </nav>
     </aside>
     `;
