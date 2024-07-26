@@ -23,6 +23,7 @@ export class MetadataPage extends LitElem {
 
   render() {
     const photo = this.image;
+
     const tags = (photo.tags.sort() ?? [])
       .filter((tag) => tag !== "Published")
       .sort()
@@ -44,6 +45,12 @@ export class MetadataPage extends LitElem {
       </p>
 
       ${photo.description ? html`<br/><p>${unsafeHTML(photo.description)}</p>` : html``}
+
+      <h3>Rating</h3>
+      <p>${ photo.rating ?? 'unrated' }</p>
+
+      <h3>Photo Subject</h3>
+      <p>${ photo.subject ?? '' }</p>
 
       <h3>Tags</h3>
       <ul class="photo-tag-list">${tags}</ul>
