@@ -25,7 +25,7 @@ export class MetadataPage extends LitElem {
     const photo = this.image;
 
     const tags = (photo.tags.sort() ?? [])
-      .filter((tag) => tag !== "Published")
+      .filter((tag) => tag !== "Published" && !tag.includes('⭐'))
       .sort()
       .map((tagName) => {
         return html`<li><tag-link tagName="${tagName}"></tag-link></li>`;
