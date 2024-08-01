@@ -1,4 +1,8 @@
 export class PageLocation {
+  static showAboutUrl() {
+    window.location.hash = "#/about";
+    document.title = "About - photos";
+  }
   static showAlbumsUrl() {
     window.location.hash = "#/albums";
     document.title = "Albums - photos";
@@ -80,6 +84,13 @@ export class PageLocation {
       return {
         type: "photos",
       };
+    } else if (window.location.hash.startsWith("#/about")) {
+
+      return {
+        type: "about",
+      }
+    } else {
+      console.error("Unknown location", window.location.hash);
     }
   }
 }

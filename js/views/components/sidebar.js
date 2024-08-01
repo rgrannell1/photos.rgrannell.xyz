@@ -41,6 +41,14 @@ export class Sidebar extends LitElem {
     }
             id="tags-sidebar-link" class="sidebar-item">TAGS</li>
 
+          <li
+            @click=${
+      this.broadcast("navigate-page", {
+        page: "about",
+      })
+    }
+            id="photos-sidebar-link" class="sidebar-item">ABOUT</li>
+
       </nav>
     </aside>
     `;

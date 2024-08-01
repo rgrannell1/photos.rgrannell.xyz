@@ -27,4 +27,5 @@ export class Pages {
   static TAG_ALBUM = "tag-album";
   static TAGS = "tags";
   static METADATA = "metadata";
+  static ABOUT = "about";
 }

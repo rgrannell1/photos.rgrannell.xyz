@@ -24,6 +24,7 @@ import "./pages/tag/pages.js";
 import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
 import "./pages/date/pages.js";
+import "./pages/about/pages.js";
 
 const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
@@ -46,6 +47,11 @@ export const DEFAULT_DEPENDENCIES = [
  * for each page.
  */
 export const PAGE_DEPENDECIES = {
+  [Pages.ABOUT]: [
+    [albums, LoadMode.LAZY],
+    [images, LoadMode.LAZY],
+    [metadata, LoadMode.LAZY]
+  ],
   [Pages.ALBUMS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.LAZY],
@@ -135,6 +141,7 @@ export class PhotoApp extends LitElem {
     "locations": Pages.LOCATIONS,
     "stats": Pages.STATS,
     "metadata": Pages.METADATA,
+    "about": Pages.ABOUT
   };
   static get properties() {
     return {
@@ -279,7 +286,9 @@ export class PhotoApp extends LitElem {
   receiveNavigatePage(event) {
     this.page = event.detail.page;
 
-    if (this.page === Pages.PHOTOS) {
+    if (this.page === Pages.ABOUT) {
+      PageLocation.showAboutUrl();
+    } else if (this.page === Pages.PHOTOS) {
       PageLocation.showPhotosUrl();
     } else if (this.page === Pages.ALBUMS) {
       PageLocation.showAlbumsUrl();
@@ -318,6 +327,10 @@ export class PhotoApp extends LitElem {
         classes.join(" ")
       }"></photo-album-page>
       `;
+    }
+
+    if (this.page === Pages.ABOUT) {
+      return html`<about-page class="${classes.join(" ")}"></about-page>`;
     }
 
     if (this.page === Pages.PHOTOS) {
