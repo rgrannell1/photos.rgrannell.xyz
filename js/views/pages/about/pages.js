@@ -30,6 +30,10 @@ export class AboutPage extends LitElem {
 
         <p>No, absolutely not. The <a href="http://photos.rgrannell.xyz/robots.txt">robots.txt</a> file for this site explicitly prohibits this.</p>
 
+        <h2>What is your contact information?</h2>
+
+        <p>See <a href="https://rgrannell.xyz/">my personal site</a> for contact details.</p>
+
         </section>
     </div>
     `;
