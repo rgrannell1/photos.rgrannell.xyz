@@ -1,6 +1,8 @@
 import { html, unsafeHTML } from "../../../library/lit.js";
 
 import "../../components/photo.js";
+import "./components/share.js";
+
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
 import { JSONFeed } from "../../../services/json-feed.js";
@@ -59,6 +61,10 @@ export class AlbumPage extends LitElem {
         </p>
         <p class="photo-album-count">${this.imageCount} photos</p>
         <p class="photo-album-description">${unsafeHTML(this.description)}</p>
+        <br>
+        <album-share-button
+          .title=${this.title}
+          .url=${window.location.href}></album-share-button>
       </section>
 
       <section class="photo-container">
