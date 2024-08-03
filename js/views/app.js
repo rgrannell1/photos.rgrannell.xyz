@@ -147,7 +147,7 @@ export class PhotoApp extends LitElem {
     return {
       title: { type: String },
       page: { type: String },
-      sidebarVisible: { type: Boolean },
+      sidebarVisible: { type: Boolean, state: true },
       id: { type: String },
       tags: { type: Array },
       imageUrl: { type: String },
@@ -166,6 +166,7 @@ export class PhotoApp extends LitElem {
     this.requestUpdate();
 
     window.addEventListener("popstate", this.handlePopState.bind(this));
+    this.sidebarVisible = false;
   }
 
   disconnectedCallback() {
