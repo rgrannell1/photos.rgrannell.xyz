@@ -6,6 +6,7 @@ import "./components/share.js";
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
 import { JSONFeed } from "../../../services/json-feed.js";
+import { SocialCard } from "../../../services/social-card.js";
 import { LitElem } from "../../../models/lit-element.js";
 
 export class AlbumPage extends LitElem {
@@ -23,6 +24,15 @@ export class AlbumPage extends LitElem {
 
   connectedCallback() {
     super.connectedCallback();
+
+    const photo = this.albumPhotos()[0];
+
+    SocialCard.set({
+      url: window.location.href,
+      title: this.title,
+      description: this.description,
+      image: photo.thumbnail_url
+    });
 
     JSONFeed.setIndex();
   }
