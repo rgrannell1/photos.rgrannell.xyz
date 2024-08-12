@@ -33,6 +33,12 @@ export class AlbumPage extends LitElem {
     });
   }
 
+  renderPhotoCount() {
+    return this.imageCount === 1
+      ? `${this.imageCount} photo`
+      : `${this.imageCount} photos`
+  }
+
   render() {
     const mediaQuery = window.matchMedia("(max-width: 500px)");
     const range = Dates.dateRange(
@@ -59,7 +65,7 @@ export class AlbumPage extends LitElem {
         <p class="photo-album-date">
           <time>${range}</time>
         </p>
-        <p class="photo-album-count">${this.imageCount} photos</p>
+        <p class="photo-album-count">${this.renderPhotoCount()}</p>
         <p class="photo-album-description">${unsafeHTML(this.description)}</p>
         <br>
         <album-share-button
