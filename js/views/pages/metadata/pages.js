@@ -21,6 +21,26 @@ export class MetadataPage extends LitElem {
     JSONFeed.setIndex();
   }
 
+  renderAperture() {
+    if (this.image.f_number === "Unknown") {
+      return html`<td>Unknown aperture</td>`;
+    } else if (this.image.f_number === '0.0') {
+      return html`<td>Manual aperture control</td>`;
+    }
+
+    return html`<td>ƒ/${this.image.f_number}</td>`
+  }
+
+  renderFocalLength() {
+    if (this.image.focal_length === 'Unknown') {
+      return html`${this.image.focal_length}`;
+    } else if (this.image.focal_length === '0') {
+      return html`<td>Manual lens</td>`;
+    } else {
+      return html`<td>${this.image.focal_length}mm equiv.</td>`;
+    }
+  }
+
   render() {
     const photo = this.image;
 
@@ -79,9 +99,7 @@ export class MetadataPage extends LitElem {
       <tr>
         <th class="exif-heading">Focal Length</th>
         ${
-          photo.focal_length === 'Unknown'
-            ? html`${photo.focal_length}`
-            : html`<td>${photo.focal_length}mm equiv.</td>`
+          this.renderFocalLength()
         }
       </tr>
       <tr>
@@ -92,8 +110,8 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Aperture</th>
-        <td>ƒ/${photo.f_number}</td>
-      </tr>
+        ${this.renderAperture()}
+        </tr>
       <tr>
         <th class="exif-heading">ISO</th>
         <td>${photo.iso}</td>
