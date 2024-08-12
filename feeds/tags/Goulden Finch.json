@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Goulden Finch — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Goulden Finch.json",
+  "description": "📷 Goulden Finch — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c10d8c78d99f0f63f61380350a16348457de7bf67fb5f2f9cbd6997ca9472819.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c10d8c78d99f0f63f61380350a16348457de7bf67fb5f2f9cbd6997ca9472819.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/abb61fc40e2e4523f328206cf0ea2993cb8e3817192a7efd291156af415ac21c_thumbnail.webp",
+      "date_published": "2018-11-04T19:59:12Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/abb61fc40e2e4523f328206cf0ea2993cb8e3817192a7efd291156af415ac21c_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Yellow Billed Spoonbill — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Yellow Billed Spoonbill.json",
+  "description": "📷 Yellow Billed Spoonbill — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/543f4e3ea154b684e9422c520b0f7a1cdfb403d594469b0756b6a0eaa57b3e0c.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/543f4e3ea154b684e9422c520b0f7a1cdfb403d594469b0756b6a0eaa57b3e0c.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/da5e8563ee67527f67c9e8b0050557a419eea0e9faf4b8ed21f6f5e5b7e11b4e_thumbnail.webp",
+      "date_published": "2022-08-01T17:59:55Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/da5e8563ee67527f67c9e8b0050557a419eea0e9faf4b8ed21f6f5e5b7e11b4e_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Alexander Hamilton Statue — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Alexander Hamilton Statue.json",
+  "description": "📷 Alexander Hamilton Statue — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/002719fd0d0e672a445ea1cda207e8818c3d1c15ab0df6043929f75fed988bb6.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/002719fd0d0e672a445ea1cda207e8818c3d1c15ab0df6043929f75fed988bb6.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d9e739ac718c3d8c48a1b63ecb6569fa07e672c2bc2d2a7c37346f0c68adc2a5_thumbnail.webp",
+      "date_published": "2018-11-05T19:40:34Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d9e739ac718c3d8c48a1b63ecb6569fa07e672c2bc2d2a7c37346f0c68adc2a5_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

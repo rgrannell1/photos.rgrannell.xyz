@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Sparrow — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Sparrow.json",
+  "description": "📷 Sparrow — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8a773c80b57a9f7ff12e2623247f4a36f155ac1890047056f9929c8011862112.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8a773c80b57a9f7ff12e2623247f4a36f155ac1890047056f9929c8011862112.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/abe74b2722b0d1ec6a21dd4d871da2d23b414a2ee100b09ac6749310e6ae8b1d_thumbnail.webp",
+      "date_published": "2018-11-04T18:26:06Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/abe74b2722b0d1ec6a21dd4d871da2d23b414a2ee100b09ac6749310e6ae8b1d_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

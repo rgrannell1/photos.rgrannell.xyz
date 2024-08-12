@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Old World Swallowtail — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Old World Swallowtail.json",
+  "description": "📷 Old World Swallowtail — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/296e747c4c3836db26ec6c9744d07488f65bb827a8ea05826c515bba96459224.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/296e747c4c3836db26ec6c9744d07488f65bb827a8ea05826c515bba96459224.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7f34c976dd06c1afba3fd1bd0af44cf2c2793885dbbd43cc3f6fc8e9feed231b_thumbnail.webp",
+      "date_published": "2022-08-02T20:46:46Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/7f34c976dd06c1afba3fd1bd0af44cf2c2793885dbbd43cc3f6fc8e9feed231b_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Chipmunk — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Chipmunk.json",
+  "description": "📷 Chipmunk — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ae5d5076de0c54ce934636e359d3b84479bdac80e5f9398717e474077d2f821e.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ae5d5076de0c54ce934636e359d3b84479bdac80e5f9398717e474077d2f821e.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4daa537be9a4c50de707eb9b0a44fbb7a707cb148915c10f1aafd615f37ba3ef_thumbnail.webp",
+      "date_published": "2022-08-02T20:12:05Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4daa537be9a4c50de707eb9b0a44fbb7a707cb148915c10f1aafd615f37ba3ef_thumbnail.webp' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2777a9eb52436664332b36a29972b201c2141281303a26b217aa3f22503a9adf.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2777a9eb52436664332b36a29972b201c2141281303a26b217aa3f22503a9adf.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d793e01bd96912a0b6bdb23a208f84d1d374b5792f1c804f690f61b5d41fa79a_thumbnail.webp",
+      "date_published": "2018-11-04T19:49:09Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d793e01bd96912a0b6bdb23a208f84d1d374b5792f1c804f690f61b5d41fa79a_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

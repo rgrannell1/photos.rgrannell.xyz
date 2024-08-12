@@ -14,11 +14,18 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/50cafc0279a594657d8fc8a45c8a430a2eb98389f0c917b7ac83f8b990646d8e.jpeg",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/50cafc0279a594657d8fc8a45c8a430a2eb98389f0c917b7ac83f8b990646d8e.jpeg",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a9faeb6ca33ddf254415990e53be52a0a6c9bc2fb144efb814c0676b81f4ac37_thumbnail.jpeg",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4057a0cf888f3a5403008b2be661cd7d6a14a5a11fdd4cfc3a91224acafaedc0.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4057a0cf888f3a5403008b2be661cd7d6a14a5a11fdd4cfc3a91224acafaedc0.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/34a01a1672c964bdab196972267f2216a4cfb0b676e87d6ce151e018cdef01fb_thumbnail.webp",
       "date_published": "2024-04-20T12:30:51Z",
-      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a9faeb6ca33ddf254415990e53be52a0a6c9bc2fb144efb814c0676b81f4ac37_thumbnail.jpeg' alt='Photo'>"
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/34a01a1672c964bdab196972267f2216a4cfb0b676e87d6ce151e018cdef01fb_thumbnail.webp' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fd712e6a704004bd240975f253e451436671684f95f4f8a648c36eb0a0f447f5.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fd712e6a704004bd240975f253e451436671684f95f4f8a648c36eb0a0f447f5.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0bb26c5f0d6eb7d6894f0bb01308bffdfb85ffb5529206f0a21b2b4f578f3361_thumbnail.webp",
+      "date_published": "2024-07-07T12:34:13Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0bb26c5f0d6eb7d6894f0bb01308bffdfb85ffb5529206f0a21b2b4f578f3361_thumbnail.webp' alt='Photo'>"
     }
   ]
 }

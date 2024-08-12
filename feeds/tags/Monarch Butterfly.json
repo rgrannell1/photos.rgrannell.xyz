@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Monarch Butterfly — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Monarch Butterfly.json",
+  "description": "📷 Monarch Butterfly — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9540d0ba4e3597157e8efda9cdf30b8f8ef8562689da2fa4ecc2788c35d5b98b.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9540d0ba4e3597157e8efda9cdf30b8f8ef8562689da2fa4ecc2788c35d5b98b.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fb545cf787a7d47817e7a6787933920eb6e892e13f148ba4b621c5499a5d5d53_thumbnail.webp",
+      "date_published": "2022-08-02T20:03:41Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/fb545cf787a7d47817e7a6787933920eb6e892e13f148ba4b621c5499a5d5d53_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

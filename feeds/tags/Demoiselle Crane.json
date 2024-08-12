@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Demoiselle Crane — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Demoiselle Crane.json",
+  "description": "📷 Demoiselle Crane — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3140087e9f3a57953933f46944eda2be23566c27a04112a86933e4a3bc1f2a59.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/3140087e9f3a57953933f46944eda2be23566c27a04112a86933e4a3bc1f2a59.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/27d36689a4489a802f2a7cdb8d555e5536e497751e0402f77df5a007d4aa8469_thumbnail.webp",
+      "date_published": "2022-08-02T19:58:13Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/27d36689a4489a802f2a7cdb8d555e5536e497751e0402f77df5a007d4aa8469_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

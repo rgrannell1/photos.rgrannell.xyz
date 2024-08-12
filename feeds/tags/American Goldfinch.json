@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 American Goldfinch — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/American Goldfinch.json",
+  "description": "📷 American Goldfinch — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a194c421e473545540784c204d2f446dad49a01446c5f5cf9f64ee63f2416a14.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a194c421e473545540784c204d2f446dad49a01446c5f5cf9f64ee63f2416a14.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/536588cea8a276e8d61d2a67a7b68c82a32dfb6461cdd7d6fe684adaa5995803_thumbnail.webp",
+      "date_published": "2022-08-06T18:55:41Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/536588cea8a276e8d61d2a67a7b68c82a32dfb6461cdd7d6fe684adaa5995803_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

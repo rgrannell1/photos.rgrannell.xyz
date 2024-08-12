@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Guira Cuckoo — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Guira Cuckoo.json",
+  "description": "📷 Guira Cuckoo — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e6fc496580115fa116f57de7cc98727d17b973d77376d2bb22693111dac47168.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e6fc496580115fa116f57de7cc98727d17b973d77376d2bb22693111dac47168.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d3d564e5798ad961702eda9a991566d00f175477fe5659bda581571b8e89d01a_thumbnail.webp",
+      "date_published": "2022-08-01T17:50:14Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d3d564e5798ad961702eda9a991566d00f175477fe5659bda581571b8e89d01a_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

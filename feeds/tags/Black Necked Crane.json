@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Black Necked Crane — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Black Necked Crane.json",
+  "description": "📷 Black Necked Crane — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/79032ea6415f277284063e669dae4b041a714230c954fbb6c2d29ff769c05d81.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/79032ea6415f277284063e669dae4b041a714230c954fbb6c2d29ff769c05d81.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a9ba2834d0d5d5cc71a3d2be83b26ccb9e242f38376273ecc003bd6e5188c3a5_thumbnail.webp",
+      "date_published": "2022-08-02T20:35:37Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a9ba2834d0d5d5cc71a3d2be83b26ccb9e242f38376273ecc003bd6e5188c3a5_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

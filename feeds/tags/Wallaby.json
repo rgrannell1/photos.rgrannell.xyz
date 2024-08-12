@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Wallaby — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Wallaby.json",
+  "description": "📷 Wallaby — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9b8fd8e557616d19498132a0f1107d420b9e9ad672b26e82d6f99421da295a9e.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9b8fd8e557616d19498132a0f1107d420b9e9ad672b26e82d6f99421da295a9e.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cd117295d9a408812e08aed034b9c00925605178f4b1f7950d7a7d49cf9bd1fd_thumbnail.webp",
+      "date_published": "2018-11-04T20:08:22Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/cd117295d9a408812e08aed034b9c00925605178f4b1f7950d7a7d49cf9bd1fd_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

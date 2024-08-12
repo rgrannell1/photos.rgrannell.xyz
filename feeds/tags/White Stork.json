@@ -14,25 +14,25 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f9e5dbc5825fb696f67bec27140f52c5b31ec39da54b69be17095d1a902f14a3.jpeg",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f9e5dbc5825fb696f67bec27140f52c5b31ec39da54b69be17095d1a902f14a3.jpeg",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f078725b6a3f419ed284279cb6aee26c6afd0aa23a3d7d6ceeb331386a45d551_thumbnail.jpeg",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/aff7558ee66f519e13ae10c964fc6977b2dc41446b149f16335aa4ab4ed6f9f1.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/aff7558ee66f519e13ae10c964fc6977b2dc41446b149f16335aa4ab4ed6f9f1.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/642e326b749f4a257c882cff48f42c920e0435e1abf7d9bf6bc8e3e40cd2ab2f_thumbnail.webp",
       "date_published": "2023-11-28T12:48:15Z",
-      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f078725b6a3f419ed284279cb6aee26c6afd0aa23a3d7d6ceeb331386a45d551_thumbnail.jpeg' alt='Photo'>"
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/642e326b749f4a257c882cff48f42c920e0435e1abf7d9bf6bc8e3e40cd2ab2f_thumbnail.webp' alt='Photo'>"
     },
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2e431b5bb66fc06c57037754205aeac358a879af9412f4f6f361ad1eb8e6c9dd.jpeg",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2e431b5bb66fc06c57037754205aeac358a879af9412f4f6f361ad1eb8e6c9dd.jpeg",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ccfc1000d8da4a74976f32ff654ef8c498d814e80a13df19d43b7f2db95cab33_thumbnail.jpeg",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/062b9014bfdd75ec316ab5d12f45d2db5672942a2af655747120b5ec5bb2b39f.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/062b9014bfdd75ec316ab5d12f45d2db5672942a2af655747120b5ec5bb2b39f.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/87143c41fcba451b29261389516d56dd1126b7de6f14c6c13d25141e51ca54db_thumbnail.webp",
       "date_published": "2023-11-28T12:48:21Z",
-      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ccfc1000d8da4a74976f32ff654ef8c498d814e80a13df19d43b7f2db95cab33_thumbnail.jpeg' alt='Photo'>"
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/87143c41fcba451b29261389516d56dd1126b7de6f14c6c13d25141e51ca54db_thumbnail.webp' alt='Photo'>"
     },
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/824ec050fbb4d92edf8f03de8318c98cd7d7abc84e4f26155ce50e585863f929.jpeg",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/824ec050fbb4d92edf8f03de8318c98cd7d7abc84e4f26155ce50e585863f929.jpeg",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8087a1e38403a58d42a46ebfc57a6f54537f6c6c9cab5e279b6bae7b1b30bb19_thumbnail.jpeg",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/95b904a718f5dd8628bf61fe26517e9fc60aafc56e0e92656e30cb1c9cb1e9d4.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/95b904a718f5dd8628bf61fe26517e9fc60aafc56e0e92656e30cb1c9cb1e9d4.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/15b3f5e569379e05508c4056e61c742805ec0d852847b6d1db882bffee99af55_thumbnail.webp",
       "date_published": "2023-11-28T12:45:19Z",
-      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/8087a1e38403a58d42a46ebfc57a6f54537f6c6c9cab5e279b6bae7b1b30bb19_thumbnail.jpeg' alt='Photo'>"
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/15b3f5e569379e05508c4056e61c742805ec0d852847b6d1db882bffee99af55_thumbnail.webp' alt='Photo'>"
     }
   ]
 }

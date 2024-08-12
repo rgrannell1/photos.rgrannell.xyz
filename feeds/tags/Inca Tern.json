@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Inca Tern — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Inca Tern.json",
+  "description": "📷 Inca Tern — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f98c1ebef862692067674426e71104e0a7163009ead34323890c7574b3f9a482.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f98c1ebef862692067674426e71104e0a7163009ead34323890c7574b3f9a482.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9323c769816f1afd79d8a23c9af14f7dcd8de6eecc4e3d80aff347f432de4a85_thumbnail.webp",
+      "date_published": "2022-08-01T17:43:31Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9323c769816f1afd79d8a23c9af14f7dcd8de6eecc4e3d80aff347f432de4a85_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

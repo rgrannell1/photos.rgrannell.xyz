@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Siberian Crane — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Siberian Crane.json",
+  "description": "📷 Siberian Crane — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4c73c113de2d288af448e1ca6b8d2eadd89c769d8208848a70dda88ba30fa90f.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/4c73c113de2d288af448e1ca6b8d2eadd89c769d8208848a70dda88ba30fa90f.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2f14bd3d1f1974498f5e6ec1651f5836cfff2ab25d8ca0fc42c956d3411e368d_thumbnail.webp",
+      "date_published": "2022-08-02T19:43:33Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2f14bd3d1f1974498f5e6ec1651f5836cfff2ab25d8ca0fc42c956d3411e368d_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

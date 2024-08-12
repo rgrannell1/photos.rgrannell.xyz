@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Bali Myna — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Bali Myna.json",
+  "description": "📷 Bali Myna — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2414e4cd2e5f748a71da02428200b1f272bf3b5731527201c681c6515082740a.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/2414e4cd2e5f748a71da02428200b1f272bf3b5731527201c681c6515082740a.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a9f692aeecf079811d62fd14f260511eb627182f80d139d35b7f71fb3870f3a1_thumbnail.webp",
+      "date_published": "2018-11-04T19:55:45Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/a9f692aeecf079811d62fd14f260511eb627182f80d139d35b7f71fb3870f3a1_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

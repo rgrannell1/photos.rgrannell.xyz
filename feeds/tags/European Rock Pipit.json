@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 European Rock Pipit — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/European Rock Pipit.json",
+  "description": "📷 European Rock Pipit — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/953a78ca9506f06cbc99945a8d32b34f817919807ced22043a304e4d53e7a5b6.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/953a78ca9506f06cbc99945a8d32b34f817919807ced22043a304e4d53e7a5b6.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c4e48c81c4fa729946a660a0860617dee41da62159bc2d7b0f4f107e34787deb_thumbnail.webp",
+      "date_published": "2024-04-13T15:07:06Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c4e48c81c4fa729946a660a0860617dee41da62159bc2d7b0f4f107e34787deb_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

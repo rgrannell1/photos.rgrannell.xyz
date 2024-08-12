@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Thrush — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Thrush.json",
+  "description": "📷 Thrush — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e55f324679bd925368fbbb2f0c9c496d9dfa7ef828d0d2ddedd4101915a0573a.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/e55f324679bd925368fbbb2f0c9c496d9dfa7ef828d0d2ddedd4101915a0573a.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/52f840808d9fe23cbc6887e79e6545ca94c94b4de677a8509381824caeefa316_thumbnail.webp",
+      "date_published": "2018-07-14T12:32:20Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/52f840808d9fe23cbc6887e79e6545ca94c94b4de677a8509381824caeefa316_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

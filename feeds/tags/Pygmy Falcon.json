@@ -1,0 +1,24 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Pygmy Falcon — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Pygmy Falcon.json",
+  "description": "📷 Pygmy Falcon — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/583327c3cf06c322b8fc75b84785285ff0bb85b54902b8c7b1223c7695cb4c10.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/583327c3cf06c322b8fc75b84785285ff0bb85b54902b8c7b1223c7695cb4c10.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b90b4da0c22a1137b3e565e034dab42d6a99c314cdc7bc8d2271cd2851eddf55_thumbnail.webp",
+      "date_published": "2018-11-04T19:20:04Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/b90b4da0c22a1137b3e565e034dab42d6a99c314cdc7bc8d2271cd2851eddf55_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}

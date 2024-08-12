@@ -14,18 +14,25 @@
   "language": "en-IE",
   "items": [
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d54e6e0454795bfa51b349a8b9cf448091c98c9e6ef049769d83f4eab286356b.jpeg",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/d54e6e0454795bfa51b349a8b9cf448091c98c9e6ef049769d83f4eab286356b.jpeg",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6a2f283b5c8fedc489c0bac72ad513210051168dca967effd18ead681a518b78_thumbnail.jpeg",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ec87abc455be8a3ae3d571acafcd6adbb644a216811adaf6813c562b7b919eb1.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/ec87abc455be8a3ae3d571acafcd6adbb644a216811adaf6813c562b7b919eb1.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/914f514f76faf1a1354d92b41eac0e6727ddef83120211337394675a09b57c36_thumbnail.webp",
       "date_published": "2023-09-22T22:25:02Z",
-      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6a2f283b5c8fedc489c0bac72ad513210051168dca967effd18ead681a518b78_thumbnail.jpeg' alt='Photo'>"
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/914f514f76faf1a1354d92b41eac0e6727ddef83120211337394675a09b57c36_thumbnail.webp' alt='Photo'>"
     },
     {
-      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/77cff91e2d7210563f51010f70107b06847381a05757ebdeaa460c4a1ded9228.jpeg",
-      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/77cff91e2d7210563f51010f70107b06847381a05757ebdeaa460c4a1ded9228.jpeg",
-      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/161f1dcdd5b3c128dd0cf949eb36862e6018da459df62fb8f6fd1e8f4338aca8_thumbnail.jpeg",
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c4d27f04e46bfc159d2ff6a83d3db35975eb7697f7650cd0960692792a96ff2e.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/c4d27f04e46bfc159d2ff6a83d3db35975eb7697f7650cd0960692792a96ff2e.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6fcb190a4f128a3b875ed60343ba543b8604f76e17e4ce8ef014c80e70e04195_thumbnail.webp",
+      "date_published": "2022-08-01T18:04:47Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/6fcb190a4f128a3b875ed60343ba543b8604f76e17e4ce8ef014c80e70e04195_thumbnail.webp' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/41e8a44e27b3352c08a83b4f9d285df33e5f4ccff754f35b7c0bf29a302e9776.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/41e8a44e27b3352c08a83b4f9d285df33e5f4ccff754f35b7c0bf29a302e9776.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/02c461ee86f08f4b367b46971dab2e2d2defa36703e6677217a437fce43c1c1b_thumbnail.webp",
       "date_published": "2022-04-01T13:44:16Z",
-      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/161f1dcdd5b3c128dd0cf949eb36862e6018da459df62fb8f6fd1e8f4338aca8_thumbnail.jpeg' alt='Photo'>"
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/02c461ee86f08f4b367b46971dab2e2d2defa36703e6677217a437fce43c1c1b_thumbnail.webp' alt='Photo'>"
     }
   ]
 }

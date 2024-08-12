@@ -1,0 +1,31 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "📷 Eurasian Sparrowhawk — https://photos.rgrannell.xyz",
+  "home_page_url": "https://photos.rgrannell.xyz",
+  "feed_url": "https://photos.rgrannell.xyz/feeds/Eurasian Sparrowhawk.json",
+  "description": "📷 Eurasian Sparrowhawk — photos.rgrannell.xyz",
+  "icon": "https://photos.rgrannell.xyz/icons/android-chrome-512x512.png",
+  "favicon": "https://photos.rgrannell.xyz/favicon.ico",
+  "author": {
+    "name": "R* Grannell",
+    "url": "https://rgrannell.xyz",
+    "avatar": "https://rgrannell.xyz/me.png"
+  },
+  "language": "en-IE",
+  "items": [
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dec0e0a4033dd1dbed31619cb23ec3d5b94ef8396f79f40523c0fc1686325b85.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/dec0e0a4033dd1dbed31619cb23ec3d5b94ef8396f79f40523c0fc1686325b85.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9c8cb0a89e7ed669cc3dfc43daaa765fb901bfaafa0e710dd7a73e13db890128_thumbnail.webp",
+      "date_published": "2020-08-08T17:14:21Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/9c8cb0a89e7ed669cc3dfc43daaa765fb901bfaafa0e710dd7a73e13db890128_thumbnail.webp' alt='Photo'>"
+    },
+    {
+      "id": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/089af81735b2de63345413596afe037acb1ee457f098307d209f4d633931cdbd.webp",
+      "url": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/089af81735b2de63345413596afe037acb1ee457f098307d209f4d633931cdbd.webp",
+      "image": "https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0329513d7e544be90a912094a002cece9200cf8dab9ccf85a9d8400d9e1061bc_thumbnail.webp",
+      "date_published": "2020-09-09T13:52:34Z",
+      "content_html": "<img src='https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/0329513d7e544be90a912094a002cece9200cf8dab9ccf85a9d8400d9e1061bc_thumbnail.webp' alt='Photo'>"
+    }
+  ]
+}
