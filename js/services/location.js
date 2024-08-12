@@ -40,7 +40,7 @@ export class PageLocation {
     document.title = "Metadata - photos";
   }
   static showTagAlbumUrl(tagName) {
-    window.location.hash = `#/tag/${tagName}`;
+    window.location.hash = `#/tag/${encodeURIComponent(tagName)}`;
     document.title = "Tag - photos";
   }
   static getUrl() {
