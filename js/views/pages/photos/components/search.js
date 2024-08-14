@@ -7,7 +7,7 @@ export class SearchBar extends LitElem {
     <div class="search-box">
       <input type="text" placeholder="Search...">
     </div>
-    `
+    `;
   }
 }
 

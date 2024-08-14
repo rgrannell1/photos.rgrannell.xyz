@@ -1,4 +1,3 @@
-
 import "../../components/photo.js";
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
@@ -25,8 +24,8 @@ export class DatePage extends LitElem {
         return false;
       }
 
-      const [date] = image.date_time.split(' ')
-      return date.replace(/\:/g, '-') === this.date;
+      const [date] = image.date_time.split(" ");
+      return date.replace(/\:/g, "-") === this.date;
     });
   }
 

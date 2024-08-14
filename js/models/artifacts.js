@@ -1,9 +1,16 @@
 import { ALBUMS_SYMBOL, IMAGES_SYMBOL, METADATA_SYMBOL } from "../constants.js";
 
+async function readConfig() {
+  const res = await fetch("/manifest/env.json");
+  return await res.json();
+}
+
+const CONFIG = await readConfig();
+
 export class ImagesArtifact {
   _data;
 
-  constructor(url="/manifest/images.json") {
+  constructor(url = `/manifest/images.${CONFIG.publication_id}.json`) {
     this.url = url;
   }
 
@@ -34,7 +41,7 @@ export class ImagesArtifact {
       return;
     }
 
-    console.log("fetching images");
+    console.log(`🔎 fetching ${this.url}`);
 
     const images = await (await fetch(this.url)).json();
 
@@ -48,7 +55,7 @@ export class ImagesArtifact {
     return this._data.map((image) => {
       return {
         ...image,
-        tags: image.tags.split(",")
+        tags: (image.tags ?? '').split(",")
           .filter((tag) => tag != "Published")
           .map((tag) => tag.trim()),
       };
@@ -59,7 +66,7 @@ export class ImagesArtifact {
 export class AlbumsArtifact {
   _data;
 
-  constructor(url="/manifest/albums.json") {
+  constructor(url = `/manifest/albums.${CONFIG.publication_id}.json`) {
     this.url = url;
   }
 
@@ -90,7 +97,7 @@ export class AlbumsArtifact {
       return;
     }
 
-    console.log("fetching albums");
+    console.log(`🔎 fetching ${this.url}`);
 
     const albums = await (await fetch(this.url)).json();
 
@@ -128,7 +135,7 @@ function isChild(metadata, parent, child) {
 export class MetadataArtifact {
   _data;
 
-  constructor(url="/manifest/metadata.json") {
+  constructor(url = "/manifest/metadata.json") {
     this.url = url;
   }
 
@@ -141,7 +148,7 @@ export class MetadataArtifact {
       return;
     }
 
-    console.log("fetching metadata");
+    console.log(`🔎 fetching ${this.url}`);
 
     const metadata = await (await fetch(this.url)).json();
     window[METADATA_SYMBOL] = metadata;

@@ -1537,10 +1537,6 @@ const _s = Ut(ws);
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-window.litDisableBundleWarning ||
-  console.warn(
-    "Lit has been loaded from a bundle that combines all core features into a single file. To reduce transfer size and parsing cost, consider using the `lit` npm package directly in your project.",
-  );
 export {
   $ as ReactiveElement,
   _ as notEqual,

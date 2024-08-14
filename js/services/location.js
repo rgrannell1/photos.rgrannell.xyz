@@ -85,12 +85,13 @@ export class PageLocation {
         type: "photos",
       };
     } else if (window.location.hash.startsWith("#/about")) {
-
       return {
         type: "about",
-      }
+      };
     } else {
-      console.error("Unknown location", window.location.hash);
+      return {
+        type: 'albums',
+      }
     }
   }
 }

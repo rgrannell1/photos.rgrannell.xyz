@@ -1,7 +1,7 @@
 import { html, unsafeHTML } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
-import { Dates } from "../../../services/dates.js"
+import { Dates } from "../../../services/dates.js";
 
 import "./components/share-button.js";
 import "../../components/tag-link.js";
@@ -24,17 +24,17 @@ export class MetadataPage extends LitElem {
   renderAperture() {
     if (this.image.f_number === "Unknown") {
       return html`<td>Unknown aperture</td>`;
-    } else if (this.image.f_number === '0.0') {
+    } else if (this.image.f_number === "0.0") {
       return html`<td>Manual aperture control</td>`;
     }
 
-    return html`<td>ƒ/${this.image.f_number}</td>`
+    return html`<td>ƒ/${this.image.f_number}</td>`;
   }
 
   renderFocalLength() {
-    if (this.image.focal_length === 'Unknown') {
+    if (this.image.focal_length === "Unknown") {
       return html`${this.image.focal_length}`;
-    } else if (this.image.focal_length === '0') {
+    } else if (this.image.focal_length === "0") {
       return html`<td>Manual lens</td>`;
     } else {
       return html`<td>${this.image.focal_length}mm equiv.</td>`;
@@ -45,7 +45,7 @@ export class MetadataPage extends LitElem {
     const photo = this.image;
 
     const tags = (photo.tags.sort() ?? [])
-      .filter((tag) => tag !== "Published" && !tag.includes('⭐'))
+      .filter((tag) => tag !== "Published" && !tag.includes("⭐"))
       .sort()
       .map((tagName) => {
         return html`<li><tag-link tagName="${tagName}"></tag-link></li>`;
@@ -64,13 +64,17 @@ export class MetadataPage extends LitElem {
         <share-metadata-button format="image/webp" url=${photo.image_url}></share-metadata-button>
       </p>
 
-      ${photo.description ? html`<br/><p>${unsafeHTML(photo.description)}</p>` : html``}
+      ${
+      photo.description
+        ? html`<br/><p>${unsafeHTML(photo.description)}</p>`
+        : html``
+    }
 
       <h3>Rating</h3>
-      <p>${ photo.rating ?? 'unrated' }</p>
+      <p>${photo.rating ?? "unrated"}</p>
 
       <h3>Photo Subject</h3>
-      <p>${ photo.subject ?? '' }</p>
+      <p>${photo.subject ?? ""}</p>
 
       <h3>Tags</h3>
       <ul class="photo-tag-list">${tags}</ul>
@@ -98,9 +102,7 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Focal Length</th>
-        ${
-          this.renderFocalLength()
-        }
+        ${this.renderFocalLength()}
       </tr>
       <tr>
         <th class="exif-heading">Shutter Speed</th>

@@ -6,7 +6,7 @@ import { LitElem } from "../../../models/lit-element.js";
 
 export class AboutPage extends LitElem {
   static get properties() {
-    return { };
+    return {};
   }
 
   connectedCallback() {

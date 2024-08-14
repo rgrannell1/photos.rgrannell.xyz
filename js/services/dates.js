@@ -11,8 +11,8 @@ export class Dates {
       return dateTime;
     }
 
-    const [date, time] = dateTime.split(' ');
-    return `${date.replace(/\:/g, '/')} ${time}`;
+    const [date, time] = dateTime.split(" ");
+    return `${date.replace(/\:/g, "/")} ${time}`;
   }
 
   static findRange(images) {

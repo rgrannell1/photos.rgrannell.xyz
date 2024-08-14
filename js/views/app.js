@@ -9,10 +9,7 @@ import {
 import { PageLocation } from "../services/location.js";
 import { SocialCard } from "../services/social-card.js";
 
-import {
-  LoadMode,
-  Pages,
-} from "../constants.js";
+import { LoadMode, Pages } from "../constants.js";
 
 import "./components/sidebar.js";
 import "./components/header.js";
@@ -52,7 +49,7 @@ export const PAGE_DEPENDECIES = {
   [Pages.ABOUT]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
-    [metadata, LoadMode.LAZY]
+    [metadata, LoadMode.LAZY],
   ],
   [Pages.ALBUMS]: [
     [albums, LoadMode.EAGER],
@@ -143,7 +140,7 @@ export class PhotoApp extends LitElem {
     "locations": Pages.LOCATIONS,
     "stats": Pages.STATS,
     "metadata": Pages.METADATA,
-    "about": Pages.ABOUT
+    "about": Pages.ABOUT,
   };
   static get properties() {
     return {
@@ -192,12 +189,15 @@ export class PhotoApp extends LitElem {
     if (PhotoApp.LOCATION_TYPE_TO_PAGE[location?.type]) {
       this.page = PhotoApp.LOCATION_TYPE_TO_PAGE[location.type];
     } else {
-      console.error('did not match pagetype', location?.type)
+      console.error("did not match pagetype", location?.type);
       this.page = PhotoApp.DEFAULT_PAGE;
     }
 
     // set additional state from the url
-    if (this.page === Pages.METADATA || this.page === Pages.ALBUM || this.page === Pages.METADATA) {
+    if (
+      this.page === Pages.METADATA || this.page === Pages.ALBUM ||
+      this.page === Pages.METADATA
+    ) {
       this.id = location.id;
     } else if (this.page === Pages.TAG_ALBUM) {
       this.tag = location.tag;
@@ -208,7 +208,6 @@ export class PhotoApp extends LitElem {
 
   /*
    * Navigate to the album page
-   *
    */
   receiveClickAlbum(event) {
     const {
@@ -225,7 +224,6 @@ export class PhotoApp extends LitElem {
 
   /*
    * Open a photo in a new tab
-   *
    */
   async receiveClickPhoto(event) {
     const {
@@ -246,7 +244,6 @@ export class PhotoApp extends LitElem {
 
   /*
    * When we click on the burger menu icon, toggle the sidebar
-   *
    */
   async receiveClickBurgerMenu() {
     this.sidebarVisible = !this.sidebarVisible;
@@ -307,7 +304,7 @@ export class PhotoApp extends LitElem {
       PageLocation.showMetadataUrl(this.id);
     } else if (this.page === Pages.DATE) {
       PageLocation.showDateUrl(this.date);
-    }else {
+    } else {
       PageLocation.showAlbumsUrl();
     }
 
@@ -367,7 +364,7 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.DATE) {
-      console.log(this.date)
+      console.log(this.date);
       return html`<date-page
         .images=${images} date="${this.date}"
         ></date-page>`;

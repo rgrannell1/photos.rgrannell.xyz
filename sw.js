@@ -1,5 +1,9 @@
+
+const swChannel = new BroadcastChannel('sw');
+
+swChannel.postMessage("⚙️ service-worker loaded");
+
 const CACHE_NAME = "sw-cache";
-const THUMBNAIL_SUFFIX = "_thumbnail.webp";
 const CACHEABLE_RESOURCES = [
   "/icons/android-chrome-192x192.png",
   "/icons/android-chrome-512x512.png",
@@ -9,18 +13,17 @@ const CACHEABLE_RESOURCES = [
   "/favicon.ico",
   "/js/library/lit.js",
   "/js/library/leaflet.js",
+  "/fonts/Rubik-Regular.ttf"
 ];
 
-// let's not cache list of images / albums here. Netlify will cache them for us,
-// and we'll attach them to the window so they'll persist within a page load but not reloads.
+// -- let's not cache list of images / albums here. Netlify will cache them for us,
+// -- and we'll attach them to the window so they'll persist within a page load but not reloads.
 const UNCACHEABLE_RESOURCES = [
   "/manifest/metdata.json",
-  "/manifest/images.json",
-  "/manifest/albums.json",
 ];
 
 self.addEventListener("install", function (event) {
-  // on install, cache every cacheable resource explicity listed.
+  // -- on install, cache every cacheable resource explicity listed.
 
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
@@ -31,9 +34,29 @@ self.addEventListener("install", function (event) {
   );
 });
 
+function isCacheable(url, status) {
+  if (url.includes('_thumbnail') || url.includes('/t/')) {
+    return true;
+  }
+
+  if (url.includes('/manifest/albums')) {
+    return true;
+  }
+
+  if (url.includes('/manifest/images')) {
+    return true;
+  }
+
+  return false;
+}
+
 self.addEventListener("fetch", function (event) {
+  const url = event.request.url;
+
+  // -- do nothing for uncacheable resources
   for (const resource of UNCACHEABLE_RESOURCES) {
-    if (event.request.url.includes(resource)) {
+    if (url.includes(resource)) {
+      swChannel.postMessage(`⚙️ rejecting ${url} from cache`);
       return;
     }
   }
@@ -43,20 +66,28 @@ self.addEventListener("fetch", function (event) {
       if (response) {
         return response;
       }
+      swChannel.postMessage(`⚙️ service-worker cache miss for ${url}`);
 
-      return fetch(event.request).then(function (networkResponse) {
-        const isThumbnail = event.request.url.includes(THUMBNAIL_SUFFIX);
+      return fetch(event.request)
+      .then(function (networkResponse) {
+        swChannel.postMessage(`⚙️ cannot cache ${url} ${networkResponse?.status}`);
 
-        // just return the result directly
-        if (!isThumbnail) {
+        // -- just return the result directly
+        if (!isCacheable(url, networkResponse.status)) {
+          swChannel.postMessage(`⚙️ cannot cache ${url}`);
+
           return networkResponse;
         }
 
-        // cache image thumbnail
+        // -- cache thumbnails and artifacts
         return caches.open(CACHE_NAME).then(function (cache) {
+          swChannel.postMessage(`⚙️ caching ${url} ${networkResponse.status}`);
+
           cache.put(event.request, networkResponse.clone());
           return networkResponse;
         });
+      }).catch(err => {
+        swChannel.postMessage(`⚙️ service-worker fetch failed for ${url}: ${err}`);
       });
     }),
   );

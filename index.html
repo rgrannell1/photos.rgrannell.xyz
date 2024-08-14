@@ -12,7 +12,7 @@
 
     <!-- Preconnects -->
     <link rel="preconnect" href="https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com">
-    <link rel="preconnect" href="https://c.tile.osm.org">
+    <!-- <link rel="preconnect" href="https://c.tile.osm.org"> -->
 
     <!-- OpenGraph Attributes -->
     <meta property="og:title" content="photos.rgrannell.xyz">
@@ -32,7 +32,7 @@
     <meta name="twitter:image" content="https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/open-graph-card.png">
 
     <link rel="manifest" href="/site.webmanifest">
-    <link rel="shortcut icon" type="image/png" href="/icons/favicon-32x32.png"/ defer="">
+    <link rel="shortcut icon" type="image/png" href="/icons/favicon-32x32.png"/ defer="" fetchpriorty="low">
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0056b3">
@@ -45,13 +45,22 @@
 
   <photo-app></photo-app>
 
-  <script>
+  <script async fetchpriority="low">
+    const swChannel = new BroadcastChannel('sw');
+
+    swChannel.onmessage = event => {
+      console.log(event.data);
+    }
+
     // -- register a service-worker
     if('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-      console.log('loaded /sw.js')
+      console.log('⚙️ loading service worker: /sw.js')
+
+      navigator.serviceWorker.register('/sw.js').catch(err => {
+        console.error(`⚙️ failed service worker: /sw.js ${err}`)
+      });
     } else {
-      console.error('failed to load /sw.js')
+      console.error('⚙️ service worker not supported: /sw.js')
     }
   </script>
 </html>

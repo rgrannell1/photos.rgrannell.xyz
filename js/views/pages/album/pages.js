@@ -31,7 +31,7 @@ export class AlbumPage extends LitElem {
       url: window.location.href,
       title: this.title,
       description: this.description,
-      image: photo.thumbnail_url
+      image: photo.thumbnail_url,
     });
 
     JSONFeed.setIndex();
@@ -46,7 +46,7 @@ export class AlbumPage extends LitElem {
   renderPhotoCount() {
     return this.imageCount === 1
       ? `${this.imageCount} photo`
-      : `${this.imageCount} photos`
+      : `${this.imageCount} photos`;
   }
 
   render() {
