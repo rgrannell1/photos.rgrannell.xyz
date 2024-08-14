@@ -1,11 +1,15 @@
-
-import assert from 'assert';
-import puppeteer from 'puppeteer';
-import { promises as fs } from 'fs';
+import assert from "assert";
+import puppeteer from "puppeteer";
+import { promises as fs } from "fs";
 
 class Artifacts {
   static async albums() {
-    const data = JSON.parse(await fs.readFile('/home/rg/Code/websites/photos.rgrannell.xyz/manifest/albums.json', 'utf8'));
+    const data = JSON.parse(
+      await fs.readFile(
+        "/home/rg/Code/websites/photos.rgrannell.xyz/manifest/albums.json",
+        "utf8",
+      ),
+    );
 
     const headers = data[0];
     const albumRows = [];
@@ -29,11 +33,11 @@ async function openBrowser() {
 }
 
 async function openPage(browser, path) {
-  const ENDPOINT = 'http://127.0.0.1:5501';
+  const ENDPOINT = "http://127.0.0.1:5501";
   const page = await browser.newPage({ headless: true });
 
   await page.goto(`${ENDPOINT}/index.html#${path}`, {
-    waitUntil: 'networkidle2',
+    waitUntil: "networkidle2",
   });
 
   return page;
@@ -55,21 +59,26 @@ for (const album of await Artifacts.albums()) {
     throw new Error(`failure while opening ${id}`, { cause: err });
   }
 
-  const h1Text = await page.$eval('h1', (element) => element.textContent);
+  const h1Text = await page.$eval("h1", (element) => element.textContent);
 
   // assert the title is set for the album
   assert.equal(h1Text, albumName);
 
-  const imageCountText = await page.$eval('.photo-album-count', (element) => element.textContent);
+  const imageCountText = await page.$eval(
+    ".photo-album-count",
+    (element) => element.textContent,
+  );
 
   // assert the album count field is correct
   assert.equal(
     imageCountText,
-    imageCount === 1
-      ? `${imageCount} photo`
-      : `${imageCount} photos`);
+    imageCount === 1 ? `${imageCount} photo` : `${imageCount} photos`,
+  );
 
-  const actualImageCount = await page.$$eval('.photo', (elements) => elements.length);
+  const actualImageCount = await page.$$eval(
+    ".photo",
+    (elements) => elements.length,
+  );
 
   assert.equal(actualImageCount, imageCount);
 }
