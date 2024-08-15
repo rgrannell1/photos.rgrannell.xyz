@@ -1,0 +1,25 @@
+{
+  "name": "photos.rgrannell.xyz",
+  "version": "1.0.0",
+  "description": "[![Netlify Status](https://api.netlify.com/api/v1/badges/a1a5cde2-e35a-4d64-a01b-6076687edb7a/deploy-status)](https://app.netlify.com/sites/inquisitive-biscuit-b7e81a/deploys)",
+  "main": "sw.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgrannell1/photos.rgrannell.xyz.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rgrannell1/photos.rgrannell.xyz/issues"
+  },
+  "homepage": "https://github.com/rgrannell1/photos.rgrannell.xyz#readme",
+  "dependencies": {
+    "@netlify/functions": "^2.8.1"
+  }
+}

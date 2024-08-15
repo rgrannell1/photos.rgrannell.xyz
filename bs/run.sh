@@ -1,3 +1,3 @@
 #!/bin/bash
 
-netlify dev
+find server | entr -r netlify dev
