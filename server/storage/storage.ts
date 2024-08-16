@@ -65,4 +65,18 @@ export class Storage {
       return data as Album;
     });
   }
+
+  static toManifestFormat(rows: any[]) {
+    const output: any[] = [];
+
+    for (const row of rows) {
+      if (output.length === 0) {
+        output.push(Object.keys(row));
+      }
+
+      output.push(Object.values(row));
+    }
+
+    return output;
+  }
 }

@@ -7,15 +7,20 @@ const store = new Storage();
 
 const handler: Handler = async (event) => {
   await store.init();
+  const env = await store.getEnv();
 
   const { columns: colString } = event.queryStringParameters as { columns: string };
-  const colummnNames = colString.split(',');
+  const colummnNames = (colString ?? '').split(',');
 
   const relevant = store.albums.map((album: Album): Partial<Album> => {
     const data = {};
 
-    for (const header of colummnNames) {
-      data[header] = album[header];
+    if (colString) {
+      for (const header of colummnNames) {
+        data[header] = album[header];
+      }
+    } else {
+      return album;
     }
 
     return data;
@@ -23,7 +28,10 @@ const handler: Handler = async (event) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(relevant)
+    body: JSON.stringify({
+      publication_id: env.publication_id,
+      data: Storage.toManifestFormat(relevant)
+    })
   }
 }
 

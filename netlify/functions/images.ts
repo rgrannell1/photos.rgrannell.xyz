@@ -7,15 +7,20 @@ const store = new Storage();
 
 const handler: Handler = async (event) => {
   await store.init();
+  const env = await store.getEnv();
 
   const { columns: colString } = event.queryStringParameters as { columns: string };
-  const colummnNames = colString.split(',');
+  const colummnNames = (colString ?? '').split(',');
 
   const relevant = store.images.map((image: Image): Partial<Image> => {
     const data = {};
 
-    for (const header of colummnNames) {
-      data[header] = image[header];
+    if (colString) {
+      for (const header of colummnNames) {
+        data[header] = image[header];
+      }
+    } else {
+      return image;
     }
 
     return data;
@@ -23,7 +28,10 @@ const handler: Handler = async (event) => {
 
   return {
     statusCode: 200,
-    body: JSON.stringify(relevant)
+    body: JSON.stringify({
+      publication_id: env.publication_id,
+      data: Storage.toManifestFormat(relevant)
+    })
   }
 }
 
