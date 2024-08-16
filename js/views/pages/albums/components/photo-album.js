@@ -12,6 +12,7 @@ export class PhotoAlbum extends LitElem {
       maxDate: { type: String },
       id: { type: String },
       count: { type: Number },
+      countries: { type: String },
       loading: { type: String },
     };
   }
@@ -37,25 +38,31 @@ export class PhotoAlbum extends LitElem {
   render() {
     return html`
     <div class="photo-album">
-      <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.thumbnailDataUrl}"/>
-      <img @load=${
-      this.hidePlaceholder.bind(this)
-    } style="z-index: -1" class="thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
-      @click=${
-      this.broadcast("click-album", {
-        id: this.id,
-        title: this.title,
-      })
-    }>
+      <a href="${'/#/album/' + this.id}" onclick="event.preventDefault();">
+        <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.thumbnailDataUrl}"/>
+        <img @load=${
+        this.hidePlaceholder.bind(this)
+      } style="z-index: -1" class="thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
+        @click=${
+        this.broadcast("click-album", {
+          id: this.id,
+          title: this.title,
+        })
+      }>
+    </a>
       <div class="photo-album-metadata">
         <p class="photo-album-title">${this.title}</p>
         <p class="photo-album-date">
           <time>${this.dateRange()}</time>
         </p>
+        <div class="photo-metadata-inline">
         <p class="photo-album-count">${this.count} ${
       this.count === 1 ? "photo" : "photos"
     }</p>
-      </div>
+        <p class="photo-album-countries">${this.countries}</p>
+        </div>
+
+    </div>
     </div>
     `;
   }

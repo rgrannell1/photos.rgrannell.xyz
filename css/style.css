@@ -448,3 +448,8 @@ photo-app {
     font-weight: bold;
   }
 }
+
+.photo-metadata-inline {
+  display: flex;
+  gap: 10px;
+}
