@@ -39,20 +39,23 @@ export class AppPhoto extends LitElem {
 
     return html`
     <div class="photo">
-      <div
-        @click=${this.broadcast("click-photo-metadata", photoMetadata)}
-        class="photo-metadata-popover">${this.renderIcon()}</div>
+      <a href="${'#/metadata/' + this.id}" onclick="event.preventDefault();">
+        <div
+          @click=${this.broadcast("click-photo-metadata", photoMetadata)}
+          class="photo-metadata-popover">${this.renderIcon()}</div>
+      </a>
 
-      <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.thumbnailDataUrl}"/>
+      <a href="${this.imageUrl}" target="_blank" rel="external">
+        <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.thumbnailDataUrl}"/>
 
-      <img
-        @load=${this.hidePlaceholder.bind(this)} style="z-index: -1"
-        class="thumbnail-image"
-        width="400"
-        height="400"
-        src="${this.thumbnailUrl}"
-        loading="${this.loading}"
-        @click=${this.broadcast("click-photo", { imageUrl: this.imageUrl })}/>
+        <img
+          @load=${this.hidePlaceholder.bind(this)} style="z-index: -1"
+          class="thumbnail-image"
+          width="400"
+          height="400"
+          src="${this.thumbnailUrl}"
+          loading="${this.loading}"/>
+      </a>
     </div>
     `;
   }

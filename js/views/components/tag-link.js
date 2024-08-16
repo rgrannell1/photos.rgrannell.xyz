@@ -21,6 +21,7 @@ export class TagLink extends LitElem {
 
     return html`<a
       href="#/tag/${encodedTagName}"
+      rel="tag"
       @click=${
       this.broadcast("click-tag", { tagName })
     }>${tagName}</a> (${count})`;

@@ -222,17 +222,6 @@ export class PhotoApp extends LitElem {
     PageLocation.showAlbumUrl(id);
   }
 
-  /*
-   * Open a photo in a new tab
-   */
-  async receiveClickPhoto(event) {
-    const {
-      imageUrl,
-    } = event.detail;
-
-    window.open(imageUrl, "_blank");
-  }
-
   async receiveClickTag(event) {
     const { tagName } = event.detail;
 
@@ -448,7 +437,6 @@ export class PhotoApp extends LitElem {
     <body>
       <div class="${topLevelClasses.join(" ")}"
         @click-album=${this.receiveClickAlbum}
-        @click-photo=${this.receiveClickPhoto}
         @click-tag=${this.receiveClickTag}
         @click-burger-menu=${this.receiveClickBurgerMenu}
         @click-photo-metadata=${this.receiveClickPhotoMetadata}
