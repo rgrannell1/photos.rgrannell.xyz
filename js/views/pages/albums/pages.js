@@ -56,6 +56,8 @@ export class AlbumsPage extends LitElem {
   }
 
   render() {
+    performance.mark("start-albums-render");
+
     return html`
     <section class="album-metadata">
       <h1>Albums</h1>

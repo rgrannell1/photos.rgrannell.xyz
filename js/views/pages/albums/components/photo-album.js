@@ -36,6 +36,8 @@ export class PhotoAlbum extends LitElem {
   }
 
   render() {
+    performance.mark(`start-album-render-${this.url}`);
+
     return html`
     <div class="photo-album">
       <a href="${'/#/album/' + this.id}" onclick="event.preventDefault();">
