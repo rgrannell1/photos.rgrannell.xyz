@@ -5,3 +5,4 @@
 .netlify
 node_modules/
 search-engine/
+dist/

@@ -74,7 +74,6 @@ export class LocationsPage extends LitElem {
     <section>
       <h1>Locations</h1>
 
-      <link rel="stylesheet" href="/css/library/leaflet.css">
       <div id="map"></div>
     </section>
     `;

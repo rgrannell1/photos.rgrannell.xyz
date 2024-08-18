@@ -7,7 +7,6 @@ import {
 } from "../models/artifacts.js";
 
 import { PageLocation } from "../services/location.js";
-import { SocialCard } from "../services/social-card.js";
 
 import { LoadMode, Pages } from "../constants.js";
 

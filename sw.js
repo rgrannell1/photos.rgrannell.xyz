@@ -12,8 +12,8 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-32x32.png",
   "/favicon.ico",
   "/js/library/lit.js",
-  "/js/library/leaflet.js",
-  "/fonts/Rubik-Regular.ttf"
+
+  // removed the font, it seemed to do something weird here
 ];
 
 // -- let's not cache list of images / albums here. Netlify will cache them for us,
@@ -36,6 +36,10 @@ self.addEventListener("install", function (event) {
 
 function isCacheable(url, status) {
   if (url.includes('_thumbnail') || url.includes('/t/')) {
+    return true;
+  }
+
+  if (url.includes('.ttf')) {
     return true;
   }
 
