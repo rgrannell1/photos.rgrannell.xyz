@@ -16,7 +16,8 @@
     <!-- Preloads -->
     <link rel="preload" href="/dist/app.js">
 
-    <!-- Prefetches -->
+    <!-- Prefetches
+         These seem a bit excessive to me, but WebPageTest tells me it knocks half a second off load-times -->
     <link rel="prefetch" href="/manifest/env.json">
     <link rel="prefetch" href="/manifest/metadata.json">
 
@@ -27,7 +28,6 @@
     <link rel="preload" fetchpriority="high" as="image" href="https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/22b02cd377a7504b2a67f6700dd1950963fb3ed94c0dff61cb5c7d4e8de5854c_thumbnail.webp">
     <link rel="preload" fetchpriority="high" as="image" href="https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/48eacb8875d98b3c54f148d5b05d3e3d2dfa36de5ebb42cf26accfcb9e22884b_thumbnail.webp">
     <link rel="preload" fetchpriority="high" as="image" href="https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/f3f048b71d70cf2afe5faa0437907cadc16aaa8fb261d2db97f32423610c6c58_thumbnail.webp">
-
 
     <!-- OpenGraph Attributes -->
     <meta property="og:title" content="photos.rgrannell.xyz">
@@ -71,7 +71,7 @@
     if('serviceWorker' in navigator) {
       console.log('⚙️ loading service worker: /sw.js')
 
-      navigator.serviceWorker.register('/sw.js').catch(err => {
+      navigator.serviceWorker.register('/dist/sw.js').catch(err => {
         console.error(`⚙️ failed service worker: /sw.js ${err}`)
       });
     } else {

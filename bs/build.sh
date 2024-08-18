@@ -5,5 +5,11 @@ npx esbuild js/views/app.js \
   --outfile=dist/app.js     \
   --format=esm              \
   --minify                  \
-  --sourcemap               \
-  --watch                   \
+  --sourcemap
+
+npx esbuild sw.js      \
+  --bundle             \
+  --outfile=dist/sw.js \
+  --format=esm         \
+  --minify             \
+  --sourcemap
