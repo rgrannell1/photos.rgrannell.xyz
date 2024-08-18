@@ -52,9 +52,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0056b3">
 
-    <link rel="stylesheet" href="/css/style.css" as="style">
+    <link rel="stylesheet" href="/dist/css/style.css" as="style">
 
-    <script type="module" src="/dist/app.js"></script>
+    <script type="module" src="/dist/js/app.js"></script>
     <title>photos.rgrannell.xyz</title>
   </head>
 
@@ -71,7 +71,7 @@
     if('serviceWorker' in navigator) {
       console.log('⚙️ loading service worker: /sw.js')
 
-      navigator.serviceWorker.register('/dist/sw.js').catch(err => {
+      navigator.serviceWorker.register('/dist/js/sw.js').catch(err => {
         console.error(`⚙️ failed service worker: /sw.js ${err}`)
       });
     } else {

@@ -1,120 +1,94 @@
-
-/*
- * ++++ ++++ ++++ ~~~~ Global Variables ~~~~ ++++ ++++ ++++
- */
+/* css/style.css */
 :root {
   color-scheme: dark light;
 }
-
 :root {
-  --secondary-text-color:   hsl(0, 0%, 60%);
-  --font-colour:            hsla(0, 0%, 0%, 0.8);
-  --navbar-font-colour:     hsl(0, 0%, 0%);
-  --background-color:       hsl(0, 0%, 96%);
-  --link-color:             hsl(211, 100%, 35%);
-  --disabled-link-color:    hsl(0, 0%, 38%);
-  --brand-color:            hsl(211, 100%, 35%);
-  --link-background-color:  hsl(211, 100%, 95%);
-
-  /* hover over sidebar color */
+  --secondary-text-color: hsl(0, 0%, 60%);
+  --font-colour: hsla(0, 0%, 0%, 0.8);
+  --navbar-font-colour: hsl(0, 0%, 0%);
+  --background-color: hsl(0, 0%, 96%);
+  --link-color: hsl(211, 100%, 35%);
+  --disabled-link-color: hsl(0, 0%, 38%);
+  --brand-color: hsl(211, 100%, 35%);
+  --link-background-color: hsl(211, 100%, 95%);
   --hover-background-color: hsl(210, 100%, 84%);
-
-  /* the colour of list markers */
-  --marker-color:           hsl(0, 0%, 56%);
-  --nav-border-color:       hsl(0, 0%, 0%);
+  --marker-color: hsl(0, 0%, 56%);
+  --nav-border-color: hsl(0, 0%, 0%);
   --image-placeholder-background-color: hsl(0, 0%, 69%);
-
-  /* photo width */
   --photo-width: 400px;
 }
-
 .dark-mode {
-  --secondary-text-color:   hsl(0, 0%, 66%);
-  --font-colour:            hsl(0, 0%, 100%);
-  --navbar-font-colour:     hsl(0, 0%, 100%);
-  --background-color:       hsl(0, 0%, 8%);
-  --link-color:             hsl(211, 84%, 74%);
-  --disabled-link-color:    hsl(0, 0%, 60%);
-  --brand-color:            hsl(211, 100%, 78%);
-  --link-background-color:  hsl(211, 87%, 62%);
+  --secondary-text-color: hsl(0, 0%, 66%);
+  --font-colour: hsl(0, 0%, 100%);
+  --navbar-font-colour: hsl(0, 0%, 100%);
+  --background-color: hsl(0, 0%, 8%);
+  --link-color: hsl(211, 84%, 74%);
+  --disabled-link-color: hsl(0, 0%, 60%);
+  --brand-color: hsl(211, 100%, 78%);
+  --link-background-color: hsl(211, 87%, 62%);
   --hover-background-color: hsl(211, 87%, 62%);
-  --marker-color:           hsl(0, 0%, 100%);
-  --nav-border-color:       hsl(0, 0%, 100%);
+  --marker-color: hsl(0, 0%, 100%);
+  --nav-border-color: hsl(0, 0%, 100%);
   --image-placeholder-background-color: hsl(0, 0%, 25%);
 }
-
 @font-face {
-  font-family: 'Rubik';
+  font-family: "Rubik";
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/Rubik-Regular.ttf') format('truetype');
-  font-display: swap
+  src: url("./Rubik-Regular-NP7THWPI.ttf") format("truetype");
+  font-display: swap;
 }
-
-/*
- * ++++ ++++ ++++ ~~~~ Basic Styles ~~~~ ++++ ++++ ++++
- */
 html * {
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   margin: 0;
   padding: 0;
 }
-
-/* this spaces the sidebar away from images */
 section {
   margin-left: 2em;
 }
-
 a {
   color: var(--link-color);
 }
-
 main a {
   background-color: var(--link-background-color);
 }
-
 li {
   list-style: square;
 }
-
 li::marker {
   font-size: 0.75em;
   color: var(--marker-color);
 }
-
 h1 {
   font-size: 3em;
   font-weight: lighter;
 }
-
 h2 {
   font-size: 2em;
   margin-top: 1.35em;
 }
-
 h3 {
   margin-top: 1.35em;
 }
-
-h3, h4, h5, h6 {
+h3,
+h4,
+h5,
+h6 {
   font-size: 1.5em;
 }
-
-html, body {
+html,
+body {
   height: 100%;
   background-color: var(--background-color);
 }
-
 button {
   all: unset;
   color: var(--link-color);
   cursor: pointer;
 }
-
 button:disabled {
   color: var(--disabled-link-color);
 }
-
 .photos-app {
   font-size: 1.2em;
   color: var(--font-colour);
@@ -122,29 +96,21 @@ button:disabled {
   background-color: var(--background-color);
   padding-bottom: 100px;
 }
-
 photo-app {
   width: max(180px, min(60vw, var(--photo-width)));
   max-width: max(180px, 60vw);
 }
-
-/*
- * ++++ ++++ ++++ ~~~~ Navbar ~~~~ ++++ ++++ ++++
- */
-
 .burger {
   padding: 10px;
 }
-
 .brand {
   padding: 0px 20px;
 }
-
 .dark-light-button-toggle {
   cursor: pointer;
 }
-
-.header li a, .header li .dark-light-button-toggle {
+.header li a,
+.header li .dark-light-button-toggle {
   display: block;
   color: var(--navbar-font-colour);
   text-align: left;
@@ -152,73 +118,62 @@ photo-app {
   padding: 4px 0px;
   text-decoration: none;
 }
-
-.brand, .burger, .dark-light-button-toggle {
+.brand,
+.burger,
+.dark-light-button-toggle {
   font-size: 0.75em;
   color: var(--brand-color);
   cursor: pointer;
 }
-
 .header {
   margin-bottom: min(5vh, 80px);
   padding: 15px 0px;
   font-size: 1.5em;
-  padding-right:25px;
-  /* border-bottom: 4px solid var(--nav-border-color); */
-
+  padding-right: 25px;
   ul {
     overflow: hidden;
     padding: 1px;
     margin: 0px;
   }
-
   li {
     list-style-type: none;
     float: left;
   }
 }
-
 @media (hover: hover) {
   .burger:hover {
     background-color: var(--hover-background-color);
     cursor: pointer;
   }
-
   .dark-light-button-toggle:hover {
     background-color: var(--hover-background-color);
   }
 }
-
-.thumbnail-image  {
+.thumbnail-image {
   height: auto;
   background-color: var(--image-placeholder-background-color);
 }
-
-.album-container, .photo-container {
+.album-container,
+.photo-container {
   display: flex;
   flex-wrap: wrap;
   column-gap: 10px;
 }
-
 .photo {
   margin: 5px;
   cursor: pointer;
   position: relative;
   display: inline-block;
-  flex:content
+  flex: content;
 }
-
 @media (hover: hover) {
   .photo:hover {
     filter: brightness(80%);
   }
 }
-
-/* the icon */
 .photo-icon {
   fill: white;
 }
-
 .photo-metadata-popover {
   position: absolute;
   padding: 6px 6px;
@@ -230,216 +185,151 @@ photo-app {
   font-size: 2em;
   display: none;
 }
-
 .photo-album {
   margin: 10px;
   cursor: pointer;
 }
-
-/* On non-hover devices, just show a metadata overlay */
 @media (hover: none), (pointer: coarse) {
   .photo .photo-metadata-popover {
     display: block;
   }
 }
-
-/* On hover devices, show a metadata overlay on hover */
 @media (hover: hover) {
   .photo:hover .photo-metadata-popover {
     display: block;
   }
-
   .photo-album:hover {
     filter: brightness(80%);
   }
 }
-
 .photo-album-title {
   margin: 4px 0px;
   font-weight: bolder;
   max-width: max(180px, min(60vw, var(--photo-width)));
 }
-
 .photo-album-date {
   max-width: max(180px, min(60vw, var(--photo-width)));
 }
-
 .photo-album-description {
   margin-top: 1em;
   max-width: 900px;
   word-spacing: normal;
 }
-
-.photo-album-count, .photo-count {
+.photo-album-count,
+.photo-count {
   color: var(--secondary-text-color);
 }
-
-/* metadata */
-
-.album-metadata, .photos-metadata {
+.album-metadata,
+.photos-metadata {
   margin-bottom: 25px;
 }
-
 .thumbnail-placeholder {
   position: absolute;
 }
-
-/*
- * ++++ ++++ ++++ ~~~~ Page Grid Layout ~~~~ ++++ ++++ ++++
- */
-
-/* Small Devices */
 @media (max-width: 500px) {
   h1 {
     font-size: 2em;
   }
-
   .photo-album {
     margin-left: 0 !important;
   }
-
   .thumbnail-image {
     width: max(180px, min(80vw, var(--photo-width)));
     max-width: max(180px, 80vw);
   }
-
   photo-sidebar {
     display: none;
   }
-
-  .photo-album-metadata p, .photo-album-description {
+  .photo-album-metadata p,
+  .photo-album-description {
     font-size: 0.8em;
     padding: 2px;
   }
-
   .photo-album .photo-album-metadata p {
     color: white;
     background-color: black;
   }
-
-  /* hover metadata over the album */
   .photo-album-metadata {
     position: absolute;
     transform: translate(10px, -100px);
     z-index: 1;
   }
-
-  photo-sidebar[visible="true"] {
+  photo-sidebar[visible=true] {
     display: block;
   }
-
-  /* hide the photo-page when sidebar is visible */
   .photo-page {
     display: block;
   }
-
   .photo-page.sidebar-visible {
     display: none;
   }
-
   .app-container {
     display: grid;
     grid-template-columns: 0px 1fr 0px;
   }
-
   .app-container.sidebar-visible {
     display: grid;
     grid-template-columns: 1fr 0px 0px;
   }
 }
-
-/*
- * Medium Devices
- *
- * This reduces the right margin, so we can have more images alongside
- * each other
- */
 @media (min-width: 501px) {
   .app-container {
     display: grid;
     grid-template-columns: 200px 1fr 10px;
   }
-
   .burger {
     display: none;
   }
-
   locations-page {
     margin-right: 0px;
   }
 }
-
-/* Big Devices */
 @media (min-width: 1301px) {
   locations-page {
     margin-right: 200px;
   }
 }
-
-/*
-* ++++ ++++ ++++ ~~~~ Sidebar Styling ~~~~ ++++ ++++ ++++
-*/
-
 @media (hover: hover) {
   .sidebar-item:hover {
     background-color: var(--hover-background-color);
     cursor: pointer;
   }
 }
-
 .sidebar-item {
   padding: 20px;
 }
-
 .photo-sidebar {
   grid-row: 1;
   grid-column: 1;
 }
-
 .dark-light-button-toggle {
   cursor: pointer;
 }
-
 .photo-page {
   grid-row: 1;
   grid-column: 2;
 }
-
-/*
-* ++++ ++++ ++++ ~~~~ Map Page ~~~~ ++++ ++++ ++++
-*/
-
 #map {
   height: 1000px;
 }
-
 .leaflet-marker-icon {
   background-color: transparent;
   border: none !important;
 }
-
-/*
-* ++++ ++++ ++++ ~~~~ Metadata Page ~~~~ ++++ ++++ ++++
-*/
-
 .photo-share-button {
   text-decoration: underline;
 }
-
 .photo-tag-list {
   padding-top: 8px;
   margin-left: 20px;
 }
-
-/* EXIF information about an image */
 .metadata-table {
-    margin: 10px 0;
-
-  th, td {
+  margin: 10px 0;
+  th,
+  td {
     padding: 4px 8px;
     text-align: left;
   }
-
   th {
     font-weight: bold;
   }
@@ -448,7 +338,6 @@ photo-app {
     font-weight: bold;
   }
 }
-
 .photo-metadata-inline {
   display: flex;
   gap: 10px;
