@@ -230,6 +230,12 @@ photo-app {
   h1 {
     font-size: 2em;
   }
+  section.about-page {
+    margin-right: 40px;
+    h2 {
+      font-size: 1.5em;
+    }
+  }
   .photo-album {
     margin-left: 0 !important;
   }
