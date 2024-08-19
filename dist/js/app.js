@@ -89,7 +89,7 @@ var Q=globalThis,Et=Q.ShadowRoot&&(Q.ShadyCSS===void 0||Q.ShadyCSS.nativeShadow)
         ${t}
       </section>
     </div>
-    `}};customElements.define("photos-page",Pt);var k=class i{static parse(t){let[e,s]=t.split(" ");return e=e.replace(/:/g,"-"),new Date(`${e} ${s}`)}static formatExifDate(t){if(!t)return t;let[e,s]=t.split(" ");return`${e.replace(/\:/g,"/")} ${s}`}static findRange(t){let e=1/0,s=-1/0;for(let a of t){if(!a.date_time)continue;let r=i.parse(a.date_time);r<e&&(e=r),r>s&&(s=r)}return[e,s]}static dateRange(t,e,s){if(!t&&!e)return"unknown date";let a=t instanceof Date?t:new Date(parseFloat(t)),r=e instanceof Date?e:new Date(parseFloat(e));if(s){let o={day:"numeric",month:"short"},h=a.toLocaleDateString("en-IE",o),n=r.toLocaleDateString("en-IE",o),u=a.toLocaleDateString("en-IE",{day:"numeric"}),f=r.toLocaleDateString("en-IE",{day:"numeric"}),c=a.toLocaleDateString("en-IE",{month:"short"}),b=r.toLocaleDateString("en-IE",{month:"short"}),g=a.getFullYear(),v=r.getFullYear(),U=c===b,G=g===v;return h===n?`${h} ${g}`:U&&G?`${u} - ${f} ${b} ${g}`:`${h} ${g} - ${n} ${v}`}else{let o={year:"numeric",month:"short",day:"numeric"},h=a.toLocaleDateString("en-IE",o),n=r.toLocaleDateString("en-IE",o);return h===n?h:`${h} \u2014 ${n}`}}};var Dt=class extends p{static get properties(){return{title:{type:String},url:{type:String},thumbnailDataUrl:{type:String},minDate:{type:String},maxDate:{type:String},id:{type:String},count:{type:Number},countries:{type:String},loading:{type:String}}}dateRange(){if(!this.minDate&&!this.maxDate)return"unknown date";let t=window.matchMedia("(max-width: 500px)");return k.dateRange(this.minDate,this.maxDate,t.matches)}hidePlaceholder(t){this.broadcast("photo-loaded",{url:this.url})();let e=t.target.parentNode.querySelector(".thumbnail-placeholder");e.style.zIndex=-1}render(){return performance.mark(`start-album-render-${this.url}`),l`
+    `}};customElements.define("photos-page",Pt);var k=class i{static parse(t){let[e,s]=t.split(" ");return e=e.replace(/:/g,"-"),new Date(`${e} ${s}`)}static formatExifDate(t){if(!t)return t;let[e,s]=t.split(" ");return`${e.replace(/\:/g,"/")} ${s}`}static findRange(t){let e=1/0,s=-1/0;for(let a of t){if(!a.date_time)continue;let r=i.parse(a.date_time);r<e&&(e=r),r>s&&(s=r)}return[e,s]}static dateRange(t,e,s){if(!t&&!e)return"unknown date";let a=t instanceof Date?t:new Date(parseFloat(t)),r=e instanceof Date?e:new Date(parseFloat(e));if(s){let o={day:"numeric",month:"short"},h=a.toLocaleDateString("en-IE",o),n=r.toLocaleDateString("en-IE",o),u=a.toLocaleDateString("en-IE",{day:"numeric"}),f=r.toLocaleDateString("en-IE",{day:"numeric"}),c=a.toLocaleDateString("en-IE",{month:"short"}),b=r.toLocaleDateString("en-IE",{month:"short"}),g=a.getFullYear(),v=r.getFullYear(),U=c===b,G=g===v;return h===n?`${h} ${g}`:U&&G?`${u} - ${f} ${b} ${g}`:`${h} ${g} - ${n} ${v}`}else{let o={year:"numeric",month:"short",day:"numeric"},h=a.toLocaleDateString("en-IE",o),n=r.toLocaleDateString("en-IE",o);return h===n?h:`${h} \u2014 ${n}`}}};var Dt=class extends p{static get properties(){return{title:{type:String},url:{type:String},thumbnailDataUrl:{type:String},minDate:{type:String},maxDate:{type:String},id:{type:String},count:{type:Number},countries:{type:Array},loading:{type:String}}}dateRange(){if(!this.minDate&&!this.maxDate)return"unknown date";let t=window.matchMedia("(max-width: 500px)");return k.dateRange(this.minDate,this.maxDate,t.matches)}hidePlaceholder(t){this.broadcast("photo-loaded",{url:this.url})();let e=t.target.parentNode.querySelector(".thumbnail-placeholder");e.style.zIndex=-1}render(){return performance.mark(`start-album-render-${this.url}`),l`
     <div class="photo-album">
       <a href="${"/#/album/"+this.id}" onclick="event.preventDefault();">
         <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.thumbnailDataUrl}"/>
@@ -103,12 +103,12 @@ var Q=globalThis,Et=Q.ShadowRoot&&(Q.ShadyCSS===void 0||Q.ShadyCSS.nativeShadow)
         </p>
         <div class="photo-metadata-inline">
         <p class="photo-album-count">${this.count} ${this.count===1?"photo":"photos"}</p>
-        <p class="photo-album-countries">${this.countries}</p>
+        <p class="photo-album-countries">${this.countries.join(" ")}</p>
         </div>
 
     </div>
     </div>
-    `}};customElements.define("photo-album",Dt);var Nt=class extends p{static get properties(){return{albums:{type:Object}}}connectedCallback(){super.connectedCallback(),y.setIndex()}getAlbums(){return Object.values(this.albums.albums()).map(t=>{let{image_count:e}=t;if(e)return{title:t.album_name,minDate:t.min_date,maxDate:t.max_date,url:t.thumbnail_url,thumbnailDataUrl:t.thumbnail_mosaic_url,id:t.id,count:e}})}imageCount(){let t=0;for(let e of this.getAlbums())t+=e.count;return t}loadingMode(t){let e=window.innerWidth,s=window.innerHeight,a=400,r=Math.floor(e/a),o=Math.floor(s/a);return t>r*o?"lazy":"eager"}render(){return performance.mark("start-albums-render"),l`
+    `}};customElements.define("photo-album",Dt);var Nt=class extends p{static get properties(){return{albums:{type:Object}}}connectedCallback(){super.connectedCallback(),y.setIndex()}getAlbums(){return Object.values(this.albums.albums()).map(t=>{let{image_count:e}=t;if(e)return{title:t.album_name,minDate:t.min_date,maxDate:t.max_date,url:t.thumbnail_url,thumbnailDataUrl:t.thumbnail_mosaic_url,id:t.id,count:e,flags:t.flags.split(",")}})}imageCount(){let t=0;for(let e of this.getAlbums())t+=e.count;return t}loadingMode(t){let e=window.innerWidth,s=window.innerHeight,a=400,r=Math.floor(e/a),o=Math.floor(s/a);return t>r*o?"lazy":"eager"}render(){return performance.mark("start-albums-render"),l`
     <section class="album-metadata">
       <h1>Albums</h1>
       <p class="photo-count">${this.imageCount()} photos</p>
@@ -123,7 +123,9 @@ var Q=globalThis,Et=Q.ShadowRoot&&(Q.ShadyCSS===void 0||Q.ShadyCSS.nativeShadow)
               id="${t.id}" count="${t.count}"
               minDate="${t.minDate}"
               maxDate="${t.maxDate}"
-              loading=${s}></photo-album>
+              .countries="${t.flags}"
+              loading=${s}>
+              </photo-album>
             `})}
     </section>
     `}};customElements.define("photo-album-page",Nt);var It=class extends p{static get properties(){return{albums:{type:Object}}}connectedCallback(){super.connectedCallback(),y.setIndex()}firstUpdated(){super.firstUpdated();let t=this.querySelector("#map"),e=createMap(t).setView([Me,Ce],Le);e.addLayer(tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png",{minZoom:4}));let a=this.albums.albums();for(let r of Object.values(a)){let o=r.geolocation;o&&geoJSON(o,{style:function(){return{color:"red"}},onEachFeature:(h,n)=>{let u=`

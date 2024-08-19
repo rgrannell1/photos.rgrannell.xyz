@@ -30,6 +30,7 @@ export class AlbumsPage extends LitElem {
         thumbnailDataUrl: album.thumbnail_mosaic_url,
         id: album.id,
         count: image_count,
+        flags: album.flags.split(','),
       };
     });
   }
@@ -81,7 +82,9 @@ export class AlbumsPage extends LitElem {
               id="${album.id}" count="${album.count}"
               minDate="${album.minDate}"
               maxDate="${album.maxDate}"
-              loading=${loading}></photo-album>
+              .countries="${album.flags}"
+              loading=${loading}>
+              </photo-album>
             `;
         })
     }
