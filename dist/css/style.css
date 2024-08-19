@@ -198,7 +198,7 @@ photo-app {
   .photo:hover .photo-metadata-popover {
     display: block;
   }
-  .photo-album:hover {
+  .photo-album img:hover {
     filter: brightness(80%);
   }
 }

@@ -249,7 +249,7 @@ photo-app {
     display: block;
   }
 
-  .photo-album:hover {
+  .photo-album img:hover {
     filter: brightness(80%);
   }
 }
