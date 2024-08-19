@@ -108,7 +108,7 @@ var Q=globalThis,Et=Q.ShadowRoot&&(Q.ShadyCSS===void 0||Q.ShadyCSS.nativeShadow)
 
     </div>
     </div>
-    `}};customElements.define("photo-album",Dt);var Nt=class extends p{static get properties(){return{albums:{type:Object}}}connectedCallback(){super.connectedCallback(),y.setIndex()}getAlbums(){return Object.values(this.albums.albums()).map(t=>{let{image_count:e}=t;if(e)return{title:t.album_name,minDate:t.min_date,maxDate:t.max_date,url:t.thumbnail_url,thumbnailDataUrl:t.thumbnail_mosaic_url,id:t.id,count:e,flags:t.flags.split(",")}})}imageCount(){let t=0;for(let e of this.getAlbums())t+=e.count;return t}loadingMode(t){let e=window.innerWidth,s=window.innerHeight,a=400,r=Math.floor(e/a),o=Math.floor(s/a);return t>r*o?"lazy":"eager"}render(){return performance.mark("start-albums-render"),l`
+    `}};customElements.define("photo-album",Dt);var Nt=class extends p{static get properties(){return{albums:{type:Object}}}connectedCallback(){super.connectedCallback(),y.setIndex()}getAlbums(){return Object.values(this.albums.albums()).map(t=>{let{image_count:e}=t;if(e)return{title:t.album_name,minDate:t.min_date,maxDate:t.max_date,url:t.thumbnail_url,thumbnailDataUrl:t.thumbnail_mosaic_url,id:t.id,count:e,flags:(t.flags??"").split(",")}})}imageCount(){let t=0;for(let e of this.getAlbums())t+=e.count;return t}loadingMode(t){let e=window.innerWidth,s=window.innerHeight,a=400,r=Math.floor(e/a),o=Math.floor(s/a);return t>r*o?"lazy":"eager"}render(){return performance.mark("start-albums-render"),l`
     <section class="album-metadata">
       <h1>Albums</h1>
       <p class="photo-count">${this.imageCount()} photos</p>

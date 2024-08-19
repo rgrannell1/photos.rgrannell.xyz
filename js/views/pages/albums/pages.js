@@ -30,7 +30,7 @@ export class AlbumsPage extends LitElem {
         thumbnailDataUrl: album.thumbnail_mosaic_url,
         id: album.id,
         count: image_count,
-        flags: album.flags.split(','),
+        flags: (album.flags ?? '').split(','),
       };
     });
   }
