@@ -47,7 +47,7 @@
   font-family: 'Rubik';
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/Rubik-Regular.ttf') format('truetype');
+  src: url('../fonts/Rubik-Regular.woff2') format('woff2')
   font-display: swap
 }
 

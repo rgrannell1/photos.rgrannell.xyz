@@ -35,8 +35,7 @@
   font-family: "Rubik";
   font-style: normal;
   font-weight: 400;
-  src: url("./Rubik-Regular-NP7THWPI.ttf") format("truetype");
-  font-display: swap;
+  src: url("./Rubik-Regular-MPIWAPB2.woff2") format("woff2") font-display: swap;
 }
 html * {
   font-family: "Rubik", sans-serif;

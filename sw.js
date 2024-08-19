@@ -38,7 +38,7 @@ function isCacheable(url, status) {
     return true;
   }
 
-  if (url.includes('.ttf')) {
+  if (url.includes('.woff2')) {
     return true;
   }
 

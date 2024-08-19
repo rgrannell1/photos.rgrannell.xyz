@@ -19,5 +19,6 @@ npx esbuild js/views/app.js \
 npx esbuild css/style.css      \
   --bundle                     \
   --loader:.ttf=file           \
+  --loader:.woff2=file         \
   --outfile=dist/css/style.css \
   --watch=forever &
