@@ -303,7 +303,7 @@ export class PhotoApp extends LitElem {
    * Render the subpage (e.g metadata, albums, photos, etc.)
    */
   renderPage(sidebarVisible) {
-    const classes = ["photo-page"];
+    const classes = ["page"];
 
     if (sidebarVisible) {
       classes.push("sidebar-visible");
@@ -322,7 +322,7 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.PHOTOS) {
-      return html`<photos-page .images=${images}></photos-page>`;
+      return html`<photos-page class="${classes.join(" ")}" .images=${images}></photos-page>`;
     }
 
     if (this.page === Pages.ALBUM) {

@@ -126,7 +126,6 @@ photo-app {
   cursor: pointer;
 }
 .header {
-  margin-bottom: min(5vh, 80px);
   padding: 15px 0px;
   font-size: 1.5em;
   padding-right: 25px;
@@ -263,10 +262,10 @@ photo-app {
   photo-sidebar[visible=true] {
     display: block;
   }
-  .photo-page {
+  .page {
     display: block;
   }
-  .photo-page.sidebar-visible {
+  .page.sidebar-visible {
     display: none;
   }
   .app-container {
@@ -307,13 +306,15 @@ photo-app {
 .photo-sidebar {
   grid-row: 1;
   grid-column: 1;
+  margin-top: min(5vh, 80px);
 }
 .dark-light-button-toggle {
   cursor: pointer;
 }
-.photo-page {
+.page {
   grid-row: 1;
   grid-column: 2;
+  margin-top: min(5, 80px);
 }
 #map {
   height: 1000px;

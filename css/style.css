@@ -160,11 +160,9 @@ photo-app {
 }
 
 .header {
-  margin-bottom: min(5vh, 80px);
   padding: 15px 0px;
   font-size: 1.5em;
   padding-right:25px;
-  /* border-bottom: 4px solid var(--nav-border-color); */
 
   ul {
     overflow: hidden;
@@ -336,12 +334,12 @@ photo-app {
     display: block;
   }
 
-  /* hide the photo-page when sidebar is visible */
-  .photo-page {
+  /* hide the page when sidebar is visible */
+  .page {
     display: block;
   }
 
-  .photo-page.sidebar-visible {
+  .page.sidebar-visible {
     display: none;
   }
 
@@ -402,15 +400,17 @@ photo-app {
 .photo-sidebar {
   grid-row: 1;
   grid-column: 1;
+  margin-top: min(5vh, 80px);
 }
 
 .dark-light-button-toggle {
   cursor: pointer;
 }
 
-.photo-page {
+.page {
   grid-row: 1;
   grid-column: 2;
+  margin-top: min(5, 80px);
 }
 
 /*
