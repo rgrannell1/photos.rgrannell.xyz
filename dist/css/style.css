@@ -60,6 +60,7 @@ li::marker {
 }
 h1 {
   font-size: 3em;
+  font-weight: lighter;
 }
 h2 {
   font-size: 2em;
