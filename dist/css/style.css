@@ -35,7 +35,7 @@
   font-family: "Rubik";
   font-style: normal;
   font-weight: 400;
-  src: url("./Rubik-Regular-MPIWAPB2.woff2") format("woff2") font-display: swap;
+  src: url("./Rubik-Regular-MPIWAPB2.woff2") format("woff2");
 }
 html * {
   font-family: "Rubik", sans-serif;
@@ -60,11 +60,11 @@ li::marker {
 }
 h1 {
   font-size: 3em;
-  font-weight: lighter;
 }
 h2 {
   font-size: 2em;
   margin-top: 1.35em;
+  margin-bottom: 0.25em;
 }
 h3 {
   margin-top: 1.35em;
