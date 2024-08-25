@@ -116,13 +116,16 @@ export class TagsPage extends LitElem {
     }
       </section>
 
-      <br>
-      <details>
-        <summary>All Tags</summary>
-        <ul>
-          ${this.tags().map((tag) => this.renderTagLink(tag))}
-        </ul>
-      </details>
+      </section>
+
+      <h2>Helicopters</h2>
+      <section class="album-container">
+        ${
+      this.tagsFamily(this.metadata, "Helicopter").sort().map(
+        this.renderTagCover.bind(this),
+      )
+    }
+      </section>
     </section>
     `;
   }

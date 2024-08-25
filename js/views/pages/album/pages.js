@@ -26,7 +26,9 @@ export class AlbumPage extends LitElem {
     super.connectedCallback();
 
     const photo = this.albumPhotos()[0];
-
+    if (!photo) {
+      console.error(`empty album! ${this.id}`);
+    }
     SocialCard.set({
       url: window.location.href,
       title: this.title,
