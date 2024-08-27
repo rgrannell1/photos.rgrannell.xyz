@@ -232,27 +232,25 @@ var Q=globalThis,Et=Q.ShadowRoot&&(Q.ShadyCSS===void 0||Q.ShadyCSS.nativeShadow)
 
       <h3>Mammals</h3>
 
-      <section class="album-container">
+      <section class="no-margin album-container">
         ${this.tagsFamily(this.metadata,"Mammal").sort().map(this.renderTagCover.bind(this))}
       </section>
 
       <h3>Birds</h3>
 
-      <section class="album-container">
+      <section class="no-margin album-container">
         ${this.tagsFamily(this.metadata,"Bird").sort().map(this.renderTagCover.bind(this))}
       </section>
 
       <h2>Planes</h2>
-      <section class="album-container">
+      <section class="no-margin album-container">
         ${this.tagsFamily(this.metadata,"Plane").sort().map(this.renderTagCover.bind(this))}
-      </section>
-
-      </section>
+    </section>
 
       <h2>Helicopters</h2>
-      <section class="album-container">
+      <section class="no-margin album-container">
         ${this.tagsFamily(this.metadata,"Helicopter").sort().map(this.renderTagCover.bind(this))}
-      </section>
+    </section>
     </section>
     `}};customElements.define("tags-page",zt);var Ft=class extends u{static get properties(){return{url:{type:String},format:{type:String},sharing:{state:!0,type:Boolean}}}async shareImage(t){if(!navigator.share)console.error("navigator.share not available");else{this.sharing=!0;try{let e=await fetch(t),s=new URL(t).pathname;await navigator.share({title:s,files:[new File([await e.blob()],s,{type:this.format})]})}finally{this.sharing=!1}}}render(){return this.sharing?l`<button class="photo-share-button" disabled>[sharing...]</button>`:l`
       <button class="photo-share-button" ?disabled=${!navigator.share} @click=${this.shareImage.bind(this,this.url)}>[share]</button>

@@ -89,7 +89,7 @@ export class TagsPage extends LitElem {
 
       <h3>Mammals</h3>
 
-      <section class="album-container">
+      <section class="no-margin album-container">
         ${
       this.tagsFamily(this.metadata, "Mammal").sort().map(
         this.renderTagCover.bind(this),
@@ -99,7 +99,7 @@ export class TagsPage extends LitElem {
 
       <h3>Birds</h3>
 
-      <section class="album-container">
+      <section class="no-margin album-container">
         ${
       this.tagsFamily(this.metadata, "Bird").sort().map(
         this.renderTagCover.bind(this),
@@ -108,24 +108,22 @@ export class TagsPage extends LitElem {
       </section>
 
       <h2>Planes</h2>
-      <section class="album-container">
+      <section class="no-margin album-container">
         ${
       this.tagsFamily(this.metadata, "Plane").sort().map(
         this.renderTagCover.bind(this),
       )
     }
-      </section>
-
-      </section>
+    </section>
 
       <h2>Helicopters</h2>
-      <section class="album-container">
+      <section class="no-margin album-container">
         ${
       this.tagsFamily(this.metadata, "Helicopter").sort().map(
         this.renderTagCover.bind(this),
       )
     }
-      </section>
+    </section>
     </section>
     `;
   }

@@ -64,6 +64,10 @@ section {
   margin-left: 2em;
 }
 
+.no-margin {
+  margin: 0;
+}
+
 a {
   color: var(--link-color);
 }
