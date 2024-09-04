@@ -3,6 +3,7 @@ import { LitElem } from "../models/lit-element.js";
 import {
   AlbumsArtifact,
   ImagesArtifact,
+  VideosArtifact,
   MetadataArtifact,
 } from "../models/artifacts.js";
 
@@ -26,11 +27,13 @@ import "./pages/about/pages.js";
 
 const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
+const videos = new VideosArtifact();
 const metadata = new MetadataArtifact();
 
 export const DEFAULT_DEPENDENCIES = [
   [albums, LoadMode.EAGER],
   [images, LoadMode.EAGER],
+  [videos, LoadMode.EAGER],
   [metadata, LoadMode.EAGER],
 ];
 /*
@@ -48,56 +51,69 @@ export const PAGE_DEPENDECIES = {
   [Pages.ABOUT]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
+    [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
   ],
   [Pages.ALBUMS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.LAZY],
+    [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
   ],
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
+    [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
   ],
   [Pages.ALBUM]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
+    [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
   ],
   [Pages.PHOTO]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
+    [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
   ],
+
+  // Remove
   [Pages.DATE]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
+    [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
   ],
   [Pages.TAG_ALBUM]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
+    [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
   ],
   [Pages.TAG]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
+    [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
   ],
   [Pages.LOCATIONS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.LAZY],
+    [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
   ],
   [Pages.METADATA]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
+    [videos, LoadMode.EAGER],
     [metadata, LoadMode.EAGER],
   ],
   [Pages.STATS]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
+    [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
   ],
 };
@@ -341,6 +357,7 @@ export class PhotoApp extends LitElem {
       return html`
       <album-page
         .images=${images}
+        .videos=${videos}
         title=${album.album_name}
         id=${this.id}
         minDate=${album.min_date}

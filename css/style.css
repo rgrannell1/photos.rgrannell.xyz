@@ -191,9 +191,14 @@ photo-app {
   }
 }
 
-.thumbnail-image  {
+.thumbnail-image, .thumbnail-video  {
   height: auto;
   background-color: var(--image-placeholder-background-color);
+}
+
+.thumbnail-video {
+  height: 400px;
+  object-fit: cover;
 }
 
 .album-container, .photo-container {
@@ -208,6 +213,11 @@ photo-app {
   position: relative;
   display: inline-block;
   flex:content
+}
+
+.thumbnail-video {
+  margin: 5px;
+  width: var(--photo-width);
 }
 
 @media (hover: hover) {
@@ -308,7 +318,7 @@ photo-app {
     margin-left: 0 !important;
   }
 
-  .thumbnail-image {
+  .thumbnail-image, .thumbnail-video {
     width: max(180px, min(80vw, var(--photo-width)));
     max-width: max(180px, 80vw);
   }

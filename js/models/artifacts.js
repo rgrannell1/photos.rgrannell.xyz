@@ -1,4 +1,4 @@
-import { ALBUMS_SYMBOL, IMAGES_SYMBOL, METADATA_SYMBOL } from "../constants.js";
+import { ALBUMS_SYMBOL, IMAGES_SYMBOL, VIDEOS_SYMBOL, METADATA_SYMBOL } from "../constants.js";
 
 async function readConfig() {
   const res = await fetch("/manifest/env.json");
@@ -56,6 +56,62 @@ export class ImagesArtifact {
       return {
         ...image,
         tags: (image.tags ?? '').split(",")
+          .filter((tag) => tag != "Published")
+          .map((tag) => tag.trim()),
+      };
+    });
+  }
+}
+
+export class VideosArtifact {
+  _data;
+
+  constructor(url = `/manifest/videos.${CONFIG.publication_id}.json`) {
+    this.url = url;
+  }
+
+  processVideos(videos) {
+    const headers = videos[0];
+
+    const output = [];
+
+    for (const image of videos.slice(1)) {
+      const data = {};
+
+      for (let idx = 0; idx < headers.length; idx++) {
+        data[headers[idx]] = image[idx];
+      }
+
+      output.push(data);
+    }
+
+    return output;
+  }
+
+  async init() {
+    if (window[VIDEOS_SYMBOL]) {
+      this._data = window[VIDEOS_SYMBOL];
+    }
+
+    if (this._data || this.loading) {
+      return;
+    }
+
+    console.log(`🔎 fetching ${this.url}`);
+
+    const videos = await (await fetch(this.url)).json();
+
+    const processed = this.processVideos(videos);
+    window[VIDEOS_SYMBOL] = processed;
+
+    this._data = processed;
+  }
+
+  videos() {
+    return this._data.map((video) => {
+      return {
+        ...video,
+        tags: (video.tags ?? '').split(",")
           .filter((tag) => tag != "Published")
           .map((tag) => tag.trim()),
       };

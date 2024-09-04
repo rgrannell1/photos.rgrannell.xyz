@@ -1,6 +1,7 @@
 import { html, unsafeHTML } from "../../../library/lit.js";
 
 import "../../components/photo.js";
+import "../../components/video.js";
 import "./components/share.js";
 
 import { Dates } from "../../../services/dates.js";
@@ -19,6 +20,7 @@ export class AlbumPage extends LitElem {
       imageCount: { type: Number },
       description: { type: String },
       images: { type: Object },
+      videos: { type: Object },
     };
   }
 
@@ -42,6 +44,13 @@ export class AlbumPage extends LitElem {
   albumPhotos() {
     return this.images.images().filter((image) => {
       return image.album_id === this.id;
+    });
+  }
+
+  albumVideos() {
+
+    return this.videos.videos().filter((video) => {
+      return video.album_id === this.id;
     });
   }
 
@@ -70,6 +79,13 @@ export class AlbumPage extends LitElem {
         imageUrl="${photo.image_url}"></app-photo>`;
     });
 
+    const videos = this.albumVideos().map((video, idx) => {
+      return html`<app-video
+        id=${video.id}
+        url=${video.video_url_unscaled}
+        ></app-video>`
+    });
+
     return html`
     <div>
       <section class="photos-metadata">
@@ -87,6 +103,10 @@ export class AlbumPage extends LitElem {
 
       <section class="photo-container">
         ${photos}
+      </section>
+
+      <section class="photo-container">
+        ${videos}
       </section>
     </div>
     `;
