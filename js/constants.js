@@ -29,4 +29,5 @@ export class Pages {
   static TAGS = "tags";
   static METADATA = "metadata";
   static ABOUT = "about";
+  static VIDEOS = "videos";
 }

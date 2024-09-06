@@ -24,6 +24,7 @@ import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
 import "./pages/date/pages.js";
 import "./pages/about/pages.js";
+import "./pages/videos/pages.js";
 
 const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
@@ -63,6 +64,12 @@ export const PAGE_DEPENDECIES = {
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
+    [videos, LoadMode.EAGER],
+    [metadata, LoadMode.LAZY],
+  ],
+  [Pages.VIDEOS]: [
+    [albums, LoadMode.LAZY],
+    [images, LoadMode.LAZY],
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
   ],
@@ -156,6 +163,7 @@ export class PhotoApp extends LitElem {
     "stats": Pages.STATS,
     "metadata": Pages.METADATA,
     "about": Pages.ABOUT,
+    "videos": Pages.VIDEOS,
   };
   static get properties() {
     return {
@@ -308,6 +316,8 @@ export class PhotoApp extends LitElem {
       PageLocation.showMetadataUrl(this.id);
     } else if (this.page === Pages.DATE) {
       PageLocation.showDateUrl(this.date);
+    } else if (this.page === Pages.VIDEOS) {
+      PageLocation.showVideosUrl();
     } else {
       PageLocation.showAlbumsUrl();
     }
@@ -405,7 +415,7 @@ export class PhotoApp extends LitElem {
       `;
     }
 
-    if (this.page === "metadata") {
+    if (this.page === Pages.METADATA) {
       const photo = images.images().find((image) => {
         return image.id === this.id;
       });
@@ -418,6 +428,12 @@ export class PhotoApp extends LitElem {
       <metadata-page .image=${photo} id=${this.id} class="${
         classes.join(" ")
       }"></metadata-page>
+      `;
+    }
+
+    if (this.page === Pages.VIDEOS) {
+      return html`
+      <videos-page .videos=${videos} class="${classes.join(" ")}"></videos-page>
       `;
     }
   }

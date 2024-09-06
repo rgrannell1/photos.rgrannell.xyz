@@ -48,7 +48,6 @@ export class AlbumPage extends LitElem {
   }
 
   albumVideos() {
-
     return this.videos.videos().filter((video) => {
       return video.album_id === this.id;
     });

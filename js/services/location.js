@@ -43,6 +43,10 @@ export class PageLocation {
     window.location.hash = `#/tag/${encodeURIComponent(tagName)}`;
     document.title = "Tag - photos";
   }
+  static showVideosUrl() {
+    window.location.hash = "#/videos";
+    document.title = "Videos - photos";
+  }
   static getUrl() {
     if (window.location.hash.startsWith("#/albums")) {
       return {
@@ -87,6 +91,10 @@ export class PageLocation {
     } else if (window.location.hash.startsWith("#/about")) {
       return {
         type: "about",
+      };
+    } else if (window.location.hash.startsWith("#/videos")) {
+      return {
+        type: "videos",
       };
     } else {
       return {
