@@ -147,9 +147,9 @@ var X=globalThis,Mt=X.ShadowRoot&&(X.ShadyCSS===void 0||X.ShadyCSS.nativeShadow)
 
       <div id="map"></div>
     </section>
-    `}};customElements.define("locations-page",Gt);var Yt=class extends u{static get properties(){return{id:{type:String},url:{type:String},preload:{type:String},url_unscaled:{type:String},url_1080p:{type:String},url_720p:{type:String},url_480p:{type:String}}}render(){return n`
+    `}};customElements.define("locations-page",Gt);var Yt=class extends u{static get properties(){return{id:{type:String},url:{type:String},preload:{type:String},url_poster:{type:String},url_unscaled:{type:String},url_1080p:{type:String},url_720p:{type:String},url_480p:{type:String}}}render(){return n`
     <div>
-      <video controls class="thumbnail-video" preload="${this.preload}">
+      <video controls class="thumbnail-video" preload="${this.preload}" poster=${this.url_poster}>
         <source src="${this.url_480p}" type="video/mp4">
       </video>
       <ul>
@@ -171,6 +171,7 @@ var X=globalThis,Mt=X.ShadowRoot&&(X.ShadyCSS===void 0||X.ShadyCSS.nativeShadow)
         thumbnailDataUrl="${a.thumbnail_data_url}"
         imageUrl="${a.image_url}"></app-photo>`),r=this.albumVideos().map((a,o)=>n`<app-video
         id=${a.id}
+        url_poster=${a.poster_url}
         url_unscaled=${a.video_url_unscaled}
         url_1080p=${a.video_url_1080p}
         url_720p=${a.video_url_720p}
@@ -194,7 +195,7 @@ var X=globalThis,Mt=X.ShadowRoot&&(X.ShadyCSS===void 0||X.ShadyCSS.nativeShadow)
         ${s}
       </section>
 
-      <section class="photo-container">
+      <section class="video-container">
         ${r}
       </section>
     </div>
@@ -385,6 +386,7 @@ var X=globalThis,Mt=X.ShadowRoot&&(X.ShadyCSS===void 0||X.ShadyCSS.nativeShadow)
     </div>
     `}};customElements.define("about-page",te);var _t=class{static loadingMode(t){let e=window.innerWidth,s=window.innerHeight,r=400,a=Math.floor(e/r),o=Math.floor(s/r),d=t>a*o+1;return t===0?"auto":"none"}};var ee=class extends u{static get properties(){return{videos:{type:Object}}}connectedCallback(){super.connectedCallback(),A.setIndex()}allVideos(){return this.videos.videos()}render(){let t=this.allVideos().map((e,s)=>n`<app-video
       id=${e.id}
+      url_poster=${e.poster_url}
       url_unscaled=${e.video_url_unscaled}
       url_1080p=${e.video_url_1080p}
       url_720p=${e.video_url_720p}

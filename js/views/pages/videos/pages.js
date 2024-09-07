@@ -26,6 +26,7 @@ export class VideosPage extends LitElem {
     const videos = this.allVideos().map((video, idx) => {
       return html`<app-video
       id=${video.id}
+      url_poster=${video.poster_url}
       url_unscaled=${video.video_url_unscaled}
       url_1080p=${video.video_url_1080p}
       url_720p=${video.video_url_720p}

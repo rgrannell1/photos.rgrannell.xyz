@@ -7,6 +7,7 @@ export class AppVideo extends LitElem {
       id: { type: String },
       url: { type: String },
       preload: { type: String },
+      url_poster: { type: String },
       url_unscaled: { type: String },
       url_1080p: { type: String },
       url_720p: { type: String },
@@ -17,7 +18,7 @@ export class AppVideo extends LitElem {
   render() {
     return html`
     <div>
-      <video controls class="thumbnail-video" preload="${this.preload}">
+      <video controls class="thumbnail-video" preload="${this.preload}" poster=${this.url_poster}>
         <source src="${this.url_480p}" type="video/mp4">
       </video>
       <ul>
