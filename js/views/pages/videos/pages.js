@@ -3,6 +3,7 @@ import { html } from "../../../library/lit.js";
 import "../../components/video.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
+import { Videos } from "../../../services/videos.js";
 
 export class VideosPage extends LitElem {
   static get properties() {
@@ -26,6 +27,7 @@ export class VideosPage extends LitElem {
       return html`<app-video
       id=${video.id}
       url=${video.video_url_unscaled}
+      preload="${Videos.loadingMode(idx)}"
       ></app-video>`
     });
 

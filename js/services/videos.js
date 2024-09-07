@@ -1,4 +1,4 @@
-export class Photos {
+export class Videos {
   /*
    * Determine whether a photo should be eagerly or lazily loaded
    * depending on page position
@@ -11,6 +11,10 @@ export class Photos {
     const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
     const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
 
-    return idx > (maxImagesPerRow * maxRowsInFold) + 1 ? "lazy" : "eager";
+    const belowTheFold = idx > (maxImagesPerRow * maxRowsInFold) + 1;
+
+    // mmhh, I just want length and the first frame
+    //something more sophisticated is needed to reduce parallel requests
+    return idx === 0 ? "auto" : "none";
   }
 }

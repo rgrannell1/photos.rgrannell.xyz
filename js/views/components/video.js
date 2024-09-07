@@ -5,21 +5,14 @@ export class AppVideo extends LitElem {
   static get properties() {
     return {
       id: { type: String },
-      url: { type: String }
+      url: { type: String },
+      preload: { type: String },
     };
   }
 
   render() {
-    const photoMetadata = {
-      id: this.id,
-      imageUrl: this.imageUrl,
-      thumbnailUrl: this.thumbnailUrl,
-      thumbnailDataUrl: this.thumbnailDataUrl,
-      tags: this.tags,
-    };
-
     return html`
-    <video controls class="thumbnail-video">
+    <video controls class="thumbnail-video" preload="${this.preload}">
       <source src="${this.url}" type="video/mp4">
     </video>
     `;
