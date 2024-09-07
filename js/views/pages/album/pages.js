@@ -81,7 +81,10 @@ export class AlbumPage extends LitElem {
     const videos = this.albumVideos().map((video, idx) => {
       return html`<app-video
         id=${video.id}
-        url=${video.video_url_unscaled}
+        url_unscaled=${video.video_url_unscaled}
+        url_1080p=${video.video_url_1080p}
+        url_720p=${video.video_url_720p}
+        url_480p=${video.video_url_480p}
         ></app-video>`
     });
 
