@@ -22,10 +22,10 @@ export class AppVideo extends LitElem {
         <source src="${this.url_480p}" type="video/mp4">
       </video>
       <ul>
-        <a href="${this.url_unscaled}">[full]</a>
-        <a href="${this.url_1080p}">[large]</a>
-        <a href="${this.url_720p}">[medium]</a>
-        <a href="${this.url_480p}">[small]</a>
+        <a href="${this.url_unscaled}">[L]</a>
+        <a href="${this.url_1080p}">[M]</a>
+        <a href="${this.url_720p}">[S]</a>
+        <a href="${this.url_480p}">[XS]</a>
       </ul>
 
     </div>
