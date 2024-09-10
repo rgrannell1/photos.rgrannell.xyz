@@ -50,6 +50,11 @@ function isCacheable(url, status) {
     return true;
   }
 
+
+  if (url.includes('/manifest/videos')) {
+    return true;
+  }
+
   return false;
 }
 

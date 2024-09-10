@@ -201,7 +201,7 @@ photo-app {
   object-fit: cover;
 }
 
-.album-container, .photo-container {
+.album-container, .photo-container, .video-container {
   display: flex;
   flex-wrap: wrap;
   column-gap: 10px;
@@ -245,6 +245,9 @@ photo-app {
 
 .photo-album {
   margin: 10px;
+}
+
+.photo-album a {
   cursor: pointer;
 }
 
@@ -393,6 +396,10 @@ photo-app {
 @media (min-width: 1301px) {
   locations-page {
     margin-right: 200px;
+  }
+
+  .video-container {
+    margin-top: 60px;
   }
 }
 

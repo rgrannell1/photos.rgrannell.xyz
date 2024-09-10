@@ -199,6 +199,8 @@ photo-app {
 }
 .photo-album {
   margin: 10px;
+}
+.photo-album a {
   cursor: pointer;
 }
 @media (hover: none), (pointer: coarse) {
