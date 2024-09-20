@@ -1,7 +1,7 @@
 import { ALBUMS_SYMBOL, IMAGES_SYMBOL, VIDEOS_SYMBOL, METADATA_SYMBOL } from "../constants.js";
 
-async function readConfig() {
-  const res = await fetch("/manifest/env.json");
+async function readConfig(url = "/manifest/env.json") {
+  const res = await fetch(url);
   return await res.json();
 }
 
