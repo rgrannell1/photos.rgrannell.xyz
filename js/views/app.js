@@ -124,7 +124,6 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.LAZY],
   ],
 };
-
 class AppInitialiser {
   static async init() {
     const location = PageLocation.getUrl();
@@ -372,7 +371,7 @@ export class PhotoApp extends LitElem {
         id=${this.id}
         minDate=${album.min_date}
         maxDate=${album.max_date}
-        imageCount=${album.image_count}
+        imageCount=${album.photos_count}
         description=${album.description}
         class="${classes.join(" ")}"></album-page>
       `;

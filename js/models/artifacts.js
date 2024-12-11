@@ -55,9 +55,9 @@ export class ImagesArtifact {
     return this._data.map((image) => {
       return {
         ...image,
-        tags: (image.tags ?? '').split(",")
-          .filter((tag) => tag != "Published")
-          .map((tag) => tag.trim()),
+        full_image: `https://photos-cdn.rgrannell.xyz${image.full_image}`,
+        thumbnail_url: `https://photos-cdn.rgrannell.xyz${image.thumbnail_url}`,
+        thumbnail_mosaic_url: `data:image/bmp;base64,${image.thumbnail_mosaic_url}`,
       };
     });
   }
@@ -111,6 +111,11 @@ export class VideosArtifact {
     return this._data.map((video) => {
       return {
         ...video,
+        poster_url: `https://photos-cdn.rgrannell.xyz${video.poster_url}`,
+        video_url_1080p: `https://photos-cdn.rgrannell.xyz${video.video_url_1080p}`,
+        video_url_480p: `https://photos-cdn.rgrannell.xyz${video.video_url_480p}`,
+        video_url_720p: `https://photos-cdn.rgrannell.xyz${video.video_url_720p}`,
+        video_url_unscaled: `https://photos-cdn.rgrannell.xyz${video.video_url_unscaled}`,
         tags: (video.tags ?? '').split(",")
           .filter((tag) => tag != "Published")
           .map((tag) => tag.trim()),
@@ -164,7 +169,13 @@ export class AlbumsArtifact {
   }
 
   albums() {
-    return this._data;
+    return this._data.map((album) => {
+      return {
+        ...album,
+        thumbnail_url: `https://photos-cdn.rgrannell.xyz${album.thumbnail_url}`,
+        thumbnail_mosaic_url: `${album.thumbnail_mosaic_url}`, // TODO: should send a short version too
+      }
+    });
   }
 }
 

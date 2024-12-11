@@ -1,4 +1,4 @@
-import { cache, html } from "../../../library/lit.js";
+import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 
@@ -17,9 +17,10 @@ export class AlbumsPage extends LitElem {
   }
   getAlbums() {
     return Object.values(this.albums.albums()).map((album) => {
-      const { image_count } = album;
-      if (!image_count) {
-        return;
+
+      const { photos_count } = album;
+      if (!photos_count && false) {
+        throw new Error(`Album ${album.album_name} has no photos`);
       }
 
       return {
@@ -27,9 +28,9 @@ export class AlbumsPage extends LitElem {
         minDate: album.min_date,
         maxDate: album.max_date,
         url: album.thumbnail_url,
-        thumbnailDataUrl: album.thumbnail_mosaic_url,
+        thumbnailDataUrl: `data:image/bmp;base64,${album.thumbnail_mosaic_url}`,
         id: album.id,
-        count: image_count,
+        count: photos_count,
         flags: (album.flags ?? '').split(','),
       };
     });

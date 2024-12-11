@@ -11,7 +11,9 @@ export class Dates {
       return dateTime;
     }
 
-    const [date, time] = dateTime.split(" ");
+    const createdAt = new Date(dateTime).toISOString();
+    const [date, time] = createdAt.split("T")[0].replace(/\:/g, "-");
+
     return `${date.replace(/\:/g, "/")} ${time}`;
   }
 
@@ -20,11 +22,11 @@ export class Dates {
     let maximum = -Infinity;
 
     for (const image of images) {
-      if (!image.date_time) {
+      if (!image.created_at) {
         continue;
       }
 
-      const parsedDate = Dates.parse(image.date_time);
+      const parsedDate = Dates.parse(image.created_at);
       if (parsedDate < minimum) {
         minimum = parsedDate;
       }

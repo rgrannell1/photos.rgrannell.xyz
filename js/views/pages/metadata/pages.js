@@ -51,7 +51,9 @@ export class MetadataPage extends LitElem {
         return html`<li><tag-link tagName="${tagName}"></tag-link></li>`;
       });
 
-    const dateHref = photo.date_time.split(" ")[0].replace(/\:/g, "-");
+
+    const createdAt = new Date(photo.created_at).toISOString();
+    const dateHref = createdAt.split("T")[0].replace(/\:/g, "-");
 
     return html`
     <section>
@@ -60,7 +62,7 @@ export class MetadataPage extends LitElem {
     <img class="thumbnail-image" src="${photo.thumbnail_url}"/>
 
       <p>
-        <a href="${photo.image_url}">[full image]</a>
+        <a href="${photo.full_image}">[full image]</a>
         <share-metadata-button format="image/webp" url=${photo.image_url}></share-metadata-button>
       </p>
 
@@ -89,7 +91,7 @@ export class MetadataPage extends LitElem {
       <tr>
         <th class="exif-heading">Date-Time</th>
         <td><time><a href="#/date/${dateHref}">
-        ${Dates.formatExifDate(photo.date_time)}
+        ${Dates.formatExifDate(photo.created_at)}
         </a></time></td>
       </tr>
       <tr>

@@ -64,7 +64,7 @@ export class TagsPage extends LitElem {
       return;
     }
 
-    return html`<tag-album url="${image.thumbnail_url}" thumbnailDataUrl="${image.thumbnail_data_url}" tagName=${tag} .links=${links}>`;
+    return html`<tag-album url="${image.thumbnail_url}" thumbnailDataUrl="${image.thumbnail_mosaic_url}" tagName=${tag} .links=${links}>`;
   }
 
   tagsFamily(md, name) {

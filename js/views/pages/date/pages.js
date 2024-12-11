@@ -20,11 +20,11 @@ export class DatePage extends LitElem {
 
   datePhotos() {
     return this.images.images().filter((image) => {
-      if (!image.date_time) {
+      if (!image.created_at) {
         return false;
       }
 
-      const [date] = image.date_time.split(" ");
+      const [date] = image.created_at.split(" ");
       return date.replace(/\:/g, "-") === this.date;
     });
   }
@@ -37,8 +37,8 @@ export class DatePage extends LitElem {
         tags="${photo.tags}"
         loading="${Photos.loadingMode(idx)}"
         thumbnailUrl="${photo.thumbnail_url}"
-        thumbnailDataUrl="${photo.thumbnail_data_url}"
-        imageUrl="${photo.image_url}"></app-photo>`;
+        thumbnailDataUrl="${photo.thumbnail_mosaic_url}"
+        imageUrl="${photo.full_image}"></app-photo>`;
     });
 
     return html`

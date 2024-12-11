@@ -53,8 +53,8 @@ export class TagPage extends LitElem {
           tags="${photo.tags}"
           loading="${"lazy"}"
           thumbnailUrl="${photo.thumbnail_url}"
-          thumbnailDataUrl="${photo.thumbnail_data_url}"
-          imageUrl="${photo.image_url}"></app-photo>`;
+          thumbnailDataUrl="${photo.thumbnail_mosaic_url}"
+          imageUrl="${photo.full_image}"></app-photo>`;
       })
     }
       </section>
