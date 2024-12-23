@@ -19,7 +19,7 @@ export class JSONFeed {
       return;
     }
 
-    const feedUrl = `/feeds/index.json`;
+    const feedUrl = `/manifest/feed.json`;
     $rss.href = feedUrl;
   }
 }
