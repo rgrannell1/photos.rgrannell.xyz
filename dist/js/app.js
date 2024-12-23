@@ -25,7 +25,7 @@ var X=globalThis,Mt=X.ShadowRoot&&(X.ShadyCSS===void 0||X.ShadyCSS.nativeShadow)
 
       </nav>
     </aside>
-    `}};customElements.define("photo-sidebar",Pt);var Nt=class extends u{static get properties(){return{darkMode:{type:Boolean},tag:{type:String}}}feedUrl(){return this.tag?`/feeds/tags/${this.tag}.json`:"/feeds/index.json"}render(){let t=this.darkMode?"\u2600\uFE0F":"\u{1F319}",e=He;return n`
+    `}};customElements.define("photo-sidebar",Pt);var Nt=class extends u{static get properties(){return{darkMode:{type:Boolean},tag:{type:String}}}feedUrl(){return this.tag?`/feeds/tags/${this.tag}.json`:"/manifest/feed.json"}render(){let t=this.darkMode?"\u2600\uFE0F":"\u{1F319}",e=He;return n`
     <nav class="header" role="navigation">
       <ul>
         <li @click=${this.broadcast("click-burger-menu")}>
@@ -75,7 +75,7 @@ var X=globalThis,Mt=X.ShadowRoot&&(X.ShadyCSS===void 0||X.ShadyCSS.nativeShadow)
     <div class="search-box">
       <input type="text" placeholder="Search...">
     </div>
-    `}};customElements.define("search-bar",Rt);var N=class{static loadingMode(t){let e=window.innerWidth,s=window.innerHeight,r=400,a=Math.floor(e/r),o=Math.floor(s/r);return t>a*o+1?"lazy":"eager"}};var A=class{static getElement(){return document.getElementById("rss")}static setTag(t){let e=this.getElement();if(!e||!t)return;let s=`/feeds/tags/${t}.json`;e.href=s}static setIndex(){let t=this.getElement();if(!t)return;let e="/feeds/index.json";t.href=e}};var Bt=class extends u{static get properties(){return{images:{type:Object}}}connectedCallback(){super.connectedCallback(),A.setIndex()}allImages(){return this.images.images()}render(){let t=this.allImages().map((e,s)=>n`
+    `}};customElements.define("search-bar",Rt);var N=class{static loadingMode(t){let e=window.innerWidth,s=window.innerHeight,r=400,a=Math.floor(e/r),o=Math.floor(s/r);return t>a*o+1?"lazy":"eager"}};var A=class{static getElement(){return document.getElementById("rss")}static setTag(t){let e=this.getElement();if(!e||!t)return;let s=`/feeds/tags/${t}.json`;e.href=s}static setIndex(){let t=this.getElement();if(!t)return;let e="/manifest/feed.json";t.href=e}};var Bt=class extends u{static get properties(){return{images:{type:Object}}}connectedCallback(){super.connectedCallback(),A.setIndex()}allImages(){return this.images.images()}render(){let t=this.allImages().map((e,s)=>n`
       <app-photo
         id=${e.id}
         tags="${e.tags}"
