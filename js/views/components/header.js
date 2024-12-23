@@ -15,7 +15,7 @@ export class PhotoHeader extends LitElem {
       return `/feeds/tags/${this.tag}.json`;
     }
 
-    return `/feeds/index.json`;
+    return `/manifest/feed.json`;
   }
 
   render() {
