@@ -46,18 +46,12 @@ export class MetadataPage extends LitElem {
     const photo = this.image;
     const exif = this.exif;
 
-    console.log(exif)
-
     const tags = (photo.tags.sort() ?? [])
       .filter((tag) => tag !== "Published" && !tag.includes("⭐"))
       .sort()
       .map((tagName) => {
         return html`<li><tag-link tagName="${tagName}"></tag-link></li>`;
       });
-
-
-    const createdAt = new Date(photo.created_at).toISOString();
-    const dateHref = createdAt.split("T")[0].replace(/\:/g, "-");
 
     return html`
     <section>
@@ -90,9 +84,9 @@ export class MetadataPage extends LitElem {
     <table class="metadata-table">
       <tr>
         <th class="exif-heading">Date-Time</th>
-        <td><time><a href="#/date/${dateHref}">
-        ${Dates.formatExifDate(exif.created_at)}
-        </a></time></td>
+        <td><time>
+        ${exif.created_at}
+      </time></td>
       </tr>
       <tr>
         <th class="exif-heading">Camera Model</th>
