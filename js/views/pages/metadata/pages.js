@@ -11,6 +11,7 @@ export class MetadataPage extends LitElem {
     return {
       id: { type: String },
       image: { type: Object },
+      exif: { type: Object },
       sharing: { state: true, type: Boolean },
     };
   }
@@ -22,27 +23,30 @@ export class MetadataPage extends LitElem {
   }
 
   renderAperture() {
-    if (this.image.f_number === "Unknown") {
+    if (this.exif.f_stop === "Unknown") {
       return html`<td>Unknown aperture</td>`;
-    } else if (this.image.f_number === "0.0") {
+    } else if (this.exif.f_stop === "0.0") {
       return html`<td>Manual aperture control</td>`;
     }
 
-    return html`<td>ƒ/${this.image.f_number}</td>`;
+    return html`<td>ƒ/${this.exif.f_stop}</td>`;
   }
 
   renderFocalLength() {
-    if (this.image.focal_length === "Unknown") {
-      return html`${this.image.focal_length}`;
-    } else if (this.image.focal_length === "0") {
+    if (this.exif.focal_length === "Unknown") {
+      return html`${this.exif.focal_length}`;
+    } else if (this.exif.focal_length === "0") {
       return html`<td>Manual lens</td>`;
     } else {
-      return html`<td>${this.image.focal_length}mm equiv.</td>`;
+      return html`<td>${this.exif.focal_length}mm equiv.</td>`;
     }
   }
 
   render() {
     const photo = this.image;
+    const exif = this.exif;
+
+    console.log(exif)
 
     const tags = (photo.tags.sort() ?? [])
       .filter((tag) => tag !== "Published" && !tag.includes("⭐"))
@@ -85,22 +89,18 @@ export class MetadataPage extends LitElem {
 
     <table class="metadata-table">
       <tr>
-        <th class="exif-heading" title="The variance of the image's laplacian; one measure of blur. Bigger is sharper.">Blur</th>
-        <td>${photo.blur}</td>
-      </tr>
-      <tr>
         <th class="exif-heading">Date-Time</th>
         <td><time><a href="#/date/${dateHref}">
-        ${Dates.formatExifDate(photo.created_at)}
+        ${Dates.formatExifDate(exif.created_at)}
         </a></time></td>
       </tr>
       <tr>
         <th class="exif-heading">Camera Model</th>
-        <td>${photo.model}</td>
+        <td>${exif.model}</td>
         </tr>
       <tr>
         <th class="exif-heading">Dimensions</th>
-        <td>${photo.width} x ${photo.height}</td>
+        <td>${exif.width} x ${exif.height}</td>
       </tr>
       <tr>
         <th class="exif-heading">Focal Length</th>
@@ -109,7 +109,7 @@ export class MetadataPage extends LitElem {
       <tr>
         <th class="exif-heading">Shutter Speed</th>
         <td>1 / ${
-      photo.shutter_speed ? Math.round(1 / photo.shutter_speed) : "Unknown"
+      exif.exposure_time ? Math.round(1 / exif.exposure_time) : "Unknown"
     }</td>
       </tr>
       <tr>
@@ -118,7 +118,7 @@ export class MetadataPage extends LitElem {
         </tr>
       <tr>
         <th class="exif-heading">ISO</th>
-        <td>${photo.iso}</td>
+        <td>${exif.iso}</td>
       </tr>
     </table>
 

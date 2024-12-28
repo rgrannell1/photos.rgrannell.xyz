@@ -5,6 +5,7 @@ import {
   ImagesArtifact,
   VideosArtifact,
   MetadataArtifact,
+  ExifArtifact
 } from "../models/artifacts.js";
 
 import { PageLocation } from "../services/location.js";
@@ -30,12 +31,14 @@ const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
 const videos = new VideosArtifact();
 const metadata = new MetadataArtifact();
+const exif = new ExifArtifact();
 
 export const DEFAULT_DEPENDENCIES = [
   [albums, LoadMode.EAGER],
   [images, LoadMode.EAGER],
   [videos, LoadMode.EAGER],
   [metadata, LoadMode.EAGER],
+  [exif, LoadMode.EAGER],
 ];
 /*
  * The largest network requests will be for images.json,
@@ -54,36 +57,42 @@ export const PAGE_DEPENDECIES = {
     [images, LoadMode.LAZY],
     [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
+    [exif, LoadMode.LAZY],
   ],
   [Pages.ALBUMS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.LAZY],
     [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
+    [exif, LoadMode.LAZY],
   ],
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
+    [exif, LoadMode.LAZY],
   ],
   [Pages.VIDEOS]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
+    [exif, LoadMode.LAZY],
   ],
   [Pages.ALBUM]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
+    [exif, LoadMode.LAZY],
   ],
   [Pages.PHOTO]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
+    [exif, LoadMode.EAGER],
   ],
 
   // Remove
@@ -92,36 +101,42 @@ export const PAGE_DEPENDECIES = {
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
+    [exif, LoadMode.LAZY],
   ],
   [Pages.TAG_ALBUM]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
+    [exif, LoadMode.EAGER],
   ],
   [Pages.TAG]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
+    [exif, LoadMode.EAGER],
   ],
   [Pages.LOCATIONS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.LAZY],
     [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
+    [exif, LoadMode.EAGER],
   ],
   [Pages.METADATA]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.EAGER],
+    [exif, LoadMode.EAGER],
   ],
   [Pages.STATS]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
     [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
+    [exif, LoadMode.EAGER],
   ],
 };
 class AppInitialiser {
@@ -419,12 +434,16 @@ export class PhotoApp extends LitElem {
         return image.id === this.id;
       });
 
+      const exifData = exif.exif().find((exif) => {
+        return exif.id === this.id;
+      });
+
       if (!photo) {
         console.error(`failed to find photo with id ${this.id}`);
       }
 
       return html`
-      <metadata-page .image=${photo} id=${this.id} class="${
+      <metadata-page .image=${photo} .exif=${exifData} id=${this.id} class="${
         classes.join(" ")
       }"></metadata-page>
       `;

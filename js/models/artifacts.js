@@ -1,4 +1,4 @@
-import { ALBUMS_SYMBOL, IMAGES_SYMBOL, VIDEOS_SYMBOL, METADATA_SYMBOL } from "../constants.js";
+import { ALBUMS_SYMBOL, IMAGES_SYMBOL, VIDEOS_SYMBOL, METADATA_SYMBOL, EXIF_SYMBOL } from "../constants.js";
 
 async function readConfig(url = "/manifest/env.json") {
   const res = await fetch(url);
@@ -131,12 +131,12 @@ export class AlbumsArtifact {
     this.url = url;
   }
 
-  processAlbums(albums) {
-    const headers = albums[0];
+  process(rows) {
+    const headers = rows[0];
 
     const output = [];
 
-    for (const album of albums.slice(1)) {
+    for (const album of rows.slice(1)) {
       const data = {};
 
       for (let idx = 0; idx < headers.length; idx++) {
@@ -162,7 +162,7 @@ export class AlbumsArtifact {
 
     const albums = await (await fetch(this.url)).json();
 
-    const processed = this.processAlbums(albums);
+    const processed = this.process(albums);
     window[ALBUMS_SYMBOL] = processed;
 
     this._data = processed;
@@ -176,6 +176,56 @@ export class AlbumsArtifact {
         thumbnail_mosaic_url: `${album.thumbnail_mosaic_url}`, // TODO: should send a short version too
       }
     });
+  }
+}
+
+
+export class ExifArtifact {
+  _data;
+
+  constructor(url = `/manifest/exif.${CONFIG.publication_id}.json`) {
+    this.url = url;
+  }
+
+  process(rows) {
+    const headers = rows[0];
+
+    const output = [];
+
+    for (const album of rows.slice(1)) {
+      const data = {};
+
+      for (let idx = 0; idx < headers.length; idx++) {
+        data[headers[idx]] = album[idx];
+      }
+
+      output.push(data);
+    }
+
+    return output;
+  }
+
+  async init() {
+    if (window[EXIF_SYMBOL]) {
+      this._data = window[EXIF_SYMBOL];
+    }
+
+    if (this._data) {
+      return;
+    }
+
+    console.log(`🔎 fetching ${this.url}`);
+
+    const exif = await (await fetch(this.url)).json();
+    const processed = this.process(exif);
+
+    window[EXIF_SYMBOL] = processed;
+
+    this._data = processed;
+  }
+
+  exif() {
+    return this._data;
   }
 }
 

@@ -1,9 +1,0 @@
-bs/
-.vscode/
-.netlify/
-tests/
-README.md
-package.json
-node_modules/
-tests/
-js/
