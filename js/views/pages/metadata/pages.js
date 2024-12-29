@@ -102,7 +102,7 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Shutter Speed</th>
-        <td>1 / ${
+        <td>1/${
       exif.exposure_time ? Math.round(1 / exif.exposure_time) : "Unknown"
     }</td>
       </tr>

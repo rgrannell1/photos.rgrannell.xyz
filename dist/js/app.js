@@ -327,7 +327,7 @@ var tt=globalThis,Dt=tt.ShadowRoot&&(tt.ShadyCSS===void 0||tt.ShadyCSS.nativeSha
       </tr>
       <tr>
         <th class="exif-heading">Shutter Speed</th>
-        <td>1 / ${e.exposure_time?Math.round(1/e.exposure_time):"Unknown"}</td>
+        <td>1/${e.exposure_time?Math.round(1/e.exposure_time):"Unknown"}</td>
       </tr>
       <tr>
         <th class="exif-heading">Aperture</th>
