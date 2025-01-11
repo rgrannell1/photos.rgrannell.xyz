@@ -42,19 +42,40 @@ export class MetadataPage extends LitElem {
     }
   }
 
+  renderSemanticKey(key) {
+    return key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  }
+
+  renderSemanticValue(key, value) {
+    if (key.includes('binomial')) {
+      return html`<em>${value}</em>`;
+    }
+
+    return value;
+  }
+
+  renderSemanticData(semantic) {
+    return html`
+      <h3>Photo Information</h3>
+      <table class="metadata-table">
+        ${
+        Object.keys(semantic).sort()
+        .map((key) => {
+          return html`
+            <tr>
+              <th class="exif-heading">${this.renderSemanticKey(key)}</th>
+              <td>${this.renderSemanticValue(key, semantic[key])}</td>
+          `
+        })
+        }
+      <table>
+    `;
+  }
+
   render() {
     const photo = this.image;
     const exif = this.exif;
     const semantic = this.semantic;
-
-    console.log(semantic);
-
-    const tags = (photo.tags.sort() ?? [])
-      .filter((tag) => tag !== "Published" && !tag.includes("⭐"))
-      .sort()
-      .map((tagName) => {
-        return html`<li><tag-link tagName="${tagName}"></tag-link></li>`;
-      });
 
     return html`
     <section>
@@ -71,18 +92,11 @@ export class MetadataPage extends LitElem {
       photo.description
         ? html`<br/><p>${unsafeHTML(photo.description)}</p>`
         : html``
-    }
+      }
 
-      <h3>Rating</h3>
-      <p>${semantic.rating ?? "unrated"}</p>
+      ${this.renderSemanticData(semantic)}
 
-      <h3>Photo Subject</h3>
-      <p>${semantic.style ?? ""}</p>
-
-      <h3>Tags</h3>
-      <ul class="photo-tag-list">${tags}</ul>
-
-      <h3>Exif</h3>
+    <h3>Exif</h3>
 
     <table class="metadata-table">
       <tr>
