@@ -5,7 +5,8 @@ import {
   ImagesArtifact,
   VideosArtifact,
   MetadataArtifact,
-  ExifArtifact
+  ExifArtifact,
+  SemanticArtifact
 } from "../models/artifacts.js";
 
 import { PageLocation } from "../services/location.js";
@@ -32,6 +33,7 @@ const images = new ImagesArtifact();
 const videos = new VideosArtifact();
 const metadata = new MetadataArtifact();
 const exif = new ExifArtifact();
+const semantic = new SemanticArtifact();
 
 export const DEFAULT_DEPENDENCIES = [
   [albums, LoadMode.EAGER],
@@ -39,6 +41,7 @@ export const DEFAULT_DEPENDENCIES = [
   [videos, LoadMode.EAGER],
   [metadata, LoadMode.EAGER],
   [exif, LoadMode.EAGER],
+  [semantic, LoadMode.EAGER],
 ];
 /*
  * The largest network requests will be for images.json,
@@ -58,6 +61,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.ALBUMS]: [
     [albums, LoadMode.EAGER],
@@ -65,6 +69,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
@@ -72,6 +77,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.VIDEOS]: [
     [albums, LoadMode.LAZY],
@@ -79,6 +85,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.ALBUM]: [
     [albums, LoadMode.EAGER],
@@ -86,6 +93,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.PHOTO]: [
     [albums, LoadMode.EAGER],
@@ -93,6 +101,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.EAGER],
+    [semantic, LoadMode.EAGER],
   ],
 
   // Remove
@@ -102,6 +111,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.TAG_ALBUM]: [
     [albums, LoadMode.LAZY],
@@ -109,6 +119,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.EAGER],
+    [semantic, LoadMode.EAGER],
   ],
   [Pages.TAG]: [
     [albums, LoadMode.LAZY],
@@ -116,6 +127,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.EAGER],
+    [semantic, LoadMode.EAGER],
   ],
   [Pages.LOCATIONS]: [
     [albums, LoadMode.EAGER],
@@ -123,6 +135,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.EAGER],
+    [semantic, LoadMode.EAGER],
   ],
   [Pages.METADATA]: [
     [albums, LoadMode.LAZY],
@@ -130,6 +143,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.EAGER],
     [exif, LoadMode.EAGER],
+    [semantic, LoadMode.EAGER],
   ],
   [Pages.STATS]: [
     [albums, LoadMode.LAZY],
@@ -137,6 +151,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.EAGER],
+    [semantic, LoadMode.EAGER],
   ],
 };
 class AppInitialiser {
@@ -438,12 +453,25 @@ export class PhotoApp extends LitElem {
         return exif.id === this.id;
       });
 
+      const semanticData = semantic.semantic().filter((semantic) => {
+        return semantic[0] === this.id;
+      });
+
+      const relations = {};
+      for (const [_, relation, target] of semanticData) {
+        if (!relations[relation]) {
+          relations[relation] = target;
+        } else if (typeof relations[relation] === "string") {
+          relations[relation] = [relations[relation], target];
+        }
+      }
+
       if (!photo) {
         console.error(`failed to find photo with id ${this.id}`);
       }
 
       return html`
-      <metadata-page .image=${photo} .exif=${exifData} id=${this.id} class="${
+      <metadata-page .image=${photo} .semantic=${relations} .exif=${exifData} id=${this.id} class="${
         classes.join(" ")
       }"></metadata-page>
       `;

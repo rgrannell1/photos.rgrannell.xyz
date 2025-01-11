@@ -6,6 +6,7 @@ export const MANIFEST_SYMBOL = Symbol("the site manifest");
 export const METADATA_SYMBOL = Symbol("metadata about the site manifest");
 export const VIDEOS_SYMBOL = Symbol("the videos manifest");
 export const EXIF_SYMBOL = Symbol("the exif data");
+export const SEMANTIC_SYMBOL = Symbol("the semantic data");
 
 export const LOCATION_LATITUDE = 53.33306;
 export const LOCATION_LONGITUDE = -6.24889;

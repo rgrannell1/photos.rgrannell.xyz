@@ -1,4 +1,4 @@
-import { ALBUMS_SYMBOL, IMAGES_SYMBOL, VIDEOS_SYMBOL, METADATA_SYMBOL, EXIF_SYMBOL } from "../constants.js";
+import { ALBUMS_SYMBOL, IMAGES_SYMBOL, VIDEOS_SYMBOL, METADATA_SYMBOL, EXIF_SYMBOL, SEMANTIC_SYMBOL } from "../constants.js";
 
 async function readConfig(url = "/manifest/env.json") {
   const res = await fetch(url);
@@ -247,6 +247,35 @@ function isChild(metadata, parent, child) {
   }
 
   return false;
+}
+
+export class SemanticArtifact {
+  _data;
+
+  constructor(url = `/manifest/semantic.${CONFIG.publication_id}.json`) {
+    this.url = url;
+  }
+
+  async init() {
+    if (window[SEMANTIC_SYMBOL]) {
+      this._data = window[SEMANTIC_SYMBOL];
+    }
+
+    if (this._data) {
+      return;
+    }
+
+    console.log(`🔎 fetching ${this.url}`);
+
+    const semantic = await (await fetch(this.url)).json();
+    window[SEMANTIC_SYMBOL] = semantic;
+
+    this._data = semantic;
+  }
+
+  semantic() {
+    return this._data;
+  }
 }
 
 export class MetadataArtifact {

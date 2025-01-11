@@ -1,7 +1,6 @@
 import { html, unsafeHTML } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
-import { Dates } from "../../../services/dates.js";
 
 import "./components/share-button.js";
 import "../../components/tag-link.js";
@@ -12,6 +11,7 @@ export class MetadataPage extends LitElem {
       id: { type: String },
       image: { type: Object },
       exif: { type: Object },
+      semantic: { type: Object },
       sharing: { state: true, type: Boolean },
     };
   }
@@ -45,6 +45,9 @@ export class MetadataPage extends LitElem {
   render() {
     const photo = this.image;
     const exif = this.exif;
+    const semantic = this.semantic;
+
+    console.log(semantic);
 
     const tags = (photo.tags.sort() ?? [])
       .filter((tag) => tag !== "Published" && !tag.includes("⭐"))
@@ -71,10 +74,10 @@ export class MetadataPage extends LitElem {
     }
 
       <h3>Rating</h3>
-      <p>${photo.rating ?? "unrated"}</p>
+      <p>${semantic.rating ?? "unrated"}</p>
 
       <h3>Photo Subject</h3>
-      <p>${photo.subject ?? ""}</p>
+      <p>${semantic.style ?? ""}</p>
 
       <h3>Tags</h3>
       <ul class="photo-tag-list">${tags}</ul>
