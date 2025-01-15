@@ -24,7 +24,7 @@ export class Sidebar extends LitElem {
         page: "photos",
       })
     }
-            id="photos-sidebar-link" class="sidebar-item">PHOTOS</li>
+            class="sidebar-item">PHOTOS</li>
 
           <li
             @click=${
@@ -32,7 +32,7 @@ export class Sidebar extends LitElem {
         page: "videos",
       })
     }
-            id="photos-sidebar-link" class="sidebar-item">VIDEOS</li>
+            class="sidebar-item">VIDEOS</li>
 
           <li
             @click=${
@@ -55,7 +55,7 @@ export class Sidebar extends LitElem {
         page: "about",
       })
     }
-            id="photos-sidebar-link" class="sidebar-item">ABOUT</li>
+            class="sidebar-item">ABOUT</li>
 
       </nav>
     </aside>

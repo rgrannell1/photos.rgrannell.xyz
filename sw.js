@@ -1,5 +1,4 @@
-
-const swChannel = new BroadcastChannel('sw');
+const swChannel = new BroadcastChannel("sw");
 
 swChannel.postMessage("⚙️ service-worker loaded");
 
@@ -11,7 +10,6 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-16x16.png",
   "/icons/favicon-32x32.png",
   "/favicon.ico",
-
   // removed the font, it seemed to do something weird here
 ];
 
@@ -34,24 +32,23 @@ self.addEventListener("install", function (event) {
 });
 
 function isCacheable(url, status) {
-  if (url.includes('_thumbnail') || url.includes('/t/')) {
+  if (url.includes("_thumbnail") || url.includes("/t/")) {
     return true;
   }
 
-  if (url.includes('.woff2')) {
+  if (url.includes(".woff2")) {
     return true;
   }
 
-  if (url.includes('/manifest/albums')) {
+  if (url.includes("/manifest/albums")) {
     return true;
   }
 
-  if (url.includes('/manifest/images')) {
+  if (url.includes("/manifest/images")) {
     return true;
   }
 
-
-  if (url.includes('/manifest/videos')) {
+  if (url.includes("/manifest/videos")) {
     return true;
   }
 
@@ -77,26 +74,32 @@ self.addEventListener("fetch", function (event) {
       swChannel.postMessage(`⚙️ service-worker cache miss for ${url}`);
 
       return fetch(event.request)
-      .then(function (networkResponse) {
-        swChannel.postMessage(`⚙️ cannot cache ${url} ${networkResponse?.status}`);
+        .then(function (networkResponse) {
+          swChannel.postMessage(
+            `⚙️ cannot cache ${url} ${networkResponse?.status}`,
+          );
 
-        // -- just return the result directly
-        if (!isCacheable(url, networkResponse.status)) {
-          swChannel.postMessage(`⚙️ cannot cache ${url}`);
+          // -- just return the result directly
+          if (!isCacheable(url, networkResponse.status)) {
+            swChannel.postMessage(`⚙️ cannot cache ${url}`);
 
-          return networkResponse;
-        }
+            return networkResponse;
+          }
 
-        // -- cache thumbnails and artifacts
-        return caches.open(CACHE_NAME).then(function (cache) {
-          swChannel.postMessage(`⚙️ caching ${url} ${networkResponse.status}`);
+          // -- cache thumbnails and artifacts
+          return caches.open(CACHE_NAME).then(function (cache) {
+            swChannel.postMessage(
+              `⚙️ caching ${url} ${networkResponse.status}`,
+            );
 
-          cache.put(event.request, networkResponse.clone());
-          return networkResponse;
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+        }).catch((err) => {
+          swChannel.postMessage(
+            `⚙️ service-worker fetch failed for ${url}: ${err}`,
+          );
         });
-      }).catch(err => {
-        swChannel.postMessage(`⚙️ service-worker fetch failed for ${url}: ${err}`);
-      });
     }),
   );
 });

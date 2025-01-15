@@ -40,17 +40,17 @@ export class PhotoAlbum extends LitElem {
 
     return html`
     <div class="photo-album">
-      <a href="${'/#/album/' + this.id}" onclick="event.preventDefault();">
+      <a href="${"/#/album/" + this.id}" onclick="event.preventDefault();">
         <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.thumbnailDataUrl}"/>
         <img @load=${
-        this.hidePlaceholder.bind(this)
-      } style="z-index: -1" class="thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
+      this.hidePlaceholder.bind(this)
+    } style="z-index: -1" class="thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
         @click=${
-        this.broadcast("click-album", {
-          id: this.id,
-          title: this.title,
-        })
-      }>
+      this.broadcast("click-album", {
+        id: this.id,
+        title: this.title,
+      })
+    }>
     </a>
       <div class="photo-album-metadata">
         <p class="photo-album-title">${this.title}</p>
@@ -61,7 +61,7 @@ export class PhotoAlbum extends LitElem {
         <p class="photo-album-count">${this.count} ${
       this.count === 1 ? "photo" : "photos"
     }</p>
-        <p class="photo-album-countries">${this.countries.join(' ')}</p>
+        <p class="photo-album-countries">${this.countries.join(" ")}</p>
         </div>
 
     </div>

@@ -43,11 +43,11 @@ export class MetadataPage extends LitElem {
   }
 
   renderSemanticKey(key) {
-    return key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    return key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
   }
 
   renderSemanticValue(key, value) {
-    if (key.includes('binomial')) {
+    if (key.includes("binomial")) {
       return html`<em>${value}</em>`;
     }
 
@@ -59,15 +59,15 @@ export class MetadataPage extends LitElem {
       <h3>Photo Information</h3>
       <table class="metadata-table">
         ${
-        Object.keys(semantic).sort()
+      Object.keys(semantic).sort()
         .map((key) => {
           return html`
             <tr>
               <th class="exif-heading">${this.renderSemanticKey(key)}</th>
               <td>${this.renderSemanticValue(key, semantic[key])}</td>
-          `
+          `;
         })
-        }
+    }
       <table>
     `;
   }
@@ -92,7 +92,7 @@ export class MetadataPage extends LitElem {
       photo.description
         ? html`<br/><p>${unsafeHTML(photo.description)}</p>`
         : html``
-      }
+    }
 
       ${this.renderSemanticData(semantic)}
 

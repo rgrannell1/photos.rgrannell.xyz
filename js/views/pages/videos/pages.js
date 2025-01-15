@@ -32,7 +32,7 @@ export class VideosPage extends LitElem {
       url_720p=${video.video_url_720p}
       url_480p=${video.video_url_480p}
       preload="${Videos.loadingMode(idx)}"
-      ></app-video>`
+      ></app-video>`;
     });
 
     return html`

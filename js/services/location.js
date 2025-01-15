@@ -98,8 +98,8 @@ export class PageLocation {
       };
     } else {
       return {
-        type: 'albums',
-      }
+        type: "albums",
+      };
     }
   }
 }

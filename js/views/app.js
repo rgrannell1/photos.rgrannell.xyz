@@ -2,11 +2,11 @@ import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.js";
 import {
   AlbumsArtifact,
-  ImagesArtifact,
-  VideosArtifact,
-  MetadataArtifact,
   ExifArtifact,
-  SemanticArtifact
+  ImagesArtifact,
+  MetadataArtifact,
+  SemanticArtifact,
+  VideosArtifact,
 } from "../models/artifacts.js";
 
 import { PageLocation } from "../services/location.js";
@@ -377,7 +377,9 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.PHOTOS) {
-      return html`<photos-page class="${classes.join(" ")}" .images=${images}></photos-page>`;
+      return html`<photos-page class="${
+        classes.join(" ")
+      }" .images=${images}></photos-page>`;
     }
 
     if (this.page === Pages.ALBUM) {

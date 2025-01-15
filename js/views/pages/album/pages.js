@@ -55,8 +55,8 @@ export class AlbumPage extends LitElem {
 
   renderPhotoCount() {
     console.log(
-      this
-    )
+      this,
+    );
 
     return this.imageCount === 1
       ? `${this.imageCount} photo`
@@ -90,7 +90,7 @@ export class AlbumPage extends LitElem {
         url_1080p=${video.video_url_1080p}
         url_720p=${video.video_url_720p}
         url_480p=${video.video_url_480p}
-        ></app-video>`
+        ></app-video>`;
     });
 
     return html`

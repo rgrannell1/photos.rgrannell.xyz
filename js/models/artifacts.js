@@ -1,4 +1,11 @@
-import { ALBUMS_SYMBOL, IMAGES_SYMBOL, VIDEOS_SYMBOL, METADATA_SYMBOL, EXIF_SYMBOL, SEMANTIC_SYMBOL } from "../constants.js";
+import {
+  ALBUMS_SYMBOL,
+  EXIF_SYMBOL,
+  IMAGES_SYMBOL,
+  METADATA_SYMBOL,
+  SEMANTIC_SYMBOL,
+  VIDEOS_SYMBOL,
+} from "../constants.js";
 
 async function readConfig(url = "/manifest/env.json") {
   const res = await fetch(url);
@@ -57,7 +64,8 @@ export class ImagesArtifact {
         ...image,
         full_image: `https://photos-cdn.rgrannell.xyz${image.full_image}`,
         thumbnail_url: `https://photos-cdn.rgrannell.xyz${image.thumbnail_url}`,
-        thumbnail_mosaic_url: `data:image/bmp;base64,${image.thumbnail_mosaic_url}`,
+        thumbnail_mosaic_url:
+          `data:image/bmp;base64,${image.thumbnail_mosaic_url}`,
       };
     });
   }
@@ -112,11 +120,15 @@ export class VideosArtifact {
       return {
         ...video,
         poster_url: `https://photos-cdn.rgrannell.xyz${video.poster_url}`,
-        video_url_1080p: `https://photos-cdn.rgrannell.xyz${video.video_url_1080p}`,
-        video_url_480p: `https://photos-cdn.rgrannell.xyz${video.video_url_480p}`,
-        video_url_720p: `https://photos-cdn.rgrannell.xyz${video.video_url_720p}`,
-        video_url_unscaled: `https://photos-cdn.rgrannell.xyz${video.video_url_unscaled}`,
-        tags: (video.tags ?? '').split(",")
+        video_url_1080p:
+          `https://photos-cdn.rgrannell.xyz${video.video_url_1080p}`,
+        video_url_480p:
+          `https://photos-cdn.rgrannell.xyz${video.video_url_480p}`,
+        video_url_720p:
+          `https://photos-cdn.rgrannell.xyz${video.video_url_720p}`,
+        video_url_unscaled:
+          `https://photos-cdn.rgrannell.xyz${video.video_url_unscaled}`,
+        tags: (video.tags ?? "").split(",")
           .filter((tag) => tag != "Published")
           .map((tag) => tag.trim()),
       };
@@ -174,11 +186,10 @@ export class AlbumsArtifact {
         ...album,
         thumbnail_url: `https://photos-cdn.rgrannell.xyz${album.thumbnail_url}`,
         thumbnail_mosaic_url: `${album.thumbnail_mosaic_url}`, // TODO: should send a short version too
-      }
+      };
     });
   }
 }
-
 
 export class ExifArtifact {
   _data;

@@ -11,7 +11,7 @@ export class AppVideo extends LitElem {
       url_unscaled: { type: String },
       url_1080p: { type: String },
       url_720p: { type: String },
-      url_480p: { type: String }
+      url_480p: { type: String },
     };
   }
 

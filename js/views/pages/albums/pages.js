@@ -17,7 +17,6 @@ export class AlbumsPage extends LitElem {
   }
   getAlbums() {
     return Object.values(this.albums.albums()).map((album) => {
-
       const { photos_count } = album;
       if (!photos_count && false) {
         throw new Error(`Album ${album.album_name} has no photos`);
@@ -31,7 +30,7 @@ export class AlbumsPage extends LitElem {
         thumbnailDataUrl: `data:image/bmp;base64,${album.thumbnail_mosaic_url}`,
         id: album.id,
         count: photos_count,
-        flags: (album.flags ?? '').split(','),
+        flags: (album.flags ?? "").split(","),
       };
     });
   }
