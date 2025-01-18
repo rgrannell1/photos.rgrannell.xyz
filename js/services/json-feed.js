@@ -19,7 +19,7 @@ export class JSONFeed {
       return;
     }
 
-    const feedUrl = `/manifest/atom/atom-index.json`;
+    const feedUrl = `/manifest/atom/atom-index.xml`;
     $rss.href = feedUrl;
   }
 }
