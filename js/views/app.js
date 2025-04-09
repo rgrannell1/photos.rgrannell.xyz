@@ -1,4 +1,5 @@
 import { html } from "../library/lit.js";
+import { HaystackSearchEngine } from "../library/haystack.js";
 import { LitElem } from "../models/lit-element.js";
 import {
   AlbumsArtifact,
@@ -511,6 +512,8 @@ export class PhotoApp extends LitElem {
     } else {
       $html.classList = [];
     }
+
+    const searchEngine = new HaystackSearchEngine();
 
     // events are mostly handled here
     return html`

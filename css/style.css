@@ -1,4 +1,3 @@
-
 /*
  * ++++ ++++ ++++ ~~~~ Global Variables ~~~~ ++++ ++++ ++++
  */
@@ -7,21 +6,21 @@
 }
 
 :root {
-  --secondary-text-color:   hsl(0, 0%, 60%);
-  --font-colour:            hsla(0, 0%, 0%, 0.8);
-  --navbar-font-colour:     hsl(0, 0%, 0%);
-  --background-color:       hsl(0, 0%, 96%);
-  --link-color:             hsl(211, 100%, 35%);
-  --disabled-link-color:    hsl(0, 0%, 38%);
-  --brand-color:            hsl(211, 100%, 35%);
-  --link-background-color:  hsl(211, 100%, 95%);
+  --secondary-text-color: hsl(0, 0%, 60%);
+  --font-colour: hsla(0, 0%, 0%, 0.8);
+  --navbar-font-colour: hsl(0, 0%, 0%);
+  --background-color: hsl(0, 0%, 96%);
+  --link-color: hsl(211, 100%, 35%);
+  --disabled-link-color: hsl(0, 0%, 38%);
+  --brand-color: hsl(211, 100%, 35%);
+  --link-background-color: hsl(211, 100%, 95%);
 
   /* hover over sidebar color */
   --hover-background-color: hsl(210, 100%, 84%);
 
   /* the colour of list markers */
-  --marker-color:           hsl(0, 0%, 56%);
-  --nav-border-color:       hsl(0, 0%, 0%);
+  --marker-color: hsl(0, 0%, 56%);
+  --nav-border-color: hsl(0, 0%, 0%);
   --image-placeholder-background-color: hsl(0, 0%, 69%);
 
   /* photo width */
@@ -29,32 +28,32 @@
 }
 
 .dark-mode {
-  --secondary-text-color:   hsl(0, 0%, 66%);
-  --font-colour:            hsl(0, 0%, 100%);
-  --navbar-font-colour:     hsl(0, 0%, 100%);
-  --background-color:       hsl(0, 0%, 8%);
-  --link-color:             hsl(211, 84%, 74%);
-  --disabled-link-color:    hsl(0, 0%, 60%);
-  --brand-color:            hsl(211, 100%, 78%);
-  --link-background-color:  hsl(211, 87%, 62%);
+  --secondary-text-color: hsl(0, 0%, 66%);
+  --font-colour: hsl(0, 0%, 100%);
+  --navbar-font-colour: hsl(0, 0%, 100%);
+  --background-color: hsl(0, 0%, 8%);
+  --link-color: hsl(211, 84%, 74%);
+  --disabled-link-color: hsl(0, 0%, 60%);
+  --brand-color: hsl(211, 100%, 78%);
+  --link-background-color: hsl(211, 87%, 62%);
   --hover-background-color: hsl(211, 87%, 62%);
-  --marker-color:           hsl(0, 0%, 100%);
-  --nav-border-color:       hsl(0, 0%, 100%);
+  --marker-color: hsl(0, 0%, 100%);
+  --nav-border-color: hsl(0, 0%, 100%);
   --image-placeholder-background-color: hsl(0, 0%, 25%);
 }
 
 @font-face {
-  font-family: 'Rubik';
+  font-family: "Rubik";
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/Rubik-Regular.woff2') format('woff2');
+  src: url("../fonts/Rubik-Regular.woff2") format("woff2");
 }
 
 /*
  * ++++ ++++ ++++ ~~~~ Basic Styles ~~~~ ++++ ++++ ++++
  */
 html * {
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   margin: 0;
   padding: 0;
 }
@@ -166,7 +165,7 @@ photo-app {
 .header {
   padding: 15px 0px;
   font-size: 1.5em;
-  padding-right:25px;
+  padding-right: 25px;
 
   ul {
     overflow: hidden;
@@ -191,7 +190,7 @@ photo-app {
   }
 }
 
-.thumbnail-image, .thumbnail-video  {
+.thumbnail-image, .thumbnail-video {
   height: auto;
   background-color: var(--image-placeholder-background-color);
 }
@@ -212,7 +211,7 @@ photo-app {
   cursor: pointer;
   position: relative;
   display: inline-block;
-  flex:content
+  flex: content;
 }
 
 .thumbnail-video {
@@ -404,8 +403,8 @@ photo-app {
 }
 
 /*
-* ++++ ++++ ++++ ~~~~ Sidebar Styling ~~~~ ++++ ++++ ++++
-*/
+ * ++++ ++++ ++++ ~~~~ Sidebar Styling ~~~~ ++++ ++++ ++++
+ */
 
 @media (hover: hover) {
   .sidebar-item:hover {
@@ -435,8 +434,8 @@ photo-app {
 }
 
 /*
-* ++++ ++++ ++++ ~~~~ Map Page ~~~~ ++++ ++++ ++++
-*/
+ * ++++ ++++ ++++ ~~~~ Map Page ~~~~ ++++ ++++ ++++
+ */
 
 #map {
   height: 1000px;
@@ -448,8 +447,8 @@ photo-app {
 }
 
 /*
-* ++++ ++++ ++++ ~~~~ Metadata Page ~~~~ ++++ ++++ ++++
-*/
+ * ++++ ++++ ++++ ~~~~ Metadata Page ~~~~ ++++ ++++ ++++
+ */
 
 .photo-share-button {
   text-decoration: underline;
@@ -462,7 +461,7 @@ photo-app {
 
 /* EXIF information about an image */
 .metadata-table {
-    margin: 10px 0;
+  margin: 10px 0;
 
   th, td {
     padding: 4px 8px;
