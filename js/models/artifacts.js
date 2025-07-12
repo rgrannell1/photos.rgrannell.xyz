@@ -21,7 +21,7 @@ export class ImagesArtifact {
     this.url = url;
   }
 
-  processImages(images) {
+  processCSVImages(images) {
     const headers = images[0];
 
     const output = [];
@@ -52,22 +52,24 @@ export class ImagesArtifact {
 
     const images = await (await fetch(this.url)).json();
 
-    const processed = this.processImages(images);
+    const processed = this.processCSVImages(images);
     window[IMAGES_SYMBOL] = processed;
 
     this._data = processed;
   }
 
+  static processImage(image) {
+    return {
+      ...image,
+      full_image: `https://photos-cdn.rgrannell.xyz${image.full_image}`,
+      thumbnail_url: `https://photos-cdn.rgrannell.xyz${image.thumbnail_url}`,
+      thumbnail_mosaic_url:
+        `data:image/bmp;base64,${image.thumbnail_mosaic_url}`,
+    };
+  }
+
   images() {
-    return this._data.map((image) => {
-      return {
-        ...image,
-        full_image: `https://photos-cdn.rgrannell.xyz${image.full_image}`,
-        thumbnail_url: `https://photos-cdn.rgrannell.xyz${image.thumbnail_url}`,
-        thumbnail_mosaic_url:
-          `data:image/bmp;base64,${image.thumbnail_mosaic_url}`,
-      };
-    });
+    return this._data.map(ImagesArtifact.processImage);
   }
 }
 
@@ -143,7 +145,7 @@ export class AlbumsArtifact {
     this.url = url;
   }
 
-  process(rows) {
+  processCSV(rows) {
     const headers = rows[0];
 
     const output = [];
@@ -174,20 +176,22 @@ export class AlbumsArtifact {
 
     const albums = await (await fetch(this.url)).json();
 
-    const processed = this.process(albums);
+    const processed = this.processCSV(albums);
     window[ALBUMS_SYMBOL] = processed;
 
     this._data = processed;
   }
 
+  static processAlbum(album) {
+    return {
+      ...album,
+      thumbnail_url: `https://photos-cdn.rgrannell.xyz${album.thumbnail_url}`,
+      thumbnail_mosaic_url: `${album.thumbnail_mosaic_url}`, // TODO: should send a short version too
+    };
+  }
+
   albums() {
-    return this._data.map((album) => {
-      return {
-        ...album,
-        thumbnail_url: `https://photos-cdn.rgrannell.xyz${album.thumbnail_url}`,
-        thumbnail_mosaic_url: `${album.thumbnail_mosaic_url}`, // TODO: should send a short version too
-      };
-    });
+    return this._data.map((album) => AlbumsArtifact.processAlbum);
   }
 }
 

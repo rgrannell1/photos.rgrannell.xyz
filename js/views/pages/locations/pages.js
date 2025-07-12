@@ -7,15 +7,6 @@ import {
   LOCATION_ZOOM,
 } from "../../../constants.js";
 
-/*
-import {
-  geoJSON,
-  map as createMap,
-  tileLayer,
-} from "../../../library/leaflet.js";
-// note: this is a large import
-*/
-
 export class LocationsPage extends LitElem {
   static get properties() {
     return {

@@ -1,8 +1,10 @@
 import { html } from "../../../library/lit.js";
+import { AlbumsArtifact } from "../../../models/artifacts.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 
 import "./components/photo-album.js";
+import "../../components/search-bar.js";
 
 export class AlbumsPage extends LitElem {
   static get properties() {
@@ -15,24 +17,33 @@ export class AlbumsPage extends LitElem {
 
     JSONFeed.setIndex();
   }
-  getAlbums() {
-    return Object.values(this.albums.albums()).map((album) => {
-      const { photos_count } = album;
-      if (!photos_count && false) {
-        throw new Error(`Album ${album.album_name} has no photos`);
-      }
 
-      return {
-        title: album.album_name,
-        minDate: album.min_date,
-        maxDate: album.max_date,
-        url: album.thumbnail_url,
-        thumbnailDataUrl: `data:image/bmp;base64,${album.thumbnail_mosaic_url}`,
-        id: album.id,
-        count: photos_count,
-        flags: (album.flags ?? "").split(","),
-      };
-    });
+  processAlbum(album) {
+    const { photos_count } = album;
+    if (!photos_count && false) {
+      throw new Error(`Album ${album.album_name} has no photos`);
+    }
+
+    return {
+      title: album.album_name,
+      minDate: album.min_date,
+      maxDate: album.max_date,
+      url: album.thumbnail_url,
+      thumbnailDataUrl: `data:image/bmp;base64,${album.thumbnail_mosaic_url}`,
+      id: album.id,
+      count: photos_count,
+      flags: (album.flags ?? "").split(","),
+    };
+  }
+
+  getAlbums() {
+    // TODO horrid
+    if (!this.albums.albums) {
+      return this.albums._data.map(AlbumsArtifact.processAlbum)
+        .map(this.processAlbum);
+    }
+
+    return Object.values(this.albums.albums()).map(this.processAlbum);
   }
 
   imageCount() {
@@ -60,10 +71,14 @@ export class AlbumsPage extends LitElem {
     performance.mark("start-albums-render");
 
     return html`
+
     <section class="album-metadata">
-      <h1>Albums</h1>
-      <p class="photo-count">${this.imageCount()} photos</p>
+    <h1>Albums</h1>
+    <p class="photo-count">${this.imageCount()} photos</p>
     </section>
+
+    <content-searchbar entity="album" .content=${this.getAlbums()}>
+    </content-searchbar>
 
     <section class="album-container">
       ${

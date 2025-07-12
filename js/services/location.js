@@ -47,6 +47,21 @@ export class PageLocation {
     window.location.hash = "#/videos";
     document.title = "Videos - photos";
   }
+  static showSearchQuery(query) {
+    const loc = window.location.toString();
+
+    if (loc.indexOf("?") > 0) {
+      const original = window.location.hash.toString().slice(
+        0,
+        window.location.hash.toString().indexOf("?"),
+      );
+      window.location.hash = original + "?" + encodeURIComponent(query);
+    } else {
+      window.location.hash = window.location.hash + "?" +
+        encodeURIComponent(query);
+    }
+  }
+
   static getUrl() {
     if (window.location.hash.startsWith("#/albums")) {
       return {

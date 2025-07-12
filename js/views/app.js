@@ -1,5 +1,4 @@
 import { html } from "../library/lit.js";
-import { HaystackSearchEngine } from "../library/haystack.js";
 import { LitElem } from "../models/lit-element.js";
 import {
   AlbumsArtifact,
@@ -11,6 +10,7 @@ import {
 } from "../models/artifacts.js";
 
 import { PageLocation } from "../services/location.js";
+import { ContentSearch } from "../services/search.js";
 
 import { LoadMode, Pages } from "../constants.js";
 
@@ -206,7 +206,7 @@ export class PhotoApp extends LitElem {
       thumbnailUrl: { type: String },
       route: { type: String },
       params: { type: Object },
-      query: { type: Object },
+      query: { type: String },
       darkMode: { type: Boolean },
     };
   }
@@ -355,6 +355,45 @@ export class PhotoApp extends LitElem {
     this.sidebarVisible = false;
   }
 
+  filterContent(content) {
+    if (!this.query?.trim()) {
+      return content;
+    }
+
+    let engine;
+    this.entity = "photo";
+
+    const data = content._data;
+
+    if (this.entity === "photo") {
+      engine = ContentSearch.photos(data);
+    } else if (this.entity === "album") {
+      engine = ContentSearch.albums(data);
+    } else {
+      throw new Error(`incorrectily initialised with ${this.entity}`);
+    }
+
+    // TODO this sucks; declass this data.
+    try {
+      const filtered = Array.from(engine.search(this.query ?? ""));
+      return {
+        _data: filtered,
+        url: content.url,
+      };
+    } catch (err) {
+      if (!(err instanceof SyntaxError)) {
+        console.error(err);
+      }
+
+      return content;
+    }
+  }
+
+  receiveSearchQuery(event) {
+    PageLocation.showSearchQuery(event.detail.query);
+    this.query = event.detail.query;
+  }
+
   /*
    * Render the subpage (e.g metadata, albums, photos, etc.)
    */
@@ -367,7 +406,7 @@ export class PhotoApp extends LitElem {
 
     if (!this.page || this.page === "albums") {
       return html`
-      <photo-album-page .albums="${albums}" class="${
+      <photo-album-page .albums="${this.filterContent(albums)}" class="${
         classes.join(" ")
       }"></photo-album-page>
       `;
@@ -378,9 +417,9 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.PHOTOS) {
-      return html`<photos-page class="${
-        classes.join(" ")
-      }" .images=${images}></photos-page>`;
+      return html`<photos-page class="${classes.join(" ")}" .images=${
+        this.filterContent(images)
+      }></photos-page>`;
     }
 
     if (this.page === Pages.ALBUM) {
@@ -465,7 +504,7 @@ export class PhotoApp extends LitElem {
         if (!relations[relation]) {
           relations[relation] = target;
         } else if (typeof relations[relation] === "string") {
-          relations[relation] = [relations[relation], target];
+          relations[relation] = Array.from(new Set([relations[relation], target]));
         }
       }
 
@@ -513,8 +552,6 @@ export class PhotoApp extends LitElem {
       $html.classList = [];
     }
 
-    const searchEngine = new HaystackSearchEngine();
-
     // events are mostly handled here
     return html`
     <body>
@@ -524,6 +561,7 @@ export class PhotoApp extends LitElem {
         @click-burger-menu=${this.receiveClickBurgerMenu}
         @click-photo-metadata=${this.receiveClickPhotoMetadata}
         @switch-theme=${this.receiveSwitchTheme}
+        @search-query=${this.receiveSearchQuery}
         @navigate-page=${this.receiveNavigatePage}>
 
         <photo-header .tag=${this.tag} .darkMode=${this.loadDarkMode()}></photo-header>

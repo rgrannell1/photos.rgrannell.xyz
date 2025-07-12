@@ -292,6 +292,11 @@ photo-app {
     display: grid;
     grid-template-columns: 1fr 0px 0px;
   }
+  .search-bar {
+    margin-left: 43px;
+    width: max(180px, min(80vw, var(--photo-width)));
+    max-width: max(180px, 80vw);
+  }
 }
 @media (min-width: 501px) {
   .app-container {
@@ -311,6 +316,10 @@ photo-app {
   }
   .video-container {
     margin-top: 60px;
+  }
+  .search-bar {
+    width: min(100%, 600px);
+    margin-left: 43px;
   }
 }
 @media (hover: hover) {
@@ -338,10 +347,6 @@ photo-app {
 #map {
   height: 1000px;
 }
-.leaflet-marker-icon {
-  background-color: transparent;
-  border: none !important;
-}
 .photo-share-button {
   text-decoration: underline;
 }
@@ -367,4 +372,9 @@ photo-app {
 .photo-metadata-inline {
   display: flex;
   gap: 10px;
+}
+.search-bar {
+  padding: 10px 5px;
+  grid-row: 1;
+  grid-column: 1;
 }
