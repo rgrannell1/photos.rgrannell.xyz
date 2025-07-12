@@ -16,10 +16,6 @@ var it=globalThis,It=it.ShadowRoot&&(it.ShadyCSS===void 0||it.ShadyCSS.nativeSha
             @click=${this.broadcast("navigate-page",{page:"albums"})}
             id="albums-sidebar-link" class="sidebar-item">ALBUMS</li>
           <li
-            @click=${this.broadcast("navigate-page",{page:"tags"})}
-            id="tags-sidebar-link" class="sidebar-item">TAGS</li>
-
-          <li
             @click=${this.broadcast("navigate-page",{page:"about"})}
             class="sidebar-item">ABOUT</li>
 

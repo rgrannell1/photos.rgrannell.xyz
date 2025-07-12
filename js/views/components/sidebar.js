@@ -44,14 +44,6 @@ export class Sidebar extends LitElem {
           <li
             @click=${
       this.broadcast("navigate-page", {
-        page: "tags",
-      })
-    }
-            id="tags-sidebar-link" class="sidebar-item">TAGS</li>
-
-          <li
-            @click=${
-      this.broadcast("navigate-page", {
         page: "about",
       })
     }
