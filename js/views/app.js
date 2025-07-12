@@ -92,9 +92,9 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
+    [semantic, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
-    [semantic, LoadMode.LAZY],
   ],
   [Pages.PHOTO]: [
     [albums, LoadMode.EAGER],
@@ -400,6 +400,7 @@ export class PhotoApp extends LitElem {
       <album-page
         .images=${images}
         .videos=${videos}
+        .semantic=${semantic}
         title=${album.album_name}
         id=${this.id}
         minDate=${album.min_date}
@@ -407,43 +408,6 @@ export class PhotoApp extends LitElem {
         imageCount=${album.photos_count}
         description=${album.description}
         class="${classes.join(" ")}"></album-page>
-      `;
-    }
-
-    if (this.page === Pages.DATE) {
-      console.log(this.date);
-      return html`<date-page
-        .images=${images} date="${this.date}"
-        ></date-page>`;
-    }
-
-    if (this.page === Pages.TAG_ALBUM) {
-      return html`
-      <tag-page tag=${this.tag} .images=${images} class="${
-        classes.join(" ")
-      }"></tag-page>
-      `;
-    }
-
-    if (this.page === Pages.TAGS) {
-      return html`
-      <tags-page class="${
-        classes.join(" ")
-      }" .metadata=${metadata} .images=${images}></tags-page>
-      `;
-    }
-
-    if (this.page === Pages.LOCATIONS) {
-      return html`
-      <locations-page .albums="${albums}" class="${
-        classes.join(" ")
-      }"></locations-page>
-      `;
-    }
-
-    if (this.page === Pages.STATS) {
-      return html`
-      <stats-page class="${classes.join(" ")}"></stats-page>
       `;
     }
 

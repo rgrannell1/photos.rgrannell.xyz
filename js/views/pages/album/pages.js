@@ -3,6 +3,7 @@ import { html, unsafeHTML } from "../../../library/lit.js";
 import "../../components/photo.js";
 import "../../components/video.js";
 import "./components/share.js";
+import "../../components/unesco.js";
 
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
@@ -21,6 +22,7 @@ export class AlbumPage extends LitElem {
       description: { type: String },
       images: { type: Object },
       videos: { type: Object },
+      semantic: { type: Object },
     };
   }
 
@@ -42,8 +44,25 @@ export class AlbumPage extends LitElem {
   }
 
   albumPhotos() {
+    const semantic = this.semantic.semantic();
+
     return this.images.images().filter((image) => {
       return image.album_id === this.id;
+    }).map((image) => {
+      const relations = {}
+
+      const relevantFacts = semantic.filter((fact) => {
+        return fact[0] === image.id;
+      });
+
+      for (const [_, type, value] of relevantFacts) {
+        if (!relations[type]) {
+          relations[type] = [];
+        }
+        relations[type].push(value);
+      }
+
+      return {...image, relations}
     });
   }
 
@@ -54,10 +73,6 @@ export class AlbumPage extends LitElem {
   }
 
   renderPhotoCount() {
-    console.log(
-      this,
-    );
-
     return this.imageCount === 1
       ? `${this.imageCount} photo`
       : `${this.imageCount} photos`;
@@ -71,7 +86,8 @@ export class AlbumPage extends LitElem {
       mediaQuery.matches,
     );
 
-    const photos = this.albumPhotos().map((photo, idx) => {
+    const albumPhotos = this.albumPhotos();
+    const photos = albumPhotos.map((photo, idx) => {
       return html`
       <app-photo
         id=${photo.id}
@@ -93,6 +109,17 @@ export class AlbumPage extends LitElem {
         ></app-video>`;
     });
 
+    // TODO: add unesco tags here
+    const unescoTags = new Set(albumPhotos.flatMap((photo) => {
+      return photo.relations.location?.filter((location) => {
+        return location.startsWith("urn:ró:unesco:");
+      });
+    }).filter(x => x));
+
+    const unescoLinks = Array.from(unescoTags).map((urn) => {
+      return html`<unesco-link urn="${urn}"></unesco-link>`;
+    });
+
     return html`
     <div>
       <section class="photos-metadata">
@@ -101,11 +128,19 @@ export class AlbumPage extends LitElem {
           <time>${range}</time>
         </p>
         <p class="photo-album-count">${this.renderPhotoCount()}</p>
-        <p class="photo-album-description">${unsafeHTML(this.description)}</p>
-        <br>
+        <p class="photo-album-description">${unsafeHTML(this.description)}
+        </p>
+
         <album-share-button
           .title=${this.title}
           .url=${window.location.href}></album-share-button>
+
+        <ul class="unesco-links">
+          ${unescoLinks.map((link) => {
+            return html`<li>${link}</li>`;
+          })}
+        </ul>
+
       </section>
 
       <section class="photo-container">
