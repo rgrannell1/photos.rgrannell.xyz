@@ -490,3 +490,17 @@ photo-app {
   text-decoration: none;
   border-radius: 6px;
 }
+
+.unesco-text-short {
+  display: none;
+}
+
+@media (max-width: 750px) {
+  .unesco-text-full {
+    display: none;
+  }
+
+  .unesco-text-short {
+    display: inline;
+  }
+}

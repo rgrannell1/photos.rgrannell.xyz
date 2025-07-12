@@ -3,6 +3,7 @@ import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 
 import "./components/share-button.js";
+import "../../components/unesco.js";
 import "../../components/tag-link.js";
 
 export class MetadataPage extends LitElem {
@@ -54,14 +55,7 @@ export class MetadataPage extends LitElem {
     // this is bad, but a start
     // componentise this
     if (value.startsWith('urn:ró:unesco')) {
-      const placeId = value.replace("urn:ró:unesco:", "");
-      const url = `https://whc.unesco.org/en/list/${placeId}`;
-
-      return html`
-        <a class="unesco-link" href="${url}" target="_blank" rel="noopener noreferrer">
-          ${value.replace("urn:ró:unesco:", "UNESCO World Heritage Site #")}
-        </a>
-      `;
+      return html`<unesco-link .urn="${value}"></unesco-link>`;
     }
 
     return value;
