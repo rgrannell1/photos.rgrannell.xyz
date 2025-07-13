@@ -3,6 +3,30 @@
  */
 
 export class PageLocation {
+  static router(page) {
+    if (page === Pages.PHOTOS) {
+      return this.showPhotosUrl;
+    } else if (page === Pages.ALBUMS) {
+      return this.showAlbumsUrl;
+    } else if (page === Pages.ALBUM) {
+      return this.showAlbumUrl;
+    } else if (page === Pages.METADATA) {
+      return this.showMetadataUrl;
+    } else if (page === Pages.ABOUT) {
+      return this.showAboutUrl;
+    } else if (page === Pages.VIDEOS) {
+      return this.showVideosUrl;
+    } else {
+      throw new Error(`Unknown page: ${page}`);
+    }
+  }
+
+  static pageUsesId(page) {
+    return page === Pages.ALBUM ||
+      page === Pages.PHOTO ||
+      page === Pages.METADATA;
+  }
+
   static showAboutUrl() {
     window.location.hash = "#/about";
     document.title = "About - photos";
@@ -23,29 +47,9 @@ export class PageLocation {
     window.location.hash = `#/photo/${id}`;
     document.title = "Photo - photos";
   }
-  static showDateUrl(date) {
-    window.location.hash = `#/date/${date}`;
-    document.title = "Date - photos";
-  }
-  static showLocationsUrl() {
-    window.location.hash = "#/locations";
-    document.title = "Locations - photos";
-  }
-  static showTagsUrl() {
-    window.location.hash = "#/tags";
-    document.title = "Tags - photos";
-  }
-  static showStatsUrl() {
-    window.location.hash = "#/stats";
-    document.title = "Stats - photos";
-  }
   static showMetadataUrl(id) {
     window.location.hash = `#/metadata/${id}`;
     document.title = "Metadata - photos";
-  }
-  static showTagAlbumUrl(tagName) {
-    window.location.hash = `#/tag/${encodeURIComponent(tagName)}`;
-    document.title = "Tag - photos";
   }
   static showVideosUrl() {
     window.location.hash = "#/videos";
@@ -61,32 +65,10 @@ export class PageLocation {
         type: "album",
         id: window.location.hash.split("/")[2],
       };
-    } else if (window.location.hash.startsWith("#/locations")) {
-      return {
-        type: "locations",
-      };
-    } else if (window.location.hash.startsWith("#/tags")) {
-      return {
-        type: "tags",
-      };
-    } else if (window.location.hash.startsWith("#/tag")) {
-      return {
-        type: "tag-album",
-        tag: decodeURIComponent(window.location.hash.split("/")[2]),
-      };
-    } else if (window.location.hash.startsWith("#/stats")) {
-      return {
-        type: "stats",
-      };
     } else if (window.location.hash.startsWith("#/metadata")) {
       return {
         type: "metadata",
         id: window.location.hash.split("/")[2],
-      };
-    } else if (window.location.hash.startsWith("#/date")) {
-      return {
-        type: "date",
-        date: window.location.hash.split("/")[2],
       };
     } else if (window.location.hash.startsWith("#/photos")) {
       return {

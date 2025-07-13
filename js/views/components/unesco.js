@@ -3,7 +3,7 @@ import { LitElem } from "../../models/lit-element.js";
 
 export class UnescoLink extends LitElem {
   static properties = {
-    urn: { type: String }
+    urn: { type: String },
   };
 
   get placeId() {
@@ -30,4 +30,4 @@ export class UnescoLink extends LitElem {
   }
 }
 
-customElements.define('unesco-link', UnescoLink);
+customElements.define("unesco-link", UnescoLink);

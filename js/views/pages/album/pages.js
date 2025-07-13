@@ -48,7 +48,7 @@ export class AlbumPage extends LitElem {
     return this.images.images().filter((image) => {
       return image.album_id === this.id;
     }).map((image) => {
-      const relations = {}
+      const relations = {};
 
       const relevantFacts = semantic.filter((fact) => {
         return fact[0] === image.id;
@@ -61,7 +61,7 @@ export class AlbumPage extends LitElem {
         relations[type].push(value);
       }
 
-      return {...image, relations}
+      return { ...image, relations };
     });
   }
 
@@ -109,11 +109,13 @@ export class AlbumPage extends LitElem {
     });
 
     // TODO: add unesco tags here
-    const unescoTags = new Set(albumPhotos.flatMap((photo) => {
-      return photo.relations.location?.filter((location) => {
-        return location.startsWith("urn:ró:unesco:");
-      });
-    }).filter(x => x));
+    const unescoTags = new Set(
+      albumPhotos.flatMap((photo) => {
+        return photo.relations.location?.filter((location) => {
+          return location.startsWith("urn:ró:unesco:");
+        });
+      }).filter((x) => x),
+    );
 
     const unescoLinks = Array.from(unescoTags).map((urn) => {
       return html`<unesco-link urn="${urn}"></unesco-link>`;
@@ -135,9 +137,11 @@ export class AlbumPage extends LitElem {
           .url=${window.location.href}></album-share-button>
 
         <ul class="unesco-links">
-          ${unescoLinks.map((link) => {
-            return html`<li>${link}</li>`;
-          })}
+          ${
+      unescoLinks.map((link) => {
+        return html`<li>${link}</li>`;
+      })
+    }
         </ul>
 
       </section>

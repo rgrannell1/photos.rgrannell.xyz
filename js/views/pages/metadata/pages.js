@@ -61,10 +61,10 @@ export class MetadataPage extends LitElem {
       return html`<em>${value}</em>`;
     }
 
-    if (value.startsWith('urn:ró:unesco')) {
+    if (value.startsWith("urn:ró:unesco")) {
       return html`<unesco-link .urn="${value}"></unesco-link>`;
     } else if (key.toLowerCase() === "summary") {
-      return html`${unsafeHTML(value ?? '')}`;
+      return html`${unsafeHTML(value ?? "")}`;
     }
 
     return value;

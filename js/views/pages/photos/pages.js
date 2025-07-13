@@ -2,7 +2,7 @@
  * #/photos
  *
  * List all photos
-*/
+ */
 
 import { html } from "../../../library/lit.js";
 

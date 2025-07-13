@@ -19,7 +19,7 @@ var QueryTokeniser = class {
     const match = query.match(RELATION_PATTERN);
     if (!match) {
       throw new SyntaxError(
-        `failed while parsing relationship: ${query}, expected relation`
+        `failed while parsing relationship: ${query}, expected relation`,
       );
     }
     return [match[1], query.slice(match[0].length)];
@@ -34,7 +34,7 @@ var QueryTokeniser = class {
       return [unquotedMatch[1], query.slice(unquotedMatch[0].length)];
     }
     throw new SyntaxError(
-      `subquery: failed to parse query: ${query}, expected subquery`
+      `subquery: failed to parse query: ${query}, expected subquery`,
     );
   }
   advanceState(state) {
@@ -64,19 +64,19 @@ var QueryTokeniser = class {
       }
       if (this.state === this.lastState) {
         throw new SyntaxError(
-          `failed to parse query: ${query}, expected relation`
+          `failed to parse query: ${query}, expected relation`,
         );
       }
     }
     for (const token of tokens) {
       if (!token.relation) {
         throw new SyntaxError(
-          `failed to parse query: ${query}, expected relation`
+          `failed to parse query: ${query}, expected relation`,
         );
       }
       if (!token.subquery) {
         throw new SyntaxError(
-          `failed to parse query: ${query}, expected subquery`
+          `failed to parse query: ${query}, expected subquery`,
         );
       }
     }
@@ -122,6 +122,4 @@ var HaystackSearchEngine = class {
     }
   }
 };
-export {
-  HaystackSearchEngine
-};
+export { HaystackSearchEngine };

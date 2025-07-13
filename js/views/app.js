@@ -107,7 +107,7 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.EAGER],
     [exif, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
-  ]
+  ],
 };
 class AppInitialiser {
   static async init() {
@@ -140,11 +140,6 @@ export class PhotoApp extends LitElem {
     "album": Pages.ALBUM,
     "albums": Pages.ALBUMS,
     "photos": Pages.PHOTOS,
-    "date": Pages.DATE,
-    "tag-album": Pages.TAG_ALBUM,
-    "tags": Pages.TAGS,
-    "locations": Pages.LOCATIONS,
-    "stats": Pages.STATS,
     "metadata": Pages.METADATA,
     "about": Pages.ABOUT,
     "videos": Pages.VIDEOS,
@@ -201,15 +196,8 @@ export class PhotoApp extends LitElem {
     }
 
     // set additional state from the url
-    if (
-      this.page === Pages.METADATA || this.page === Pages.ALBUM ||
-      this.page === Pages.METADATA
-    ) {
+    if (PageLocation.pageUsesId(this.page)) {
       this.id = location.id;
-    } else if (this.page === Pages.TAG_ALBUM) {
-      this.tag = location.tag;
-    } else if (this.page === Pages.DATE) {
-      this.date = location.date;
     }
   }
 
@@ -227,15 +215,6 @@ export class PhotoApp extends LitElem {
     this.title = title;
 
     PageLocation.showAlbumUrl(id);
-  }
-
-  async receiveClickTag(event) {
-    const { tagName } = event.detail;
-
-    this.page = Pages.TAG_ALBUM;
-    this.tag = tagName;
-
-    PageLocation.showTagAlbumUrl(tagName);
   }
 
   /*
@@ -268,7 +247,7 @@ export class PhotoApp extends LitElem {
   /*
    * Toggle between light and dark mode
    */
-  receiveSwitchTheme(event) {
+  receiveSwitchTheme(_) {
     this.darkMode = !this.darkMode;
 
     localStorage.setItem("darkMode", this.darkMode);
@@ -278,63 +257,50 @@ export class PhotoApp extends LitElem {
 
   /*
    * On @navigate-page, update the URL
+   * by using the `PageLocation` service
    */
   receiveNavigatePage(event) {
+    // state updates
     this.page = event.detail.page;
-
-    if (this.page === Pages.ABOUT) {
-      PageLocation.showAboutUrl();
-    } else if (this.page === Pages.PHOTOS) {
-      PageLocation.showPhotosUrl();
-    } else if (this.page === Pages.ALBUMS) {
-      PageLocation.showAlbumsUrl();
-    } else if (this.page === Pages.TAGS) {
-      PageLocation.showTagsUrl();
-    } else if (this.page === Pages.LOCATIONS) {
-      PageLocation.showLocationsUrl();
-    } else if (this.page === Pages.STATS) {
-      PageLocation.showStatsUrl();
-    } else if (this.page === Pages.PHOTOS) {
-      PageLocation.showAlbumUrl(this.id);
-    } else if (this.page === Pages.METADATA) {
-      PageLocation.showMetadataUrl(this.id);
-    } else if (this.page === Pages.DATE) {
-      PageLocation.showDateUrl(this.date);
-    } else if (this.page === Pages.VIDEOS) {
-      PageLocation.showVideosUrl();
-    } else {
-      PageLocation.showAlbumsUrl();
-    }
-
     this.sidebarVisible = false;
+
+    const router = PageLocation.router(this.page);
+
+    if (PageLocation.pageUsesId(this.page)) {
+      router(this.id);
+    } else {
+      router();
+    }
   }
 
-  /*
-   * Render the subpage (e.g metadata, albums, photos, etc.)
-   */
-  renderPage(sidebarVisible) {
+  pageClasses(sidebarVisible) {
     const classes = ["page"];
 
     if (sidebarVisible) {
       classes.push("sidebar-visible");
     }
 
+    return classes.join(" ");
+  }
+
+  /*
+   * Render the subpage (e.g metadata, albums, photos, etc.)
+   */
+  renderPage(sidebarVisible) {
+    const classes = this.pageClasses(sidebarVisible);
+
     if (!this.page || this.page === "albums") {
       return html`
-      <photo-album-page .albums="${albums}" class="${
-        classes.join(" ")
-      }"></photo-album-page>
+      <photo-album-page .albums="${albums}" class="${classes}"></photo-album-page>
       `;
     }
 
     if (this.page === Pages.ABOUT) {
-      return html`<about-page class="${classes.join(" ")}"></about-page>`;
+      return html`<about-page class="${classes}"></about-page>`;
     }
 
     if (this.page === Pages.PHOTOS) {
-      return html`<photos-page class="${
-        classes.join(" ")
-      }" .images=${images}></photos-page>`;
+      return html`<photos-page class="${classes}" .images=${images}></photos-page>`;
     }
 
     if (this.page === Pages.ALBUM) {
@@ -361,7 +327,7 @@ export class PhotoApp extends LitElem {
         maxDate=${album.max_date}
         imageCount=${album.photos_count}
         description=${album.description}
-        class="${classes.join(" ")}"></album-page>
+        class="${classes}"></album-page>
       `;
     }
 
@@ -392,15 +358,13 @@ export class PhotoApp extends LitElem {
       }
 
       return html`
-      <metadata-page .image=${photo} .semantic=${relations} .exif=${exifData} id=${this.id} class="${
-        classes.join(" ")
-      }"></metadata-page>
+      <metadata-page .image=${photo} .semantic=${relations} .exif=${exifData} id=${this.id} class="${classes}"></metadata-page>
       `;
     }
 
     if (this.page === Pages.VIDEOS) {
       return html`
-      <videos-page .videos=${videos} class="${classes.join(" ")}"></videos-page>
+      <videos-page .videos=${videos} class="${classes}"></videos-page>
       `;
     }
   }
@@ -431,14 +395,11 @@ export class PhotoApp extends LitElem {
       $html.classList = [];
     }
 
-    const searchEngine = new HaystackSearchEngine();
-
     // events are mostly handled here
     return html`
     <body>
       <div class="${topLevelClasses.join(" ")}"
         @click-album=${this.receiveClickAlbum}
-        @click-tag=${this.receiveClickTag}
         @click-burger-menu=${this.receiveClickBurgerMenu}
         @click-photo-metadata=${this.receiveClickPhotoMetadata}
         @switch-theme=${this.receiveSwitchTheme}

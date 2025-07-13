@@ -20,15 +20,9 @@ export class LoadMode {
 }
 
 export class Pages {
-  static PHOTOS = "photos"; // is this a thing?
+  static PHOTOS = "photos";
   static ALBUMS = "albums";
-  static DATE = "date";
-  static LOCATIONS = "locations";
   static ALBUM = "album";
-  static STATS = "stats";
-  static TAG = "tag";
-  static TAG_ALBUM = "tag-album";
-  static TAGS = "tags";
   static METADATA = "metadata";
   static ABOUT = "about";
   static VIDEOS = "videos";

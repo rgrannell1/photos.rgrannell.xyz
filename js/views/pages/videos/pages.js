@@ -2,7 +2,7 @@
  * #/videos
  *
  * List all videos in a grid, with differen quality options available.
-*/
+ */
 
 import { html } from "../../../library/lit.js";
 
