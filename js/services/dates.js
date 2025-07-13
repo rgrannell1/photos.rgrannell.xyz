@@ -1,3 +1,7 @@
+/*
+ * Utility code for detailing with dates & rendering them
+ */
+
 export class Dates {
   static parse(dateTime) {
     let [date, time] = dateTime.split(" ");

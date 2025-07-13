@@ -1,3 +1,7 @@
+/*
+ * Utility classes for dealing with photos
+ */
+
 export class Photos {
   /*
    * Determine whether a photo should be eagerly or lazily loaded

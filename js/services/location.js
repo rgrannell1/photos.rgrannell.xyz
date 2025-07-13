@@ -1,3 +1,7 @@
+/*
+ * Define page routes (poorly)
+ */
+
 export class PageLocation {
   static showAboutUrl() {
     window.location.hash = "#/about";
