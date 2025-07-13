@@ -12,7 +12,8 @@ import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 
 import "./components/share-button.js";
-import "../../components/unesco.js";
+import "../../components/unesco-link.js";
+import "../../components/thing-link.js";
 import "../../components/tag-link.js";
 import { Things } from "../../../services/things.js";
 import { KnownThings } from "../../../constants.js";
@@ -63,10 +64,14 @@ export class MetadataPage extends LitElem {
       return html`<em>${value}</em>`;
     }
 
+    if (key.toLowerCase() === "summary") {
+      return html`${unsafeHTML(value ?? "")}`;
+    }
+
     if (Things.isUrn(value) && Things.is(value, KnownThings.UNESCO)) {
       return html`<unesco-link .urn="${value}"></unesco-link>`;
-    } else if (key.toLowerCase() === "summary") {
-      return html`${unsafeHTML(value ?? "")}`;
+    } else if (Things.isUrn(value)) {
+      return html`<thing-link .urn="${value}"></thing-link>`;
     }
 
     return value;

@@ -23,4 +23,13 @@ export class Things {
   static is(urn, type) {
     return Things.isUrn(urn) && Things.parseUrn(urn).type === type;
   }
+
+  static toURL(urn) {
+    if (!Things.isUrn(urn)) {
+      throw new Error(`Invalid URN: ${urn}`);
+    }
+
+    const { type, id } = Things.parseUrn(urn);
+    return `#/thing/${type}:${id}`;
+  }
 }

@@ -9,7 +9,7 @@ import { html, unsafeHTML } from "../../../library/lit.js";
 import "../../components/photo.js";
 import "../../components/video.js";
 import "./components/share.js";
-import "../../components/unesco.js";
+import "../../components/unesco-link.js";
 
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
