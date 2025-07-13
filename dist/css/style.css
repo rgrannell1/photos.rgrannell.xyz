@@ -341,13 +341,6 @@ photo-app {
   grid-column: 2;
   margin-top: min(5, 80px);
 }
-#map {
-  height: 1000px;
-}
-.leaflet-marker-icon {
-  background-color: transparent;
-  border: none !important;
-}
 .photo-share-button {
   text-decoration: underline;
 }

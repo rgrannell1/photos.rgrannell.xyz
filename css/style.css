@@ -442,19 +442,6 @@ photo-app {
 }
 
 /*
- * ++++ ++++ ++++ ~~~~ Map Page ~~~~ ++++ ++++ ++++
- */
-
-#map {
-  height: 1000px;
-}
-
-.leaflet-marker-icon {
-  background-color: transparent;
-  border: none !important;
-}
-
-/*
  * ++++ ++++ ++++ ~~~~ Metadata Page ~~~~ ++++ ++++ ++++
  */
 
