@@ -52,10 +52,10 @@ export class MetadataPage extends LitElem {
       return html`<em>${value}</em>`;
     }
 
-    // this is bad, but a start
-    // componentise this
     if (value.startsWith('urn:ró:unesco')) {
       return html`<unesco-link .urn="${value}"></unesco-link>`;
+    } else if (key.toLowerCase() === "summary") {
+      return html`${unsafeHTML(value ?? '')}`;
     }
 
     return value;
@@ -94,12 +94,6 @@ export class MetadataPage extends LitElem {
         <a href="${photo.full_image}">[full image]</a>
         <share-metadata-button format="image/webp" url=${photo.image_url}></share-metadata-button>
       </p>
-
-      ${
-      photo.description
-        ? html`<br/><p>${unsafeHTML(photo.description)}</p>`
-        : html``
-    }
 
       ${this.renderSemanticData(semantic)}
 
