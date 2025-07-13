@@ -19,13 +19,8 @@ import "./components/header.js";
 
 import "./pages/photos/pages.js";
 import "./pages/albums/pages.js";
-import "./pages/locations/pages.js";
 import "./pages/album/pages.js";
-import "./pages/stats/pages.js";
-import "./pages/tag/pages.js";
-import "./pages/tags/pages.js";
 import "./pages/metadata/pages.js";
-import "./pages/date/pages.js";
 import "./pages/about/pages.js";
 import "./pages/videos/pages.js";
 
