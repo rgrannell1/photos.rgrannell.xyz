@@ -37,6 +37,12 @@
   font-weight: 400;
   src: url("./Rubik-Regular-MPIWAPB2.woff2") format("woff2");
 }
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./Inter-Regular-GS5EHSMB.woff2") format("woff2");
+}
 html * {
   font-family: "Rubik", sans-serif;
   margin: 0;
@@ -376,6 +382,14 @@ photo-app {
   text-decoration: none;
   box-sizing: border-box;
   border-radius: 6px;
+}
+.unesco-link * {
+  font-family:
+    "Inter",
+    "Rukib",
+    sans-serif;
+  word-spacing: normal;
+  font-weight: bolder;
 }
 .unesco-links {
   list-style: none;

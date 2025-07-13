@@ -49,6 +49,14 @@
   src: url("../fonts/Rubik-Regular.woff2") format("woff2");
 }
 
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/Inter-Regular.woff2") format("woff2");
+}
+
+
 /*
  * ++++ ++++ ++++ ~~~~ Basic Styles ~~~~ ++++ ++++ ++++
  */
@@ -490,6 +498,13 @@ photo-app {
   text-decoration: none;
   box-sizing: border-box;;
   border-radius: 6px;
+}
+
+/* yes this is an enormous waste of bytes, but it's fun to
+   match their styling!... */
+.unesco-link * {
+  font-family: "Inter", "Rukib", sans-serif;
+  word-spacing: normal;
 }
 
 .unesco-links {
