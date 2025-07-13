@@ -7,6 +7,7 @@
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
+import { Photos } from "../../../services/photos.js";
 
 import "./components/photo-album.js";
 
@@ -24,9 +25,6 @@ export class AlbumsPage extends LitElem {
   getAlbums() {
     return Object.values(this.albums.albums()).map((album) => {
       const { photos_count } = album;
-      if (!photos_count && false) {
-        throw new Error(`Album ${album.album_name} has no photos`);
-      }
 
       return {
         title: album.album_name,
@@ -42,24 +40,9 @@ export class AlbumsPage extends LitElem {
   }
 
   imageCount() {
-    let count = 0;
-
-    for (const album of this.getAlbums()) {
-      count += album.count;
-    }
-
-    return count;
-  }
-
-  loadingMode(idx) {
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-
-    const imageDimension = 400;
-    const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
-    const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
-
-    return idx > (maxImagesPerRow * maxRowsInFold) ? "lazy" : "eager";
+    return this.getAlbums().reduce((acc, album) => {
+      return acc + album.count;
+    }, 0);
   }
 
   render() {
@@ -78,7 +61,7 @@ export class AlbumsPage extends LitElem {
           return album1.maxDate - album0.maxDate;
         })
         .map((album, idx) => {
-          const loading = this.loadingMode(idx);
+          const loading = Photos.loadingMode(idx);
 
           return html`
             <photo-album

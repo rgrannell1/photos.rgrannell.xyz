@@ -2,28 +2,29 @@
  * Define page routes (poorly)
  */
 
+import { Pages } from "../constants.js";
+
 export class PageLocation {
+  static ROUTES = {
+    [Pages.PHOTOS]: this.showPhotosUrl,
+    [Pages.ALBUMS]: this.showAlbumsUrl,
+    [Pages.ALBUM]: this.showAlbumUrl,
+    [Pages.METADATA]: this.showMetadataUrl,
+    [Pages.ABOUT]: this.showAboutUrl,
+    [Pages.VIDEOS]: this.showVideosUrl
+  }
+
   static router(page) {
-    if (page === Pages.PHOTOS) {
-      return this.showPhotosUrl;
-    } else if (page === Pages.ALBUMS) {
-      return this.showAlbumsUrl;
-    } else if (page === Pages.ALBUM) {
-      return this.showAlbumUrl;
-    } else if (page === Pages.METADATA) {
-      return this.showMetadataUrl;
-    } else if (page === Pages.ABOUT) {
-      return this.showAboutUrl;
-    } else if (page === Pages.VIDEOS) {
-      return this.showVideosUrl;
-    } else {
-      throw new Error(`Unknown page: ${page}`);
+    if (PageLocation.ROUTES.hasOwnProperty(page)) {
+      return PageLocation.ROUTES[page];
     }
+    throw new Error(`Unknown page: ${page}`);
   }
 
   static pageUsesId(page) {
     return page === Pages.ALBUM ||
       page === Pages.PHOTO ||
+      page === Pages.PHOTOS || // seems to be miswired?
       page === Pages.METADATA;
   }
 
@@ -55,6 +56,7 @@ export class PageLocation {
     window.location.hash = "#/videos";
     document.title = "Videos - photos";
   }
+
   static getUrl() {
     if (window.location.hash.startsWith("#/albums")) {
       return {

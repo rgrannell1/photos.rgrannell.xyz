@@ -1,30 +1,30 @@
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.js";
+import { Things } from "../../services/things.js"
 
 export class UnescoLink extends LitElem {
   static properties = {
     urn: { type: String },
   };
 
-  get placeId() {
-    const match = this.urn?.match(/^urn:ró:unesco:(\d+)$/);
-    return match ? match[1] : null;
+  id() {
+    return Things.parseUrn(this.urn)?.id ?? 'unknown';
   }
 
-  get url() {
-    return this.placeId
-      ? `https://whc.unesco.org/en/list/${this.placeId}`
+  url() {
+    return this.id()
+      ? `https://whc.unesco.org/en/list/${this.id()}`
       : null;
   }
 
   render() {
-    if (!this.placeId) {
+    if (!this.id()) {
       return html`<span>Invalid UNESCO URN</span>`;
     }
     return html`
-      <a class="unesco-link" href="${this.url}" target="_blank" rel="noopener noreferrer">
-        <span class="unesco-text-full">UNESCO World Heritage Site #${this.placeId}</span>
-        <span class="unesco-text-short">UNESCO #${this.placeId}</span>
+      <a class="unesco-link" href="${this.url()}" target="_blank" rel="noopener noreferrer">
+        <span class="unesco-text-full">UNESCO World Heritage Site #${this.id()}</span>
+        <span class="unesco-text-short">UNESCO #${this.id()}</span>
       </a>
     `;
   }

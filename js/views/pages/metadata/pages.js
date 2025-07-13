@@ -14,6 +14,8 @@ import { JSONFeed } from "../../../services/json-feed.js";
 import "./components/share-button.js";
 import "../../components/unesco.js";
 import "../../components/tag-link.js";
+import { Things } from "../../../services/things.js";
+import { KnownThings } from "../../../constants.js";
 
 export class MetadataPage extends LitElem {
   static get properties() {
@@ -61,7 +63,7 @@ export class MetadataPage extends LitElem {
       return html`<em>${value}</em>`;
     }
 
-    if (value.startsWith("urn:ró:unesco")) {
+    if (Things.isUrn(value) && Things.is(value, KnownThings.UNESCO)) {
       return html`<unesco-link .urn="${value}"></unesco-link>`;
     } else if (key.toLowerCase() === "summary") {
       return html`${unsafeHTML(value ?? "")}`;

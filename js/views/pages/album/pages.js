@@ -14,7 +14,9 @@ import "../../components/unesco.js";
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
 import { JSONFeed } from "../../../services/json-feed.js";
+import { Things } from "../../../services/things.js";
 import { LitElem } from "../../../models/lit-element.js";
+import { KnownThings } from "../../../constants.js";
 
 export class AlbumPage extends LitElem {
   static get properties() {
@@ -112,7 +114,8 @@ export class AlbumPage extends LitElem {
     const unescoTags = new Set(
       albumPhotos.flatMap((photo) => {
         return photo.relations.location?.filter((location) => {
-          return location.startsWith("urn:ró:unesco:");
+          console.log( Things.parseUrn(location), KnownThings.UNESCO, location )
+          return Things.is(location, KnownThings.UNESCO)
         });
       }).filter((x) => x),
     );

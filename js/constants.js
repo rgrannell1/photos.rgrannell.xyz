@@ -27,3 +27,7 @@ export class Pages {
   static ABOUT = "about";
   static VIDEOS = "videos";
 }
+
+export class KnownThings {
+  static UNESCO = "unesco"
+}
