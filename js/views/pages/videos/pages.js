@@ -24,12 +24,12 @@ export class VideosPage extends LitElem {
     JSONFeed.setIndex();
   }
 
-  allVideos() {
+  videos() {
     return this.videos.videos();
   }
 
   render() {
-    const videos = this.allVideos().map((video, idx) => {
+    const videos = this.videos().map((video, idx) => {
       return html`<app-video
       id=${video.id}
       url_poster=${video.poster_url}

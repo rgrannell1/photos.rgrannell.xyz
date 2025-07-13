@@ -26,6 +26,7 @@ export class Pages {
   static METADATA = "metadata";
   static ABOUT = "about";
   static VIDEOS = "videos";
+  static THING = "thing";
 }
 
 export class KnownThings {

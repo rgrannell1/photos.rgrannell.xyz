@@ -13,7 +13,7 @@ import { LitElem } from "../../../models/lit-element.js";
 export class ThingPage extends LitElem {
   static get properties() {
     return {
-      thing: { type: Object },
+      urn: { type: String },
     };
   }
 
@@ -24,11 +24,13 @@ export class ThingPage extends LitElem {
   }
 
   render() {
+    // Show a Name, URN, Description,
+    // Wikilinks, and all images with this ARN
+
     return html`
       <div>
         <section class="thing-page">
-          <h1>${this.thing.name}</h1>
-          <p>${this.thing.description}</p>
+          <h1>${this.urn}</h1>
         </section>
       </div>
     `;

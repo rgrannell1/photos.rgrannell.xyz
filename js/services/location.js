@@ -11,7 +11,8 @@ export class PageLocation {
     [Pages.ALBUM]: this.showAlbumUrl,
     [Pages.METADATA]: this.showMetadataUrl,
     [Pages.ABOUT]: this.showAboutUrl,
-    [Pages.VIDEOS]: this.showVideosUrl
+    [Pages.VIDEOS]: this.showVideosUrl,
+    [Pages.THING]: this.showThingUrl,
   }
 
   static router(page) {
@@ -24,8 +25,8 @@ export class PageLocation {
   static pageUsesId(page) {
     return page === Pages.ALBUM ||
       page === Pages.PHOTO ||
-      page === Pages.PHOTOS || // seems to be miswired?
-      page === Pages.METADATA;
+      page === Pages.METADATA ||
+      page === Pages.THING;
   }
 
   static showAboutUrl() {
@@ -57,6 +58,12 @@ export class PageLocation {
     document.title = "Videos - photos";
   }
 
+  static showThingUrl(urn) {
+    window.location.hash = `#/thing/${urn}`;
+    // TODO dynamically look up the name for this urn
+    document.title = "Thing - photos";
+  }
+
   static getUrl() {
     if (window.location.hash.startsWith("#/albums")) {
       return {
@@ -70,6 +77,11 @@ export class PageLocation {
     } else if (window.location.hash.startsWith("#/metadata")) {
       return {
         type: "metadata",
+        id: window.location.hash.split("/")[2],
+      };
+    } else if (window.location.hash.startsWith("#/thing")) {
+      return {
+        type: "thing",
         id: window.location.hash.split("/")[2],
       };
     } else if (window.location.hash.startsWith("#/photos")) {

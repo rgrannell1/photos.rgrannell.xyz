@@ -23,6 +23,7 @@ import "./pages/album/pages.js";
 import "./pages/metadata/pages.js";
 import "./pages/about/pages.js";
 import "./pages/videos/pages.js";
+import "./pages/thing/pages.js";
 
 const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
@@ -136,6 +137,8 @@ await AppInitialiser.init();
 
 export class PhotoApp extends LitElem {
   static DEFAULT_PAGE = Pages.ALBUMS;
+
+  // TODO dislike
   static LOCATION_TYPE_TO_PAGE = {
     "album": Pages.ALBUM,
     "albums": Pages.ALBUMS,
@@ -143,6 +146,7 @@ export class PhotoApp extends LitElem {
     "metadata": Pages.METADATA,
     "about": Pages.ABOUT,
     "videos": Pages.VIDEOS,
+    "thing": Pages.THING,
   };
   static get properties() {
     return {
@@ -366,6 +370,12 @@ export class PhotoApp extends LitElem {
       return html`
       <videos-page .videos=${videos} class="${classes}"></videos-page>
       `;
+    }
+
+    if (this.page === Pages.THING) {
+      return html`
+      <thing-page .urn=${this.id} class="${classes}"></thing-page>
+      `
     }
   }
 
