@@ -1,3 +1,9 @@
+/*
+ * /#/albums
+ *
+ * All albums. Shows cover photos in a grid + some basic album information.
+ */
+
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";

@@ -1,3 +1,12 @@
+/*
+ * /#/metadata/<photo-id
+ *
+ * Shows information about the photo, like:
+ * - Exif data
+ * - Semantic data
+ * - Links & Sharing Options
+ */
+
 import { html, unsafeHTML } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";

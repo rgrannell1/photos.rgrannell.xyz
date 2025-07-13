@@ -1,3 +1,9 @@
+/*
+ * #/photos
+ *
+ * List all photos
+*/
+
 import { html } from "../../../library/lit.js";
 
 import "../../components/photo.js";
@@ -20,7 +26,9 @@ export class PhotosPage extends LitElem {
   }
 
   allImages() {
-    return this.images.images();
+    return this.images.images().sort((left, right) => {
+      return right.created_at - left.created_at;
+    });
   }
 
   render() {

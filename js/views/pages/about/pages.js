@@ -1,3 +1,9 @@
+/*
+ * /#/about
+ *
+ * The website's about page.
+ */
+
 import { html } from "../../../library/lit.js";
 
 import "../../components/photo.js";

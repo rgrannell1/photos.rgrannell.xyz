@@ -1,3 +1,9 @@
+/*
+ * /#/album/<id>
+ *
+ * Each individual album page. Shows photos, videos, and some album metadata
+ */
+
 import { html, unsafeHTML } from "../../../library/lit.js";
 
 import "../../components/photo.js";
@@ -8,7 +14,6 @@ import "../../components/unesco.js";
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
 import { JSONFeed } from "../../../services/json-feed.js";
-import { SocialCard } from "../../../services/social-card.js";
 import { LitElem } from "../../../models/lit-element.js";
 
 export class AlbumPage extends LitElem {
@@ -33,12 +38,6 @@ export class AlbumPage extends LitElem {
     if (!photo) {
       console.error(`empty album! ${this.id}`);
     }
-    SocialCard.set({
-      url: window.location.href,
-      title: this.title,
-      description: this.description,
-      image: photo.thumbnail_url,
-    });
 
     JSONFeed.setIndex();
   }

@@ -100,39 +100,6 @@ export const PAGE_DEPENDECIES = {
     [semantic, LoadMode.EAGER],
   ],
 
-  // Remove
-  [Pages.DATE]: [
-    [albums, LoadMode.EAGER],
-    [images, LoadMode.EAGER],
-    [videos, LoadMode.EAGER],
-    [metadata, LoadMode.LAZY],
-    [exif, LoadMode.LAZY],
-    [semantic, LoadMode.LAZY],
-  ],
-  [Pages.TAG_ALBUM]: [
-    [albums, LoadMode.LAZY],
-    [images, LoadMode.EAGER],
-    [videos, LoadMode.EAGER],
-    [metadata, LoadMode.LAZY],
-    [exif, LoadMode.EAGER],
-    [semantic, LoadMode.EAGER],
-  ],
-  [Pages.TAG]: [
-    [albums, LoadMode.LAZY],
-    [images, LoadMode.EAGER],
-    [videos, LoadMode.EAGER],
-    [metadata, LoadMode.LAZY],
-    [exif, LoadMode.EAGER],
-    [semantic, LoadMode.EAGER],
-  ],
-  [Pages.LOCATIONS]: [
-    [albums, LoadMode.EAGER],
-    [images, LoadMode.LAZY],
-    [videos, LoadMode.LAZY],
-    [metadata, LoadMode.LAZY],
-    [exif, LoadMode.EAGER],
-    [semantic, LoadMode.EAGER],
-  ],
   [Pages.METADATA]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
@@ -140,15 +107,7 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.EAGER],
     [exif, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
-  ],
-  [Pages.STATS]: [
-    [albums, LoadMode.LAZY],
-    [images, LoadMode.LAZY],
-    [videos, LoadMode.LAZY],
-    [metadata, LoadMode.LAZY],
-    [exif, LoadMode.EAGER],
-    [semantic, LoadMode.EAGER],
-  ],
+  ]
 };
 class AppInitialiser {
   static async init() {
