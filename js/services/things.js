@@ -32,4 +32,15 @@ export class Things {
     const { type, id } = Things.parseUrn(urn);
     return `#/thing/${type}:${id}`;
   }
+
+  static sameURN(urn1, urn2) {
+    if (!Things.isUrn(urn1) || !Things.isUrn(urn2)) {
+      return false;
+    }
+
+    const parsed1 = Things.parseUrn(urn1);
+    const parsed2 = Things.parseUrn(urn2);
+
+    return parsed1.type === parsed2.type && parsed1.id === parsed2.id;
+  }
 }

@@ -109,6 +109,14 @@ export const PAGE_DEPENDECIES = {
     [exif, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
   ],
+  [Pages.THING]: [
+    [albums, LoadMode.LAZY],
+    [images, LoadMode.EAGER],
+    [videos, LoadMode.LAZY],
+    [metadata, LoadMode.EAGER],
+    [exif, LoadMode.LAZY],
+    [semantic, LoadMode.EAGER],
+  ],
 };
 class AppInitialiser {
   static async init() {
@@ -374,7 +382,11 @@ export class PhotoApp extends LitElem {
 
     if (this.page === Pages.THING) {
       return html`
-      <thing-page .urn=${this.id} class="${classes}"></thing-page>
+      <thing-page
+        .urn=${"urn:ró:" + this.id}
+        .images=${images}
+        .semantic=${semantic}
+        class="${classes}"></thing-page>
       `
     }
   }

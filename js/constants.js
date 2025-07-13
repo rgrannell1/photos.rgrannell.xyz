@@ -32,3 +32,8 @@ export class Pages {
 export class KnownThings {
   static UNESCO = "unesco"
 }
+
+export class KnownRelations {
+  static SUBJECT = "subject";
+  static LOCATION = "location";
+}
