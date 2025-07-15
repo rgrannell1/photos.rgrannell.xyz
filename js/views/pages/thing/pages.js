@@ -28,11 +28,19 @@ export class ThingPage extends LitElem {
     JSONFeed.setIndex();
   }
 
+  isSemanticRelation(relation) {
+    return (relation === KnownRelations.SUBJECT || relation === KnownRelations.LOCATION || relation === KnownRelations.RATING);
+  }
+
   subjectPhotos(images, facts) {
     return facts.filter((fact) => {
       const [_, relation, value] = fact;
 
-      return (relation === KnownRelations.SUBJECT || relation === KnownRelations.LOCATION) && Things.sameURN(value, this.urn);
+      const candidateUrn = Things.isRating(value)
+        ? `urn:ró:rating:${encodeURIComponent(value)}`
+        : value
+
+      return this.isSemanticRelation(relation) && Things.sameURN(candidateUrn, this.urn);
     })
     .map((fact) => {
       return images.find(image => image.id === fact[0]);
@@ -50,6 +58,15 @@ export class ThingPage extends LitElem {
     });
   }
 
+  getTitle() {
+    const parsedUrn = Things.parseUrn(this.urn);
+    if (parsedUrn.type === "rating") {
+      return `${decodeURIComponent(parsedUrn.id)}`;
+    }
+
+    return this.urn
+  }
+
   render() {
     // Show a Name, URN, Description,
     // Wikilinks, and all images with this ARN
@@ -62,7 +79,7 @@ export class ThingPage extends LitElem {
     return html`
       <div>
         <section class="thing-page">
-          <h1>${this.urn}</h1>
+          <h1>${this.getTitle()}</h1>
 
           ${photos}
         </section>

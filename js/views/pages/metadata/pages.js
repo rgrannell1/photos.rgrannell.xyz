@@ -68,7 +68,10 @@ export class MetadataPage extends LitElem {
       return html`${unsafeHTML(value ?? "")}`;
     }
 
-    if (Things.isUrn(value) && Things.is(value, KnownThings.UNESCO)) {
+    if (Things.isRating(value)) {
+      const urn = `urn:ró:rating:${value}`;
+      return html`<thing-link .urn="${urn}"></thing-link>`
+    } else if (Things.isUrn(value) && Things.is(value, KnownThings.UNESCO)) {
       return html`<unesco-link .urn="${value}"></unesco-link>`;
     } else if (Things.isUrn(value)) {
       return html`<thing-link .urn="${value}"></thing-link>`;

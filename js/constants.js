@@ -36,4 +36,5 @@ export class KnownThings {
 export class KnownRelations {
   static SUBJECT = "subject";
   static LOCATION = "location";
+  static RATING = "rating";
 }

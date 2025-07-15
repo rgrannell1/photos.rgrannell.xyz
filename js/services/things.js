@@ -43,4 +43,8 @@ export class Things {
 
     return parsed1.type === parsed2.type && parsed1.id === parsed2.id;
   }
+
+  static isRating(value) {
+    return /^[⭐]{1,5}$/.test(value)
+  }
 }

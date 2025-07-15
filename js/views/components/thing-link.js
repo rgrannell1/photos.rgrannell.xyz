@@ -13,7 +13,7 @@ export class ThingLink extends LitElem {
 
   render() {
     if (!Things.isUrn(this.urn)) {
-      return html`<span>Invalid UNESCO URN</span>`;
+      return html`<span>Invalid URN</span>`;
     }
 
     return html`
