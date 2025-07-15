@@ -61,7 +61,13 @@ export class ThingPage extends LitElem {
   getTitle() {
     try {
       const parsedUrn = Things.parseUrn(this.urn);
-      return `${decodeURIComponent(parsedUrn.id)}`;
+      const value = decodeURIComponent(parsedUrn.id);
+
+      if (parsedUrn.type === 'bird') {
+        return value.replace('-', ' ').replace(/^./, char => char.toUpperCase())
+      }
+
+      return value
     } catch (err) {
       return this.urn;
     }
