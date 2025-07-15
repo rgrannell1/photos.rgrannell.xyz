@@ -193,9 +193,9 @@ var nt=globalThis,Bt=nt.ShadowRoot&&(nt.ShadyCSS===void 0||nt.ShadyCSS.nativeSha
     </div>
     `}};customElements.define("album-page",Xt);var te=class extends p{static get properties(){return{url:{type:String},format:{type:String},sharing:{state:!0,type:Boolean}}}async shareImage(t){if(!navigator.share)console.error("navigator.share not available");else{this.sharing=!0;try{let e=await fetch(t),s=new URL(t).pathname;await navigator.share({title:s,files:[new File([await e.blob()],s,{type:this.format})]})}finally{this.sharing=!1}}}render(){return this.sharing?l`<button class="photo-share-button" disabled>[sharing...]</button>`:l`
       <button class="photo-share-button" ?disabled=${!navigator.share} @click=${this.shareImage.bind(this,this.url)}>[share]</button>
-      `}};customElements.define("share-metadata-button",te);var ee=class extends p{static properties={urn:{type:String}};render(){return _.isUrn(this.urn)?l`
-      <a class="thing-link" href="${_.toURL(this.urn)}">${this.urn}</a>
-    `:l`<span>Invalid URN</span>`}};customElements.define("thing-link",ee);var se=class extends p{static get properties(){return{tagName:{type:String},count:{type:Number}}}render(){let{tagName:t,count:e}=this,s=encodeURIComponent(t);return typeof e>"u"?l`<a
+      `}};customElements.define("share-metadata-button",te);var ee=class extends p{static properties={urn:{type:String}};render(){if(!_.isUrn(this.urn))return l`<span>Invalid URN</span>`;let{id:t}=_.parseUrn(this.urn);return l`
+      <a class="thing-link" href="${_.toURL(this.urn)}">${t}</a>
+    `}};customElements.define("thing-link",ee);var se=class extends p{static get properties(){return{tagName:{type:String},count:{type:Number}}}render(){let{tagName:t,count:e}=this,s=encodeURIComponent(t);return typeof e>"u"?l`<a
         href="#/tag/${s}"
         @click=${this.broadcast("click-tag",{tagName:t})}>${t}</a>`:l`<a
       href="#/tag/${s}"
@@ -303,7 +303,7 @@ var nt=globalThis,Bt=nt.ShadowRoot&&(nt.ShadyCSS===void 0||nt.ShadyCSS.nativeSha
         loading="${O.loadingMode(r)}"
         thumbnailUrl="${s.thumbnail_url}"
         thumbnailDataUrl="${s.thumbnail_mosaic_url}"
-        imageUrl="${s.full_image}"></app-photo>`)}getTitle(){let t=_.parseUrn(this.urn);return t.type==="rating"?`${decodeURIComponent(t.id)}`:this.urn}render(){let t=this.images.images(),e=this.semantic.semantic(),s=this.subjectPhotos(t,e);return l`
+        imageUrl="${s.full_image}"></app-photo>`)}getTitle(){try{let t=_.parseUrn(this.urn);return`${decodeURIComponent(t.id)}`}catch{return this.urn}}render(){let t=this.images.images(),e=this.semantic.semantic(),s=this.subjectPhotos(t,e);return l`
       <div>
         <section class="thing-page">
           <h1>${this.getTitle()}</h1>

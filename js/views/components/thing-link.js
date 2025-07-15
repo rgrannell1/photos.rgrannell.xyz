@@ -16,8 +16,10 @@ export class ThingLink extends LitElem {
       return html`<span>Invalid URN</span>`;
     }
 
+    const { id } = Things.parseUrn(this.urn);
+
     return html`
-      <a class="thing-link" href="${Things.toURL(this.urn)}">${this.urn}</a>
+      <a class="thing-link" href="${Things.toURL(this.urn)}">${id}</a>
     `;
   }
 }

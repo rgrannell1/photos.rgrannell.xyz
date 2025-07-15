@@ -59,12 +59,12 @@ export class ThingPage extends LitElem {
   }
 
   getTitle() {
-    const parsedUrn = Things.parseUrn(this.urn);
-    if (parsedUrn.type === "rating") {
+    try {
+      const parsedUrn = Things.parseUrn(this.urn);
       return `${decodeURIComponent(parsedUrn.id)}`;
+    } catch (err) {
+      return this.urn;
     }
-
-    return this.urn
   }
 
   render() {
