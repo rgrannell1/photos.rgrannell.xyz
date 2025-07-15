@@ -19,7 +19,7 @@ export class ThingLink extends LitElem {
     const { id } = Things.parseUrn(this.urn);
 
     return html`
-      <a class="thing-link" href="${Things.toURL(this.urn)}">${id}</a>
+      <a class="thing-link" href="${Things.toURL(this.urn)}">${decodeURIComponent(id)}</a>
     `;
   }
 }
