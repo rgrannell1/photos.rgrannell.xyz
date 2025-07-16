@@ -9,6 +9,7 @@ import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { Photos } from "../../../services/photos.js";
 
+import "./components/photos-stats.js";
 import "./components/photo-album.js";
 
 export class AlbumsPage extends LitElem {
@@ -51,7 +52,7 @@ export class AlbumsPage extends LitElem {
     return html`
     <section class="album-metadata">
       <h1>Albums</h1>
-      <p class="photo-count">${this.imageCount()} photos</p>
+      <photos-stats .albums=${this.getAlbums()}></photos-stats>
     </section>
 
     <section class="album-container">
