@@ -1,10 +1,13 @@
 import { html } from "../../../../library/lit.js";
 import { LitElem } from "../../../../models/lit-element.js";
+import { Things } from "../../../../services/things.js";
+import { KnownThings, KnownRelations } from "../../../../constants.js";
 
 export class PhotosStats extends LitElem {
   static get properties() {
     return {
       albums: { type: Array },
+      semantic: { type: Array },
     };
   }
 
@@ -44,11 +47,47 @@ export class PhotosStats extends LitElem {
     `;
   }
 
+  birdsCount(semantic) {
+    const birds = semantic
+      .filter(([_, relation, value]) => {
+        if (!Things.isUrn(value)) {
+          return false;
+        }
+
+        return relation === KnownRelations.SUBJECT && Things.parseUrn(value).type === KnownThings.BIRD;
+      })
+      .map(([key, relation, value]) => {
+        return Things.parseUrn(value).id;
+      });
+
+    const uniqueBirds = new Set(birds);
+    return uniqueBirds.size;
+  }
+
+  unescoCount(semantic) {
+    const unesco = semantic
+      .filter(([_, relation, value]) => {
+        if (!Things.isUrn(value)) {
+          return false;
+        }
+
+        return relation === KnownRelations.LOCATION && Things.parseUrn(value).type === KnownThings.UNESCO;
+      })
+      .map(([key, relation, value]) => {
+        return Things.parseUrn(value).id;
+      });
+
+    const uniqueLocation = new Set(unesco);
+    return uniqueLocation.size;
+  }
+
   render() {
     return html`
       <p class="photo-count">${this.imageCount()} photos ·
         ${this.albums.length} albums · ${this.dateRanges()} ·
-        ${this.countryCount()} <span title="well, flags">countries</span>
+        ${this.countryCount()} <span title="well, flags">countries</span> ·
+        ${this.birdsCount(this.semantic)} bird species ·
+        ${this.unescoCount(this.semantic)} World Heritage Sites
         </p>
       </p>
     `

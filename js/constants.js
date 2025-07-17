@@ -31,6 +31,7 @@ export class Pages {
 
 export class KnownThings {
   static UNESCO = "unesco"
+  static BIRD = "bird";
 }
 
 export class KnownRelations {

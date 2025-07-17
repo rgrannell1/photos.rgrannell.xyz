@@ -66,7 +66,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
-    [semantic, LoadMode.LAZY],
+    [semantic, LoadMode.EAGER],
   ],
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
@@ -303,7 +303,7 @@ export class PhotoApp extends LitElem {
 
     if (!this.page || this.page === "albums") {
       return html`
-      <photo-album-page .albums="${albums}" class="${classes}"></photo-album-page>
+      <photo-album-page .semantic=${semantic} .albums="${albums}" class="${classes}"></photo-album-page>
       `;
     }
 
