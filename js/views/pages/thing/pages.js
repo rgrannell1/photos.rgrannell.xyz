@@ -32,7 +32,7 @@ export class ThingPage extends LitElem {
     return (relation === KnownRelations.SUBJECT || relation === KnownRelations.LOCATION || relation === KnownRelations.RATING);
   }
 
-  subjectPhotos(images, facts) {
+  filterPhotos(images, facts) {
     return facts.filter((fact) => {
       const [_, relation, value] = fact;
 
@@ -40,12 +40,33 @@ export class ThingPage extends LitElem {
         ? `urn:ró:rating:${encodeURIComponent(value)}`
         : value
 
-      return this.isSemanticRelation(relation) && Things.sameURN(candidateUrn, this.urn);
+        if (!this.isSemanticRelation(relation) && !Things.isUrn(candidateUrn)) {
+          return false;
+        }
+
+        try {
+          const parsedCandidate = Things.parseUrn(candidateUrn);
+          const parsedUrn = Things.parseUrn(this.urn);
+
+          if (parsedUrn.id === '*') {
+            return parsedUrn.type === parsedCandidate.type;
+          } else {
+            return Things.sameURN(candidateUrn, this.urn);
+          }
+        } catch (err) {
+          //console.warn(`Invalid URN in fact: ${candidateUrn}`, err);
+          return false
+        }
     })
     .map((fact) => {
       return images.find(image => image.id === fact[0]);
     })
     .filter((value) => value !== undefined)
+  }
+
+  subjectPhotos(images, facts) {
+
+    return this.filterPhotos(images, facts)
     .map((photo, idx) => {
       return html`
       <app-photo
@@ -63,6 +84,10 @@ export class ThingPage extends LitElem {
       const parsedUrn = Things.parseUrn(this.urn);
       const value = decodeURIComponent(parsedUrn.id);
 
+      if (parsedUrn.id === '*') {
+        return `${parsedUrn.type.charAt(0).toUpperCase()}${parsedUrn.type.slice(1)}`;
+      }
+
       if (parsedUrn.type === 'bird') {
         return value.replace('-', ' ').replace(/^./, char => char.toUpperCase())
       }
@@ -76,6 +101,7 @@ export class ThingPage extends LitElem {
   render() {
     // Show a Name, URN, Description,
     // Wikilinks, and all images with this ARN
+    // Support bird:* level queries
 
 
     const images = this.images.images();

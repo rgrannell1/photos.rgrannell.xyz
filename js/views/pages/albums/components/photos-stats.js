@@ -103,9 +103,9 @@ export class PhotosStats extends LitElem {
       <p class="photo-stats">${this.imageCount()} <a href="#/photos">photos</a> ·
         ${this.albums.length} albums · ${this.dateRanges()} ·
         ${this.countryCount()} <span title="well, flags">countries</span> ·
-        ${this.birdsCount(this.semantic)} bird species ·
-        ${this.mammalCount(this.semantic)} mammal species ·
-        ${this.unescoCount(this.semantic)} UNESCO sites
+        ${this.birdsCount(this.semantic)} <a href="#/thing/bird:*">bird species</a> ·
+        ${this.mammalCount(this.semantic)} <a href="#/thing/mammal:*">mammal species</a> ·
+        ${this.unescoCount(this.semantic)} <a href="#/thing/unesco:*">UNESCO sites</a>
       </p>
     `
   }
