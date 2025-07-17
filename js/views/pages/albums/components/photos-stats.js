@@ -81,14 +81,31 @@ export class PhotosStats extends LitElem {
     return uniqueLocation.size;
   }
 
+  mammalCount(semantic) {
+    const mammals = semantic
+      .filter(([_, relation, value]) => {
+        if (!Things.isUrn(value)) {
+          return false;
+        }
+
+        return relation === KnownRelations.SUBJECT && Things.parseUrn(value).type === KnownThings.MAMMAL;
+      })
+      .map(([key, relation, value]) => {
+        return Things.parseUrn(value).id;
+      });
+
+    const uniqueMammals = new Set(mammals);
+    return uniqueMammals.size;
+  }
+
   render() {
     return html`
-      <p class="photo-count">${this.imageCount()} photos ·
+      <p class="photo-stats">${this.imageCount()} photos ·
         ${this.albums.length} albums · ${this.dateRanges()} ·
         ${this.countryCount()} <span title="well, flags">countries</span> ·
         ${this.birdsCount(this.semantic)} bird species ·
-        ${this.unescoCount(this.semantic)} World Heritage Sites
-        </p>
+        ${this.mammalCount(this.semantic)} mammal species ·
+        ${this.unescoCount(this.semantic)} UNESCO sites
       </p>
     `
   }

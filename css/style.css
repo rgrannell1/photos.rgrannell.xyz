@@ -292,8 +292,12 @@ photo-app {
   word-spacing: normal;
 }
 
-.photo-album-count, .photo-count {
+.photo-album-count, .photo-stats {
   color: var(--secondary-text-color);
+}
+
+.photo-stats {
+  margin-right: 2em;
 }
 
 /* metadata */
