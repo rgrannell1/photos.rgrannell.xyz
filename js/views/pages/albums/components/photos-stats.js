@@ -100,7 +100,7 @@ export class PhotosStats extends LitElem {
 
   render() {
     return html`
-      <p class="photo-stats">${this.imageCount()} photos ·
+      <p class="photo-stats">${this.imageCount()} <a href="#/photos">photos</a> ·
         ${this.albums.length} albums · ${this.dateRanges()} ·
         ${this.countryCount()} <span title="well, flags">countries</span> ·
         ${this.birdsCount(this.semantic)} bird species ·
