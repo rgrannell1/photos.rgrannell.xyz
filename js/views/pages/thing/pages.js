@@ -108,13 +108,23 @@ export class ThingPage extends LitElem {
     const facts = this.semantic.semantic();
     const photos = this.subjectPhotos(images, facts);
 
+    const urn = Things.parseUrn(this.urn)
+    const type = urn.type;
+
     return html`
       <div>
-        <section class="thing-page">
-          <h1>${this.getTitle()}</h1>
+      <section class="thing-page">
+      <h1>${this.getTitle()}</h1>
+        ${
+          urn.id === '*'
+            ? html`<a></a>`
+            : html`<a href="#/thing/${type}:*">See all ${type}s</a>`
+        }
 
+        <br>
           ${photos}
-        </section>
+
+          </section>
       </div>
     `;
   }
