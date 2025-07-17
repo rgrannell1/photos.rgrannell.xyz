@@ -40,3 +40,5 @@ export class KnownRelations {
   static LOCATION = "location";
   static RATING = "rating";
 }
+
+export const BinomialTypes = new Set(['bird', 'mammal', 'reptile', 'amphibian', 'fish']);

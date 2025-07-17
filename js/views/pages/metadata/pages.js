@@ -80,12 +80,23 @@ export class MetadataPage extends LitElem {
     return value;
   }
 
+  isIgnoredKey(key) {
+    // TODO remove this when semantic data is cleaned up
+    console.log(key)
+    return (new Set([
+      'bird_binomial',
+      'wildlife',
+      'living_conditions'
+    ])).has(key);
+  }
+
   renderSemanticData(semantic) {
     return html`
       <h3>Photo Information</h3>
       <table class="metadata-table">
         ${
       Object.keys(semantic).sort()
+        .filter(key => !this.isIgnoredKey(key))
         .map((key) => {
           return html`
             <tr>

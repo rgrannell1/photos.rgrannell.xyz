@@ -12,6 +12,7 @@ import { LitElem } from "../../../models/lit-element.js";
 import { KnownRelations } from "../../../constants.js";
 import { Things } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
+import { BinomialTypes } from "../../../constants.js";
 
 export class ThingPage extends LitElem {
   static get properties() {
@@ -88,7 +89,8 @@ export class ThingPage extends LitElem {
         return `${parsedUrn.type.charAt(0).toUpperCase()}${parsedUrn.type.slice(1)}`;
       }
 
-      if (parsedUrn.type === 'bird') {
+
+      if (BinomialTypes.has(parsedUrn.type)) {
         return value.replace('-', ' ').replace(/^./, char => char.toUpperCase())
       }
 
@@ -115,11 +117,14 @@ export class ThingPage extends LitElem {
       <div>
       <section class="thing-page">
       <h1>${this.getTitle()}</h1>
-        ${
-          urn.id === '*'
-            ? html`<a></a>`
-            : html`<a href="#/thing/${type}:*">See all ${type}s</a>`
-        }
+
+      <h3>Metadata</h3>
+      <table class="metadata-table">
+        <tr>
+          <th class="exif-heading">Group</th>
+          <td><a href="#/thing/${type}:*">${type}</a></td>
+        </tr>
+      </table>
 
         <br>
           ${photos}

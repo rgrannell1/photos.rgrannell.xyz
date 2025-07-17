@@ -320,6 +320,10 @@ photo-app {
     font-size: 2em;
   }
 
+  .albums-header {
+    display: none;
+  }
+
   section.about-page {
     margin-right: 40px;
 

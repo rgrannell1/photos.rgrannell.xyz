@@ -50,7 +50,7 @@ export class AlbumsPage extends LitElem {
 
     return html`
     <section class="album-metadata">
-      <h1>Albums</h1>
+      <h1 class="albums-header">Albums</h1>
       <photos-stats
         .albums=${this.getAlbums()}
         .semantic=${this.semantic.semantic()}
