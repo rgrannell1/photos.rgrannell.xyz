@@ -41,11 +41,8 @@ export class AlbumsPage extends LitElem {
     });
   }
 
-
-
   render() {
     performance.mark("start-albums-render");
-
 
     return html`
     <section class="album-metadata">
@@ -72,7 +69,7 @@ export class AlbumsPage extends LitElem {
               id="${album.id}" count="${album.count}"
               minDate="${album.minDate}"
               maxDate="${album.maxDate}"
-              .countries="${album.flags}"
+              countries="${album.flags}"
               loading=${loading}>
               </photo-album>
             `;

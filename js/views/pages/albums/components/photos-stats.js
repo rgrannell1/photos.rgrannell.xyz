@@ -18,7 +18,7 @@ export class PhotosStats extends LitElem {
         ${this.stats.mammal_species} <a href="#/thing/mammal:*">mammal species</a> ·
         ${this.stats.unesco_sites} <a href="#/thing/unesco:*">UNESCO sites</a>
       </p>
-    `
+    `;
   }
 }
 

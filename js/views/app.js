@@ -7,8 +7,8 @@ import {
   ImagesArtifact,
   MetadataArtifact,
   SemanticArtifact,
+  StatsArtifact,
   VideosArtifact,
-  StatsArtifact
 } from "../models/artifacts.js";
 
 import { PageLocation } from "../services/location.js";
@@ -127,7 +127,7 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.EAGER],
     [exif, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
-    [stats, LoadMode.LAZY]
+    [stats, LoadMode.LAZY],
   ],
 };
 class AppInitialiser {
@@ -351,6 +351,7 @@ export class PhotoApp extends LitElem {
         maxDate=${album.max_date}
         imageCount=${album.photos_count}
         description=${album.description}
+        countries=${album.flags}
         class="${classes}"></album-page>
       `;
     }
@@ -399,7 +400,7 @@ export class PhotoApp extends LitElem {
         .images=${images}
         .semantic=${semantic}
         class="${classes}"></thing-page>
-      `
+      `;
     }
   }
 

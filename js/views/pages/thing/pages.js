@@ -19,7 +19,7 @@ export class ThingPage extends LitElem {
     return {
       urn: { type: String },
       images: { type: Object },
-      semantic: { type: Object }
+      semantic: { type: Object },
     };
   }
 
@@ -30,7 +30,9 @@ export class ThingPage extends LitElem {
   }
 
   isSemanticRelation(relation) {
-    return (relation === KnownRelations.SUBJECT || relation === KnownRelations.LOCATION || relation === KnownRelations.RATING);
+    return (relation === KnownRelations.SUBJECT ||
+      relation === KnownRelations.LOCATION ||
+      relation === KnownRelations.RATING);
   }
 
   filterPhotos(images, facts) {
@@ -39,37 +41,36 @@ export class ThingPage extends LitElem {
 
       const candidateUrn = Things.isRating(value)
         ? `urn:ró:rating:${encodeURIComponent(value)}`
-        : value
+        : value;
 
-        if (!this.isSemanticRelation(relation) && !Things.isUrn(candidateUrn)) {
-          return false;
+      if (!this.isSemanticRelation(relation) && !Things.isUrn(candidateUrn)) {
+        return false;
+      }
+
+      try {
+        const parsedCandidate = Things.parseUrn(candidateUrn);
+        const parsedUrn = Things.parseUrn(this.urn);
+
+        if (parsedUrn.id === "*") {
+          return parsedUrn.type === parsedCandidate.type;
+        } else {
+          return Things.sameURN(candidateUrn, this.urn);
         }
-
-        try {
-          const parsedCandidate = Things.parseUrn(candidateUrn);
-          const parsedUrn = Things.parseUrn(this.urn);
-
-          if (parsedUrn.id === '*') {
-            return parsedUrn.type === parsedCandidate.type;
-          } else {
-            return Things.sameURN(candidateUrn, this.urn);
-          }
-        } catch (err) {
-          //console.warn(`Invalid URN in fact: ${candidateUrn}`, err);
-          return false
-        }
+      } catch (err) {
+        //console.warn(`Invalid URN in fact: ${candidateUrn}`, err);
+        return false;
+      }
     })
-    .map((fact) => {
-      return images.find(image => image.id === fact[0]);
-    })
-    .filter((value) => value !== undefined)
+      .map((fact) => {
+        return images.find((image) => image.id === fact[0]);
+      })
+      .filter((value) => value !== undefined);
   }
 
   subjectPhotos(images, facts) {
-
     return this.filterPhotos(images, facts)
-    .map((photo, idx) => {
-      return html`
+      .map((photo, idx) => {
+        return html`
       <app-photo
         id=${photo.id}
         tags="${photo.tags}"
@@ -77,7 +78,7 @@ export class ThingPage extends LitElem {
         thumbnailUrl="${photo.thumbnail_url}"
         thumbnailDataUrl="${photo.thumbnail_mosaic_url}"
         imageUrl="${photo.full_image}"></app-photo>`;
-    });
+      });
   }
 
   getTitle() {
@@ -85,16 +86,20 @@ export class ThingPage extends LitElem {
       const parsedUrn = Things.parseUrn(this.urn);
       const value = decodeURIComponent(parsedUrn.id);
 
-      if (parsedUrn.id === '*') {
-        return `${parsedUrn.type.charAt(0).toUpperCase()}${parsedUrn.type.slice(1)}`;
+      if (parsedUrn.id === "*") {
+        return `${parsedUrn.type.charAt(0).toUpperCase()}${
+          parsedUrn.type.slice(1)
+        }`;
       }
-
 
       if (BinomialTypes.has(parsedUrn.type)) {
-        return value.replace('-', ' ').replace(/^./, char => char.toUpperCase())
+        return value.replace("-", " ").replace(
+          /^./,
+          (char) => char.toUpperCase(),
+        );
       }
 
-      return value
+      return value;
     } catch (err) {
       return this.urn;
     }
@@ -105,12 +110,11 @@ export class ThingPage extends LitElem {
     // Wikilinks, and all images with this ARN
     // Support bird:* level queries
 
-
     const images = this.images.images();
     const facts = this.semantic.semantic();
     const photos = this.subjectPhotos(images, facts);
 
-    const urn = Things.parseUrn(this.urn)
+    const urn = Things.parseUrn(this.urn);
     const type = urn.type;
 
     return html`

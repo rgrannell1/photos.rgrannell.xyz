@@ -30,6 +30,7 @@ export class AlbumPage extends LitElem {
       images: { type: Object },
       videos: { type: Object },
       semantic: { type: Object },
+      countries: { type: String },
     };
   }
 
@@ -88,7 +89,7 @@ export class AlbumPage extends LitElem {
     );
 
     const albumPhotos = this.albumPhotos();
-  const photos = albumPhotos.map((photo, idx) => {
+    const photos = albumPhotos.map((photo, idx) => {
       return html`
       <app-photo
         id=${photo.id}
@@ -115,8 +116,8 @@ export class AlbumPage extends LitElem {
     const unescoTags = new Set(
       albumPhotos.flatMap((photo) => {
         return photo.relations.location?.filter((location) => {
-          console.log( Things.parseUrn(location), KnownThings.UNESCO, location )
-          return Things.is(location, KnownThings.UNESCO)
+          console.log(Things.parseUrn(location), KnownThings.UNESCO, location);
+          return Things.is(location, KnownThings.UNESCO);
         });
       }).filter((x) => x),
     );
@@ -124,7 +125,7 @@ export class AlbumPage extends LitElem {
     const unescoLinks = Array.from(unescoTags).map((urn) => {
       return html`<unesco-link urn="${urn}"></unesco-link>`;
     });
-
+console.log(this.countries, 'countries');
     return html`
     <div>
       <section class="photos-metadata">
@@ -133,6 +134,7 @@ export class AlbumPage extends LitElem {
           <time>${range}</time>
         </p>
         <p class="photo-album-count">${this.renderPhotoCount()}</p>
+        <p class="photo-album-countries">${this?.countries}</p>
         <p class="photo-album-description">${unsafeHTML(this.description)}
         </p>
 

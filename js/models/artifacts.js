@@ -4,8 +4,8 @@ import {
   IMAGES_SYMBOL,
   METADATA_SYMBOL,
   SEMANTIC_SYMBOL,
+  STATS_SYMBOL,
   VIDEOS_SYMBOL,
-  STATS_SYMBOL
 } from "../constants.js";
 
 async function readConfig(url = "/manifest/env.json") {
@@ -340,7 +340,6 @@ export class MetadataArtifact {
     return tags;
   }
 }
-
 
 export class StatsArtifact {
   _data;

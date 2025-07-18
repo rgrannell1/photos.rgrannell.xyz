@@ -292,6 +292,10 @@ photo-app {
   word-spacing: normal;
 }
 
+.photo-album-count, .photo-album-countries {
+  display: inline;
+}
+
 .photo-album-count, .photo-stats {
   color: var(--secondary-text-color);
 }

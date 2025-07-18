@@ -4,7 +4,7 @@
 
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.js";
-import { Things } from "../../services/things.js"
+import { Things } from "../../services/things.js";
 
 import { BinomialTypes } from "../../constants.js";
 
@@ -18,10 +18,10 @@ export class ThingLink extends LitElem {
 
     if (BinomialTypes.has(type)) {
       const label = id.charAt(0).toUpperCase() + id.slice(1);
-      return html`<em>${decodeURIComponent(label.replace('-', ' '))}</em>`;
+      return html`<em>${decodeURIComponent(label.replace("-", " "))}</em>`;
     }
 
-    return decodeURIComponent(id)
+    return decodeURIComponent(id);
   }
 
   render() {

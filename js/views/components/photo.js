@@ -40,7 +40,7 @@ export class AppPhoto extends LitElem {
 
     // Yes this is a script injection risk, no I don't plan on doing that to myself.
     const div = document.createElement("div");
-    div.innerHTML = this.summary ?? '';
+    div.innerHTML = this.summary ?? "";
     const sanitisedDangerously = div.textContent ?? div.innerText ?? "";
 
     return html`

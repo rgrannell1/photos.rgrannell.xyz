@@ -13,7 +13,7 @@ export class PageLocation {
     [Pages.ABOUT]: this.showAboutUrl,
     [Pages.VIDEOS]: this.showVideosUrl,
     [Pages.THING]: this.showThingUrl,
-  }
+  };
 
   static router(page) {
     if (PageLocation.ROUTES.hasOwnProperty(page)) {

@@ -99,7 +99,7 @@ var ot=globalThis,jt=ot.ShadowRoot&&(ot.ShadyCSS===void 0||ot.ShadyCSS.nativeSha
         ${this.stats.mammal_species} <a href="#/thing/mammal:*">mammal species</a> ·
         ${this.stats.unesco_sites} <a href="#/thing/unesco:*">UNESCO sites</a>
       </p>
-    `}};customElements.define("photos-stats",Kt);var q=class i{static parse(t){let[e,s]=t.split(" ");return e=e.replace(/:/g,"-"),new Date(`${e} ${s}`)}static formatExifDate(t){if(!t)return t;let e=new Date(t).toISOString(),[s,r]=e.split("T")[0].replace(/\:/g,"-");return`${s.replace(/\:/g,"/")} ${r}`}static findRange(t){let e=1/0,s=-1/0;for(let r of t){if(!r.created_at)continue;let n=i.parse(r.created_at);n<e&&(e=n),n>s&&(s=n)}return[e,s]}static dateRange(t,e,s){if(!t&&!e)return"unknown date";let r=t instanceof Date?t:new Date(parseFloat(t)),n=e instanceof Date?e:new Date(parseFloat(e));if(s){let o={day:"numeric",month:"short"},h=r.toLocaleDateString("en-IE",o),a=n.toLocaleDateString("en-IE",o),d=r.toLocaleDateString("en-IE",{day:"numeric"}),g=n.toLocaleDateString("en-IE",{day:"numeric"}),u=r.toLocaleDateString("en-IE",{month:"short"}),$=n.toLocaleDateString("en-IE",{month:"short"}),f=r.getFullYear(),_=n.getFullYear(),U=u===$,Q=f===_;return h===a?`${h} ${f}`:U&&Q?`${d} - ${g} ${$} ${f}`:`${h} ${f} - ${a} ${_}`}else{let o={year:"numeric",month:"short",day:"numeric"},h=r.toLocaleDateString("en-IE",o),a=n.toLocaleDateString("en-IE",o);return h===a?h:`${h} \u2014 ${a}`}}};var Xt=class extends p{static get properties(){return{title:{type:String},url:{type:String},thumbnailDataUrl:{type:String},minDate:{type:String},maxDate:{type:String},id:{type:String},count:{type:Number},countries:{type:Array},loading:{type:String}}}dateRange(){if(!this.minDate&&!this.maxDate)return"unknown date";let t=window.matchMedia("(max-width: 500px)");return q.dateRange(this.minDate,this.maxDate,t.matches)}hidePlaceholder(t){this.broadcast("photo-loaded",{url:this.url})();let e=t.target.parentNode.querySelector(".thumbnail-placeholder");e.style.zIndex=-1}render(){return performance.mark(`start-album-render-${this.url}`),l`
+    `}};customElements.define("photos-stats",Kt);var q=class i{static parse(t){let[e,s]=t.split(" ");return e=e.replace(/:/g,"-"),new Date(`${e} ${s}`)}static formatExifDate(t){if(!t)return t;let e=new Date(t).toISOString(),[s,r]=e.split("T")[0].replace(/\:/g,"-");return`${s.replace(/\:/g,"/")} ${r}`}static findRange(t){let e=1/0,s=-1/0;for(let r of t){if(!r.created_at)continue;let n=i.parse(r.created_at);n<e&&(e=n),n>s&&(s=n)}return[e,s]}static dateRange(t,e,s){if(!t&&!e)return"unknown date";let r=t instanceof Date?t:new Date(parseFloat(t)),n=e instanceof Date?e:new Date(parseFloat(e));if(s){let o={day:"numeric",month:"short"},h=r.toLocaleDateString("en-IE",o),a=n.toLocaleDateString("en-IE",o),d=r.toLocaleDateString("en-IE",{day:"numeric"}),g=n.toLocaleDateString("en-IE",{day:"numeric"}),u=r.toLocaleDateString("en-IE",{month:"short"}),$=n.toLocaleDateString("en-IE",{month:"short"}),f=r.getFullYear(),_=n.getFullYear(),U=u===$,Q=f===_;return h===a?`${h} ${f}`:U&&Q?`${d} - ${g} ${$} ${f}`:`${h} ${f} - ${a} ${_}`}else{let o={year:"numeric",month:"short",day:"numeric"},h=r.toLocaleDateString("en-IE",o),a=n.toLocaleDateString("en-IE",o);return h===a?h:`${h} \u2014 ${a}`}}};var Xt=class extends p{static get properties(){return{title:{type:String},url:{type:String},thumbnailDataUrl:{type:String},minDate:{type:String},maxDate:{type:String},id:{type:String},count:{type:Number},countries:{type:String},loading:{type:String}}}dateRange(){if(!this.minDate&&!this.maxDate)return"unknown date";let t=window.matchMedia("(max-width: 500px)");return q.dateRange(this.minDate,this.maxDate,t.matches)}hidePlaceholder(t){this.broadcast("photo-loaded",{url:this.url})();let e=t.target.parentNode.querySelector(".thumbnail-placeholder");e.style.zIndex=-1}render(){return performance.mark(`start-album-render-${this.url}`),l`
     <div class="photo-album">
       <a href="${"/#/album/"+this.id}" onclick="event.preventDefault();">
         <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.thumbnailDataUrl}"/>
@@ -113,7 +113,7 @@ var ot=globalThis,jt=ot.ShadowRoot&&(ot.ShadyCSS===void 0||ot.ShadyCSS.nativeSha
         </p>
         <div class="photo-metadata-inline">
         <p class="photo-album-count">${this.count} ${this.count===1?"photo":"photos"}</p>
-        <p class="photo-album-countries">${this.countries.join(" ")}</p>
+        <p class="photo-album-countries">${this?.countries}</p>
         </div>
 
     </div>
@@ -135,7 +135,7 @@ var ot=globalThis,jt=ot.ShadowRoot&&(ot.ShadyCSS===void 0||ot.ShadyCSS.nativeSha
               id="${t.id}" count="${t.count}"
               minDate="${t.minDate}"
               maxDate="${t.maxDate}"
-              .countries="${t.flags}"
+              countries="${t.flags}"
               loading=${s}>
               </photo-album>
             `})}
@@ -160,7 +160,7 @@ var ot=globalThis,jt=ot.ShadowRoot&&(ot.ShadyCSS===void 0||ot.ShadyCSS.nativeSha
         <span class="unesco-text-full">UNESCO World Heritage Site #${this.id()}</span>
         <span class="unesco-text-short">UNESCO #${this.id()}</span>
       </a>
-    `:l`<span>Invalid UNESCO URN</span>`}};customElements.define("unesco-link",ie);var re=class extends p{static get properties(){return{title:{type:String},id:{type:String},minDate:{type:String},maxDate:{type:String},imageCount:{type:Number},description:{type:String},images:{type:Object},videos:{type:Object},semantic:{type:Object}}}connectedCallback(){super.connectedCallback(),this.albumPhotos()[0]||console.error(`empty album! ${this.id}`),v.setIndex()}albumPhotos(){let t=this.semantic.semantic();return this.images.images().filter(e=>e.album_id===this.id).map(e=>{let s={},r=t.filter(n=>n[0]===e.id);for(let[n,o,h]of r)s[o]||(s[o]=[]),s[o].push(h);return{...e,relations:s}})}albumVideos(){return this.videos.videos().filter(t=>t.album_id===this.id)}renderPhotoCount(){return this.imageCount===1?`${this.imageCount} photo`:`${this.imageCount} photos`}render(){let t=window.matchMedia("(max-width: 500px)"),e=q.dateRange(this.minDate,this.maxDate,t.matches),s=this.albumPhotos(),r=s.map((a,d)=>l`
+    `:l`<span>Invalid UNESCO URN</span>`}};customElements.define("unesco-link",ie);var re=class extends p{static get properties(){return{title:{type:String},id:{type:String},minDate:{type:String},maxDate:{type:String},imageCount:{type:Number},description:{type:String},images:{type:Object},videos:{type:Object},semantic:{type:Object},countries:{type:String}}}connectedCallback(){super.connectedCallback(),this.albumPhotos()[0]||console.error(`empty album! ${this.id}`),v.setIndex()}albumPhotos(){let t=this.semantic.semantic();return this.images.images().filter(e=>e.album_id===this.id).map(e=>{let s={},r=t.filter(n=>n[0]===e.id);for(let[n,o,h]of r)s[o]||(s[o]=[]),s[o].push(h);return{...e,relations:s}})}albumVideos(){return this.videos.videos().filter(t=>t.album_id===this.id)}renderPhotoCount(){return this.imageCount===1?`${this.imageCount} photo`:`${this.imageCount} photos`}render(){let t=window.matchMedia("(max-width: 500px)"),e=q.dateRange(this.minDate,this.maxDate,t.matches),s=this.albumPhotos(),r=s.map((a,d)=>l`
       <app-photo
         id=${a.id}
         tags="${a.tags}"
@@ -175,7 +175,7 @@ var ot=globalThis,jt=ot.ShadowRoot&&(ot.ShadyCSS===void 0||ot.ShadyCSS.nativeSha
         url_1080p=${a.video_url_1080p}
         url_720p=${a.video_url_720p}
         url_480p=${a.video_url_480p}
-        ></app-video>`),o=new Set(s.flatMap(a=>a.relations.location?.filter(d=>(console.log(y.parseUrn(d),z.UNESCO,d),y.is(d,z.UNESCO)))).filter(a=>a)),h=Array.from(o).map(a=>l`<unesco-link urn="${a}"></unesco-link>`);return l`
+        ></app-video>`),o=new Set(s.flatMap(a=>a.relations.location?.filter(d=>(console.log(y.parseUrn(d),z.UNESCO,d),y.is(d,z.UNESCO)))).filter(a=>a)),h=Array.from(o).map(a=>l`<unesco-link urn="${a}"></unesco-link>`);return console.log(this.countries,"countries"),l`
     <div>
       <section class="photos-metadata">
         <h1>${this.title}</h1>
@@ -183,6 +183,7 @@ var ot=globalThis,jt=ot.ShadowRoot&&(ot.ShadyCSS===void 0||ot.ShadyCSS.nativeSha
           <time>${e}</time>
         </p>
         <p class="photo-album-count">${this.renderPhotoCount()}</p>
+        <p class="photo-album-countries">${this?.countries}</p>
         <p class="photo-album-description">${yt(this.description)}
         </p>
 
@@ -347,6 +348,7 @@ var ot=globalThis,jt=ot.ShadowRoot&&(ot.ShadyCSS===void 0||ot.ShadyCSS.nativeSha
         maxDate=${s.max_date}
         imageCount=${s.photos_count}
         description=${s.description}
+        countries=${s.flags}
         class="${e}"></album-page>
       `}if(this.page===m.METADATA){let s=E.images().find(h=>h.id===this.id),r=O.exif().find(h=>h.id===this.id),n=S.semantic().filter(h=>h[0]===this.id),o={};for(let[h,a,d]of n)o[a]?typeof o[a]=="string"&&(o[a]=[o[a],d]):o[a]=d;return s||console.error(`failed to find photo with id ${this.id}`),l`
       <metadata-page .image=${s} .semantic=${o} .exif=${r} id=${this.id} class="${e}"></metadata-page>

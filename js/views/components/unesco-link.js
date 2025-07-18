@@ -1,6 +1,6 @@
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.js";
-import { Things } from "../../services/things.js"
+import { Things } from "../../services/things.js";
 
 export class UnescoLink extends LitElem {
   static properties = {
@@ -8,13 +8,11 @@ export class UnescoLink extends LitElem {
   };
 
   id() {
-    return Things.parseUrn(this.urn)?.id ?? 'unknown';
+    return Things.parseUrn(this.urn)?.id ?? "unknown";
   }
 
   url() {
-    return this.id()
-      ? `https://whc.unesco.org/en/list/${this.id()}`
-      : null;
+    return this.id() ? `https://whc.unesco.org/en/list/${this.id()}` : null;
   }
 
   render() {

@@ -70,7 +70,7 @@ export class MetadataPage extends LitElem {
 
     if (Things.isRating(value)) {
       const urn = `urn:ró:rating:${value}`;
-      return html`<thing-link .urn="${urn}"></thing-link>`
+      return html`<thing-link .urn="${urn}"></thing-link>`;
     } else if (Things.isUrn(value) && Things.is(value, KnownThings.UNESCO)) {
       return html`<unesco-link .urn="${value}"></unesco-link>`;
     } else if (Things.isUrn(value)) {
@@ -82,11 +82,11 @@ export class MetadataPage extends LitElem {
 
   isIgnoredKey(key) {
     // TODO remove this when semantic data is cleaned up
-    console.log(key)
+    console.log(key);
     return (new Set([
-      'bird_binomial',
-      'wildlife',
-      'living_conditions'
+      "bird_binomial",
+      "wildlife",
+      "living_conditions",
     ])).has(key);
   }
 
@@ -96,7 +96,7 @@ export class MetadataPage extends LitElem {
       <table class="metadata-table">
         ${
       Object.keys(semantic).sort()
-        .filter(key => !this.isIgnoredKey(key))
+        .filter((key) => !this.isIgnoredKey(key))
         .map((key) => {
           return html`
             <tr>

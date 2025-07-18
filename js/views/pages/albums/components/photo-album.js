@@ -12,7 +12,7 @@ export class PhotoAlbum extends LitElem {
       maxDate: { type: String },
       id: { type: String },
       count: { type: Number },
-      countries: { type: Array },
+      countries: { type: String },
       loading: { type: String },
     };
   }
@@ -61,7 +61,7 @@ export class PhotoAlbum extends LitElem {
         <p class="photo-album-count">${this.count} ${
       this.count === 1 ? "photo" : "photos"
     }</p>
-        <p class="photo-album-countries">${this.countries.join(" ")}</p>
+        <p class="photo-album-countries">${this?.countries}</p>
         </div>
 
     </div>
