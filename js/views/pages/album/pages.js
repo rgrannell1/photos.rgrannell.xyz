@@ -88,11 +88,12 @@ export class AlbumPage extends LitElem {
     );
 
     const albumPhotos = this.albumPhotos();
-    const photos = albumPhotos.map((photo, idx) => {
+  const photos = albumPhotos.map((photo, idx) => {
       return html`
       <app-photo
         id=${photo.id}
         tags="${photo.tags}"
+        summary=${photo.relations.summary}
         loading="${Photos.loadingMode(idx)}"
         thumbnailUrl="${photo.thumbnail_url}"
         thumbnailDataUrl="${photo.thumbnail_mosaic_url}"

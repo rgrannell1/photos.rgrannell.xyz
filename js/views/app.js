@@ -108,7 +108,6 @@ export const PAGE_DEPENDECIES = {
     [exif, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
-    [semantic, LoadMode.LAZY]
   ],
 
   [Pages.METADATA]: [

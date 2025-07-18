@@ -9,6 +9,7 @@ export class AppPhoto extends LitElem {
       thumbnailDataUrl: { type: String },
       thumbnailUrl: { type: String },
       tags: { type: Array },
+      summary: { type: String },
       loading: { type: String },
     };
   }
@@ -37,6 +38,11 @@ export class AppPhoto extends LitElem {
       tags: this.tags,
     };
 
+    // Yes this is a script injection risk, no I don't plan on doing that to myself.
+    const div = document.createElement("div");
+    div.innerHTML = this.summary ?? '';
+    const sanitisedDangerously = div.textContent ?? div.innerText ?? "";
+
     return html`
     <div class="photo">
       <a href="${"#/metadata/" + this.id}" onclick="event.preventDefault();">
@@ -51,6 +57,8 @@ export class AppPhoto extends LitElem {
         <img
           @load=${this.hidePlaceholder.bind(this)} style="z-index: -1"
           class="thumbnail-image"
+          alt=${sanitisedDangerously}
+          title=${sanitisedDangerously}
           width="400"
           height="400"
           src="${this.thumbnailUrl}"
