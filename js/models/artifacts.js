@@ -5,6 +5,7 @@ import {
   METADATA_SYMBOL,
   SEMANTIC_SYMBOL,
   VIDEOS_SYMBOL,
+  STATS_SYMBOL
 } from "../constants.js";
 
 async function readConfig(url = "/manifest/env.json") {
@@ -337,5 +338,35 @@ export class MetadataArtifact {
     }
 
     return tags;
+  }
+}
+
+
+export class StatsArtifact {
+  _data;
+
+  constructor(url = `/manifest/stats.${CONFIG.publication_id}.json`) {
+    this.url = url;
+  }
+
+  async init() {
+    if (window[STATS_SYMBOL]) {
+      this._data = window[STATS_SYMBOL];
+    }
+
+    if (this._data) {
+      return;
+    }
+
+    console.log(`🔎 fetching ${this.url}`);
+
+    const stats = await (await fetch(this.url)).json();
+    window[STATS_SYMBOL] = stats;
+
+    this._data = stats;
+  }
+
+  stats() {
+    return this._data;
   }
 }

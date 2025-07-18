@@ -8,6 +8,7 @@ import {
   MetadataArtifact,
   SemanticArtifact,
   VideosArtifact,
+  StatsArtifact
 } from "../models/artifacts.js";
 
 import { PageLocation } from "../services/location.js";
@@ -31,6 +32,7 @@ const videos = new VideosArtifact();
 const metadata = new MetadataArtifact();
 const exif = new ExifArtifact();
 const semantic = new SemanticArtifact();
+const stats = new StatsArtifact();
 
 export const DEFAULT_DEPENDENCIES = [
   [albums, LoadMode.EAGER],
@@ -39,6 +41,7 @@ export const DEFAULT_DEPENDENCIES = [
   [metadata, LoadMode.EAGER],
   [exif, LoadMode.EAGER],
   [semantic, LoadMode.EAGER],
+  [stats, LoadMode.EAGER],
 ];
 /*
  * The largest network requests will be for images.json,
@@ -58,7 +61,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
-    [semantic, LoadMode.LAZY],
+    [stats, LoadMode.LAZY],
   ],
   [Pages.ALBUMS]: [
     [albums, LoadMode.EAGER],
@@ -66,7 +69,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
-    [semantic, LoadMode.EAGER],
+    [stats, LoadMode.EAGER],
   ],
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
@@ -74,7 +77,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
-    [semantic, LoadMode.LAZY],
+    [stats, LoadMode.LAZY],
   ],
   [Pages.VIDEOS]: [
     [albums, LoadMode.LAZY],
@@ -82,13 +85,13 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
-    [semantic, LoadMode.LAZY],
+    [stats, LoadMode.LAZY],
   ],
   [Pages.ALBUM]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
-    [semantic, LoadMode.EAGER],
+    [stats, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
   ],
@@ -99,6 +102,7 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
+    [stats, LoadMode.LAZY]
   ],
 
   [Pages.METADATA]: [
@@ -108,6 +112,7 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.EAGER],
     [exif, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
+    [stats, LoadMode.LAZY]
   ],
   [Pages.THING]: [
     [albums, LoadMode.LAZY],
@@ -116,6 +121,7 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.EAGER],
     [exif, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
+    [stats, LoadMode.LAZY]
   ],
 };
 class AppInitialiser {
@@ -303,7 +309,7 @@ export class PhotoApp extends LitElem {
 
     if (!this.page || this.page === "albums") {
       return html`
-      <photo-album-page .semantic=${semantic} .albums="${albums}" class="${classes}"></photo-album-page>
+      <photo-album-page .stats=${stats} .albums="${albums}" class="${classes}"></photo-album-page>
       `;
     }
 

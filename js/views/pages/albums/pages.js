@@ -16,7 +16,7 @@ export class AlbumsPage extends LitElem {
   static get properties() {
     return {
       albums: { type: Object },
-      semantic: { type: Object },
+      stats: { type: Object },
     };
   }
   connectedCallback() {
@@ -45,15 +45,13 @@ export class AlbumsPage extends LitElem {
 
   render() {
     performance.mark("start-albums-render");
-    const facts = this.semantic.semantic();
 
 
     return html`
     <section class="album-metadata">
       <h1 class="albums-header">Albums</h1>
       <photos-stats
-        .albums=${this.getAlbums()}
-        .semantic=${this.semantic.semantic()}
+        .stats=${this.stats.stats()}
         ></photos-stats>
     </section>
 
