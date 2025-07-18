@@ -62,6 +62,7 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.ALBUMS]: [
     [albums, LoadMode.EAGER],
@@ -70,6 +71,7 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.EAGER],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
@@ -78,6 +80,7 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.VIDEOS]: [
     [albums, LoadMode.LAZY],
@@ -86,6 +89,7 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.ALBUM]: [
     [albums, LoadMode.EAGER],
@@ -94,6 +98,7 @@ export const PAGE_DEPENDECIES = {
     [stats, LoadMode.LAZY],
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.PHOTO]: [
     [albums, LoadMode.EAGER],
@@ -102,7 +107,8 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.LAZY],
     [exif, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
-    [stats, LoadMode.LAZY]
+    [stats, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY]
   ],
 
   [Pages.METADATA]: [
@@ -112,7 +118,8 @@ export const PAGE_DEPENDECIES = {
     [metadata, LoadMode.EAGER],
     [exif, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
-    [stats, LoadMode.LAZY]
+    [stats, LoadMode.LAZY],
+    [semantic, LoadMode.LAZY],
   ],
   [Pages.THING]: [
     [albums, LoadMode.LAZY],
