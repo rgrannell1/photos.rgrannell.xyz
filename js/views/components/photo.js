@@ -9,7 +9,6 @@ export class AppPhoto extends LitElem {
       imageUrl: { type: String },
       thumbnailUrl: { type: String },
       mosaicColours: { type: String },
-      tags: { type: Array },
       summary: { type: String },
       loading: { type: String },
     };
@@ -37,7 +36,6 @@ export class AppPhoto extends LitElem {
       imageUrl: this.imageUrl,
       thumbnailUrl: this.thumbnailUrl,
       thumbnailDataUrl: Photos.encodeBitmapDataURL(this.mosaicColours),
-      tags: this.tags,
     };
 
     // Yes this is a script injection risk, no I don't plan on doing that to myself.

@@ -94,7 +94,6 @@ export class AlbumPage extends LitElem {
       return html`
       <app-photo
         id=${photo.id}
-        tags="${photo.tags}"
         summary=${photo.relations.summary}
         loading="${Photos.loadingMode(idx)}"
         thumbnailUrl="${photo.thumbnail_url}"

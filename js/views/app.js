@@ -174,7 +174,6 @@ export class PhotoApp extends LitElem {
       page: { type: String },
       sidebarVisible: { type: Boolean, state: true },
       id: { type: String },
-      tags: { type: Array },
       imageUrl: { type: String },
       thumbnailUrl: { type: String },
       route: { type: String },
@@ -256,14 +255,12 @@ export class PhotoApp extends LitElem {
       id,
       imageUrl,
       thumbnailUrl,
-      tags,
     } = event.detail;
 
     this.page = Pages.METADATA;
     this.id = id;
     this.imageUrl = imageUrl;
     this.thumbnailUrl = thumbnailUrl;
-    this.tags = tags ?? [];
 
     PageLocation.showMetadataUrl(id);
   }
@@ -440,7 +437,7 @@ export class PhotoApp extends LitElem {
         @switch-theme=${this.receiveSwitchTheme}
         @navigate-page=${this.receiveNavigatePage}>
 
-        <photo-header .tag=${this.tag} .darkMode=${this.loadDarkMode()}></photo-header>
+        <photo-header .darkMode=${this.loadDarkMode()}></photo-header>
 
         <div class="${classes.join(" ")}">
             <photo-sidebar visible=${this.sidebarVisible}></photo-sidebar>

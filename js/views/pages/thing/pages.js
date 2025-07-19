@@ -73,7 +73,6 @@ export class ThingPage extends LitElem {
         return html`
       <app-photo
         id=${photo.id}
-        tags="${photo.tags}"
         loading="${Photos.loadingMode(idx)}"
         thumbnailUrl="${photo.thumbnail_url}"
         mosaicColours="${photo.mosaic_colours}"
