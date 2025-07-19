@@ -2,6 +2,8 @@
  * Utility classes for dealing with photos
  */
 
+const coloursCache = new Map();
+
 export class Photos {
   /*
    * Determine whether a photo should be eagerly or lazily loaded
@@ -19,6 +21,10 @@ export class Photos {
   }
 
   static encodeBitmapDataURL(colours) {
+    if (coloursCache.has(colours)) {
+      return coloursCache.get(colours);
+    }
+
     const coloursList = colours.split('#').map(colour => `#${colour}`);
     const canvas = document.createElement('canvas');
     canvas.width = 2;
@@ -34,6 +40,7 @@ export class Photos {
     ctx.fillStyle = coloursList[4];
     ctx.fillRect(1, 1, 1, 1);
 
-    return canvas.toDataURL('image/png');
+    coloursCache.set(colours, canvas.toDataURL('image/png'));
+    return coloursCache.get(colours);
   }
 }
