@@ -33,7 +33,7 @@ export class AlbumsPage extends LitElem {
         minDate: album.min_date,
         maxDate: album.max_date,
         url: album.thumbnail_url,
-        thumbnailDataUrl: `data:image/bmp;base64,${album.thumbnail_mosaic_url}`,
+        mosaicColours: album.mosaic,
         id: album.id,
         count: photos_count,
         flags: (album.flags ?? "").split(","),
@@ -65,7 +65,7 @@ export class AlbumsPage extends LitElem {
             <photo-album
               title="${album.title}"
               url="${album.url}"
-              thumbnailDataUrl="${album.thumbnailDataUrl}"
+              mosaicColours="${album.mosaicColours}"
               id="${album.id}" count="${album.count}"
               minDate="${album.minDate}"
               maxDate="${album.maxDate}"

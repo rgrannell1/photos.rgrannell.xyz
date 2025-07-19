@@ -64,9 +64,7 @@ export class ImagesArtifact {
       return {
         ...image,
         full_image: `https://photos-cdn.rgrannell.xyz${image.full_image}`,
-        thumbnail_url: `https://photos-cdn.rgrannell.xyz${image.thumbnail_url}`,
-        thumbnail_mosaic_url:
-          `data:image/bmp;base64,${image.thumbnail_mosaic_url}`,
+        thumbnail_url: `https://photos-cdn.rgrannell.xyz${image.thumbnail_url}`
       };
     });
   }

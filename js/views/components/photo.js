@@ -1,13 +1,14 @@
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.js";
+import { Photos } from "../../services/photos.js";
 
 export class AppPhoto extends LitElem {
   static get properties() {
     return {
       id: { type: String },
       imageUrl: { type: String },
-      thumbnailDataUrl: { type: String },
       thumbnailUrl: { type: String },
+      mosaicColours: { type: String },
       tags: { type: Array },
       summary: { type: String },
       loading: { type: String },
@@ -30,11 +31,12 @@ export class AppPhoto extends LitElem {
   }
 
   render() {
+    console.log(this.mosaicColours, 'colours')
     const photoMetadata = {
       id: this.id,
       imageUrl: this.imageUrl,
       thumbnailUrl: this.thumbnailUrl,
-      thumbnailDataUrl: this.thumbnailDataUrl,
+      thumbnailDataUrl: Photos.encodeBitmapDataURL(this.mosaicColours),
       tags: this.tags,
     };
 
@@ -52,7 +54,7 @@ export class AppPhoto extends LitElem {
       </a>
 
       <a href="${this.imageUrl}" target="_blank" rel="external">
-        <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.thumbnailDataUrl}"/>
+        <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${photoMetadata.thumbnailDataUrl}"/>
 
         <img
           @load=${this.hidePlaceholder.bind(this)} style="z-index: -1"

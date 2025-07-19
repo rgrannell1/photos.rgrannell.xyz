@@ -90,6 +90,7 @@ export class AlbumPage extends LitElem {
 
     const albumPhotos = this.albumPhotos();
     const photos = albumPhotos.map((photo, idx) => {
+      console.log(photo.mosaic_colours, 'colours')
       return html`
       <app-photo
         id=${photo.id}
@@ -97,7 +98,7 @@ export class AlbumPage extends LitElem {
         summary=${photo.relations.summary}
         loading="${Photos.loadingMode(idx)}"
         thumbnailUrl="${photo.thumbnail_url}"
-        thumbnailDataUrl="${photo.thumbnail_mosaic_url}"
+        mosaicColours="${photo.mosaic_colours}"
         imageUrl="${photo.full_image}"></app-photo>`;
     });
 

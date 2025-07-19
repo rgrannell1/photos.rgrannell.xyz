@@ -39,7 +39,7 @@ export class PhotosPage extends LitElem {
         tags="${photo.tags}"
         loading="${Photos.loadingMode(idx)}"
         thumbnailUrl="${photo.thumbnail_url}"
-        thumbnailDataUrl="${photo.thumbnail_mosaic_url}"
+        mosaicColours="${photo.mosaic_colours}"
         imageUrl="${photo.full_image}"></app-photo>`;
     });
 

@@ -1,13 +1,14 @@
 import { html } from "../../../../library/lit.js";
 import { LitElem } from "../../../../models/lit-element.js";
 import { Dates } from "../../../../services/dates.js";
+import { Photos } from "../../../../services/photos.js";
 
 export class PhotoAlbum extends LitElem {
   static get properties() {
     return {
       title: { type: String },
       url: { type: String },
-      thumbnailDataUrl: { type: String },
+      mosaicColours: { type: String },
       minDate: { type: String },
       maxDate: { type: String },
       id: { type: String },
@@ -38,10 +39,12 @@ export class PhotoAlbum extends LitElem {
   render() {
     performance.mark(`start-album-render-${this.url}`);
 
+    const thumbnailDataUrl = Photos.encodeBitmapDataURL(this.mosaicColours);
+
     return html`
     <div class="photo-album">
       <a href="${"/#/album/" + this.id}" onclick="event.preventDefault();">
-        <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.thumbnailDataUrl}"/>
+        <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${thumbnailDataUrl}"/>
         <img @load=${
       this.hidePlaceholder.bind(this)
     } style="z-index: -1" class="thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
