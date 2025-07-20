@@ -25,6 +25,20 @@ class Artifacts {
   async html() {
     return await Deno.readTextFile('index.mustache.html');
   }
+  async albums() {
+    return await JSON.parse(await Deno.readTextFile(await this.findFile('albums')));
+  }
+}
+
+function prefetchTargets(albums: any[]) {
+  return albums
+    .slice(1)
+    .sort((album0, album1) => {
+      return album1[6] - album0[6]; // max date
+    })
+    .map(album => {
+      return album[7]; // thumbnail url
+    }).slice(0, 5);
 }
 
 async function buildHTML() {
@@ -36,7 +50,9 @@ async function buildHTML() {
 
   console.log(render(html, {
     stats,
-    env
+    env,
+    prefetched: prefetchTargets(await artifacts.albums()),
+    cdnUrl: JSON.parse(env).photos_url
   }));
 }
 

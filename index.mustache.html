@@ -15,11 +15,9 @@
 
     <!-- Preloads -->
     <link rel="preload" href="/dist/app.js">
-    <link rel="preload" href="https://photos-cdn.rgrannell.xyz/27034b3963.webp">
-    <link rel="preload" href="https://photos-cdn.rgrannell.xyz/09e237217c.webp">
-    <link rel="preload" href="https://photos-cdn.rgrannell.xyz/bed1128661.webp">
-    <link rel="preload" href="https://photos-cdn.rgrannell.xyz/9a1c8db6a3.webp">
-    <link rel="preload" href="https://photos-cdn.rgrannell.xyz/4c061c00f6.webp">
+    {{#prefetched}}
+      <link rel="preload" href="{{{ cdnUrl }}}{{{.}}}">
+    {{/prefetched}}
 
     <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/manifest/atom/atom-index.xml" />
 
