@@ -1,0 +1,33 @@
+{
+  "version": "3",
+  "packages": {
+    "specifiers": {
+      "jsr:@std/assert@^0.218.2": "jsr:@std/assert@0.218.2",
+      "jsr:@std/path": "jsr:@std/path@0.218.2"
+    },
+    "jsr": {
+      "@std/assert@0.218.2": {
+        "integrity": "7f0a5a1a8cf86607cd6c2c030584096e1ffad27fc9271429a8cb48cfbdee5eaf"
+      },
+      "@std/path@0.218.2": {
+        "integrity": "b568fd923d9e53ad76d17c513e7310bda8e755a3e825e6289a0ce536404e2662",
+        "dependencies": [
+          "jsr:@std/assert@^0.218.2"
+        ]
+      }
+    }
+  },
+  "redirects": {
+    "https://deno.land/x/mustache_ts/mustache.ts": "https://deno.land/x/mustache_ts@v0.4.1.1/mustache.ts"
+  },
+  "remote": {
+    "https://deno.land/x/mustache_ts@v0.4.1.1/mustache.ts": "228a1138f55735e399b2232c87bcbb415ee462a067a10c71c14ae207c0b36a78"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:esbuild@^0.23.1"
+      ]
+    }
+  }
+}

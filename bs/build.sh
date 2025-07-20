@@ -19,3 +19,5 @@ npx esbuild css/style.css      \
   --loader:.ttf=file           \
   --loader:.woff2=file         \
   --outfile=dist/css/style.css
+
+deno run -A --watch build.ts > index.html

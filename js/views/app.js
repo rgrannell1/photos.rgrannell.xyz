@@ -1,11 +1,10 @@
 import { html } from "../library/lit.js";
-import { HaystackSearchEngine } from "../library/haystack.js";
+//import { HaystackSearchEngine } from "../library/haystack.js";
 import { LitElem } from "../models/lit-element.js";
 import {
   AlbumsArtifact,
   ExifArtifact,
   ImagesArtifact,
-  MetadataArtifact,
   SemanticArtifact,
   StatsArtifact,
   VideosArtifact,
@@ -29,7 +28,6 @@ import "./pages/thing/pages.js";
 const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
 const videos = new VideosArtifact();
-const metadata = new MetadataArtifact();
 const exif = new ExifArtifact();
 const semantic = new SemanticArtifact();
 const stats = new StatsArtifact();
@@ -38,7 +36,6 @@ export const DEFAULT_DEPENDENCIES = [
   [albums, LoadMode.EAGER],
   [images, LoadMode.EAGER],
   [videos, LoadMode.EAGER],
-  [metadata, LoadMode.EAGER],
   [exif, LoadMode.EAGER],
   [semantic, LoadMode.EAGER],
   [stats, LoadMode.EAGER],
@@ -59,7 +56,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
     [videos, LoadMode.LAZY],
-    [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
@@ -68,7 +64,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.EAGER],
     [images, LoadMode.LAZY],
     [videos, LoadMode.LAZY],
-    [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
@@ -77,7 +72,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
-    [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
@@ -86,7 +80,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
     [videos, LoadMode.EAGER],
-    [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
@@ -96,7 +89,6 @@ export const PAGE_DEPENDECIES = {
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
-    [metadata, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
   ],
@@ -104,7 +96,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
-    [metadata, LoadMode.LAZY],
     [exif, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
@@ -114,7 +105,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
-    [metadata, LoadMode.EAGER],
     [exif, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
@@ -124,7 +114,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
     [videos, LoadMode.LAZY],
-    [metadata, LoadMode.EAGER],
     [exif, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
     [stats, LoadMode.LAZY],

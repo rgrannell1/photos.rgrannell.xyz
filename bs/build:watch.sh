@@ -22,3 +22,5 @@ npx esbuild css/style.css      \
   --loader:.woff2=file         \
   --outfile=dist/css/style.css \
   --watch=forever &
+
+deno run -A --watch build.ts > index.html

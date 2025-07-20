@@ -112,7 +112,6 @@ export class AlbumPage extends LitElem {
         ></app-video>`;
     });
 
-    // TODO: add unesco tags here
     const unescoTags = new Set(
       albumPhotos.flatMap((photo) => {
         return photo.relations.location?.filter((location) => {
@@ -125,7 +124,7 @@ export class AlbumPage extends LitElem {
     const unescoLinks = Array.from(unescoTags).map((urn) => {
       return html`<unesco-link urn="${urn}"></unesco-link>`;
     });
-console.log(this.countries, 'countries');
+
     return html`
     <div>
       <section class="photos-metadata">

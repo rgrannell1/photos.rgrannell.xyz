@@ -8,12 +8,8 @@ import {
   VIDEOS_SYMBOL,
 } from "../constants.js";
 
-async function readConfig(url = "/manifest/env.json") {
-  const res = await fetch(url);
-  return await res.json();
-}
-
-const CONFIG = await readConfig();
+// injected into the HTLM during build-time
+const CONFIG = window.envConfig;
 
 export class ImagesArtifact {
   _data;
@@ -288,6 +284,7 @@ export class SemanticArtifact {
   }
 }
 
+// TODO deprecate
 export class MetadataArtifact {
   _data;
 
