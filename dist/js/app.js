@@ -73,7 +73,7 @@ var nt=globalThis,Gt=nt.ShadowRoot&&(nt.ShadyCSS===void 0||nt.ShadyCSS.nativeSha
     <div class="search-box">
       <input type="text" placeholder="Search...">
     </div>
-    `}};customElements.define("search-bar",qt);var v=class{static getElement(){return document.getElementById("rss")}static setTag(t){let e=this.getElement();if(!e||!t)return;let s=`/feeds/tags/${t}.json`;e.href=s}static setIndex(){let t=this.getElement();if(!t)return;let e="/manifest/atom/atom-index.xml";t.href=e}};var Jt=class extends u{static get properties(){return{images:{type:Object}}}connectedCallback(){super.connectedCallback(),v.setIndex()}allImages(){return this.images.images().sort((t,e)=>e.created_at-t.created_at)}render(){let t=this.allImages();async function*e(){for(let s=0;s<this.allImages().length;s++){let r=this.allImages()[s];yield l`
+    `}};customElements.define("search-bar",qt);var v=class{static getElement(){return document.getElementById("rss")}static setTag(t){let e=this.getElement();if(!e||!t)return;let s=`/feeds/tags/${t}.json`;e.href=s}static setIndex(){let t=this.getElement();if(!t)return;let e="/manifest/atom/atom-index.xml";t.href=e}};var Jt=class extends u{static get properties(){return{images:{type:Object}}}connectedCallback(){super.connectedCallback(),v.setIndex()}allImages(){return this.images.images().sort((t,e)=>e.created_at-t.created_at)}render(){let t=this.allImages();async function*e(){for(let s=0;s<t.length;s++){let r=t[s];yield l`
           <app-photo
             id=${r.id}
             loading="${S.loadingMode(s)}"

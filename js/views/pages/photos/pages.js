@@ -36,8 +36,8 @@ export class PhotosPage extends LitElem {
     const photos = this.allImages();
 
     async function* photosIterable() {
-      for (let idx = 0; idx < this.allImages().length; idx++) {
-        const photo = this.allImages()[idx];
+      for (let idx = 0; idx < photos.length; idx++) {
+        const photo = photos[idx];
         yield html`
           <app-photo
             id=${photo.id}
