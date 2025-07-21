@@ -6,6 +6,7 @@
 
 import { html } from "../../../library/lit.js";
 
+import { asyncAppend } from "../../../library/lit.js";
 import "../../components/photo.js";
 import "./components/search.js";
 import { Photos } from "../../../services/photos.js";
@@ -32,15 +33,20 @@ export class PhotosPage extends LitElem {
   }
 
   render() {
-    const photos = this.allImages().map((photo, idx) => {
-      return html`
-      <app-photo
-        id=${photo.id}
-        loading="${Photos.loadingMode(idx)}"
-        thumbnailUrl="${photo.thumbnail_url}"
-        mosaicColours="${photo.mosaic_colours}"
-        imageUrl="${photo.full_image}"></app-photo>`;
-    });
+    const photos = this.allImages();
+
+    async function* photosIterable() {
+      for (let idx = 0; idx < this.allImages().length; idx++) {
+        const photo = this.allImages()[idx];
+        yield html`
+          <app-photo
+            id=${photo.id}
+            loading="${Photos.loadingMode(idx)}"
+            thumbnailUrl="${photo.thumbnail_url}"
+            mosaicColours="${photo.mosaic_colours}"
+            imageUrl="${photo.full_image}"></app-photo>`;
+      }
+    }
 
     return html`
     <div>
@@ -50,7 +56,7 @@ export class PhotosPage extends LitElem {
       </section>
 
       <section class="photo-container">
-        ${photos}
+        ${asyncAppend(photosIterable())}
       </section>
     </div>
     `;
