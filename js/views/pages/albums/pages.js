@@ -4,6 +4,7 @@
  * All albums. Shows cover photos in a grid + some basic album information.
  */
 
+import { asyncAppend } from "../../../library/lit.js";
 import { html } from "../../../library/lit.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
@@ -44,6 +45,34 @@ export class AlbumsPage extends LitElem {
   render() {
     performance.mark("start-albums-render");
 
+    const sorted = this.getAlbums()
+      .sort((album0, album1) => {
+        return album1.maxDate - album0.maxDate;
+      });
+
+    /*
+     * append photo albums to the DOM
+     */
+    async function* albumIterable() {
+      for (let idx = 0; idx < sorted.length; idx++) {
+        const album = sorted[idx];
+        const loading = Photos.loadingMode(idx);
+
+        yield html`
+          <photo-album
+            title="${album.title}"
+            url="${album.url}"
+            mosaicColours="${album.mosaicColours}"
+            id="${album.id}" count="${album.count}"
+            minDate="${album.minDate}"
+            maxDate="${album.maxDate}"
+            countries="${album.flags}"
+            loading=${loading}>
+            </photo-album>
+          `;
+      }
+    }
+
     return html`
     <section class="album-metadata">
       <h1 class="albums-header">Albums</h1>
@@ -53,28 +82,7 @@ export class AlbumsPage extends LitElem {
     </section>
 
     <section class="album-container">
-      ${
-      this.getAlbums()
-        .sort((album0, album1) => {
-          return album1.maxDate - album0.maxDate;
-        })
-        .map((album, idx) => {
-          const loading = Photos.loadingMode(idx);
-
-          return html`
-            <photo-album
-              title="${album.title}"
-              url="${album.url}"
-              mosaicColours="${album.mosaicColours}"
-              id="${album.id}" count="${album.count}"
-              minDate="${album.minDate}"
-              maxDate="${album.maxDate}"
-              countries="${album.flags}"
-              loading=${loading}>
-              </photo-album>
-            `;
-        })
-    }
+      ${asyncAppend(albumIterable())}
     </section>
     `;
   }
