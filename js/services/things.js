@@ -1,6 +1,6 @@
 export class Things {
   static isUrn(candidate) {
-    return candidate.startsWith("urn:ró");
+    return candidate && candidate.startsWith("urn:ró");
   }
   static parseUrn(urn) {
     if (!Things.isUrn(urn)) {
