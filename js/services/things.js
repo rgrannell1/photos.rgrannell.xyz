@@ -1,4 +1,5 @@
 export class Things {
+  // TODO handle arrays
   static isUrn(candidate) {
     return candidate && candidate.startsWith("urn:ró");
   }

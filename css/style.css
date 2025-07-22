@@ -516,6 +516,11 @@ photo-app {
   flex-wrap: wrap;
 }
 
+.thing-list li {
+  list-style-type: none;
+  padding: 3px;
+}
+
 .unesco-links li {
   list-style-type: none;
 }

@@ -60,6 +60,12 @@ export class MetadataPage extends LitElem {
   }
 
   renderSemanticValue(key, value) {
+    if (Array.isArray(value)) {
+      return html`<ul class="thing-list">
+        ${ value.map((subval) => html`<li>${ this.renderSemanticValue.call(this, key, subval) }</li>`) }
+      </ul>`;
+    }
+
     if (key.includes("binomial")) {
       return html`<em>${value}</em>`;
     }
