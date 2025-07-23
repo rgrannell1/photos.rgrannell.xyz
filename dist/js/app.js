@@ -188,6 +188,7 @@ var nt=globalThis,Gt=nt.ShadowRoot&&(nt.ShadyCSS===void 0||nt.ShadyCSS.nativeSha
         <album-share-button
           .title=${this.title}
           .url=${window.location.href}></album-share-button>
+        <a href="#/albums">[albums]</a>
 
         <ul class="unesco-links">
           ${c.map(a=>l`<li>${a}</li>`)}

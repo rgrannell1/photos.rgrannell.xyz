@@ -140,6 +140,7 @@ export class AlbumPage extends LitElem {
         <album-share-button
           .title=${this.title}
           .url=${window.location.href}></album-share-button>
+        <a href="#/albums">[albums]</a>
 
         <ul class="unesco-links">
           ${
