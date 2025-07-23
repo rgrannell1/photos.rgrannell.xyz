@@ -223,7 +223,7 @@ var nt=globalThis,Gt=nt.ShadowRoot&&(nt.ShadyCSS===void 0||nt.ShadyCSS.nativeSha
               <td>${this.renderSemanticValue(e,t[e])}</td>
           `)}
       <table>
-    `}render(){let t=this.image,e=this.exif,s=this.semantic;return l`
+    `}render(){let t=this.image,e=this.exif,s=this.semantic,r=t.album_id;return l`
     <section>
     <h1>Metadata</h1>
 
@@ -232,6 +232,7 @@ var nt=globalThis,Gt=nt.ShadowRoot&&(nt.ShadyCSS===void 0||nt.ShadyCSS.nativeSha
       <p>
         <a href="${t.full_image}">[full image]</a>
         <share-metadata-button format="image/webp" url=${t.image_url}></share-metadata-button>
+        <a href="#/album/${r}">[album]</a>
       </p>
 
       ${this.renderSemanticData(s)}

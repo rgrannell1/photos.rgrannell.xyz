@@ -119,6 +119,7 @@ export class MetadataPage extends LitElem {
     const photo = this.image;
     const exif = this.exif;
     const semantic = this.semantic;
+    const albumId = photo.album_id;
 
     return html`
     <section>
@@ -129,6 +130,7 @@ export class MetadataPage extends LitElem {
       <p>
         <a href="${photo.full_image}">[full image]</a>
         <share-metadata-button format="image/webp" url=${photo.image_url}></share-metadata-button>
+        <a href="#/album/${albumId}">[album]</a>
       </p>
 
       ${this.renderSemanticData(semantic)}
