@@ -3,11 +3,11 @@
 export const ALBUMS_SYMBOL = Symbol("the albums manifest");
 export const IMAGES_SYMBOL = Symbol("the images manifest");
 export const MANIFEST_SYMBOL = Symbol("the site manifest");
-export const METADATA_SYMBOL = Symbol("metadata about the site manifest");
 export const VIDEOS_SYMBOL = Symbol("the videos manifest");
 export const EXIF_SYMBOL = Symbol("the exif data");
 export const SEMANTIC_SYMBOL = Symbol("the semantic data");
 export const STATS_SYMBOL = Symbol("the album stats");
+export const TRIPLES_SYMBOL = Symbol("the triples data");
 
 export const LOCATION_LATITUDE = 53.33306;
 export const LOCATION_LONGITUDE = -6.24889;
@@ -40,6 +40,7 @@ export class KnownRelations {
   static SUBJECT = "subject";
   static LOCATION = "location";
   static RATING = "rating";
+  static NAME = "name";
 }
 
 export const BinomialTypes = new Set([

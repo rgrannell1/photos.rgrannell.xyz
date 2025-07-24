@@ -2,7 +2,7 @@ import {
   ALBUMS_SYMBOL,
   EXIF_SYMBOL,
   IMAGES_SYMBOL,
-  METADATA_SYMBOL,
+  TRIPLES_SYMBOL,
   SEMANTIC_SYMBOL,
   STATS_SYMBOL,
   VIDEOS_SYMBOL,
@@ -284,58 +284,6 @@ export class SemanticArtifact {
   }
 }
 
-// TODO deprecate
-export class MetadataArtifact {
-  _data;
-
-  constructor(url = "/manifest/metadata.json") {
-    this.url = url;
-  }
-
-  async init() {
-    if (window[METADATA_SYMBOL]) {
-      this._data = window[METADATA_SYMBOL];
-    }
-
-    if (this._data) {
-      return;
-    }
-
-    console.log(`🔎 fetching ${this.url}`);
-
-    const metadata = await (await fetch(this.url)).json();
-    window[METADATA_SYMBOL] = metadata;
-
-    this._data = metadata;
-  }
-
-  metadata() {
-    return this._data;
-  }
-
-  /*
-   * Check whether a tag is a child of another tag
-   */
-  isChild(parent, child) {
-    return isChild(this._data, parent, child);
-  }
-
-  /*
-   * Return the subset of tags that are children of some particular parent
-   */
-  childrenOf(parent, candidates) {
-    const tags = new Set([]);
-
-    for (const candidate of candidates) {
-      if (this.isChild(parent, candidate)) {
-        tags.add(candidate);
-      }
-    }
-
-    return tags;
-  }
-}
-
 export class StatsArtifact {
   _data;
 
@@ -362,5 +310,30 @@ export class StatsArtifact {
 
   stats() {
     return this._data;
+  }
+}
+
+export class TriplesArtifact {
+  _data;
+
+  constructor(url = `/manifest/triples.${CONFIG.publication_id}.json`) {
+    this.url = url;
+  }
+
+  async init() {
+    if (window[TRIPLES_SYMBOL]) {
+      this._data = window[TRIPLES_SYMBOL];
+    }
+
+    if (this._data) {
+      return;
+    }
+
+    console.log(`🔎 fetching ${this.url}`);
+
+    const triples = await (await fetch(this.url)).json();
+    window[TRIPLES_SYMBOL] = triples;
+
+    this._data = triples;
   }
 }

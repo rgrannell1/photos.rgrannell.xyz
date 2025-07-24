@@ -8,6 +8,7 @@ import {
   SemanticArtifact,
   StatsArtifact,
   VideosArtifact,
+  TriplesArtifact
 } from "../models/artifacts.js";
 
 import { PageLocation } from "../services/location.js";
@@ -31,6 +32,7 @@ const videos = new VideosArtifact();
 const exif = new ExifArtifact();
 const semantic = new SemanticArtifact();
 const stats = new StatsArtifact();
+const triples = new TriplesArtifact();
 
 export const DEFAULT_DEPENDENCIES = [
   [albums, LoadMode.EAGER],
@@ -39,6 +41,7 @@ export const DEFAULT_DEPENDENCIES = [
   [exif, LoadMode.EAGER],
   [semantic, LoadMode.EAGER],
   [stats, LoadMode.EAGER],
+  [triples, LoadMode.LAZY],
 ];
 /*
  * The largest network requests will be for images.json,
@@ -59,6 +62,7 @@ export const PAGE_DEPENDECIES = {
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
+    [triples, LoadMode.LAZY],
   ],
   [Pages.ALBUMS]: [
     [albums, LoadMode.EAGER],
@@ -67,6 +71,8 @@ export const PAGE_DEPENDECIES = {
     [exif, LoadMode.LAZY],
     [stats, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
+    [triples, LoadMode.LAZY],
+
   ],
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
@@ -75,6 +81,8 @@ export const PAGE_DEPENDECIES = {
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
+    [triples, LoadMode.LAZY],
+
   ],
   [Pages.VIDEOS]: [
     [albums, LoadMode.LAZY],
@@ -83,6 +91,8 @@ export const PAGE_DEPENDECIES = {
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
+    [triples, LoadMode.LAZY],
+
   ],
   [Pages.ALBUM]: [
     [albums, LoadMode.EAGER],
@@ -91,6 +101,8 @@ export const PAGE_DEPENDECIES = {
     [stats, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
+    [triples, LoadMode.LAZY],
+
   ],
   [Pages.PHOTO]: [
     [albums, LoadMode.EAGER],
@@ -99,6 +111,8 @@ export const PAGE_DEPENDECIES = {
     [exif, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
+    [triples, LoadMode.LAZY],
+
   ],
 
   [Pages.METADATA]: [
@@ -109,6 +123,7 @@ export const PAGE_DEPENDECIES = {
     [semantic, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
+    [triples, LoadMode.EAGER],
   ],
   [Pages.THING]: [
     [albums, LoadMode.LAZY],
@@ -117,6 +132,7 @@ export const PAGE_DEPENDECIES = {
     [exif, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
+    [triples, LoadMode.EAGER],
   ],
 };
 class AppInitialiser {
@@ -369,7 +385,10 @@ export class PhotoApp extends LitElem {
       }
 
       return html`
-      <metadata-page .image=${photo} .semantic=${relations} .exif=${exifData} id=${this.id} class="${classes}"></metadata-page>
+      <metadata-page
+        .triples=${triples._data}
+        .image=${photo}
+        .semantic=${relations} .exif=${exifData} id=${this.id} class="${classes}"></metadata-page>
       `;
     }
 
@@ -385,6 +404,7 @@ export class PhotoApp extends LitElem {
         .urn=${"urn:ró:" + this.id}
         .images=${images}
         .semantic=${semantic}
+        .triples=${triples._data}
         class="${classes}"></thing-page>
       `;
     }

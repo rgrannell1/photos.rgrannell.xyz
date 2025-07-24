@@ -14,12 +14,17 @@ import { Things } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
 import { BinomialTypes } from "../../../constants.js";
 
+function pluckFirst(facts, key) {
+  return facts[key] && facts[key].length > 0 ? facts[key][0] : null;
+}
+
 export class ThingPage extends LitElem {
   static get properties() {
     return {
       urn: { type: String },
       images: { type: Object },
       semantic: { type: Object },
+      triples: { type: Array },
     };
   }
 
@@ -80,7 +85,34 @@ export class ThingPage extends LitElem {
       });
   }
 
+  getFacts() {
+    const relevant = this.triples.filter(triple => {
+      return triple[0] === this.urn;
+    });
+
+    const facts = {}
+
+    for (const triple of relevant) {
+      const [_, relation, value] = triple;
+
+      if (!facts.hasOwnProperty(relation)) {
+        facts[relation] = [];
+      }
+
+      facts[relation].push(value);
+    }
+
+    return facts
+  }
+
   getTitle() {
+    const facts = this.getFacts();
+
+    const tripleName = pluckFirst(facts, KnownRelations.NAME);
+    if (tripleName) {
+      return tripleName;
+    }
+
     try {
       const parsedUrn = Things.parseUrn(this.urn);
       const value = decodeURIComponent(parsedUrn.id);
@@ -104,6 +136,16 @@ export class ThingPage extends LitElem {
     }
   }
 
+  renderFacts(urn, facts) {
+    const pairs = {};
+
+    if (facts.country) {
+      pairs["Country"] = html`${facts.country}`;
+    }
+
+    return pairs
+  }
+
   render() {
     // Show a Name, URN, Description,
     // Wikilinks, and all images with this ARN
@@ -113,26 +155,48 @@ export class ThingPage extends LitElem {
     const facts = this.semantic.semantic();
     const photos = this.subjectPhotos(images, facts);
 
+    const triples = this.getFacts();
     const urn = Things.parseUrn(this.urn);
     const type = urn.type;
+
+    const metadata = Object.assign({
+      "Classification": html`<a href="#/thing/${type}:*">${type}</a>`,
+    }, this.renderFacts(urn, triples));
+
+
+    let location;
+    if (triples.longitude && triples.latitude) {
+      const googleMapsUrl = `https://www.google.com/maps?q=${triples.latitude},${triples.longitude}`;
+      location = html`
+        <a href="${googleMapsUrl}" target="_blank" rel="noopener">[maps]</a>
+      `;
+    }
+
+    const wikipedia = pluckFirst(triples, "wikipedia");
 
     return html`
       <div>
       <section class="thing-page">
-      <h1>${this.getTitle()}</h1>
+        <h1>${this.getTitle()}</h1>
 
-      <h3>Metadata</h3>
-      <table class="metadata-table">
-        <tr>
-          <th class="exif-heading">Group</th>
-          <td><a href="#/thing/${type}:*">${type}</a></td>
-        </tr>
-      </table>
+        ${wikipedia ? html`<a href="${wikipedia}" target="_blank" rel="noopener">[wikipedia]</a>` : html``}
+        ${location ? html`<span class="location">${location}</span>` : html``}
+
+        <h3>Metadata</h3>
+        <table class="metadata-table">
+        ${Object.entries(metadata).map(
+          ([key, value]) => html`
+          <tr>
+            <th class="exif-heading">${key}</th>
+            <td>${value}</td>
+          </tr>
+          `
+        )}
+        </table>
 
         <br>
-          ${photos}
-
-          </section>
+        ${photos}
+      </section>
       </div>
     `;
   }
