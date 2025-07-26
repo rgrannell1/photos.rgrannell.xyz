@@ -230,7 +230,7 @@ export class ThingPage extends LitElem {
     const type = urn.type;
 
     const metadata = Object.assign({
-      "Classification": html`<a href="#/thing/${type}:*">${type}</a>`,
+      "Classification": html`<a href="#/thing/${type}:*">${type.charAt(0).toUpperCase()}${type.slice(1)}</a>`,
     }, this.renderFacts(urn, triples));
 
     if (BinomialTypes.has(type)) {
