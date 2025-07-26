@@ -7,18 +7,19 @@ import { LitElem } from "../../models/lit-element.js";
 import { Things } from "../../services/things.js";
 
 import { BinomialTypes } from "../../constants.js";
+import { Binomials } from "../../services/things.js";
 
 export class ThingLink extends LitElem {
   static properties = {
     urn: { type: String },
+    triples: { type: Array }
   };
 
   name() {
     const { type, id } = Things.parseUrn(this.urn);
 
     if (BinomialTypes.has(type)) {
-      const label = id.charAt(0).toUpperCase() + id.slice(1);
-      return html`<em>${decodeURIComponent(label.replace("-", " "))}</em>`;
+      return html`<span>${Binomials.toCommonName(this.triples, id)}</span>`;
     }
 
     return decodeURIComponent(id);

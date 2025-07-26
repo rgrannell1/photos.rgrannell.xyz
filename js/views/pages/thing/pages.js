@@ -10,7 +10,7 @@ import "../../components/photo.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { KnownRelations } from "../../../constants.js";
-import { Things } from "../../../services/things.js";
+import { Binomials, Things } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
 import { BinomialTypes } from "../../../constants.js";
 
@@ -106,7 +106,16 @@ export class ThingPage extends LitElem {
 
   binomialToCommonName(binomial) {
     const match = this.triples.find(triple => {
-      return triple[0] === binomial && triple[1] === KnownRelations.NAME;
+      const [source, relation, _] = triple;
+
+      if (!Things.isUrn(source)) {
+        return false;
+      }
+
+      const parsed = Things.parseUrn(source);
+      const normalisedBinomial = binomial.replace(' ', '-').toLowerCase();
+
+      return parsed.id === normalisedBinomial && relation === KnownRelations.NAME;
     })
 
     if (match) {
@@ -135,12 +144,7 @@ export class ThingPage extends LitElem {
       }
 
       if (BinomialTypes.has(parsedUrn.type)) {
-        const binomial = value.replace("-", " ").replace(
-          /^./,
-          (char) => char.toUpperCase(),
-        );
-
-        return this.binomialToCommonName(binomial)
+        return Binomials.toCommonName(this.triples, value);
       }
 
       return value;

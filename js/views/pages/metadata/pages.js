@@ -26,6 +26,7 @@ export class MetadataPage extends LitElem {
       exif: { type: Object },
       semantic: { type: Object },
       sharing: { state: true, type: Boolean },
+      triples: { type: Array }
     };
   }
 
@@ -76,11 +77,11 @@ export class MetadataPage extends LitElem {
 
     if (Things.isRating(value)) {
       const urn = `urn:ró:rating:${value}`;
-      return html`<thing-link .urn="${urn}"></thing-link>`;
+      return html`<thing-link .triples=${this.triples} .urn="${urn}"></thing-link>`;
     } else if (Things.isUrn(value) && Things.is(value, KnownThings.UNESCO)) {
       return html`<unesco-link .urn="${value}"></unesco-link>`;
     } else if (Things.isUrn(value)) {
-      return html`<thing-link .urn="${value}"></thing-link>`;
+      return html`<thing-link .triples=${this.triples} .urn="${value}"></thing-link>`;
     }
 
     return value;

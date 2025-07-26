@@ -1,3 +1,6 @@
+
+import { KnownRelations } from "../constants.js";
+
 export class Things {
   // TODO handle arrays
   static isUrn(candidate) {
@@ -48,5 +51,31 @@ export class Things {
 
   static isRating(value) {
     return /^[⭐]{1,5}$/.test(value);
+  }
+}
+
+export class Binomials {
+  static pretty(binomial) {
+    const pretty = binomial.replace(/-/g, ' ');
+    return pretty.charAt(0).toUpperCase() + pretty.slice(1);
+  }
+
+  static toCommonName(triples, binomial) {
+    const match = triples.find(triple => {
+      const [source, relation, _] = triple;
+
+      if (!Things.isUrn(source)) {
+        return false;
+      }
+
+      const parsed = Things.parseUrn(source);
+      return parsed.id === binomial && relation === KnownRelations.NAME;
+    })
+
+    if (match) {
+      return match[2];
+    }
+
+    return binomial;
   }
 }

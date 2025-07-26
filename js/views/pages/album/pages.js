@@ -90,7 +90,6 @@ export class AlbumPage extends LitElem {
 
     const albumPhotos = this.albumPhotos();
     const photos = albumPhotos.map((photo, idx) => {
-      console.log(photo.mosaic_colours, 'colours')
       return html`
       <app-photo
         id=${photo.id}
