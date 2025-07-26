@@ -89,11 +89,17 @@ export class ThingPage extends LitElem {
     }));
 
     // TODO sort
-    return Array.from(albumSet).map((albumId) => {
-      const album = this.albums.albums().find(album => {
+    return Array
+    .from(albumSet)
+    .flatMap((albumId) => {
+      return this.albums.albums().filter(album => {
         return album.id === albumId;
       });
-
+    })
+    .sort((album0, album1) => {
+      return album1.min_date - album0.min_date;
+    })
+    .map((album) => {
       return html`
           <photo-album
             title="${album.album_name}"
