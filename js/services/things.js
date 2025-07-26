@@ -7,7 +7,6 @@ export class TriplesDB {
       throw new TypeError("Triples must be an array");
     }
 
-
     const match = triples.find(triple => {
       return Things.sameURN(triple[0], urn) && Triples.hasRelation(triple, relation);
     });

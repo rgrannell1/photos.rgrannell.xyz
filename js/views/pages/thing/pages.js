@@ -10,7 +10,7 @@ import "../../components/photo.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { KnownRelations } from "../../../constants.js";
-import { Binomials, Things } from "../../../services/things.js";
+import { Binomials, Things, Triples } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
 import { BinomialTypes } from "../../../constants.js";
 import { TriplesDB } from "../../../services/things.js";
@@ -129,6 +129,7 @@ export class ThingPage extends LitElem {
 
   getTitle() {
     const triplesName = TriplesDB.findName(this.triples, this.urn)
+    console.log(triplesName, this.urn)
 
     if (triplesName) {
       return triplesName;
