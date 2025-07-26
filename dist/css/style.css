@@ -73,6 +73,10 @@ h1 {
   font-size: 3em;
   font-weight: lighter;
 }
+.thing-binomial {
+  font-size: 2em;
+  font-weight: lighter;
+}
 h2 {
   font-size: 2em;
   margin-top: 1.35em;
@@ -258,6 +262,9 @@ photo-app {
 @media (max-width: 500px) {
   h1 {
     font-size: 2em;
+  }
+  .thing-binomial {
+    font-size: 1.5em;
   }
   .albums-header {
     display: none;

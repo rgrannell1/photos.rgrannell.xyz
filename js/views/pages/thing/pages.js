@@ -88,6 +88,7 @@ export class ThingPage extends LitElem {
       return photo.album_id;
     }));
 
+    // TODO sort
     return Array.from(albumSet).map((albumId) => {
       const album = this.albums.albums().find(album => {
         return album.id === albumId;
@@ -227,7 +228,6 @@ export class ThingPage extends LitElem {
     }, this.renderFacts(urn, triples));
 
     if (BinomialTypes.has(type)) {
-      metadata["Binomial"] = html`<em>${Binomials.pretty(urn.id)}</em>`;
       metadata["First Photographed"] = html`<span>${this.firstPhotographed(images, facts)}</span>`
     }
 
@@ -249,6 +249,15 @@ export class ThingPage extends LitElem {
       <div>
       <section class="thing-page">
         <h1>${this.getTitle()}</h1>
+
+        <p>
+          ${
+            BinomialTypes.has(type)
+            ? html`<span class="thing-binomial">(${Binomials.pretty(urn.id)})</span>`
+            : html``
+          }
+        </p>
+        <br>
 
         ${
       wikipedia
