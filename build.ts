@@ -1,8 +1,8 @@
 import * as path from "jsr:@std/path";
-import { render } from 'https://deno.land/x/mustache_ts/mustache.ts';
+import { render } from "https://deno.land/x/mustache_ts/mustache.ts";
 
 class Artifacts {
-  dpath: string
+  dpath: string;
 
   constructor(dpath: string) {
     this.dpath = dpath;
@@ -17,16 +17,18 @@ class Artifacts {
   }
 
   async env() {
-    return await Deno.readTextFile(await this.findFile('env'));
+    return await Deno.readTextFile(await this.findFile("env"));
   }
   async stats() {
-    return await Deno.readTextFile(await this.findFile('stats'));
+    return await Deno.readTextFile(await this.findFile("stats"));
   }
   async html() {
-    return await Deno.readTextFile('index.mustache.html');
+    return await Deno.readTextFile("index.mustache.html");
   }
   async albums() {
-    return await JSON.parse(await Deno.readTextFile(await this.findFile('albums')));
+    return await JSON.parse(
+      await Deno.readTextFile(await this.findFile("albums")),
+    );
   }
 }
 
@@ -36,13 +38,13 @@ function prefetchTargets(albums: any[]) {
     .sort((album0, album1) => {
       return album1[6] - album0[6]; // max date
     })
-    .map(album => {
+    .map((album) => {
       return album[7]; // thumbnail url
     }).slice(0, 5);
 }
 
 async function buildHTML() {
-  const artifacts = new Artifacts('./manifest');
+  const artifacts = new Artifacts("./manifest");
 
   const env = await artifacts.env();
   const stats = await artifacts.stats();
@@ -52,9 +54,8 @@ async function buildHTML() {
     stats,
     env,
     prefetched: prefetchTargets(await artifacts.albums()),
-    cdnUrl: JSON.parse(env).photos_url
+    cdnUrl: JSON.parse(env).photos_url,
   }));
 }
-
 
 await buildHTML();

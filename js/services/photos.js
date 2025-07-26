@@ -25,12 +25,12 @@ export class Photos {
       return coloursCache.get(colours);
     }
 
-    const coloursList = colours.split('#').map(colour => `#${colour}`);
-    const canvas = document.createElement('canvas');
+    const coloursList = colours.split("#").map((colour) => `#${colour}`);
+    const canvas = document.createElement("canvas");
     canvas.width = 2;
     canvas.height = 2;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     ctx.fillStyle = coloursList[1];
     ctx.fillRect(0, 0, 1, 1);
     ctx.fillStyle = coloursList[2];
@@ -40,7 +40,7 @@ export class Photos {
     ctx.fillStyle = coloursList[4];
     ctx.fillRect(1, 1, 1, 1);
 
-    coloursCache.set(colours, canvas.toDataURL('image/png'));
+    coloursCache.set(colours, canvas.toDataURL("image/png"));
     return coloursCache.get(colours);
   }
 }

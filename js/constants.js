@@ -39,9 +39,12 @@ export class KnownThings {
 export class KnownRelations {
   static SUBJECT = "subject";
   static LOCATION = "location";
+  static LONGITUDE = "longitude";
+  static LATITUDE = "latitude";
   static RATING = "rating";
   static NAME = "name";
   static BIRDWATCH_URL = "birdwatch_url";
+  static WIKIPEDIA = "wikipedia";
 }
 
 export const BinomialTypes = new Set([

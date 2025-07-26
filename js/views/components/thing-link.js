@@ -12,7 +12,7 @@ import { Binomials } from "../../services/things.js";
 export class ThingLink extends LitElem {
   static properties = {
     urn: { type: String },
-    triples: { type: Array }
+    triples: { type: Array },
   };
 
   name() {

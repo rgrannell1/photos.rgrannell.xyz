@@ -2,9 +2,9 @@ import {
   ALBUMS_SYMBOL,
   EXIF_SYMBOL,
   IMAGES_SYMBOL,
-  TRIPLES_SYMBOL,
   SEMANTIC_SYMBOL,
   STATS_SYMBOL,
+  TRIPLES_SYMBOL,
   VIDEOS_SYMBOL,
 } from "../constants.js";
 
@@ -60,7 +60,7 @@ export class ImagesArtifact {
       return {
         ...image,
         full_image: `https://photos-cdn.rgrannell.xyz${image.full_image}`,
-        thumbnail_url: `https://photos-cdn.rgrannell.xyz${image.thumbnail_url}`
+        thumbnail_url: `https://photos-cdn.rgrannell.xyz${image.thumbnail_url}`,
       };
     });
   }

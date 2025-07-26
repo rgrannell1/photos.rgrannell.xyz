@@ -26,7 +26,7 @@ export class MetadataPage extends LitElem {
       exif: { type: Object },
       semantic: { type: Object },
       sharing: { state: true, type: Boolean },
-      triples: { type: Array }
+      triples: { type: Array },
     };
   }
 
@@ -63,7 +63,11 @@ export class MetadataPage extends LitElem {
   renderSemanticValue(key, value) {
     if (Array.isArray(value)) {
       return html`<ul class="thing-list">
-        ${ value.map((subval) => html`<li>${ this.renderSemanticValue.call(this, key, subval) }</li>`) }
+        ${
+        value.map((subval) =>
+          html`<li>${this.renderSemanticValue.call(this, key, subval)}</li>`
+        )
+      }
       </ul>`;
     }
 

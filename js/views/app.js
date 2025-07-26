@@ -7,8 +7,8 @@ import {
   ImagesArtifact,
   SemanticArtifact,
   StatsArtifact,
+  TriplesArtifact,
   VideosArtifact,
-  TriplesArtifact
 } from "../models/artifacts.js";
 
 import { PageLocation } from "../services/location.js";
@@ -72,7 +72,6 @@ export const PAGE_DEPENDECIES = {
     [stats, LoadMode.EAGER],
     [semantic, LoadMode.EAGER],
     [triples, LoadMode.LAZY],
-
   ],
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
@@ -82,7 +81,6 @@ export const PAGE_DEPENDECIES = {
     [stats, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
     [triples, LoadMode.LAZY],
-
   ],
   [Pages.VIDEOS]: [
     [albums, LoadMode.LAZY],
@@ -92,7 +90,6 @@ export const PAGE_DEPENDECIES = {
     [stats, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
     [triples, LoadMode.LAZY],
-
   ],
   [Pages.ALBUM]: [
     [albums, LoadMode.EAGER],
@@ -102,7 +99,6 @@ export const PAGE_DEPENDECIES = {
     [exif, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
     [triples, LoadMode.LAZY],
-
   ],
   [Pages.PHOTO]: [
     [albums, LoadMode.EAGER],
@@ -112,7 +108,6 @@ export const PAGE_DEPENDECIES = {
     [semantic, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
     [triples, LoadMode.LAZY],
-
   ],
 
   [Pages.METADATA]: [

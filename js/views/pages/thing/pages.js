@@ -13,6 +13,7 @@ import { KnownRelations } from "../../../constants.js";
 import { Binomials, Things } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
 import { BinomialTypes } from "../../../constants.js";
+import { TriplesDB } from "../../../services/things.js";
 
 function pluckFirst(facts, key) {
   return facts[key] && facts[key].length > 0 ? facts[key][0] : null;
@@ -85,11 +86,11 @@ export class ThingPage extends LitElem {
   }
 
   getFacts() {
-    const relevant = this.triples.filter(triple => {
+    const relevant = this.triples.filter((triple) => {
       return triple[0] === this.urn;
     });
 
-    const facts = {}
+    const facts = {};
 
     for (const triple of relevant) {
       const [_, relation, value] = triple;
@@ -101,11 +102,11 @@ export class ThingPage extends LitElem {
       facts[relation].push(value);
     }
 
-    return facts
+    return facts;
   }
 
   binomialToCommonName(binomial) {
-    const match = this.triples.find(triple => {
+    const match = this.triples.find((triple) => {
       const [source, relation, _] = triple;
 
       if (!Things.isUrn(source)) {
@@ -113,10 +114,11 @@ export class ThingPage extends LitElem {
       }
 
       const parsed = Things.parseUrn(source);
-      const normalisedBinomial = binomial.replace(' ', '-').toLowerCase();
+      const normalisedBinomial = binomial.replace(" ", "-").toLowerCase();
 
-      return parsed.id === normalisedBinomial && relation === KnownRelations.NAME;
-    })
+      return parsed.id === normalisedBinomial &&
+        relation === KnownRelations.NAME;
+    });
 
     if (match) {
       return match[2];
@@ -126,11 +128,10 @@ export class ThingPage extends LitElem {
   }
 
   getTitle() {
-    const facts = this.getFacts();
+    const triplesName = TriplesDB.findName(this.triples, this.urn)
 
-    const tripleName = pluckFirst(facts, KnownRelations.NAME);
-    if (tripleName) {
-      return tripleName;
+    if (triplesName) {
+      return triplesName;
     }
 
     try {
@@ -160,7 +161,7 @@ export class ThingPage extends LitElem {
       pairs["Country"] = html`${facts.country}`;
     }
 
-    return pairs
+    return pairs;
   }
 
   render() {
@@ -176,42 +177,54 @@ export class ThingPage extends LitElem {
     const urn = Things.parseUrn(this.urn);
     const type = urn.type;
 
-    const birdwatchUrl = Binomials.birdwatchUrl(this.triples, this.urn);
-
     const metadata = Object.assign({
       "Classification": html`<a href="#/thing/${type}:*">${type}</a>`,
     }, this.renderFacts(urn, triples));
 
+    const wikipedia = TriplesDB.findWikipedia(this.triples, this.urn)
+    const birdwatchUrl = TriplesDB.findBirdwatchUrl(this.triples, this.urn);
+    const longitude = TriplesDB.findLongitude(this.triples, this.urn);
+    const latitude = TriplesDB.findLatitude(this.triples, this.urn);
 
     let location;
-    if (triples.longitude && triples.latitude) {
-      const googleMapsUrl = `https://www.google.com/maps?q=${triples.latitude},${triples.longitude}`;
+    if (longitude && latitude) {
+      const googleMapsUrl =
+      `https://www.google.com/maps?q=${triples.latitude},${triples.longitude}`;
       location = html`
-        <a href="${googleMapsUrl}" target="_blank" rel="noopener">[maps]</a>
+      <a href="${googleMapsUrl}" target="_blank" rel="noopener">[maps]</a>
       `;
     }
-
-    const wikipedia = pluckFirst(triples, "wikipedia");
 
     return html`
       <div>
       <section class="thing-page">
         <h1>${this.getTitle()}</h1>
 
-        ${wikipedia ? html`<a href="${wikipedia}" target="_blank" rel="noopener">[wikipedia]</a>` : html``}
-        ${birdwatchUrl ? html`<a href="${birdwatchUrl}" target="_blank" rel="noopener">[birdwatch]</a>` : html``}
+        ${
+      wikipedia
+        ? html`<a href="${wikipedia}" target="_blank" rel="noopener">[wikipedia]</a>`
+        : html``
+    }
+        ${
+      birdwatchUrl
+        ? html`<a href="${birdwatchUrl}" target="_blank" rel="noopener">[birdwatch]</a>`
+        : html``
+    }
         ${location ? html`<span class="location">${location}</span>` : html``}
 
         <h3>Metadata</h3>
         <table class="metadata-table">
-        ${Object.entries(metadata).map(
-          ([key, value]) => html`
+        ${
+      Object.entries(metadata).map(
+        ([key, value]) =>
+          html`
           <tr>
             <th class="exif-heading">${key}</th>
             <td>${value}</td>
           </tr>
-          `
-        )}
+          `,
+      )
+    }
         </table>
 
         <br>
