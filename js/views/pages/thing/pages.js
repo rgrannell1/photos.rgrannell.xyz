@@ -9,11 +9,10 @@ import { html } from "../../../library/lit.js";
 import "../../components/photo.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
-import { KnownRelations, BinomialTypes } from "../../../constants.js";
+import { BinomialTypes, KnownRelations } from "../../../constants.js";
 import { Binomials, Things, TriplesDB } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
-import { Dates } from "../../../services/dates.js"
-
+import { Dates } from "../../../services/dates.js";
 
 export class ThingPage extends LitElem {
   static get properties() {
@@ -90,17 +89,17 @@ export class ThingPage extends LitElem {
 
     // TODO sort
     return Array
-    .from(albumSet)
-    .flatMap((albumId) => {
-      return this.albums.albums().filter(album => {
-        return album.id === albumId;
-      });
-    })
-    .sort((album0, album1) => {
-      return album1.min_date - album0.min_date;
-    })
-    .map((album) => {
-      return html`
+      .from(albumSet)
+      .flatMap((albumId) => {
+        return this.albums.albums().filter((album) => {
+          return album.id === albumId;
+        });
+      })
+      .sort((album0, album1) => {
+        return album1.min_date - album0.min_date;
+      })
+      .map((album) => {
+        return html`
           <photo-album
             title="${album.album_name}"
             url="${album.thumbnail_url}"
@@ -113,7 +112,7 @@ export class ThingPage extends LitElem {
             loading="eager">
             </photo-album>
       `;
-    });
+      });
   }
 
   getFacts() {
@@ -172,9 +171,9 @@ export class ThingPage extends LitElem {
     }
 
     return new Date(first.created_at).toLocaleDateString("en-IE", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
     });
   }
 
@@ -230,11 +229,15 @@ export class ThingPage extends LitElem {
     const type = urn.type;
 
     const metadata = Object.assign({
-      "Classification": html`<a href="#/thing/${type}:*">${type.charAt(0).toUpperCase()}${type.slice(1)}</a>`,
+      "Classification": html`<a href="#/thing/${type}:*">${
+        type.charAt(0).toUpperCase()
+      }${type.slice(1)}</a>`,
     }, this.renderFacts(urn, triples));
 
     if (BinomialTypes.has(type)) {
-      metadata["First Photographed"] = html`<span>${this.firstPhotographed(images, facts)}</span>`
+      metadata["First Photographed"] = html`<span>${
+        this.firstPhotographed(images, facts)
+      }</span>`;
     }
 
     const wikipedia = TriplesDB.findWikipedia(this.triples, this.urn);
@@ -258,10 +261,12 @@ export class ThingPage extends LitElem {
 
         <p>
           ${
-            BinomialTypes.has(type)
-            ? html`<span class="thing-binomial">(${Binomials.pretty(urn.id)})</span>`
-            : html``
-          }
+      BinomialTypes.has(type)
+        ? html`<span class="thing-binomial">(${
+          Binomials.pretty(urn.id)
+        })</span>`
+        : html``
+    }
         </p>
         <br>
 

@@ -21,7 +21,7 @@ export class ThingLink extends LitElem {
     if (BinomialTypes.has(type)) {
       return html`<span>${Binomials.toCommonName(this.triples, id)}</span>`;
     }
-    const name = TriplesDB.findName(this.triples, this.urn)
+    const name = TriplesDB.findName(this.triples, this.urn);
 
     if (name) {
       return html`<span>${name}</span>`;
