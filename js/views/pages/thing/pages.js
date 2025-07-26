@@ -9,21 +9,17 @@ import { html } from "../../../library/lit.js";
 import "../../components/photo.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
-import { KnownRelations } from "../../../constants.js";
-import { Binomials, Things, Triples } from "../../../services/things.js";
+import { KnownRelations, BinomialTypes } from "../../../constants.js";
+import { Binomials, Things, TriplesDB } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
-import { BinomialTypes } from "../../../constants.js";
-import { TriplesDB } from "../../../services/things.js";
 
-function pluckFirst(facts, key) {
-  return facts[key] && facts[key].length > 0 ? facts[key][0] : null;
-}
 
 export class ThingPage extends LitElem {
   static get properties() {
     return {
       urn: { type: String },
       images: { type: Object },
+      albums: { type: Object },
       semantic: { type: Object },
       triples: { type: Array },
     };
@@ -85,6 +81,33 @@ export class ThingPage extends LitElem {
       });
   }
 
+  subjectAlbums(images, facts) {
+    const filtered = this.filterPhotos(images, facts);
+    const albumSet = new Set(filtered.map((photo) => {
+      return photo.album_id;
+    }));
+
+    return Array.from(albumSet).map((albumId) => {
+      const album = this.albums.albums().find(album => {
+        return album.id === albumId;
+      });
+
+      return html`
+          <photo-album
+            title="${album.album_name}"
+            url="${album.thumbnail_url}"
+            mosaicColours="${album.mosaic}"
+            id="${album.id}"
+            count="${album.photos_count}"
+            minDate="${album.min_date}"
+            maxDate="${album.max_date}"
+            countries="${album.flags}"
+            loading="eager">
+            </photo-album>
+      `;
+    });
+  }
+
   getFacts() {
     const relevant = this.triples.filter((triple) => {
       return triple[0] === this.urn;
@@ -128,8 +151,8 @@ export class ThingPage extends LitElem {
   }
 
   getTitle() {
-    const triplesName = TriplesDB.findName(this.triples, this.urn)
-    console.log(triplesName, this.urn)
+    const triplesName = TriplesDB.findName(this.triples, this.urn);
+    console.log(triplesName, this.urn);
 
     if (triplesName) {
       return triplesName;
@@ -173,6 +196,7 @@ export class ThingPage extends LitElem {
     const images = this.images.images();
     const facts = this.semantic.semantic();
     const photos = this.subjectPhotos(images, facts);
+    const albums = this.subjectAlbums(images, facts);
 
     const triples = this.getFacts();
     const urn = Things.parseUrn(this.urn);
@@ -182,7 +206,11 @@ export class ThingPage extends LitElem {
       "Classification": html`<a href="#/thing/${type}:*">${type}</a>`,
     }, this.renderFacts(urn, triples));
 
-    const wikipedia = TriplesDB.findWikipedia(this.triples, this.urn)
+    if (BinomialTypes.has(type)) {
+      metadata["Binomial"] = html`<em>${Binomials.pretty(urn.id)}</em>`;
+    }
+
+    const wikipedia = TriplesDB.findWikipedia(this.triples, this.urn);
     const birdwatchUrl = TriplesDB.findBirdwatchUrl(this.triples, this.urn);
     const longitude = TriplesDB.findLongitude(this.triples, this.urn);
     const latitude = TriplesDB.findLatitude(this.triples, this.urn);
@@ -190,7 +218,7 @@ export class ThingPage extends LitElem {
     let location;
     if (longitude && latitude) {
       const googleMapsUrl =
-      `https://www.google.com/maps?q=${triples.latitude},${triples.longitude}`;
+        `https://www.google.com/maps?q=${triples.latitude},${triples.longitude}`;
       location = html`
       <a href="${googleMapsUrl}" target="_blank" rel="noopener">[maps]</a>
       `;
@@ -230,7 +258,11 @@ export class ThingPage extends LitElem {
 
         <br>
         ${photos}
-      </section>
+
+        <h3>Albums</h3>
+        ${albums}
+
+        </section>
       </div>
     `;
   }

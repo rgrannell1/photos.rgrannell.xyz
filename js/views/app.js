@@ -121,7 +121,7 @@ export const PAGE_DEPENDECIES = {
     [triples, LoadMode.EAGER],
   ],
   [Pages.THING]: [
-    [albums, LoadMode.LAZY],
+    [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
@@ -398,6 +398,7 @@ export class PhotoApp extends LitElem {
       <thing-page
         .urn=${"urn:ró:" + this.id}
         .images=${images}
+        .albums=${albums}
         .semantic=${semantic}
         .triples=${triples._data}
         class="${classes}"></thing-page>

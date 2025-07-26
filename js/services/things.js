@@ -1,4 +1,3 @@
-
 import { KnownRelations } from "../constants.js";
 
 export class TriplesDB {
@@ -7,8 +6,9 @@ export class TriplesDB {
       throw new TypeError("Triples must be an array");
     }
 
-    const match = triples.find(triple => {
-      return Things.sameURN(triple[0], urn) && Triples.hasRelation(triple, relation);
+    const match = triples.find((triple) => {
+      return Things.sameURN(triple[0], urn) &&
+        Triples.hasRelation(triple, relation);
     });
 
     if (!match) {
@@ -35,7 +35,11 @@ export class TriplesDB {
   }
 
   static findBirdwatchUrl(triples, urn) {
-    return TriplesDB.findSourceRelation(KnownRelations.BIRDWATCH_URL, triples, urn);
+    return TriplesDB.findSourceRelation(
+      KnownRelations.BIRDWATCH_URL,
+      triples,
+      urn,
+    );
   }
 
   static findWikipedia(triples, urn) {
@@ -58,7 +62,7 @@ export class Triples {
     return triple[1] === relation;
   }
   static hasUrnTarget(triple) {
-    return Things.isUrn(triple[2])
+    return Things.isUrn(triple[2]);
   }
 
   static getSource(triple) {
@@ -74,7 +78,7 @@ export class Triples {
   }
 
   static filterRelation(triples, relation) {
-    return triples.filter(triple => {
+    return triples.filter((triple) => {
       return triple[1] === relation;
     });
   }
@@ -85,8 +89,9 @@ export class Triples {
     }
 
     const parsedUrn = Things.parseUrn(urn);
-    return triples.filter(triple => {
-      return Things.sameURN(triple[0], urn) || Things.hasId(triple[0], parsedUrn.id);
+    return triples.filter((triple) => {
+      return Things.sameURN(triple[0], urn) ||
+        Things.hasId(triple[0], parsedUrn.id);
     });
   }
 }
@@ -176,7 +181,9 @@ export class Binomials {
 
   static toCommonName(triples, binomial) {
     const namedTriples = Triples.filterRelation(triples, KnownRelations.NAME);
-    const match = namedTriples.find(triple => Things.hasId(triple[0], binomial));
+    const match = namedTriples.find((triple) =>
+      Things.hasId(triple[0], binomial)
+    );
 
     if (match) {
       return Triples.getTarget(match);
@@ -188,10 +195,11 @@ export class Binomials {
   static birdwatchUrl(triples, urn) {
     const matches = Triples.filterSourceId(
       Triples.filterRelation(triples, KnownRelations.BIRDWATCH_URL),
-      urn);
+      urn,
+    );
 
     if (matches.length === 0) {
-      return
+      return;
     }
 
     const [match] = matches;
