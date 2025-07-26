@@ -34,6 +34,7 @@ export class KnownThings {
   static UNESCO = "unesco";
   static BIRD = "bird";
   static MAMMAL = "mammal";
+  static GEONAME = "geoname";
 }
 
 export class KnownRelations {

@@ -4,7 +4,7 @@
 
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.js";
-import { Things } from "../../services/things.js";
+import { Things, TriplesDB } from "../../services/things.js";
 
 import { BinomialTypes } from "../../constants.js";
 import { Binomials } from "../../services/things.js";
@@ -20,6 +20,11 @@ export class ThingLink extends LitElem {
 
     if (BinomialTypes.has(type)) {
       return html`<span>${Binomials.toCommonName(this.triples, id)}</span>`;
+    }
+    const name = TriplesDB.findName(this.triples, this.urn)
+
+    if (name) {
+      return html`<span>${name}</span>`;
     }
 
     return decodeURIComponent(id);

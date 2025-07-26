@@ -44,12 +44,7 @@
 
     <script>
       // reduce blocking requests by injecting this critical data
-      window.envConfig = {
-  "photos_url": "https://photos-cdn.rgrannell.xyz",
-  "data_url": "data:image/bmp;base64,",
-  "publication_id": "d7d53599cf"
-}
-
+      window.envConfig = {"photos_url": "https://photos-cdn.rgrannell.xyz", "data_url": "data:image/bmp;base64,", "publication_id": "2e30200a4d"}
     </script>
 
     <script type="module" src="/dist/js/app.js"></script>
@@ -62,16 +57,7 @@
     // this should circumvent blocking on `stats` fetches
     import { STATS_SYMBOL } from "/js/constants.js";
 
-    window[STATS_SYMBOL] = {
-  "photos": 1142,
-  "albums": 100,
-  "years": 13,
-  "countries": 100,
-  "bird_species": 135,
-  "mammal_species": 53,
-  "unesco_sites": 17
-}
-
+    window[STATS_SYMBOL] = {"photos": 1142, "albums": 100, "years": 13, "countries": 100, "bird_species": 135, "mammal_species": 53, "unesco_sites": 17}
   </script>
 
   <script async fetchpriority="low">
