@@ -12,6 +12,7 @@ import { LitElem } from "../../../models/lit-element.js";
 import { KnownRelations, BinomialTypes } from "../../../constants.js";
 import { Binomials, Things, TriplesDB } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
+import { Dates } from "../../../services/dates.js"
 
 
 export class ThingPage extends LitElem {
@@ -150,9 +151,28 @@ export class ThingPage extends LitElem {
     return binomial;
   }
 
+  firstPhotographed(images, facts) {
+    const relevantPhotos = this
+      .filterPhotos(images, facts)
+      .sort((photo0, photo1) => {
+        return photo0.created_at - photo1.created_at;
+      });
+
+    const first = relevantPhotos[0];
+
+    if (!first) {
+      return "Unknown";
+    }
+
+    return new Date(first.created_at).toLocaleDateString("en-IE", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+    });
+  }
+
   getTitle() {
     const triplesName = TriplesDB.findName(this.triples, this.urn);
-    console.log(triplesName, this.urn);
 
     if (triplesName) {
       return triplesName;
@@ -208,6 +228,7 @@ export class ThingPage extends LitElem {
 
     if (BinomialTypes.has(type)) {
       metadata["Binomial"] = html`<em>${Binomials.pretty(urn.id)}</em>`;
+      metadata["First Photographed"] = html`<span>${this.firstPhotographed(images, facts)}</span>`
     }
 
     const wikipedia = TriplesDB.findWikipedia(this.triples, this.urn);
