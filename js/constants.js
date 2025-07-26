@@ -41,6 +41,7 @@ export class KnownRelations {
   static LOCATION = "location";
   static RATING = "rating";
   static NAME = "name";
+  static BIRDWATCH_URL = "birdwatch_url";
 }
 
 export const BinomialTypes = new Set([

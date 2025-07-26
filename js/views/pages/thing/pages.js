@@ -176,6 +176,8 @@ export class ThingPage extends LitElem {
     const urn = Things.parseUrn(this.urn);
     const type = urn.type;
 
+    const birdwatchUrl = Binomials.birdwatchUrl(this.triples, this.urn);
+
     const metadata = Object.assign({
       "Classification": html`<a href="#/thing/${type}:*">${type}</a>`,
     }, this.renderFacts(urn, triples));
@@ -197,6 +199,7 @@ export class ThingPage extends LitElem {
         <h1>${this.getTitle()}</h1>
 
         ${wikipedia ? html`<a href="${wikipedia}" target="_blank" rel="noopener">[wikipedia]</a>` : html``}
+        ${birdwatchUrl ? html`<a href="${birdwatchUrl}" target="_blank" rel="noopener">[birdwatch]</a>` : html``}
         ${location ? html`<span class="location">${location}</span>` : html``}
 
         <h3>Metadata</h3>

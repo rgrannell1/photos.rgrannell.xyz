@@ -78,4 +78,32 @@ export class Binomials {
 
     return binomial;
   }
+
+  static birdwatchUrl(triples, urn) {
+    if (!Things.isUrn(urn)) {
+      throw new Error(`Invalid URN: ${urn}`);
+    }
+
+    const urnId = Things.parseUrn(urn).id;
+
+
+    const match = triples.find(triple => {
+      const [birdUrn, relation, _] = triple;
+console.log(urn, triple)
+      if (!Things.isUrn(birdUrn) || relation !== KnownRelations.BIRDWATCH_URL) {
+        return false;
+      }
+
+      const sourceBirdUrn = Things.parseUrn(birdUrn);
+      if (sourceBirdUrn.type !== "bird") {
+        return false;
+      }
+
+      return sourceBirdUrn.id === urnId;
+    });
+
+  if (match) {
+      return match[2];
+    }
+  }
 }
