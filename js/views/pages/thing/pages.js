@@ -62,7 +62,6 @@ export class ThingPage extends LitElem {
           return Things.sameURN(candidateUrn, this.urn);
         }
       } catch (err) {
-        //console.warn(`Invalid URN in fact: ${candidateUrn}`, err);
         return false;
       }
     })
@@ -105,6 +104,18 @@ export class ThingPage extends LitElem {
     return facts
   }
 
+  binomialToCommonName(binomial) {
+    const match = this.triples.find(triple => {
+      return triple[0] === binomial && triple[1] === KnownRelations.NAME;
+    })
+
+    if (match) {
+      return match[2];
+    }
+
+    return binomial;
+  }
+
   getTitle() {
     const facts = this.getFacts();
 
@@ -124,10 +135,12 @@ export class ThingPage extends LitElem {
       }
 
       if (BinomialTypes.has(parsedUrn.type)) {
-        return value.replace("-", " ").replace(
+        const binomial = value.replace("-", " ").replace(
           /^./,
           (char) => char.toUpperCase(),
         );
+
+        return this.binomialToCommonName(binomial)
       }
 
       return value;
