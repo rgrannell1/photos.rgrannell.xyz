@@ -290,9 +290,13 @@ export class ThingPage extends LitElem {
         ${photos}
 
         <h3>Albums</h3>
-        ${albums}
 
         </section>
+
+        <section class="album-container">
+          ${albums}
+        </section>
+
       </div>
     `;
   }
