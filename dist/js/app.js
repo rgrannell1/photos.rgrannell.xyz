@@ -188,7 +188,7 @@ var dt=globalThis,qt=dt.ShadowRoot&&(dt.ShadyCSS===void 0||dt.ShadyCSS.nativeSha
         <album-share-button
           .title=${this.title}
           .url=${window.location.href}></album-share-button>
-        <a href="#/albums">[<albums]</a>
+        <a href="#/albums">[\<albums]</a>
 
         <ul class="unesco-links">
           ${c.map(h=>a`<li>${h}</li>`)}
@@ -233,7 +233,7 @@ var dt=globalThis,qt=dt.ShadowRoot&&(dt.ShadyCSS===void 0||dt.ShadyCSS.nativeSha
       <p>
         <a href="${t.full_image}">[full image]</a>
         <share-metadata-button format="image/webp" url=${t.image_url}></share-metadata-button>
-        <a href="#/album/${r}">[<album]</a>
+        <a href="#/album/${r}">[\<album]</a>
       </p>
 
       ${this.renderSemanticData(s)}
