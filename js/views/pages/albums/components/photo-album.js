@@ -2,6 +2,7 @@ import { html } from "../../../../library/lit.js";
 import { LitElem } from "../../../../models/lit-element.js";
 import { Dates } from "../../../../services/dates.js";
 import { Photos } from "../../../../services/photos.js";
+import { CountriesService } from "../../../../services/countries.js";
 
 export class PhotoAlbum extends LitElem {
   static get properties() {
@@ -40,6 +41,7 @@ export class PhotoAlbum extends LitElem {
     performance.mark(`start-album-render-${this.url}`);
 
     const thumbnailDataUrl = Photos.encodeBitmapDataURL(this.mosaicColours);
+    const flags = CountriesService.flags(this?.countries.split(','))
 
     return html`
     <div class="photo-album">
@@ -64,7 +66,7 @@ export class PhotoAlbum extends LitElem {
         <p class="photo-album-count">${this.count} ${
       this.count === 1 ? "photo" : "photos"
     }</p>
-        <p class="photo-album-countries">${this?.countries}</p>
+        <p class="photo-album-countries">${flags}</p>
         </div>
 
     </div>

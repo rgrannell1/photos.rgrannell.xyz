@@ -17,6 +17,7 @@ import { JSONFeed } from "../../../services/json-feed.js";
 import { Things } from "../../../services/things.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { KnownThings } from "../../../constants.js";
+import { CountriesService } from "../../../services/countries.js";
 
 export class AlbumPage extends LitElem {
   static get properties() {
@@ -124,6 +125,8 @@ export class AlbumPage extends LitElem {
       return html`<unesco-link urn="${urn}"></unesco-link>`;
     });
 
+    const flags = CountriesService.flags(this?.countries.split(','))
+
     return html`
     <div>
       <section class="photos-metadata">
@@ -132,14 +135,14 @@ export class AlbumPage extends LitElem {
           <time>${range}</time>
         </p>
         <p class="photo-album-count">${this.renderPhotoCount()}</p>
-        <p class="photo-album-countries">${this?.countries}</p>
+        <p class="photo-album-countries">${flags}</p>
         <p class="photo-album-description">${unsafeHTML(this.description)}
         </p>
 
         <album-share-button
           .title=${this.title}
           .url=${window.location.href}></album-share-button>
-        <a href="#/albums">[albums]</a>
+        <a href="#/albums">[<albums]</a>
 
         <ul class="unesco-links">
           ${

@@ -155,10 +155,6 @@ export class AlbumsArtifact {
         data[headers[idx]] = album[idx];
       }
 
-      if (album[0].includes('cologne')) {
-        debugger;
-      }
-
       output.push(data);
     }
     return output;

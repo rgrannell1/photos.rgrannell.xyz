@@ -37,7 +37,7 @@ export class AlbumsPage extends LitElem {
         mosaicColours: album.mosaic,
         id: album.id,
         count: photos_count,
-        flags: (album.flags ?? "").split(","),
+        flags: album.flags,
       };
     });
   }
