@@ -146,13 +146,21 @@ export class AlbumsArtifact {
     for (const album of rows.slice(1)) {
       const data = {};
 
+      if (album.length !== headers.length) {
+        throw new Error(
+          `album row length mismatch: expected ${headers.length}, got ${album.length}`)
+      }
+
       for (let idx = 0; idx < headers.length; idx++) {
         data[headers[idx]] = album[idx];
       }
 
+      if (album[0].includes('cologne')) {
+        debugger;
+      }
+
       output.push(data);
     }
-
     return output;
   }
 
