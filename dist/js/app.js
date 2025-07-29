@@ -92,7 +92,7 @@ var dt=globalThis,qt=dt.ShadowRoot&&(dt.ShadyCSS===void 0||dt.ShadyCSS.nativeSha
     </div>
     `}};customElements.define("photos-page",ie);var re=class extends u{static get properties(){return{albums:{type:Array},stats:{type:Array}}}render(){return a`
       <p class="photo-stats">${this.stats.photos} <a href="#/photos">photos</a> ·
-        ${this.stats.albums} albums · ${this.stats.years} years·
+        ${this.stats.albums} albums · ${this.stats.years} years ·
         ${this.stats.countries} <span title="well, roughly">countries</span> ·
         ${this.stats.bird_species} <a href="#/thing/bird:*">bird species</a> ·
         ${this.stats.mammal_species} <a href="#/thing/mammal:*">mammal species</a> ·
