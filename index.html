@@ -15,11 +15,11 @@
 
     <!-- Preloads -->
     <link rel="preload" href="/dist/app.js">
+      <link rel="preload" href="https://photos-cdn.rgrannell.xyz/88d0b1c0a1.webp">
       <link rel="preload" href="https://photos-cdn.rgrannell.xyz/2196642deb.webp">
       <link rel="preload" href="https://photos-cdn.rgrannell.xyz/da867d06fa.webp">
       <link rel="preload" href="https://photos-cdn.rgrannell.xyz/835c7ff700.webp">
       <link rel="preload" href="https://photos-cdn.rgrannell.xyz/7fc6f0c3bd.webp">
-      <link rel="preload" href="https://photos-cdn.rgrannell.xyz/7d0f0e2d9a.webp">
 
     <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/manifest/atom/atom-index.xml" />
 
@@ -44,7 +44,7 @@
 
     <script>
       // reduce blocking requests by injecting this critical data
-      window.envConfig = {"photos_url": "https://photos-cdn.rgrannell.xyz", "data_url": "data:image/bmp;base64,", "publication_id": "475d9d9523"}
+      window.envConfig = {"photos_url": "https://photos-cdn.rgrannell.xyz", "data_url": "data:image/bmp;base64,", "publication_id": "b598d8e642"}
     </script>
 
     <script type="module" src="/dist/js/app.js"></script>
@@ -57,7 +57,7 @@
     // this should circumvent blocking on `stats` fetches
     import { STATS_SYMBOL } from "/js/constants.js";
 
-    window[STATS_SYMBOL] = {"photos": 1142, "albums": 100, "years": 13, "countries": 18, "bird_species": 135, "mammal_species": 53, "unesco_sites": 17}
+    window[STATS_SYMBOL] = {"photos": 1144, "albums": 101, "years": 13, "countries": 0, "bird_species": 135, "mammal_species": 53, "unesco_sites": 17}
   </script>
 
   <script async fetchpriority="low">
