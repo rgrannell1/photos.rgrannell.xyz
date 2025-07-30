@@ -30,7 +30,6 @@ export class AppPhoto extends LitElem {
   }
 
   render() {
-    console.log(this.mosaicColours, "colours");
     const photoMetadata = {
       id: this.id,
       imageUrl: this.imageUrl,

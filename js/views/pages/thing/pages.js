@@ -70,6 +70,9 @@ export class ThingPage extends LitElem {
 
   subjectPhotos(images, facts) {
     return this.filterPhotos(images, facts)
+      .sort((photo0, photo1) => {
+        return photo1.created_at - photo0.created_at;
+      })
       .map((photo, idx) => {
         return html`
       <app-photo
