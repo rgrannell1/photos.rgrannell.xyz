@@ -98,7 +98,7 @@ export const PAGE_DEPENDECIES = {
     [stats, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [semantic, LoadMode.EAGER],
-    [triples, LoadMode.LAZY],
+    [triples, LoadMode.EAGER],
   ],
   [Pages.PHOTO]: [
     [albums, LoadMode.EAGER],
@@ -342,6 +342,7 @@ export class PhotoApp extends LitElem {
         .images=${images}
         .videos=${videos}
         .semantic=${semantic}
+        .triples=${triples._data}
         title=${album.album_name}
         id=${this.id}
         minDate=${album.min_date}

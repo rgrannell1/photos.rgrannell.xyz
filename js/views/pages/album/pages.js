@@ -9,7 +9,7 @@ import { html, unsafeHTML } from "../../../library/lit.js";
 import "../../components/photo.js";
 import "../../components/video.js";
 import "./components/share.js";
-import "../../components/unesco-link.js";
+import "../../components/thing-link.js";
 
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
@@ -31,6 +31,7 @@ export class AlbumPage extends LitElem {
       images: { type: Object },
       videos: { type: Object },
       semantic: { type: Object },
+      triples: { type: Array },
       countries: { type: String },
     };
   }
@@ -95,9 +96,31 @@ export class AlbumPage extends LitElem {
       ));
     }
 
-    return Array.from(groups[KnownThings.UNESCO]).map((urn) => {
+    for (const type of [KnownThings.BIRD, KnownThings.MAMMAL]) {
+      groups[type] = Array.from(new Set(
+        albumPhotos.flatMap((photo) => {
+          return photo.relations.subject?.filter((subject) => {
+            return Things.is(subject, type);
+          });
+        }).filter(val => val),
+      ));
+    }
+
+    let links = [];
+
+    links = links.concat(groups[KnownThings.UNESCO].map((urn) => {
       return html`<unesco-link urn="${urn}"></unesco-link>`;
-    });
+    }));
+
+    links = links.concat(groups[KnownThings.BIRD].map((urn) => {
+      return html`<thing-link .urn="${urn}" .triples="${this.triples}"></thing-link>`;
+    }));
+
+    links = links.concat(groups[KnownThings.MAMMAL].map((urn) => {
+      return html`<thing-link .urn="${urn}" .triples="${this.triples}"></thing-link>`;
+    }));
+
+    return links;
   }
 
   render() {

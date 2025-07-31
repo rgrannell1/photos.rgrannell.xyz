@@ -12,7 +12,6 @@ import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 
 import "./components/share-button.js";
-import "../../components/unesco-link.js";
 import "../../components/thing-link.js";
 import "../../components/tag-link.js";
 import { Things } from "../../../services/things.js";

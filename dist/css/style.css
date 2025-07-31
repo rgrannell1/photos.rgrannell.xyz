@@ -9,7 +9,7 @@
   --background-color: hsl(0, 0%, 96%);
   --link-color: hsl(211, 100%, 35%);
   --disabled-link-color: hsl(0, 0%, 38%);
-  --brand-color: hsl(211, 100%, 35%);
+  --brand-color: #0056b3;
   --link-background-color: hsl(211, 100%, 95%);
   --hover-background-color: hsl(210, 100%, 84%);
   --marker-color: hsl(0, 0%, 56%);
@@ -386,14 +386,28 @@ photo-app {
   display: flex;
   gap: 10px;
 }
-.unesco-link {
-  background-color: #0077d4;
+.thing-link {
+  display: block;
+}
+.unesco-link,
+.bird-link,
+.mammal-link {
   color: white;
   font-weight: bolder;
   padding: 4px 8px;
   text-decoration: none;
   box-sizing: border-box;
   border-radius: 6px;
+  margin: 2px;
+}
+.unesco-link {
+  background-color: #0079d6;
+}
+.bird-link {
+  background-color: #7CCCA0;
+}
+.mammal-link {
+  background-color: #7cc8cc;
 }
 .unesco-link * {
   font-family:
