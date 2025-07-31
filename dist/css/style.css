@@ -399,6 +399,7 @@ photo-app {
   box-sizing: border-box;
   border-radius: 6px;
   margin: 2px;
+  width: fit-content;
 }
 .unesco-link {
   background-color: #0079d6;
