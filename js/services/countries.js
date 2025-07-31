@@ -1,4 +1,3 @@
-
 export class CountriesService {
   static TABLE = {
     "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
@@ -18,8 +17,8 @@ export class CountriesService {
     "Tenerife": "🇪🇸",
     "The Netherlands": "🇳🇱",
     "United States of America": "🇺🇸",
-    "Wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
-  }
+    "Wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+  };
 
   static flag(country) {
     if (CountriesService.TABLE[country]) {
@@ -30,6 +29,6 @@ export class CountriesService {
   }
 
   static flags(countries) {
-    return countries.map(country => CountriesService.flag(country)).join(' ');
+    return countries.map((country) => CountriesService.flag(country)).join(" ");
   }
 }

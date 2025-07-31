@@ -42,18 +42,21 @@
       window.envConfig = {{{ env }}}
     </script>
 
+    <div id="stats-data" style="display: none;"></div>
+    <script type="module">
+      // this mustashe injection should circumvent blocking on `stats` fetches
+      import { STATS_SYMBOL } from "/js/constants.js";
+
+      const $statsData = document.getElementById('stats-data');
+      $statsData.innerText = JSON.stringify({{{ stats }}})
+
+    </script>
     <script type="module" src="/dist/js/app.js"></script>
+
     <title>photos.rgrannell.xyz</title>
   </head>
 
   <photo-app></photo-app>
-
-  <script type="module">
-    // this mustashe injection should circumvent blocking on `stats` fetches
-    import { STATS_SYMBOL } from "/js/constants.js";
-
-    window[STATS_SYMBOL] = {{{ stats }}}
-  </script>
 
   <script async fetchpriority="low">
     const swChannel = new BroadcastChannel('sw');

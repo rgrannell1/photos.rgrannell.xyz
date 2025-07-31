@@ -16,7 +16,7 @@ const CACHEABLE_RESOURCES = [
 
 // -- let's not cache list of images / albums here. Our CDN will cache them for us,
 // -- and we'll attach them to the window so they'll persist within a page load but not reloads.
-const UNCACHEABLE_RESOURCES = [ ];
+const UNCACHEABLE_RESOURCES = [];
 
 self.addEventListener("install", function (event) {
   // -- on install, cache every cacheable resource explicity listed.
@@ -35,7 +35,14 @@ function isCacheable(url) {
     return true;
   }
 
-  const manifestEntries = ['albums', 'images', 'videos', 'exif', 'semantic', 'triples']
+  const manifestEntries = [
+    "albums",
+    "images",
+    "videos",
+    "exif",
+    "semantic",
+    "triples",
+  ];
 
   for (const entry of manifestEntries) {
     if (url.includes(`/manifest/${entry}`)) {

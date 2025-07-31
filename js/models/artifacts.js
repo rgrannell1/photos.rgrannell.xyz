@@ -148,7 +148,8 @@ export class AlbumsArtifact {
 
       if (album.length !== headers.length) {
         throw new Error(
-          `album row length mismatch: expected ${headers.length}, got ${album.length}`)
+          `album row length mismatch: expected ${headers.length}, got ${album.length}`,
+        );
       }
 
       for (let idx = 0; idx < headers.length; idx++) {
@@ -296,12 +297,11 @@ export class StatsArtifact {
   }
 
   async init() {
-    if (window[STATS_SYMBOL]) {
-      this._data = window[STATS_SYMBOL];
-    }
+    const $statsData = document.getElementById('stats-data');
 
-    if (this._data) {
-      return;
+    this._data = JSON.parse($statsData.textContent);
+    if (!this._data) {
+      console.error('stats symbol not injected');
     }
   }
 

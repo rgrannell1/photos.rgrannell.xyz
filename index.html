@@ -41,21 +41,38 @@
 
     <script>
       // reduce blocking requests by injecting this critical data
-      window.envConfig = {"photos_url": "https://photos-cdn.rgrannell.xyz", "data_url": "data:image/bmp;base64,", "publication_id": "9b09cc32f0"}
+      window.envConfig = {
+  "photos_url": "https://photos-cdn.rgrannell.xyz",
+  "data_url": "data:image/bmp;base64,",
+  "publication_id": "9b09cc32f0"
+}
+
     </script>
 
+    <div id="stats-data" style="display: none;"></div>
+    <script type="module">
+      // this mustashe injection should circumvent blocking on `stats` fetches
+      import { STATS_SYMBOL } from "/js/constants.js";
+
+      const $statsData = document.getElementById('stats-data');
+      $statsData.innerText = JSON.stringify({
+  "photos": 1166,
+  "albums": 101,
+  "years": 13,
+  "countries": 18,
+  "bird_species": 141,
+  "mammal_species": 55,
+  "unesco_sites": 17
+}
+)
+
+    </script>
     <script type="module" src="/dist/js/app.js"></script>
+
     <title>photos.rgrannell.xyz</title>
   </head>
 
   <photo-app></photo-app>
-
-  <script type="module">
-    // this mustashe injection should circumvent blocking on `stats` fetches
-    import { STATS_SYMBOL } from "/js/constants.js";
-
-    window[STATS_SYMBOL] = {"photos": 1166, "albums": 101, "years": 13, "countries": 18, "bird_species": 141, "mammal_species": 55, "unesco_sites": 17}
-  </script>
 
   <script async fetchpriority="low">
     const swChannel = new BroadcastChannel('sw');

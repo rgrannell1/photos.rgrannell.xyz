@@ -81,6 +81,25 @@ export class AlbumPage extends LitElem {
       : `${this.imageCount} photos`;
   }
 
+  thingsLinks() {
+    const groups = {};
+    const albumPhotos = this.albumPhotos();
+
+    for (const type of [KnownThings.UNESCO]) {
+      groups[type] = Array.from(new Set(
+        albumPhotos.flatMap((photo) => {
+          return photo.relations.location?.filter((location) => {
+            return Things.is(location, type);
+          });
+        }).filter(val => val),
+      ));
+    }
+
+    return Array.from(groups[KnownThings.UNESCO]).map((urn) => {
+      return html`<unesco-link urn="${urn}"></unesco-link>`;
+    });
+  }
+
   render() {
     const mediaQuery = window.matchMedia("(max-width: 500px)");
     const range = Dates.dateRange(
@@ -112,20 +131,7 @@ export class AlbumPage extends LitElem {
         ></app-video>`;
     });
 
-    const unescoTags = new Set(
-      albumPhotos.flatMap((photo) => {
-        return photo.relations.location?.filter((location) => {
-          console.log(Things.parseUrn(location), KnownThings.UNESCO, location);
-          return Things.is(location, KnownThings.UNESCO);
-        });
-      }).filter((x) => x),
-    );
-
-    const unescoLinks = Array.from(unescoTags).map((urn) => {
-      return html`<unesco-link urn="${urn}"></unesco-link>`;
-    });
-
-    const flags = CountriesService.flags(this?.countries.split(','))
+    const flags = CountriesService.flags(this?.countries.split(","));
 
     return html`
     <div>
@@ -145,11 +151,7 @@ export class AlbumPage extends LitElem {
         <a href="#/albums">[albums]</a>
 
         <ul class="unesco-links">
-          ${
-      unescoLinks.map((link) => {
-        return html`<li>${link}</li>`;
-      })
-    }
+          ${this.thingsLinks().map((link) => html`<li>${link}</li>`)}
         </ul>
 
       </section>
