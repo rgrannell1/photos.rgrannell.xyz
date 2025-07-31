@@ -303,13 +303,6 @@ export class StatsArtifact {
     if (this._data) {
       return;
     }
-
-    console.log(`🔎 fetching ${this.url}`);
-
-    const stats = await (await fetch(this.url)).json();
-    window[STATS_SYMBOL] = stats;
-
-    this._data = stats;
   }
 
   stats() {

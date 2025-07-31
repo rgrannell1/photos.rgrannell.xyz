@@ -10,14 +10,13 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-16x16.png",
   "/icons/favicon-32x32.png",
   "/favicon.ico",
+  "/favicon-32x32.png",
   // removed the font, it seemed to do something weird here
 ];
 
-// -- let's not cache list of images / albums here. Netlify will cache them for us,
+// -- let's not cache list of images / albums here. Our CDN will cache them for us,
 // -- and we'll attach them to the window so they'll persist within a page load but not reloads.
-const UNCACHEABLE_RESOURCES = [
-  "/manifest/metdata.json",
-];
+const UNCACHEABLE_RESOURCES = [ ];
 
 self.addEventListener("install", function (event) {
   // -- on install, cache every cacheable resource explicity listed.
@@ -31,25 +30,17 @@ self.addEventListener("install", function (event) {
   );
 });
 
-function isCacheable(url, status) {
-  if (url.includes("_thumbnail") || url.includes("/t/")) {
-    return true;
-  }
-
+function isCacheable(url) {
   if (url.includes(".woff2")) {
     return true;
   }
 
-  if (url.includes("/manifest/albums")) {
-    return true;
-  }
+  const manifestEntries = ['albums', 'images', 'videos', 'exif', 'semantic', 'triples']
 
-  if (url.includes("/manifest/images")) {
-    return true;
-  }
-
-  if (url.includes("/manifest/videos")) {
-    return true;
+  for (const entry of manifestEntries) {
+    if (url.includes(`/manifest/${entry}`)) {
+      return true;
+    }
   }
 
   return false;
@@ -80,7 +71,7 @@ self.addEventListener("fetch", function (event) {
           );
 
           // -- just return the result directly
-          if (!isCacheable(url, networkResponse.status)) {
+          if (!isCacheable(url)) {
             swChannel.postMessage(`⚙️ cannot cache ${url}`);
 
             return networkResponse;

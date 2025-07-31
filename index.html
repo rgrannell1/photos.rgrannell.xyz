@@ -30,9 +30,6 @@
     <meta property="og:locale" content="en_IE">
     <meta property="og:url" content="https://photos.rgrannell.xyz">
     <meta property="og:site_name" content="photos.rgrannell.xyz">
-    <meta property="og:image" content="https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com/open-graph-card.png">
-
-    <!-- No longer supports X tags, because fuck that site... -->
 
     <link rel="manifest" href="/site.webmanifest">
     <link rel="shortcut icon" type="image/png" href="/icons/favicon-32x32.png"/ defer="" fetchpriorty="low">
@@ -54,7 +51,7 @@
   <photo-app></photo-app>
 
   <script type="module">
-    // this should circumvent blocking on `stats` fetches
+    // this mustashe injection should circumvent blocking on `stats` fetches
     import { STATS_SYMBOL } from "/js/constants.js";
 
     window[STATS_SYMBOL] = {"photos": 1166, "albums": 101, "years": 13, "countries": 18, "bird_species": 141, "mammal_species": 55, "unesco_sites": 17}
