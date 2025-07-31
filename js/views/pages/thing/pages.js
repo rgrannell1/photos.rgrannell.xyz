@@ -90,7 +90,6 @@ export class ThingPage extends LitElem {
       return photo.album_id;
     }));
 
-    // TODO sort
     return Array
       .from(albumSet)
       .flatMap((albumId) => {
