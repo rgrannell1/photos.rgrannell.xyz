@@ -62,11 +62,16 @@ export class ThingLink extends LitElem {
   linkClass() {
     const { type } = Things.parseUrn(this.urn);
 
-    if (type === KnownThings.BIRD) {
-      return "bird-link";
-    } else if (type === KnownThings.MAMMAL) {
-      return "mammal-link";
+    const classes = {
+      [KnownThings.BIRD]: "bird-link",
+      [KnownThings.MAMMAL]: "mammal-link",
+      [KnownThings.REPTILE]: "reptile-link",
+      [KnownThings.AMPHIBIAN]: "amphibian-link",
+      [KnownThings.FISH]: "fish-link",
+      [KnownThings.INSECT]: "insect-link"
     }
+
+    return classes[type] ?? '';
   }
 
   render() {

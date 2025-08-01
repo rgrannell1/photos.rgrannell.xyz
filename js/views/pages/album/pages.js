@@ -96,7 +96,7 @@ export class AlbumPage extends LitElem {
       ));
     }
 
-    for (const type of [KnownThings.BIRD, KnownThings.MAMMAL]) {
+    for (const type of [KnownThings.BIRD, KnownThings.MAMMAL, KnownThings.REPTILE, KnownThings.FISH, KnownThings.AMPHIBIAN, KnownThings.INSECT]) {
       groups[type] = Array.from(new Set(
         albumPhotos.flatMap((photo) => {
           return photo.relations.subject?.filter((subject) => {
@@ -112,13 +112,11 @@ export class AlbumPage extends LitElem {
       return html`<unesco-link urn="${urn}"></unesco-link>`;
     }));
 
-    links = links.concat(groups[KnownThings.BIRD].map((urn) => {
-      return html`<thing-link .urn="${urn}" .triples="${this.triples}"></thing-link>`;
-    }));
-
-    links = links.concat(groups[KnownThings.MAMMAL].map((urn) => {
-      return html`<thing-link .urn="${urn}" .triples="${this.triples}"></thing-link>`;
-    }));
+    for (const type of [KnownThings.BIRD, KnownThings.MAMMAL, KnownThings.REPTILE, KnownThings.FISH, KnownThings.AMPHIBIAN, KnownThings.INSECT]) {
+      links = links.concat(groups[type].map((urn) => {
+        return html`<thing-link .urn="${urn}" .triples="${this.triples}"></thing-link>`;
+      }));
+    }
 
     return links;
   }

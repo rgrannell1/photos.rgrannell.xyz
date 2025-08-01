@@ -34,6 +34,10 @@ export class KnownThings {
   static UNESCO = "unesco";
   static BIRD = "bird";
   static MAMMAL = "mammal";
+  static REPTILE = "reptile";
+  static FISH = "fish";
+  static INSECT = "insect";
+  static AMPHIBIAN = "amphibian";
   static GEONAME = "geoname";
 }
 
@@ -54,4 +58,5 @@ export const BinomialTypes = new Set([
   "reptile",
   "amphibian",
   "fish",
+  "insect",
 ]);

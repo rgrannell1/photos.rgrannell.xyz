@@ -505,7 +505,13 @@ photo-app {
   display: block;;
 }
 
-.unesco-link, .bird-link, .mammal-link {
+.unesco-link,
+.bird-link,
+.mammal-link,
+.reptile-link,
+.fish-link,
+.amphibian-link,
+.insect-link {
   color: white;
   font-weight: bolder;
   padding: 4px 8px;
@@ -526,6 +532,22 @@ photo-app {
 
 .mammal-link {
   background-color: #7cc8cc;
+}
+
+.reptile-link {
+  background-color: #d6a700;
+}
+
+.fish-link {
+  background-color: #7c7cc8;
+}
+
+.amphibian-link {
+  background-color: #7c7c7c;
+}
+
+.insect-link {
+  background-color: #d67c7c;
 }
 
 /* yes this is an enormous waste of bytes, but it's fun to
