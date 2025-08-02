@@ -15,11 +15,11 @@
 
     <!-- Preloads -->
     <link rel="preload" href="/dist/app.js">
+      <link rel="preload" href="https://photos-cdn.rgrannell.xyz/3dd12452d2.webp">
       <link rel="preload" href="https://photos-cdn.rgrannell.xyz/88d0b1c0a1.webp">
+      <link rel="preload" href="https://photos-cdn.rgrannell.xyz/e261da6ed7.webp">
       <link rel="preload" href="https://photos-cdn.rgrannell.xyz/2196642deb.webp">
       <link rel="preload" href="https://photos-cdn.rgrannell.xyz/da867d06fa.webp">
-      <link rel="preload" href="https://photos-cdn.rgrannell.xyz/835c7ff700.webp">
-      <link rel="preload" href="https://photos-cdn.rgrannell.xyz/7fc6f0c3bd.webp">
 
     <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/manifest/atom/atom-index.xml" />
 
@@ -41,7 +41,7 @@
 
     <script>
       // reduce blocking requests by injecting this critical data
-      window.envConfig = {"photos_url": "https://photos-cdn.rgrannell.xyz", "data_url": "data:image/bmp;base64,", "publication_id": "210d3ea02c"}
+      window.envConfig = {"photos_url": "https://photos-cdn.rgrannell.xyz", "data_url": "data:image/bmp;base64,", "publication_id": "1fc60d9e1d"}
     </script>
 
     <div id="stats-data" style="display: none;"></div>
@@ -50,7 +50,7 @@
       import { STATS_SYMBOL } from "/js/constants.js";
 
       const $statsData = document.getElementById('stats-data');
-      $statsData.innerText = JSON.stringify({"photos": 1170, "albums": 101, "years": 13, "countries": 18, "bird_species": 141, "mammal_species": 55, "unesco_sites": 18})
+      $statsData.innerText = JSON.stringify({"photos": 1176, "albums": 103, "years": 13, "countries": 18, "bird_species": 141, "mammal_species": 55, "unesco_sites": 18})
 
     </script>
     <script type="module" src="/dist/js/app.js"></script>
