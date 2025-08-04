@@ -1,5 +1,4 @@
-import { html } from "../library/lit.js";
-//import { HaystackSearchEngine } from "../library/haystack.js";
+import { html, property } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.js";
 import {
   AlbumsArtifact,
@@ -100,6 +99,7 @@ export const PAGE_DEPENDECIES = {
     [semantic, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
+  // TODO DOES THIS EXIST
   [Pages.PHOTO]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
@@ -168,20 +168,27 @@ export class PhotoApp extends LitElem {
     "videos": Pages.VIDEOS,
     "thing": Pages.THING,
   };
-  static get properties() {
-    return {
-      title: { type: String },
-      page: { type: String },
-      sidebarVisible: { type: Boolean, state: true },
-      id: { type: String },
-      imageUrl: { type: String },
-      thumbnailUrl: { type: String },
-      route: { type: String },
-      params: { type: Object },
-      query: { type: Object },
-      darkMode: { type: Boolean },
-    };
-  }
+
+  @property({ type: String })
+  title = "Photos";
+  @property({ type: String })
+  page = PhotoApp.DEFAULT_PAGE;
+  @property({ type: Boolean, state: true })
+  sidebarVisible = false;
+  @property({ type: String })
+  id = "";
+  @property({ type: String })
+  imageUrl = "";
+  @property({ type: String })
+  thumbnailUrl = "";
+  @property({ type: String })
+  route = "";
+  @property({ type: Object })
+  params = {};
+  @property({ type: Object })
+  query = {};
+  @property({ type: Boolean })
+  darkMode = false;
 
   connectedCallback() {
     super.connectedCallback();
@@ -227,7 +234,7 @@ export class PhotoApp extends LitElem {
   /*
    * Navigate to the album page
    */
-  receiveClickAlbum(event) {
+  receiveClickAlbum(event: CustomEvent) {
     const {
       title,
       id,
@@ -250,7 +257,7 @@ export class PhotoApp extends LitElem {
   /*
    * When we click on a photo's info icon, navigate to the photo's metadata page
    */
-  async receiveClickPhotoMetadata(event) {
+  async receiveClickPhotoMetadata(event: CustomEvent) {
     const {
       id,
       imageUrl,
@@ -271,7 +278,7 @@ export class PhotoApp extends LitElem {
   receiveSwitchTheme(_) {
     this.darkMode = !this.darkMode;
 
-    localStorage.setItem("darkMode", this.darkMode);
+    localStorage.setItem("darkMode", this.darkMode.toString());
 
     this.requestUpdate();
   }
@@ -280,7 +287,7 @@ export class PhotoApp extends LitElem {
    * On @navigate-page, update the URL
    * by using the `PageLocation` service
    */
-  receiveNavigatePage(event) {
+  receiveNavigatePage(event: CustomEvent) {
     // state updates
     this.page = event.detail.page;
     this.sidebarVisible = false;
@@ -294,7 +301,7 @@ export class PhotoApp extends LitElem {
     }
   }
 
-  pageClasses(sidebarVisible) {
+  pageClasses(sidebarVisible: boolean) {
     const classes = ["page"];
 
     if (sidebarVisible) {
@@ -307,7 +314,7 @@ export class PhotoApp extends LitElem {
   /*
    * Render the subpage (e.g metadata, albums, photos, etc.)
    */
-  renderPage(sidebarVisible) {
+  renderPage(sidebarVisible: boolean) {
     const classes = this.pageClasses(sidebarVisible);
 
     if (!this.page || this.page === "albums") {
@@ -329,7 +336,7 @@ export class PhotoApp extends LitElem {
         console.error("no album id provided");
       }
 
-      const album = albums.albums().find((album) => {
+      const album = albums.albums().find((album: any) => {
         return album.id === this.id;
       });
 
@@ -355,15 +362,15 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.METADATA) {
-      const photo = images.images().find((image) => {
+      const photo = images.images().find((image: any) => {
         return image.id === this.id;
       });
 
-      const exifData = exif.exif().find((exif) => {
+      const exifData = exif.exif().find((exif: any) => {
         return exif.id === this.id;
       });
 
-      const semanticData = semantic.semantic().filter((semantic) => {
+      const semanticData = semantic.semantic().filter((semantic: any) => {
         return semantic[0] === this.id;
       });
 

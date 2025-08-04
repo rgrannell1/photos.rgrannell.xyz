@@ -1,6 +1,6 @@
 #!/bin/bash
 
-npx esbuild js/views/app.js \
+npx esbuild js/views/app.ts \
   --bundle                  \
   --outfile=dist/js/app.js  \
   --format=esm              \
