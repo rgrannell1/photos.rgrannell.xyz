@@ -1,4 +1,4 @@
-import { html, property } from "../library/lit.js";
+import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.js";
 import {
   AlbumsArtifact,
@@ -169,26 +169,20 @@ export class PhotoApp extends LitElem {
     "thing": Pages.THING,
   };
 
-  @property({ type: String })
-  title = "Photos";
-  @property({ type: String })
-  page = PhotoApp.DEFAULT_PAGE;
-  @property({ type: Boolean, state: true })
-  sidebarVisible = false;
-  @property({ type: String })
-  id = "";
-  @property({ type: String })
-  imageUrl = "";
-  @property({ type: String })
-  thumbnailUrl = "";
-  @property({ type: String })
-  route = "";
-  @property({ type: Object })
-  params = {};
-  @property({ type: Object })
-  query = {};
-  @property({ type: Boolean })
-  darkMode = false;
+  static get properties() {
+    return {
+      title: { type: String },
+      page: { type: String },
+      sidebarVisible: { type: Boolean, state: true },
+      id: { type: String },
+      imageUrl: { type: String },
+      thumbnailUrl: { type: String },
+      route: { type: String },
+      params: { type: Object },
+      query: { type: Object },
+      darkMode: { type: Boolean },
+    };
+  }
 
   connectedCallback() {
     super.connectedCallback();
