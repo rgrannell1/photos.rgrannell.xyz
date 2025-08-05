@@ -158,7 +158,7 @@ await AppInitialiser.init();
 export class PhotoApp extends LitElem {
   static DEFAULT_PAGE = Pages.ALBUMS;
 
-  // TODO dislike
+  // TODO dislike, move to constants
   static LOCATION_TYPE_TO_PAGE = {
     "album": Pages.ALBUM,
     "albums": Pages.ALBUMS,
