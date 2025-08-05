@@ -36,22 +36,22 @@ export class MetadataPage extends LitElem {
   }
 
   renderAperture() {
-    if (this.exif.f_stop === "Unknown") {
+    if (exif.f_stop === "Unknown") {
       return html`<td>Unknown aperture</td>`;
-    } else if (this.exif.f_stop === "0.0") {
+    } else if (exif.f_stop === "0.0") {
       return html`<td>Manual aperture control</td>`;
     }
 
-    return html`<td>ƒ/${this.exif.f_stop}</td>`;
+    return html`<td>ƒ/${exif.f_stop}</td>`;
   }
 
-  renderFocalLength() {
-    if (this.exif.focal_length === "Unknown") {
-      return html`${this.exif.focal_length}`;
-    } else if (this.exif.focal_length === "0") {
+  renderFocalLength(exif) {
+    if (exif.focal_length === "Unknown") {
+      return html`${exif.focal_length}`;
+    } else if (exif.focal_length === "0") {
       return html`<td>Manual lens</td>`;
     } else {
-      return html`<td>${this.exif.focal_length}mm equiv.</td>`;
+      return html`<td>${exif.focal_length}mm equiv.</td>`;
     }
   }
 
@@ -119,26 +119,8 @@ export class MetadataPage extends LitElem {
     `;
   }
 
-  render() {
-    const photo = this.image;
-    const exif = this.exif;
-    const semantic = this.semantic;
-    const albumId = photo.album_id;
-
+  renderExif(exif) {
     return html`
-    <section>
-    <h1>Metadata</h1>
-
-    <img class="thumbnail-image" src="${photo.thumbnail_url}"/>
-
-      <p>
-        <a href="${photo.full_image}">[full image]</a>
-        <share-metadata-button format="image/webp" url=${photo.image_url}></share-metadata-button>
-        <a href="#/album/${albumId}">[album]</a>
-      </p>
-
-      ${this.renderSemanticData(semantic)}
-
     <h3>Exif</h3>
 
     <table class="metadata-table">
@@ -158,7 +140,7 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Focal Length</th>
-        ${this.renderFocalLength()}
+        ${this.renderFocalLength(exif)}
       </tr>
       <tr>
         <th class="exif-heading">Shutter Speed</th>
@@ -168,13 +150,36 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Aperture</th>
-        ${this.renderAperture()}
+        ${this.renderAperture(exif)}
         </tr>
       <tr>
         <th class="exif-heading">ISO</th>
         <td>${exif.iso}</td>
       </tr>
     </table>
+    `;
+  }
+
+  render() {
+    const photo = this.image;
+    const semantic = this.semantic;
+    const albumId = photo.album_id;
+
+    return html`
+    <section>
+    <h1>Metadata</h1>
+
+    <img class="thumbnail-image" src="${photo.thumbnail_url}"/>
+
+      <p>
+        <a href="${photo.full_image}">[full image]</a>
+        <share-metadata-button format="image/webp" url=${photo.image_url}></share-metadata-button>
+        <a href="#/album/${albumId}">[album]</a>
+      </p>
+
+      ${this.renderSemanticData(semantic)}
+
+    ${this.exif ? this.renderExif(this.exif) : html``}
 
     </section>
     `;

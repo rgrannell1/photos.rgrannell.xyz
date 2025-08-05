@@ -213,7 +213,7 @@ var dt=globalThis,Wt=dt.ShadowRoot&&(dt.ShadyCSS===void 0||dt.ShadyCSS.nativeSha
         @click=${this.broadcast("click-tag",{tagName:t})}>${t}</a>`:a`<a
       href="#/tag/${s}"
       rel="tag"
-      @click=${this.broadcast("click-tag",{tagName:t})}>${t}</a> (${e})`}};customElements.define("tag-link",pe);var ue=class extends u{static get properties(){return{id:{type:String},image:{type:Object},exif:{type:Object},semantic:{type:Object},sharing:{state:!0,type:Boolean},triples:{type:Array}}}connectedCallback(){super.connectedCallback(),w.setIndex()}renderAperture(){return this.exif.f_stop==="Unknown"?a`<td>Unknown aperture</td>`:this.exif.f_stop==="0.0"?a`<td>Manual aperture control</td>`:a`<td>ƒ/${this.exif.f_stop}</td>`}renderFocalLength(){return this.exif.focal_length==="Unknown"?a`${this.exif.focal_length}`:this.exif.focal_length==="0"?a`<td>Manual lens</td>`:a`<td>${this.exif.focal_length}mm equiv.</td>`}renderSemanticKey(t){return t.replace(/_/g," ").replace(/\b\w/g,e=>e.toUpperCase())}renderSemanticValue(t,e){if(Array.isArray(e))return a`<ul class="thing-list">
+      @click=${this.broadcast("click-tag",{tagName:t})}>${t}</a> (${e})`}};customElements.define("tag-link",pe);var ue=class extends u{static get properties(){return{id:{type:String},image:{type:Object},exif:{type:Object},semantic:{type:Object},sharing:{state:!0,type:Boolean},triples:{type:Array}}}connectedCallback(){super.connectedCallback(),w.setIndex()}renderAperture(){return exif.f_stop==="Unknown"?a`<td>Unknown aperture</td>`:exif.f_stop==="0.0"?a`<td>Manual aperture control</td>`:a`<td>ƒ/${exif.f_stop}</td>`}renderFocalLength(t){return t.focal_length==="Unknown"?a`${t.focal_length}`:t.focal_length==="0"?a`<td>Manual lens</td>`:a`<td>${t.focal_length}mm equiv.</td>`}renderSemanticKey(t){return t.replace(/_/g," ").replace(/\b\w/g,e=>e.toUpperCase())}renderSemanticValue(t,e){if(Array.isArray(e))return a`<ul class="thing-list">
         ${e.map(s=>a`<li>${this.renderSemanticValue.call(this,t,s)}</li>`)}
       </ul>`;if(t.includes("binomial"))return a`<em>${e}</em>`;if(t.toLowerCase()==="summary")return a`${Et(e??"")}`;if(g.isRating(e)){let s=`urn:r\xF3:rating:${e}`;return a`<thing-link .triples=${this.triples} .urn="${s}"></thing-link>`}else{if(g.isUrn(e)&&g.is(e,y.UNESCO))return a`<unesco-link .urn="${e}"></unesco-link>`;if(g.isUrn(e))return a`<thing-link .triples=${this.triples} .urn="${e}"></thing-link>`}return e}isIgnoredKey(t){return console.log(t),new Set(["bird_binomial","wildlife","living_conditions"]).has(t)}renderSemanticData(t){return a`
       <h3>Photo Information</h3>
@@ -224,7 +224,42 @@ var dt=globalThis,Wt=dt.ShadowRoot&&(dt.ShadyCSS===void 0||dt.ShadyCSS.nativeSha
               <td>${this.renderSemanticValue(e,t[e])}</td>
           `)}
       <table>
-    `}render(){let t=this.image,e=this.exif,s=this.semantic,r=t.album_id;return a`
+    `}renderExif(t){return a`
+    <h3>Exif</h3>
+
+    <table class="metadata-table">
+      <tr>
+        <th class="exif-heading">Date-Time</th>
+        <td><time>
+        ${t.created_at}
+      </time></td>
+      </tr>
+      <tr>
+        <th class="exif-heading">Camera Model</th>
+        <td>${t.model}</td>
+        </tr>
+      <tr>
+        <th class="exif-heading">Dimensions</th>
+        <td>${t.width} x ${t.height}</td>
+      </tr>
+      <tr>
+        <th class="exif-heading">Focal Length</th>
+        ${this.renderFocalLength(t)}
+      </tr>
+      <tr>
+        <th class="exif-heading">Shutter Speed</th>
+        <td>1/${t.exposure_time?Math.round(1/t.exposure_time):"Unknown"}</td>
+      </tr>
+      <tr>
+        <th class="exif-heading">Aperture</th>
+        ${this.renderAperture(t)}
+        </tr>
+      <tr>
+        <th class="exif-heading">ISO</th>
+        <td>${t.iso}</td>
+      </tr>
+    </table>
+    `}render(){let t=this.image,e=this.semantic,s=t.album_id;return a`
     <section>
     <h1>Metadata</h1>
 
@@ -233,45 +268,12 @@ var dt=globalThis,Wt=dt.ShadowRoot&&(dt.ShadyCSS===void 0||dt.ShadyCSS.nativeSha
       <p>
         <a href="${t.full_image}">[full image]</a>
         <share-metadata-button format="image/webp" url=${t.image_url}></share-metadata-button>
-        <a href="#/album/${r}">[album]</a>
+        <a href="#/album/${s}">[album]</a>
       </p>
 
-      ${this.renderSemanticData(s)}
+      ${this.renderSemanticData(e)}
 
-    <h3>Exif</h3>
-
-    <table class="metadata-table">
-      <tr>
-        <th class="exif-heading">Date-Time</th>
-        <td><time>
-        ${e.created_at}
-      </time></td>
-      </tr>
-      <tr>
-        <th class="exif-heading">Camera Model</th>
-        <td>${e.model}</td>
-        </tr>
-      <tr>
-        <th class="exif-heading">Dimensions</th>
-        <td>${e.width} x ${e.height}</td>
-      </tr>
-      <tr>
-        <th class="exif-heading">Focal Length</th>
-        ${this.renderFocalLength()}
-      </tr>
-      <tr>
-        <th class="exif-heading">Shutter Speed</th>
-        <td>1/${e.exposure_time?Math.round(1/e.exposure_time):"Unknown"}</td>
-      </tr>
-      <tr>
-        <th class="exif-heading">Aperture</th>
-        ${this.renderAperture()}
-        </tr>
-      <tr>
-        <th class="exif-heading">ISO</th>
-        <td>${e.iso}</td>
-      </tr>
-    </table>
+    ${this.exif?this.renderExif(this.exif):a``}
 
     </section>
     `}};customElements.define("metadata-page",ue);var me=class extends u{static get properties(){return{}}connectedCallback(){super.connectedCallback(),w.setIndex()}render(){return a`
