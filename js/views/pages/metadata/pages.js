@@ -35,7 +35,7 @@ export class MetadataPage extends LitElem {
     JSONFeed.setIndex();
   }
 
-  renderAperture() {
+  renderAperture(exif) {
     if (exif.f_stop === "Unknown") {
       return html`<td>Unknown aperture</td>`;
     } else if (exif.f_stop === "0.0") {
