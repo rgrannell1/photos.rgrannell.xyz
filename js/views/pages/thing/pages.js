@@ -245,13 +245,12 @@ export class ThingPage extends LitElem {
 
     const tdb = new TribbleDB(this.triples);
     const urnTriples = tdb.search({source: asUrn(this.urn)});
-    const [facts2] = urnTriples.objects()
+    const facts2 = urnTriples.firstObject() ?? {};
 
     const wikipedia = facts2[KnownRelations.WIKIPEDIA];
     const birdwatchUrl = facts2[KnownRelations.BIRDWATCH_URL];
     const longitude = facts2[KnownRelations.LONGITUDE];
     const latitude = facts2[KnownRelations.LATITUDE];
-
     let location;
     if (longitude && latitude) {
       const googleMapsUrl =
