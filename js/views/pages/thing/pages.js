@@ -230,6 +230,7 @@ export class ThingPage extends LitElem {
     const urn = Things.parseUrn(this.urn);
     const type = urn.type;
 
+
     const metadata = Object.assign({
       "Classification": html`<a href="#/thing/${type}:*">${
         type.charAt(0).toUpperCase()
@@ -241,13 +242,15 @@ export class ThingPage extends LitElem {
         this.firstPhotographed(images, facts)
       }</span>`;
     }
+
     const tdb = new TribbleDB(this.triples);
     const urnTriples = tdb.search({source: asUrn(this.urn)});
+    const [facts2] = urnTriples.objects()
 
-    const wikipedia = urnTriples.search({relation: KnownRelations.WIKIPEDIA}).firstTarget();
-    const birdwatchUrl = urnTriples.search({relation: KnownRelations.BIRDWATCH_URL}).firstTarget();
-    const longitude = urnTriples.search({relation: KnownRelations.LONGITUDE}).firstTarget();
-    const latitude = urnTriples.search({relation: KnownRelations.LATITUDE}).firstTarget();
+    const wikipedia = facts2[KnownRelations.WIKIPEDIA];
+    const birdwatchUrl = facts2[KnownRelations.BIRDWATCH_URL];
+    const longitude = facts2[KnownRelations.LONGITUDE];
+    const latitude = facts2[KnownRelations.LATITUDE];
 
     let location;
     if (longitude && latitude) {
