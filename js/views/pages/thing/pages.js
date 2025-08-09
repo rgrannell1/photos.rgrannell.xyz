@@ -12,7 +12,7 @@ import { LitElem } from "../../../models/lit-element.js";
 import { BinomialTypes, KnownRelations } from "../../../constants.js";
 import { Binomials, Things, TriplesDB } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
-import { Dates } from "../../../services/dates.js";
+import { asUrn, TribbleDB } from "../../../library/tribble.js";
 
 export class ThingPage extends LitElem {
   static get properties() {
@@ -241,11 +241,13 @@ export class ThingPage extends LitElem {
         this.firstPhotographed(images, facts)
       }</span>`;
     }
+    const tdb = new TribbleDB(this.triples);
+    const urnTriples = tdb.search({source: asUrn(this.urn)});
 
-    const wikipedia = TriplesDB.findWikipedia(this.triples, this.urn);
-    const birdwatchUrl = TriplesDB.findBirdwatchUrl(this.triples, this.urn);
-    const longitude = TriplesDB.findLongitude(this.triples, this.urn);
-    const latitude = TriplesDB.findLatitude(this.triples, this.urn);
+    const wikipedia = urnTriples.search({relation: KnownRelations.WIKIPEDIA}).firstTarget();
+    const birdwatchUrl = urnTriples.search({relation: KnownRelations.BIRDWATCH_URL}).firstTarget();
+    const longitude = urnTriples.search({relation: KnownRelations.LONGITUDE}).firstTarget();
+    const latitude = urnTriples.search({relation: KnownRelations.LATITUDE}).firstTarget();
 
     let location;
     if (longitude && latitude) {

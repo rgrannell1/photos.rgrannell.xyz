@@ -92,7 +92,6 @@ export class MetadataPage extends LitElem {
 
   isIgnoredKey(key) {
     // TODO remove this when semantic data is cleaned up
-    console.log(key);
     return (new Set([
       "bird_binomial",
       "wildlife",
