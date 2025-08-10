@@ -251,10 +251,11 @@ export class ThingPage extends LitElem {
     const birdwatchUrl = facts2[KnownRelations.BIRDWATCH_URL];
     const longitude = facts2[KnownRelations.LONGITUDE];
     const latitude = facts2[KnownRelations.LATITUDE];
+
     let location;
     if (longitude && latitude) {
       const googleMapsUrl =
-        `https://www.google.com/maps?q=${triples.latitude},${triples.longitude}`;
+        `https://www.google.com/maps?q=${latitude},${longitude}`;
       location = html`
       <a href="${googleMapsUrl}" target="_blank" rel="noopener">[maps]</a>
       `;
