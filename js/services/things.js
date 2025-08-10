@@ -1,4 +1,5 @@
 import { KnownRelations } from "../constants.js";
+import { parseUrn, TribbleDB } from "../library/tribble.js";
 
 export class TriplesDB {
   static findSourceRelation(relation, triples, urn) {
@@ -75,24 +76,6 @@ export class Triples {
 
   static getTarget(triple) {
     return triple[2];
-  }
-
-  static filterRelation(triples, relation) {
-    return triples.filter((triple) => {
-      return triple[1] === relation;
-    });
-  }
-
-  static filterSourceId(triples, urn) {
-    if (!Things.isUrn(urn)) {
-      throw new Error(`Invalid URN: ${urn}`);
-    }
-
-    const parsedUrn = Things.parseUrn(urn);
-    return triples.filter((triple) => {
-      return Things.sameURN(triple[0], urn) ||
-        Things.hasId(triple[0], parsedUrn.id);
-    });
   }
 }
 
@@ -179,31 +162,20 @@ export class Binomials {
     return pretty.charAt(0).toUpperCase() + pretty.slice(1);
   }
 
-  static toCommonName(triples, binomial) {
-    const namedTriples = Triples.filterRelation(triples, KnownRelations.NAME);
-    const match = namedTriples.find((triple) =>
-      Things.hasId(triple[0], binomial)
-    );
-
-    if (match) {
-      return Triples.getTarget(match);
-    }
-
-    return binomial;
+  static toCommonName(tdb, binomial) {
+    return tdb.search({
+      source: { id: binomial },
+      relation: KnownRelations.NAME
+    }).firstTarget() ?? binomial;
   }
 
-  static birdwatchUrl(triples, urn) {
-    const matches = Triples.filterSourceId(
-      Triples.filterRelation(triples, KnownRelations.BIRDWATCH_URL),
-      urn,
-    );
+  static birdwatchUrl(tdb, urn) {
+    const {id} = parseUrn(urn)
 
-    if (matches.length === 0) {
-      return;
-    }
-
-    const [match] = matches;
-    return Triples.getTarget(match);
+    return tdb.search({
+      source: { id },
+      relation: KnownRelations.BIRDWATCH_URL
+    }).firstTarget();
   }
 }
 
@@ -211,4 +183,30 @@ export class Wikipedias {
   static toURL(triples, urn) {
     return TriplesDB.findWikipedia(urn, triples);
   }
+}
+
+let triblesUpdated = false;
+let tribbleDb  = new TribbleDB([]);
+
+// TODO make this do more
+function updateTriples(triple) {
+  if (Triples.getRelation(triple) !== KnownRelations.RATING) {
+    return triple;
+  }
+
+  return [
+    Triples.getSource(triple),
+    Triples.getRelation(triple),
+    `urn:ró:rating:${encodeURIComponent(Triples.getTarget(triple))}`,
+  ];
+}
+
+export function getTribbleDB(triples) {
+  if (!triblesUpdated) {
+    tribbleDb.add(triples);
+    tribbleDb = tribbleDb.map(updateTriples)
+    triblesUpdated = true
+  }
+
+  return tribbleDb;
 }

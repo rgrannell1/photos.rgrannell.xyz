@@ -23,6 +23,7 @@ import "./pages/metadata/pages.ts";
 import "./pages/about/pages.js";
 import "./pages/videos/pages.js";
 import "./pages/thing/pages.js";
+import { getTribbleDB } from "../services/things.js";
 
 const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
@@ -37,7 +38,7 @@ export const DEFAULT_DEPENDENCIES = [
   [videos, LoadMode.EAGER],
   [exif, LoadMode.EAGER],
   [stats, LoadMode.EAGER],
-  [triples, LoadMode.LAZY],
+  [triples, LoadMode.EAGER],
 ];
 /*
  * The largest network requests will be for images.json,
@@ -57,7 +58,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
-    [triples, LoadMode.LAZY],
+    [triples, LoadMode.EAGER],
   ],
   [Pages.ALBUMS]: [
     [albums, LoadMode.EAGER],
@@ -65,7 +66,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.EAGER],
-    [triples, LoadMode.LAZY],
+    [triples, LoadMode.EAGER],
   ],
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
@@ -73,7 +74,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
-    [triples, LoadMode.LAZY],
+    [triples, LoadMode.EAGER],
   ],
   [Pages.VIDEOS]: [
     [albums, LoadMode.LAZY],
@@ -81,7 +82,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
-    [triples, LoadMode.LAZY],
+    [triples, LoadMode.EAGER],
   ],
   [Pages.ALBUM]: [
     [albums, LoadMode.EAGER],
@@ -98,7 +99,7 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [exif, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
-    [triples, LoadMode.LAZY],
+    [triples, LoadMode.EAGER],
   ],
 
   [Pages.METADATA]: [
@@ -330,7 +331,7 @@ export class PhotoApp extends LitElem {
       <album-page
         .images=${images}
         .videos=${videos}
-        .triples=${triples._data}
+        .triples=${getTribbleDB(triples._data)}
         title=${album.album_name}
         id=${this.id}
         minDate=${album.min_date}
@@ -372,7 +373,7 @@ export class PhotoApp extends LitElem {
 
       return html`
       <metadata-page
-        .triples=${triples._data}
+        .triples=${getTribbleDB(triples._data)}
         .image=${photo}
         .semantic=${triples._data} .exif=${exifData} id=${this.id} class="${classes}"></metadata-page>
       `;
@@ -385,11 +386,13 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.THING) {
+      console.log(getTribbleDB(triples._data))
       return html`
       <thing-page
         .urn=${"urn:ró:" + this.id}
         .images=${images}
-        .albums=${albums}       .triples=${triples._data}
+        .albums=${albums}
+        .triples=${getTribbleDB(triples._data)}
         class="${classes}"></thing-page>
       `;
     }

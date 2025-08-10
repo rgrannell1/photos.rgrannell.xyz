@@ -17,7 +17,7 @@ import {
   TriplesDB,
 } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
-import { asUrn, TribbleDB } from "../../../library/tribble.js";
+import { asUrn } from "../../../library/tribble.js";
 
 export class ThingPage extends LitElem {
   static get properties() {
@@ -25,7 +25,7 @@ export class ThingPage extends LitElem {
       urn: { type: String },
       images: { type: Object },
       albums: { type: Object },
-      triples: { type: Array },
+      triples: { type: Object },
     };
   }
 
@@ -134,10 +134,15 @@ export class ThingPage extends LitElem {
   }
 
   renderTitle() {
-    const triplesName = TriplesDB.findName(this.triples, this.urn);
+    const { id, type } = Things.parseUrn(this.urn);
 
-    if (triplesName) {
-      return triplesName;
+    const definedName = this.triples.search({
+      source: { id, type },
+      relation: KnownRelations.NAME
+    }).firstTarget();
+
+    if (definedName) {
+      return definedName;
     }
 
     try {
@@ -173,19 +178,8 @@ export class ThingPage extends LitElem {
 
     // TODO reprecate semantic artifact, use triples alone
     // TODO lift this to top level
-    const tdb = new TribbleDB(this.triples)
-      // transform ratings to URNs
-      .map((triple) => {
-        if (Triples.getRelation(triple) !== KnownRelations.RATING) {
-          return triple;
-        }
+    const tdb = this.triples;
 
-        return [
-          Triples.getSource(triple),
-          Triples.getRelation(triple),
-          `urn:ró:rating:${encodeURIComponent(Triples.getTarget(triple))}`,
-        ];
-      });
     const images = this.images.images();
     const photos = this.renderSubjectPhotos(images, tdb);
     const albums = this.renderSubjectAlbums(images, tdb);

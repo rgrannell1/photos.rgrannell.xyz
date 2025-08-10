@@ -177,7 +177,7 @@ export class MetadataPage extends LitElem {
     const photo = this.image;
     const albumId = photo.album_id;
 
-    const tdb = new TribbleDB(this.triples);
+    const tdb = this.triples;
     const imageTriples = tdb.search({
       source: {
         id: photo.id,

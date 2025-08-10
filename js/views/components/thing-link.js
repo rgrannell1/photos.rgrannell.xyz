@@ -1,7 +1,7 @@
 /*
  * Construct a link for a urn:ró arn
  */
-import { KnownThings } from "../../constants.js";
+import { KnownRelations, KnownThings } from "../../constants.js";
 
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.js";
@@ -50,8 +50,10 @@ export class ThingLink extends LitElem {
     if (BinomialTypes.has(type)) {
       return html`<span>${Binomials.toCommonName(this.triples, id)}</span>`;
     }
-    // TODO replace with the DB
-    const name = TriplesDB.findName(this.triples, this.urn);
+    const name = this.triples.search({
+      source: Things.parseUrn(this.urn),
+      relation: KnownRelations.NAME
+    }).firstTarget();
 
     if (name) {
       return html`<span>${name}</span>`;

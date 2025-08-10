@@ -18,7 +18,6 @@ import { Things } from "../../../services/things.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { KnownRelations, KnownThings } from "../../../constants.js";
 import { CountriesService } from "../../../services/countries.js";
-import { TribbleDB } from "../../../library/tribble.js";
 
 export class AlbumPage extends LitElem {
   static get properties() {
@@ -41,19 +40,21 @@ export class AlbumPage extends LitElem {
     JSONFeed.setIndex();
   }
 
-  albumPhotos(tdb: typeof TribbleDB) {
+  albumPhotos(tdb) {
     return this.images.images().filter((image: Record<string, any>) => {
       return image.album_id === this.id;
     }).map((image: Record<string, any>) => {
       const facts = tdb.search({
         id: image.id,
-      }).firstObject(true);
+        type: 'unknown'
+      })//.firstObject(true);
+      // TODO so, so, so slow
 
-      return { ...image, relations: facts ?? {} };
+      return { ...image, relations: {} };
     });
   }
 
-  albumVideos(tdb: typeof TribbleDB) {
+  albumVideos(tdb) {
     return this.videos.videos().filter((video) => {
       return video.album_id === this.id;
     });
@@ -65,7 +66,7 @@ export class AlbumPage extends LitElem {
       : `${this.imageCount} photos`;
   }
 
-  thingsLinks(tdb: typeof TribbleDB) {
+  thingsLinks(tdb) {
     const groups = {};
     const albumPhotos = this.albumPhotos(tdb);
 
@@ -131,7 +132,7 @@ export class AlbumPage extends LitElem {
   }
 
   render() {
-    const tdb = new TribbleDB(this.triples);
+    const tdb = this.triples;
 
     const mediaQuery = window.matchMedia("(max-width: 500px)");
     const range = Dates.dateRange(
