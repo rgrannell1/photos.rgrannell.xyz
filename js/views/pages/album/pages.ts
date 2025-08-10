@@ -16,8 +16,9 @@ import { Photos } from "../../../services/photos.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { Things } from "../../../services/things.js";
 import { LitElem } from "../../../models/lit-element.js";
-import { KnownThings } from "../../../constants.js";
+import { KnownRelations, KnownThings } from "../../../constants.js";
 import { CountriesService } from "../../../services/countries.js";
+import { TribbleDB } from "../../../library/tribble.js";
 
 export class AlbumPage extends LitElem {
   static get properties() {
@@ -30,7 +31,6 @@ export class AlbumPage extends LitElem {
       description: { type: String },
       images: { type: Object },
       videos: { type: Object },
-      semantic: { type: Object },
       triples: { type: Array },
       countries: { type: String },
     };
@@ -38,39 +38,22 @@ export class AlbumPage extends LitElem {
 
   connectedCallback() {
     super.connectedCallback();
-
-    const photo = this.albumPhotos()[0];
-    if (!photo) {
-      console.error(`empty album! ${this.id}`);
-    }
-
     JSONFeed.setIndex();
   }
 
-  albumPhotos() {
-    const semantic = this.semantic.semantic();
-
-    return this.images.images().filter((image) => {
+  albumPhotos(tdb: typeof TribbleDB) {
+    return this.images.images().filter((image: Record<string, any>) => {
       return image.album_id === this.id;
-    }).map((image) => {
-      const relations = {};
+    }).map((image: Record<string, any>) => {
+      const facts = tdb.search({
+        id: image.id,
+      }).firstObject(true);
 
-      const relevantFacts = semantic.filter((fact) => {
-        return fact[0] === image.id;
-      });
-
-      for (const [_, type, value] of relevantFacts) {
-        if (!relations[type]) {
-          relations[type] = [];
-        }
-        relations[type].push(value);
-      }
-
-      return { ...image, relations };
+      return { ...image, relations: facts ?? {} };
     });
   }
 
-  albumVideos() {
+  albumVideos(tdb: typeof TribbleDB) {
     return this.videos.videos().filter((video) => {
       return video.album_id === this.id;
     });
@@ -82,28 +65,45 @@ export class AlbumPage extends LitElem {
       : `${this.imageCount} photos`;
   }
 
-  thingsLinks() {
+  thingsLinks(tdb: typeof TribbleDB) {
     const groups = {};
-    const albumPhotos = this.albumPhotos();
+    const albumPhotos = this.albumPhotos(tdb);
 
     for (const type of [KnownThings.UNESCO]) {
-      groups[type] = Array.from(new Set(
-        albumPhotos.flatMap((photo) => {
-          return photo.relations.location?.filter((location) => {
-            return Things.is(location, type);
-          });
-        }).filter(val => val),
-      ));
+      groups[type] = Array.from(
+        new Set(
+          albumPhotos.flatMap((photo: Record<string, string | string[]>) => {
+            return photo.relations[KnownRelations.LOCATION]?.filter(
+              (location: string) => {
+                return Things.is(location, type);
+              },
+            );
+          }).filter((val) => val),
+        ),
+      );
     }
 
-    for (const type of [KnownThings.BIRD, KnownThings.MAMMAL, KnownThings.REPTILE, KnownThings.FISH, KnownThings.AMPHIBIAN, KnownThings.INSECT]) {
-      groups[type] = Array.from(new Set(
-        albumPhotos.flatMap((photo) => {
-          return photo.relations.subject?.filter((subject) => {
-            return Things.is(subject, type);
-          });
-        }).filter(val => val),
-      ));
+    for (
+      const type of [
+        KnownThings.BIRD,
+        KnownThings.MAMMAL,
+        KnownThings.REPTILE,
+        KnownThings.FISH,
+        KnownThings.AMPHIBIAN,
+        KnownThings.INSECT,
+      ]
+    ) {
+      groups[type] = Array.from(
+        new Set(
+          albumPhotos.flatMap((photo) => {
+            return photo.relations[KnownRelations.SUBJECT]?.filter(
+              (subject: string) => {
+                return Things.is(subject, type);
+              },
+            );
+          }).filter((val) => val),
+        ),
+      );
     }
 
     let links = [];
@@ -112,7 +112,16 @@ export class AlbumPage extends LitElem {
       return html`<unesco-link urn="${urn}"></unesco-link>`;
     }));
 
-    for (const type of [KnownThings.BIRD, KnownThings.MAMMAL, KnownThings.REPTILE, KnownThings.FISH, KnownThings.AMPHIBIAN, KnownThings.INSECT]) {
+    for (
+      const type of [
+        KnownThings.BIRD,
+        KnownThings.MAMMAL,
+        KnownThings.REPTILE,
+        KnownThings.FISH,
+        KnownThings.AMPHIBIAN,
+        KnownThings.INSECT,
+      ]
+    ) {
       links = links.concat(groups[type].map((urn) => {
         return html`<thing-link .urn="${urn}" .triples="${this.triples}"></thing-link>`;
       }));
@@ -122,6 +131,8 @@ export class AlbumPage extends LitElem {
   }
 
   render() {
+    const tdb = new TribbleDB(this.triples);
+
     const mediaQuery = window.matchMedia("(max-width: 500px)");
     const range = Dates.dateRange(
       this.minDate,
@@ -129,7 +140,7 @@ export class AlbumPage extends LitElem {
       mediaQuery.matches,
     );
 
-    const albumPhotos = this.albumPhotos();
+    const albumPhotos = this.albumPhotos(tdb);
     const photos = albumPhotos.map((photo, idx) => {
       return html`
       <app-photo
@@ -172,7 +183,7 @@ export class AlbumPage extends LitElem {
         <a href="#/albums">[albums]</a>
 
         <ul class="unesco-links">
-          ${this.thingsLinks().map((link) => html`<li>${link}</li>`)}
+          ${this.thingsLinks(tdb).map((link) => html`<li>${link}</li>`)}
         </ul>
 
       </section>

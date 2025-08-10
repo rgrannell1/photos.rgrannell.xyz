@@ -14,8 +14,9 @@ import { JSONFeed } from "../../../services/json-feed.js";
 import "./components/share-button.js";
 import "../../components/thing-link.js";
 import "../../components/tag-link.js";
-import { Things } from "../../../services/things.js";
+import { Things, Triples } from "../../../services/things.js";
 import { KnownThings } from "../../../constants.js";
+import { TribbleDB } from "../../../library/tribble.js";
 
 export class MetadataPage extends LitElem {
   static get properties() {
@@ -99,18 +100,31 @@ export class MetadataPage extends LitElem {
     ])).has(key);
   }
 
-  renderSemanticData(semantic) {
+  renderSemanticData(triples: [string, string, string][]) {
     return html`
       <h3>Photo Information</h3>
       <table class="metadata-table">
         ${
-      Object.keys(semantic).sort()
-        .filter((key) => !this.isIgnoredKey(key))
-        .map((key) => {
+      triples.sort((triple0, triple1) => {
+        return Triples.getRelation(triple0).localeCompare(
+          Triples.getRelation(triple1),
+        );
+      })
+        .filter((triple) => {
+          return !this.isIgnoredKey(Triples.getRelation(triple));
+        })
+        .map((triple) => {
           return html`
-            <tr>
-              <th class="exif-heading">${this.renderSemanticKey(key)}</th>
-              <td>${this.renderSemanticValue(key, semantic[key])}</td>
+          <tr>
+            <th class="exif-heading">${
+            this.renderSemanticKey(Triples.getRelation(triple))
+          }</th>
+              <td>${
+            this.renderSemanticValue(
+              Triples.getRelation(triple),
+              Triples.getTarget(triple),
+            )
+          }</td>
           `;
         })
     }
@@ -161,8 +175,14 @@ export class MetadataPage extends LitElem {
 
   render() {
     const photo = this.image;
-    const semantic = this.semantic;
     const albumId = photo.album_id;
+
+    const tdb = new TribbleDB(this.triples);
+    const imageTriples = tdb.search({
+      source: {
+        id: photo.id,
+      },
+    }).triples();
 
     return html`
     <section>
@@ -176,7 +196,7 @@ export class MetadataPage extends LitElem {
         <a href="#/album/${albumId}">[album]</a>
       </p>
 
-      ${this.renderSemanticData(semantic)}
+      ${this.renderSemanticData(imageTriples)}
 
     ${this.exif ? this.renderExif(this.exif) : html``}
 

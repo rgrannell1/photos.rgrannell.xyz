@@ -4,7 +4,6 @@ import {
   AlbumsArtifact,
   ExifArtifact,
   ImagesArtifact,
-  SemanticArtifact,
   StatsArtifact,
   TriplesArtifact,
   VideosArtifact,
@@ -19,8 +18,8 @@ import "./components/header.js";
 
 import "./pages/photos/pages.js";
 import "./pages/albums/pages.js";
-import "./pages/album/pages.js";
-import "./pages/metadata/pages.js";
+import "./pages/album/pages.ts";
+import "./pages/metadata/pages.ts";
 import "./pages/about/pages.js";
 import "./pages/videos/pages.js";
 import "./pages/thing/pages.js";
@@ -29,7 +28,6 @@ const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
 const videos = new VideosArtifact();
 const exif = new ExifArtifact();
-const semantic = new SemanticArtifact();
 const stats = new StatsArtifact();
 const triples = new TriplesArtifact();
 
@@ -38,7 +36,6 @@ export const DEFAULT_DEPENDENCIES = [
   [images, LoadMode.EAGER],
   [videos, LoadMode.EAGER],
   [exif, LoadMode.EAGER],
-  [semantic, LoadMode.EAGER],
   [stats, LoadMode.EAGER],
   [triples, LoadMode.LAZY],
 ];
@@ -60,7 +57,6 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
-    [semantic, LoadMode.EAGER],
     [triples, LoadMode.LAZY],
   ],
   [Pages.ALBUMS]: [
@@ -69,7 +65,6 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.EAGER],
-    [semantic, LoadMode.EAGER],
     [triples, LoadMode.LAZY],
   ],
   [Pages.PHOTOS]: [
@@ -78,7 +73,6 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
-    [semantic, LoadMode.EAGER],
     [triples, LoadMode.LAZY],
   ],
   [Pages.VIDEOS]: [
@@ -87,7 +81,6 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
-    [semantic, LoadMode.EAGER],
     [triples, LoadMode.LAZY],
   ],
   [Pages.ALBUM]: [
@@ -96,7 +89,6 @@ export const PAGE_DEPENDECIES = {
     [videos, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
-    [semantic, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   // TODO DOES THIS EXIST
@@ -105,7 +97,6 @@ export const PAGE_DEPENDECIES = {
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
     [exif, LoadMode.EAGER],
-    [semantic, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
     [triples, LoadMode.LAZY],
   ],
@@ -115,9 +106,7 @@ export const PAGE_DEPENDECIES = {
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
     [exif, LoadMode.EAGER],
-    [semantic, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
-    [semantic, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   [Pages.THING]: [
@@ -125,7 +114,6 @@ export const PAGE_DEPENDECIES = {
     [images, LoadMode.EAGER],
     [videos, LoadMode.LAZY],
     [exif, LoadMode.LAZY],
-    [semantic, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
@@ -342,7 +330,6 @@ export class PhotoApp extends LitElem {
       <album-page
         .images=${images}
         .videos=${videos}
-        .semantic=${semantic}
         .triples=${triples._data}
         title=${album.album_name}
         id=${this.id}
@@ -364,7 +351,9 @@ export class PhotoApp extends LitElem {
         return exif.id === this.id;
       });
 
-      const semanticData = semantic.semantic().filter((semantic: any) => {
+      // TODO this sucks
+
+      const semanticData = triples._data.filter((semantic: any) => {
         return semantic[0] === this.id;
       });
 
@@ -385,7 +374,7 @@ export class PhotoApp extends LitElem {
       <metadata-page
         .triples=${triples._data}
         .image=${photo}
-        .semantic=${relations} .exif=${exifData} id=${this.id} class="${classes}"></metadata-page>
+        .semantic=${triples._data} .exif=${exifData} id=${this.id} class="${classes}"></metadata-page>
       `;
     }
 
@@ -400,9 +389,7 @@ export class PhotoApp extends LitElem {
       <thing-page
         .urn=${"urn:ró:" + this.id}
         .images=${images}
-        .albums=${albums}
-        .semantic=${semantic}
-        .triples=${triples._data}
+        .albums=${albums}       .triples=${triples._data}
         class="${classes}"></thing-page>
       `;
     }

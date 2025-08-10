@@ -1,2 +1,355 @@
-function S(d,e="r\xF3"){if(!d.startsWith(`urn:${e}:`))throw new Error(`Invalid URN for namespace ${e}: ${d}`);let t=d.split(":")[2],[r,i]=d.split("?"),n=r.split(":")[3],g=i?Object.fromEntries(new URLSearchParams(i)):{};return{type:t,id:n,qs:g}}function I(d,e="r\xF3"){try{return S(d,e)}catch{return{type:"unknown",id:d,qs:{}}}}var o=class{static source(e){return e[0]}static relation(e){return e[1]}static target(e){return e[2]}};var c=class{#t;#e;#r;constructor(){this.#t=0,this.#e=new Map,this.#r=new Map}map(){return this.#e}reverseMap(){return this.#r}add(e){return this.#e.has(e)?this.#e.get(e):(this.#e.set(e,this.#t),this.#r.set(this.#t,e),this.#t++,this.#t-1)}getIndex(e){return this.#e.get(e)}getValue(e){return this.#r.get(e)}has(e){return this.#e.has(e)}},l=class{static intersection(e){if(e.length===0)return new Set;e.sort((r,i)=>r.size-i.size);let t=new Set(e[0]);for(let r=1;r<e.length;r++){let i=e[r];for(let n of t)i.has(n)||t.delete(n);if(t.size===0)break}return t}};var f=class{indexedTriples;stringIndex;sourceType;sourceId;sourceQs;relations;targetType;targetId;targetQs;constructor(e){this.indexedTriples=[],this.stringIndex=new c,this.sourceType=new Map,this.sourceId=new Map,this.sourceQs=new Map,this.relations=new Map,this.targetType=new Map,this.targetId=new Map,this.targetQs=new Map,this.indexTriples(e)}indexTriples(e){for(let t=0;t<e.length;t++)this.indexTriple(e[t],t)}indexTriple(e,t){let r=I(o.source(e)),i=o.relation(e),n=I(o.target(e)),g=this.stringIndex.add(r.type),u=this.stringIndex.add(r.id),s=this.stringIndex.add(i),p=this.stringIndex.add(n.type),a=this.stringIndex.add(n.id);this.indexedTriples.push([this.stringIndex.add(o.source(e)),s,this.stringIndex.add(o.target(e))]),this.sourceType.has(g)||this.sourceType.set(g,new Set),this.sourceType.get(g).add(t),this.sourceId.has(u)||this.sourceId.set(u,new Set),this.sourceId.get(u).add(t);for(let[x,T]of Object.entries(r.qs)){let h=this.stringIndex.add(`${x}=${T}`);this.sourceQs.has(h)||this.sourceQs.set(h,new Set),this.sourceQs.get(h).add(t)}this.relations.has(s)||this.relations.set(s,new Set),this.relations.get(s).add(t),this.targetType.has(p)||this.targetType.set(p,new Set),this.targetType.get(p).add(t),this.targetId.has(a)||this.targetId.set(a,new Set),this.targetId.get(a).add(t);for(let[x,T]of Object.entries(n.qs)){let h=this.stringIndex.add(`${x}=${T}`);this.targetQs.has(h)||this.targetQs.set(h,new Set),this.targetQs.get(h).add(t)}}add(e){let t=this.indexedTriples.length;for(let r=0;r<e.length;r++)this.indexTriple(e[r],t+r)}get length(){return this.indexedTriples.length}triples(){return this.indexedTriples.map(([e,t,r])=>[this.stringIndex.getValue(e),this.stringIndex.getValue(t),this.stringIndex.getValue(r)])}getTriple(e){if(e<0||e>=this.indexedTriples.length)return;let[t,r,i]=this.indexedTriples[e];return[this.stringIndex.getValue(t),this.stringIndex.getValue(r),this.stringIndex.getValue(i)]}getSourceTypeSet(e){let t=this.stringIndex.getIndex(e);return t!==void 0?this.sourceType.get(t):void 0}getSourceIdSet(e){let t=this.stringIndex.getIndex(e);return t!==void 0?this.sourceId.get(t):void 0}getSourceQsSet(e,t){let r=this.stringIndex.getIndex(`${e}=${t}`);return r!==void 0?this.sourceQs.get(r):void 0}getRelationSet(e){let t=this.stringIndex.getIndex(e);return t!==void 0?this.relations.get(t):void 0}getTargetTypeSet(e){let t=this.stringIndex.getIndex(e);return t!==void 0?this.targetType.get(t):void 0}getTargetIdSet(e){let t=this.stringIndex.getIndex(e);return t!==void 0?this.targetId.get(t):void 0}getTargetQsSet(e,t){let r=this.stringIndex.getIndex(`${e}=${t}`);return r!==void 0?this.targetQs.get(r):void 0}};var m=class d{index;triplesCount;tripleRows;constructor(e){this.index=new f(e),this.triplesCount=this.index.length,this.tripleRows=new Set;for(let t=0;t<this.triplesCount;t++)this.tripleRows.add(t)}static of(e){return new d(e)}static from(e){let t=[];for(let r of e){let{id:i,...n}=r;if(typeof i!="string")throw new Error("Each TripleObject must have a string id.");for(let[g,u]of Object.entries(n))if(Array.isArray(u))for(let s of u)t.push([i,g,s]);else t.push([i,g,u])}return new d(t)}add(e){let t=this.index.length;this.index.add(e),this.triplesCount=this.index.length;for(let r=t;r<this.triplesCount;r++)this.tripleRows.add(r)}map(e){return new d(this.index.triples().map(e))}flatMap(e){let t=this.index.triples().flatMap(e);return new d(t)}firstTriple(){return this.index.length>0?this.index.getTriple(0):void 0}firstSource(){let e=this.firstTriple();return e?o.source(e):void 0}firstRelation(){let e=this.firstTriple();return e?o.relation(e):void 0}firstTarget(){let e=this.firstTriple();return e?o.target(e):void 0}firstObject(){return this.objects()[0]}triples(){return this.index.triples()}sources(){return new Set(this.index.triples().map(o.source))}relations(){return new Set(this.index.triples().map(o.relation))}targets(){return new Set(this.index.triples().map(o.target))}objects(){let e={};for(let[r,i,n]of this.index.triples())e[r]||(e[r]={}),e[r][i]?Array.isArray(e[r][i])?e[r][i].push(n):e[r][i]=[e[r][i],n]:e[r][i]=n;let t=[];for(let[r,i]of Object.entries(e))i.id=r,t.push(i);return t}search(e){let t=[this.tripleRows],{source:r,relation:i,target:n}=e;if(r){if(r.type){let s=this.index.getSourceTypeSet(r.type);if(s)t.push(s);else return new d([])}if(r.id){let s=this.index.getSourceIdSet(r.id);if(s)t.push(s);else return new d([])}if(r.qs)for(let[s,p]of Object.entries(r.qs)){let a=this.index.getSourceQsSet(s,p);if(a)t.push(a);else return new d([])}}if(n){if(n.type){let s=this.index.getTargetTypeSet(n.type);if(s)t.push(s);else return new d([])}if(n.id){let s=this.index.getTargetIdSet(n.id);if(s)t.push(s);else return new d([])}if(n.qs)for(let[s,p]of Object.entries(n.qs)){let a=this.index.getTargetQsSet(s,p);if(a)t.push(a);else return new d([])}}if(i){let s=this.index.getRelationSet(i);if(s)t.push(s);else return new d([])}let g=l.intersection(t),u=[];for(let s of g){let p=this.index.getTriple(s);if(!r?.predicate&&!n?.predicate){u.push(p);continue}let a=!0;r?.predicate&&(a=a&&r.predicate(o.source(p))),n?.predicate&&(a=a&&n.predicate(o.target(p))),a&&u.push(p)}return new d(u)}};export{m as TribbleDB,I as asUrn,S as parseUrn};
+function w(d, e = "r\xF3") {
+  if (!d.startsWith(`urn:${e}:`)) {
+    throw new Error(`Invalid URN for namespace ${e}: ${d}`);
+  }
+  let t = d.split(":")[2],
+    [r, s] = d.split("?"),
+    i = r.split(":")[3],
+    o = s ? Object.fromEntries(new URLSearchParams(s)) : {};
+  return { type: t, id: i, qs: o };
+}
+function b(d, e = "r\xF3") {
+  try {
+    return w(d, e);
+  } catch {
+    return { type: "unknown", id: d, qs: {} };
+  }
+}
+var a = class {
+  static source(e) {
+    return e[0];
+  }
+  static relation(e) {
+    return e[1];
+  }
+  static target(e) {
+    return e[2];
+  }
+};
+var g = class {
+    #t;
+    #e;
+    #r;
+    constructor() {
+      this.#t = 0, this.#e = new Map(), this.#r = new Map();
+    }
+    map() {
+      return this.#e;
+    }
+    reverseMap() {
+      return this.#r;
+    }
+    add(e) {
+      return this.#e.has(e)
+        ? this.#e.get(e)
+        : (this.#e.set(e, this.#t),
+          this.#r.set(this.#t, e),
+          this.#t++,
+          this.#t - 1);
+    }
+    getIndex(e) {
+      return this.#e.get(e);
+    }
+    getValue(e) {
+      return this.#r.get(e);
+    }
+    has(e) {
+      return this.#e.has(e);
+    }
+  },
+  l = class {
+    static intersection(e, t) {
+      if (t.length === 0) return new Set();
+      t.sort((s, i) => s.size - i.size);
+      let r = new Set(t[0]);
+      for (let s = 1; s < t.length; s++) {
+        let i = t[s];
+        for (let o of r) e.setCheck(), i.has(o) || r.delete(o);
+        if (r.size === 0) break;
+      }
+      return r;
+    }
+  };
+var f = class {
+    mapReadCount;
+    constructor() {
+      this.mapReadCount = 0;
+    }
+    mapRead() {
+      this.mapReadCount++;
+    }
+  },
+  m = class {
+    setCheckCount;
+    constructor() {
+      this.setCheckCount = 0;
+    }
+    setCheck() {
+      this.setCheckCount++;
+    }
+  };
+var x = class {
+  indexedTriples;
+  stringIndex;
+  sourceType;
+  sourceId;
+  sourceQs;
+  relations;
+  targetType;
+  targetId;
+  targetQs;
+  metrics;
+  constructor(e) {
+    this.indexedTriples = [],
+      this.stringIndex = new g(),
+      this.sourceType = new Map(),
+      this.sourceId = new Map(),
+      this.sourceQs = new Map(),
+      this.relations = new Map(),
+      this.targetType = new Map(),
+      this.targetId = new Map(),
+      this.targetQs = new Map(),
+      this.indexTriples(e),
+      this.metrics = new f();
+  }
+  indexTriples(e) {
+    for (let t = 0; t < e.length; t++) this.indexTriple(e[t], t);
+  }
+  indexTriple(e, t) {
+    let r = b(a.source(e)),
+      s = a.relation(e),
+      i = b(a.target(e)),
+      o = this.stringIndex.add(r.type),
+      c = this.stringIndex.add(r.id),
+      n = this.stringIndex.add(s),
+      p = this.stringIndex.add(i.type),
+      u = this.stringIndex.add(i.id);
+    this.indexedTriples.push([
+      this.stringIndex.add(a.source(e)),
+      n,
+      this.stringIndex.add(a.target(e)),
+    ]),
+      this.sourceType.has(o) || this.sourceType.set(o, new Set()),
+      this.sourceType.get(o).add(t),
+      this.sourceId.has(c) || this.sourceId.set(c, new Set()),
+      this.sourceId.get(c).add(t);
+    for (let [T, I] of Object.entries(r.qs)) {
+      let h = this.stringIndex.add(`${T}=${I}`);
+      this.sourceQs.has(h) || this.sourceQs.set(h, new Set()),
+        this.sourceQs.get(h).add(t);
+    }
+    this.relations.has(n) || this.relations.set(n, new Set()),
+      this.relations.get(n).add(t),
+      this.targetType.has(p) || this.targetType.set(p, new Set()),
+      this.targetType.get(p).add(t),
+      this.targetId.has(u) || this.targetId.set(u, new Set()),
+      this.targetId.get(u).add(t);
+    for (let [T, I] of Object.entries(i.qs)) {
+      let h = this.stringIndex.add(`${T}=${I}`);
+      this.targetQs.has(h) || this.targetQs.set(h, new Set()),
+        this.targetQs.get(h).add(t);
+    }
+  }
+  add(e) {
+    let t = this.indexedTriples.length;
+    for (let r = 0; r < e.length; r++) this.indexTriple(e[r], t + r);
+  }
+  get length() {
+    return this.indexedTriples.length;
+  }
+  triples() {
+    return this.indexedTriples.map((
+      [e, t, r],
+    ) => [
+      this.stringIndex.getValue(e),
+      this.stringIndex.getValue(t),
+      this.stringIndex.getValue(r),
+    ]);
+  }
+  getTriple(e) {
+    if (e < 0 || e >= this.indexedTriples.length) return;
+    let [t, r, s] = this.indexedTriples[e];
+    return [
+      this.stringIndex.getValue(t),
+      this.stringIndex.getValue(r),
+      this.stringIndex.getValue(s),
+    ];
+  }
+  getSourceTypeSet(e) {
+    let t = this.stringIndex.getIndex(e);
+    if (t !== void 0) return this.metrics.mapRead(), this.sourceType.get(t);
+  }
+  getSourceIdSet(e) {
+    let t = this.stringIndex.getIndex(e);
+    if (t !== void 0) return this.metrics.mapRead(), this.sourceId.get(t);
+  }
+  getSourceQsSet(e, t) {
+    let r = this.stringIndex.getIndex(`${e}=${t}`);
+    if (r !== void 0) return this.metrics.mapRead(), this.sourceQs.get(r);
+  }
+  getRelationSet(e) {
+    let t = this.stringIndex.getIndex(e);
+    if (t !== void 0) return this.metrics.mapRead(), this.relations.get(t);
+  }
+  getTargetTypeSet(e) {
+    let t = this.stringIndex.getIndex(e);
+    if (t !== void 0) return this.metrics.mapRead(), this.targetType.get(t);
+  }
+  getTargetIdSet(e) {
+    let t = this.stringIndex.getIndex(e);
+    if (t !== void 0) return this.metrics.mapRead(), this.targetId.get(t);
+  }
+  getTargetQsSet(e, t) {
+    let r = this.stringIndex.getIndex(`${e}=${t}`);
+    if (r !== void 0) return this.metrics.mapRead(), this.targetQs.get(r);
+  }
+};
+var S = class d {
+  index;
+  triplesCount;
+  tripleRows;
+  metrics;
+  constructor(e) {
+    this.index = new x(e),
+      this.triplesCount = this.index.length,
+      this.tripleRows = new Set(),
+      this.metrics = new m();
+    for (let t = 0; t < this.triplesCount; t++) this.tripleRows.add(t);
+  }
+  static of(e) {
+    return new d(e);
+  }
+  static from(e) {
+    let t = [];
+    for (let r of e) {
+      let { id: s, ...i } = r;
+      if (typeof s != "string") {
+        throw new Error("Each TripleObject must have a string id.");
+      }
+      for (let [o, c] of Object.entries(i)) {
+        if (Array.isArray(c)) {
+          for (let n of c) t.push([s, o, n]);
+        } else t.push([s, o, c]);
+      }
+    }
+    return new d(t);
+  }
+  add(e) {
+    let t = this.index.length;
+    this.index.add(e), this.triplesCount = this.index.length;
+    for (let r = t; r < this.triplesCount; r++) this.tripleRows.add(r);
+  }
+  map(e) {
+    return new d(this.index.triples().map(e));
+  }
+  flatMap(e) {
+    let t = this.index.triples().flatMap(e);
+    return new d(t);
+  }
+  firstTriple() {
+    return this.index.length > 0 ? this.index.getTriple(0) : void 0;
+  }
+  firstSource() {
+    let e = this.firstTriple();
+    return e ? a.source(e) : void 0;
+  }
+  firstRelation() {
+    let e = this.firstTriple();
+    return e ? a.relation(e) : void 0;
+  }
+  firstTarget() {
+    let e = this.firstTriple();
+    return e ? a.target(e) : void 0;
+  }
+  firstObject(e = !1) {
+    return this.objects(e)[0];
+  }
+  triples() {
+    return this.index.triples();
+  }
+  sources() {
+    return new Set(this.index.triples().map(a.source));
+  }
+  relations() {
+    return new Set(this.index.triples().map(a.relation));
+  }
+  targets() {
+    return new Set(this.index.triples().map(a.target));
+  }
+  objects(e = !1) {
+    let t = {};
+    for (let [s, i, o] of this.index.triples()) {
+      t[s] || (t[s] = {}),
+        t[s][i]
+          ? Array.isArray(t[s][i]) ? t[s][i].push(o) : t[s][i] = [t[s][i], o]
+          : t[s][i] = e ? [o] : o;
+    }
+    let r = [];
+    for (let [s, i] of Object.entries(t)) i.id = s, r.push(i);
+    return r;
+  }
+  search(e) {
+    let t = [this.tripleRows], { source: r, relation: s, target: i } = e;
+    if (r) {
+      if (r.type) {
+        let n = this.index.getSourceTypeSet(r.type);
+        if (n) t.push(n);
+        else return new d([]);
+      }
+      if (r.id) {
+        let n = this.index.getSourceIdSet(r.id);
+        if (n) t.push(n);
+        else return new d([]);
+      }
+      if (r.qs) {
+        for (let [n, p] of Object.entries(r.qs)) {
+          let u = this.index.getSourceQsSet(n, p);
+          if (u) t.push(u);
+          else return new d([]);
+        }
+      }
+    }
+    if (i) {
+      if (i.type) {
+        let n = this.index.getTargetTypeSet(i.type);
+        if (n) t.push(n);
+        else return new d([]);
+      }
+      if (i.id) {
+        let n = this.index.getTargetIdSet(i.id);
+        if (n) t.push(n);
+        else return new d([]);
+      }
+      if (i.qs) {
+        for (let [n, p] of Object.entries(i.qs)) {
+          let u = this.index.getTargetQsSet(n, p);
+          if (u) t.push(u);
+          else return new d([]);
+        }
+      }
+    }
+    if (s) {
+      let n = this.index.getRelationSet(s);
+      if (n) t.push(n);
+      else return new d([]);
+    }
+    let o = l.intersection(this.metrics, t), c = [];
+    for (let n of o) {
+      let p = this.index.getTriple(n);
+      if (!r?.predicate && !i?.predicate) {
+        c.push(p);
+        continue;
+      }
+      let u = !0;
+      r?.predicate && (u = u && r.predicate(a.source(p))),
+        i?.predicate && (u = u && i.predicate(a.target(p))),
+        u && c.push(p);
+    }
+    return new d(c);
+  }
+  getMetrics() {
+    return { index: this.index.metrics, db: this.metrics };
+  }
+};
+export { b as asUrn, S as TribbleDB, w as parseUrn };
 //# sourceMappingURL=mod.ts.map

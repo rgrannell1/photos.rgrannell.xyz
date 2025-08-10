@@ -3,7 +3,6 @@ import {
   EXIF_SYMBOL,
   IMAGES_SYMBOL,
   SEMANTIC_SYMBOL,
-  STATS_SYMBOL,
   TRIPLES_SYMBOL,
   VIDEOS_SYMBOL,
 } from "../constants.js";
@@ -260,35 +259,6 @@ function isChild(metadata, parent, child) {
   return false;
 }
 
-export class SemanticArtifact {
-  _data;
-
-  constructor(url = `/manifest/semantic.${CONFIG.publication_id}.json`) {
-    this.url = url;
-  }
-
-  async init() {
-    if (window[SEMANTIC_SYMBOL]) {
-      this._data = window[SEMANTIC_SYMBOL];
-    }
-
-    if (this._data) {
-      return;
-    }
-
-    console.log(`🔎 fetching ${this.url}`);
-
-    const semantic = await (await fetch(this.url)).json();
-    window[SEMANTIC_SYMBOL] = semantic;
-
-    this._data = semantic;
-  }
-
-  semantic() {
-    return this._data;
-  }
-}
-
 export class StatsArtifact {
   _data;
 
@@ -297,11 +267,11 @@ export class StatsArtifact {
   }
 
   async init() {
-    const $statsData = document.getElementById('stats-data');
+    const $statsData = document.getElementById("stats-data");
 
     this._data = JSON.parse($statsData.textContent);
     if (!this._data) {
-      console.error('stats symbol not injected');
+      console.error("stats symbol not injected");
     }
   }
 

@@ -10,7 +10,12 @@ import "../../components/photo.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { BinomialTypes, KnownRelations } from "../../../constants.js";
-import { Binomials, Things, TriplesDB } from "../../../services/things.js";
+import {
+  Binomials,
+  Things,
+  Triples,
+  TriplesDB,
+} from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
 import { asUrn, TribbleDB } from "../../../library/tribble.js";
 
@@ -20,7 +25,6 @@ export class ThingPage extends LitElem {
       urn: { type: String },
       images: { type: Object },
       albums: { type: Object },
-      semantic: { type: Object },
       triples: { type: Array },
     };
   }
@@ -31,45 +35,31 @@ export class ThingPage extends LitElem {
     JSONFeed.setIndex();
   }
 
-  isSemanticRelation(relation) {
-    return (relation === KnownRelations.SUBJECT ||
-      relation === KnownRelations.LOCATION ||
-      relation === KnownRelations.RATING);
+  filterUrnImages(images, tdb) {
+    const semanticRelations = [
+      KnownRelations.SUBJECT,
+      KnownRelations.LOCATION,
+      KnownRelations.RATING,
+    ];
+
+    const targetSearch = asUrn(this.urn);
+    // don't filter by ID in this case
+    if (targetSearch.id === "*") {
+      delete targetSearch.id;
+    }
+
+    const relevantPhotoIds = tdb.search({
+      target: targetSearch,
+      relation: { relation: semanticRelations },
+    }).sources();
+
+    return Array.from(relevantPhotoIds).flatMap((photoId) => {
+      return images.filter((image) => image.id === photoId).slice(0, 1);
+    });
   }
 
-  filterPhotos(images, facts) {
-    return facts.filter((fact) => {
-      const [_, relation, value] = fact;
-
-      const candidateUrn = Things.isRating(value)
-        ? `urn:ró:rating:${encodeURIComponent(value)}`
-        : value;
-
-      if (!this.isSemanticRelation(relation) && !Things.isUrn(candidateUrn)) {
-        return false;
-      }
-
-      try {
-        const parsedCandidate = Things.parseUrn(candidateUrn);
-        const parsedUrn = Things.parseUrn(this.urn);
-
-        if (parsedUrn.id === "*") {
-          return parsedUrn.type === parsedCandidate.type;
-        } else {
-          return Things.sameURN(candidateUrn, this.urn);
-        }
-      } catch (err) {
-        return false;
-      }
-    })
-      .map((fact) => {
-        return images.find((image) => image.id === fact[0]);
-      })
-      .filter((value) => value !== undefined);
-  }
-
-  subjectPhotos(images, facts) {
-    return this.filterPhotos(images, facts)
+  renderSubjectPhotos(images, tdb) {
+    return this.filterUrnImages(images, tdb)
       .sort((photo0, photo1) => {
         return photo1.created_at - photo0.created_at;
       })
@@ -84,8 +74,8 @@ export class ThingPage extends LitElem {
       });
   }
 
-  subjectAlbums(images, facts) {
-    const filtered = this.filterPhotos(images, facts);
+  renderSubjectAlbums(images, tdb) {
+    const filtered = this.filterUrnImages(images, tdb);
     const albumSet = new Set(filtered.map((photo) => {
       return photo.album_id;
     }));
@@ -117,51 +107,10 @@ export class ThingPage extends LitElem {
       });
   }
 
-  getFacts() {
-    const relevant = this.triples.filter((triple) => {
-      return triple[0] === this.urn;
-    });
-
-    const facts = {};
-
-    for (const triple of relevant) {
-      const [_, relation, value] = triple;
-
-      if (!facts.hasOwnProperty(relation)) {
-        facts[relation] = [];
-      }
-
-      facts[relation].push(value);
-    }
-
-    return facts;
-  }
-
-  binomialToCommonName(binomial) {
-    const match = this.triples.find((triple) => {
-      const [source, relation, _] = triple;
-
-      if (!Things.isUrn(source)) {
-        return false;
-      }
-
-      const parsed = Things.parseUrn(source);
-      const normalisedBinomial = binomial.replace(" ", "-").toLowerCase();
-
-      return parsed.id === normalisedBinomial &&
-        relation === KnownRelations.NAME;
-    });
-
-    if (match) {
-      return match[2];
-    }
-
-    return binomial;
-  }
-
-  firstPhotographed(images, facts) {
+  // todo push into semantic layer
+  firstPhotographed(images, tdb) {
     const relevantPhotos = this
-      .filterPhotos(images, facts)
+      .filterUrnImages(images, tdb)
       .sort((photo0, photo1) => {
         return photo0.created_at - photo1.created_at;
       });
@@ -179,7 +128,7 @@ export class ThingPage extends LitElem {
     });
   }
 
-  getTitle() {
+  renderTitle() {
     const triplesName = TriplesDB.findName(this.triples, this.urn);
 
     if (triplesName) {
@@ -201,19 +150,15 @@ export class ThingPage extends LitElem {
       }
 
       return value;
-    } catch (err) {
+    } catch (_) {
       return this.urn;
     }
   }
 
-  renderFacts(urn, facts) {
-    const pairs = {};
-
-    if (facts.country) {
-      pairs["Country"] = html`${facts.country}`;
-    }
-
-    return pairs;
+  renderClassification(type) {
+    return html`<a href="#/thing/${type}:*">${type.charAt(0).toUpperCase()}${
+      type.slice(1)
+    }</a>`;
   }
 
   render() {
@@ -221,36 +166,58 @@ export class ThingPage extends LitElem {
     // Wikilinks, and all images with this ARN
     // Support bird:* level queries
 
-    const images = this.images.images();
-    const facts = this.semantic.semantic();
-    const photos = this.subjectPhotos(images, facts);
-    const albums = this.subjectAlbums(images, facts);
+    // TODO reprecate semantic artifact, use triples alone
+    // TODO lift this to top level
+    const tdb = new TribbleDB(this.triples)
+      // transform ratings to URNs
+      .map((triple) => {
+        if (Triples.getRelation(triple) !== KnownRelations.RATING) {
+          return triple;
+        }
 
-    const triples = this.getFacts();
+        return [
+          Triples.getSource(triple),
+          Triples.getRelation(triple),
+          `urn:ró:rating:${encodeURIComponent(Triples.getTarget(triple))}`,
+        ];
+      });
+    const images = this.images.images();
+    const photos = this.renderSubjectPhotos(images, tdb);
+    const albums = this.renderSubjectAlbums(images, tdb);
+
     const urn = Things.parseUrn(this.urn);
     const type = urn.type;
 
+    const urnFacts = tdb.search({
+      source: asUrn(this.urn),
+    }).firstObject() ?? {};
 
     const metadata = Object.assign({
-      "Classification": html`<a href="#/thing/${type}:*">${
-        type.charAt(0).toUpperCase()
-      }${type.slice(1)}</a>`,
-    }, this.renderFacts(urn, triples));
+      "Classification": this.renderClassification(type),
+    });
+
+    if (urnFacts.country) {
+      metadata["Country"] = html`${urnFacts.country}`;
+    }
+
+    if (urnFacts.fcode_name) {
+      const fcodeName = urnFacts.fcode_name;
+      metadata["Place Type"] = html`${fcodeName.charAt(0).toUpperCase()}${
+        fcodeName.slice(1)
+      }`;
+    }
 
     if (BinomialTypes.has(type)) {
+      // TODO move to fact layer, not render layer
       metadata["First Photographed"] = html`<span>${
-        this.firstPhotographed(images, facts)
+        this.firstPhotographed(images, tdb)
       }</span>`;
     }
 
-    const tdb = new TribbleDB(this.triples);
-    const urnTriples = tdb.search({source: asUrn(this.urn)});
-    const facts2 = urnTriples.firstObject() ?? {};
-
-    const wikipedia = facts2[KnownRelations.WIKIPEDIA];
-    const birdwatchUrl = facts2[KnownRelations.BIRDWATCH_URL];
-    const longitude = facts2[KnownRelations.LONGITUDE];
-    const latitude = facts2[KnownRelations.LATITUDE];
+    const wikipedia = urnFacts[KnownRelations.WIKIPEDIA];
+    const birdwatchUrl = urnFacts[KnownRelations.BIRDWATCH_URL];
+    const longitude = urnFacts[KnownRelations.LONGITUDE];
+    const latitude = urnFacts[KnownRelations.LATITUDE];
 
     let location;
     if (longitude && latitude) {
@@ -264,11 +231,11 @@ export class ThingPage extends LitElem {
     return html`
       <div>
       <section class="thing-page">
-        <h1>${this.getTitle()}</h1>
+        <h1>${this.renderTitle()}</h1>
 
         <p>
           ${
-      BinomialTypes.has(type)
+      BinomialTypes.has(type) && urn.id !== "*"
         ? html`<span class="thing-binomial">(${
           Binomials.pretty(urn.id)
         })</span>`

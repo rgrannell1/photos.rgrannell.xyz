@@ -50,6 +50,7 @@ export class ThingLink extends LitElem {
     if (BinomialTypes.has(type)) {
       return html`<span>${Binomials.toCommonName(this.triples, id)}</span>`;
     }
+    // TODO replace with the DB
     const name = TriplesDB.findName(this.triples, this.urn);
 
     if (name) {
@@ -68,10 +69,10 @@ export class ThingLink extends LitElem {
       [KnownThings.REPTILE]: "reptile-link",
       [KnownThings.AMPHIBIAN]: "amphibian-link",
       [KnownThings.FISH]: "fish-link",
-      [KnownThings.INSECT]: "insect-link"
-    }
+      [KnownThings.INSECT]: "insect-link",
+    };
 
-    return classes[type] ?? '';
+    return classes[type] ?? "";
   }
 
   render() {
@@ -80,7 +81,9 @@ export class ThingLink extends LitElem {
     }
 
     return html`
-      <a class="thing-link ${this.linkClass()}" href="${Things.toURL(this.urn)}">${this.name()}</a>
+      <a class="thing-link ${this.linkClass()}" href="${
+      Things.toURL(this.urn)
+    }">${this.name()}</a>
     `;
   }
 }

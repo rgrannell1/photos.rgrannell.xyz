@@ -1,27 +1,1690 @@
-var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,He=Symbol(),Se=new WeakMap,Zt=class{constructor(t,e,s){if(this._$cssResult$=!0,s!==He)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.i,e=this.t;if(Jt&&t===void 0){let s=e!==void 0&&e.length===1;s&&(t=Se.get(e)),t===void 0&&((this.i=t=new CSSStyleSheet).replaceSync(this.cssText),s&&Se.set(e,t))}return t}toString(){return this.cssText}},rs=i=>new Zt(typeof i=="string"?i:i+"",void 0,He);var ns=(i,t)=>{if(Jt)i.adoptedStyleSheets=t.map(e=>e instanceof CSSStyleSheet?e:e.styleSheet);else for(let e of t){let s=document.createElement("style"),r=mt.litNonce;r!==void 0&&s.setAttribute("nonce",r),s.textContent=e.cssText,i.appendChild(s)}},_e=Jt?i=>i:i=>i instanceof CSSStyleSheet?(t=>{let e="";for(let s of t.cssRules)e+=s.cssText;return rs(e)})(i):i,{is:os,defineProperty:as,getOwnPropertyDescriptor:ls,getOwnPropertyNames:cs,getOwnPropertySymbols:hs,getPrototypeOf:ds}=Object,xt=globalThis,xe=xt.trustedTypes,ps=xe?xe.emptyScript:"",us=xt.reactiveElementPolyfillSupport,ot=(i,t)=>i,qt={toAttribute(i,t){switch(t){case Boolean:i=i?ps:null;break;case Object:case Array:i=i==null?i:JSON.stringify(i)}return i},fromAttribute(i,t){let e=i;switch(t){case Boolean:e=i!==null;break;case Number:e=i===null?null:Number(i);break;case Object:case Array:try{e=JSON.parse(i)}catch{e=null}}return e}},je=(i,t)=>!os(i,t),Ee={attribute:!0,type:String,converter:qt,reflect:!1,hasChanged:je};Symbol.metadata??=Symbol("metadata"),xt.litPropertyMetadata??=new WeakMap;var Y=class extends HTMLElement{static addInitializer(t){this.o(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this.u&&[...this.u.keys()]}static createProperty(t,e=Ee){if(e.state&&(e.attribute=!1),this.o(),this.elementProperties.set(t,e),!e.noAccessor){let s=Symbol(),r=this.getPropertyDescriptor(t,s,e);r!==void 0&&as(this.prototype,t,r)}}static getPropertyDescriptor(t,e,s){let{get:r,set:n}=ls(this.prototype,t)??{get(){return this[e]},set(o){this[e]=o}};return{get(){return r?.call(this)},set(o){let l=r?.call(this);n.call(this,o),this.requestUpdate(t,l,s)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??Ee}static o(){if(this.hasOwnProperty(ot("elementProperties")))return;let t=ds(this);t.finalize(),t.l!==void 0&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(ot("finalized")))return;if(this.finalized=!0,this.o(),this.hasOwnProperty(ot("properties"))){let e=this.properties,s=[...cs(e),...hs(e)];for(let r of s)this.createProperty(r,e[r])}let t=this[Symbol.metadata];if(t!==null){let e=litPropertyMetadata.get(t);if(e!==void 0)for(let[s,r]of e)this.elementProperties.set(s,r)}this.u=new Map;for(let[e,s]of this.elementProperties){let r=this.p(e,s);r!==void 0&&this.u.set(r,e)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){let e=[];if(Array.isArray(t)){let s=new Set(t.flat(1/0).reverse());for(let r of s)e.unshift(_e(r))}else t!==void 0&&e.push(_e(t));return e}static p(t,e){let s=e.attribute;return s===!1?void 0:typeof s=="string"?s:typeof t=="string"?t.toLowerCase():void 0}constructor(){super(),this.v=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this.m=null,this._()}_(){this.S=new Promise(t=>this.enableUpdating=t),this._$AL=new Map,this.$(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this.P??=new Set).add(t),this.renderRoot!==void 0&&this.isConnected&&t.hostConnected?.()}removeController(t){this.P?.delete(t)}$(){let t=new Map,e=this.constructor.elementProperties;for(let s of e.keys())this.hasOwnProperty(s)&&(t.set(s,this[s]),delete this[s]);t.size>0&&(this.v=t)}createRenderRoot(){let t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return ns(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this.P?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this.P?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,s){this._$AK(t,s)}C(t,e){let s=this.constructor.elementProperties.get(t),r=this.constructor.p(t,s);if(r!==void 0&&s.reflect===!0){let n=(s.converter?.toAttribute!==void 0?s.converter:qt).toAttribute(e,s.type);this.m=t,n==null?this.removeAttribute(r):this.setAttribute(r,n),this.m=null}}_$AK(t,e){let s=this.constructor,r=s.u.get(t);if(r!==void 0&&this.m!==r){let n=s.getPropertyOptions(r),o=typeof n.converter=="function"?{fromAttribute:n.converter}:n.converter?.fromAttribute!==void 0?n.converter:qt;this.m=r,this[r]=o.fromAttribute(e,n.type),this.m=null}}requestUpdate(t,e,s){if(t!==void 0){if(s??=this.constructor.getPropertyOptions(t),!(s.hasChanged??je)(this[t],e))return;this.T(t,e,s)}this.isUpdatePending===!1&&(this.S=this.A())}T(t,e,s){this._$AL.has(t)||this._$AL.set(t,e),s.reflect===!0&&this.m!==t&&(this.M??=new Set).add(t)}async A(){this.isUpdatePending=!0;try{await this.S}catch(e){Promise.reject(e)}let t=this.scheduleUpdate();return t!=null&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this.v){for(let[r,n]of this.v)this[r]=n;this.v=void 0}let s=this.constructor.elementProperties;if(s.size>0)for(let[r,n]of s)n.wrapped!==!0||this._$AL.has(r)||this[r]===void 0||this.T(r,this[r],n)}let t=!1,e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this.P?.forEach(s=>s.hostUpdate?.()),this.update(e)):this.k()}catch(s){throw t=!1,this.k(),s}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this.P?.forEach(e=>e.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}k(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this.S}shouldUpdate(t){return!0}update(t){this.M&&=this.M.forEach(e=>this.C(e,this[e])),this.k()}updated(t){}firstUpdated(t){}};Y.elementStyles=[],Y.shadowRootOptions={mode:"open"},Y[ot("elementProperties")]=new Map,Y[ot("finalized")]=new Map,us?.({ReactiveElement:Y}),(xt.reactiveElementVersions??=[]).push("2.0.4");var Xt=globalThis,ft=Xt.trustedTypes,Te=ft?ft.createPolicy("lit-html",{createHTML:i=>i}):void 0,te="$lit$",H=`lit$${Math.random().toFixed(9).slice(2)}$`,ee="?"+H,ms=`<${ee}>`,Z=document,lt=()=>Z.createComment(""),ct=i=>i===null||typeof i!="object"&&typeof i!="function",Ge=Array.isArray,Ye=i=>Ge(i)||typeof i?.[Symbol.iterator]=="function",zt=`[ 	
-\f\r]`,nt=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,Ue=/-->/g,Ie=/>/g,F=RegExp(`>|${zt}(?:([^\\s"'>=/]+)(${zt}*=${zt}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`,"g"),Me=/'/g,Ce=/"/g,Ve=/^(?:script|style|textarea|title)$/i,ze=i=>(t,...e)=>({_$litType$:i,strings:t,values:e}),c=ze(1),fs=ze(2),v=Symbol.for("lit-noChange"),A=Symbol.for("lit-nothing"),Le=new WeakMap,W=Z.createTreeWalker(Z,129);function Fe(i,t){if(!Array.isArray(i)||!i.hasOwnProperty("raw"))throw Error("invalid template strings array");return Te!==void 0?Te.createHTML(t):t}var We=(i,t)=>{let e=i.length-1,s=[],r,n=t===2?"<svg>":"",o=nt;for(let l=0;l<e;l++){let a=i[l],p,u,d=-1,f=0;for(;f<a.length&&(o.lastIndex=f,u=o.exec(a),u!==null);)f=o.lastIndex,o===nt?u[1]==="!--"?o=Ue:u[1]!==void 0?o=Ie:u[2]!==void 0?(Ve.test(u[2])&&(r=RegExp("</"+u[2],"g")),o=F):u[3]!==void 0&&(o=F):o===F?u[0]===">"?(o=r??nt,d=-1):u[1]===void 0?d=-2:(d=o.lastIndex-u[2].length,p=u[1],o=u[3]===void 0?F:u[3]==='"'?Ce:Me):o===Ce||o===Me?o=F:o===Ue||o===Ie?o=nt:(o=F,r=void 0);let $=o===F&&i[l+1].startsWith("/>")?" ":"";n+=o===nt?a+ms:d>=0?(s.push(p),a.slice(0,d)+te+a.slice(d)+H+$):a+H+(d===-2?l:$)}return[Fe(i,n+(i[e]||"<?>")+(t===2?"</svg>":"")),s]},ht=class i{constructor({strings:t,_$litType$:e},s){let r;this.parts=[];let n=0,o=0,l=t.length-1,a=this.parts,[p,u]=We(t,e);if(this.el=i.createElement(p,s),W.currentNode=this.el.content,e===2){let d=this.el.content.firstChild;d.replaceWith(...d.childNodes)}for(;(r=W.nextNode())!==null&&a.length<l;){if(r.nodeType===1){if(r.hasAttributes())for(let d of r.getAttributeNames())if(d.endsWith(te)){let f=u[o++],$=r.getAttribute(d).split(H),w=/([.?@])?(.*)/.exec(f);a.push({type:1,index:n,name:w[2],strings:$,ctor:w[1]==="."?$t:w[1]==="?"?bt:w[1]==="@"?yt:Q}),r.removeAttribute(d)}else d.startsWith(H)&&(a.push({type:6,index:n}),r.removeAttribute(d));if(Ve.test(r.tagName)){let d=r.textContent.split(H),f=d.length-1;if(f>0){r.textContent=ft?ft.emptyScript:"";for(let $=0;$<f;$++)r.append(d[$],lt()),W.nextNode(),a.push({type:2,index:++n});r.append(d[f],lt())}}}else if(r.nodeType===8)if(r.data===ee)a.push({type:2,index:n});else{let d=-1;for(;(d=r.data.indexOf(H,d+1))!==-1;)a.push({type:7,index:n}),d+=H.length-1}n++}}static createElement(t,e){let s=Z.createElement("template");return s.innerHTML=t,s}};function q(i,t,e=i,s){if(t===v)return t;let r=s!==void 0?e.U?.[s]:e.N,n=ct(t)?void 0:t._$litDirective$;return r?.constructor!==n&&(r?._$AO?.(!1),n===void 0?r=void 0:(r=new n(i),r._$AT(i,e,s)),s!==void 0?(e.U??=[])[s]=r:e.N=r),r!==void 0&&(t=q(i,r._$AS(i,t.values),r,s)),t}var gt=class{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}O(t){let{el:{content:e},parts:s}=this._$AD,r=(t?.creationScope??Z).importNode(e,!0);W.currentNode=r;let n=W.nextNode(),o=0,l=0,a=s[0];for(;a!==void 0;){if(o===a.index){let p;a.type===2?p=new Et(n,n.nextSibling,this,t):a.type===1?p=new a.ctor(n,a.name,a.strings,this,t):a.type===6&&(p=new At(n,this,t)),this._$AV.push(p),a=s[++l]}o!==a?.index&&(n=W.nextNode(),o++)}return W.currentNode=Z,r}R(t){let e=0;for(let s of this._$AV)s!==void 0&&(s.strings!==void 0?(s._$AI(t,s,e),e+=s.strings.length-2):s._$AI(t[e])),e++}},Et=class Ze{get _$AU(){return this._$AM?._$AU??this.V}constructor(t,e,s,r){this.type=2,this._$AH=A,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=s,this.options=r,this.V=r?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode,e=this._$AM;return e!==void 0&&t?.nodeType===11&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=q(this,t,e),ct(t)?t===A||t==null||t===""?(this._$AH!==A&&this._$AR(),this._$AH=A):t!==this._$AH&&t!==v&&this.L(t):t._$litType$!==void 0?this.I(t):t.nodeType!==void 0?this.j(t):Ye(t)?this.D(t):this.L(t)}H(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}j(t){this._$AH!==t&&(this._$AR(),this._$AH=this.H(t))}L(t){this._$AH!==A&&ct(this._$AH)?this._$AA.nextSibling.data=t:this.j(Z.createTextNode(t)),this._$AH=t}I(t){let{values:e,_$litType$:s}=t,r=typeof s=="number"?this._$AC(t):(s.el===void 0&&(s.el=ht.createElement(Fe(s.h,s.h[0]),this.options)),s);if(this._$AH?._$AD===r)this._$AH.R(e);else{let n=new gt(r,this),o=n.O(this.options);n.R(e),this.j(o),this._$AH=n}}_$AC(t){let e=Le.get(t.strings);return e===void 0&&Le.set(t.strings,e=new ht(t)),e}D(t){Ge(this._$AH)||(this._$AH=[],this._$AR());let e=this._$AH,s,r=0;for(let n of t)r===e.length?e.push(s=new Ze(this.H(lt()),this.H(lt()),this,this.options)):s=e[r],s._$AI(n),r++;r<e.length&&(this._$AR(s&&s._$AB.nextSibling,r),e.length=r)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t&&t!==this._$AB;){let s=t.nextSibling;t.remove(),t=s}}setConnected(t){this._$AM===void 0&&(this.V=t,this._$AP?.(t))}},Q=class{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,s,r,n){this.type=1,this._$AH=A,this._$AN=void 0,this.element=t,this.name=e,this._$AM=r,this.options=n,s.length>2||s[0]!==""||s[1]!==""?(this._$AH=Array(s.length-1).fill(new String),this.strings=s):this._$AH=A}_$AI(t,e=this,s,r){let n=this.strings,o=!1;if(n===void 0)t=q(this,t,e,0),o=!ct(t)||t!==this._$AH&&t!==v,o&&(this._$AH=t);else{let l=t,a,p;for(t=n[0],a=0;a<n.length-1;a++)p=q(this,l[s+a],e,a),p===v&&(p=this._$AH[a]),o||=!ct(p)||p!==this._$AH[a],p===A?t=A:t!==A&&(t+=(p??"")+n[a+1]),this._$AH[a]=p}o&&!r&&this.B(t)}B(t){t===A?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}},$t=class extends Q{constructor(){super(...arguments),this.type=3}B(t){this.element[this.name]=t===A?void 0:t}},bt=class extends Q{constructor(){super(...arguments),this.type=4}B(t){this.element.toggleAttribute(this.name,!!t&&t!==A)}},yt=class extends Q{constructor(t,e,s,r,n){super(t,e,s,r,n),this.type=5}_$AI(t,e=this){if((t=q(this,t,e,0)??A)===v)return;let s=this._$AH,r=t===A&&s!==A||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,n=t!==A&&(s===A||r);r&&this.element.removeEventListener(this.name,this,s),n&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){typeof this._$AH=="function"?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}},At=class{constructor(t,e,s){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=s}get _$AU(){return this._$AM._$AU}_$AI(t){q(this,t)}},gs={W:te,q:H,J:ee,Z:1,F:We,G:gt,K:Ye,X:q,Y:Et,tt:Q,st:bt,it:yt,et:$t,ot:At},$s=Xt.litHtmlPolyfillSupport;$s?.(ht,Et),(Xt.litHtmlVersions??=[]).push("3.1.3");var qe=(i,t,e)=>{let s=e?.renderBefore??t,r=s._$litPart$;if(r===void 0){let n=e?.renderBefore??null;s._$litPart$=r=new Et(t.insertBefore(lt(),n),n,void 0,e??{})}return r._$AI(i),r};var z=class extends Y{constructor(){super(...arguments),this.renderOptions={host:this},this.ht=void 0}createRenderRoot(){let t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){let e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this.ht=qe(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this.ht?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this.ht?.setConnected(!1)}render(){return v}};z._$litElement$=!0,z.finalized=!0,globalThis.litElementHydrateSupport?.({LitElement:z});var bs=globalThis.litElementPolyfillSupport;bs?.({LitElement:z});(globalThis.litElementVersions??=[]).push("4.0.5");var{Y:ys}=gs,As=i=>i===null||typeof i!="object"&&typeof i!="function";var Re=(i,t)=>t===void 0?i?._$litType$!==void 0:i?._$litType$===t,ws=i=>i?._$litType$?.h!=null;var Qe=i=>i.strings===void 0,Oe=()=>document.createComment(""),V=(i,t,e)=>{let s=i._$AA.parentNode,r=t===void 0?i._$AB:t._$AA;if(e===void 0){let n=s.insertBefore(Oe(),r),o=s.insertBefore(Oe(),r);e=new ys(n,o,i,i.options)}else{let n=e._$AB.nextSibling,o=e._$AM,l=o!==i;if(l){let a;e._$AQ?.(i),e._$AM=i,e._$AP!==void 0&&(a=i._$AU)!==o._$AU&&e._$AP(a)}if(n!==r||l){let a=e._$AA;for(;a!==n;){let p=a.nextSibling;s.insertBefore(a,r),a=p}}}return e},G=(i,t,e=i)=>(i._$AI(t,e),i),vs={},dt=(i,t=vs)=>i._$AH=t,Qt=i=>i._$AH,Ft=i=>{i._$AP?.(!1,!0);let t=i._$AA,e=i._$AB.nextSibling;for(;t!==e;){let s=t.nextSibling;t.remove(),t=s}},Ke=i=>{i._$AR()};var E=i=>(...t)=>({_$litDirective$:i,values:t}),L=class{constructor(t){}get _$AU(){return this._$AM._$AU}_$AT(t,e,s){this.nt=t,this._$AM=e,this.rt=s}_$AS(t,e){return this.update(t,e)}update(t,e){return this.render(...e)}};var at=(i,t)=>{let e=i._$AN;if(e===void 0)return!1;for(let s of e)s._$AO?.(t,!1),at(s,t);return!0},wt=i=>{let t,e;do{if((t=i._$AM)===void 0)break;e=t._$AN,e.delete(i),i=t}while(e?.size===0)},Je=i=>{for(let t;t=i._$AM;i=t){let e=t._$AN;if(e===void 0)t._$AN=e=new Set;else if(e.has(i))break;e.add(i),xs(t)}};function Ss(i){this._$AN!==void 0?(wt(this),this._$AM=i,Je(this)):this._$AM=i}function _s(i,t=!1,e=0){let s=this._$AH,r=this._$AN;if(r!==void 0&&r.size!==0)if(t)if(Array.isArray(s))for(let n=e;n<s.length;n++)at(s[n],!1),wt(s[n]);else s!=null&&(at(s,!1),wt(s));else at(this,i)}var xs=i=>{i.type==2&&(i._$AP??=_s,i._$AQ??=Ss)},pt=class extends L{constructor(){super(...arguments),this._$AN=void 0}_$AT(t,e,s){super._$AT(t,e,s),Je(this),this.isConnected=t._$AU}_$AO(t,e=!0){t!==this.isConnected&&(this.isConnected=t,t?this.reconnected?.():this.disconnected?.()),e&&(at(this,t),wt(this))}setValue(t){if(Qe(this.nt))this.nt._$AI(t,this);else{let e=[...this.nt._$AH];e[this.rt]=t,this.nt._$AI(e,this,0)}}disconnected(){}reconnected(){}};var vt=class{constructor(t){this.ct=t}disconnect(){this.ct=void 0}reconnect(t){this.ct=t}deref(){return this.ct}},St=class{constructor(){this.lt=void 0,this.ut=void 0}get(){return this.lt}pause(){this.lt??=new Promise(t=>this.ut=t)}resume(){this.ut?.(),this.lt=this.ut=void 0}};var _t=class extends pt{constructor(){super(...arguments),this.dt=new vt(this),this.ft=new St}render(t,e){return v}update(t,[e,s]){if(this.isConnected||this.disconnected(),e===this.vt)return v;this.vt=e;let r=0,{dt:n,ft:o}=this;return(async(l,a)=>{for await(let p of l)if(await a(p)===!1)return})(e,async l=>{for(;o.get();)await o.get();let a=n.deref();if(a!==void 0){if(a.vt!==e)return!1;s!==void 0&&(l=s(l,r)),a.commitValue(l,r),r++}return!0}),v}commitValue(t,e){this.setValue(t)}disconnected(){this.dt.disconnect(),this.ft.pause()}reconnected(){this.dt.reconnect(this),this.ft.resume()}},ks=E(_t),Tt=E(class extends _t{constructor(i){if(super(i),i.type!==2)throw Error("asyncAppend can only be used in child expressions")}update(i,t){return this.ht=i,super.update(i,t)}commitValue(i,t){t===0&&Ke(this.ht);let e=V(this.ht);G(e,i)}}),Pe=i=>ws(i)?i._$litType$.h:i.strings,Ns=E(class extends L{constructor(i){super(i),this.yt=new WeakMap}render(i){return[i]}update(i,[t]){let e=Re(this.bt)?Pe(this.bt):null,s=Re(t)?Pe(t):null;if(e!==null&&(s===null||e!==s)){let r=Qt(i).pop(),n=this.yt.get(e);if(n===void 0){let o=document.createDocumentFragment();n=qe(A,o),n.setConnected(!1),this.yt.set(e,n)}dt(n,[r]),V(n,void 0,r)}if(s!==null){if(e===null||e!==s){let r=this.yt.get(s);if(r!==void 0){let n=Qt(r).pop();Ke(i),V(i,void 0,n),dt(i,[n])}}this.bt=t}else this.bt=void 0;return this.render(t)}});var Ds=E(class extends L{constructor(i){if(super(i),i.type!==1||i.name!=="class"||i.strings?.length>2)throw Error("`classMap()` can only be used in the `class` attribute and must be the only part in the attribute.")}render(i){return" "+Object.keys(i).filter(t=>i[t]).join(" ")+" "}update(i,[t]){if(this.gt===void 0){this.gt=new Set,i.strings!==void 0&&(this.wt=new Set(i.strings.join(" ").split(/\s/).filter(s=>s!=="")));for(let s in t)t[s]&&!this.wt?.has(s)&&this.gt.add(s);return this.render(t)}let e=i.element.classList;for(let s of this.gt)s in t||(e.remove(s),this.gt.delete(s));for(let s in t){let r=!!t[s];r===this.gt.has(s)||this.wt?.has(s)||(r?(e.add(s),this.gt.add(s)):(e.remove(s),this.gt.delete(s)))}return v}}),Es={},Bs=E(class extends L{constructor(){super(...arguments),this._t=Es}render(i,t){return t()}update(i,[t,e]){if(Array.isArray(t)){if(Array.isArray(this._t)&&this._t.length===t.length&&t.every((s,r)=>s===this._t[r]))return v}else if(this._t===t)return v;return this._t=Array.isArray(t)?Array.from(t):t,this.render(t,e)}});var Hs=E(class extends L{constructor(){super(...arguments),this.key=A}render(i,t){return this.key=i,t}update(i,[t,e]){return t!==this.key&&(dt(i),this.key=t),e}}),js=E(class extends L{constructor(i){if(super(i),i.type!==3&&i.type!==1&&i.type!==4)throw Error("The `live` directive is not allowed on child or event bindings");if(!Qe(i))throw Error("`live` bindings can only contain a single expression")}render(i){return i}update(i,[t]){if(t===v||t===A)return t;let e=i.element,s=i.name;if(i.type===3){if(t===e[s])return v;if(i.type===4){if(!!t===e.hasAttribute(s))return v;if(i.type===1&&e.getAttribute(s)===t+"")return v}}return dt(i),t}});var Wt=new WeakMap,Gs=E(class extends pt{render(i){return A}update(i,[t]){let e=t!==this.ct;return e&&this.ct!==void 0&&this.St(void 0),(e||this.$t!==this.Tt)&&(this.ct=t,this.xt=i.options?.host,this.St(this.Tt=i.element)),A}St(i){if(typeof this.ct=="function"){let t=this.xt??globalThis,e=Wt.get(t);e===void 0&&(e=new WeakMap,Wt.set(t,e)),e.get(this.ct)!==void 0&&this.ct.call(this.xt,void 0),e.set(this.ct,i),i!==void 0&&this.ct.call(this.xt,i)}else this.ct.value=i}get $t(){return typeof this.ct=="function"?Wt.get(this.xt??globalThis)?.get(this.ct):this.ct?.value}disconnected(){this.$t===this.Tt&&this.St(void 0)}reconnected(){this.St(this.Tt)}}),ke=(i,t,e)=>{let s=new Map;for(let r=t;r<=e;r++)s.set(i[r],r);return s},Ys=E(class extends L{constructor(i){if(super(i),i.type!==2)throw Error("repeat() can only be used in text expressions")}Et(i,t,e){let s;e===void 0?e=t:t!==void 0&&(s=t);let r=[],n=[],o=0;for(let l of i)r[o]=s?s(l,o):o,n[o]=e(l,o),o++;return{values:n,keys:r}}render(i,t,e){return this.Et(i,t,e).values}update(i,[t,e,s]){let r=Qt(i),{values:n,keys:o}=this.Et(t,e,s);if(!Array.isArray(r))return this.Ct=o,n;let l=this.Ct??=[],a=[],p,u,d=0,f=r.length-1,$=0,w=n.length-1;for(;d<=f&&$<=w;)if(r[d]===null)d++;else if(r[f]===null)f--;else if(l[d]===o[$])a[$]=G(r[d],n[$]),d++,$++;else if(l[f]===o[w])a[w]=G(r[f],n[w]),f--,w--;else if(l[d]===o[w])a[w]=G(r[d],n[w]),V(i,a[w+1],r[d]),d++,w--;else if(l[f]===o[$])a[$]=G(r[f],n[$]),V(i,r[d],r[f]),f--,$++;else if(p===void 0&&(p=ke(o,$,w),u=ke(l,d,f)),p.has(l[d]))if(p.has(l[f])){let x=u.get(o[$]),B=x!==void 0?r[x]:null;if(B===null){let X=V(i,r[d]);G(X,n[$]),a[$]=X}else a[$]=G(B,n[$]),V(i,r[d],B),r[x]=null;$++}else Ft(r[f]),f--;else Ft(r[d]),d++;for(;$<=w;){let x=V(i,a[w+1]);G(x,n[$]),a[$++]=x}for(;d<=f;){let x=r[d++];x!==null&&Ft(x)}return this.Ct=o,dt(i,a),v}}),Xe="important",Ts=" !"+Xe,Vs=E(class extends L{constructor(i){if(super(i),i.type!==1||i.name!=="style"||i.strings?.length>2)throw Error("The `styleMap` directive must be used in the `style` attribute and must be the only part in the attribute.")}render(i){return Object.keys(i).reduce((t,e)=>{let s=i[e];return s==null?t:t+`${e=e.includes("-")?e:e.replace(/(?:^(webkit|moz|ms|o)|)(?=[A-Z])/g,"-$&").toLowerCase()}:${s};`},"")}update(i,[t]){let{style:e}=i.element;if(this.Pt===void 0)return this.Pt=new Set(Object.keys(t)),this.render(t);for(let s of this.Pt)t[s]==null&&(this.Pt.delete(s),s.includes("-")?e.removeProperty(s):e[s]=null);for(let s in t){let r=t[s];if(r!=null){this.Pt.add(s);let n=typeof r=="string"&&r.endsWith(Ts);s.includes("-")||n?e.setProperty(s,n?r.slice(0,-11):r,n?Xe:""):e[s]=r}}return v}}),zs=E(class extends L{constructor(i){if(super(i),i.type!==2)throw Error("templateContent can only be used in child bindings")}render(i){return this.At===i?v:(this.At=i,document.importNode(i.content,!0))}}),tt=class extends L{constructor(t){if(super(t),this.bt=A,t.type!==2)throw Error(this.constructor.directiveName+"() can only be used in child bindings")}render(t){if(t===A||t==null)return this.kt=void 0,this.bt=t;if(t===v)return t;if(typeof t!="string")throw Error(this.constructor.directiveName+"() called with a non-string value");if(t===this.bt)return this.kt;this.bt=t;let e=[t];return e.raw=e,this.kt={_$litType$:this.constructor.resultType,strings:e,values:[]}}};tt.directiveName="unsafeHTML",tt.resultType=1;var Ut=E(tt);var ut=class extends tt{};ut.directiveName="unsafeSVG",ut.resultType=2;var Fs=E(ut),Ne=i=>!As(i)&&typeof i.then=="function",De=1073741823;var Kt=class extends pt{constructor(){super(...arguments),this.Mt=De,this.Ut=[],this.dt=new vt(this),this.ft=new St}render(...t){return t.find(e=>!Ne(e))??v}update(t,e){let s=this.Ut,r=s.length;this.Ut=e;let n=this.dt,o=this.ft;this.isConnected||this.disconnected();for(let l=0;l<e.length&&!(l>this.Mt);l++){let a=e[l];if(!Ne(a))return this.Mt=l,a;l<r&&a===s[l]||(this.Mt=De,r=0,Promise.resolve(a).then(async p=>{for(;o.get();)await o.get();let u=n.deref();if(u!==void 0){let d=u.Ut.indexOf(a);d>-1&&d<u.Mt&&(u.Mt=d,u.setValue(p))}}))}return v}disconnected(){this.dt.disconnect(),this.ft.pause()}reconnected(){this.dt.reconnect(this),this.ft.resume()}},Ws=E(Kt);var Us=Symbol.for(""),Is=i=>{if(i?.r===Us)return i?._$litStatic$};var Be=new Map,ts=i=>(t,...e)=>{let s=e.length,r,n,o=[],l=[],a,p=0,u=!1;for(;p<s;){for(a=t[p];p<s&&(n=e[p],(r=Is(n))!==void 0);)a+=r+t[++p],u=!0;p!==s&&l.push(n),o.push(a),p++}if(p===s&&o.push(t[s]),u){let d=o.join("$$lit$$");(t=Be.get(d))===void 0&&(o.raw=o,Be.set(d,t=o)),e=l}return i(t,...e)},Zs=ts(c),qs=ts(fs);var m=class extends z{createRenderRoot(){return this}broadcast(t,e){return()=>{let s=new CustomEvent(t,{detail:e,bubbles:!0,composed:!0});this.dispatchEvent(s)}}};var It=Symbol("the albums manifest"),Mt=Symbol("the images manifest"),ci=Symbol("the site manifest"),Ct=Symbol("the videos manifest"),Lt=Symbol("the exif data"),Rt=Symbol("the semantic data"),hi=Symbol("the album stats"),Ot=Symbol("the triples data");var es="photos",h=class{static EAGER="eager";static LAZY="lazy"},g=class{static PHOTOS="photos";static ALBUMS="albums";static ALBUM="album";static METADATA="metadata";static ABOUT="about";static VIDEOS="videos";static THING="thing"},y=class{static UNESCO="unesco";static BIRD="bird";static MAMMAL="mammal";static REPTILE="reptile";static FISH="fish";static INSECT="insect";static AMPHIBIAN="amphibian";static GEONAME="geoname"},S=class{static SUBJECT="subject";static LOCATION="location";static LONGITUDE="longitude";static LATITUDE="latitude";static RATING="rating";static NAME="name";static BIRDWATCH_URL="birdwatch_url";static WIKIPEDIA="wikipedia"},et=new Set(["bird","mammal","reptile","amphibian","fish","insect"]);var K=window.envConfig,Pt=class{_data;constructor(t=`/manifest/images.${K.publication_id}.json`){this.url=t}processImages(t){let e=t[0],s=[];for(let r of t.slice(1)){let n={};for(let o=0;o<e.length;o++)n[e[o]]=r[o];s.push(n)}return s}async init(){if(window[Mt]&&(this._data=window[Mt]),this._data||this.loading)return;console.log(`\u{1F50E} fetching ${this.url}`);let t=await(await fetch(this.url)).json(),e=this.processImages(t);window[Mt]=e,this._data=e}images(){return this._data.map(t=>({...t,full_image:`https://photos-cdn.rgrannell.xyz${t.full_image}`,thumbnail_url:`https://photos-cdn.rgrannell.xyz${t.thumbnail_url}`}))}},kt=class{_data;constructor(t=`/manifest/videos.${K.publication_id}.json`){this.url=t}processVideos(t){let e=t[0],s=[];for(let r of t.slice(1)){let n={};for(let o=0;o<e.length;o++)n[e[o]]=r[o];s.push(n)}return s}async init(){if(window[Ct]&&(this._data=window[Ct]),this._data||this.loading)return;console.log(`\u{1F50E} fetching ${this.url}`);let t=await(await fetch(this.url)).json(),e=this.processVideos(t);window[Ct]=e,this._data=e}videos(){return this._data.map(t=>({...t,poster_url:`https://photos-cdn.rgrannell.xyz${t.poster_url}`,video_url_1080p:`https://photos-cdn.rgrannell.xyz${t.video_url_1080p}`,video_url_480p:`https://photos-cdn.rgrannell.xyz${t.video_url_480p}`,video_url_720p:`https://photos-cdn.rgrannell.xyz${t.video_url_720p}`,video_url_unscaled:`https://photos-cdn.rgrannell.xyz${t.video_url_unscaled}`,tags:(t.tags??"").split(",").filter(e=>e!="Published").map(e=>e.trim())}))}},Nt=class{_data;constructor(t=`/manifest/albums.${K.publication_id}.json`){this.url=t}process(t){let e=t[0],s=[];for(let r of t.slice(1)){let n={};if(r.length!==e.length)throw new Error(`album row length mismatch: expected ${e.length}, got ${r.length}`);for(let o=0;o<e.length;o++)n[e[o]]=r[o];s.push(n)}return s}async init(){if(window[It]&&(this._data=window[It]),this._data)return;console.log(`\u{1F50E} fetching ${this.url}`);let t=await(await fetch(this.url)).json(),e=this.process(t);window[It]=e,this._data=e}albums(){return this._data.map(t=>({...t,thumbnail_url:`https://photos-cdn.rgrannell.xyz${t.thumbnail_url}`,thumbnail_mosaic_url:`${t.thumbnail_mosaic_url}`}))}},Dt=class{_data;constructor(t=`/manifest/exif.${K.publication_id}.json`){this.url=t}process(t){let e=t[0],s=[];for(let r of t.slice(1)){let n={};for(let o=0;o<e.length;o++)n[e[o]]=r[o];s.push(n)}return s}async init(){if(window[Lt]&&(this._data=window[Lt]),this._data)return;console.log(`\u{1F50E} fetching ${this.url}`);let t=await(await fetch(this.url)).json(),e=this.process(t);window[Lt]=e,this._data=e}exif(){return this._data}};var Bt=class{_data;constructor(t=`/manifest/semantic.${K.publication_id}.json`){this.url=t}async init(){if(window[Rt]&&(this._data=window[Rt]),this._data)return;console.log(`\u{1F50E} fetching ${this.url}`);let t=await(await fetch(this.url)).json();window[Rt]=t,this._data=t}semantic(){return this._data}},Ht=class{_data;constructor(t=`/manifest/stats.${K.publication_id}.json`){this.url=t}async init(){let t=document.getElementById("stats-data");this._data=JSON.parse(t.textContent),this._data||console.error("stats symbol not injected")}stats(){return this._data}},jt=class{_data;constructor(t=`/manifest/triples.${K.publication_id}.json`){this.url=t}async init(){if(window[Ot]&&(this._data=window[Ot]),this._data)return;console.log(`\u{1F50E} fetching ${this.url}`);let t=await(await fetch(this.url)).json();window[Ot]=t,this._data=t}};var k=class i{static ROUTES={[g.PHOTOS]:this.showPhotosUrl,[g.ALBUMS]:this.showAlbumsUrl,[g.ALBUM]:this.showAlbumUrl,[g.METADATA]:this.showMetadataUrl,[g.ABOUT]:this.showAboutUrl,[g.VIDEOS]:this.showVideosUrl,[g.THING]:this.showThingUrl};static router(t){if(i.ROUTES.hasOwnProperty(t))return i.ROUTES[t];throw new Error(`Unknown page: ${t}`)}static pageUsesId(t){return t===g.ALBUM||t===g.PHOTO||t===g.METADATA||t===g.THING}static showAboutUrl(){window.location.hash="#/about",document.title="About - photos"}static showAlbumsUrl(){window.location.hash="#/albums",document.title="Albums - photos"}static showPhotosUrl(){window.location.hash="#/photos",document.title="Photos - photos"}static showAlbumUrl(t){window.location.hash=`#/album/${t}`,document.title="Album - photos"}static showPhotoUrl(t){window.location.hash=`#/photo/${t}`,document.title="Photo - photos"}static showMetadataUrl(t){window.location.hash=`#/metadata/${t}`,document.title="Metadata - photos"}static showVideosUrl(){window.location.hash="#/videos",document.title="Videos - photos"}static showThingUrl(t){window.location.hash=`#/thing/${t}`,document.title="Thing - photos"}static getUrl(){return window.location.hash.startsWith("#/albums")?{type:"albums"}:window.location.hash.startsWith("#/album")?{type:"album",id:window.location.hash.split("/")[2]}:window.location.hash.startsWith("#/metadata")?{type:"metadata",id:window.location.hash.split("/")[2]}:window.location.hash.startsWith("#/thing")?{type:"thing",id:window.location.hash.split("/")[2]}:window.location.hash.startsWith("#/photos")?{type:"photos"}:window.location.hash.startsWith("#/about")?{type:"about"}:window.location.hash.startsWith("#/videos")?{type:"videos"}:{type:"albums"}}};var se=class extends m{static get properties(){return{visible:{type:Boolean}}}render(){let t=["photo-sidebar"];return this.visible&&t.push("sidebar-visible"),c`
+var mt = globalThis,
+  qt = mt.ShadowRoot && (mt.ShadyCSS === void 0 || mt.ShadyCSS.nativeShadow) &&
+    "adoptedStyleSheets" in Document.prototype &&
+    "replace" in CSSStyleSheet.prototype,
+  De = Symbol(),
+  we = new WeakMap(),
+  zt = class {
+    constructor(t, e, i) {
+      if (this._$cssResult$ = !0, i !== De) {
+        throw Error(
+          "CSSResult is not constructable. Use `unsafeCSS` or `css` instead.",
+        );
+      }
+      this.cssText = t, this.t = e;
+    }
+    get styleSheet() {
+      let t = this.i, e = this.t;
+      if (qt && t === void 0) {
+        let i = e !== void 0 && e.length === 1;
+        i && (t = we.get(e)),
+          t === void 0 &&
+          ((this.i = t = new CSSStyleSheet()).replaceSync(this.cssText),
+            i && we.set(e, t));
+      }
+      return t;
+    }
+    toString() {
+      return this.cssText;
+    }
+  },
+  ts = (s) => new zt(typeof s == "string" ? s : s + "", void 0, De);
+var es = (s, t) => {
+    if (qt) {
+      s.adoptedStyleSheets = t.map((e) =>
+        e instanceof CSSStyleSheet ? e : e.styleSheet
+      );
+    } else {for (let e of t) {
+        let i = document.createElement("style"), r = mt.litNonce;
+        r !== void 0 && i.setAttribute("nonce", r),
+          i.textContent = e.cssText,
+          s.appendChild(i);
+      }}
+  },
+  Se = qt ? (s) => s : (s) =>
+    s instanceof CSSStyleSheet
+      ? ((t) => {
+        let e = "";
+        for (let i of t.cssRules) e += i.cssText;
+        return ts(e);
+      })(s)
+      : s,
+  {
+    is: ss,
+    defineProperty: is,
+    getOwnPropertyDescriptor: rs,
+    getOwnPropertyNames: ns,
+    getOwnPropertySymbols: os,
+    getPrototypeOf: as,
+  } = Object,
+  xt = globalThis,
+  _e = xt.trustedTypes,
+  ls = _e ? _e.emptyScript : "",
+  cs = xt.reactiveElementPolyfillSupport,
+  nt = (s, t) => s,
+  Ft = {
+    toAttribute(s, t) {
+      switch (t) {
+        case Boolean:
+          s = s ? ls : null;
+          break;
+        case Object:
+        case Array:
+          s = s == null ? s : JSON.stringify(s);
+      }
+      return s;
+    },
+    fromAttribute(s, t) {
+      let e = s;
+      switch (t) {
+        case Boolean:
+          e = s !== null;
+          break;
+        case Number:
+          e = s === null ? null : Number(s);
+          break;
+        case Object:
+        case Array:
+          try {
+            e = JSON.parse(s);
+          } catch {
+            e = null;
+          }
+      }
+      return e;
+    },
+  },
+  Be = (s, t) => !ss(s, t),
+  ve = {
+    attribute: !0,
+    type: String,
+    converter: Ft,
+    reflect: !1,
+    hasChanged: Be,
+  };
+Symbol.metadata ??= Symbol("metadata"),
+  xt.litPropertyMetadata ??= new WeakMap();
+var j = class extends HTMLElement {
+  static addInitializer(t) {
+    this.o(), (this.l ??= []).push(t);
+  }
+  static get observedAttributes() {
+    return this.finalize(), this.u && [...this.u.keys()];
+  }
+  static createProperty(t, e = ve) {
+    if (
+      e.state && (e.attribute = !1),
+        this.o(),
+        this.elementProperties.set(t, e),
+        !e.noAccessor
+    ) {
+      let i = Symbol(), r = this.getPropertyDescriptor(t, i, e);
+      r !== void 0 && is(this.prototype, t, r);
+    }
+  }
+  static getPropertyDescriptor(t, e, i) {
+    let { get: r, set: n } = rs(this.prototype, t) ?? {
+      get() {
+        return this[e];
+      },
+      set(o) {
+        this[e] = o;
+      },
+    };
+    return {
+      get() {
+        return r?.call(this);
+      },
+      set(o) {
+        let c = r?.call(this);
+        n.call(this, o), this.requestUpdate(t, c, i);
+      },
+      configurable: !0,
+      enumerable: !0,
+    };
+  }
+  static getPropertyOptions(t) {
+    return this.elementProperties.get(t) ?? ve;
+  }
+  static o() {
+    if (this.hasOwnProperty(nt("elementProperties"))) return;
+    let t = as(this);
+    t.finalize(),
+      t.l !== void 0 && (this.l = [...t.l]),
+      this.elementProperties = new Map(t.elementProperties);
+  }
+  static finalize() {
+    if (this.hasOwnProperty(nt("finalized"))) return;
+    if (this.finalized = !0, this.o(), this.hasOwnProperty(nt("properties"))) {
+      let e = this.properties, i = [...ns(e), ...os(e)];
+      for (let r of i) this.createProperty(r, e[r]);
+    }
+    let t = this[Symbol.metadata];
+    if (t !== null) {
+      let e = litPropertyMetadata.get(t);
+      if (e !== void 0) {
+        for (let [i, r] of e) this.elementProperties.set(i, r);
+      }
+    }
+    this.u = new Map();
+    for (let [e, i] of this.elementProperties) {
+      let r = this.p(e, i);
+      r !== void 0 && this.u.set(r, e);
+    }
+    this.elementStyles = this.finalizeStyles(this.styles);
+  }
+  static finalizeStyles(t) {
+    let e = [];
+    if (Array.isArray(t)) {
+      let i = new Set(t.flat(1 / 0).reverse());
+      for (let r of i) e.unshift(Se(r));
+    } else t !== void 0 && e.push(Se(t));
+    return e;
+  }
+  static p(t, e) {
+    let i = e.attribute;
+    return i === !1
+      ? void 0
+      : typeof i == "string"
+      ? i
+      : typeof t == "string"
+      ? t.toLowerCase()
+      : void 0;
+  }
+  constructor() {
+    super(),
+      this.v = void 0,
+      this.isUpdatePending = !1,
+      this.hasUpdated = !1,
+      this.m = null,
+      this._();
+  }
+  _() {
+    this.S = new Promise((t) => this.enableUpdating = t),
+      this._$AL = new Map(),
+      this.$(),
+      this.requestUpdate(),
+      this.constructor.l?.forEach((t) => t(this));
+  }
+  addController(t) {
+    (this.P ??= new Set()).add(t),
+      this.renderRoot !== void 0 && this.isConnected && t.hostConnected?.();
+  }
+  removeController(t) {
+    this.P?.delete(t);
+  }
+  $() {
+    let t = new Map(), e = this.constructor.elementProperties;
+    for (let i of e.keys()) {
+      this.hasOwnProperty(i) && (t.set(i, this[i]), delete this[i]);
+    }
+    t.size > 0 && (this.v = t);
+  }
+  createRenderRoot() {
+    let t = this.shadowRoot ??
+      this.attachShadow(this.constructor.shadowRootOptions);
+    return es(t, this.constructor.elementStyles), t;
+  }
+  connectedCallback() {
+    this.renderRoot ??= this.createRenderRoot(),
+      this.enableUpdating(!0),
+      this.P?.forEach((t) => t.hostConnected?.());
+  }
+  enableUpdating(t) {}
+  disconnectedCallback() {
+    this.P?.forEach((t) => t.hostDisconnected?.());
+  }
+  attributeChangedCallback(t, e, i) {
+    this._$AK(t, i);
+  }
+  C(t, e) {
+    let i = this.constructor.elementProperties.get(t),
+      r = this.constructor.p(t, i);
+    if (r !== void 0 && i.reflect === !0) {
+      let n = (i.converter?.toAttribute !== void 0 ? i.converter : Ft)
+        .toAttribute(e, i.type);
+      this.m = t,
+        n == null ? this.removeAttribute(r) : this.setAttribute(r, n),
+        this.m = null;
+    }
+  }
+  _$AK(t, e) {
+    let i = this.constructor, r = i.u.get(t);
+    if (r !== void 0 && this.m !== r) {
+      let n = i.getPropertyOptions(r),
+        o = typeof n.converter == "function"
+          ? { fromAttribute: n.converter }
+          : n.converter?.fromAttribute !== void 0
+          ? n.converter
+          : Ft;
+      this.m = r, this[r] = o.fromAttribute(e, n.type), this.m = null;
+    }
+  }
+  requestUpdate(t, e, i) {
+    if (t !== void 0) {
+      if (
+        i ??= this.constructor.getPropertyOptions(t),
+          !(i.hasChanged ?? Be)(this[t], e)
+      ) return;
+      this.T(t, e, i);
+    }
+    this.isUpdatePending === !1 && (this.S = this.A());
+  }
+  T(t, e, i) {
+    this._$AL.has(t) || this._$AL.set(t, e),
+      i.reflect === !0 && this.m !== t && (this.M ??= new Set()).add(t);
+  }
+  async A() {
+    this.isUpdatePending = !0;
+    try {
+      await this.S;
+    } catch (e) {
+      Promise.reject(e);
+    }
+    let t = this.scheduleUpdate();
+    return t != null && await t, !this.isUpdatePending;
+  }
+  scheduleUpdate() {
+    return this.performUpdate();
+  }
+  performUpdate() {
+    if (!this.isUpdatePending) return;
+    if (!this.hasUpdated) {
+      if (this.renderRoot ??= this.createRenderRoot(), this.v) {
+        for (let [r, n] of this.v) this[r] = n;
+        this.v = void 0;
+      }
+      let i = this.constructor.elementProperties;
+      if (i.size > 0) {
+        for (let [r, n] of i) {
+          n.wrapped !== !0 || this._$AL.has(r) || this[r] === void 0 ||
+            this.T(r, this[r], n);
+        }
+      }
+    }
+    let t = !1, e = this._$AL;
+    try {
+      t = this.shouldUpdate(e),
+        t
+          ? (this.willUpdate(e),
+            this.P?.forEach((i) => i.hostUpdate?.()),
+            this.update(e))
+          : this.k();
+    } catch (i) {
+      throw t = !1, this.k(), i;
+    }
+    t && this._$AE(e);
+  }
+  willUpdate(t) {}
+  _$AE(t) {
+    this.P?.forEach((e) => e.hostUpdated?.()),
+      this.hasUpdated || (this.hasUpdated = !0, this.firstUpdated(t)),
+      this.updated(t);
+  }
+  k() {
+    this._$AL = new Map(), this.isUpdatePending = !1;
+  }
+  get updateComplete() {
+    return this.getUpdateComplete();
+  }
+  getUpdateComplete() {
+    return this.S;
+  }
+  shouldUpdate(t) {
+    return !0;
+  }
+  update(t) {
+    this.M &&= this.M.forEach((e) => this.C(e, this[e])), this.k();
+  }
+  updated(t) {}
+  firstUpdated(t) {}
+};
+j.elementStyles = [],
+  j.shadowRootOptions = { mode: "open" },
+  j[nt("elementProperties")] = new Map(),
+  j[nt("finalized")] = new Map(),
+  cs?.({ ReactiveElement: j }),
+  (xt.reactiveElementVersions ??= []).push("2.0.4");
+var Qt = globalThis,
+  ft = Qt.trustedTypes,
+  xe = ft ? ft.createPolicy("lit-html", { createHTML: (s) => s }) : void 0,
+  Kt = "$lit$",
+  B = `lit$${Math.random().toFixed(9).slice(2)}$`,
+  Jt = "?" + B,
+  hs = `<${Jt}>`,
+  F = document,
+  at = () => F.createComment(""),
+  lt = (s) => s === null || typeof s != "object" && typeof s != "function",
+  He = Array.isArray,
+  je = (s) => He(s) || typeof s?.[Symbol.iterator] == "function",
+  Gt = `[ 	
+\f\r]`,
+  rt = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,
+  Ee = /-->/g,
+  Te = />/g,
+  V = RegExp(
+    `>|${Gt}(?:([^\\s"'>=/]+)(${Gt}*=${Gt}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`,
+    "g",
+  ),
+  Ue = /'/g,
+  Ie = /"/g,
+  Ge = /^(?:script|style|textarea|title)$/i,
+  Ye = (s) => (t, ...e) => ({ _$litType$: s, strings: t, values: e }),
+  l = Ye(1),
+  ds = Ye(2),
+  _ = Symbol.for("lit-noChange"),
+  w = Symbol.for("lit-nothing"),
+  Ce = new WeakMap(),
+  z = F.createTreeWalker(F, 129);
+function Ve(s, t) {
+  if (!Array.isArray(s) || !s.hasOwnProperty("raw")) {
+    throw Error("invalid template strings array");
+  }
+  return xe !== void 0 ? xe.createHTML(t) : t;
+}
+var ze = (s, t) => {
+    let e = s.length - 1, i = [], r, n = t === 2 ? "<svg>" : "", o = rt;
+    for (let c = 0; c < e; c++) {
+      let a = s[c], h, u, d = -1, f = 0;
+      for (; f < a.length && (o.lastIndex = f, u = o.exec(a), u !== null);) {
+        f = o.lastIndex,
+          o === rt
+            ? u[1] === "!--"
+              ? o = Ee
+              : u[1] !== void 0
+              ? o = Te
+              : u[2] !== void 0
+              ? (Ge.test(u[2]) && (r = RegExp("</" + u[2], "g")), o = V)
+              : u[3] !== void 0 && (o = V)
+            : o === V
+            ? u[0] === ">"
+              ? (o = r ?? rt, d = -1)
+              : u[1] === void 0
+              ? d = -2
+              : (d = o.lastIndex - u[2].length,
+                h = u[1],
+                o = u[3] === void 0 ? V : u[3] === '"' ? Ie : Ue)
+            : o === Ie || o === Ue
+            ? o = V
+            : o === Ee || o === Te
+            ? o = rt
+            : (o = V, r = void 0);
+      }
+      let $ = o === V && s[c + 1].startsWith("/>") ? " " : "";
+      n += o === rt
+        ? a + hs
+        : d >= 0
+        ? (i.push(h), a.slice(0, d) + Kt + a.slice(d) + B + $)
+        : a + B + (d === -2 ? c : $);
+    }
+    return [Ve(s, n + (s[e] || "<?>") + (t === 2 ? "</svg>" : "")), i];
+  },
+  ct = class s {
+    constructor({ strings: t, _$litType$: e }, i) {
+      let r;
+      this.parts = [];
+      let n = 0, o = 0, c = t.length - 1, a = this.parts, [h, u] = ze(t, e);
+      if (
+        this.el = s.createElement(h, i),
+          z.currentNode = this.el.content,
+          e === 2
+      ) {
+        let d = this.el.content.firstChild;
+        d.replaceWith(...d.childNodes);
+      }
+      for (; (r = z.nextNode()) !== null && a.length < c;) {
+        if (r.nodeType === 1) {
+          if (r.hasAttributes()) {
+            for (let d of r.getAttributeNames()) {
+              if (d.endsWith(Kt)) {
+                let f = u[o++],
+                  $ = r.getAttribute(d).split(B),
+                  b = /([.?@])?(.*)/.exec(f);
+                a.push({
+                  type: 1,
+                  index: n,
+                  name: b[2],
+                  strings: $,
+                  ctor: b[1] === "."
+                    ? $t
+                    : b[1] === "?"
+                    ? bt
+                    : b[1] === "@"
+                    ? yt
+                    : Z,
+                }), r.removeAttribute(d);
+              } else {d.startsWith(B) &&
+                  (a.push({ type: 6, index: n }), r.removeAttribute(d));}
+            }
+          }
+          if (Ge.test(r.tagName)) {
+            let d = r.textContent.split(B), f = d.length - 1;
+            if (f > 0) {
+              r.textContent = ft ? ft.emptyScript : "";
+              for (let $ = 0; $ < f; $++) {
+                r.append(d[$], at()),
+                  z.nextNode(),
+                  a.push({ type: 2, index: ++n });
+              }
+              r.append(d[f], at());
+            }
+          }
+        } else if (r.nodeType === 8) {
+          if (r.data === Jt) a.push({ type: 2, index: n });
+          else {
+            let d = -1;
+            for (; (d = r.data.indexOf(B, d + 1)) !== -1;) {
+              a.push({ type: 7, index: n }), d += B.length - 1;
+            }
+          }
+        }
+        n++;
+      }
+    }
+    static createElement(t, e) {
+      let i = F.createElement("template");
+      return i.innerHTML = t, i;
+    }
+  };
+function W(s, t, e = s, i) {
+  if (t === _) return t;
+  let r = i !== void 0 ? e.U?.[i] : e.N, n = lt(t) ? void 0 : t._$litDirective$;
+  return r?.constructor !== n &&
+    (r?._$AO?.(!1),
+      n === void 0 ? r = void 0 : (r = new n(s), r._$AT(s, e, i)),
+      i !== void 0 ? (e.U ??= [])[i] = r : e.N = r),
+    r !== void 0 && (t = W(s, r._$AS(s, t.values), r, i)),
+    t;
+}
+var gt = class {
+    constructor(t, e) {
+      this._$AV = [], this._$AN = void 0, this._$AD = t, this._$AM = e;
+    }
+    get parentNode() {
+      return this._$AM.parentNode;
+    }
+    get _$AU() {
+      return this._$AM._$AU;
+    }
+    O(t) {
+      let { el: { content: e }, parts: i } = this._$AD,
+        r = (t?.creationScope ?? F).importNode(e, !0);
+      z.currentNode = r;
+      let n = z.nextNode(), o = 0, c = 0, a = i[0];
+      for (; a !== void 0;) {
+        if (o === a.index) {
+          let h;
+          a.type === 2
+            ? h = new Et(n, n.nextSibling, this, t)
+            : a.type === 1
+            ? h = new a.ctor(n, a.name, a.strings, this, t)
+            : a.type === 6 && (h = new At(n, this, t)),
+            this._$AV.push(h),
+            a = i[++c];
+        }
+        o !== a?.index && (n = z.nextNode(), o++);
+      }
+      return z.currentNode = F, r;
+    }
+    R(t) {
+      let e = 0;
+      for (let i of this._$AV) {
+        i !== void 0 &&
+        (i.strings !== void 0
+          ? (i._$AI(t, i, e), e += i.strings.length - 2)
+          : i._$AI(t[e])), e++;
+      }
+    }
+  },
+  Et = class Fe {
+    get _$AU() {
+      return this._$AM?._$AU ?? this.V;
+    }
+    constructor(t, e, i, r) {
+      this.type = 2,
+        this._$AH = w,
+        this._$AN = void 0,
+        this._$AA = t,
+        this._$AB = e,
+        this._$AM = i,
+        this.options = r,
+        this.V = r?.isConnected ?? !0;
+    }
+    get parentNode() {
+      let t = this._$AA.parentNode, e = this._$AM;
+      return e !== void 0 && t?.nodeType === 11 && (t = e.parentNode), t;
+    }
+    get startNode() {
+      return this._$AA;
+    }
+    get endNode() {
+      return this._$AB;
+    }
+    _$AI(t, e = this) {
+      t = W(this, t, e),
+        lt(t)
+          ? t === w || t == null || t === ""
+            ? (this._$AH !== w && this._$AR(), this._$AH = w)
+            : t !== this._$AH && t !== _ && this.L(t)
+          : t._$litType$ !== void 0
+          ? this.I(t)
+          : t.nodeType !== void 0
+          ? this.j(t)
+          : je(t)
+          ? this.D(t)
+          : this.L(t);
+    }
+    H(t) {
+      return this._$AA.parentNode.insertBefore(t, this._$AB);
+    }
+    j(t) {
+      this._$AH !== t && (this._$AR(), this._$AH = this.H(t));
+    }
+    L(t) {
+      this._$AH !== w && lt(this._$AH)
+        ? this._$AA.nextSibling.data = t
+        : this.j(F.createTextNode(t)), this._$AH = t;
+    }
+    I(t) {
+      let { values: e, _$litType$: i } = t,
+        r = typeof i == "number" ? this._$AC(t) : (i.el === void 0 &&
+          (i.el = ct.createElement(Ve(i.h, i.h[0]), this.options)),
+          i);
+      if (this._$AH?._$AD === r) this._$AH.R(e);
+      else {
+        let n = new gt(r, this), o = n.O(this.options);
+        n.R(e), this.j(o), this._$AH = n;
+      }
+    }
+    _$AC(t) {
+      let e = Ce.get(t.strings);
+      return e === void 0 && Ce.set(t.strings, e = new ct(t)), e;
+    }
+    D(t) {
+      He(this._$AH) || (this._$AH = [], this._$AR());
+      let e = this._$AH, i, r = 0;
+      for (let n of t) {
+        r === e.length
+          ? e.push(i = new Fe(this.H(at()), this.H(at()), this, this.options))
+          : i = e[r],
+          i._$AI(n),
+          r++;
+      }
+      r < e.length && (this._$AR(i && i._$AB.nextSibling, r), e.length = r);
+    }
+    _$AR(t = this._$AA.nextSibling, e) {
+      for (this._$AP?.(!1, !0, e); t && t !== this._$AB;) {
+        let i = t.nextSibling;
+        t.remove(), t = i;
+      }
+    }
+    setConnected(t) {
+      this._$AM === void 0 && (this.V = t, this._$AP?.(t));
+    }
+  },
+  Z = class {
+    get tagName() {
+      return this.element.tagName;
+    }
+    get _$AU() {
+      return this._$AM._$AU;
+    }
+    constructor(t, e, i, r, n) {
+      this.type = 1,
+        this._$AH = w,
+        this._$AN = void 0,
+        this.element = t,
+        this.name = e,
+        this._$AM = r,
+        this.options = n,
+        i.length > 2 || i[0] !== "" || i[1] !== ""
+          ? (this._$AH = Array(i.length - 1).fill(new String()),
+            this.strings = i)
+          : this._$AH = w;
+    }
+    _$AI(t, e = this, i, r) {
+      let n = this.strings, o = !1;
+      if (n === void 0) {
+        t = W(this, t, e, 0),
+          o = !lt(t) || t !== this._$AH && t !== _,
+          o && (this._$AH = t);
+      } else {
+        let c = t, a, h;
+        for (t = n[0], a = 0; a < n.length - 1; a++) {
+          h = W(this, c[i + a], e, a),
+            h === _ && (h = this._$AH[a]),
+            o ||= !lt(h) || h !== this._$AH[a],
+            h === w ? t = w : t !== w && (t += (h ?? "") + n[a + 1]),
+            this._$AH[a] = h;
+        }
+      }
+      o && !r && this.B(t);
+    }
+    B(t) {
+      t === w
+        ? this.element.removeAttribute(this.name)
+        : this.element.setAttribute(this.name, t ?? "");
+    }
+  },
+  $t = class extends Z {
+    constructor() {
+      super(...arguments), this.type = 3;
+    }
+    B(t) {
+      this.element[this.name] = t === w ? void 0 : t;
+    }
+  },
+  bt = class extends Z {
+    constructor() {
+      super(...arguments), this.type = 4;
+    }
+    B(t) {
+      this.element.toggleAttribute(this.name, !!t && t !== w);
+    }
+  },
+  yt = class extends Z {
+    constructor(t, e, i, r, n) {
+      super(t, e, i, r, n), this.type = 5;
+    }
+    _$AI(t, e = this) {
+      if ((t = W(this, t, e, 0) ?? w) === _) return;
+      let i = this._$AH,
+        r = t === w && i !== w || t.capture !== i.capture ||
+          t.once !== i.once || t.passive !== i.passive,
+        n = t !== w && (i === w || r);
+      r && this.element.removeEventListener(this.name, this, i),
+        n && this.element.addEventListener(this.name, this, t),
+        this._$AH = t;
+    }
+    handleEvent(t) {
+      typeof this._$AH == "function"
+        ? this._$AH.call(this.options?.host ?? this.element, t)
+        : this._$AH.handleEvent(t);
+    }
+  },
+  At = class {
+    constructor(t, e, i) {
+      this.element = t,
+        this.type = 6,
+        this._$AN = void 0,
+        this._$AM = e,
+        this.options = i;
+    }
+    get _$AU() {
+      return this._$AM._$AU;
+    }
+    _$AI(t) {
+      W(this, t);
+    }
+  },
+  ps = {
+    W: Kt,
+    q: B,
+    J: Jt,
+    Z: 1,
+    F: ze,
+    G: gt,
+    K: je,
+    X: W,
+    Y: Et,
+    tt: Z,
+    st: bt,
+    it: yt,
+    et: $t,
+    ot: At,
+  },
+  us = Qt.litHtmlPolyfillSupport;
+us?.(ct, Et), (Qt.litHtmlVersions ??= []).push("3.1.3");
+var We = (s, t, e) => {
+  let i = e?.renderBefore ?? t, r = i._$litPart$;
+  if (r === void 0) {
+    let n = e?.renderBefore ?? null;
+    i._$litPart$ = r = new Et(t.insertBefore(at(), n), n, void 0, e ?? {});
+  }
+  return r._$AI(s), r;
+};
+var Y = class extends j {
+  constructor() {
+    super(...arguments), this.renderOptions = { host: this }, this.ht = void 0;
+  }
+  createRenderRoot() {
+    let t = super.createRenderRoot();
+    return this.renderOptions.renderBefore ??= t.firstChild, t;
+  }
+  update(t) {
+    let e = this.render();
+    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected),
+      super.update(t),
+      this.ht = We(e, this.renderRoot, this.renderOptions);
+  }
+  connectedCallback() {
+    super.connectedCallback(), this.ht?.setConnected(!0);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback(), this.ht?.setConnected(!1);
+  }
+  render() {
+    return _;
+  }
+};
+Y._$litElement$ = !0,
+  Y.finalized = !0,
+  globalThis.litElementHydrateSupport?.({ LitElement: Y });
+var ms = globalThis.litElementPolyfillSupport;
+ms?.({ LitElement: Y });
+(globalThis.litElementVersions ??= []).push("4.0.5");
+var { Y: fs } = ps,
+  gs = (s) => s === null || typeof s != "object" && typeof s != "function";
+var Me = (s, t) =>
+    t === void 0 ? s?._$litType$ !== void 0 : s?._$litType$ === t,
+  $s = (s) => s?._$litType$?.h != null;
+var Ze = (s) => s.strings === void 0,
+  Re = () => document.createComment(""),
+  G = (s, t, e) => {
+    let i = s._$AA.parentNode, r = t === void 0 ? s._$AB : t._$AA;
+    if (e === void 0) {
+      let n = i.insertBefore(Re(), r), o = i.insertBefore(Re(), r);
+      e = new fs(n, o, s, s.options);
+    } else {
+      let n = e._$AB.nextSibling, o = e._$AM, c = o !== s;
+      if (c) {
+        let a;
+        e._$AQ?.(s),
+          e._$AM = s,
+          e._$AP !== void 0 && (a = s._$AU) !== o._$AU && e._$AP(a);
+      }
+      if (n !== r || c) {
+        let a = e._$AA;
+        for (; a !== n;) {
+          let h = a.nextSibling;
+          i.insertBefore(a, r), a = h;
+        }
+      }
+    }
+    return e;
+  },
+  H = (s, t, e = s) => (s._$AI(t, e), s),
+  bs = {},
+  ht = (s, t = bs) => s._$AH = t,
+  Wt = (s) => s._$AH,
+  Yt = (s) => {
+    s._$AP?.(!1, !0);
+    let t = s._$AA, e = s._$AB.nextSibling;
+    for (; t !== e;) {
+      let i = t.nextSibling;
+      t.remove(), t = i;
+    }
+  },
+  qe = (s) => {
+    s._$AR();
+  };
+var E = (s) => (...t) => ({ _$litDirective$: s, values: t }),
+  L = class {
+    constructor(t) {}
+    get _$AU() {
+      return this._$AM._$AU;
+    }
+    _$AT(t, e, i) {
+      this.nt = t, this._$AM = e, this.rt = i;
+    }
+    _$AS(t, e) {
+      return this.update(t, e);
+    }
+    update(t, e) {
+      return this.render(...e);
+    }
+  };
+var ot = (s, t) => {
+    let e = s._$AN;
+    if (e === void 0) return !1;
+    for (let i of e) i._$AO?.(t, !1), ot(i, t);
+    return !0;
+  },
+  wt = (s) => {
+    let t, e;
+    do {
+      if ((t = s._$AM) === void 0) break;
+      e = t._$AN, e.delete(s), s = t;
+    } while (e?.size === 0);
+  },
+  Qe = (s) => {
+    for (let t; t = s._$AM; s = t) {
+      let e = t._$AN;
+      if (e === void 0) t._$AN = e = new Set();
+      else if (e.has(s)) break;
+      e.add(s), ws(t);
+    }
+  };
+function ys(s) {
+  this._$AN !== void 0 ? (wt(this), this._$AM = s, Qe(this)) : this._$AM = s;
+}
+function As(s, t = !1, e = 0) {
+  let i = this._$AH, r = this._$AN;
+  if (r !== void 0 && r.size !== 0) {
+    if (t) {
+      if (Array.isArray(i)) {
+        for (let n = e; n < i.length; n++) ot(i[n], !1), wt(i[n]);
+      } else i != null && (ot(i, !1), wt(i));
+    } else ot(this, s);
+  }
+}
+var ws = (s) => {
+    s.type == 2 && (s._$AP ??= As, s._$AQ ??= ys);
+  },
+  dt = class extends L {
+    constructor() {
+      super(...arguments), this._$AN = void 0;
+    }
+    _$AT(t, e, i) {
+      super._$AT(t, e, i), Qe(this), this.isConnected = t._$AU;
+    }
+    _$AO(t, e = !0) {
+      t !== this.isConnected &&
+      (this.isConnected = t, t ? this.reconnected?.() : this.disconnected?.()),
+        e && (ot(this, t), wt(this));
+    }
+    setValue(t) {
+      if (Ze(this.nt)) this.nt._$AI(t, this);
+      else {
+        let e = [...this.nt._$AH];
+        e[this.rt] = t, this.nt._$AI(e, this, 0);
+      }
+    }
+    disconnected() {}
+    reconnected() {}
+  };
+var St = class {
+    constructor(t) {
+      this.ct = t;
+    }
+    disconnect() {
+      this.ct = void 0;
+    }
+    reconnect(t) {
+      this.ct = t;
+    }
+    deref() {
+      return this.ct;
+    }
+  },
+  _t = class {
+    constructor() {
+      this.lt = void 0, this.ut = void 0;
+    }
+    get() {
+      return this.lt;
+    }
+    pause() {
+      this.lt ??= new Promise((t) => this.ut = t);
+    }
+    resume() {
+      this.ut?.(), this.lt = this.ut = void 0;
+    }
+  };
+var vt = class extends dt {
+    constructor() {
+      super(...arguments), this.dt = new St(this), this.ft = new _t();
+    }
+    render(t, e) {
+      return _;
+    }
+    update(t, [e, i]) {
+      if (this.isConnected || this.disconnected(), e === this.vt) return _;
+      this.vt = e;
+      let r = 0, { dt: n, ft: o } = this;
+      return (async (c, a) => {
+        for await (let h of c) if (await a(h) === !1) return;
+      })(e, async (c) => {
+        for (; o.get();) await o.get();
+        let a = n.deref();
+        if (a !== void 0) {
+          if (a.vt !== e) return !1;
+          i !== void 0 && (c = i(c, r)), a.commitValue(c, r), r++;
+        }
+        return !0;
+      }),
+        _;
+    }
+    commitValue(t, e) {
+      this.setValue(t);
+    }
+    disconnected() {
+      this.dt.disconnect(), this.ft.pause();
+    }
+    reconnected() {
+      this.dt.reconnect(this), this.ft.resume();
+    }
+  },
+  Os = E(vt),
+  Tt = E(
+    class extends vt {
+      constructor(s) {
+        if (super(s), s.type !== 2) {
+          throw Error(
+            "asyncAppend can only be used in child expressions",
+          );
+        }
+      }
+      update(s, t) {
+        return this.ht = s, super.update(s, t);
+      }
+      commitValue(s, t) {
+        t === 0 && qe(this.ht);
+        let e = G(this.ht);
+        H(e, s);
+      }
+    },
+  ),
+  Le = (s) => $s(s) ? s._$litType$.h : s.strings,
+  ks = E(
+    class extends L {
+      constructor(s) {
+        super(s), this.yt = new WeakMap();
+      }
+      render(s) {
+        return [s];
+      }
+      update(s, [t]) {
+        let e = Me(this.bt) ? Le(this.bt) : null, i = Me(t) ? Le(t) : null;
+        if (e !== null && (i === null || e !== i)) {
+          let r = Wt(s).pop(), n = this.yt.get(e);
+          if (n === void 0) {
+            let o = document.createDocumentFragment();
+            n = We(w, o), n.setConnected(!1), this.yt.set(e, n);
+          }
+          ht(n, [r]), G(n, void 0, r);
+        }
+        if (i !== null) {
+          if (e === null || e !== i) {
+            let r = this.yt.get(i);
+            if (r !== void 0) {
+              let n = Wt(r).pop();
+              qe(s), G(s, void 0, n), ht(s, [n]);
+            }
+          }
+          this.bt = t;
+        } else this.bt = void 0;
+        return this.render(t);
+      }
+    },
+  );
+var Ps = E(
+    class extends L {
+      constructor(s) {
+        if (
+          super(s), s.type !== 1 || s.name !== "class" || s.strings?.length > 2
+        ) {
+          throw Error(
+            "`classMap()` can only be used in the `class` attribute and must be the only part in the attribute.",
+          );
+        }
+      }
+      render(s) {
+        return " " + Object.keys(s).filter((t) => s[t]).join(" ") + " ";
+      }
+      update(s, [t]) {
+        if (this.gt === void 0) {
+          this.gt = new Set(),
+            s.strings !== void 0 &&
+            (this.wt = new Set(
+              s.strings.join(" ").split(/\s/).filter((i) => i !== ""),
+            ));
+          for (let i in t) t[i] && !this.wt?.has(i) && this.gt.add(i);
+          return this.render(t);
+        }
+        let e = s.element.classList;
+        for (let i of this.gt) i in t || (e.remove(i), this.gt.delete(i));
+        for (let i in t) {
+          let r = !!t[i];
+          r === this.gt.has(i) || this.wt?.has(i) ||
+            (r ? (e.add(i), this.gt.add(i)) : (e.remove(i), this.gt.delete(i)));
+        }
+        return _;
+      }
+    },
+  ),
+  Ss = {},
+  Ns = E(
+    class extends L {
+      constructor() {
+        super(...arguments), this._t = Ss;
+      }
+      render(s, t) {
+        return t();
+      }
+      update(s, [t, e]) {
+        if (Array.isArray(t)) {
+          if (
+            Array.isArray(this._t) && this._t.length === t.length &&
+            t.every((i, r) => i === this._t[r])
+          ) return _;
+        } else if (this._t === t) return _;
+        return this._t = Array.isArray(t) ? Array.from(t) : t,
+          this.render(t, e);
+      }
+    },
+  );
+var Ds = E(
+    class extends L {
+      constructor() {
+        super(...arguments), this.key = w;
+      }
+      render(s, t) {
+        return this.key = s, t;
+      }
+      update(s, [t, e]) {
+        return t !== this.key && (ht(s), this.key = t), e;
+      }
+    },
+  ),
+  Bs = E(
+    class extends L {
+      constructor(s) {
+        if (super(s), s.type !== 3 && s.type !== 1 && s.type !== 4) {
+          throw Error(
+            "The `live` directive is not allowed on child or event bindings",
+          );
+        }
+        if (!Ze(s)) {
+          throw Error(
+            "`live` bindings can only contain a single expression",
+          );
+        }
+      }
+      render(s) {
+        return s;
+      }
+      update(s, [t]) {
+        if (t === _ || t === w) return t;
+        let e = s.element, i = s.name;
+        if (s.type === 3) {
+          if (t === e[i]) return _;
+          if (s.type === 4) {
+            if (!!t === e.hasAttribute(i)) return _;
+            if (s.type === 1 && e.getAttribute(i) === t + "") return _;
+          }
+        }
+        return ht(s), t;
+      }
+    },
+  );
+var Vt = new WeakMap(),
+  Hs = E(
+    class extends dt {
+      render(s) {
+        return w;
+      }
+      update(s, [t]) {
+        let e = t !== this.ct;
+        return e && this.ct !== void 0 && this.St(void 0),
+          (e || this.$t !== this.Tt) &&
+          (this.ct = t,
+            this.xt = s.options?.host,
+            this.St(this.Tt = s.element)),
+          w;
+      }
+      St(s) {
+        if (typeof this.ct == "function") {
+          let t = this.xt ?? globalThis, e = Vt.get(t);
+          e === void 0 && (e = new WeakMap(), Vt.set(t, e)),
+            e.get(this.ct) !== void 0 && this.ct.call(this.xt, void 0),
+            e.set(this.ct, s),
+            s !== void 0 && this.ct.call(this.xt, s);
+        } else this.ct.value = s;
+      }
+      get $t() {
+        return typeof this.ct == "function"
+          ? Vt.get(this.xt ?? globalThis)?.get(this.ct)
+          : this.ct?.value;
+      }
+      disconnected() {
+        this.$t === this.Tt && this.St(void 0);
+      }
+      reconnected() {
+        this.St(this.Tt);
+      }
+    },
+  ),
+  Oe = (s, t, e) => {
+    let i = new Map();
+    for (let r = t; r <= e; r++) i.set(s[r], r);
+    return i;
+  },
+  js = E(
+    class extends L {
+      constructor(s) {
+        if (super(s), s.type !== 2) {
+          throw Error(
+            "repeat() can only be used in text expressions",
+          );
+        }
+      }
+      Et(s, t, e) {
+        let i;
+        e === void 0 ? e = t : t !== void 0 && (i = t);
+        let r = [], n = [], o = 0;
+        for (let c of s) r[o] = i ? i(c, o) : o, n[o] = e(c, o), o++;
+        return { values: n, keys: r };
+      }
+      render(s, t, e) {
+        return this.Et(s, t, e).values;
+      }
+      update(s, [t, e, i]) {
+        let r = Wt(s), { values: n, keys: o } = this.Et(t, e, i);
+        if (!Array.isArray(r)) return this.Ct = o, n;
+        let c = this.Ct ??= [],
+          a = [],
+          h,
+          u,
+          d = 0,
+          f = r.length - 1,
+          $ = 0,
+          b = n.length - 1;
+        for (; d <= f && $ <= b;) {
+          if (r[d] === null) d++;
+          else if (r[f] === null) f--;
+          else if (c[d] === o[$]) a[$] = H(r[d], n[$]), d++, $++;
+          else if (c[f] === o[b]) a[b] = H(r[f], n[b]), f--, b--;
+          else if (c[d] === o[b]) {
+            a[b] = H(r[d], n[b]), G(s, a[b + 1], r[d]), d++, b--;
+          } else if (c[f] === o[$]) {
+            a[$] = H(r[f], n[$]), G(s, r[d], r[f]), f--, $++;
+          } else if (
+            h === void 0 && (h = Oe(o, $, b), u = Oe(c, d, f)), h.has(c[d])
+          ) {
+            if (h.has(c[f])) {
+              let I = u.get(o[$]), it = I !== void 0 ? r[I] : null;
+              if (it === null) {
+                let Ae = G(s, r[d]);
+                H(Ae, n[$]), a[$] = Ae;
+              } else a[$] = H(it, n[$]), G(s, r[d], it), r[I] = null;
+              $++;
+            } else Yt(r[f]), f--;
+          } else Yt(r[d]), d++;
+        }
+        for (; $ <= b;) {
+          let I = G(s, a[b + 1]);
+          H(I, n[$]), a[$++] = I;
+        }
+        for (; d <= f;) {
+          let I = r[d++];
+          I !== null && Yt(I);
+        }
+        return this.Ct = o, ht(s, a), _;
+      }
+    },
+  ),
+  Ke = "important",
+  _s = " !" + Ke,
+  Gs = E(
+    class extends L {
+      constructor(s) {
+        if (
+          super(s), s.type !== 1 || s.name !== "style" || s.strings?.length > 2
+        ) {
+          throw Error(
+            "The `styleMap` directive must be used in the `style` attribute and must be the only part in the attribute.",
+          );
+        }
+      }
+      render(s) {
+        return Object.keys(s).reduce((t, e) => {
+          let i = s[e];
+          return i == null
+            ? t
+            : t + `${e = e.includes("-")
+              ? e
+              : e.replace(/(?:^(webkit|moz|ms|o)|)(?=[A-Z])/g, "-$&")
+                .toLowerCase()}:${i};`;
+        }, "");
+      }
+      update(s, [t]) {
+        let { style: e } = s.element;
+        if (this.Pt === void 0) {
+          return this.Pt = new Set(Object.keys(t)), this.render(t);
+        }
+        for (let i of this.Pt) {
+          t[i] == null &&
+            (this.Pt.delete(i),
+              i.includes("-") ? e.removeProperty(i) : e[i] = null);
+        }
+        for (let i in t) {
+          let r = t[i];
+          if (r != null) {
+            this.Pt.add(i);
+            let n = typeof r == "string" && r.endsWith(_s);
+            i.includes("-") || n
+              ? e.setProperty(i, n ? r.slice(0, -11) : r, n ? Ke : "")
+              : e[i] = r;
+          }
+        }
+        return _;
+      }
+    },
+  ),
+  Ys = E(
+    class extends L {
+      constructor(s) {
+        if (super(s), s.type !== 2) {
+          throw Error(
+            "templateContent can only be used in child bindings",
+          );
+        }
+      }
+      render(s) {
+        return this.At === s
+          ? _
+          : (this.At = s, document.importNode(s.content, !0));
+      }
+    },
+  ),
+  Q = class extends L {
+    constructor(t) {
+      if (super(t), this.bt = w, t.type !== 2) {
+        throw Error(
+          this.constructor.directiveName +
+            "() can only be used in child bindings",
+        );
+      }
+    }
+    render(t) {
+      if (t === w || t == null) return this.kt = void 0, this.bt = t;
+      if (t === _) return t;
+      if (typeof t != "string") {
+        throw Error(
+          this.constructor.directiveName + "() called with a non-string value",
+        );
+      }
+      if (t === this.bt) return this.kt;
+      this.bt = t;
+      let e = [t];
+      return e.raw = e,
+        this.kt = {
+          _$litType$: this.constructor.resultType,
+          strings: e,
+          values: [],
+        };
+    }
+  };
+Q.directiveName = "unsafeHTML", Q.resultType = 1;
+var Ut = E(Q);
+var pt = class extends Q {};
+pt.directiveName = "unsafeSVG", pt.resultType = 2;
+var Vs = E(pt),
+  ke = (s) => !gs(s) && typeof s.then == "function",
+  Pe = 1073741823;
+var Zt = class extends dt {
+    constructor() {
+      super(...arguments),
+        this.Mt = Pe,
+        this.Ut = [],
+        this.dt = new St(this),
+        this.ft = new _t();
+    }
+    render(...t) {
+      return t.find((e) => !ke(e)) ?? _;
+    }
+    update(t, e) {
+      let i = this.Ut, r = i.length;
+      this.Ut = e;
+      let n = this.dt, o = this.ft;
+      this.isConnected || this.disconnected();
+      for (let c = 0; c < e.length && !(c > this.Mt); c++) {
+        let a = e[c];
+        if (!ke(a)) return this.Mt = c, a;
+        c < r && a === i[c] ||
+          (this.Mt = Pe,
+            r = 0,
+            Promise.resolve(a).then(async (h) => {
+              for (; o.get();) await o.get();
+              let u = n.deref();
+              if (u !== void 0) {
+                let d = u.Ut.indexOf(a);
+                d > -1 && d < u.Mt && (u.Mt = d, u.setValue(h));
+              }
+            }));
+      }
+      return _;
+    }
+    disconnected() {
+      this.dt.disconnect(), this.ft.pause();
+    }
+    reconnected() {
+      this.dt.reconnect(this), this.ft.resume();
+    }
+  },
+  zs = E(Zt);
+var vs = Symbol.for(""),
+  xs = (s) => {
+    if (s?.r === vs) return s?._$litStatic$;
+  };
+var Ne = new Map(),
+  Je = (s) => (t, ...e) => {
+    let i = e.length, r, n, o = [], c = [], a, h = 0, u = !1;
+    for (; h < i;) {
+      for (a = t[h]; h < i && (n = e[h], (r = xs(n)) !== void 0);) {
+        a += r + t[++h], u = !0;
+      }
+      h !== i && c.push(n), o.push(a), h++;
+    }
+    if (h === i && o.push(t[i]), u) {
+      let d = o.join("$$lit$$");
+      (t = Ne.get(d)) === void 0 && (o.raw = o, Ne.set(d, t = o)), e = c;
+    }
+    return s(t, ...e);
+  },
+  Fs = Je(l),
+  Ws = Je(ds);
+var m = class extends Y {
+  createRenderRoot() {
+    return this;
+  }
+  broadcast(t, e) {
+    return () => {
+      let i = new CustomEvent(t, { detail: e, bubbles: !0, composed: !0 });
+      this.dispatchEvent(i);
+    };
+  }
+};
+var It = Symbol("the albums manifest"),
+  Ct = Symbol("the images manifest"),
+  ai = Symbol("the site manifest"),
+  Mt = Symbol("the videos manifest"),
+  Rt = Symbol("the exif data"),
+  li = Symbol("the semantic data"),
+  ci = Symbol("the album stats"),
+  Lt = Symbol("the triples data");
+var Xe = "photos",
+  p = class {
+    static EAGER = "eager";
+    static LAZY = "lazy";
+  },
+  g = class {
+    static PHOTOS = "photos";
+    static ALBUMS = "albums";
+    static ALBUM = "album";
+    static METADATA = "metadata";
+    static ABOUT = "about";
+    static VIDEOS = "videos";
+    static THING = "thing";
+  },
+  A = class {
+    static UNESCO = "unesco";
+    static BIRD = "bird";
+    static MAMMAL = "mammal";
+    static REPTILE = "reptile";
+    static FISH = "fish";
+    static INSECT = "insect";
+    static AMPHIBIAN = "amphibian";
+    static GEONAME = "geoname";
+  },
+  S = class {
+    static SUBJECT = "subject";
+    static LOCATION = "location";
+    static LONGITUDE = "longitude";
+    static LATITUDE = "latitude";
+    static RATING = "rating";
+    static NAME = "name";
+    static BIRDWATCH_URL = "birdwatch_url";
+    static WIKIPEDIA = "wikipedia";
+  },
+  K = new Set(["bird", "mammal", "reptile", "amphibian", "fish", "insect"]);
+var J = window.envConfig,
+  Ot = class {
+    _data;
+    constructor(t = `/manifest/images.${J.publication_id}.json`) {
+      this.url = t;
+    }
+    processImages(t) {
+      let e = t[0], i = [];
+      for (let r of t.slice(1)) {
+        let n = {};
+        for (let o = 0; o < e.length; o++) n[e[o]] = r[o];
+        i.push(n);
+      }
+      return i;
+    }
+    async init() {
+      if (window[Ct] && (this._data = window[Ct]), this._data || this.loading) {
+        return;
+      }
+      console.log(`\u{1F50E} fetching ${this.url}`);
+      let t = await (await fetch(this.url)).json(), e = this.processImages(t);
+      window[Ct] = e, this._data = e;
+    }
+    images() {
+      return this._data.map((t) => ({
+        ...t,
+        full_image: `https://photos-cdn.rgrannell.xyz${t.full_image}`,
+        thumbnail_url: `https://photos-cdn.rgrannell.xyz${t.thumbnail_url}`,
+      }));
+    }
+  },
+  kt = class {
+    _data;
+    constructor(t = `/manifest/videos.${J.publication_id}.json`) {
+      this.url = t;
+    }
+    processVideos(t) {
+      let e = t[0], i = [];
+      for (let r of t.slice(1)) {
+        let n = {};
+        for (let o = 0; o < e.length; o++) n[e[o]] = r[o];
+        i.push(n);
+      }
+      return i;
+    }
+    async init() {
+      if (window[Mt] && (this._data = window[Mt]), this._data || this.loading) {
+        return;
+      }
+      console.log(`\u{1F50E} fetching ${this.url}`);
+      let t = await (await fetch(this.url)).json(), e = this.processVideos(t);
+      window[Mt] = e, this._data = e;
+    }
+    videos() {
+      return this._data.map((t) => ({
+        ...t,
+        poster_url: `https://photos-cdn.rgrannell.xyz${t.poster_url}`,
+        video_url_1080p: `https://photos-cdn.rgrannell.xyz${t.video_url_1080p}`,
+        video_url_480p: `https://photos-cdn.rgrannell.xyz${t.video_url_480p}`,
+        video_url_720p: `https://photos-cdn.rgrannell.xyz${t.video_url_720p}`,
+        video_url_unscaled:
+          `https://photos-cdn.rgrannell.xyz${t.video_url_unscaled}`,
+        tags: (t.tags ?? "").split(",").filter((e) => e != "Published").map(
+          (e) => e.trim(),
+        ),
+      }));
+    }
+  },
+  Pt = class {
+    _data;
+    constructor(t = `/manifest/albums.${J.publication_id}.json`) {
+      this.url = t;
+    }
+    process(t) {
+      let e = t[0], i = [];
+      for (let r of t.slice(1)) {
+        let n = {};
+        if (r.length !== e.length) {
+          throw new Error(
+            `album row length mismatch: expected ${e.length}, got ${r.length}`,
+          );
+        }
+        for (let o = 0; o < e.length; o++) n[e[o]] = r[o];
+        i.push(n);
+      }
+      return i;
+    }
+    async init() {
+      if (window[It] && (this._data = window[It]), this._data) return;
+      console.log(`\u{1F50E} fetching ${this.url}`);
+      let t = await (await fetch(this.url)).json(), e = this.process(t);
+      window[It] = e, this._data = e;
+    }
+    albums() {
+      return this._data.map((t) => ({
+        ...t,
+        thumbnail_url: `https://photos-cdn.rgrannell.xyz${t.thumbnail_url}`,
+        thumbnail_mosaic_url: `${t.thumbnail_mosaic_url}`,
+      }));
+    }
+  },
+  Nt = class {
+    _data;
+    constructor(t = `/manifest/exif.${J.publication_id}.json`) {
+      this.url = t;
+    }
+    process(t) {
+      let e = t[0], i = [];
+      for (let r of t.slice(1)) {
+        let n = {};
+        for (let o = 0; o < e.length; o++) n[e[o]] = r[o];
+        i.push(n);
+      }
+      return i;
+    }
+    async init() {
+      if (window[Rt] && (this._data = window[Rt]), this._data) return;
+      console.log(`\u{1F50E} fetching ${this.url}`);
+      let t = await (await fetch(this.url)).json(), e = this.process(t);
+      window[Rt] = e, this._data = e;
+    }
+    exif() {
+      return this._data;
+    }
+  };
+var Dt = class {
+    _data;
+    constructor(t = `/manifest/stats.${J.publication_id}.json`) {
+      this.url = t;
+    }
+    async init() {
+      let t = document.getElementById("stats-data");
+      this._data = JSON.parse(t.textContent),
+        this._data || console.error("stats symbol not injected");
+    }
+    stats() {
+      return this._data;
+    }
+  },
+  Bt = class {
+    _data;
+    constructor(t = `/manifest/triples.${J.publication_id}.json`) {
+      this.url = t;
+    }
+    async init() {
+      if (window[Lt] && (this._data = window[Lt]), this._data) return;
+      console.log(`\u{1F50E} fetching ${this.url}`);
+      let t = await (await fetch(this.url)).json();
+      window[Lt] = t, this._data = t;
+    }
+  };
+var P = class s {
+  static ROUTES = {
+    [g.PHOTOS]: this.showPhotosUrl,
+    [g.ALBUMS]: this.showAlbumsUrl,
+    [g.ALBUM]: this.showAlbumUrl,
+    [g.METADATA]: this.showMetadataUrl,
+    [g.ABOUT]: this.showAboutUrl,
+    [g.VIDEOS]: this.showVideosUrl,
+    [g.THING]: this.showThingUrl,
+  };
+  static router(t) {
+    if (s.ROUTES.hasOwnProperty(t)) return s.ROUTES[t];
+    throw new Error(`Unknown page: ${t}`);
+  }
+  static pageUsesId(t) {
+    return t === g.ALBUM || t === g.PHOTO || t === g.METADATA || t === g.THING;
+  }
+  static showAboutUrl() {
+    window.location.hash = "#/about", document.title = "About - photos";
+  }
+  static showAlbumsUrl() {
+    window.location.hash = "#/albums", document.title = "Albums - photos";
+  }
+  static showPhotosUrl() {
+    window.location.hash = "#/photos", document.title = "Photos - photos";
+  }
+  static showAlbumUrl(t) {
+    window.location.hash = `#/album/${t}`, document.title = "Album - photos";
+  }
+  static showPhotoUrl(t) {
+    window.location.hash = `#/photo/${t}`, document.title = "Photo - photos";
+  }
+  static showMetadataUrl(t) {
+    window.location.hash = `#/metadata/${t}`,
+      document.title = "Metadata - photos";
+  }
+  static showVideosUrl() {
+    window.location.hash = "#/videos", document.title = "Videos - photos";
+  }
+  static showThingUrl(t) {
+    window.location.hash = `#/thing/${t}`, document.title = "Thing - photos";
+  }
+  static getUrl() {
+    return window.location.hash.startsWith("#/albums")
+      ? { type: "albums" }
+      : window.location.hash.startsWith("#/album")
+      ? { type: "album", id: window.location.hash.split("/")[2] }
+      : window.location.hash.startsWith("#/metadata")
+      ? { type: "metadata", id: window.location.hash.split("/")[2] }
+      : window.location.hash.startsWith("#/thing")
+      ? { type: "thing", id: window.location.hash.split("/")[2] }
+      : window.location.hash.startsWith("#/photos")
+      ? { type: "photos" }
+      : window.location.hash.startsWith("#/about")
+      ? { type: "about" }
+      : window.location.hash.startsWith("#/videos")
+      ? { type: "videos" }
+      : { type: "albums" };
+  }
+};
+var Xt = class extends m {
+  static get properties() {
+    return { visible: { type: Boolean } };
+  }
+  render() {
+    let t = ["photo-sidebar"];
+    return this.visible && t.push("sidebar-visible"),
+      l`
     <aside class="${t.join(" ")}">
       <nav>
         <ul>
           <li
-            @click=${this.broadcast("navigate-page",{page:"photos"})}
+            @click=${this.broadcast("navigate-page", { page: "photos" })}
             class="sidebar-item">PHOTOS</li>
 
           <li
-            @click=${this.broadcast("navigate-page",{page:"videos"})}
+            @click=${this.broadcast("navigate-page", { page: "videos" })}
             class="sidebar-item">VIDEOS</li>
 
           <li
-            @click=${this.broadcast("navigate-page",{page:"albums"})}
+            @click=${this.broadcast("navigate-page", { page: "albums" })}
             id="albums-sidebar-link" class="sidebar-item">ALBUMS</li>
           <li
-            @click=${this.broadcast("navigate-page",{page:"about"})}
+            @click=${this.broadcast("navigate-page", { page: "about" })}
             class="sidebar-item">ABOUT</li>
 
       </nav>
     </aside>
-    `}};customElements.define("photo-sidebar",se);var ie=class extends m{static get properties(){return{darkMode:{type:Boolean},tag:{type:String}}}feedUrl(){return this.tag?`/feeds/tags/${this.tag}.json`:"/manifest/atom/atom-index.xml"}render(){let t=this.darkMode?"\u2600\uFE0F":"\u{1F319}",e=es;return c`
+    `;
+  }
+};
+customElements.define("photo-sidebar", Xt);
+var te = class extends m {
+  static get properties() {
+    return { darkMode: { type: Boolean }, tag: { type: String } };
+  }
+  feedUrl() {
+    return this.tag
+      ? `/feeds/tags/${this.tag}.json`
+      : "/manifest/atom/atom-index.xml";
+  }
+  render() {
+    let t = this.darkMode ? "\u2600\uFE0F" : "\u{1F319}", e = Xe;
+    return l`
     <nav class="header" role="navigation">
       <ul>
       <li @click=${this.broadcast("click-burger-menu")}>
@@ -39,19 +1702,82 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
 
       <li style="float: right">
       <a>
-      <span @click=${this.broadcast("switch-theme")} class="brand switch">${t}</span>
+      <span @click=${
+      this.broadcast("switch-theme")
+    } class="brand switch">${t}</span>
       </a>
       </li>
 
       </ul>
     </nav>
-    `}};customElements.define("photo-header",ie);var Gt=new Map,T=class{static loadingMode(t){let e=window.innerWidth,s=window.innerHeight,r=400,n=Math.floor(e/r),o=Math.floor(s/r);return t>n*o+1?"lazy":"eager"}static encodeBitmapDataURL(t){if(Gt.has(t))return Gt.get(t);let e=t.split("#").map(n=>`#${n}`),s=document.createElement("canvas");s.width=2,s.height=2;let r=s.getContext("2d");return r.fillStyle=e[1],r.fillRect(0,0,1,1),r.fillStyle=e[2],r.fillRect(1,0,1,1),r.fillStyle=e[3],r.fillRect(0,1,1,1),r.fillStyle=e[4],r.fillRect(1,1,1,1),Gt.set(t,s.toDataURL("image/png")),Gt.get(t)}};var re=class extends m{static get properties(){return{id:{type:String},imageUrl:{type:String},thumbnailUrl:{type:String},mosaicColours:{type:String},summary:{type:String},loading:{type:String}}}renderIcon(){return c`
+    `;
+  }
+};
+customElements.define("photo-header", te);
+var Ht = new Map(),
+  T = class {
+    static loadingMode(t) {
+      let e = window.innerWidth,
+        i = window.innerHeight,
+        r = 400,
+        n = Math.floor(e / r),
+        o = Math.floor(i / r);
+      return t > n * o + 1 ? "lazy" : "eager";
+    }
+    static encodeBitmapDataURL(t) {
+      if (Ht.has(t)) return Ht.get(t);
+      let e = t.split("#").map((n) => `#${n}`),
+        i = document.createElement("canvas");
+      i.width = 2, i.height = 2;
+      let r = i.getContext("2d");
+      return r.fillStyle = e[1],
+        r.fillRect(0, 0, 1, 1),
+        r.fillStyle = e[2],
+        r.fillRect(1, 0, 1, 1),
+        r.fillStyle = e[3],
+        r.fillRect(0, 1, 1, 1),
+        r.fillStyle = e[4],
+        r.fillRect(1, 1, 1, 1),
+        Ht.set(t, i.toDataURL("image/png")),
+        Ht.get(t);
+    }
+  };
+var ee = class extends m {
+  static get properties() {
+    return {
+      id: { type: String },
+      imageUrl: { type: String },
+      thumbnailUrl: { type: String },
+      mosaicColours: { type: String },
+      summary: { type: String },
+      loading: { type: String },
+    };
+  }
+  renderIcon() {
+    return l`
     <svg class="photo-icon" height="40" width="40" preserveAspectRatio="xMinYMin" viewBox="-2 -2 24 24"  xmlns="http://www.w3.org/2000/svg"><path d="m10 20c-5.523 0-10-4.477-10-10s4.477-10 10-10 10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-10a1 1 0 0 1 1 1v5a1 1 0 0 1 -2 0v-5a1 1 0 0 1 1-1zm0-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
-    `}hidePlaceholder(t){this.broadcast("photo-loaded",{url:this.thumbnailUrl})();let e=t.target.parentNode.querySelector(".thumbnail-placeholder");e.style.zIndex=-1}render(){let t={id:this.id,imageUrl:this.imageUrl,thumbnailUrl:this.thumbnailUrl,thumbnailDataUrl:T.encodeBitmapDataURL(this.mosaicColours)},e=document.createElement("div");e.innerHTML=this.summary??"";let s=e.textContent??e.innerText??"";return c`
+    `;
+  }
+  hidePlaceholder(t) {
+    this.broadcast("photo-loaded", { url: this.thumbnailUrl })();
+    let e = t.target.parentNode.querySelector(".thumbnail-placeholder");
+    e.style.zIndex = -1;
+  }
+  render() {
+    let t = {
+        id: this.id,
+        imageUrl: this.imageUrl,
+        thumbnailUrl: this.thumbnailUrl,
+        thumbnailDataUrl: T.encodeBitmapDataURL(this.mosaicColours),
+      },
+      e = document.createElement("div");
+    e.innerHTML = this.summary ?? "";
+    let i = e.textContent ?? e.innerText ?? "";
+    return l`
     <div class="photo">
-      <a href="${"#/metadata/"+this.id}" onclick="event.preventDefault();">
+      <a href="${"#/metadata/" + this.id}" onclick="event.preventDefault();">
         <div
-          @click=${this.broadcast("click-photo-metadata",t)}
+          @click=${this.broadcast("click-photo-metadata", t)}
           class="photo-metadata-popover">${this.renderIcon()}</div>
       </a>
 
@@ -61,25 +1787,70 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
         <img
           @load=${this.hidePlaceholder.bind(this)} style="z-index: -1"
           class="thumbnail-image"
-          alt=${s}
-          title=${s}
+          alt=${i}
+          title=${i}
           width="400"
           height="400"
           src="${this.thumbnailUrl}"
           loading="${this.loading}"/>
       </a>
     </div>
-    `}};customElements.define("app-photo",re);var ne=class extends m{render(){return c`
+    `;
+  }
+};
+customElements.define("app-photo", ee);
+var se = class extends m {
+  render() {
+    return l`
     <div class="search-box">
       <input type="text" placeholder="Search...">
     </div>
-    `}};customElements.define("search-bar",ne);var _=class{static getElement(){return document.getElementById("rss")}static setTag(t){let e=this.getElement();if(!e||!t)return;let s=`/feeds/tags/${t}.json`;e.href=s}static setIndex(){let t=this.getElement();if(!t)return;let e="/manifest/atom/atom-index.xml";t.href=e}};var oe=class extends m{static get properties(){return{images:{type:Object}}}connectedCallback(){super.connectedCallback(),_.setIndex()}allImages(){return this.images.images().sort((t,e)=>e.created_at-t.created_at)}render(){let t=this.allImages();async function*e(){for(let s=0;s<t.length;s++){let r=t[s];yield c`
+    `;
+  }
+};
+customElements.define("search-bar", se);
+var x = class {
+  static getElement() {
+    return document.getElementById("rss");
+  }
+  static setTag(t) {
+    let e = this.getElement();
+    if (!e || !t) return;
+    let i = `/feeds/tags/${t}.json`;
+    e.href = i;
+  }
+  static setIndex() {
+    let t = this.getElement();
+    if (!t) return;
+    let e = "/manifest/atom/atom-index.xml";
+    t.href = e;
+  }
+};
+var ie = class extends m {
+  static get properties() {
+    return { images: { type: Object } };
+  }
+  connectedCallback() {
+    super.connectedCallback(), x.setIndex();
+  }
+  allImages() {
+    return this.images.images().sort((t, e) => e.created_at - t.created_at);
+  }
+  render() {
+    let t = this.allImages();
+    async function* e() {
+      for (let i = 0; i < t.length; i++) {
+        let r = t[i];
+        yield l`
           <app-photo
             id=${r.id}
-            loading="${T.loadingMode(s)}"
+            loading="${T.loadingMode(i)}"
             thumbnailUrl="${r.thumbnail_url}"
             mosaicColours="${r.mosaic_colours}"
-            imageUrl="${r.full_image}"></app-photo>`}}return c`
+            imageUrl="${r.full_image}"></app-photo>`;
+      }
+    }
+    return l`
     <div>
       <section class="photos-metadata">
         <h1>Photos</h1>
@@ -90,7 +1861,16 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
         ${Tt(e())}
       </section>
     </div>
-    `}};customElements.define("photos-page",oe);var ae=class extends m{static get properties(){return{albums:{type:Array},stats:{type:Array}}}render(){return c`
+    `;
+  }
+};
+customElements.define("photos-page", ie);
+var re = class extends m {
+  static get properties() {
+    return { albums: { type: Array }, stats: { type: Array } };
+  }
+  render() {
+    return l`
       <p class="photo-stats">${this.stats.photos} <a href="#/photos">photos</a> ·
         ${this.stats.albums} albums · ${this.stats.years} years ·
         ${this.stats.countries} <span title="well, roughly">countries</span> ·
@@ -98,12 +1878,125 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
         ${this.stats.mammal_species} <a href="#/thing/mammal:*">mammal species</a> ·
         ${this.stats.unesco_sites} <a href="#/thing/unesco:*">UNESCO sites</a>
       </p>
-    `}};customElements.define("photos-stats",ae);var st=class i{static parse(t){let[e,s]=t.split(" ");return e=e.replace(/:/g,"-"),new Date(`${e} ${s}`)}static formatExifDate(t){if(!t)return t;let e=new Date(t).toISOString(),[s,r]=e.split("T")[0].replace(/\:/g,"-");return`${s.replace(/\:/g,"/")} ${r}`}static findRange(t){let e=1/0,s=-1/0;for(let r of t){if(!r.created_at)continue;let n=i.parse(r.created_at);n<e&&(e=n),n>s&&(s=n)}return[e,s]}static dateRange(t,e,s){if(!t&&!e)return"unknown date";let r=t instanceof Date?t:new Date(parseFloat(t)),n=e instanceof Date?e:new Date(parseFloat(e));if(s){let o={day:"numeric",month:"short"},l=r.toLocaleDateString("en-IE",o),a=n.toLocaleDateString("en-IE",o),p=r.toLocaleDateString("en-IE",{day:"numeric"}),u=n.toLocaleDateString("en-IE",{day:"numeric"}),d=r.toLocaleDateString("en-IE",{month:"short"}),f=n.toLocaleDateString("en-IE",{month:"short"}),$=r.getFullYear(),w=n.getFullYear(),x=d===f,B=$===w;return l===a?`${l} ${$}`:x&&B?`${p} - ${u} ${f} ${$}`:`${l} ${$} - ${a} ${w}`}else{let o={year:"numeric",month:"short",day:"numeric"},l=r.toLocaleDateString("en-IE",o),a=n.toLocaleDateString("en-IE",o);return l===a?l:`${l} \u2014 ${a}`}}};var it=class i{static TABLE={England:"\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}",France:"\u{1F1EB}\u{1F1F7}",Germany:"\u{1F1E9}\u{1F1EA}",Ireland:"\u{1F1EE}\u{1F1EA}",Italy:"\u{1F1EE}\u{1F1F9}",Lanzarote:"\u{1F1EA}\u{1F1F8}",Mallorca:"\u{1F1EA}\u{1F1F8}","Northern Ireland":"\u{1F1EC}\u{1F1E7}",Norway:"\u{1F1F3}\u{1F1F4}",Scotland:"\u{1F3F4}\u{E0067}\u{E0062}\u{E0073}\u{E0063}\u{E0074}\u{E007F}",Slovenia:"\u{1F1F8}\u{1F1EE}",Spain:"\u{1F1EA}\u{1F1F8}",Sweden:"\u{1F1F8}\u{1F1EA}",Switzerland:"\u{1F1E8}\u{1F1ED}",Tenerife:"\u{1F1EA}\u{1F1F8}","The Netherlands":"\u{1F1F3}\u{1F1F1}","United States of America":"\u{1F1FA}\u{1F1F8}",Wales:"\u{1F3F4}\u{E0067}\u{E0062}\u{E0077}\u{E006C}\u{E0073}\u{E007F}"};static flag(t){return i.TABLE[t]?i.TABLE[t]:"\u{1F3F3}\uFE0F"}static flags(t){return t.map(e=>i.flag(e)).join(" ")}};var le=class extends m{static get properties(){return{title:{type:String},url:{type:String},mosaicColours:{type:String},minDate:{type:String},maxDate:{type:String},id:{type:String},count:{type:Number},countries:{type:String},loading:{type:String}}}dateRange(){if(!this.minDate&&!this.maxDate)return"unknown date";let t=window.matchMedia("(max-width: 500px)");return st.dateRange(this.minDate,this.maxDate,t.matches)}hidePlaceholder(t){this.broadcast("photo-loaded",{url:this.url})();let e=t.target.parentNode.querySelector(".thumbnail-placeholder");e.style.zIndex=-1}render(){performance.mark(`start-album-render-${this.url}`);let t=T.encodeBitmapDataURL(this.mosaicColours),e=it.flags(this?.countries.split(","));return c`
+    `;
+  }
+};
+customElements.define("photos-stats", re);
+var X = class s {
+  static parse(t) {
+    let [e, i] = t.split(" ");
+    return e = e.replace(/:/g, "-"), new Date(`${e} ${i}`);
+  }
+  static formatExifDate(t) {
+    if (!t) return t;
+    let e = new Date(t).toISOString(),
+      [i, r] = e.split("T")[0].replace(/\:/g, "-");
+    return `${i.replace(/\:/g, "/")} ${r}`;
+  }
+  static findRange(t) {
+    let e = 1 / 0, i = -1 / 0;
+    for (let r of t) {
+      if (!r.created_at) continue;
+      let n = s.parse(r.created_at);
+      n < e && (e = n), n > i && (i = n);
+    }
+    return [e, i];
+  }
+  static dateRange(t, e, i) {
+    if (!t && !e) return "unknown date";
+    let r = t instanceof Date ? t : new Date(parseFloat(t)),
+      n = e instanceof Date ? e : new Date(parseFloat(e));
+    if (i) {
+      let o = { day: "numeric", month: "short" },
+        c = r.toLocaleDateString("en-IE", o),
+        a = n.toLocaleDateString("en-IE", o),
+        h = r.toLocaleDateString("en-IE", { day: "numeric" }),
+        u = n.toLocaleDateString("en-IE", { day: "numeric" }),
+        d = r.toLocaleDateString("en-IE", { month: "short" }),
+        f = n.toLocaleDateString("en-IE", { month: "short" }),
+        $ = r.getFullYear(),
+        b = n.getFullYear(),
+        I = d === f,
+        it = $ === b;
+      return c === a
+        ? `${c} ${$}`
+        : I && it
+        ? `${h} - ${u} ${f} ${$}`
+        : `${c} ${$} - ${a} ${b}`;
+    } else {
+      let o = { year: "numeric", month: "short", day: "numeric" },
+        c = r.toLocaleDateString("en-IE", o),
+        a = n.toLocaleDateString("en-IE", o);
+      return c === a ? c : `${c} \u2014 ${a}`;
+    }
+  }
+};
+var tt = class s {
+  static TABLE = {
+    England: "\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}",
+    France: "\u{1F1EB}\u{1F1F7}",
+    Germany: "\u{1F1E9}\u{1F1EA}",
+    Ireland: "\u{1F1EE}\u{1F1EA}",
+    Italy: "\u{1F1EE}\u{1F1F9}",
+    Lanzarote: "\u{1F1EA}\u{1F1F8}",
+    Mallorca: "\u{1F1EA}\u{1F1F8}",
+    "Northern Ireland": "\u{1F1EC}\u{1F1E7}",
+    Norway: "\u{1F1F3}\u{1F1F4}",
+    Scotland: "\u{1F3F4}\u{E0067}\u{E0062}\u{E0073}\u{E0063}\u{E0074}\u{E007F}",
+    Slovenia: "\u{1F1F8}\u{1F1EE}",
+    Spain: "\u{1F1EA}\u{1F1F8}",
+    Sweden: "\u{1F1F8}\u{1F1EA}",
+    Switzerland: "\u{1F1E8}\u{1F1ED}",
+    Tenerife: "\u{1F1EA}\u{1F1F8}",
+    "The Netherlands": "\u{1F1F3}\u{1F1F1}",
+    "United States of America": "\u{1F1FA}\u{1F1F8}",
+    Wales: "\u{1F3F4}\u{E0067}\u{E0062}\u{E0077}\u{E006C}\u{E0073}\u{E007F}",
+  };
+  static flag(t) {
+    return s.TABLE[t] ? s.TABLE[t] : "\u{1F3F3}\uFE0F";
+  }
+  static flags(t) {
+    return t.map((e) => s.flag(e)).join(" ");
+  }
+};
+var ne = class extends m {
+  static get properties() {
+    return {
+      title: { type: String },
+      url: { type: String },
+      mosaicColours: { type: String },
+      minDate: { type: String },
+      maxDate: { type: String },
+      id: { type: String },
+      count: { type: Number },
+      countries: { type: String },
+      loading: { type: String },
+    };
+  }
+  dateRange() {
+    if (!this.minDate && !this.maxDate) return "unknown date";
+    let t = window.matchMedia("(max-width: 500px)");
+    return X.dateRange(this.minDate, this.maxDate, t.matches);
+  }
+  hidePlaceholder(t) {
+    this.broadcast("photo-loaded", { url: this.url })();
+    let e = t.target.parentNode.querySelector(".thumbnail-placeholder");
+    e.style.zIndex = -1;
+  }
+  render() {
+    performance.mark(`start-album-render-${this.url}`);
+    let t = T.encodeBitmapDataURL(this.mosaicColours),
+      e = tt.flags(this?.countries.split(","));
+    return l`
     <div class="photo-album">
-      <a href="${"/#/album/"+this.id}" onclick="event.preventDefault();">
+      <a href="${"/#/album/" + this.id}" onclick="event.preventDefault();">
         <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${t}"/>
-        <img @load=${this.hidePlaceholder.bind(this)} style="z-index: -1" class="thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
-        @click=${this.broadcast("click-album",{id:this.id,title:this.title})}>
+        <img @load=${
+      this.hidePlaceholder.bind(this)
+    } style="z-index: -1" class="thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
+        @click=${
+      this.broadcast("click-album", { id: this.id, title: this.title })
+    }>
     </a>
       <div class="photo-album-metadata">
         <p class="photo-album-title">${this.title}</p>
@@ -111,13 +2004,47 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
           <time>${this.dateRange()}</time>
         </p>
         <div class="photo-metadata-inline">
-        <p class="photo-album-count">${this.count} ${this.count===1?"photo":"photos"}</p>
+        <p class="photo-album-count">${this.count} ${
+      this.count === 1 ? "photo" : "photos"
+    }</p>
         <p class="photo-album-countries">${e}</p>
         </div>
 
     </div>
     </div>
-    `}};customElements.define("photo-album",le);var ce=class extends m{static get properties(){return{albums:{type:Object},stats:{type:Object}}}connectedCallback(){super.connectedCallback(),_.setIndex()}getAlbums(){return Object.values(this.albums.albums()).map(t=>{let{photos_count:e}=t;return{title:t.album_name,minDate:t.min_date,maxDate:t.max_date,url:t.thumbnail_url,mosaicColours:t.mosaic,id:t.id,count:e,flags:t.flags}})}render(){performance.mark("start-albums-render");let t=this.getAlbums().sort((s,r)=>r.maxDate-s.maxDate);async function*e(){for(let s=0;s<t.length;s++){let r=t[s],n=T.loadingMode(s);yield c`
+    `;
+  }
+};
+customElements.define("photo-album", ne);
+var oe = class extends m {
+  static get properties() {
+    return { albums: { type: Object }, stats: { type: Object } };
+  }
+  connectedCallback() {
+    super.connectedCallback(), x.setIndex();
+  }
+  getAlbums() {
+    return Object.values(this.albums.albums()).map((t) => {
+      let { photos_count: e } = t;
+      return {
+        title: t.album_name,
+        minDate: t.min_date,
+        maxDate: t.max_date,
+        url: t.thumbnail_url,
+        mosaicColours: t.mosaic,
+        id: t.id,
+        count: e,
+        flags: t.flags,
+      };
+    });
+  }
+  render() {
+    performance.mark("start-albums-render");
+    let t = this.getAlbums().sort((i, r) => r.maxDate - i.maxDate);
+    async function* e() {
+      for (let i = 0; i < t.length; i++) {
+        let r = t[i], n = T.loadingMode(i);
+        yield l`
           <photo-album
             title="${r.title}"
             url="${r.url}"
@@ -128,7 +2055,10 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
             countries="${r.flags}"
             loading=${n}>
             </photo-album>
-          `}}return c`
+          `;
+      }
+    }
+    return l`
     <section class="album-metadata">
       <h1 class="albums-header">Albums</h1>
       <photos-stats
@@ -139,7 +2069,25 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
     <section class="album-container">
       ${Tt(e())}
     </section>
-    `}};customElements.define("photo-album-page",ce);var he=class extends m{static get properties(){return{id:{type:String},url:{type:String},preload:{type:String},url_poster:{type:String},url_unscaled:{type:String},url_1080p:{type:String},url_720p:{type:String},url_480p:{type:String}}}render(){return c`
+    `;
+  }
+};
+customElements.define("photo-album-page", oe);
+var ae = class extends m {
+  static get properties() {
+    return {
+      id: { type: String },
+      url: { type: String },
+      preload: { type: String },
+      url_poster: { type: String },
+      url_unscaled: { type: String },
+      url_1080p: { type: String },
+      url_720p: { type: String },
+      url_480p: { type: String },
+    };
+  }
+  render() {
+    return l`
     <div>
       <video controls class="thumbnail-video" preload="${this.preload}" poster=${this.url_poster}>
         <source src="${this.url_480p}" type="video/mp4">
@@ -152,38 +2100,664 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
       </ul>
 
     </div>
-    `}};customElements.define("app-video",he);var de=class extends m{static get properties(){return{title:{type:String},url:{type:String},sharing:{state:!0,type:Boolean}}}async shareAlbum(t){if(!navigator.share)console.error("navigator.share not available");else{this.sharing=!0;try{await navigator.share({title:`${this.title} - photos.rgrannell.xyz`,url:t})}finally{this.sharing=!1}}}render(){return this.sharing?c`<button class="photo-share-button" disabled>[sharing...]</button>`:c`
-      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${this.shareAlbum.bind(this,this.url)}>[share]</button>
-      `}};customElements.define("album-share-button",de);var rt=class i{static findSourceRelation(t,e,s){if(!Array.isArray(e))throw new TypeError("Triples must be an array");let r=e.find(n=>b.sameURN(n[0],s)&&j.hasRelation(n,t));return r?j.getTarget(r):null}static findSubject(t,e){return i.findSourceRelation(S.SUBJECT,t,e)}static findLocation(t,e){return i.findSourceRelation(S.LOCATION,t,e)}static findRating(t,e){return i.findSourceRelation(S.RATING,t,e)}static findName(t,e){return i.findSourceRelation(S.NAME,t,e)}static findBirdwatchUrl(t,e){return i.findSourceRelation(S.BIRDWATCH_URL,t,e)}static findWikipedia(t,e){return i.findSourceRelation(S.WIKIPEDIA,t,e)}static findLongitude(t,e){return i.findSourceRelation(S.LONGITUDE,t,e)}static findLatitude(t,e){return i.findSourceRelation(S.LATITUDE,t,e)}},j=class{static isUrnSource(t){return b.isUrn(t[0])}static hasRelation(t,e){return t[1]===e}static hasUrnTarget(t){return b.isUrn(t[2])}static getSource(t){return t[0]}static getRelation(t){return t[1]}static getTarget(t){return t[2]}static filterRelation(t,e){return t.filter(s=>s[1]===e)}static filterSourceId(t,e){if(!b.isUrn(e))throw new Error(`Invalid URN: ${e}`);let s=b.parseUrn(e);return t.filter(r=>b.sameURN(r[0],e)||b.hasId(r[0],s.id))}},b=class i{static isUrn(t){return t&&t.startsWith("urn:r\xF3")}static parseUrn(t){if(!i.isUrn(t))throw new Error(`Invalid URN: ${t}`);let e=t.split(":")[2],[s,r]=t.split("?"),n=s.split(":")[3],o=r?Object.fromEntries(new URLSearchParams(r)):{};return{type:e,id:n,qs:o}}static is(t,e){return i.isUrn(t)&&i.parseUrn(t).type===e}static toURL(t){if(!i.isUrn(t))throw new Error(`Invalid URN: ${t}`);let{type:e,id:s}=i.parseUrn(t);return`#/thing/${e}:${s}`}static sameURN(t,e){if(!i.isUrn(t)||!i.isUrn(e))return!1;let s=i.parseUrn(t),r=i.parseUrn(e);return s.type===r.type&&s.id===r.id}static isRating(t){return/^[⭐]{1,5}$/.test(t)}static hasId(t,e){return i.isUrn(t)&&i.parseUrn(t).id===e}static sameType(t,e){if(!i.isUrn(t)||!i.isUrn(e))return!1;let s=i.parseUrn(t),r=i.parseUrn(e);return s.type===r.type}static isType(t,e){return i.isUrn(t)?i.parseUrn(t).type===e:!1}},J=class{static pretty(t){let e=t.replace(/-/g," ");return e.charAt(0).toUpperCase()+e.slice(1)}static toCommonName(t,e){let r=j.filterRelation(t,S.NAME).find(n=>b.hasId(n[0],e));return r?j.getTarget(r):e}static birdwatchUrl(t,e){let s=j.filterSourceId(j.filterRelation(t,S.BIRDWATCH_URL),e);if(s.length===0)return;let[r]=s;return j.getTarget(r)}};var pe=class extends m{static properties={urn:{type:String}};id(){return b.parseUrn(this.urn)?.id??"unknown"}url(){return this.id()?`https://whc.unesco.org/en/list/${this.id()}`:null}render(){return this.id()?c`
+    `;
+  }
+};
+customElements.define("app-video", ae);
+var le = class extends m {
+  static get properties() {
+    return {
+      title: { type: String },
+      url: { type: String },
+      sharing: { state: !0, type: Boolean },
+    };
+  }
+  async shareAlbum(t) {
+    if (!navigator.share) console.error("navigator.share not available");
+    else {
+      this.sharing = !0;
+      try {
+        await navigator.share({
+          title: `${this.title} - photos.rgrannell.xyz`,
+          url: t,
+        });
+      } finally {
+        this.sharing = !1;
+      }
+    }
+  }
+  render() {
+    return this.sharing
+      ? l`<button class="photo-share-button" disabled>[sharing...]</button>`
+      : l`
+      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${
+        this.shareAlbum.bind(this, this.url)
+      }>[share]</button>
+      `;
+  }
+};
+customElements.define("album-share-button", le);
+var et = class s {
+    static findSourceRelation(t, e, i) {
+      if (!Array.isArray(e)) throw new TypeError("Triples must be an array");
+      let r = e.find((n) => y.sameURN(n[0], i) && v.hasRelation(n, t));
+      return r ? v.getTarget(r) : null;
+    }
+    static findSubject(t, e) {
+      return s.findSourceRelation(S.SUBJECT, t, e);
+    }
+    static findLocation(t, e) {
+      return s.findSourceRelation(S.LOCATION, t, e);
+    }
+    static findRating(t, e) {
+      return s.findSourceRelation(S.RATING, t, e);
+    }
+    static findName(t, e) {
+      return s.findSourceRelation(S.NAME, t, e);
+    }
+    static findBirdwatchUrl(t, e) {
+      return s.findSourceRelation(S.BIRDWATCH_URL, t, e);
+    }
+    static findWikipedia(t, e) {
+      return s.findSourceRelation(S.WIKIPEDIA, t, e);
+    }
+    static findLongitude(t, e) {
+      return s.findSourceRelation(S.LONGITUDE, t, e);
+    }
+    static findLatitude(t, e) {
+      return s.findSourceRelation(S.LATITUDE, t, e);
+    }
+  },
+  v = class {
+    static isUrnSource(t) {
+      return y.isUrn(t[0]);
+    }
+    static hasRelation(t, e) {
+      return t[1] === e;
+    }
+    static hasUrnTarget(t) {
+      return y.isUrn(t[2]);
+    }
+    static getSource(t) {
+      return t[0];
+    }
+    static getRelation(t) {
+      return t[1];
+    }
+    static getTarget(t) {
+      return t[2];
+    }
+    static filterRelation(t, e) {
+      return t.filter((i) => i[1] === e);
+    }
+    static filterSourceId(t, e) {
+      if (!y.isUrn(e)) throw new Error(`Invalid URN: ${e}`);
+      let i = y.parseUrn(e);
+      return t.filter((r) => y.sameURN(r[0], e) || y.hasId(r[0], i.id));
+    }
+  },
+  y = class s {
+    static isUrn(t) {
+      return t && t.startsWith("urn:r\xF3");
+    }
+    static parseUrn(t) {
+      if (!s.isUrn(t)) throw new Error(`Invalid URN: ${t}`);
+      let e = t.split(":")[2],
+        [i, r] = t.split("?"),
+        n = i.split(":")[3],
+        o = r ? Object.fromEntries(new URLSearchParams(r)) : {};
+      return { type: e, id: n, qs: o };
+    }
+    static is(t, e) {
+      return s.isUrn(t) && s.parseUrn(t).type === e;
+    }
+    static toURL(t) {
+      if (!s.isUrn(t)) throw new Error(`Invalid URN: ${t}`);
+      let { type: e, id: i } = s.parseUrn(t);
+      return `#/thing/${e}:${i}`;
+    }
+    static sameURN(t, e) {
+      if (!s.isUrn(t) || !s.isUrn(e)) return !1;
+      let i = s.parseUrn(t), r = s.parseUrn(e);
+      return i.type === r.type && i.id === r.id;
+    }
+    static isRating(t) {
+      return /^[⭐]{1,5}$/.test(t);
+    }
+    static hasId(t, e) {
+      return s.isUrn(t) && s.parseUrn(t).id === e;
+    }
+    static sameType(t, e) {
+      if (!s.isUrn(t) || !s.isUrn(e)) return !1;
+      let i = s.parseUrn(t), r = s.parseUrn(e);
+      return i.type === r.type;
+    }
+    static isType(t, e) {
+      return s.isUrn(t) ? s.parseUrn(t).type === e : !1;
+    }
+  },
+  q = class {
+    static pretty(t) {
+      let e = t.replace(/-/g, " ");
+      return e.charAt(0).toUpperCase() + e.slice(1);
+    }
+    static toCommonName(t, e) {
+      let r = v.filterRelation(t, S.NAME).find((n) => y.hasId(n[0], e));
+      return r ? v.getTarget(r) : e;
+    }
+    static birdwatchUrl(t, e) {
+      let i = v.filterSourceId(v.filterRelation(t, S.BIRDWATCH_URL), e);
+      if (i.length === 0) return;
+      let [r] = i;
+      return v.getTarget(r);
+    }
+  };
+var ce = class extends m {
+  static properties = { urn: { type: String } };
+  id() {
+    return y.parseUrn(this.urn)?.id ?? "unknown";
+  }
+  url() {
+    return this.id() ? `https://whc.unesco.org/en/list/${this.id()}` : null;
+  }
+  render() {
+    return this.id()
+      ? l`
       <a class="unesco-link" href="${this.url()}" target="_blank" rel="noopener noreferrer">
         <span class="unesco-text-full">UNESCO World Heritage Site #${this.id()}</span>
         <span class="unesco-text-short">UNESCO #${this.id()}</span>
       </a>
-    `:c`<span>Invalid UNESCO URN</span>`}};customElements.define("unesco-link",pe);var ue=class extends m{static properties={urn:{type:String},triples:{type:Array}};name(){let{type:t,id:e}=b.parseUrn(this.urn);if(et.has(t))return c`<span>${J.toCommonName(this.triples,e)}</span>`;let s=rt.findName(this.triples,this.urn);return s?c`<span>${s}</span>`:decodeURIComponent(e)}linkClass(){let{type:t}=b.parseUrn(this.urn);return{[y.BIRD]:"bird-link",[y.MAMMAL]:"mammal-link",[y.REPTILE]:"reptile-link",[y.AMPHIBIAN]:"amphibian-link",[y.FISH]:"fish-link",[y.INSECT]:"insect-link"}[t]??""}render(){return b.isUrn(this.urn)?c`
-      <a class="thing-link ${this.linkClass()}" href="${b.toURL(this.urn)}">${this.name()}</a>
-    `:c`<span>Invalid URN</span>`}};customElements.define("thing-link",ue);var me=class extends m{static get properties(){return{title:{type:String},id:{type:String},minDate:{type:String},maxDate:{type:String},imageCount:{type:Number},description:{type:String},images:{type:Object},videos:{type:Object},semantic:{type:Object},triples:{type:Array},countries:{type:String}}}connectedCallback(){super.connectedCallback(),this.albumPhotos()[0]||console.error(`empty album! ${this.id}`),_.setIndex()}albumPhotos(){let t=this.semantic.semantic();return this.images.images().filter(e=>e.album_id===this.id).map(e=>{let s={},r=t.filter(n=>n[0]===e.id);for(let[n,o,l]of r)s[o]||(s[o]=[]),s[o].push(l);return{...e,relations:s}})}albumVideos(){return this.videos.videos().filter(t=>t.album_id===this.id)}renderPhotoCount(){return this.imageCount===1?`${this.imageCount} photo`:`${this.imageCount} photos`}thingsLinks(){let t={},e=this.albumPhotos();for(let r of[y.UNESCO])t[r]=Array.from(new Set(e.flatMap(n=>n.relations.location?.filter(o=>b.is(o,r))).filter(n=>n)));for(let r of[y.BIRD,y.MAMMAL,y.REPTILE,y.FISH,y.AMPHIBIAN,y.INSECT])t[r]=Array.from(new Set(e.flatMap(n=>n.relations.subject?.filter(o=>b.is(o,r))).filter(n=>n)));let s=[];s=s.concat(t[y.UNESCO].map(r=>c`<unesco-link urn="${r}"></unesco-link>`));for(let r of[y.BIRD,y.MAMMAL,y.REPTILE,y.FISH,y.AMPHIBIAN,y.INSECT])s=s.concat(t[r].map(n=>c`<thing-link .urn="${n}" .triples="${this.triples}"></thing-link>`));return s}render(){let t=window.matchMedia("(max-width: 500px)"),e=st.dateRange(this.minDate,this.maxDate,t.matches),r=this.albumPhotos().map((l,a)=>c`
+    `
+      : l`<span>Invalid UNESCO URN</span>`;
+  }
+};
+customElements.define("unesco-link", ce);
+var he = class extends m {
+  static properties = { urn: { type: String }, triples: { type: Array } };
+  name() {
+    let { type: t, id: e } = y.parseUrn(this.urn);
+    if (K.has(t)) return l`<span>${q.toCommonName(this.triples, e)}</span>`;
+    let i = et.findName(this.triples, this.urn);
+    return i ? l`<span>${i}</span>` : decodeURIComponent(e);
+  }
+  linkClass() {
+    let { type: t } = y.parseUrn(this.urn);
+    return {
+      [A.BIRD]: "bird-link",
+      [A.MAMMAL]: "mammal-link",
+      [A.REPTILE]: "reptile-link",
+      [A.AMPHIBIAN]: "amphibian-link",
+      [A.FISH]: "fish-link",
+      [A.INSECT]: "insect-link",
+    }[t] ?? "";
+  }
+  render() {
+    return y.isUrn(this.urn)
+      ? l`
+      <a class="thing-link ${this.linkClass()}" href="${
+        y.toURL(this.urn)
+      }">${this.name()}</a>
+    `
+      : l`<span>Invalid URN</span>`;
+  }
+};
+customElements.define("thing-link", he);
+function Es(s, t = "r\xF3") {
+  if (!s.startsWith(`urn:${t}:`)) {
+    throw new Error(`Invalid URN for namespace ${t}: ${s}`);
+  }
+  let e = s.split(":")[2],
+    [i, r] = s.split("?"),
+    n = i.split(":")[3],
+    o = r ? Object.fromEntries(new URLSearchParams(r)) : {};
+  return { type: e, id: n, qs: o };
+}
+function ut(s, t = "r\xF3") {
+  try {
+    return Es(s, t);
+  } catch {
+    return { type: "unknown", id: s, qs: {} };
+  }
+}
+var M = class {
+    static source(s) {
+      return s[0];
+    }
+    static relation(s) {
+      return s[1];
+    }
+    static target(s) {
+      return s[2];
+    }
+  },
+  Ts = class {
+    #e;
+    #t;
+    #s;
+    constructor() {
+      this.#e = 0, this.#t = new Map(), this.#s = new Map();
+    }
+    map() {
+      return this.#t;
+    }
+    reverseMap() {
+      return this.#s;
+    }
+    add(s) {
+      return this.#t.has(s)
+        ? this.#t.get(s)
+        : (this.#t.set(s, this.#e),
+          this.#s.set(this.#e, s),
+          this.#e++,
+          this.#e - 1);
+    }
+    getIndex(s) {
+      return this.#t.get(s);
+    }
+    getValue(s) {
+      return this.#s.get(s);
+    }
+    has(s) {
+      return this.#t.has(s);
+    }
+  },
+  Us = class {
+    static intersection(s, t) {
+      if (t.length === 0) return new Set();
+      t.sort((i, r) => i.size - r.size);
+      let e = new Set(t[0]);
+      for (let i = 1; i < t.length; i++) {
+        let r = t[i];
+        for (let n of e) s.setCheck(), r.has(n) || e.delete(n);
+        if (e.size === 0) break;
+      }
+      return e;
+    }
+  },
+  Is = class {
+    mapReadCount;
+    constructor() {
+      this.mapReadCount = 0;
+    }
+    mapRead() {
+      this.mapReadCount++;
+    }
+  },
+  Cs = class {
+    setCheckCount;
+    constructor() {
+      this.setCheckCount = 0;
+    }
+    setCheck() {
+      this.setCheckCount++;
+    }
+  },
+  Ms = class {
+    indexedTriples;
+    stringIndex;
+    sourceType;
+    sourceId;
+    sourceQs;
+    relations;
+    targetType;
+    targetId;
+    targetQs;
+    metrics;
+    constructor(s) {
+      this.indexedTriples = [],
+        this.stringIndex = new Ts(),
+        this.sourceType = new Map(),
+        this.sourceId = new Map(),
+        this.sourceQs = new Map(),
+        this.relations = new Map(),
+        this.targetType = new Map(),
+        this.targetId = new Map(),
+        this.targetQs = new Map(),
+        this.indexTriples(s),
+        this.metrics = new Is();
+    }
+    indexTriples(s) {
+      for (let t = 0; t < s.length; t++) this.indexTriple(s[t], t);
+    }
+    indexTriple(s, t) {
+      let e = ut(M.source(s)),
+        i = M.relation(s),
+        r = ut(M.target(s)),
+        n = this.stringIndex.add(e.type),
+        o = this.stringIndex.add(e.id),
+        c = this.stringIndex.add(i),
+        a = this.stringIndex.add(r.type),
+        h = this.stringIndex.add(r.id);
+      this.indexedTriples.push([
+        this.stringIndex.add(M.source(s)),
+        c,
+        this.stringIndex.add(M.target(s)),
+      ]),
+        this.sourceType.has(n) || this.sourceType.set(n, new Set()),
+        this.sourceType.get(n).add(t),
+        this.sourceId.has(o) || this.sourceId.set(o, new Set()),
+        this.sourceId.get(o).add(t);
+      for (let [u, d] of Object.entries(e.qs)) {
+        let f = this.stringIndex.add(`${u}=${d}`);
+        this.sourceQs.has(f) || this.sourceQs.set(f, new Set()),
+          this.sourceQs.get(f).add(t);
+      }
+      this.relations.has(c) || this.relations.set(c, new Set()),
+        this.relations.get(c).add(t),
+        this.targetType.has(a) || this.targetType.set(a, new Set()),
+        this.targetType.get(a).add(t),
+        this.targetId.has(h) || this.targetId.set(h, new Set()),
+        this.targetId.get(h).add(t);
+      for (let [u, d] of Object.entries(r.qs)) {
+        let f = this.stringIndex.add(`${u}=${d}`);
+        this.targetQs.has(f) || this.targetQs.set(f, new Set()),
+          this.targetQs.get(f).add(t);
+      }
+    }
+    add(s) {
+      let t = this.indexedTriples.length;
+      for (let e = 0; e < s.length; e++) this.indexTriple(s[e], t + e);
+    }
+    get length() {
+      return this.indexedTriples.length;
+    }
+    triples() {
+      return this.indexedTriples.map((
+        [s, t, e],
+      ) => [
+        this.stringIndex.getValue(s),
+        this.stringIndex.getValue(t),
+        this.stringIndex.getValue(e),
+      ]);
+    }
+    getTriple(s) {
+      if (s < 0 || s >= this.indexedTriples.length) return;
+      let [t, e, i] = this.indexedTriples[s];
+      return [
+        this.stringIndex.getValue(t),
+        this.stringIndex.getValue(e),
+        this.stringIndex.getValue(i),
+      ];
+    }
+    getSourceTypeSet(s) {
+      let t = this.stringIndex.getIndex(s);
+      if (t !== void 0) return this.metrics.mapRead(), this.sourceType.get(t);
+    }
+    getSourceIdSet(s) {
+      let t = this.stringIndex.getIndex(s);
+      if (t !== void 0) return this.metrics.mapRead(), this.sourceId.get(t);
+    }
+    getSourceQsSet(s, t) {
+      let e = this.stringIndex.getIndex(`${s}=${t}`);
+      if (e !== void 0) return this.metrics.mapRead(), this.sourceQs.get(e);
+    }
+    getRelationSet(s) {
+      let t = this.stringIndex.getIndex(s);
+      if (t !== void 0) return this.metrics.mapRead(), this.relations.get(t);
+    }
+    getTargetTypeSet(s) {
+      let t = this.stringIndex.getIndex(s);
+      if (t !== void 0) return this.metrics.mapRead(), this.targetType.get(t);
+    }
+    getTargetIdSet(s) {
+      let t = this.stringIndex.getIndex(s);
+      if (t !== void 0) return this.metrics.mapRead(), this.targetId.get(t);
+    }
+    getTargetQsSet(s, t) {
+      let e = this.stringIndex.getIndex(`${s}=${t}`);
+      if (e !== void 0) return this.metrics.mapRead(), this.targetQs.get(e);
+    }
+  },
+  st = class C {
+    index;
+    triplesCount;
+    tripleRows;
+    metrics;
+    constructor(t) {
+      this.index = new Ms(t),
+        this.triplesCount = this.index.length,
+        this.tripleRows = new Set(),
+        this.metrics = new Cs();
+      for (let e = 0; e < this.triplesCount; e++) this.tripleRows.add(e);
+    }
+    static of(t) {
+      return new C(t);
+    }
+    static from(t) {
+      let e = [];
+      for (let i of t) {
+        let { id: r, ...n } = i;
+        if (typeof r != "string") {
+          throw new Error("Each TripleObject must have a string id.");
+        }
+        for (let [o, c] of Object.entries(n)) {
+          if (Array.isArray(c)) {
+            for (let a of c) e.push([r, o, a]);
+          } else e.push([r, o, c]);
+        }
+      }
+      return new C(e);
+    }
+    add(t) {
+      let e = this.index.length;
+      this.index.add(t), this.triplesCount = this.index.length;
+      for (let i = e; i < this.triplesCount; i++) this.tripleRows.add(i);
+    }
+    map(t) {
+      return new C(this.index.triples().map(t));
+    }
+    flatMap(t) {
+      let e = this.index.triples().flatMap(t);
+      return new C(e);
+    }
+    firstTriple() {
+      return this.index.length > 0 ? this.index.getTriple(0) : void 0;
+    }
+    firstSource() {
+      let t = this.firstTriple();
+      return t ? M.source(t) : void 0;
+    }
+    firstRelation() {
+      let t = this.firstTriple();
+      return t ? M.relation(t) : void 0;
+    }
+    firstTarget() {
+      let t = this.firstTriple();
+      return t ? M.target(t) : void 0;
+    }
+    firstObject(t = !1) {
+      return this.objects(t)[0];
+    }
+    triples() {
+      return this.index.triples();
+    }
+    sources() {
+      return new Set(this.index.triples().map(M.source));
+    }
+    relations() {
+      return new Set(this.index.triples().map(M.relation));
+    }
+    targets() {
+      return new Set(this.index.triples().map(M.target));
+    }
+    objects(t = !1) {
+      let e = {};
+      for (let [r, n, o] of this.index.triples()) {
+        e[r] || (e[r] = {}),
+          e[r][n]
+            ? Array.isArray(e[r][n]) ? e[r][n].push(o) : e[r][n] = [e[r][n], o]
+            : e[r][n] = t ? [o] : o;
+      }
+      let i = [];
+      for (let [r, n] of Object.entries(e)) n.id = r, i.push(n);
+      return i;
+    }
+    search(t) {
+      let e = [this.tripleRows], { source: i, relation: r, target: n } = t;
+      if (i) {
+        if (i.type) {
+          let a = this.index.getSourceTypeSet(i.type);
+          if (a) e.push(a);
+          else return new C([]);
+        }
+        if (i.id) {
+          let a = this.index.getSourceIdSet(i.id);
+          if (a) e.push(a);
+          else return new C([]);
+        }
+        if (i.qs) {
+          for (let [a, h] of Object.entries(i.qs)) {
+            let u = this.index.getSourceQsSet(a, h);
+            if (u) e.push(u);
+            else return new C([]);
+          }
+        }
+      }
+      if (n) {
+        if (n.type) {
+          let a = this.index.getTargetTypeSet(n.type);
+          if (a) e.push(a);
+          else return new C([]);
+        }
+        if (n.id) {
+          let a = this.index.getTargetIdSet(n.id);
+          if (a) e.push(a);
+          else return new C([]);
+        }
+        if (n.qs) {
+          for (let [a, h] of Object.entries(n.qs)) {
+            let u = this.index.getTargetQsSet(a, h);
+            if (u) e.push(u);
+            else return new C([]);
+          }
+        }
+      }
+      if (r) {
+        let a = this.index.getRelationSet(r);
+        if (a) e.push(a);
+        else return new C([]);
+      }
+      let o = Us.intersection(this.metrics, e), c = [];
+      for (let a of o) {
+        let h = this.index.getTriple(a);
+        if (!i?.predicate && !n?.predicate) {
+          c.push(h);
+          continue;
+        }
+        let u = !0;
+        i?.predicate && (u = u && i.predicate(M.source(h))),
+          n?.predicate && (u = u && n.predicate(M.target(h))),
+          u && c.push(h);
+      }
+      return new C(c);
+    }
+    getMetrics() {
+      return { index: this.index.metrics, db: this.metrics };
+    }
+  };
+var de = class extends m {
+  static get properties() {
+    return {
+      title: { type: String },
+      id: { type: String },
+      minDate: { type: String },
+      maxDate: { type: String },
+      imageCount: { type: Number },
+      description: { type: String },
+      images: { type: Object },
+      videos: { type: Object },
+      triples: { type: Array },
+      countries: { type: String },
+    };
+  }
+  connectedCallback() {
+    super.connectedCallback(), x.setIndex();
+  }
+  albumPhotos(t) {
+    return this.images.images().filter((e) => e.album_id === this.id).map(
+      (e) => {
+        let i = t.search({ id: e.id }).firstObject(!0);
+        return { ...e, relations: i ?? {} };
+      },
+    );
+  }
+  albumVideos(t) {
+    return this.videos.videos().filter((e) => e.album_id === this.id);
+  }
+  renderPhotoCount() {
+    return this.imageCount === 1
+      ? `${this.imageCount} photo`
+      : `${this.imageCount} photos`;
+  }
+  thingsLinks(t) {
+    let e = {}, i = this.albumPhotos(t);
+    for (let n of [A.UNESCO]) {
+      e[n] = Array.from(
+        new Set(
+          i.flatMap((o) => o.relations[S.LOCATION]?.filter((c) => y.is(c, n)))
+            .filter((o) => o),
+        ),
+      );
+    }
+    for (
+      let n of [A.BIRD, A.MAMMAL, A.REPTILE, A.FISH, A.AMPHIBIAN, A.INSECT]
+    ) {
+      e[n] = Array.from(
+        new Set(
+          i.flatMap((o) => o.relations[S.SUBJECT]?.filter((c) => y.is(c, n)))
+            .filter((o) => o),
+        ),
+      );
+    }
+    let r = [];
+    r = r.concat(
+      e[A.UNESCO].map((n) => l`<unesco-link urn="${n}"></unesco-link>`),
+    );
+    for (
+      let n of [A.BIRD, A.MAMMAL, A.REPTILE, A.FISH, A.AMPHIBIAN, A.INSECT]
+    ) {
+      r = r.concat(
+        e[n].map((o) =>
+          l`<thing-link .urn="${o}" .triples="${this.triples}"></thing-link>`
+        ),
+      );
+    }
+    return r;
+  }
+  render() {
+    let t = new st(this.triples),
+      e = window.matchMedia("(max-width: 500px)"),
+      i = X.dateRange(this.minDate, this.maxDate, e.matches),
+      n = this.albumPhotos(t).map((a, h) =>
+        l`
       <app-photo
-        id=${l.id}
-        summary=${l.relations.summary}
-        loading="${T.loadingMode(a)}"
-        thumbnailUrl="${l.thumbnail_url}"
-        mosaicColours="${l.mosaic_colours}"
-        imageUrl="${l.full_image}"></app-photo>`),n=this.albumVideos().map((l,a)=>c`<app-video
-        id=${l.id}
-        url_poster=${l.poster_url}
-        url_unscaled=${l.video_url_unscaled}
-        url_1080p=${l.video_url_1080p}
-        url_720p=${l.video_url_720p}
-        url_480p=${l.video_url_480p}
-        ></app-video>`),o=it.flags(this?.countries.split(","));return c`
+        id=${a.id}
+        summary=${a.relations.summary}
+        loading="${T.loadingMode(h)}"
+        thumbnailUrl="${a.thumbnail_url}"
+        mosaicColours="${a.mosaic_colours}"
+        imageUrl="${a.full_image}"></app-photo>`
+      ),
+      o = this.albumVideos().map((a, h) =>
+        l`<app-video
+        id=${a.id}
+        url_poster=${a.poster_url}
+        url_unscaled=${a.video_url_unscaled}
+        url_1080p=${a.video_url_1080p}
+        url_720p=${a.video_url_720p}
+        url_480p=${a.video_url_480p}
+        ></app-video>`
+      ),
+      c = tt.flags(this?.countries.split(","));
+    return l`
     <div>
       <section class="photos-metadata">
         <h1>${this.title}</h1>
         <p class="photo-album-date">
-          <time>${e}</time>
+          <time>${i}</time>
         </p>
         <p class="photo-album-count">${this.renderPhotoCount()}</p>
-        <p class="photo-album-countries">${o}</p>
+        <p class="photo-album-countries">${c}</p>
         <p class="photo-album-description">${Ut(this.description)}
         </p>
 
@@ -193,38 +2767,155 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
         <a href="#/albums">[albums]</a>
 
         <ul class="unesco-links">
-          ${this.thingsLinks().map(l=>c`<li>${l}</li>`)}
+          ${this.thingsLinks(t).map((a) => l`<li>${a}</li>`)}
         </ul>
 
       </section>
 
       <section class="photo-container">
-        ${r}
+        ${n}
       </section>
 
       <section class="video-container">
-        ${n}
+        ${o}
       </section>
     </div>
-    `}};customElements.define("album-page",me);var fe=class extends m{static get properties(){return{url:{type:String},format:{type:String},sharing:{state:!0,type:Boolean}}}async shareImage(t){if(!navigator.share)console.error("navigator.share not available");else{this.sharing=!0;try{let e=await fetch(t),s=new URL(t).pathname;await navigator.share({title:s,files:[new File([await e.blob()],s,{type:this.format})]})}finally{this.sharing=!1}}}render(){return this.sharing?c`<button class="photo-share-button" disabled>[sharing...]</button>`:c`
-      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${this.shareImage.bind(this,this.url)}>[share]</button>
-      `}};customElements.define("share-metadata-button",fe);var ge=class extends m{static get properties(){return{tagName:{type:String},count:{type:Number}}}render(){let{tagName:t,count:e}=this,s=encodeURIComponent(t);return typeof e>"u"?c`<a
-        href="#/tag/${s}"
-        @click=${this.broadcast("click-tag",{tagName:t})}>${t}</a>`:c`<a
-      href="#/tag/${s}"
+    `;
+  }
+};
+customElements.define("album-page", de);
+var pe = class extends m {
+  static get properties() {
+    return {
+      url: { type: String },
+      format: { type: String },
+      sharing: { state: !0, type: Boolean },
+    };
+  }
+  async shareImage(t) {
+    if (!navigator.share) console.error("navigator.share not available");
+    else {
+      this.sharing = !0;
+      try {
+        let e = await fetch(t), i = new URL(t).pathname;
+        await navigator.share({
+          title: i,
+          files: [new File([await e.blob()], i, { type: this.format })],
+        });
+      } finally {
+        this.sharing = !1;
+      }
+    }
+  }
+  render() {
+    return this.sharing
+      ? l`<button class="photo-share-button" disabled>[sharing...]</button>`
+      : l`
+      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${
+        this.shareImage.bind(this, this.url)
+      }>[share]</button>
+      `;
+  }
+};
+customElements.define("share-metadata-button", pe);
+var ue = class extends m {
+  static get properties() {
+    return { tagName: { type: String }, count: { type: Number } };
+  }
+  render() {
+    let { tagName: t, count: e } = this, i = encodeURIComponent(t);
+    return typeof e > "u"
+      ? l`<a
+        href="#/tag/${i}"
+        @click=${this.broadcast("click-tag", { tagName: t })}>${t}</a>`
+      : l`<a
+      href="#/tag/${i}"
       rel="tag"
-      @click=${this.broadcast("click-tag",{tagName:t})}>${t}</a> (${e})`}};customElements.define("tag-link",ge);var $e=class extends m{static get properties(){return{id:{type:String},image:{type:Object},exif:{type:Object},semantic:{type:Object},sharing:{state:!0,type:Boolean},triples:{type:Array}}}connectedCallback(){super.connectedCallback(),_.setIndex()}renderAperture(t){return t.f_stop==="Unknown"?c`<td>Unknown aperture</td>`:t.f_stop==="0.0"?c`<td>Manual aperture control</td>`:c`<td>ƒ/${t.f_stop}</td>`}renderFocalLength(t){return t.focal_length==="Unknown"?c`${t.focal_length}`:t.focal_length==="0"?c`<td>Manual lens</td>`:c`<td>${t.focal_length}mm equiv.</td>`}renderSemanticKey(t){return t.replace(/_/g," ").replace(/\b\w/g,e=>e.toUpperCase())}renderSemanticValue(t,e){if(Array.isArray(e))return c`<ul class="thing-list">
-        ${e.map(s=>c`<li>${this.renderSemanticValue.call(this,t,s)}</li>`)}
-      </ul>`;if(t.includes("binomial"))return c`<em>${e}</em>`;if(t.toLowerCase()==="summary")return c`${Ut(e??"")}`;if(b.isRating(e)){let s=`urn:r\xF3:rating:${e}`;return c`<thing-link .triples=${this.triples} .urn="${s}"></thing-link>`}else{if(b.isUrn(e)&&b.is(e,y.UNESCO))return c`<unesco-link .urn="${e}"></unesco-link>`;if(b.isUrn(e))return c`<thing-link .triples=${this.triples} .urn="${e}"></thing-link>`}return e}isIgnoredKey(t){return new Set(["bird_binomial","wildlife","living_conditions"]).has(t)}renderSemanticData(t){return c`
+      @click=${this.broadcast("click-tag", { tagName: t })}>${t}</a> (${e})`;
+  }
+};
+customElements.define("tag-link", ue);
+var me = class extends m {
+  static get properties() {
+    return {
+      id: { type: String },
+      image: { type: Object },
+      exif: { type: Object },
+      semantic: { type: Object },
+      sharing: { state: !0, type: Boolean },
+      triples: { type: Array },
+    };
+  }
+  connectedCallback() {
+    super.connectedCallback(), x.setIndex();
+  }
+  renderAperture(t) {
+    return t.f_stop === "Unknown"
+      ? l`<td>Unknown aperture</td>`
+      : t.f_stop === "0.0"
+      ? l`<td>Manual aperture control</td>`
+      : l`<td>ƒ/${t.f_stop}</td>`;
+  }
+  renderFocalLength(t) {
+    return t.focal_length === "Unknown"
+      ? l`${t.focal_length}`
+      : t.focal_length === "0"
+      ? l`<td>Manual lens</td>`
+      : l`<td>${t.focal_length}mm equiv.</td>`;
+  }
+  renderSemanticKey(t) {
+    return t.replace(/_/g, " ").replace(/\b\w/g, (e) => e.toUpperCase());
+  }
+  renderSemanticValue(t, e) {
+    if (Array.isArray(e)) {
+      return l`<ul class="thing-list">
+        ${
+        e.map((i) => l`<li>${this.renderSemanticValue.call(this, t, i)}</li>`)
+      }
+      </ul>`;
+    }
+    if (t.includes("binomial")) return l`<em>${e}</em>`;
+    if (t.toLowerCase() === "summary") return l`${Ut(e ?? "")}`;
+    if (y.isRating(e)) {
+      let i = `urn:r\xF3:rating:${e}`;
+      return l`<thing-link .triples=${this.triples} .urn="${i}"></thing-link>`;
+    } else {
+      if (y.isUrn(e) && y.is(e, A.UNESCO)) {
+        return l`<unesco-link .urn="${e}"></unesco-link>`;
+      }
+      if (y.isUrn(e)) {
+        return l`<thing-link .triples=${this.triples} .urn="${e}"></thing-link>`;
+      }
+    }
+    return e;
+  }
+  isIgnoredKey(t) {
+    return new Set(["bird_binomial", "wildlife", "living_conditions"]).has(t);
+  }
+  renderSemanticData(t) {
+    return l`
       <h3>Photo Information</h3>
       <table class="metadata-table">
-        ${Object.keys(t).sort().filter(e=>!this.isIgnoredKey(e)).map(e=>c`
-            <tr>
-              <th class="exif-heading">${this.renderSemanticKey(e)}</th>
-              <td>${this.renderSemanticValue(e,t[e])}</td>
-          `)}
+        ${
+      t.sort((e, i) => v.getRelation(e).localeCompare(v.getRelation(i))).filter(
+        (e) => !this.isIgnoredKey(v.getRelation(e)),
+      ).map((e) =>
+        l`
+          <tr>
+            <th class="exif-heading">${
+          this.renderSemanticKey(v.getRelation(e))
+        }</th>
+              <td>${
+          this.renderSemanticValue(v.getRelation(e), v.getTarget(e))
+        }</td>
+          `
+      )
+    }
       <table>
-    `}renderExif(t){return c`
+    `;
+  }
+  renderExif(t) {
+    return l`
     <h3>Exif</h3>
 
     <table class="metadata-table">
@@ -248,7 +2939,9 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
       </tr>
       <tr>
         <th class="exif-heading">Shutter Speed</th>
-        <td>1/${t.exposure_time?Math.round(1/t.exposure_time):"Unknown"}</td>
+        <td>1/${
+      t.exposure_time ? Math.round(1 / t.exposure_time) : "Unknown"
+    }</td>
       </tr>
       <tr>
         <th class="exif-heading">Aperture</th>
@@ -259,7 +2952,13 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
         <td>${t.iso}</td>
       </tr>
     </table>
-    `}render(){let t=this.image,e=this.semantic,s=t.album_id;return c`
+    `;
+  }
+  render() {
+    let t = this.image,
+      e = t.album_id,
+      r = new st(this.triples).search({ source: { id: t.id } }).triples();
+    return l`
     <section>
     <h1>Metadata</h1>
 
@@ -268,15 +2967,27 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
       <p>
         <a href="${t.full_image}">[full image]</a>
         <share-metadata-button format="image/webp" url=${t.image_url}></share-metadata-button>
-        <a href="#/album/${s}">[album]</a>
+        <a href="#/album/${e}">[album]</a>
       </p>
 
-      ${this.renderSemanticData(e)}
+      ${this.renderSemanticData(r)}
 
-    ${this.exif?this.renderExif(this.exif):c``}
+    ${this.exif ? this.renderExif(this.exif) : l``}
 
     </section>
-    `}};customElements.define("metadata-page",$e);var be=class extends m{static get properties(){return{}}connectedCallback(){super.connectedCallback(),_.setIndex()}render(){return c`
+    `;
+  }
+};
+customElements.define("metadata-page", me);
+var fe = class extends m {
+  static get properties() {
+    return {};
+  }
+  connectedCallback() {
+    super.connectedCallback(), x.setIndex();
+  }
+  render() {
+    return l`
     <div>
       <section class="about-page">
         <h1>About</h1>
@@ -295,15 +3006,38 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
 
         </section>
     </div>
-    `}};customElements.define("about-page",be);var Yt=class{static loadingMode(t){return t===0?"auto":"none"}};var ye=class extends m{static get properties(){return{videos:{type:Object}}}connectedCallback(){super.connectedCallback(),_.setIndex()}videos(){return this.videos.videos()}render(){let t=this.videos().map((e,s)=>c`<app-video
+    `;
+  }
+};
+customElements.define("about-page", fe);
+var jt = class {
+  static loadingMode(t) {
+    return t === 0 ? "auto" : "none";
+  }
+};
+var ge = class extends m {
+  static get properties() {
+    return { videos: { type: Object } };
+  }
+  connectedCallback() {
+    super.connectedCallback(), x.setIndex();
+  }
+  videos() {
+    return this.videos.videos();
+  }
+  render() {
+    let t = this.videos().map((e, i) =>
+      l`<app-video
       id=${e.id}
       url_poster=${e.poster_url}
       url_unscaled=${e.video_url_unscaled}
       url_1080p=${e.video_url_1080p}
       url_720p=${e.video_url_720p}
       url_480p=${e.video_url_480p}
-      preload="${Yt.loadingMode(s)}"
-      ></app-video>`);return c`
+      preload="${jt.loadingMode(i)}"
+      ></app-video>`
+    );
+    return l`
     <div>
       <section class="photos-metadata">
         <h1>Videos</h1>
@@ -314,13 +3048,49 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
         ${t}
       </section>
     </div>
-    `}};customElements.define("videos-page",ye);function Ms(i,t="r\xF3"){if(!i.startsWith(`urn:${t}:`))throw new Error(`Invalid URN for namespace ${t}: ${i}`);let e=i.split(":")[2],[s,r]=i.split("?"),n=s.split(":")[3],o=r?Object.fromEntries(new URLSearchParams(r)):{};return{type:e,id:n,qs:o}}function Vt(i,t="r\xF3"){try{return Ms(i,t)}catch{return{type:"unknown",id:i,qs:{}}}}var I=class{static source(i){return i[0]}static relation(i){return i[1]}static target(i){return i[2]}},Cs=class{#e;#t;#s;constructor(){this.#e=0,this.#t=new Map,this.#s=new Map}map(){return this.#t}reverseMap(){return this.#s}add(i){return this.#t.has(i)?this.#t.get(i):(this.#t.set(i,this.#e),this.#s.set(this.#e,i),this.#e++,this.#e-1)}getIndex(i){return this.#t.get(i)}getValue(i){return this.#s.get(i)}has(i){return this.#t.has(i)}},Ls=class{static intersection(i){if(i.length===0)return new Set;i.sort((e,s)=>e.size-s.size);let t=new Set(i[0]);for(let e=1;e<i.length;e++){let s=i[e];for(let r of t)s.has(r)||t.delete(r);if(t.size===0)break}return t}},Rs=class{indexedTriples;stringIndex;sourceType;sourceId;sourceQs;relations;targetType;targetId;targetQs;constructor(i){this.indexedTriples=[],this.stringIndex=new Cs,this.sourceType=new Map,this.sourceId=new Map,this.sourceQs=new Map,this.relations=new Map,this.targetType=new Map,this.targetId=new Map,this.targetQs=new Map,this.indexTriples(i)}indexTriples(i){for(let t=0;t<i.length;t++)this.indexTriple(i[t],t)}indexTriple(i,t){let e=Vt(I.source(i)),s=I.relation(i),r=Vt(I.target(i)),n=this.stringIndex.add(e.type),o=this.stringIndex.add(e.id),l=this.stringIndex.add(s),a=this.stringIndex.add(r.type),p=this.stringIndex.add(r.id);this.indexedTriples.push([this.stringIndex.add(I.source(i)),l,this.stringIndex.add(I.target(i))]),this.sourceType.has(n)||this.sourceType.set(n,new Set),this.sourceType.get(n).add(t),this.sourceId.has(o)||this.sourceId.set(o,new Set),this.sourceId.get(o).add(t);for(let[u,d]of Object.entries(e.qs)){let f=this.stringIndex.add(`${u}=${d}`);this.sourceQs.has(f)||this.sourceQs.set(f,new Set),this.sourceQs.get(f).add(t)}this.relations.has(l)||this.relations.set(l,new Set),this.relations.get(l).add(t),this.targetType.has(a)||this.targetType.set(a,new Set),this.targetType.get(a).add(t),this.targetId.has(p)||this.targetId.set(p,new Set),this.targetId.get(p).add(t);for(let[u,d]of Object.entries(r.qs)){let f=this.stringIndex.add(`${u}=${d}`);this.targetQs.has(f)||this.targetQs.set(f,new Set),this.targetQs.get(f).add(t)}}add(i){let t=this.indexedTriples.length;for(let e=0;e<i.length;e++)this.indexTriple(i[e],t+e)}get length(){return this.indexedTriples.length}triples(){return this.indexedTriples.map(([i,t,e])=>[this.stringIndex.getValue(i),this.stringIndex.getValue(t),this.stringIndex.getValue(e)])}getTriple(i){if(i<0||i>=this.indexedTriples.length)return;let[t,e,s]=this.indexedTriples[i];return[this.stringIndex.getValue(t),this.stringIndex.getValue(e),this.stringIndex.getValue(s)]}getSourceTypeSet(i){let t=this.stringIndex.getIndex(i);return t!==void 0?this.sourceType.get(t):void 0}getSourceIdSet(i){let t=this.stringIndex.getIndex(i);return t!==void 0?this.sourceId.get(t):void 0}getSourceQsSet(i,t){let e=this.stringIndex.getIndex(`${i}=${t}`);return e!==void 0?this.sourceQs.get(e):void 0}getRelationSet(i){let t=this.stringIndex.getIndex(i);return t!==void 0?this.relations.get(t):void 0}getTargetTypeSet(i){let t=this.stringIndex.getIndex(i);return t!==void 0?this.targetType.get(t):void 0}getTargetIdSet(i){let t=this.stringIndex.getIndex(i);return t!==void 0?this.targetId.get(t):void 0}getTargetQsSet(i,t){let e=this.stringIndex.getIndex(`${i}=${t}`);return e!==void 0?this.targetQs.get(e):void 0}},ss=class U{index;triplesCount;tripleRows;constructor(t){this.index=new Rs(t),this.triplesCount=this.index.length,this.tripleRows=new Set;for(let e=0;e<this.triplesCount;e++)this.tripleRows.add(e)}static of(t){return new U(t)}static from(t){let e=[];for(let s of t){let{id:r,...n}=s;if(typeof r!="string")throw new Error("Each TripleObject must have a string id.");for(let[o,l]of Object.entries(n))if(Array.isArray(l))for(let a of l)e.push([r,o,a]);else e.push([r,o,l])}return new U(e)}add(t){let e=this.index.length;this.index.add(t),this.triplesCount=this.index.length;for(let s=e;s<this.triplesCount;s++)this.tripleRows.add(s)}map(t){return new U(this.index.triples().map(t))}flatMap(t){let e=this.index.triples().flatMap(t);return new U(e)}firstTriple(){return this.index.length>0?this.index.getTriple(0):void 0}firstSource(){let t=this.firstTriple();return t?I.source(t):void 0}firstRelation(){let t=this.firstTriple();return t?I.relation(t):void 0}firstTarget(){let t=this.firstTriple();return t?I.target(t):void 0}firstObject(){return this.objects()[0]}triples(){return this.index.triples()}sources(){return new Set(this.index.triples().map(I.source))}relations(){return new Set(this.index.triples().map(I.relation))}targets(){return new Set(this.index.triples().map(I.target))}objects(){let t={};for(let[s,r,n]of this.index.triples())t[s]||(t[s]={}),t[s][r]?Array.isArray(t[s][r])?t[s][r].push(n):t[s][r]=[t[s][r],n]:t[s][r]=n;let e=[];for(let[s,r]of Object.entries(t))r.id=s,e.push(r);return e}search(t){let e=[this.tripleRows],{source:s,relation:r,target:n}=t;if(s){if(s.type){let a=this.index.getSourceTypeSet(s.type);if(a)e.push(a);else return new U([])}if(s.id){let a=this.index.getSourceIdSet(s.id);if(a)e.push(a);else return new U([])}if(s.qs)for(let[a,p]of Object.entries(s.qs)){let u=this.index.getSourceQsSet(a,p);if(u)e.push(u);else return new U([])}}if(n){if(n.type){let a=this.index.getTargetTypeSet(n.type);if(a)e.push(a);else return new U([])}if(n.id){let a=this.index.getTargetIdSet(n.id);if(a)e.push(a);else return new U([])}if(n.qs)for(let[a,p]of Object.entries(n.qs)){let u=this.index.getTargetQsSet(a,p);if(u)e.push(u);else return new U([])}}if(r){let a=this.index.getRelationSet(r);if(a)e.push(a);else return new U([])}let o=Ls.intersection(e),l=[];for(let a of o){let p=this.index.getTriple(a);if(!s?.predicate&&!n?.predicate){l.push(p);continue}let u=!0;s?.predicate&&(u=u&&s.predicate(I.source(p))),n?.predicate&&(u=u&&n.predicate(I.target(p))),u&&l.push(p)}return new U(l)}};var Ae=class extends m{static get properties(){return{urn:{type:String},images:{type:Object},albums:{type:Object},semantic:{type:Object},triples:{type:Array}}}connectedCallback(){super.connectedCallback(),_.setIndex()}isSemanticRelation(t){return t===S.SUBJECT||t===S.LOCATION||t===S.RATING}filterPhotos(t,e){return e.filter(s=>{let[r,n,o]=s,l=b.isRating(o)?`urn:r\xF3:rating:${encodeURIComponent(o)}`:o;if(!this.isSemanticRelation(n)&&!b.isUrn(l))return!1;try{let a=b.parseUrn(l),p=b.parseUrn(this.urn);return p.id==="*"?p.type===a.type:b.sameURN(l,this.urn)}catch{return!1}}).map(s=>t.find(r=>r.id===s[0])).filter(s=>s!==void 0)}subjectPhotos(t,e){return this.filterPhotos(t,e).sort((s,r)=>r.created_at-s.created_at).map((s,r)=>c`
+    `;
+  }
+};
+customElements.define("videos-page", ge);
+var $e = class extends m {
+  static get properties() {
+    return {
+      urn: { type: String },
+      images: { type: Object },
+      albums: { type: Object },
+      triples: { type: Array },
+    };
+  }
+  connectedCallback() {
+    super.connectedCallback(), x.setIndex();
+  }
+  filterUrnImages(t, e) {
+    let i = [S.SUBJECT, S.LOCATION, S.RATING], r = ut(this.urn);
+    r.id === "*" && delete r.id;
+    let n = e.search({ target: r, relation: { relation: i } }).sources();
+    return Array.from(n).flatMap((o) =>
+      t.filter((c) => c.id === o).slice(0, 1)
+    );
+  }
+  renderSubjectPhotos(t, e) {
+    return this.filterUrnImages(t, e).sort((i, r) =>
+      r.created_at - i.created_at
+    ).map((i, r) =>
+      l`
       <app-photo
-        id=${s.id}
+        id=${i.id}
         loading="${T.loadingMode(r)}"
-        thumbnailUrl="${s.thumbnail_url}"
-        mosaicColours="${s.mosaic_colours}"
-        imageUrl="${s.full_image}"></app-photo>`)}subjectAlbums(t,e){let s=this.filterPhotos(t,e),r=new Set(s.map(n=>n.album_id));return Array.from(r).flatMap(n=>this.albums.albums().filter(o=>o.id===n)).sort((n,o)=>o.min_date-n.min_date).map(n=>c`
+        thumbnailUrl="${i.thumbnail_url}"
+        mosaicColours="${i.mosaic_colours}"
+        imageUrl="${i.full_image}"></app-photo>`
+    );
+  }
+  renderSubjectAlbums(t, e) {
+    let i = this.filterUrnImages(t, e), r = new Set(i.map((n) => n.album_id));
+    return Array.from(r).flatMap((n) =>
+      this.albums.albums().filter((o) => o.id === n)
+    ).sort((n, o) => o.min_date - n.min_date).map((n) =>
+      l`
           <photo-album
             title="${n.album_name}"
             url="${n.thumbnail_url}"
@@ -332,34 +3102,111 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
             countries="${n.flags}"
             loading="eager">
             </photo-album>
-      `)}getFacts(){let t=this.triples.filter(s=>s[0]===this.urn),e={};for(let s of t){let[r,n,o]=s;e.hasOwnProperty(n)||(e[n]=[]),e[n].push(o)}return e}binomialToCommonName(t){let e=this.triples.find(s=>{let[r,n,o]=s;if(!b.isUrn(r))return!1;let l=b.parseUrn(r),a=t.replace(" ","-").toLowerCase();return l.id===a&&n===S.NAME});return e?e[2]:t}firstPhotographed(t,e){let r=this.filterPhotos(t,e).sort((n,o)=>n.created_at-o.created_at)[0];return r?new Date(r.created_at).toLocaleDateString("en-IE",{day:"numeric",month:"short",year:"numeric"}):"Unknown"}getTitle(){let t=rt.findName(this.triples,this.urn);if(t)return t;try{let e=b.parseUrn(this.urn),s=decodeURIComponent(e.id);return e.id==="*"?`${e.type.charAt(0).toUpperCase()}${e.type.slice(1)}`:et.has(e.type)?J.toCommonName(this.triples,s):s}catch{return this.urn}}renderFacts(t,e){let s={};return e.country&&(s.Country=c`${e.country}`),s}render(){let t=this.images.images(),e=this.semantic.semantic(),s=this.subjectPhotos(t,e),r=this.subjectAlbums(t,e),n=this.getFacts(),o=b.parseUrn(this.urn),l=o.type,a=Object.assign({Classification:c`<a href="#/thing/${l}:*">${l.charAt(0).toUpperCase()}${l.slice(1)}</a>`},this.renderFacts(o,n));et.has(l)&&(a["First Photographed"]=c`<span>${this.firstPhotographed(t,e)}</span>`);let d=new ss(this.triples).search({source:Vt(this.urn)}).firstObject()??{},f=d[S.WIKIPEDIA],$=d[S.BIRDWATCH_URL],w=d[S.LONGITUDE],x=d[S.LATITUDE],B;if(w&&x){let X=`https://www.google.com/maps?q=${x},${w}`;B=c`
-      <a href="${X}" target="_blank" rel="noopener">[maps]</a>
-      `}return c`
+      `
+    );
+  }
+  firstPhotographed(t, e) {
+    let r =
+      this.filterUrnImages(t, e).sort((n, o) => n.created_at - o.created_at)[0];
+    return r
+      ? new Date(r.created_at).toLocaleDateString("en-IE", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+      : "Unknown";
+  }
+  renderTitle() {
+    let t = et.findName(this.triples, this.urn);
+    if (t) return t;
+    try {
+      let e = y.parseUrn(this.urn), i = decodeURIComponent(e.id);
+      return e.id === "*"
+        ? `${e.type.charAt(0).toUpperCase()}${e.type.slice(1)}`
+        : K.has(e.type)
+        ? q.toCommonName(this.triples, i)
+        : i;
+    } catch {
+      return this.urn;
+    }
+  }
+  renderClassification(t) {
+    return l`<a href="#/thing/${t}:*">${t.charAt(0).toUpperCase()}${
+      t.slice(1)
+    }</a>`;
+  }
+  render() {
+    let t = new st(this.triples).map((b) =>
+        v.getRelation(b) !== S.RATING ? b : [
+          v.getSource(b),
+          v.getRelation(b),
+          `urn:r\xF3:rating:${encodeURIComponent(v.getTarget(b))}`,
+        ]
+      ),
+      e = this.images.images(),
+      i = this.renderSubjectPhotos(e, t),
+      r = this.renderSubjectAlbums(e, t),
+      n = y.parseUrn(this.urn),
+      o = n.type,
+      c = t.search({ source: ut(this.urn) }).firstObject() ?? {},
+      a = Object.assign({ Classification: this.renderClassification(o) });
+    if (c.country && (a.Country = l`${c.country}`), c.fcode_name) {
+      let b = c.fcode_name;
+      a["Place Type"] = l`${b.charAt(0).toUpperCase()}${b.slice(1)}`;
+    }
+    K.has(o) &&
+      (a["First Photographed"] = l`<span>${
+        this.firstPhotographed(e, t)
+      }</span>`);
+    let h = c[S.WIKIPEDIA],
+      u = c[S.BIRDWATCH_URL],
+      d = c[S.LONGITUDE],
+      f = c[S.LATITUDE],
+      $;
+    if (d && f) {
+      let b = `https://www.google.com/maps?q=${f},${d}`;
+      $ = l`
+      <a href="${b}" target="_blank" rel="noopener">[maps]</a>
+      `;
+    }
+    return l`
       <div>
       <section class="thing-page">
-        <h1>${this.getTitle()}</h1>
+        <h1>${this.renderTitle()}</h1>
 
         <p>
-          ${et.has(l)?c`<span class="thing-binomial">(${J.pretty(o.id)})</span>`:c``}
+          ${
+      K.has(o) && n.id !== "*"
+        ? l`<span class="thing-binomial">(${q.pretty(n.id)})</span>`
+        : l``
+    }
         </p>
         <br>
 
-        ${f?c`<a href="${f}" target="_blank" rel="noopener">[wikipedia]</a>`:c``}
-        ${$?c`<a href="${$}" target="_blank" rel="noopener">[birdwatch]</a>`:c``}
-        ${B?c`<span class="location">${B}</span>`:c``}
+        ${
+      h ? l`<a href="${h}" target="_blank" rel="noopener">[wikipedia]</a>` : l``
+    }
+        ${
+      u ? l`<a href="${u}" target="_blank" rel="noopener">[birdwatch]</a>` : l``
+    }
+        ${$ ? l`<span class="location">${$}</span>` : l``}
 
         <h3>Metadata</h3>
         <table class="metadata-table">
-        ${Object.entries(a).map(([X,is])=>c`
+        ${
+      Object.entries(a).map(([b, I]) =>
+        l`
           <tr>
-            <th class="exif-heading">${X}</th>
-            <td>${is}</td>
+            <th class="exif-heading">${b}</th>
+            <td>${I}</td>
           </tr>
-          `)}
+          `
+      )
+    }
         </table>
 
         <br>
-        ${s}
+        ${i}
 
         <h3>Albums</h3>
 
@@ -370,40 +3217,222 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
         </section>
 
       </div>
-    `}};customElements.define("thing-page",Ae);var R=new Nt,C=new Pt,P=new kt,N=new Dt,M=new Bt,D=new Ht,O=new jt,Os=[[R,h.EAGER],[C,h.EAGER],[P,h.EAGER],[N,h.EAGER],[M,h.EAGER],[D,h.EAGER],[O,h.LAZY]],Ps={[g.ABOUT]:[[R,h.LAZY],[C,h.LAZY],[P,h.LAZY],[N,h.LAZY],[D,h.LAZY],[M,h.EAGER],[O,h.LAZY]],[g.ALBUMS]:[[R,h.EAGER],[C,h.LAZY],[P,h.LAZY],[N,h.LAZY],[D,h.EAGER],[M,h.EAGER],[O,h.LAZY]],[g.PHOTOS]:[[R,h.EAGER],[C,h.EAGER],[P,h.EAGER],[N,h.LAZY],[D,h.LAZY],[M,h.EAGER],[O,h.LAZY]],[g.VIDEOS]:[[R,h.LAZY],[C,h.LAZY],[P,h.EAGER],[N,h.LAZY],[D,h.LAZY],[M,h.EAGER],[O,h.LAZY]],[g.ALBUM]:[[R,h.EAGER],[C,h.EAGER],[P,h.EAGER],[D,h.LAZY],[N,h.LAZY],[M,h.EAGER],[O,h.EAGER]],[g.PHOTO]:[[R,h.EAGER],[C,h.EAGER],[P,h.EAGER],[N,h.EAGER],[M,h.EAGER],[D,h.LAZY],[O,h.LAZY]],[g.METADATA]:[[R,h.LAZY],[C,h.EAGER],[P,h.EAGER],[N,h.EAGER],[M,h.EAGER],[D,h.LAZY],[M,h.EAGER],[O,h.EAGER]],[g.THING]:[[R,h.EAGER],[C,h.EAGER],[P,h.LAZY],[N,h.LAZY],[M,h.EAGER],[D,h.LAZY],[O,h.EAGER]]},we=class{static async init(){let t=k.getUrl();console.log(`loading ${t?.type}`);let e=Ps[t?.type]??Os,s=[];for(let[r,n]of e)n===h.EAGER?s.push(r.init()):n===h.LAZY&&r.init();await Promise.all(s)}};await we.init();var ve=class i extends m{static DEFAULT_PAGE=g.ALBUMS;static LOCATION_TYPE_TO_PAGE={album:g.ALBUM,albums:g.ALBUMS,photos:g.PHOTOS,metadata:g.METADATA,about:g.ABOUT,videos:g.VIDEOS,thing:g.THING};static get properties(){return{title:{type:String},page:{type:String},sidebarVisible:{type:Boolean,state:!0},id:{type:String},imageUrl:{type:String},thumbnailUrl:{type:String},route:{type:String},params:{type:Object},query:{type:Object},darkMode:{type:Boolean}}}connectedCallback(){super.connectedCallback(),this.setStateFromUrl(),this.requestUpdate(),window.addEventListener("popstate",this.handlePopState.bind(this)),this.sidebarVisible=!1}disconnectedCallback(){super.disconnectedCallback(),window.removeEventListener("popstate",this.handlePopState.bind(this))}handlePopState(){this.setStateFromUrl(),this.requestUpdate()}setStateFromUrl(){let t=k.getUrl();i.LOCATION_TYPE_TO_PAGE[t?.type]?this.page=i.LOCATION_TYPE_TO_PAGE[t.type]:(console.error("did not match pagetype",t?.type),this.page=i.DEFAULT_PAGE),k.pageUsesId(this.page)&&(this.id=t.id)}receiveClickAlbum(t){let{title:e,id:s}=t.detail;this.page=g.PHOTOS,this.id=s,this.title=e,k.showAlbumUrl(s)}async receiveClickBurgerMenu(){this.sidebarVisible=!this.sidebarVisible}async receiveClickPhotoMetadata(t){let{id:e,imageUrl:s,thumbnailUrl:r}=t.detail;this.page=g.METADATA,this.id=e,this.imageUrl=s,this.thumbnailUrl=r,k.showMetadataUrl(e)}receiveSwitchTheme(t){this.darkMode=!this.darkMode,localStorage.setItem("darkMode",this.darkMode.toString()),this.requestUpdate()}receiveNavigatePage(t){this.page=t.detail.page,this.sidebarVisible=!1;let e=k.router(this.page);k.pageUsesId(this.page)?e(this.id):e()}pageClasses(t){let e=["page"];return t&&e.push("sidebar-visible"),e.join(" ")}renderPage(t){let e=this.pageClasses(t);if(!this.page||this.page==="albums")return c`
-      <photo-album-page .stats=${D} .albums="${R}" class="${e}"></photo-album-page>
-      `;if(this.page===g.ABOUT)return c`<about-page class="${e}"></about-page>`;if(this.page===g.PHOTOS)return c`<photos-page class="${e}" .images=${C}></photos-page>`;if(this.page===g.ALBUM){this.id||console.error("no album id provided");let s=R.albums().find(r=>r.id===this.id);return s||console.error(`failed to find album with id ${this.id}`),c`
+    `;
+  }
+};
+customElements.define("thing-page", $e);
+var O = new Pt(),
+  R = new Ot(),
+  k = new kt(),
+  N = new Nt(),
+  D = new Dt(),
+  U = new Bt(),
+  Rs = [[O, p.EAGER], [R, p.EAGER], [k, p.EAGER], [N, p.EAGER], [D, p.EAGER], [
+    U,
+    p.LAZY,
+  ]],
+  Ls = {
+    [g.ABOUT]: [
+      [O, p.LAZY],
+      [R, p.LAZY],
+      [k, p.LAZY],
+      [N, p.LAZY],
+      [D, p.LAZY],
+      [U, p.LAZY],
+    ],
+    [g.ALBUMS]: [[O, p.EAGER], [R, p.LAZY], [k, p.LAZY], [N, p.LAZY], [
+      D,
+      p.EAGER,
+    ], [U, p.LAZY]],
+    [g.PHOTOS]: [[O, p.EAGER], [R, p.EAGER], [k, p.EAGER], [N, p.LAZY], [
+      D,
+      p.LAZY,
+    ], [U, p.LAZY]],
+    [g.VIDEOS]: [[O, p.LAZY], [R, p.LAZY], [k, p.EAGER], [N, p.LAZY], [
+      D,
+      p.LAZY,
+    ], [U, p.LAZY]],
+    [g.ALBUM]: [[O, p.EAGER], [R, p.EAGER], [k, p.EAGER], [D, p.LAZY], [
+      N,
+      p.LAZY,
+    ], [U, p.EAGER]],
+    [g.PHOTO]: [[O, p.EAGER], [R, p.EAGER], [k, p.EAGER], [N, p.EAGER], [
+      D,
+      p.LAZY,
+    ], [U, p.LAZY]],
+    [g.METADATA]: [[O, p.LAZY], [R, p.EAGER], [k, p.EAGER], [N, p.EAGER], [
+      D,
+      p.LAZY,
+    ], [U, p.EAGER]],
+    [g.THING]: [[O, p.EAGER], [R, p.EAGER], [k, p.LAZY], [N, p.LAZY], [
+      D,
+      p.LAZY,
+    ], [U, p.EAGER]],
+  },
+  be = class {
+    static async init() {
+      let t = P.getUrl();
+      console.log(`loading ${t?.type}`);
+      let e = Ls[t?.type] ?? Rs, i = [];
+      for (let [r, n] of e) {
+        n === p.EAGER ? i.push(r.init()) : n === p.LAZY && r.init();
+      }
+      await Promise.all(i);
+    }
+  };
+await be.init();
+var ye = class s extends m {
+  static DEFAULT_PAGE = g.ALBUMS;
+  static LOCATION_TYPE_TO_PAGE = {
+    album: g.ALBUM,
+    albums: g.ALBUMS,
+    photos: g.PHOTOS,
+    metadata: g.METADATA,
+    about: g.ABOUT,
+    videos: g.VIDEOS,
+    thing: g.THING,
+  };
+  static get properties() {
+    return {
+      title: { type: String },
+      page: { type: String },
+      sidebarVisible: { type: Boolean, state: !0 },
+      id: { type: String },
+      imageUrl: { type: String },
+      thumbnailUrl: { type: String },
+      route: { type: String },
+      params: { type: Object },
+      query: { type: Object },
+      darkMode: { type: Boolean },
+    };
+  }
+  connectedCallback() {
+    super.connectedCallback(),
+      this.setStateFromUrl(),
+      this.requestUpdate(),
+      window.addEventListener("popstate", this.handlePopState.bind(this)),
+      this.sidebarVisible = !1;
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback(),
+      window.removeEventListener("popstate", this.handlePopState.bind(this));
+  }
+  handlePopState() {
+    this.setStateFromUrl(), this.requestUpdate();
+  }
+  setStateFromUrl() {
+    let t = P.getUrl();
+    s.LOCATION_TYPE_TO_PAGE[t?.type]
+      ? this.page = s.LOCATION_TYPE_TO_PAGE[t.type]
+      : (console.error("did not match pagetype", t?.type),
+        this.page = s.DEFAULT_PAGE),
+      P.pageUsesId(this.page) && (this.id = t.id);
+  }
+  receiveClickAlbum(t) {
+    let { title: e, id: i } = t.detail;
+    this.page = g.PHOTOS, this.id = i, this.title = e, P.showAlbumUrl(i);
+  }
+  async receiveClickBurgerMenu() {
+    this.sidebarVisible = !this.sidebarVisible;
+  }
+  async receiveClickPhotoMetadata(t) {
+    let { id: e, imageUrl: i, thumbnailUrl: r } = t.detail;
+    this.page = g.METADATA,
+      this.id = e,
+      this.imageUrl = i,
+      this.thumbnailUrl = r,
+      P.showMetadataUrl(e);
+  }
+  receiveSwitchTheme(t) {
+    this.darkMode = !this.darkMode,
+      localStorage.setItem("darkMode", this.darkMode.toString()),
+      this.requestUpdate();
+  }
+  receiveNavigatePage(t) {
+    this.page = t.detail.page, this.sidebarVisible = !1;
+    let e = P.router(this.page);
+    P.pageUsesId(this.page) ? e(this.id) : e();
+  }
+  pageClasses(t) {
+    let e = ["page"];
+    return t && e.push("sidebar-visible"), e.join(" ");
+  }
+  renderPage(t) {
+    let e = this.pageClasses(t);
+    if (!this.page || this.page === "albums") {
+      return l`
+      <photo-album-page .stats=${D} .albums="${O}" class="${e}"></photo-album-page>
+      `;
+    }
+    if (this.page === g.ABOUT) return l`<about-page class="${e}"></about-page>`;
+    if (this.page === g.PHOTOS) {
+      return l`<photos-page class="${e}" .images=${R}></photos-page>`;
+    }
+    if (this.page === g.ALBUM) {
+      this.id || console.error("no album id provided");
+      let i = O.albums().find((r) => r.id === this.id);
+      return i || console.error(`failed to find album with id ${this.id}`),
+        l`
       <album-page
-        .images=${C}
-        .videos=${P}
-        .semantic=${M}
-        .triples=${O._data}
-        title=${s.album_name}
+        .images=${R}
+        .videos=${k}
+        .triples=${U._data}
+        title=${i.album_name}
         id=${this.id}
-        minDate=${s.min_date}
-        maxDate=${s.max_date}
-        imageCount=${s.photos_count}
-        description=${s.description}
-        countries=${s.flags}
+        minDate=${i.min_date}
+        maxDate=${i.max_date}
+        imageCount=${i.photos_count}
+        description=${i.description}
+        countries=${i.flags}
         class="${e}"></album-page>
-      `}if(this.page===g.METADATA){let s=C.images().find(l=>l.id===this.id),r=N.exif().find(l=>l.id===this.id),n=M.semantic().filter(l=>l[0]===this.id),o={};for(let[l,a,p]of n)o[a]?typeof o[a]=="string"&&(o[a]=[o[a],p]):o[a]=p;return s||console.error(`failed to find photo with id ${this.id}`),c`
+      `;
+    }
+    if (this.page === g.METADATA) {
+      let i = R.images().find((c) => c.id === this.id),
+        r = N.exif().find((c) => c.id === this.id),
+        n = U._data.filter((c) => c[0] === this.id),
+        o = {};
+      for (let [c, a, h] of n) {
+        o[a] ? typeof o[a] == "string" && (o[a] = [o[a], h]) : o[a] = h;
+      }
+      return i || console.error(`failed to find photo with id ${this.id}`),
+        l`
       <metadata-page
-        .triples=${O._data}
-        .image=${s}
-        .semantic=${o} .exif=${r} id=${this.id} class="${e}"></metadata-page>
-      `}if(this.page===g.VIDEOS)return c`
-      <videos-page .videos=${P} class="${e}"></videos-page>
-      `;if(this.page===g.THING)return c`
+        .triples=${U._data}
+        .image=${i}
+        .semantic=${U._data} .exif=${r} id=${this.id} class="${e}"></metadata-page>
+      `;
+    }
+    if (this.page === g.VIDEOS) {
+      return l`
+      <videos-page .videos=${k} class="${e}"></videos-page>
+      `;
+    }
+    if (this.page === g.THING) {
+      return l`
       <thing-page
-        .urn=${"urn:r\xF3:"+this.id}
-        .images=${C}
-        .albums=${R}
-        .semantic=${M}
-        .triples=${O._data}
+        .urn=${"urn:r\xF3:" + this.id}
+        .images=${R}
+        .albums=${O}       .triples=${U._data}
         class="${e}"></thing-page>
-      `}loadDarkMode(){return typeof this.darkMode<"u"?this.darkMode:localStorage.getItem("darkMode")==="true"}render(){let t=["app-container"];this.sidebarVisible&&t.push("sidebar-visible");let e=document.documentElement,s=["photos-app"];return this.darkMode?(e.classList.add("dark-mode"),s.push("dark-mode")):e.classList=[],c`
+      `;
+    }
+  }
+  loadDarkMode() {
+    return typeof this.darkMode < "u"
+      ? this.darkMode
+      : localStorage.getItem("darkMode") === "true";
+  }
+  render() {
+    let t = ["app-container"];
+    this.sidebarVisible && t.push("sidebar-visible");
+    let e = document.documentElement, i = ["photos-app"];
+    return this.darkMode
+      ? (e.classList.add("dark-mode"), i.push("dark-mode"))
+      : e.classList = [],
+      l`
     <body>
-      <div class="${s.join(" ")}"
+      <div class="${i.join(" ")}"
         @click-album=${this.receiveClickAlbum}
         @click-burger-menu=${this.receiveClickBurgerMenu}
         @click-photo-metadata=${this.receiveClickPhotoMetadata}
@@ -418,7 +3447,11 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
         </div>
       </div>
     </body>
-    `}};customElements.define("photo-app",ve);export{Os as DEFAULT_DEPENDENCIES,Ps as PAGE_DEPENDECIES,ve as PhotoApp};
+    `;
+  }
+};
+customElements.define("photo-app", ye);
+export { Ls as PAGE_DEPENDECIES, Rs as DEFAULT_DEPENDENCIES, ye as PhotoApp };
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -440,10 +3473,10 @@ var mt=globalThis,Jt=mt.ShadowRoot&&(mt.ShadyCSS===void 0||mt.ShadyCSS.nativeSha
  * SPDX-License-Identifier: BSD-3-Clause
  */
 /**
-* @license
-* Copyright 2021 Google LLC
-* SPDX-License-Identifier: BSD-3-Clause
-*/
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
 /**
  * @license
  * Copyright 2020 Google LLC
