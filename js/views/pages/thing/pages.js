@@ -43,15 +43,20 @@ export class ThingPage extends LitElem {
     ];
 
     const targetSearch = asUrn(this.urn);
+
     // don't filter by ID in this case
     if (targetSearch.id === "*") {
       delete targetSearch.id;
     }
 
-    const relevantPhotoIds = tdb.search({
+
+    const relevantPhotos = tdb.search({
       target: targetSearch,
-      relation: { relation: semanticRelations },
-    }).sources();
+      // TODO broken
+      //relation: { relation: semanticRelations },
+    })
+
+    const relevantPhotoIds = relevantPhotos.sources()
 
     return Array.from(relevantPhotoIds).flatMap((photoId) => {
       return images.filter((image) => image.id === photoId).slice(0, 1);
