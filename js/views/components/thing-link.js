@@ -5,7 +5,7 @@ import { KnownRelations, KnownThings } from "../../constants.js";
 
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.js";
-import { Things, TriplesDB } from "../../services/things.js";
+import { Things } from "../../services/things.js";
 
 import { BinomialTypes } from "../../constants.js";
 import { Binomials } from "../../services/things.js";

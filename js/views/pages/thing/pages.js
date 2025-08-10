@@ -12,9 +12,7 @@ import { LitElem } from "../../../models/lit-element.js";
 import { BinomialTypes, KnownRelations } from "../../../constants.js";
 import {
   Binomials,
-  Things,
-  Triples,
-  TriplesDB,
+  Things
 } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
 import { asUrn } from "../../../library/tribble.js";
@@ -175,9 +173,6 @@ export class ThingPage extends LitElem {
     // Show a Name, URN, Description,
     // Wikilinks, and all images with this ARN
     // Support bird:* level queries
-
-    // TODO reprecate semantic artifact, use triples alone
-    // TODO lift this to top level
     const tdb = this.triples;
 
     const images = this.images.images();

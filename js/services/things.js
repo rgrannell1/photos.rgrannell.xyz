@@ -1,60 +1,6 @@
 import { KnownRelations } from "../constants.js";
 import { parseUrn, TribbleDB } from "../library/tribble.js";
 
-export class TriplesDB {
-  static findSourceRelation(relation, triples, urn) {
-    if (!Array.isArray(triples)) {
-      throw new TypeError("Triples must be an array");
-    }
-
-    const match = triples.find((triple) => {
-      return Things.sameURN(triple[0], urn) &&
-        Triples.hasRelation(triple, relation);
-    });
-
-    if (!match) {
-      return null;
-    }
-
-    return Triples.getTarget(match);
-  }
-
-  static findSubject(triples, urn) {
-    return TriplesDB.findSourceRelation(KnownRelations.SUBJECT, triples, urn);
-  }
-
-  static findLocation(triples, urn) {
-    return TriplesDB.findSourceRelation(KnownRelations.LOCATION, triples, urn);
-  }
-
-  static findRating(triples, urn) {
-    return TriplesDB.findSourceRelation(KnownRelations.RATING, triples, urn);
-  }
-
-  static findName(triples, urn) {
-    return TriplesDB.findSourceRelation(KnownRelations.NAME, triples, urn);
-  }
-
-  static findBirdwatchUrl(triples, urn) {
-    return TriplesDB.findSourceRelation(
-      KnownRelations.BIRDWATCH_URL,
-      triples,
-      urn,
-    );
-  }
-
-  static findWikipedia(triples, urn) {
-    return TriplesDB.findSourceRelation(KnownRelations.WIKIPEDIA, triples, urn);
-  }
-
-  static findLongitude(triples, urn) {
-    return TriplesDB.findSourceRelation(KnownRelations.LONGITUDE, triples, urn);
-  }
-  static findLatitude(triples, urn) {
-    return TriplesDB.findSourceRelation(KnownRelations.LATITUDE, triples, urn);
-  }
-}
-
 export class Triples {
   static isUrnSource(triple) {
     return Things.isUrn(triple[0]);
@@ -176,12 +122,6 @@ export class Binomials {
       source: { id },
       relation: KnownRelations.BIRDWATCH_URL
     }).firstTarget();
-  }
-}
-
-export class Wikipedias {
-  static toURL(triples, urn) {
-    return TriplesDB.findWikipedia(urn, triples);
   }
 }
 
