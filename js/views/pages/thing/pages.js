@@ -33,7 +33,7 @@ export class ThingPage extends LitElem {
     JSONFeed.setIndex();
   }
 
-  filterUrnImages(images, tdb) {
+  filterUrnImages(images, tdb, query) {
     const semanticRelations = [
       KnownRelations.SUBJECT,
       KnownRelations.LOCATION,
@@ -47,13 +47,7 @@ export class ThingPage extends LitElem {
       delete targetSearch.id;
     }
 
-
-    const relevantPhotos = tdb.search({
-      target: targetSearch,
-      // TODO broken
-      //relation: { relation: semanticRelations },
-    })
-
+    const relevantPhotos = tdb.search(query)
     const relevantPhotoIds = relevantPhotos.sources()
 
     return Array.from(relevantPhotoIds).flatMap((photoId) => {
@@ -62,7 +56,7 @@ export class ThingPage extends LitElem {
   }
 
   renderSubjectPhotos(images, tdb) {
-    return this.filterUrnImages(images, tdb)
+    return images
       .sort((photo0, photo1) => {
         return photo1.created_at - photo0.created_at;
       })
@@ -77,8 +71,8 @@ export class ThingPage extends LitElem {
       });
   }
 
-  renderSubjectAlbums(images, tdb) {
-    const filtered = this.filterUrnImages(images, tdb);
+  renderSubjectAlbums(images, tdb, search) {
+    const filtered = this.filterUrnImages(images, tdb, search);
     const albumSet = new Set(filtered.map((photo) => {
       return photo.album_id;
     }));
@@ -111,9 +105,9 @@ export class ThingPage extends LitElem {
   }
 
   // todo push into semantic layer
-  firstPhotographed(images, tdb) {
+  firstPhotographed(images, tdb, query) {
     const relevantPhotos = this
-      .filterUrnImages(images, tdb)
+      .filterUrnImages(images, tdb, query)
       .sort((photo0, photo1) => {
         return photo0.created_at - photo1.created_at;
       });
@@ -169,6 +163,56 @@ export class ThingPage extends LitElem {
     }</a>`;
   }
 
+  getPhotoQueries(urn) {
+    const queries = []
+    if (BinomialTypes.has(urn.type)) {
+      for (const label of ['captivity', 'wild']) {
+        const qs = { context: label };
+
+        const target = {...urn, ...{qs}}
+        queries.push({
+          label,
+          query: { target }
+        })
+      }
+    } else {
+      // todo, search where QS is missing
+      queries.push({
+        label: 'default',
+        query: {
+          target: urn
+        }
+      })
+    }
+
+    return queries;
+  }
+
+  renderPhotoSection(groups) {
+    return html`<div>
+    ${Object.entries(groups).flatMap(([label, groupPhotos]) => {
+      if (!groupPhotos) {
+        return [];
+      }
+
+      if (label === "default") {
+        return [html`
+        <div class="photo-group">
+          ${groupPhotos}
+        </div>
+        `];
+      }
+
+      return [html`
+        <div class="photo-group">
+          <h4>${label.charAt(0).toUpperCase() + label.slice(1)}</h4>
+          ${groupPhotos}
+        </div>
+      `];
+    })}
+    <div/>`
+  }
+
   render() {
     // Show a Name, URN, Description,
     // Wikilinks, and all images with this ARN
@@ -176,10 +220,8 @@ export class ThingPage extends LitElem {
     const tdb = this.triples;
 
     const images = this.images.images();
-    const photos = this.renderSubjectPhotos(images, tdb);
-    const albums = this.renderSubjectAlbums(images, tdb);
-
     const urn = Things.parseUrn(this.urn);
+
     const type = urn.type;
 
     const urnFacts = tdb.search({
@@ -204,8 +246,9 @@ export class ThingPage extends LitElem {
     if (BinomialTypes.has(type)) {
       // TODO move to fact layer, not render layer
       metadata["First Photographed"] = html`<span>${
-        this.firstPhotographed(images, tdb)
-      }</span>`;
+        this.firstPhotographed(images, tdb, {
+          target: asUrn(this.urn)
+        })}</span>`;
     }
 
     const wikipedia = urnFacts[KnownRelations.WIKIPEDIA];
@@ -221,6 +264,30 @@ export class ThingPage extends LitElem {
       <a href="${googleMapsUrl}" target="_blank" rel="noopener">[maps]</a>
       `;
     }
+
+
+    // TODO; rework photos to allow group by function
+    const targetSearch = asUrn(this.urn);
+    if (targetSearch.id === "*") {
+      // don't filter by ID in this case
+      delete targetSearch.id;
+    }
+
+    const query = ({
+      target: targetSearch,
+      //relation: { relation: semanticRelations }, TODO broken
+    })
+
+    const queries = this.getPhotoQueries(asUrn(this.urn));
+
+    const photoGroups = {}
+    for (const {query, label} of queries) {
+      const relevantPhotos = this.filterUrnImages(images, tdb, query)
+      photoGroups[label] = this.renderSubjectPhotos(relevantPhotos);
+    }
+
+    const albums = this.renderSubjectAlbums(images, tdb, query);
+    const photos = this.renderPhotoSection(photoGroups)
 
     return html`
       <div>
