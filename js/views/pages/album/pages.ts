@@ -44,13 +44,14 @@ export class AlbumPage extends LitElem {
     return this.images.images().filter((image: Record<string, any>) => {
       return image.album_id === this.id;
     }).map((image: Record<string, any>) => {
-      const facts = tdb.search({
-        id: image.id,
-        type: 'unknown'
-      })//.firstObject(true);
-      // TODO so, so, so slow
 
-      return { ...image, relations: {} };
+      const facts = tdb.search({
+        source: {
+          id: image.id,
+        }
+      }).firstObject(true);
+
+      return { ...image, relations: facts ?? {} };
     });
   }
 
