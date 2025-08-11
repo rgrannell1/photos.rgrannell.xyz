@@ -194,6 +194,9 @@ export class ThingPage extends LitElem {
       if (!groupPhotos) {
         return [];
       }
+      if (groupPhotos.length === 0) {
+        return [];
+      }
 
       if (label === "default") {
         return [html`
@@ -202,6 +205,7 @@ export class ThingPage extends LitElem {
         </div>
         `];
       }
+
 
       return [html`
         <div class="photo-group">
