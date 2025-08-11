@@ -164,6 +164,11 @@ export class ThingPage extends LitElem {
   }
 
   getPhotoQueries(urn) {
+    const target = urn
+    if (target.id === "*") {
+      delete target.id;
+    }
+
     const queries = []
     if (BinomialTypes.has(urn.type)) {
       for (const label of ['captivity', 'wild']) {
