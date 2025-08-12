@@ -20,4 +20,6 @@ npx esbuild css/style.css      \
   --loader:.woff2=file         \
   --outfile=dist/css/style.css
 
+
+google-chrome --auto-open-devtools-for-tabs http://127.0.0.1:5501/index.html &
 deno run -A --watch build.ts > index.html

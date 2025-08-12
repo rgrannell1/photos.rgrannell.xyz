@@ -11,18 +11,18 @@ import {
 
 import { PageLocation } from "../services/location.js";
 
-import { LoadMode, Pages } from "../constants.js";
+import { KnownRelations, LoadMode, Pages } from "../constants.js";
 
 import "./components/sidebar.js";
 import "./components/header.js";
 
-import "./pages/photos/pages.js";
-import "./pages/albums/pages.js";
+import "./pages/photos/pages.ts";
+import "./pages/albums/pages.ts";
 import "./pages/album/pages.ts";
 import "./pages/metadata/pages.ts";
-import "./pages/about/pages.js";
-import "./pages/videos/pages.js";
-import "./pages/thing/pages.js";
+import "./pages/about/pages.ts";
+import "./pages/videos/pages.ts";
+import "./pages/thing/pages.ts";
 import { getTribbleDB } from "../services/things.js";
 
 const albums = new AlbumsArtifact();
@@ -276,6 +276,9 @@ export class PhotoApp extends LitElem {
     this.sidebarVisible = false;
 
     const router = PageLocation.router(this.page);
+    if (!router) {
+      console.error(`no router found for page ${this.page}`);
+    }
 
     if (PageLocation.pageUsesId(this.page)) {
       router(this.id);
@@ -301,8 +304,10 @@ export class PhotoApp extends LitElem {
     const classes = this.pageClasses(sidebarVisible);
 
     if (!this.page || this.page === "albums") {
+      const tdb = getTribbleDB(triples._data);
+
       return html`
-      <photo-album-page .stats=${stats} .albums="${albums}" class="${classes}"></photo-album-page>
+      <albums-page .triples=${tdb} .stats=${stats} .albums="${albums}" class="${classes}"></albums-page>
       `;
     }
 
@@ -327,11 +332,13 @@ export class PhotoApp extends LitElem {
         console.error(`failed to find album with id ${this.id}`);
       }
 
+      const tdb = getTribbleDB(triples._data);
+
       return html`
       <album-page
         .images=${images}
         .videos=${videos}
-        .triples=${getTribbleDB(triples._data)}
+        .triples=${tdb}
         title=${album.album_name}
         id=${this.id}
         minDate=${album.min_date}
@@ -386,7 +393,7 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.THING) {
-      console.log(getTribbleDB(triples._data))
+      console.log(getTribbleDB(triples._data));
       return html`
       <thing-page
         .urn=${"urn:ró:" + this.id}

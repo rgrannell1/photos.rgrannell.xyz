@@ -188,7 +188,7 @@ export class MetadataPage extends LitElem {
     <section>
     <h1>Metadata</h1>
 
-    <img class="thumbnail-image" src="${photo.thumbnail_url}"/>
+    <img class="u-photo thumbnail-image" src="${photo.thumbnail_url}"/>
 
       <p>
         <a href="${photo.full_image}">[full image]</a>

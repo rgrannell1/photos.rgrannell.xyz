@@ -20,16 +20,15 @@ export class VideosPage extends LitElem {
 
   connectedCallback() {
     super.connectedCallback();
-
     JSONFeed.setIndex();
   }
 
-  videos() {
+  getVideos() {
     return this.videos.videos();
   }
 
   render() {
-    const videos = this.videos().map((video, idx) => {
+    const videos = this.getVideos().map((video, idx) => {
       return html`<app-video
       id=${video.id}
       url_poster=${video.poster_url}

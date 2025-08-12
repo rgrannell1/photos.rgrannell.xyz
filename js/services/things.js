@@ -111,41 +111,99 @@ export class Binomials {
   static toCommonName(tdb, binomial) {
     return tdb.search({
       source: { id: binomial },
-      relation: KnownRelations.NAME
+      relation: KnownRelations.NAME,
     }).firstTarget() ?? binomial;
   }
 
   static birdwatchUrl(tdb, urn) {
-    const {id} = parseUrn(urn)
+    const { id } = parseUrn(urn);
 
     return tdb.search({
       source: { id },
-      relation: KnownRelations.BIRDWATCH_URL
+      relation: KnownRelations.BIRDWATCH_URL,
     }).firstTarget();
   }
 }
 
-let triblesUpdated = false;
-let tribbleDb  = new TribbleDB([]);
+export class Countries {
+  // TODO deprecate this, as we move away from passing
+  // non URN data to the client
+  static details(tdb, name) {
 
-// TODO make this do more
-function updateTriples(triple) {
+      // narrow down the search to triples about country names and flags
+      const countriesData = tdb.search({
+        source: { type: 'country' },
+        relation: {relation: [KnownRelations.NAME, KnownRelations.FLAG]}
+      })
+
+      // grab the URN based on the name
+      const urn = countriesData.search({
+        relation: KnownRelations.NAME,
+        target: { id: name }
+      }).firstSource();
+
+      const parsed = parseUrn(urn);
+
+      // and the flag based on the URN
+      const flag = countriesData.search({
+        source: parsed,
+        relation: KnownRelations.FLAG
+      }).firstTarget();
+
+      return {
+        urn,
+        name,
+        flag
+      }
+  }
+}
+
+let triblesUpdated = false;
+let tribbleDb = new TribbleDB([]);
+
+function ratingsAsUrns(triple) {
   if (Triples.getRelation(triple) !== KnownRelations.RATING) {
-    return triple;
+    return [triple];
   }
 
-  return [
+  return [[
     Triples.getSource(triple),
     Triples.getRelation(triple),
     `urn:ró:rating:${encodeURIComponent(Triples.getTarget(triple))}`,
+  ]];
+}
+
+function countriesAsUrns(triple) {
+  if (Triples.getRelation(triple) !== KnownRelations.COUNTRY) {
+    return [triple];
+  }
+  console.log(triple)
+
+  const countryId = Triples.getTarget(triple).toLowerCase().replace(" ", "-");
+  const countryUrn = `urn:ró:country:${countryId}`;
+
+  return [
+    [
+      Triples.getSource(triple),
+      Triples.getRelation(triple),
+      countryUrn,
+      countryUrn,
+      Triples.getRelation(triple),
+      Triples.getTarget(triple),
+    ],
   ];
 }
+
+// TODO tag each photo with a year
 
 export function getTribbleDB(triples) {
   if (!triblesUpdated) {
     tribbleDb.add(triples);
-    tribbleDb = tribbleDb.map(updateTriples)
-    triblesUpdated = true
+    tribbleDb = tribbleDb
+      .flatMap(ratingsAsUrns)
+      .flatMap(countriesAsUrns);
+
+    triblesUpdated = true;
   }
 
   return tribbleDb;

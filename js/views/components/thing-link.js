@@ -52,7 +52,7 @@ export class ThingLink extends LitElem {
     }
     const name = this.triples.search({
       source: Things.parseUrn(this.urn),
-      relation: KnownRelations.NAME
+      relation: KnownRelations.NAME,
     }).firstTarget();
 
     if (name) {

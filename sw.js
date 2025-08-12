@@ -1,7 +1,3 @@
-const swChannel = new BroadcastChannel("sw");
-
-swChannel.postMessage("⚙️ service-worker loaded");
-
 const CACHE_NAME = "sw-cache";
 const CACHEABLE_RESOURCES = [
   "/icons/android-chrome-192x192.png",
@@ -59,7 +55,6 @@ self.addEventListener("fetch", function (event) {
   // -- do nothing for uncacheable resources
   for (const resource of UNCACHEABLE_RESOURCES) {
     if (url.includes(resource)) {
-      swChannel.postMessage(`⚙️ rejecting ${url} from cache`);
       return;
     }
   }
@@ -69,34 +64,21 @@ self.addEventListener("fetch", function (event) {
       if (response) {
         return response;
       }
-      swChannel.postMessage(`⚙️ service-worker cache miss for ${url}`);
 
       return fetch(event.request)
         .then(function (networkResponse) {
-          swChannel.postMessage(
-            `⚙️ cannot cache ${url} ${networkResponse?.status}`,
-          );
-
           // -- just return the result directly
           if (!isCacheable(url)) {
-            swChannel.postMessage(`⚙️ cannot cache ${url}`);
-
             return networkResponse;
           }
 
           // -- cache thumbnails and artifacts
           return caches.open(CACHE_NAME).then(function (cache) {
-            swChannel.postMessage(
-              `⚙️ caching ${url} ${networkResponse.status}`,
-            );
-
             cache.put(event.request, networkResponse.clone());
             return networkResponse;
           });
         }).catch((err) => {
-          swChannel.postMessage(
-            `⚙️ service-worker fetch failed for ${url}: ${err}`,
-          );
+          console.error(err);
         });
     }),
   );

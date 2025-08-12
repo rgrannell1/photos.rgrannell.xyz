@@ -51,7 +51,7 @@ export class AppPhoto extends LitElem {
       </a>
 
       <a href="${this.imageUrl}" target="_blank" rel="external">
-        <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${photoMetadata.thumbnailDataUrl}"/>
+        <img class="u-photo thumbnail-image thumbnail-placeholder" width="400" height="400" src="${photoMetadata.thumbnailDataUrl}"/>
 
         <img
           @load=${this.hidePlaceholder.bind(this)} style="z-index: -1"

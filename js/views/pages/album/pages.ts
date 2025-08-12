@@ -14,10 +14,11 @@ import "../../components/thing-link.js";
 import { Dates } from "../../../services/dates.js";
 import { Photos } from "../../../services/photos.js";
 import { JSONFeed } from "../../../services/json-feed.js";
-import { Things } from "../../../services/things.js";
+import { Countries, Things } from "../../../services/things.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { KnownRelations, KnownThings } from "../../../constants.js";
 import { CountriesService } from "../../../services/countries.js";
+import { parseUrn } from "../../../library/tribble.js";
 
 export class AlbumPage extends LitElem {
   static get properties() {
@@ -44,11 +45,10 @@ export class AlbumPage extends LitElem {
     return this.images.images().filter((image: Record<string, any>) => {
       return image.album_id === this.id;
     }).map((image: Record<string, any>) => {
-
       const facts = tdb.search({
         source: {
           id: image.id,
-        }
+        },
       }).firstObject(true);
 
       return { ...image, relations: facts ?? {} };
@@ -165,7 +165,14 @@ export class AlbumPage extends LitElem {
         ></app-video>`;
     });
 
-    const flags = CountriesService.flags(this?.countries.split(","));
+    const flags = this?.countries.split(',').map((country: string) => {
+      const {flag, urn} = Countries.details(this.triples, country);
+
+      const parsed = parseUrn(urn);
+
+      // TODO swap for an anchor tag
+      return html`<span href="#/thing/country:${parsed.id}" title=${country}>${flag}</span>`
+    });
 
     return html`
     <div>

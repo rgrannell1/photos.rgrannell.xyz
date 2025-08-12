@@ -502,6 +502,13 @@ var TribbleDB = class _TribbleDB {
     if (typeof source === "undefined" && typeof target === "undefined" && typeof relation === "undefined") {
       throw new Error("At least one search parameter must be defined");
     }
+    const allowedKeys = ["source", "relation", "target"];
+    for (const key of Object.keys(params)) {
+      if (!Object.prototype.hasOwnProperty.call(params, key)) continue;
+      if (!allowedKeys.includes(key)) {
+        throw new Error(`Unexpected search parameter: ${key}`);
+      }
+    }
     if (source) {
       if (source.type) {
         const sourceTypeSet = this.index.getSourceTypeSet(source.type);

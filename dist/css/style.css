@@ -259,8 +259,16 @@ photo-app {
 .thumbnail-placeholder {
   position: absolute;
 }
+.album-year-heading {
+  flex-basis: 100%;
+  font-size: 2.5em;
+  margin-left: 5px;
+}
 @media (max-width: 500px) {
   h1 {
+    font-size: 2em;
+  }
+  .album-year-heading {
     font-size: 2em;
   }
   .thing-binomial {

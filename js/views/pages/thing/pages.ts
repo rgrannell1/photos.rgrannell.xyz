@@ -10,10 +10,7 @@ import "../../components/photo.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { LitElem } from "../../../models/lit-element.js";
 import { BinomialTypes, KnownRelations } from "../../../constants.js";
-import {
-  Binomials,
-  Things
-} from "../../../services/things.js";
+import { Binomials, Things } from "../../../services/things.js";
 import { Photos } from "../../../services/photos.js";
 import { asUrn } from "../../../library/tribble.js";
 
@@ -47,8 +44,8 @@ export class ThingPage extends LitElem {
       delete targetSearch.id;
     }
 
-    const relevantPhotos = tdb.search(query)
-    const relevantPhotoIds = relevantPhotos.sources()
+    const relevantPhotos = tdb.search(query);
+    const relevantPhotoIds = relevantPhotos.sources();
 
     return Array.from(relevantPhotoIds).flatMap((photoId) => {
       return images.filter((image) => image.id === photoId).slice(0, 1);
@@ -90,6 +87,7 @@ export class ThingPage extends LitElem {
       .map((album) => {
         return html`
           <photo-album
+            .triples=${this.triples}
             title="${album.album_name}"
             url="${album.thumbnail_url}"
             mosaicColours="${album.mosaic}"
@@ -130,7 +128,7 @@ export class ThingPage extends LitElem {
 
     const definedName = this.triples.search({
       source: { id, type },
-      relation: KnownRelations.NAME
+      relation: KnownRelations.NAME,
     }).firstTarget();
 
     if (definedName) {
@@ -164,30 +162,30 @@ export class ThingPage extends LitElem {
   }
 
   getPhotoQueries(urn) {
-    const target = urn
+    const target = urn;
     if (target.id === "*") {
       delete target.id;
     }
 
-    const queries = []
+    const queries = [];
     if (BinomialTypes.has(urn.type)) {
-      for (const label of ['captivity', 'wild']) {
+      for (const label of ["captivity", "wild"]) {
         const qs = { context: label };
 
-        const target = {...urn, ...{qs}}
+        const target = { ...urn, ...{ qs } };
         queries.push({
           label,
-          query: { target }
-        })
+          query: { target },
+        });
       }
     } else {
       // todo, search where QS is missing
       queries.push({
-        label: 'default',
+        label: "default",
         query: {
-          target: urn
-        }
-      })
+          target: urn,
+        },
+      });
     }
 
     return queries;
@@ -195,31 +193,32 @@ export class ThingPage extends LitElem {
 
   renderPhotoSection(groups) {
     return html`<div>
-    ${Object.entries(groups).flatMap(([label, groupPhotos]) => {
-      if (!groupPhotos) {
-        return [];
-      }
-      if (groupPhotos.length === 0) {
-        return [];
-      }
+    ${
+      Object.entries(groups).flatMap(([label, groupPhotos]) => {
+        if (!groupPhotos) {
+          return [];
+        }
+        if (groupPhotos.length === 0) {
+          return [];
+        }
 
-      if (label === "default") {
-        return [html`
+        if (label === "default") {
+          return [html`
         <div class="photo-group">
           ${groupPhotos}
         </div>
         `];
-      }
+        }
 
-
-      return [html`
+        return [html`
         <div class="photo-group">
           <h4>${label.charAt(0).toUpperCase() + label.slice(1)}</h4>
           ${groupPhotos}
         </div>
       `];
-    })}
-    <div/>`
+      })
+    }
+    <div/>`;
   }
 
   render() {
@@ -256,8 +255,9 @@ export class ThingPage extends LitElem {
       // TODO move to fact layer, not render layer
       metadata["First Photographed"] = html`<span>${
         this.firstPhotographed(images, tdb, {
-          target: asUrn(this.urn)
-        })}</span>`;
+          target: asUrn(this.urn),
+        })
+      }</span>`;
     }
 
     const wikipedia = urnFacts[KnownRelations.WIKIPEDIA];
@@ -274,7 +274,6 @@ export class ThingPage extends LitElem {
       `;
     }
 
-
     // TODO; rework photos to allow group by function
     const targetSearch = asUrn(this.urn);
     if (targetSearch.id === "*") {
@@ -282,21 +281,21 @@ export class ThingPage extends LitElem {
       delete targetSearch.id;
     }
 
-    const query = ({
+    const query = {
       target: targetSearch,
       //relation: { relation: semanticRelations }, TODO broken
-    })
+    };
 
     const queries = this.getPhotoQueries(asUrn(this.urn));
 
-    const photoGroups = {}
-    for (const {query, label} of queries) {
-      const relevantPhotos = this.filterUrnImages(images, tdb, query)
+    const photoGroups = {};
+    for (const { query, label } of queries) {
+      const relevantPhotos = this.filterUrnImages(images, tdb, query);
       photoGroups[label] = this.renderSubjectPhotos(relevantPhotos);
     }
 
     const albums = this.renderSubjectAlbums(images, tdb, query);
-    const photos = this.renderPhotoSection(photoGroups)
+    const photos = this.renderPhotoSection(photoGroups);
 
     return html`
       <div>

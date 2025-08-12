@@ -10,14 +10,15 @@ import { LitElem } from "../../../models/lit-element.js";
 import { JSONFeed } from "../../../services/json-feed.js";
 import { Photos } from "../../../services/photos.js";
 
-import "./components/photos-stats.js";
-import "./components/photo-album.js";
+import "./components/photos-stats.ts";
+import "./components/photo-album.ts";
 
 export class AlbumsPage extends LitElem {
   static get properties() {
     return {
       albums: { type: Object },
       stats: { type: Object },
+      triples: { type: Object }
     };
   }
   connectedCallback() {
@@ -54,12 +55,25 @@ export class AlbumsPage extends LitElem {
      * append photo albums to the DOM
      */
     async function* albumIterable() {
+      let year = 2000;
+      const currentYear = new Date().getFullYear();
+
       for (let idx = 0; idx < sorted.length; idx++) {
         const album = sorted[idx];
         const loading = Photos.loadingMode(idx);
 
+        const albumYear = new Date(album.minDate).getFullYear();
+        if (albumYear !== year) {
+          year = albumYear;
+
+          if (albumYear !== currentYear) {
+            yield html`<h2 class="album-year-heading">${albumYear}</h2>`;
+          }
+        }
+
         yield html`
           <photo-album
+            .triples=${this.triples}
             title="${album.title}"
             url="${album.url}"
             mosaicColours="${album.mosaicColours}"
@@ -82,10 +96,10 @@ export class AlbumsPage extends LitElem {
     </section>
 
     <section class="album-container">
-      ${asyncAppend(albumIterable())}
+      ${asyncAppend(albumIterable.bind(this)())}
     </section>
     `;
   }
 }
 
-customElements.define("photo-album-page", AlbumsPage);
+customElements.define("albums-page", AlbumsPage);

@@ -2,12 +2,14 @@ import { html } from "../../../../library/lit.js";
 import { LitElem } from "../../../../models/lit-element.js";
 import { Dates } from "../../../../services/dates.js";
 import { Photos } from "../../../../services/photos.js";
-import { CountriesService } from "../../../../services/countries.js";
+import { parseUrn } from "../../../../library/tribble.js";
+import { Countries } from "../../../../services/things.js";
 
 export class PhotoAlbum extends LitElem {
   static get properties() {
     return {
       title: { type: String },
+      triples: { type: Object },
       url: { type: String },
       mosaicColours: { type: String },
       minDate: { type: String },
@@ -37,11 +39,22 @@ export class PhotoAlbum extends LitElem {
     $placeholder.style.zIndex = -1;
   }
 
+  renderCountries() {
+    return this.countries.split(",").map(country => {
+      const {flag, urn} = Countries.details(this.triples, country);
+
+      const parsed = parseUrn(urn);
+
+      // TODO swap for an anchor tag
+      return html`<span href="#/thing/country:${parsed.id}" title=${country}>${flag}</span>`
+    })
+  }
+
   render() {
     performance.mark(`start-album-render-${this.url}`);
 
     const thumbnailDataUrl = Photos.encodeBitmapDataURL(this.mosaicColours);
-    const flags = CountriesService.flags(this?.countries.split(","));
+    const flags = this.renderCountries();
 
     return html`
     <div class="photo-album">
@@ -49,7 +62,7 @@ export class PhotoAlbum extends LitElem {
         <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${thumbnailDataUrl}"/>
         <img @load=${
       this.hidePlaceholder.bind(this)
-    } style="z-index: -1" class="thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
+    } style="z-index: -1" class="u-photo thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
         @click=${
       this.broadcast("click-album", {
         id: this.id,

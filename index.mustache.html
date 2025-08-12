@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://photos.rgrannell.xyz/">
 
     <!-- Preconnects -->
-    <link rel="preconnect" href="https://xyz-rgrannell-photos.ams3.cdn.digitaloceanspaces.com">
+    <link rel="preconnect" href="{{{ cdnUrl }}}">
 
     <!-- Preloads -->
     <link rel="preload" href="/dist/app.js">
@@ -59,12 +59,6 @@
   <photo-app></photo-app>
 
   <script async fetchpriority="low">
-    const swChannel = new BroadcastChannel('sw');
-
-    swChannel.onmessage = event => {
-      console.log(event.data);
-    }
-
     // -- register a service-worker
     if('serviceWorker' in navigator) {
       console.log('⚙️ loading service worker: /sw.js')

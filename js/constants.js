@@ -46,6 +46,8 @@ export class KnownRelations {
   static LOCATION = "location";
   static LONGITUDE = "longitude";
   static LATITUDE = "latitude";
+  static COUNTRY = "country";
+  static FLAG = "flag";
   static RATING = "rating";
   static NAME = "name";
   static BIRDWATCH_URL = "birdwatch_url";
