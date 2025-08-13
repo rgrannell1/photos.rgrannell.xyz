@@ -6,9 +6,9 @@
 
 import { html } from "../../../library/lit.js";
 
-import "../../components/photo.js";
-import { JSONFeed } from "../../../services/json-feed.js";
-import { LitElem } from "../../../models/lit-element.js";
+import "../../components/photo.ts";
+import { JSONFeed } from "../../../services/json-feed.ts";
+import { LitElem } from "../../../models/lit-element.ts";
 
 export class AboutPage extends LitElem {
   static get properties() {

@@ -1,5 +1,5 @@
 import { html } from "../../../../library/lit.js";
-import { LitElem } from "../../../../models/lit-element.js";
+import { LitElem } from "../../../../models/lit-element.ts";
 
 export class PhotosStats extends LitElem {
   static get properties() {

@@ -8,15 +8,14 @@
  */
 
 import { html, unsafeHTML } from "../../../library/lit.js";
-import { LitElem } from "../../../models/lit-element.js";
-import { JSONFeed } from "../../../services/json-feed.js";
+import { LitElem } from "../../../models/lit-element.ts";
+import { JSONFeed } from "../../../services/json-feed.ts";
 
-import "./components/share-button.js";
-import "../../components/thing-link.js";
-import "../../components/tag-link.js";
-import { Things, Triples } from "../../../services/things.js";
+import "./components/share-button.ts";
+import "../../components/thing-link.ts";
+import "../../components/tag-link.ts";
+import { Things, Triples } from "../../../services/things.ts";
 import { KnownThings } from "../../../constants.js";
-import { TribbleDB } from "../../../library/tribble.js";
 
 export class MetadataPage extends LitElem {
   static get properties() {

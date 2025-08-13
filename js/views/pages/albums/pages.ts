@@ -6,9 +6,9 @@
 
 import { asyncAppend } from "../../../library/lit.js";
 import { html } from "../../../library/lit.js";
-import { LitElem } from "../../../models/lit-element.js";
-import { JSONFeed } from "../../../services/json-feed.js";
-import { Photos } from "../../../services/photos.js";
+import { LitElem } from "../../../models/lit-element.ts";
+import { JSONFeed } from "../../../services/json-feed.ts";
+import { Photos } from "../../../services/photos.ts";
 
 import "./components/photos-stats.ts";
 import "./components/photo-album.ts";

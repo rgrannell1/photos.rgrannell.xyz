@@ -4,11 +4,11 @@
 import { KnownRelations, KnownThings } from "../../constants.js";
 
 import { html } from "../../library/lit.js";
-import { LitElem } from "../../models/lit-element.js";
-import { Things } from "../../services/things.js";
+import { LitElem } from "../../models/lit-element.ts";
+import { Things } from "../../services/things.ts";
 
 import { BinomialTypes } from "../../constants.js";
-import { Binomials } from "../../services/things.js";
+import { Binomials } from "../../services/things.ts";
 
 export class UnescoLink extends LitElem {
   static properties = {
@@ -54,6 +54,8 @@ export class ThingLink extends LitElem {
       source: Things.parseUrn(this.urn),
       relation: KnownRelations.NAME,
     }).firstTarget();
+
+    console.log(this.urn)
 
     if (name) {
       return html`<span>${name}</span>`;

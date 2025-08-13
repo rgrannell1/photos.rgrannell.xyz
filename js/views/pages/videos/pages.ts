@@ -6,10 +6,10 @@
 
 import { html } from "../../../library/lit.js";
 
-import "../../components/video.js";
-import { JSONFeed } from "../../../services/json-feed.js";
-import { LitElem } from "../../../models/lit-element.js";
-import { Videos } from "../../../services/videos.js";
+import "../../components/video.ts";
+import { JSONFeed } from "../../../services/json-feed.ts";
+import { LitElem } from "../../../models/lit-element.ts";
+import { Videos } from "../../../services/videos.ts";
 
 export class VideosPage extends LitElem {
   static get properties() {

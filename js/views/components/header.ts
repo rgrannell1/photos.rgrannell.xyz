@@ -1,5 +1,5 @@
 import { html } from "../../library/lit.js";
-import { LitElem } from "../../models/lit-element.js";
+import { LitElem } from "../../models/lit-element.ts";
 import { BRAND_TEXT } from "../../constants.js";
 
 export class PhotoHeader extends LitElem {

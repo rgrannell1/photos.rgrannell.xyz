@@ -5,14 +5,14 @@
  */
 
 import { html } from "../../../library/lit.js";
-
-import "../../components/photo.js";
-import { JSONFeed } from "../../../services/json-feed.js";
-import { LitElem } from "../../../models/lit-element.js";
-import { BinomialTypes, KnownRelations } from "../../../constants.js";
-import { Binomials, Things } from "../../../services/things.js";
-import { Photos } from "../../../services/photos.js";
 import { asUrn } from "../../../library/tribble.js";
+
+import "../../components/photo.ts";
+import { JSONFeed } from "../../../services/json-feed.ts";
+import { LitElem } from "../../../models/lit-element.ts";
+import { BinomialTypes, KnownRelations } from "../../../constants.js";
+import { Binomials, Countries, Things } from "../../../services/things.ts";
+import { Photos } from "../../../services/photos.ts";
 
 export class ThingPage extends LitElem {
   static get properties() {
@@ -241,7 +241,7 @@ export class ThingPage extends LitElem {
     });
 
     if (urnFacts.country) {
-      metadata["Country"] = html`${urnFacts.country}`;
+      metadata["Country"] = html`<thing-link .triples=${this.triples} urn=${urnFacts.country}></thing-link>`;
     }
 
     if (urnFacts.fcode_name) {

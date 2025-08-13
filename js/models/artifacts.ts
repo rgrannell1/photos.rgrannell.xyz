@@ -268,8 +268,18 @@ export class StatsArtifact {
 
   async init() {
     const $statsData = document.getElementById("stats-data");
+    const textContent = $statsData.textContent;
 
-    this._data = JSON.parse($statsData.textContent);
+    if (!textContent) {
+      throw new Error('stats-data empty')
+    }
+
+    try {
+      this._data = JSON.parse(textContent);
+    } catch (err) {
+      throw new Error(`failed to parse stats-data as JSON: ${textContent}`)
+    }
+
     if (!this._data) {
       console.error("stats symbol not injected");
     }

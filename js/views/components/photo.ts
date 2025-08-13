@@ -1,6 +1,6 @@
 import { html } from "../../library/lit.js";
-import { LitElem } from "../../models/lit-element.js";
-import { Photos } from "../../services/photos.js";
+import { LitElem } from "../../models/lit-element.ts";
+import { Photos } from "../../services/photos.ts";
 
 export class AppPhoto extends LitElem {
   static get properties() {

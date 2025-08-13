@@ -1,5 +1,5 @@
 import { html } from "../library/lit.js";
-import { LitElem } from "../models/lit-element.js";
+import { LitElem } from "../models/lit-element.ts";
 import {
   AlbumsArtifact,
   ExifArtifact,
@@ -7,14 +7,14 @@ import {
   StatsArtifact,
   TriplesArtifact,
   VideosArtifact,
-} from "../models/artifacts.js";
+} from "../models/artifacts.ts";
 
-import { PageLocation } from "../services/location.js";
+import { PageLocation } from "../services/location.ts";
 
 import { KnownRelations, LoadMode, Pages } from "../constants.js";
 
-import "./components/sidebar.js";
-import "./components/header.js";
+import "./components/sidebar.ts";
+import "./components/header.ts";
 
 import "./pages/photos/pages.ts";
 import "./pages/albums/pages.ts";
@@ -23,7 +23,7 @@ import "./pages/metadata/pages.ts";
 import "./pages/about/pages.ts";
 import "./pages/videos/pages.ts";
 import "./pages/thing/pages.ts";
-import { getTribbleDB } from "../services/things.js";
+import { getTribbleDB } from "../services/things.ts";
 
 const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
@@ -393,7 +393,6 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.THING) {
-      console.log(getTribbleDB(triples._data));
       return html`
       <thing-page
         .urn=${"urn:ró:" + this.id}

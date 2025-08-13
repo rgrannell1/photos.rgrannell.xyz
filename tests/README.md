@@ -1,6 +1,6 @@
 
 
-Albums page loads
+Albums page
   Stats present
   Things links present
   Known albums present
@@ -9,14 +9,34 @@ Albums page loads
   Click photo works
 
 Album page
+  Markdown description renders
+  Flag, date, photo count present
+  Photo's and videos linked
+  Metadata page clicks
 
-Videos page loads
+Videos page
   Known video loads
   Known links present
+
+Metadata page
+  Location geoname renders
+  Rating, style present
+  Exif present
+  Image link
+  Image renders
 
 About page
   Known content present
 
-Photos
+Photos page
   Shows count
   Known photo present
+
+Things page
+  Renders wildcard page names
+  Renders wildcard page content
+  Renders Binomial and common species name
+  Renders birdwatch and wikipedia
+  Renders country and placetype
+  Renders Wild and captive pictures
+  Links albums

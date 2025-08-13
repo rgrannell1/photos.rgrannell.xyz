@@ -5,20 +5,19 @@
  */
 
 import { html, unsafeHTML } from "../../../library/lit.js";
-
-import "../../components/photo.js";
-import "../../components/video.js";
-import "./components/share.js";
-import "../../components/thing-link.js";
-
-import { Dates } from "../../../services/dates.js";
-import { Photos } from "../../../services/photos.js";
-import { JSONFeed } from "../../../services/json-feed.js";
-import { Countries, Things } from "../../../services/things.js";
-import { LitElem } from "../../../models/lit-element.js";
-import { KnownRelations, KnownThings } from "../../../constants.js";
-import { CountriesService } from "../../../services/countries.js";
 import { parseUrn } from "../../../library/tribble.js";
+
+import "../../components/photo.ts";
+import "../../components/video.ts";
+import "./components/share.ts";
+import "../../components/thing-link.ts";
+
+import { Dates } from "../../../services/dates.ts";
+import { Photos } from "../../../services/photos.ts";
+import { JSONFeed } from "../../../services/json-feed.ts";
+import { Countries, Things } from "../../../services/things.ts";
+import { LitElem } from "../../../models/lit-element.ts";
+import { KnownRelations, KnownThings } from "../../../constants.js";
 
 export class AlbumPage extends LitElem {
   static get properties() {

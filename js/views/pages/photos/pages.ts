@@ -7,11 +7,11 @@
 import { html } from "../../../library/lit.js";
 
 import { asyncAppend } from "../../../library/lit.js";
-import "../../components/photo.js";
-import "./components/search.js";
-import { Photos } from "../../../services/photos.js";
-import { JSONFeed } from "../../../services/json-feed.js";
-import { LitElem } from "../../../models/lit-element.js";
+import "../../components/photo.ts";
+import "./components/search.ts";
+import { Photos } from "../../../services/photos.ts";
+import { JSONFeed } from "../../../services/json-feed.ts";
+import { LitElem } from "../../../models/lit-element.ts";
 
 export class PhotosPage extends LitElem {
   static get properties() {

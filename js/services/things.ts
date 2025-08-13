@@ -156,6 +156,21 @@ export class Countries {
         flag
       }
   }
+
+  static urnDetails(tdb, urn) {
+      const parsed = parseUrn(urn);
+
+      // narrow down the search to triples about country names and flags
+      const name = tdb.search({
+        source: { type: 'country', id: parsed.id },
+        relation: KnownRelations.NAME
+      }).firstTarget()
+
+      return {
+        urn,
+        name
+      }
+  }
 }
 
 let triblesUpdated = false;
@@ -177,7 +192,6 @@ function countriesAsUrns(triple) {
   if (Triples.getRelation(triple) !== KnownRelations.COUNTRY) {
     return [triple];
   }
-  console.log(triple)
 
   const countryId = Triples.getTarget(triple).toLowerCase().replace(" ", "-");
   const countryUrn = `urn:ró:country:${countryId}`;
