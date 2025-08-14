@@ -33,9 +33,11 @@ export class ThingPage extends LitElem {
     const relevantPhotoIds = relevantPhotos.sources();
 
     return Array.from(relevantPhotoIds).flatMap((photoId) => {
-      return [tdb.search({
-        source: { id: photoId }
-      }).object()];
+      const match = tdb.search({
+        source: { id: photoId, type: "photo" },
+      }).firstObject();
+
+      return match ? [match] : [];
     });
   }
 
@@ -45,10 +47,9 @@ export class ThingPage extends LitElem {
         return photo1.created_at - photo0.created_at;
       })
       .map((photo, idx) => {
-        console.log(photo.id)
         return html`
       <app-photo
-        id=${asUrn(photo.id).id}
+        id=${photo.id.startsWith("urn:") ? parseUrn(photo.id).id : photo.id}
         loading="${Photos.loadingMode(idx)}"
         thumbnailUrl="${photo.thumbnail_url}"
         mosaicColours="${photo.mosaic_colours}"
