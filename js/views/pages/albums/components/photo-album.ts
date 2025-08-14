@@ -72,7 +72,7 @@ export class PhotoAlbum extends LitElem {
     </a>
       <div class="photo-album-metadata">
         <p class="photo-album-title">${this.title}</p>
-        <p class="photo-album-date">
+        <p class="photo-album-date" data-min-date=${this.minDate}>
           <time>${this.dateRange()}</time>
         </p>
         <div class="photo-metadata-inline">

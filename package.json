@@ -1,7 +1,6 @@
 {
   "name": "photos.rgrannell.xyz",
   "version": "1.0.0",
-  "description": "[![Netlify Status](https://api.netlify.com/api/v1/badges/a1a5cde2-e35a-4d64-a01b-6076687edb7a/deploy-status)](https://app.netlify.com/sites/inquisitive-biscuit-b7e81a/deploys)",
   "main": "sw.js",
   "directories": {
     "test": "tests"

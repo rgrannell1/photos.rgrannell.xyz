@@ -12,6 +12,7 @@ import { Photos } from "../../../services/photos.ts";
 
 import "./components/photos-stats.ts";
 import "./components/photo-album.ts";
+import "./components/year-cursor.ts";
 
 export class AlbumsPage extends LitElem {
   static get properties() {
@@ -94,6 +95,8 @@ export class AlbumsPage extends LitElem {
         .stats=${this.stats.stats()}
         ></photos-stats>
     </section>
+
+    <year-cursor></year-cursor>
 
     <section class="album-container">
       ${asyncAppend(albumIterable.bind(this)())}

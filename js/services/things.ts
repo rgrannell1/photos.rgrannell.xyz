@@ -157,7 +157,7 @@ export class Countries {
       }
   }
 
-  static urnDetails(tdb, urn) {
+  static urnDetails(tdb, urn: string) {
       const parsed = parseUrn(urn);
 
       // narrow down the search to triples about country names and flags

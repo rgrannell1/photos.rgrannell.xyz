@@ -179,6 +179,14 @@ photo-app {
   flex-wrap: wrap;
   column-gap: 10px;
 }
+#year-cursor {
+  position: fixed;
+  top: 0;
+  right: 10px;
+  display: none;
+  padding: 3px;
+  font-size: 0.8em;
+}
 .photo {
   margin: 5px;
   cursor: pointer;
@@ -267,6 +275,10 @@ photo-app {
 @media (max-width: 500px) {
   h1 {
     font-size: 2em;
+  }
+  #year-cursor {
+    background-color: black;
+    color: white;
   }
   .album-year-heading {
     font-size: 2em;

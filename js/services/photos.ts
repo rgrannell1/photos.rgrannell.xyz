@@ -25,7 +25,7 @@ export class Photos {
       return coloursCache.get(colours);
     }
 
-    const coloursList = colours.split("#").map((colour) => `#${colour}`);
+    const coloursList = colours.split("#").map((colour: string) => `#${colour}`);
     const canvas = document.createElement("canvas");
     canvas.width = 2;
     canvas.height = 2;

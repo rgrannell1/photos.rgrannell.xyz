@@ -1,0 +1,77 @@
+{
+  "compilerOptions": {
+    // Target and module settings for modern web browsers
+    "target": "ES2020",
+    "module": "ES2020",
+    "moduleResolution": "node",
+
+    // Include DOM types for web development
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+
+    // Output settings
+    "outDir": "./dist",
+    "rootDir": "./",
+
+    // Enable strict type checking
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+
+    // Additional checks
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": false,
+
+    // Module resolution
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Emit settings
+    "noEmit": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "removeComments": false,
+    "importHelpers": false,
+
+    // Advanced options
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false,
+
+    // Experimental decorators for lit-element if needed
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    "baseUrl": "./"
+  },
+
+  // Include all TypeScript files
+  "include": [
+    "js/**/*.ts",
+    "js/**/*.js",
+    "*.ts"
+  ],
+  // Exclude build outputs and dependencies
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "tests/node_modules",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    // Exclude deno-specific files for now as requested
+    "build.ts"
+  ],
+
+  // TypeScript project references if needed later
+  "references": []
+}
