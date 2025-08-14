@@ -14,7 +14,7 @@ import { Videos } from "../../../services/videos.ts";
 export class VideosPage extends LitElem {
   static get properties() {
     return {
-      videos: { type: Object },
+      triples: { type: Object },
     };
   }
 
@@ -24,7 +24,9 @@ export class VideosPage extends LitElem {
   }
 
   getVideos() {
-    return this.videos.videos();
+    return this.triples.search({
+      source: {type: 'video'}
+    }).objects()
   }
 
   render() {

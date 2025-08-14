@@ -1,26 +1,28 @@
 import { KnownRelations } from "../constants.js";
 import { parseUrn, TribbleDB } from "../library/tribble.js";
 
+const CONFIG = window.envConfig;
+
 export class Triples {
-  static isUrnSource(triple) {
+  static isUrnSource(triple: [string, string, string]) {
     return Things.isUrn(triple[0]);
   }
-  static hasRelation(triple, relation) {
+  static hasRelation(triple: [string, string, string], relation: string) {
     return triple[1] === relation;
   }
-  static hasUrnTarget(triple) {
+  static hasUrnTarget(triple: [string, string, string]) {
     return Things.isUrn(triple[2]);
   }
 
-  static getSource(triple) {
+  static getSource(triple: [string, string, string]) {
     return triple[0];
   }
 
-  static getRelation(triple) {
+  static getRelation(triple: [string, string, string]) {
     return triple[1];
   }
 
-  static getTarget(triple) {
+  static getTarget(triple: [string, string, string]) {
     return triple[2];
   }
 }
@@ -207,6 +209,22 @@ function countriesAsUrns(triple) {
   ];
 }
 
+function expandCdnUrls(triple) {
+  for (const relation of ['poster_url', 'video_url_1080p', 'video_url_480p', 'video_url_720p', 'video_url_unscaled']) {
+    if (Triples.getRelation(triple) === relation) {
+      return [
+        [
+          Triples.getSource(triple),
+          relation,
+          `${CONFIG.photos_url}${Triples.getTarget(triple)}`,
+        ]
+      ]
+    }
+  }
+
+  return [triple]
+}
+
 // TODO tag each photo with a year
 
 export function getTribbleDB(triples) {
@@ -214,7 +232,8 @@ export function getTribbleDB(triples) {
     tribbleDb.add(triples);
     tribbleDb = tribbleDb
       .flatMap(ratingsAsUrns)
-      .flatMap(countriesAsUrns);
+      .flatMap(countriesAsUrns)
+      .flatMap(expandCdnUrls);
 
     triblesUpdated = true;
   }

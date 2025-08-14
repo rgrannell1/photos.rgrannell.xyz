@@ -1,9 +1,7 @@
 import {
   ALBUMS_SYMBOL,
   IMAGES_SYMBOL,
-  SEMANTIC_SYMBOL,
   TRIPLES_SYMBOL,
-  VIDEOS_SYMBOL,
 } from "../constants.js";
 
 // injected into the HTLM during build-time
@@ -59,71 +57,6 @@ export class ImagesArtifact {
         ...image,
         full_image: `https://photos-cdn.rgrannell.xyz${image.full_image}`,
         thumbnail_url: `https://photos-cdn.rgrannell.xyz${image.thumbnail_url}`,
-      };
-    });
-  }
-}
-
-export class VideosArtifact {
-  _data;
-
-  constructor(url = `/manifest/videos.${CONFIG.publication_id}.json`) {
-    this.url = url;
-  }
-
-  processVideos(videos) {
-    const headers = videos[0];
-
-    const output = [];
-
-    for (const image of videos.slice(1)) {
-      const data = {};
-
-      for (let idx = 0; idx < headers.length; idx++) {
-        data[headers[idx]] = image[idx];
-      }
-
-      output.push(data);
-    }
-
-    return output;
-  }
-
-  async init() {
-    if (window[VIDEOS_SYMBOL]) {
-      this._data = window[VIDEOS_SYMBOL];
-    }
-
-    if (this._data || this.loading) {
-      return;
-    }
-
-    console.log(`🔎 fetching ${this.url}`);
-
-    const videos = await (await fetch(this.url)).json();
-
-    const processed = this.processVideos(videos);
-    window[VIDEOS_SYMBOL] = processed;
-
-    this._data = processed;
-  }
-
-  videos() {
-    return this._data.map((video) => {
-      return {
-        ...video,
-        poster_url: `https://photos-cdn.rgrannell.xyz${video.poster_url}`,
-        video_url_1080p:
-          `https://photos-cdn.rgrannell.xyz${video.video_url_1080p}`,
-        video_url_480p:
-          `https://photos-cdn.rgrannell.xyz${video.video_url_480p}`,
-        video_url_720p:
-          `https://photos-cdn.rgrannell.xyz${video.video_url_720p}`,
-        video_url_unscaled:
-          `https://photos-cdn.rgrannell.xyz${video.video_url_unscaled}`,
-        tags: (video.tags ?? "").split(",")
-          .filter((tag) => tag != "Published")
-          .map((tag) => tag.trim()),
       };
     });
   }

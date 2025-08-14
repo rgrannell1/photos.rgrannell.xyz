@@ -4,12 +4,11 @@ import {
   AlbumsArtifact,
   ImagesArtifact,
   TriplesArtifact,
-  VideosArtifact,
 } from "../models/artifacts.ts";
 
 import { PageLocation } from "../services/location.ts";
 
-import { KnownRelations, LoadMode, Pages } from "../constants.js";
+import { LoadMode, Pages } from "../constants.js";
 
 import "./components/sidebar.ts";
 import "./components/header.ts";
@@ -19,19 +18,17 @@ import "./pages/albums/pages.ts";
 import "./pages/album/pages.ts";
 import "./pages/metadata/pages.ts";
 import "./pages/about/pages.ts";
-import "./pages/videos/pages.ts";
 import "./pages/thing/pages.ts";
+import "./pages/videos/pages.ts";
 import { getTribbleDB } from "../services/things.ts";
 
 const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
-const videos = new VideosArtifact();
 const triples = new TriplesArtifact();
 
 export const DEFAULT_DEPENDENCIES = [
   [albums, LoadMode.EAGER],
   [images, LoadMode.EAGER],
-  [videos, LoadMode.EAGER],
   [triples, LoadMode.EAGER],
 ];
 /*
@@ -49,51 +46,43 @@ export const PAGE_DEPENDECIES = {
   [Pages.ABOUT]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
-    [videos, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.ALBUMS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.LAZY],
-    [videos, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
-    [videos, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   [Pages.VIDEOS]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
-    [videos, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   [Pages.ALBUM]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
-    [videos, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   // TODO DOES THIS EXIST
   [Pages.PHOTO]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
-    [videos, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
 
   [Pages.METADATA]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
-    [videos, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   [Pages.THING]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
-    [videos, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
 };
@@ -315,7 +304,6 @@ export class PhotoApp extends LitElem {
       return html`
       <album-page
         .images=${images}
-        .videos=${videos}
         .triples=${tdb}
         title=${album.album_name}
         id=${this.id}
@@ -341,13 +329,13 @@ export class PhotoApp extends LitElem {
       <metadata-page
         .triples=${getTribbleDB(triples._data)}
         .image=${photo}
-        .semantic=${triples._data} id=${this.id} class="${classes}"></metadata-page>
+        id=${this.id} class="${classes}"></metadata-page>
       `;
     }
 
     if (this.page === Pages.VIDEOS) {
       return html`
-      <videos-page .videos=${videos} class="${classes}"></videos-page>
+      <videos-page .triples=${getTribbleDB(triples._data)} class="${classes}"></videos-page>
       `;
     }
 

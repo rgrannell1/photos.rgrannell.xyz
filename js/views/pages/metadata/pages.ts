@@ -137,7 +137,7 @@ export class MetadataPage extends LitElem {
         id: this.id,
       },
       relation: {
-        relation: ExifRelations,
+        //relation: ExifRelations,
       },
     }).firstObject();
 
@@ -157,7 +157,7 @@ export class MetadataPage extends LitElem {
       </tr>
       <tr>
         <th class="exif-heading">Camera Model</th>
-        <td>${exif.model}</td>
+        <td><thing-link .triples=${this.triples} urn=${exif.model}></thing-link></td>
         </tr>
       <tr>
         <th class="exif-heading">Dimensions</th>

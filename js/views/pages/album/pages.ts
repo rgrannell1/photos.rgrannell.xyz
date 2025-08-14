@@ -29,7 +29,6 @@ export class AlbumPage extends LitElem {
       imageCount: { type: Number },
       description: { type: String },
       images: { type: Object },
-      videos: { type: Object },
       triples: { type: Array },
       countries: { type: String },
     };
@@ -55,8 +54,22 @@ export class AlbumPage extends LitElem {
   }
 
   albumVideos(tdb) {
-    return this.videos.videos().filter((video) => {
-      return video.album_id === this.id;
+    const albumVideoIds: Set<string> = tdb.search({
+      source: {
+        type: 'video'
+      },
+      relation: 'album_id',
+      target: {
+        id: this.id
+      }
+    }).sources();
+
+    return Array.from(albumVideoIds).flatMap((source: string) => {
+      const info = tdb.search({
+        source: parseUrn(source)
+      }).firstObject();
+
+      return info ? [info] : [];
     });
   }
 
@@ -153,7 +166,7 @@ export class AlbumPage extends LitElem {
         imageUrl="${photo.full_image}"></app-photo>`;
     });
 
-    const videos = this.albumVideos().map((video, idx) => {
+    const videos = this.albumVideos(tdb).map((video, idx) => {
       return html`<app-video
         id=${video.id}
         url_poster=${video.poster_url}
