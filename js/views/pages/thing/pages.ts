@@ -241,7 +241,8 @@ export class ThingPage extends LitElem {
     });
 
     if (urnFacts.country) {
-      metadata["Country"] = html`<thing-link .triples=${this.triples} urn=${urnFacts.country}></thing-link>`;
+      metadata["Country"] =
+        html`<thing-link .triples=${this.triples} urn=${urnFacts.country}></thing-link>`;
     }
 
     if (urnFacts.fcode_name) {

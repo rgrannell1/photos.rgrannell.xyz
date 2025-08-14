@@ -129,47 +129,46 @@ export class Countries {
   // TODO deprecate this, as we move away from passing
   // non URN data to the client
   static details(tdb, name) {
+    // narrow down the search to triples about country names and flags
+    const countriesData = tdb.search({
+      source: { type: "country" },
+      relation: { relation: [KnownRelations.NAME, KnownRelations.FLAG] },
+    });
 
-      // narrow down the search to triples about country names and flags
-      const countriesData = tdb.search({
-        source: { type: 'country' },
-        relation: {relation: [KnownRelations.NAME, KnownRelations.FLAG]}
-      })
+    // grab the URN based on the name
+    const urn = countriesData.search({
+      relation: KnownRelations.NAME,
+      target: { id: name },
+    }).firstSource();
 
-      // grab the URN based on the name
-      const urn = countriesData.search({
-        relation: KnownRelations.NAME,
-        target: { id: name }
-      }).firstSource();
+    const parsed = parseUrn(urn);
 
-      const parsed = parseUrn(urn);
+    // and the flag based on the URN
+    const flag = countriesData.search({
+      source: parsed,
+      relation: KnownRelations.FLAG,
+    }).firstTarget();
 
-      // and the flag based on the URN
-      const flag = countriesData.search({
-        source: parsed,
-        relation: KnownRelations.FLAG
-      }).firstTarget();
-
-      return {
-        urn,
-        name,
-        flag
-      }
+    return {
+      urn,
+      name,
+      flag,
+    };
   }
 
   static urnDetails(tdb, urn: string) {
-      const parsed = parseUrn(urn);
+    const parsed = parseUrn(urn);
 
-      // narrow down the search to triples about country names and flags
-      const name = tdb.search({
-        source: { type: 'country', id: parsed.id },
-        relation: KnownRelations.NAME
-      }).firstTarget()
+    // narrow down the search to triples about country names and flags
+    const name = tdb.search({
+      source: { type: "country", id: parsed.id },
+      relation: KnownRelations.NAME,
+    }).firstTarget();
 
-      return {
-        urn,
-        name
-      }
+    return {
+      urn,
+      name,
+    };
   }
 }
 

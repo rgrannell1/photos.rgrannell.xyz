@@ -2,7 +2,6 @@ import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.ts";
 import {
   AlbumsArtifact,
-  ExifArtifact,
   ImagesArtifact,
   StatsArtifact,
   TriplesArtifact,
@@ -28,7 +27,6 @@ import { getTribbleDB } from "../services/things.ts";
 const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
 const videos = new VideosArtifact();
-const exif = new ExifArtifact();
 const stats = new StatsArtifact();
 const triples = new TriplesArtifact();
 
@@ -36,7 +34,6 @@ export const DEFAULT_DEPENDENCIES = [
   [albums, LoadMode.EAGER],
   [images, LoadMode.EAGER],
   [videos, LoadMode.EAGER],
-  [exif, LoadMode.EAGER],
   [stats, LoadMode.EAGER],
   [triples, LoadMode.EAGER],
 ];
@@ -56,7 +53,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
     [videos, LoadMode.LAZY],
-    [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
@@ -64,7 +60,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.EAGER],
     [images, LoadMode.LAZY],
     [videos, LoadMode.LAZY],
-    [exif, LoadMode.LAZY],
     [stats, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
@@ -72,7 +67,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
-    [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
@@ -80,7 +74,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
     [videos, LoadMode.EAGER],
-    [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
@@ -89,7 +82,6 @@ export const PAGE_DEPENDECIES = {
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
-    [exif, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   // TODO DOES THIS EXIST
@@ -97,7 +89,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
-    [exif, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
@@ -106,7 +97,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
-    [exif, LoadMode.EAGER],
     [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
@@ -114,7 +104,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.LAZY],
-    [exif, LoadMode.LAZY],
     [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
@@ -355,25 +344,6 @@ export class PhotoApp extends LitElem {
         return image.id === this.id;
       });
 
-      const exifData = exif.exif().find((exif: any) => {
-        return exif.id === this.id;
-      });
-
-      // TODO this sucks
-
-      const semanticData = triples._data.filter((semantic: any) => {
-        return semantic[0] === this.id;
-      });
-
-      const relations = {};
-      for (const [_, relation, target] of semanticData) {
-        if (!relations[relation]) {
-          relations[relation] = target;
-        } else if (typeof relations[relation] === "string") {
-          relations[relation] = [relations[relation], target];
-        }
-      }
-
       if (!photo) {
         console.error(`failed to find photo with id ${this.id}`);
       }
@@ -382,7 +352,7 @@ export class PhotoApp extends LitElem {
       <metadata-page
         .triples=${getTribbleDB(triples._data)}
         .image=${photo}
-        .semantic=${triples._data} .exif=${exifData} id=${this.id} class="${classes}"></metadata-page>
+        .semantic=${triples._data} id=${this.id} class="${classes}"></metadata-page>
       `;
     }
 

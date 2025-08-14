@@ -1,6 +1,5 @@
 import {
   ALBUMS_SYMBOL,
-  EXIF_SYMBOL,
   IMAGES_SYMBOL,
   SEMANTIC_SYMBOL,
   TRIPLES_SYMBOL,
@@ -190,75 +189,7 @@ export class AlbumsArtifact {
   }
 }
 
-export class ExifArtifact {
-  _data;
-
-  constructor(url = `/manifest/exif.${CONFIG.publication_id}.json`) {
-    this.url = url;
-  }
-
-  process(rows) {
-    const headers = rows[0];
-
-    const output = [];
-
-    for (const album of rows.slice(1)) {
-      const data = {};
-
-      for (let idx = 0; idx < headers.length; idx++) {
-        data[headers[idx]] = album[idx];
-      }
-
-      output.push(data);
-    }
-
-    return output;
-  }
-
-  async init() {
-    if (window[EXIF_SYMBOL]) {
-      this._data = window[EXIF_SYMBOL];
-    }
-
-    if (this._data) {
-      return;
-    }
-
-    console.log(`🔎 fetching ${this.url}`);
-
-    const exif = await (await fetch(this.url)).json();
-    const processed = this.process(exif);
-
-    window[EXIF_SYMBOL] = processed;
-
-    this._data = processed;
-  }
-
-  exif() {
-    return this._data;
-  }
-}
-
-function isChild(metadata, parent, child) {
-  if (!metadata.hasOwnProperty(parent)) {
-    return false;
-  }
-
-  const children = metadata[parent];
-
-  if (children.includes(child)) {
-    return true;
-  }
-
-  for (const candidate of children) {
-    if (isChild(metadata, candidate, child)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
+// TODO replace with a service
 export class StatsArtifact {
   _data;
 
@@ -271,13 +202,13 @@ export class StatsArtifact {
     const textContent = $statsData.textContent;
 
     if (!textContent) {
-      throw new Error('stats-data empty')
+      throw new Error("stats-data empty");
     }
 
     try {
       this._data = JSON.parse(textContent);
     } catch (err) {
-      throw new Error(`failed to parse stats-data as JSON: ${textContent}`)
+      throw new Error(`failed to parse stats-data as JSON: ${textContent}`);
     }
 
     if (!this._data) {

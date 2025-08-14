@@ -4,7 +4,6 @@ export const ALBUMS_SYMBOL = Symbol("the albums manifest");
 export const IMAGES_SYMBOL = Symbol("the images manifest");
 export const MANIFEST_SYMBOL = Symbol("the site manifest");
 export const VIDEOS_SYMBOL = Symbol("the videos manifest");
-export const EXIF_SYMBOL = Symbol("the exif data");
 export const SEMANTIC_SYMBOL = Symbol("the semantic data");
 export const STATS_SYMBOL = Symbol("the album stats");
 export const TRIPLES_SYMBOL = Symbol("the triples data");
@@ -52,7 +51,26 @@ export class KnownRelations {
   static NAME = "name";
   static BIRDWATCH_URL = "birdwatch_url";
   static WIKIPEDIA = "wikipedia";
-}
+  static CREATED_AT = "created_at";
+  static F_STOP = "f_stop";
+  static FOCAL_LENGTH = "focal_length";
+  static MODEL = "model";
+  static EXPOSURE_TIME = "exposure_time";
+  static ISO = "iso";
+  static WIDTH = "width";
+  static HEIGHT = "height";
+};
+
+export const ExifRelations = new Set([
+  "created_at",
+  "f_stop",
+  "focal_length",
+  "model",
+  "exposure_time",
+  "iso",
+  "width",
+  "height"
+]);
 
 export const BinomialTypes = new Set([
   "bird",

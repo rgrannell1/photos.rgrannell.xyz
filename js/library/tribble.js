@@ -252,6 +252,12 @@ var Index = class {
       this.stringIndex.getValue(targetIdx)
     ];
   }
+  getTripleIndices(index) {
+    if (index < 0 || index >= this.indexedTriples.length) {
+      return void 0;
+    }
+    return this.indexedTriples[index];
+  }
   /*
    * Helper methods to convert string keys to indices for external API compatibility
    */
@@ -314,6 +320,52 @@ var Index = class {
 };
 
 // tribble-db.ts
+function joinSubqueryResults(metrics, acc, tripleResult) {
+  const joinedNames = acc.names.concat(tripleResult.names);
+  if (acc.rows.length === 0 || tripleResult.rows.length === 0) {
+    return {
+      names: joinedNames,
+      rows: []
+    };
+  }
+  const endings = /* @__PURE__ */ new Map();
+  const starts = /* @__PURE__ */ new Map();
+  for (let idx = 0; idx < acc.rows.length; idx++) {
+    const refId = acc.rows[idx][2];
+    if (!endings.has(refId)) {
+      endings.set(refId, []);
+    }
+    endings.get(refId).push(idx);
+  }
+  for (let idx = 0; idx < tripleResult.rows.length; idx++) {
+    const refId = tripleResult.rows[idx][0];
+    if (!starts.has(refId)) {
+      starts.set(refId, []);
+    }
+    starts.get(refId).push(idx);
+  }
+  const commonLinks = Sets.intersection(metrics, [
+    new Set(endings.keys()),
+    new Set(starts.keys())
+  ]);
+  const joinedRows = [];
+  for (const link of commonLinks) {
+    const startRowIndices = starts.get(link);
+    const endRowsIndices = endings.get(link);
+    for (const startRowIndex of startRowIndices) {
+      for (const endRowIndex of endRowsIndices) {
+        const joinedRow = acc.rows[startRowIndex].concat(
+          tripleResult.rows[endRowIndex]
+        );
+        joinedRows.push(joinedRow);
+      }
+    }
+  }
+  return {
+    names: joinedNames,
+    rows: joinedRows
+  };
+}
 var TribbleDB = class _TribbleDB {
   index;
   triplesCount;
@@ -494,13 +546,7 @@ var TribbleDB = class _TribbleDB {
     }
     return objs;
   }
-  /*
-   * Search all triples in the database.
-   *
-   * @param params - The search parameters.
-   * @returns A new TribbleDB instance containing the matching triples.
-   */
-  search(params) {
+  #findMatchingRows(params) {
     const matchingRowSets = [
       this.cursorIndices
     ];
@@ -521,7 +567,7 @@ var TribbleDB = class _TribbleDB {
         if (sourceTypeSet) {
           matchingRowSets.push(sourceTypeSet);
         } else {
-          return new _TribbleDB([]);
+          return /* @__PURE__ */ new Set();
         }
       }
       if (source.id) {
@@ -529,7 +575,7 @@ var TribbleDB = class _TribbleDB {
         if (sourceIdSet) {
           matchingRowSets.push(sourceIdSet);
         } else {
-          return new _TribbleDB([]);
+          return /* @__PURE__ */ new Set();
         }
       }
       if (source.qs) {
@@ -538,7 +584,7 @@ var TribbleDB = class _TribbleDB {
           if (sourceQsSet) {
             matchingRowSets.push(sourceQsSet);
           } else {
-            return new _TribbleDB([]);
+            return /* @__PURE__ */ new Set();
           }
         }
       }
@@ -549,7 +595,7 @@ var TribbleDB = class _TribbleDB {
         if (targetTypeSet) {
           matchingRowSets.push(targetTypeSet);
         } else {
-          return new _TribbleDB([]);
+          return /* @__PURE__ */ new Set();
         }
       }
       if (target.id) {
@@ -557,7 +603,7 @@ var TribbleDB = class _TribbleDB {
         if (targetIdSet) {
           matchingRowSets.push(targetIdSet);
         } else {
-          return new _TribbleDB([]);
+          return /* @__PURE__ */ new Set();
         }
       }
       if (target.qs) {
@@ -566,34 +612,36 @@ var TribbleDB = class _TribbleDB {
           if (targetQsSet) {
             matchingRowSets.push(targetQsSet);
           } else {
-            return new _TribbleDB([]);
+            return /* @__PURE__ */ new Set();
           }
         }
       }
     }
     if (relation) {
       const relationDsl = typeof relation === "string" ? { relation: [relation] } : relation;
-      const unionedRelations = /* @__PURE__ */ new Set();
-      for (const rel of relationDsl.relation) {
-        const relationSet = this.index.getRelationSet(rel);
-        if (relationSet) {
-          for (const elem of relationSet) {
-            unionedRelations.add(elem);
+      if (relationDsl.relation) {
+        const unionedRelations = /* @__PURE__ */ new Set();
+        for (const rel of relationDsl.relation) {
+          const relationSet = this.index.getRelationSet(rel);
+          if (relationSet) {
+            for (const elem of relationSet) {
+              unionedRelations.add(elem);
+            }
           }
         }
-      }
-      if (unionedRelations.size > 0) {
-        matchingRowSets.push(unionedRelations);
-      } else {
-        return new _TribbleDB([]);
+        if (unionedRelations.size > 0) {
+          matchingRowSets.push(unionedRelations);
+        } else {
+          return /* @__PURE__ */ new Set();
+        }
       }
     }
     const intersection = Sets.intersection(this.metrics, matchingRowSets);
-    const matchingTriples = [];
+    const matchingTriples = /* @__PURE__ */ new Set();
     for (const index of intersection) {
       const triple = this.index.getTriple(index);
       if (!source?.predicate && !target?.predicate && !(typeof relation === "object" && relation.predicate)) {
-        matchingTriples.push(triple);
+        matchingTriples.add(index);
         continue;
       }
       let isValid = true;
@@ -607,10 +655,62 @@ var TribbleDB = class _TribbleDB {
         isValid = isValid && relation.predicate(Triples.relation(triple));
       }
       if (isValid) {
+        matchingTriples.add(index);
+      }
+    }
+    return matchingTriples;
+  }
+  /*
+   * Search all triples in the database.
+   *
+   * @param params - The search parameters.
+   * @returns A new TribbleDB instance containing the matching triples.
+   */
+  search(params) {
+    const matchingTriples = [];
+    for (const rowIdx of this.#findMatchingRows(params)) {
+      const triple = this.index.getTriple(rowIdx);
+      if (triple) {
         matchingTriples.push(triple);
       }
     }
     return new _TribbleDB(matchingTriples);
+  }
+  search2(query) {
+    const bindings = Object.entries(query);
+    const subqueryResults = [];
+    for (let idx = 0; idx < bindings.length - 2; idx += 2) {
+      const tripleSlice = bindings.slice(idx, idx + 3);
+      const pattern = {
+        source: tripleSlice[0][1],
+        relation: tripleSlice[1][1],
+        target: tripleSlice[2][1]
+      };
+      const bindingNames = tripleSlice.map((pair) => pair[0]);
+      const tripleRows = this.#findMatchingRows(pattern);
+      const rowData = Array.from(tripleRows).flatMap((row) => {
+        const contents = this.index.getTripleIndices(row);
+        return typeof contents === "undefined" ? [] : [contents];
+      });
+      subqueryResults.push({
+        names: bindingNames,
+        rows: rowData
+      });
+    }
+    const queryResult = subqueryResults.reduce(
+      joinSubqueryResults.bind(this, this.metrics)
+    );
+    const outputNames = queryResult.names;
+    const objects = [];
+    for (const row of queryResult.rows) {
+      const data = {};
+      for (let idx = 0; idx < outputNames.length; idx++) {
+        const label = outputNames[idx];
+        data[label] = this.index.stringIndex.getValue(row[idx]);
+      }
+      objects.push(data);
+    }
+    return objects;
   }
   getMetrics() {
     return {

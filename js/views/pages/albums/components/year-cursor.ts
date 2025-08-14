@@ -27,7 +27,7 @@ export class YearCursor extends LitElem {
 
     const dates = this.getDates();
 
-    let firstBelowPositionHeight: number|undefined = undefined;
+    let firstBelowPositionHeight: number | undefined = undefined;
     const row: {
       position: DOMRect;
       minDate: number;
@@ -50,11 +50,14 @@ export class YearCursor extends LitElem {
       }
     }
 
-    const minimumDate = Math.min(...row.map(item => item.minDate));
+    const minimumDate = Math.min(...row.map((item) => item.minDate));
     const dateSummary = new Date(minimumDate);
-    const monthYearString = dateSummary.toLocaleString('default', { month: 'short', year: 'numeric' });
+    const monthYearString = dateSummary.toLocaleString("default", {
+      month: "short",
+      year: "numeric",
+    });
 
-    if (yearCursor && monthYearString !== 'Invalid Date') {
+    if (yearCursor && monthYearString !== "Invalid Date") {
       yearCursor.textContent = monthYearString;
     }
   }
@@ -69,15 +72,15 @@ export class YearCursor extends LitElem {
     }
     const $dates = document.querySelectorAll(".photo-album-date");
     const details = Array.from($dates).flatMap((date: Element) => {
-      const minDate = date.getAttribute('data-min-date');
+      const minDate = date.getAttribute("data-min-date");
 
       if (!minDate) {
-        return []
+        return [];
       }
       return [{
         position: date.getBoundingClientRect(),
-        minDate: parseInt(minDate, 10)
-      }]
+        minDate: parseInt(minDate, 10),
+      }];
     });
 
     this.datesCache = details;
@@ -86,13 +89,15 @@ export class YearCursor extends LitElem {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    window.addEventListener('scroll', this._onScroll, {passive: true});
-    window.addEventListener("resize", this._clearCacheOnResize, {passive: true})
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._clearCacheOnResize, {
+      passive: true,
+    });
   }
 
   override disconnectedCallback(): void {
-    window.removeEventListener('scroll', this._onScroll);
-    window.removeEventListener('scroll', this._clearCacheOnResize);
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("scroll", this._clearCacheOnResize);
   }
 
   render() {

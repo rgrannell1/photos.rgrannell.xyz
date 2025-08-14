@@ -15,14 +15,13 @@ import "./components/share-button.ts";
 import "../../components/thing-link.ts";
 import "../../components/tag-link.ts";
 import { Things, Triples } from "../../../services/things.ts";
-import { KnownThings } from "../../../constants.js";
+import { ExifRelations, KnownThings } from "../../../constants.js";
 
 export class MetadataPage extends LitElem {
   static get properties() {
     return {
       id: { type: String },
       image: { type: Object },
-      exif: { type: Object },
       semantic: { type: Object },
       sharing: { state: true, type: Boolean },
       triples: { type: Array },
@@ -131,7 +130,21 @@ export class MetadataPage extends LitElem {
     `;
   }
 
-  renderExif(exif) {
+  renderExif(tdb) {
+    const exif = tdb.search({
+      source: {
+        type: "photo",
+        id: this.id,
+      },
+      relation: {
+        relation: ExifRelations,
+      },
+    }).firstObject();
+
+    if (!exif) {
+      return html`<p>No EXIF data available</p>`;
+    }
+
     return html`
     <h3>Exif</h3>
 
@@ -181,6 +194,11 @@ export class MetadataPage extends LitElem {
       source: {
         id: photo.id,
       },
+      relation: {
+        predicate: (relation: string) => {
+          return !ExifRelations.has(relation);
+        }
+      }
     }).triples();
 
     return html`
@@ -196,8 +214,7 @@ export class MetadataPage extends LitElem {
       </p>
 
       ${this.renderSemanticData(imageTriples)}
-
-    ${this.exif ? this.renderExif(this.exif) : html``}
+      ${this.renderExif(tdb)}
 
     </section>
     `;

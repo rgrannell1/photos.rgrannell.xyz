@@ -164,13 +164,13 @@ export class AlbumPage extends LitElem {
         ></app-video>`;
     });
 
-    const flags = this?.countries.split(',').map((country: string) => {
-      const {flag, urn} = Countries.details(this.triples, country);
+    const flags = this?.countries.split(",").map((country: string) => {
+      const { flag, urn } = Countries.details(this.triples, country);
 
       const parsed = parseUrn(urn);
 
       // TODO swap for an anchor tag
-      return html`<span href="#/thing/country:${parsed.id}" title=${country}>${flag}</span>`
+      return html`<span href="#/thing/country:${parsed.id}" title=${country}>${flag}</span>`;
     });
 
     return html`

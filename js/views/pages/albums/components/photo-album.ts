@@ -40,14 +40,14 @@ export class PhotoAlbum extends LitElem {
   }
 
   renderCountries() {
-    return this.countries.split(",").map(country => {
-      const {flag, urn} = Countries.details(this.triples, country);
+    return this.countries.split(",").map((country) => {
+      const { flag, urn } = Countries.details(this.triples, country);
 
       const parsed = parseUrn(urn);
 
       // TODO swap for an anchor tag
-      return html`<span href="#/thing/country:${parsed.id}" title=${country}>${flag}</span>`
-    })
+      return html`<span href="#/thing/country:${parsed.id}" title=${country}>${flag}</span>`;
+    });
   }
 
   render() {

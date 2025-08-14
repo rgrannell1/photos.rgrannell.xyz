@@ -41,7 +41,11 @@
 
     <script>
       // reduce blocking requests by injecting this critical data
-      window.envConfig = {"photos_url": "https://photos-cdn.rgrannell.xyz", "publication_id": "2be7239d04"}
+      window.envConfig = {
+  "photos_url": "https://photos-cdn.rgrannell.xyz",
+  "publication_id": "8a724b17e0"
+}
+
     </script>
 
     <div id="stats-data" style="display: none;"></div>
@@ -50,7 +54,16 @@
       import { STATS_SYMBOL } from "/js/constants.js";
 
       const $statsData = document.getElementById('stats-data');
-      $statsData.innerText = JSON.stringify({"photos":1178,"albums":103,"years":13,"countries":18,"bird_species":141,"mammal_species":55,"unesco_sites":18})
+      $statsData.innerText = JSON.stringify({
+  "photos": 1178,
+  "albums": 103,
+  "years": 13,
+  "countries": 18,
+  "bird_species": 141,
+  "mammal_species": 55,
+  "unesco_sites": 18
+}
+)
 
     </script>
     <script type="module" src="/dist/js/app.js"></script>

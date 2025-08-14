@@ -19,7 +19,7 @@ export class AlbumsPage extends LitElem {
     return {
       albums: { type: Object },
       stats: { type: Object },
-      triples: { type: Object }
+      triples: { type: Object },
     };
   }
   connectedCallback() {
