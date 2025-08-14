@@ -56,6 +56,8 @@ export class PhotoAlbum extends LitElem {
     const thumbnailDataUrl = Photos.encodeBitmapDataURL(this.mosaicColours);
     const flags = this.renderCountries();
 
+    const albumId = parseUrn(this.id)
+
     return html`
     <div class="photo-album">
       <a href="${"/#/album/" + this.id}" onclick="event.preventDefault();">
@@ -65,7 +67,7 @@ export class PhotoAlbum extends LitElem {
     } style="z-index: -1" class="u-photo thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
         @click=${
       this.broadcast("click-album", {
-        id: this.id,
+        id: albumId.id,
         title: this.title,
       })
     }>

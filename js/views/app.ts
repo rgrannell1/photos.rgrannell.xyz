@@ -1,7 +1,6 @@
 import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.ts";
 import {
-  AlbumsArtifact,
   ImagesArtifact,
   TriplesArtifact,
 } from "../models/artifacts.ts";
@@ -22,12 +21,10 @@ import "./pages/thing/pages.ts";
 import "./pages/videos/pages.ts";
 import { getTribbleDB } from "../services/things.ts";
 
-const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
 const triples = new TriplesArtifact();
 
 export const DEFAULT_DEPENDENCIES = [
-  [albums, LoadMode.EAGER],
   [images, LoadMode.EAGER],
   [triples, LoadMode.EAGER],
 ];
@@ -44,44 +41,36 @@ export const DEFAULT_DEPENDENCIES = [
  */
 export const PAGE_DEPENDECIES = {
   [Pages.ABOUT]: [
-    [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.ALBUMS]: [
-    [albums, LoadMode.EAGER],
     [images, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.PHOTOS]: [
-    [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   [Pages.VIDEOS]: [
-    [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.ALBUM]: [
-    [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   // TODO DOES THIS EXIST
   [Pages.PHOTO]: [
-    [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
 
   [Pages.METADATA]: [
-    [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   [Pages.THING]: [
-    [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
@@ -274,7 +263,7 @@ export class PhotoApp extends LitElem {
       const tdb = getTribbleDB(triples._data);
 
       return html`
-      <albums-page .triples=${tdb} .albums="${albums}" class="${classes}"></albums-page>
+      <albums-page .triples=${tdb} class="${classes}"></albums-page>
       `;
     }
 
@@ -291,21 +280,19 @@ export class PhotoApp extends LitElem {
         console.error("no album id provided");
       }
 
-      const album = albums.albums().find((album: any) => {
-        return album.id === this.id;
-      });
+      const tdb = getTribbleDB(triples._data);
+      const album = tdb.search({
+        source: { type: "album", id: this.id },
+      }).firstObject();
 
       if (!album) {
         console.error(`failed to find album with id ${this.id}`);
       }
-
-      const tdb = getTribbleDB(triples._data);
-
       return html`
       <album-page
         .images=${images}
         .triples=${tdb}
-        title=${album.album_name}
+        title=${album.name}
         id=${this.id}
         minDate=${album.min_date}
         maxDate=${album.max_date}
@@ -344,7 +331,6 @@ export class PhotoApp extends LitElem {
       <thing-page
         .urn=${"urn:ró:" + this.id}
         .images=${images}
-        .albums=${albums}
         .triples=${getTribbleDB(triples._data)}
         class="${classes}"></thing-page>
       `;

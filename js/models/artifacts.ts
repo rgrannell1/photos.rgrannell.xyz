@@ -62,66 +62,7 @@ export class ImagesArtifact {
   }
 }
 
-export class AlbumsArtifact {
-  _data;
-
-  constructor(url = `/manifest/albums.${CONFIG.publication_id}.json`) {
-    this.url = url;
-  }
-
-  process(rows) {
-    const headers = rows[0];
-
-    const output = [];
-
-    for (const album of rows.slice(1)) {
-      const data = {};
-
-      if (album.length !== headers.length) {
-        throw new Error(
-          `album row length mismatch: expected ${headers.length}, got ${album.length}`,
-        );
-      }
-
-      for (let idx = 0; idx < headers.length; idx++) {
-        data[headers[idx]] = album[idx];
-      }
-
-      output.push(data);
-    }
-    return output;
-  }
-
-  async init() {
-    if (window[ALBUMS_SYMBOL]) {
-      this._data = window[ALBUMS_SYMBOL];
-    }
-
-    if (this._data) {
-      return;
-    }
-
-    console.log(`🔎 fetching ${this.url}`);
-
-    const albums = await (await fetch(this.url)).json();
-
-    const processed = this.process(albums);
-    window[ALBUMS_SYMBOL] = processed;
-
-    this._data = processed;
-  }
-
-  albums() {
-    return this._data.map((album) => {
-      return {
-        ...album,
-        thumbnail_url: `https://photos-cdn.rgrannell.xyz${album.thumbnail_url}`,
-        thumbnail_mosaic_url: album.thumbnail_mosaic_url
-      };
-    });
-  }
-}
-
+// TODO be smarter, stream
 export class TriplesArtifact {
   _data;
 

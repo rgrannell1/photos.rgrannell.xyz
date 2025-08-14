@@ -5,7 +5,7 @@
  */
 
 import { html } from "../../../library/lit.js";
-import { asUrn } from "../../../library/tribble.js";
+import { asUrn, parseUrn } from "../../../library/tribble.js";
 
 import "../../components/photo.ts";
 import { JSONFeed } from "../../../services/json-feed.ts";
@@ -19,7 +19,6 @@ export class ThingPage extends LitElem {
     return {
       urn: { type: String },
       images: { type: Object },
-      albums: { type: Object },
       triples: { type: Object },
     };
   }
@@ -68,6 +67,12 @@ export class ThingPage extends LitElem {
       });
   }
 
+  getAlbums() {
+    return this.triples.search({
+      source: {type: 'album'}
+    }).objects()
+  }
+
   renderSubjectAlbums(images, tdb, search) {
     const filtered = this.filterUrnImages(images, tdb, search);
     const albumSet = new Set(filtered.map((photo) => {
@@ -77,8 +82,8 @@ export class ThingPage extends LitElem {
     return Array
       .from(albumSet)
       .flatMap((albumId) => {
-        return this.albums.albums().filter((album) => {
-          return album.id === albumId;
+        return this.getAlbums().filter((album) => {
+          return parseUrn(album.id).id === albumId;
         });
       })
       .sort((album0, album1) => {

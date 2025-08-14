@@ -27,17 +27,17 @@ export class AlbumsPage extends LitElem {
     JSONFeed.setIndex();
   }
   getAlbums() {
-    return Object.values(this.albums.albums()).map((album) => {
-      const { photos_count } = album;
-
+    return this.triples.search({
+      source: {type: 'album'}
+    }).objects().map((album) => {
       return {
-        title: album.album_name,
-        minDate: album.min_date,
-        maxDate: album.max_date,
+        title: album.name,
+        minDate: parseInt(album.min_date),
+        maxDate: parseInt(album.max_date),
         url: album.thumbnail_url,
         mosaicColours: album.mosaic,
         id: album.id,
-        count: photos_count,
+        count: album.photos_count,
         flags: album.flags,
       };
     });
@@ -51,7 +51,7 @@ export class AlbumsPage extends LitElem {
         return album1.maxDate - album0.maxDate;
       });
 
-    /*
+      /*
      * append photo albums to the DOM
      */
     async function* albumIterable() {

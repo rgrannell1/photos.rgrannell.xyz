@@ -210,7 +210,7 @@ function countriesAsUrns(triple) {
 }
 
 function expandCdnUrls(triple) {
-  for (const relation of ['poster_url', 'video_url_1080p', 'video_url_480p', 'video_url_720p', 'video_url_unscaled']) {
+  for (const relation of ['thumbnail_url', 'full_image', 'poster_url', 'video_url_1080p', 'video_url_480p', 'video_url_720p', 'video_url_unscaled']) {
     if (Triples.getRelation(triple) === relation) {
       return [
         [
@@ -224,8 +224,6 @@ function expandCdnUrls(triple) {
 
   return [triple]
 }
-
-// TODO tag each photo with a year
 
 export function getTribbleDB(triples) {
   if (!triblesUpdated) {
