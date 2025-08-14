@@ -12,11 +12,12 @@ import "./components/search.ts";
 import { Photos } from "../../../services/photos.ts";
 import { JSONFeed } from "../../../services/json-feed.ts";
 import { LitElem } from "../../../models/lit-element.ts";
+import { asUrn } from "js/library/tribble.js";
 
 export class PhotosPage extends LitElem {
   static get properties() {
     return {
-      images: { type: Object },
+      triples: { type: Object },
     };
   }
 
@@ -27,7 +28,9 @@ export class PhotosPage extends LitElem {
   }
 
   allImages() {
-    return this.images.images().sort((left, right) => {
+    return this.triples.search({
+      source: {type: 'photo'}
+    }).objects().sort((left, right) => {
       return right.created_at - left.created_at;
     });
   }
@@ -40,7 +43,7 @@ export class PhotosPage extends LitElem {
         const photo = photos[idx];
         yield html`
           <app-photo
-            id=${photo.id}
+            id=${asUrn(photo.id)}
             loading="${Photos.loadingMode(idx)}"
             thumbnailUrl="${photo.thumbnail_url}"
             mosaicColours="${photo.mosaic_colours}"

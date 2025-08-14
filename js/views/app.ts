@@ -1,7 +1,6 @@
 import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.ts";
 import {
-  ImagesArtifact,
   TriplesArtifact,
 } from "../models/artifacts.ts";
 
@@ -21,11 +20,9 @@ import "./pages/thing/pages.ts";
 import "./pages/videos/pages.ts";
 import { getTribbleDB } from "../services/things.ts";
 
-const images = new ImagesArtifact();
 const triples = new TriplesArtifact();
 
 export const DEFAULT_DEPENDENCIES = [
-  [images, LoadMode.EAGER],
   [triples, LoadMode.EAGER],
 ];
 /*
@@ -41,37 +38,29 @@ export const DEFAULT_DEPENDENCIES = [
  */
 export const PAGE_DEPENDECIES = {
   [Pages.ABOUT]: [
-    [images, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.ALBUMS]: [
-    [images, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.PHOTOS]: [
-    [images, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   [Pages.VIDEOS]: [
-    [images, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.ALBUM]: [
-    [images, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   // TODO DOES THIS EXIST
   [Pages.PHOTO]: [
-    [images, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
 
   [Pages.METADATA]: [
-    [images, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   [Pages.THING]: [
-    [images, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
 };
@@ -272,7 +261,7 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.PHOTOS) {
-      return html`<photos-page class="${classes}" .images=${images}></photos-page>`;
+      return html`<photos-page class="${classes}" .triples=${triples}></photos-page>`;
     }
 
     if (this.page === Pages.ALBUM) {
@@ -290,7 +279,6 @@ export class PhotoApp extends LitElem {
       }
       return html`
       <album-page
-        .images=${images}
         .triples=${tdb}
         title=${album.name}
         id=${this.id}
@@ -304,18 +292,18 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.METADATA) {
-      const photo = images.images().find((image: any) => {
-        return image.id === this.id;
-      });
+      const image = getTribbleDB(triples._data).search({
+        source: { type: 'photo', id: this.id }
+      }).firstObject();
 
-      if (!photo) {
+      if (!image) {
         console.error(`failed to find photo with id ${this.id}`);
       }
 
       return html`
       <metadata-page
         .triples=${getTribbleDB(triples._data)}
-        .image=${photo}
+        .image=${image}
         id=${this.id} class="${classes}"></metadata-page>
       `;
     }
@@ -330,7 +318,6 @@ export class PhotoApp extends LitElem {
       return html`
       <thing-page
         .urn=${"urn:ró:" + this.id}
-        .images=${images}
         .triples=${getTribbleDB(triples._data)}
         class="${classes}"></thing-page>
       `;

@@ -18,7 +18,6 @@ export class ThingPage extends LitElem {
   static get properties() {
     return {
       urn: { type: String },
-      images: { type: Object },
       triples: { type: Object },
     };
   }
@@ -29,37 +28,27 @@ export class ThingPage extends LitElem {
     JSONFeed.setIndex();
   }
 
-  filterUrnImages(images, tdb, query) {
-    const semanticRelations = [
-      KnownRelations.SUBJECT,
-      KnownRelations.LOCATION,
-      KnownRelations.RATING,
-    ];
-
-    const targetSearch = asUrn(this.urn);
-
-    // don't filter by ID in this case
-    if (targetSearch.id === "*") {
-      delete targetSearch.id;
-    }
-
+  urnImages(tdb, query) {
     const relevantPhotos = tdb.search(query);
     const relevantPhotoIds = relevantPhotos.sources();
 
     return Array.from(relevantPhotoIds).flatMap((photoId) => {
-      return images.filter((image) => image.id === photoId).slice(0, 1);
+      return [tdb.search({
+        source: { id: photoId }
+      }).object()];
     });
   }
 
-  renderSubjectPhotos(images, tdb) {
+  renderSubjectPhotos(images) {
     return images
       .sort((photo0, photo1) => {
         return photo1.created_at - photo0.created_at;
       })
       .map((photo, idx) => {
+        console.log(photo.id)
         return html`
       <app-photo
-        id=${photo.id}
+        id=${asUrn(photo.id).id}
         loading="${Photos.loadingMode(idx)}"
         thumbnailUrl="${photo.thumbnail_url}"
         mosaicColours="${photo.mosaic_colours}"
@@ -73,8 +62,9 @@ export class ThingPage extends LitElem {
     }).objects()
   }
 
-  renderSubjectAlbums(images, tdb, search) {
-    const filtered = this.filterUrnImages(images, tdb, search);
+  renderSubjectAlbums(tdb, search) {
+    const filtered = this.urnImages(tdb, search);
+
     const albumSet = new Set(filtered.map((photo) => {
       return photo.album_id;
     }));
@@ -110,7 +100,7 @@ export class ThingPage extends LitElem {
   // todo push into semantic layer
   firstPhotographed(images, tdb, query) {
     const relevantPhotos = this
-      .filterUrnImages(images, tdb, query)
+      .urnImages(tdb, query)
       .sort((photo0, photo1) => {
         return photo0.created_at - photo1.created_at;
       });
@@ -232,7 +222,9 @@ export class ThingPage extends LitElem {
     // Support bird:* level queries
     const tdb = this.triples;
 
-    const images = this.images.images();
+    const images = tdb.search({
+      source: {type: 'photo'}
+    }).objects();
     const urn = Things.parseUrn(this.urn);
 
     const type = urn.type;
@@ -296,11 +288,11 @@ export class ThingPage extends LitElem {
 
     const photoGroups = {};
     for (const { query, label } of queries) {
-      const relevantPhotos = this.filterUrnImages(images, tdb, query);
+      const relevantPhotos = this.urnImages(tdb, query);
       photoGroups[label] = this.renderSubjectPhotos(relevantPhotos);
     }
 
-    const albums = this.renderSubjectAlbums(images, tdb, query);
+    const albums = this.renderSubjectAlbums(tdb, query);
     const photos = this.renderPhotoSection(photoGroups);
 
     return html`

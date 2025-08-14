@@ -28,7 +28,6 @@ export class AlbumPage extends LitElem {
       maxDate: { type: String },
       imageCount: { type: Number },
       description: { type: String },
-      images: { type: Object },
       triples: { type: Array },
       countries: { type: String },
     };
@@ -40,16 +39,18 @@ export class AlbumPage extends LitElem {
   }
 
   albumPhotos(tdb) {
-    return this.images.images().filter((image: Record<string, any>) => {
-      return image.album_id === this.id;
-    }).map((image: Record<string, any>) => {
-      const facts = tdb.search({
-        source: {
-          id: image.id,
-        },
-      }).firstObject(true);
+    const albumPhotoSources: Set<string> = tdb.search({
+      source: { type: 'photo' },
+      relation: 'album_id',
+      target: { id: this.id }
+    }).sources();
 
-      return { ...image, relations: facts ?? {} };
+    return Array.from(albumPhotoSources).flatMap((source: string) => {
+      const info = tdb.search({
+        source: parseUrn(source)
+      }).firstObject();
+
+      return info ? [info] : [];
     });
   }
 
@@ -87,7 +88,7 @@ export class AlbumPage extends LitElem {
       groups[type] = Array.from(
         new Set(
           albumPhotos.flatMap((photo: Record<string, string | string[]>) => {
-            return photo.relations[KnownRelations.LOCATION]?.filter(
+            return photo[KnownRelations.LOCATION]?.filter(
               (location: string) => {
                 return Things.is(location, type);
               },
@@ -110,7 +111,7 @@ export class AlbumPage extends LitElem {
       groups[type] = Array.from(
         new Set(
           albumPhotos.flatMap((photo) => {
-            return photo.relations[KnownRelations.SUBJECT]?.filter(
+            return photo[KnownRelations.SUBJECT]?.filter(
               (subject: string) => {
                 return Things.is(subject, type);
               },
@@ -156,10 +157,12 @@ export class AlbumPage extends LitElem {
 
     const albumPhotos = this.albumPhotos(tdb);
     const photos = albumPhotos.map((photo, idx) => {
+      console.log(photo)
+      console.log('xxxxxxxxxxxxxxxx')
       return html`
       <app-photo
         id=${photo.id}
-        summary=${photo.relations.summary}
+        summary=${photo.summary}
         loading="${Photos.loadingMode(idx)}"
         thumbnailUrl="${photo.thumbnail_url}"
         mosaicColours="${photo.mosaic_colours}"

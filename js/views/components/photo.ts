@@ -1,3 +1,4 @@
+import { parseUrn } from "js/library/tribble.js";
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.ts";
 import { Photos } from "../../services/photos.ts";
@@ -30,6 +31,10 @@ export class AppPhoto extends LitElem {
   }
 
   render() {
+    if (!this.id) {
+      return html`<p>Missing photo ID</p>`;
+    }
+
     const photoMetadata = {
       id: this.id,
       imageUrl: this.imageUrl,

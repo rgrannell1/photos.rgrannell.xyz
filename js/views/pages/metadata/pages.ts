@@ -16,6 +16,7 @@ import "../../components/thing-link.ts";
 import "../../components/tag-link.ts";
 import { Things, Triples } from "../../../services/things.ts";
 import { ExifRelations, KnownThings } from "../../../constants.js";
+import { parseUrn } from "js/library/tribble.js";
 
 export class MetadataPage extends LitElem {
   static get properties() {
@@ -192,11 +193,17 @@ export class MetadataPage extends LitElem {
     const tdb = this.triples;
     const imageTriples = tdb.search({
       source: {
-        id: photo.id,
+        id: parseUrn(photo.id).id,
       },
       relation: {
         predicate: (relation: string) => {
-          return !ExifRelations.has(relation);
+          const TODO = new Set([
+            'album_id',
+            'full_image',
+            'mosaic_colours',
+            'thumbnail_url'
+          ])
+          return !ExifRelations.has(relation) && !TODO.has(relation);
         }
       }
     }).triples();
