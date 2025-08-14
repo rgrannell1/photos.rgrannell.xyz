@@ -304,7 +304,7 @@ var ht=globalThis,Nt=ht.ShadowRoot&&(ht.ShadyCSS===void 0||ht.ShadyCSS.nativeSha
         imageUrl="${e.full_image}"></app-photo>`)}getAlbums(){return this.triples.search({source:{type:"album"}}).objects()}renderSubjectAlbums(t,e){let s=this.urnImages(t,e),r=new Set(s.map(n=>n.album_id));return Array.from(r).flatMap(n=>this.getAlbums().filter(o=>x(o.id).id===n)).sort((n,o)=>o.min_date-n.min_date).map(n=>l`
           <photo-album
             .triples=${this.triples}
-            title="${n.album_name}"
+            title="${n.name}"
             url="${n.thumbnail_url}"
             mosaicColours="${n.mosaic}"
             id="${n.id}"

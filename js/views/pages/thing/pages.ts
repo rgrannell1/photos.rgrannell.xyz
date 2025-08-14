@@ -84,7 +84,7 @@ export class ThingPage extends LitElem {
         return html`
           <photo-album
             .triples=${this.triples}
-            title="${album.album_name}"
+            title="${album.name}"
             url="${album.thumbnail_url}"
             mosaicColours="${album.mosaic}"
             id="${album.id}"
