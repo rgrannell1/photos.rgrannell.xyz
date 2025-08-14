@@ -261,7 +261,9 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.PHOTOS) {
-      return html`<photos-page class="${classes}" .triples=${triples}></photos-page>`;
+      const tdb = getTribbleDB(triples._data);
+
+      return html`<photos-page .triples=${tdb} class="${classes}"></photos-page>`;
     }
 
     if (this.page === Pages.ALBUM) {

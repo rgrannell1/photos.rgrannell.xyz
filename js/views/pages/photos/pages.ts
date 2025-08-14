@@ -28,6 +28,7 @@ export class PhotosPage extends LitElem {
   }
 
   allImages() {
+    // NOTE: this is really slow now!
     return this.triples.search({
       source: {type: 'photo'}
     }).objects().sort((left, right) => {
