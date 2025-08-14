@@ -73,7 +73,7 @@ var ht=globalThis,Nt=ht.ShadowRoot&&(ht.ShadyCSS===void 0||ht.ShadyCSS.nativeSha
     <div class="search-box">
       <input type="text" placeholder="Search...">
     </div>
-    `}};customElements.define("search-bar",Gt);var _=class{static getElement(){return document.getElementById("rss")}static setTag(t){let e=this.getElement();if(!e||!t)return;let s=`/feeds/tags/${t}.json`;e.href=s}static setIndex(){let t=this.getElement();if(!t)return;let e="/manifest/atom/atom-index.xml";t.href=e}};var qt=class extends f{static get properties(){return{triples:{type:Object}}}connectedCallback(){super.connectedCallback(),_.setIndex()}allImages(){return this.triples.search({source:{type:"photo"}}).objects().sort((t,e)=>e.created_at-t.created_at)}render(){let t=this.allImages();async function*e(){for(let s=0;s<t.length;s++){let r=t[s];yield l`
+    `}};customElements.define("search-bar",Gt);var _=class{static getElement(){return document.getElementById("rss")}static setTag(t){let e=this.getElement();if(!e||!t)return;let s=`/feeds/tags/${t}.json`;e.href=s}static setIndex(){let t=this.getElement();if(!t)return;let e="/manifest/atom/atom-index.xml";t.href=e}};var qt=class extends f{static get properties(){return{triples:{type:Object}}}connectedCallback(){super.connectedCallback(),_.setIndex()}allImages(){return this.triples.search({source:{type:"photo"},relation:{relation:["thumbnail_url","mosaic_colours","full_image"]},target:{type:"unknown"}}).objects().sort((t,e)=>e.created_at-t.created_at)}render(){let t=this.allImages();async function*e(){for(let s=0;s<t.length;s++){let r=t[s];yield l`
           <app-photo
             id=${L(r.id)}
             loading="${M.loadingMode(s)}"
