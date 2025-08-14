@@ -3,7 +3,6 @@ import { LitElem } from "../models/lit-element.ts";
 import {
   AlbumsArtifact,
   ImagesArtifact,
-  StatsArtifact,
   TriplesArtifact,
   VideosArtifact,
 } from "../models/artifacts.ts";
@@ -27,14 +26,12 @@ import { getTribbleDB } from "../services/things.ts";
 const albums = new AlbumsArtifact();
 const images = new ImagesArtifact();
 const videos = new VideosArtifact();
-const stats = new StatsArtifact();
 const triples = new TriplesArtifact();
 
 export const DEFAULT_DEPENDENCIES = [
   [albums, LoadMode.EAGER],
   [images, LoadMode.EAGER],
   [videos, LoadMode.EAGER],
-  [stats, LoadMode.EAGER],
   [triples, LoadMode.EAGER],
 ];
 /*
@@ -53,35 +50,30 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
     [videos, LoadMode.LAZY],
-    [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.ALBUMS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.LAZY],
     [videos, LoadMode.LAZY],
-    [stats, LoadMode.EAGER],
     [triples, LoadMode.EAGER],
   ],
   [Pages.PHOTOS]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
-    [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.VIDEOS]: [
     [albums, LoadMode.LAZY],
     [images, LoadMode.LAZY],
     [videos, LoadMode.EAGER],
-    [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.ALBUM]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
-    [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   // TODO DOES THIS EXIST
@@ -89,7 +81,6 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
-    [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
 
@@ -97,14 +88,12 @@ export const PAGE_DEPENDECIES = {
     [albums, LoadMode.LAZY],
     [images, LoadMode.EAGER],
     [videos, LoadMode.EAGER],
-    [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
   [Pages.THING]: [
     [albums, LoadMode.EAGER],
     [images, LoadMode.EAGER],
     [videos, LoadMode.LAZY],
-    [stats, LoadMode.LAZY],
     [triples, LoadMode.EAGER],
   ],
 };
@@ -296,7 +285,7 @@ export class PhotoApp extends LitElem {
       const tdb = getTribbleDB(triples._data);
 
       return html`
-      <albums-page .triples=${tdb} .stats=${stats} .albums="${albums}" class="${classes}"></albums-page>
+      <albums-page .triples=${tdb} .albums="${albums}" class="${classes}"></albums-page>
       `;
     }
 

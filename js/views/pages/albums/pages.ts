@@ -18,7 +18,6 @@ export class AlbumsPage extends LitElem {
   static get properties() {
     return {
       albums: { type: Object },
-      stats: { type: Object },
       triples: { type: Object },
     };
   }
@@ -91,9 +90,7 @@ export class AlbumsPage extends LitElem {
     return html`
     <section class="album-metadata">
       <h1 class="albums-header">Albums</h1>
-      <photos-stats
-        .stats=${this.stats.stats()}
-        ></photos-stats>
+      <photos-stats></photos-stats>
     </section>
 
     <year-cursor></year-cursor>

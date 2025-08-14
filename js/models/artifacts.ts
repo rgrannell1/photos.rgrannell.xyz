@@ -183,41 +183,9 @@ export class AlbumsArtifact {
       return {
         ...album,
         thumbnail_url: `https://photos-cdn.rgrannell.xyz${album.thumbnail_url}`,
-        thumbnail_mosaic_url: `${album.thumbnail_mosaic_url}`, // TODO: should send a short version too
+        thumbnail_mosaic_url: album.thumbnail_mosaic_url
       };
     });
-  }
-}
-
-// TODO replace with a service
-export class StatsArtifact {
-  _data;
-
-  constructor(url = `/manifest/stats.${CONFIG.publication_id}.json`) {
-    this.url = url;
-  }
-
-  async init() {
-    const $statsData = document.getElementById("stats-data");
-    const textContent = $statsData.textContent;
-
-    if (!textContent) {
-      throw new Error("stats-data empty");
-    }
-
-    try {
-      this._data = JSON.parse(textContent);
-    } catch (err) {
-      throw new Error(`failed to parse stats-data as JSON: ${textContent}`);
-    }
-
-    if (!this._data) {
-      console.error("stats symbol not injected");
-    }
-  }
-
-  stats() {
-    return this._data;
   }
 }
 

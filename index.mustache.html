@@ -45,8 +45,6 @@
     <div id="stats-data" style="display: none;"></div>
     <script type="module">
       // this mustashe injection should circumvent blocking on `stats` fetches
-      import { STATS_SYMBOL } from "/js/constants.js";
-
       const $statsData = document.getElementById('stats-data');
       $statsData.innerText = JSON.stringify({{{ stats }}})
 
