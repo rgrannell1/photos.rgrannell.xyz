@@ -54,7 +54,7 @@ export class PhotosPage extends LitElem {
         const photo = photos[idx];
         yield html`
           <app-photo
-            id=${asUrn(photo.id)}
+            id=${asUrn(photo.id).id}
             loading="${Photos.loadingMode(idx)}"
             thumbnailUrl="${photo.thumbnail_url}"
             mosaicColours="${photo.mosaic_colours}"

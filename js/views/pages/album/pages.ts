@@ -157,8 +157,6 @@ export class AlbumPage extends LitElem {
 
     const albumPhotos = this.albumPhotos(tdb);
     const photos = albumPhotos.map((photo, idx) => {
-      console.log(photo)
-      console.log('xxxxxxxxxxxxxxxx')
       return html`
       <app-photo
         id=${photo.id}
