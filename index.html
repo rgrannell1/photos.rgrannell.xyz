@@ -1,1 +1,87 @@
-[]
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex">
+
+    <meta charset="utf-8">
+    <meta name="application-name" content="photos.rgrannell.xyz">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Description" content="My personal photo library">
+    <link rel="canonical" href="https://photos.rgrannell.xyz/">
+
+    <!-- Preconnects -->
+    <link rel="preconnect" href="https://photos-cdn.rgrannell.xyz">
+
+    <!-- Preloads -->
+    <link rel="preload" href="/dist/js/app.js" as="script">
+    <link rel="preload" href="https://photos-cdn.rgrannell.xyz/3dd12452d2.webp" as="image">
+    <link rel="preload" href="https://photos-cdn.rgrannell.xyz/e261da6ed7.webp" as="image">
+    <link rel="preload" href="https://photos-cdn.rgrannell.xyz/88d0b1c0a1.webp" as="image">
+    <link rel="preload" href="https://photos-cdn.rgrannell.xyz/2196642deb.webp" as="image">
+    <link rel="preload" href="https://photos-cdn.rgrannell.xyz/da867d06fa.webp" as="image">
+
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/manifest/atom/atom-index.xml" />
+
+    <!-- OpenGraph Attributes -->
+    <meta property="og:title" content="photos.rgrannell.xyz">
+    <meta property="og:description" content="My personal photo library">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_IE">
+    <meta property="og:url" content="https://photos.rgrannell.xyz">
+    <meta property="og:site_name" content="photos.rgrannell.xyz">
+
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="shortcut icon" type="image/png" href="/icons/favicon-32x32.png"/ defer="" fetchpriorty="low">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0056b3">
+
+    <link rel="stylesheet" href="/dist/css/style.css" as="style">
+
+    <script>
+      // reduce blocking requests by injecting this critical data
+      window.envConfig = {
+  "photos_url": "https://photos-cdn.rgrannell.xyz",
+  "publication_id": "6574ae9836"
+}
+
+    </script>
+
+    <div id="stats-data" style="display: none;"></div>
+    <script type="module">
+      // this mustashe injection should circumvent blocking on `stats` fetches
+      const $statsData = document.getElementById('stats-data');
+      $statsData.innerText = JSON.stringify({
+  "photos": 1178,
+  "albums": 103,
+  "years": 13,
+  "countries": 18,
+  "bird_species": 141,
+  "mammal_species": 55,
+  "unesco_sites": 18
+}
+)
+
+    </script>
+    <script type="module" src="/dist/js/app.js"></script>
+
+    <title>photos.rgrannell.xyz</title>
+  </head>
+
+  <photo-app></photo-app>
+
+  <script async fetchpriority="low">
+    // -- register a service-worker
+    if('serviceWorker' in navigator) {
+      console.log('⚙️ loading service worker: /sw.js')
+
+      navigator.serviceWorker.register('/dist/js/sw.js').catch(err => {
+        console.error(`⚙️ failed service worker: /sw.js ${err}`)
+      });
+    } else {
+      console.error('⚙️ service worker not supported: /sw.js')
+    }
+  </script>
+</html>
+

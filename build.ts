@@ -63,7 +63,6 @@ async function buildHTML() {
   console.log(render(html, {
     stats,
     env,
-    // TODO
     prefetched: prefetchTargets(env, triples),
     cdnUrl: JSON.parse(env).photos_url,
   }));
