@@ -1,6 +1,8 @@
 import * as path from "jsr:@std/path";
 import { render } from "https://deno.land/x/mustache_ts/mustache.ts";
 
+import { TribbleDB } from "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/dist/mod.ts";
+
 class Artifacts {
   dpath: string;
 
@@ -22,20 +24,32 @@ class Artifacts {
   async stats() {
     return await Deno.readTextFile(await this.findFile("stats"));
   }
+  async triples() {
+    return JSON.parse(await Deno.readTextFile(await this.findFile("triples")));
+  }
   async html() {
     return await Deno.readTextFile("index.mustache.html");
   }
 }
 
-function prefetchTargets(albums: any[]) {
-  return albums
-    .slice(1)
-    .sort((album0, album1) => {
-      return album1[6] - album0[6]; // max date
-    })
-    .map((album) => {
-      return album[7]; // thumbnail url
-    }).slice(0, 5);
+export function expandUrns(triple) {
+  const [source, relation, target] = triple;
+
+  return [[
+    typeof source === 'string' && source.startsWith("::") ? `urn:ró:${source.slice(2)}` : source,
+    relation,
+    typeof target === 'string' && target.startsWith("::") ? `urn:ró:${target.slice(2)}` : target,
+  ]];
+}
+
+function prefetchTargets(env, triples: [string, string, string][]) {
+  const tdb = new TribbleDB(triples).flatMap(expandUrns);
+  const albums = tdb.search({
+    source: { type: 'album' }
+  }).objects().sort((album0, album1) => {
+    return parseInt(album1.min_date, 10) - parseInt(album0.min_date, 10);
+  });
+  return albums.slice(0, 5).map(album => `${album.thumbnail_url}`);
 }
 
 async function buildHTML() {
@@ -44,12 +58,13 @@ async function buildHTML() {
   const env = await artifacts.env();
   const stats = await artifacts.stats();
   const html = await artifacts.html();
+  const triples = await artifacts.triples();
 
   console.log(render(html, {
     stats,
     env,
     // TODO
-    prefetched: [], //prefetchTargets(await artifacts.albums()),
+    prefetched: prefetchTargets(env, triples),
     cdnUrl: JSON.parse(env).photos_url,
   }));
 }

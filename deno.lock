@@ -21,7 +21,8 @@
     "https://deno.land/x/mustache_ts/mustache.ts": "https://deno.land/x/mustache_ts@v0.4.1.1/mustache.ts"
   },
   "remote": {
-    "https://deno.land/x/mustache_ts@v0.4.1.1/mustache.ts": "228a1138f55735e399b2232c87bcbb415ee462a067a10c71c14ae207c0b36a78"
+    "https://deno.land/x/mustache_ts@v0.4.1.1/mustache.ts": "228a1138f55735e399b2232c87bcbb415ee462a067a10c71c14ae207c0b36a78",
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/dist/mod.ts": "be6c9069c311311356b31806e7eaef6e0746a3f39e152624650dba6ac7f5e193"
   },
   "workspace": {
     "packageJson": {
