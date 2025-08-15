@@ -74,7 +74,7 @@ export class PhotoApp extends LitElem {
       tribbleDB: {
         type: Object,
         state: true,
-        attribute: false,
+        attribute: false
       },
     };
   }
@@ -101,6 +101,7 @@ export class PhotoApp extends LitElem {
 
         if (buffer.length > 500) {
           this.tribbleDB.add(buffer);
+          this.tribbleDB = this.tribbleDB;
           buffer.length = 0;
           this.requestUpdate("tribbleDB");
         }
@@ -120,7 +121,6 @@ export class PhotoApp extends LitElem {
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    // use the same bound handler reference we added earlier
     window.removeEventListener("popstate", this._onPopState);
   }
 
