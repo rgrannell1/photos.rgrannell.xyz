@@ -21,7 +21,8 @@ import { TribbleDB } from "js/library/tribble.js";
 import {
 ratingsAsUrns,
 countriesAsUrns,
-expandCdnUrls
+expandCdnUrls,
+expandUrns
 } from "../services/things.ts"
 
 const tribbles = new TribblesArtifact();
@@ -81,11 +82,10 @@ export class PhotoApp extends LitElem {
       for await (const triple of tribbles.stream()) {
         buffer.push(triple);
 
-        if (buffer.length > 50) {
+        if (buffer.length > 500) {
           this.tribbleDB.add(buffer);
-
           buffer.length = 0;
-          this.requestUpdate(); // requestUpdate without args is more reliable
+          this.requestUpdate('tribbleDB'); // requestUpdate without args is more reliable
         }
       }
 
@@ -95,6 +95,7 @@ export class PhotoApp extends LitElem {
       }
 
       this.tribbleDB = this.tribbleDB
+        .flatMap(expandUrns)
         .flatMap(ratingsAsUrns)
         .flatMap(countriesAsUrns)
         .flatMap(expandCdnUrls);

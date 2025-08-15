@@ -221,3 +221,13 @@ export function expandCdnUrls(triple) {
 
   return [triple]
 }
+
+export function expandUrns(triple) {
+  const [source, relation, target] = triple;
+
+  return [[
+    source.startsWith('::') ? `urn:ró:${source.slice(2)}` : source,
+    relation,
+    target.startsWith('::') ? `urn:ró:${target.slice(2)}` : target
+  ]]
+}
