@@ -27,19 +27,20 @@ self.addEventListener("install", function (event) {
 });
 
 function isCacheable(url) {
+  /*
+   * We can cache fonts
+   */
   if (url.includes(".woff2")) {
     return true;
   }
 
   const manifestEntries = [
-    "albums",
-    "images",
-    "videos",
-    "exif",
-    "semantic",
-    "triples",
+    "tribbles",
   ];
 
+  /*
+   * We can cache tribbles (main data source), as it has a publication ID to cache-bust between versions
+   */
   for (const entry of manifestEntries) {
     if (url.includes(`/manifest/${entry}`)) {
       return true;
