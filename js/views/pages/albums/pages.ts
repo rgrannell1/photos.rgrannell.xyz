@@ -28,7 +28,7 @@ export class AlbumsPage extends LitElem {
   }
   getAlbums() {
     return this.triples.search({
-      source: {type: 'album'}
+      source: { type: "album" },
     }).objects().map((album) => {
       return {
         title: album.name,
@@ -51,7 +51,7 @@ export class AlbumsPage extends LitElem {
         return album1.maxDate - album0.maxDate;
       });
 
-      /*
+    /*
      * append photo albums to the DOM
      */
     async function* albumIterable() {

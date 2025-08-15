@@ -198,14 +198,14 @@ export class MetadataPage extends LitElem {
       relation: {
         predicate: (relation: string) => {
           const TODO = new Set([
-            'album_id',
-            'full_image',
-            'mosaic_colours',
-            'thumbnail_url'
-          ])
+            "album_id",
+            "full_image",
+            "mosaic_colours",
+            "thumbnail_url",
+          ]);
           return !ExifRelations.has(relation) && !TODO.has(relation);
-        }
-      }
+        },
+      },
     }).triples();
 
     return html`

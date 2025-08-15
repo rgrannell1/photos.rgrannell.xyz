@@ -25,13 +25,14 @@ export class VideosPage extends LitElem {
 
   getVideos() {
     return this.triples.search({
-      source: {type: 'video'}
-    }).objects()
+      source: { type: "video" },
+    }).objects();
   }
 
   render() {
-    const videos = this.getVideos().map((video: Record<string, string>, idx: number) => {
-      return html`<app-video
+    const videos = this.getVideos().map(
+      (video: Record<string, string>, idx: number) => {
+        return html`<app-video
       id=${video.id}
       url_poster=${video.poster_url}
       url_unscaled=${video.video_url_unscaled}
@@ -40,7 +41,8 @@ export class VideosPage extends LitElem {
       url_480p=${video.video_url_480p}
       preload="${Videos.loadingMode(idx)}"
       ></app-video>`;
-    });
+      },
+    );
 
     return html`
     <div>

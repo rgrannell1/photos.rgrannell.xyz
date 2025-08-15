@@ -207,27 +207,37 @@ export function countriesAsUrns(triple) {
 }
 
 export function expandCdnUrls(triple) {
-  for (const relation of ['thumbnail_url', 'full_image', 'poster_url', 'video_url_1080p', 'video_url_480p', 'video_url_720p', 'video_url_unscaled']) {
+  for (
+    const relation of [
+      "thumbnail_url",
+      "full_image",
+      "poster_url",
+      "video_url_1080p",
+      "video_url_480p",
+      "video_url_720p",
+      "video_url_unscaled",
+    ]
+  ) {
     if (Triples.getRelation(triple) === relation) {
       return [
         [
           Triples.getSource(triple),
           relation,
           `${CONFIG.photos_url}${Triples.getTarget(triple)}`,
-        ]
-      ]
+        ],
+      ];
     }
   }
 
-  return [triple]
+  return [triple];
 }
 
 export function expandUrns(triple) {
   const [source, relation, target] = triple;
 
   return [[
-    source.startsWith('::') ? `urn:ró:${source.slice(2)}` : source,
+    source.startsWith("::") ? `urn:ró:${source.slice(2)}` : source,
     relation,
-    target.startsWith('::') ? `urn:ró:${target.slice(2)}` : target
-  ]]
+    target.startsWith("::") ? `urn:ró:${target.slice(2)}` : target,
+  ]];
 }

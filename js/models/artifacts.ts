@@ -1,4 +1,3 @@
-
 import { TribbleParser } from "../library/tribble.js";
 
 // injected into the HTLM during build-time
@@ -14,12 +13,12 @@ export class TribblesArtifact {
     const parser = new TribbleParser();
     const response = await fetch(this.url);
     if (!response.body) {
-      throw new Error('No response body');
+      throw new Error("No response body");
     }
 
     const decoder = new TextDecoderStream();
     const reader = response.body.pipeThrough(decoder).getReader();
-    let buffer = '';
+    let buffer = "";
 
     while (true) {
       const { value, done } = await reader.read();
@@ -27,8 +26,8 @@ export class TribblesArtifact {
         break;
       }
       buffer += value;
-      let lines = buffer.split('\n');
-      buffer = lines.pop() ?? '';
+      let lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
       for (const line of lines) {
         const triple = parser.parse(line);
         if (triple !== undefined) {

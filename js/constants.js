@@ -59,7 +59,7 @@ export class KnownRelations {
   static ISO = "iso";
   static WIDTH = "width";
   static HEIGHT = "height";
-};
+}
 
 export const ExifRelations = new Set([
   "created_at",
@@ -69,7 +69,7 @@ export const ExifRelations = new Set([
   "exposure_time",
   "iso",
   "width",
-  "height"
+  "height",
 ]);
 
 export const BinomialTypes = new Set([

@@ -59,8 +59,8 @@ export class ThingPage extends LitElem {
 
   getAlbums() {
     return this.triples.search({
-      source: {type: 'album'}
-    }).objects()
+      source: { type: "album" },
+    }).objects();
   }
 
   renderSubjectAlbums(tdb, search) {
@@ -224,7 +224,7 @@ export class ThingPage extends LitElem {
     const tdb = this.triples;
 
     const images = tdb.search({
-      source: {type: 'photo'}
+      source: { type: "photo" },
     }).objects();
     const urn = Things.parseUrn(this.urn);
 

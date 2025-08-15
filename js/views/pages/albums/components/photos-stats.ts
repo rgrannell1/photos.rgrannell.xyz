@@ -5,12 +5,12 @@ import { LitElem } from "../../../../models/lit-element.ts";
 export class PhotosStats extends LitElem {
   static get properties() {
     return {
-      albums: { type: Array }
+      albums: { type: Array },
     };
   }
 
   render() {
-    const $statsData = document.getElementById('stats-data');
+    const $statsData = document.getElementById("stats-data");
     const stats = JSON.parse($statsData.innerText);
 
     return html`

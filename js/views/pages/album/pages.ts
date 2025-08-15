@@ -40,14 +40,14 @@ export class AlbumPage extends LitElem {
 
   albumPhotos(tdb) {
     const albumPhotoSources: Set<string> = tdb.search({
-      source: { type: 'photo' },
-      relation: 'album_id',
-      target: { id: this.id }
+      source: { type: "photo" },
+      relation: "album_id",
+      target: { id: this.id },
     }).sources();
 
     return Array.from(albumPhotoSources).flatMap((source: string) => {
       const info = tdb.search({
-        source: parseUrn(source)
+        source: parseUrn(source),
       }).firstObject();
 
       return info ? [info] : [];
@@ -57,17 +57,17 @@ export class AlbumPage extends LitElem {
   albumVideos(tdb) {
     const albumVideoIds: Set<string> = tdb.search({
       source: {
-        type: 'video'
+        type: "video",
       },
-      relation: 'album_id',
+      relation: "album_id",
       target: {
-        id: this.id
-      }
+        id: this.id,
+      },
     }).sources();
 
     return Array.from(albumVideoIds).flatMap((source: string) => {
       const info = tdb.search({
-        source: parseUrn(source)
+        source: parseUrn(source),
       }).firstObject();
 
       return info ? [info] : [];

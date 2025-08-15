@@ -56,7 +56,7 @@ export class PhotoAlbum extends LitElem {
     const thumbnailDataUrl = Photos.encodeBitmapDataURL(this.mosaicColours);
     const flags = this.renderCountries();
 
-    const albumId = parseUrn(this.id)
+    const albumId = parseUrn(this.id);
 
     return html`
     <div class="photo-album">

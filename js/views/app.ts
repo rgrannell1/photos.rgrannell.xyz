@@ -1,8 +1,6 @@
 import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.ts";
-import {
-  TribblesArtifact
-} from "../models/artifacts.ts";
+import { TribblesArtifact } from "../models/artifacts.ts";
 
 import { PageLocation } from "../services/location.ts";
 import { Pages } from "../constants.js";
@@ -19,11 +17,31 @@ import "./pages/videos/pages.ts";
 import { TribbleDB } from "js/library/tribble.js";
 
 import {
-ratingsAsUrns,
-countriesAsUrns,
-expandCdnUrls,
-expandUrns
-} from "../services/things.ts"
+  countriesAsUrns,
+  expandCdnUrls,
+  expandUrns,
+  ratingsAsUrns,
+} from "../services/things.ts";
+import { Triple } from "js/types.ts";
+
+const tripleProcessors = [
+  expandUrns,
+  ratingsAsUrns,
+  countriesAsUrns,
+  expandCdnUrls,
+];
+
+function processTriples(triple: Triple): Triple[] {
+  // derive new triples or modify old ones,
+  // sequentially apply functions against intermediate results
+
+  let outputTriples = [triple];
+  for (const fn of tripleProcessors) {
+    outputTriples = outputTriples.flatMap(fn);
+  }
+
+  return outputTriples;
+}
 
 const tribbles = new TribblesArtifact();
 
@@ -56,8 +74,8 @@ export class PhotoApp extends LitElem {
       tribbleDB: {
         type: Object,
         state: true,
-        attribute: false
-      }
+        attribute: false,
+      },
     };
   }
 
@@ -72,7 +90,6 @@ export class PhotoApp extends LitElem {
     window.addEventListener("popstate", this._onPopState);
     this.sidebarVisible = false;
 
-
     (async () => {
       const buffer = [];
       if (!this.tribbleDB) {
@@ -85,7 +102,7 @@ export class PhotoApp extends LitElem {
         if (buffer.length > 500) {
           this.tribbleDB.add(buffer);
           buffer.length = 0;
-          this.requestUpdate('tribbleDB'); // requestUpdate without args is more reliable
+          this.requestUpdate("tribbleDB");
         }
       }
 
@@ -94,17 +111,10 @@ export class PhotoApp extends LitElem {
         this.tribbleDB.add(buffer);
       }
 
-      this.tribbleDB = this.tribbleDB
-        .flatMap(expandUrns)
-        .flatMap(ratingsAsUrns)
-        .flatMap(countriesAsUrns)
-        .flatMap(expandCdnUrls);
+      this.tribbleDB = this.tribbleDB.flatMap(processTriples);
 
       this.requestUpdate();
-
-      console.log('all pushed!!', this.tribbleDB.size);
     })();
-
   }
 
   disconnectedCallback() {
@@ -270,7 +280,7 @@ export class PhotoApp extends LitElem {
 
     if (this.page === Pages.METADATA) {
       const image = this.tribbleDB.search({
-        source: { type: 'photo', id: this.id }
+        source: { type: "photo", id: this.id },
       }).firstObject();
 
       if (!image) {

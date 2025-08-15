@@ -53,7 +53,9 @@ export class AppPhoto extends LitElem {
 
     return html`
     <div class="photo">
-      <a href="${"#/metadata/" + broadcastId}" onclick="event.preventDefault();">
+      <a href="${
+      "#/metadata/" + broadcastId
+    }" onclick="event.preventDefault();">
         <div
           @click=${this.broadcast("click-photo-metadata", photoMetadata)}
           class="photo-metadata-popover">${this.renderIcon()}</div>
