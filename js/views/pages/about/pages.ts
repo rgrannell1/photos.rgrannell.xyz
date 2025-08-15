@@ -15,7 +15,7 @@ export class AboutPage extends LitElem {
     return {};
   }
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
 
     JSONFeed.setIndex();

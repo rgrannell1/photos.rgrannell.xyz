@@ -76,7 +76,7 @@ var TribbleParser = class {
     this.stringIndex = new IndexedSet();
   }
   parseTriple(line) {
-    const match = line.match(/^src (\d+) rel (\d+) tgt (\d+)$/);
+    const match = line.match(/^(\d+) (\d+) (\d+)$/);
     if (!match) {
       throw new SyntaxError(`Invalid format for triple line: ${line}`);
     }
@@ -91,7 +91,6 @@ var TribbleParser = class {
     return [src, rel, tgt];
   }
   parseDeclaration(line) {
-    console.log(line);
     const match = line.match(/^(\d+) "(.*)"$/);
     if (!match) {
       throw new SyntaxError(`Invalid format for declaration line: ${line}`);
@@ -101,7 +100,8 @@ var TribbleParser = class {
     this.stringIndex.setIndex(value, parseInt(id, 10));
   }
   parse(line) {
-    if (line.startsWith("src")) {
+    const isTriple = /^(\d+)\s(\d+)\s(\d+)$/;
+    if (isTriple.test(line)) {
       return this.parseTriple(line);
     } else {
       this.parseDeclaration(line);
@@ -126,7 +126,7 @@ var TribbleStringifier = class {
         message.push(`${newId} ${stringifiedValue}`);
       }
     }
-    message.push(`src ${this.stringIndex.getIndex(source)} rel ${this.stringIndex.getIndex(relation)} tgt ${this.stringIndex.getIndex(target)}`);
+    message.push(`${this.stringIndex.getIndex(source)} ${this.stringIndex.getIndex(relation)} ${this.stringIndex.getIndex(target)}`);
     return message.join("\n");
   }
 };

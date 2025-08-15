@@ -9,7 +9,7 @@ export class PhotoAlbum extends LitElem {
   static get properties() {
     return {
       title: { type: String },
-      triples: { type: Object },
+      triples: { type: Object, state: true },
       url: { type: String },
       mosaicColours: { type: String },
       minDate: { type: String },

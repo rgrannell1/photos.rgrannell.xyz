@@ -1,17 +1,14 @@
 import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.ts";
 import {
-  TribblesArtifact,
-  TriplesArtifact,
+  TribblesArtifact
 } from "../models/artifacts.ts";
 
 import { PageLocation } from "../services/location.ts";
-
-import { LoadMode, Pages } from "../constants.js";
+import { Pages } from "../constants.js";
 
 import "./components/sidebar.ts";
 import "./components/header.ts";
-
 import "./pages/photos/pages.ts";
 import "./pages/albums/pages.ts";
 import "./pages/album/pages.ts";
@@ -19,79 +16,15 @@ import "./pages/metadata/pages.ts";
 import "./pages/about/pages.ts";
 import "./pages/thing/pages.ts";
 import "./pages/videos/pages.ts";
-import { getTribbleDB } from "../services/things.ts";
+import { TribbleDB } from "js/library/tribble.js";
 
-const triples = new TriplesArtifact();
+import {
+ratingsAsUrns,
+countriesAsUrns,
+expandCdnUrls
+} from "../services/things.ts"
 
 const tribbles = new TribblesArtifact();
-tribbles.init();
-
-export const DEFAULT_DEPENDENCIES = [
-  [triples, LoadMode.EAGER],
-];
-/*
- * The largest network requests will be for images.json,
- * albums.json, and metadata.json. We should block the page until
- * the critical resources FOR THAT page are loaded, but we can fire off
- * the other requests in the background. If the user waits a few seconds
- * before navigating to another page, it's likely the required data will
- * already be cached in `window`
- *
- * The only difficulty is we need to track which resources are required
- * for each page.
- */
-export const PAGE_DEPENDECIES = {
-  [Pages.ABOUT]: [
-    [triples, LoadMode.EAGER],
-  ],
-  [Pages.ALBUMS]: [
-    [triples, LoadMode.EAGER],
-  ],
-  [Pages.PHOTOS]: [
-    [triples, LoadMode.EAGER],
-  ],
-  [Pages.VIDEOS]: [
-    [triples, LoadMode.EAGER],
-  ],
-  [Pages.ALBUM]: [
-    [triples, LoadMode.EAGER],
-  ],
-  // TODO DOES THIS EXIST
-  [Pages.PHOTO]: [
-    [triples, LoadMode.EAGER],
-  ],
-
-  [Pages.METADATA]: [
-    [triples, LoadMode.EAGER],
-  ],
-  [Pages.THING]: [
-    [triples, LoadMode.EAGER],
-  ],
-};
-class AppInitialiser {
-  static async init() {
-    const location = PageLocation.getUrl();
-    console.log(`loading ${location?.type}`);
-
-    const dependencies = PAGE_DEPENDECIES[location?.type] ??
-      DEFAULT_DEPENDENCIES;
-    const eagerlyLoaded = [];
-
-    for (const [artifact, loadMode] of dependencies) {
-      if (loadMode === LoadMode.EAGER) {
-        eagerlyLoaded.push(artifact.init());
-      } else if (loadMode === LoadMode.LAZY) {
-        // non-blocking load of this artifact
-        artifact.init();
-      }
-    }
-
-    // block awaiting eagerly loaded artifacts
-    await Promise.all(eagerlyLoaded);
-  }
-}
-
-await AppInitialiser.init();
 
 export class PhotoApp extends LitElem {
   static DEFAULT_PAGE = Pages.ALBUMS;
@@ -119,6 +52,11 @@ export class PhotoApp extends LitElem {
       params: { type: Object },
       query: { type: Object },
       darkMode: { type: Boolean },
+      tribbleDB: {
+        type: Object,
+        state: true,
+        attribute: false
+      }
     };
   }
 
@@ -128,14 +66,51 @@ export class PhotoApp extends LitElem {
     this.setStateFromUrl();
     this.requestUpdate();
 
-    window.addEventListener("popstate", this.handlePopState.bind(this));
+    // keep a stable bound handler so removeEventListener works
+    this._onPopState = this.handlePopState.bind(this);
+    window.addEventListener("popstate", this._onPopState);
     this.sidebarVisible = false;
+
+
+    (async () => {
+      const buffer = [];
+      if (!this.tribbleDB) {
+        this.tribbleDB = new TribbleDB([]);
+      }
+
+      for await (const triple of tribbles.stream()) {
+        buffer.push(triple);
+
+        if (buffer.length > 50) {
+          this.tribbleDB.add(buffer);
+
+          buffer.length = 0;
+          this.requestUpdate(); // requestUpdate without args is more reliable
+        }
+      }
+
+      // final flush
+      if (buffer.length) {
+        this.tribbleDB.add(buffer);
+      }
+
+      this.tribbleDB = this.tribbleDB
+        .flatMap(ratingsAsUrns)
+        .flatMap(countriesAsUrns)
+        .flatMap(expandCdnUrls);
+
+      this.requestUpdate();
+
+      console.log('all pushed!!', this.tribbleDB.size);
+    })();
+
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    window.removeEventListener("popstate", this.handlePopState.bind(this));
+    // use the same bound handler reference we added earlier
+    window.removeEventListener("popstate", this._onPopState);
   }
 
   handlePopState() {
@@ -253,10 +228,8 @@ export class PhotoApp extends LitElem {
     const classes = this.pageClasses(sidebarVisible);
 
     if (!this.page || this.page === "albums") {
-      const tdb = getTribbleDB(triples._data);
-
       return html`
-      <albums-page .triples=${tdb} class="${classes}"></albums-page>
+      <albums-page .triples=${this.tribbleDB} class="${classes}"></albums-page>
       `;
     }
 
@@ -265,9 +238,7 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.PHOTOS) {
-      const tdb = getTribbleDB(triples._data);
-
-      return html`<photos-page .triples=${tdb} class="${classes}"></photos-page>`;
+      return html`<photos-page .triples=${this.tribbleDB} class="${classes}"></photos-page>`;
     }
 
     if (this.page === Pages.ALBUM) {
@@ -275,8 +246,7 @@ export class PhotoApp extends LitElem {
         console.error("no album id provided");
       }
 
-      const tdb = getTribbleDB(triples._data);
-      const album = tdb.search({
+      const album = this.tribbleDB.search({
         source: { type: "album", id: this.id },
       }).firstObject();
 
@@ -285,7 +255,7 @@ export class PhotoApp extends LitElem {
       }
       return html`
       <album-page
-        .triples=${tdb}
+        .triples=${this.tribbleDB}
         title=${album.name}
         id=${this.id}
         minDate=${album.min_date}
@@ -298,7 +268,7 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === Pages.METADATA) {
-      const image = getTribbleDB(triples._data).search({
+      const image = this.tribbleDB.search({
         source: { type: 'photo', id: this.id }
       }).firstObject();
 
@@ -308,7 +278,7 @@ export class PhotoApp extends LitElem {
 
       return html`
       <metadata-page
-        .triples=${getTribbleDB(triples._data)}
+        .triples=${this.tribbleDB}
         .image=${image}
         id=${this.id} class="${classes}"></metadata-page>
       `;
@@ -316,7 +286,7 @@ export class PhotoApp extends LitElem {
 
     if (this.page === Pages.VIDEOS) {
       return html`
-      <videos-page .triples=${getTribbleDB(triples._data)} class="${classes}"></videos-page>
+      <videos-page .triples=${this.tribbleDB} class="${classes}"></videos-page>
       `;
     }
 
@@ -324,7 +294,7 @@ export class PhotoApp extends LitElem {
       return html`
       <thing-page
         .urn=${"urn:ró:" + this.id}
-        .triples=${getTribbleDB(triples._data)}
+        .triples=${this.tribbleDB}
         class="${classes}"></thing-page>
       `;
     }

@@ -23500,7 +23500,7 @@
 6739 6386 6743
 6744 "Ireland"
 6739 6388 6744
-6745 "<p>Killarney National Park is one of the easier places to spot <a href=\"https://photos.rgrannell.xyz/#/thing/mammal:cervus-elaphus\">Red Deer</a> in Ireland. I'd visited the year before, and taken <a href=\"https://photos.rgrannell.xyz/#/album/rutting-season-21\">many more photos</a>, but it was nice to get a lucky (if distant) photo of a Keston the trip down</p>"
+6745 "<p>Killarney National Park is one of the easier places to spot <a href=\"https://photos.rgrannell.xyz/#/thing/mammal:cervus-elaphus\">Red Deer</a> in Ireland. I'd visited the year before, and taken <a href=\"https://photos.rgrannell.xyz/#/album/rutting-season-21\">many more photos</a>, but it was nice to get a lucky (if distant) photo of a Kestrel on the trip down</p>"
 6739 5827 6745
 6746 "urn:ró:album:lapwings-22"
 6747 "Lapwings, Emo, Laois"
@@ -23581,7 +23581,7 @@
 6775 6386 6779
 6780 "Ireland"
 6775 6388 6780
-6781 "<p>During this visit to Ballyfin Nature Hide I managed to get some nice photos of our native <a href=\"https://photos.rgrannell.xyz/#/thing/mammal:sciurus-vulgaris\">red squirrel</a>. The invasive grey squirpopulation is more common in the east, but fortunately it seems that the slower grey squirrels cannot coexist with pine-martens while our red squirrels can</p>"
+6781 "<p>During this visit to Ballyfin Nature Hide I managed to get some nice photos of our native <a href=\"https://photos.rgrannell.xyz/#/thing/mammal:sciurus-vulgaris\">red squirrel</a>. The invasive grey squirrel population is more common in the east, but fortunately it seems that the slower grey squirrels cannot coexist with pine-martens while our red squirrels can</p>"
 6775 5827 6781
 6782 "urn:ró:album:wisconsin-state-24"
 6782 1 6725
@@ -24238,7 +24238,7 @@
 7071 6386 7076
 7077 "Tenerife"
 7071 6388 7077
-7078 "<p>Anaga Rural Park is located in Macizo de Anaga, a cool, damp, cloudy mountain range. It's a laurainforest (which bears an odd resemblence to the remnants of Killarney's temperate rainforest) with many endemic species.</p>"
+7078 "<p>Anaga Rural Park is located in Macizo de Anaga, a cool, damp, cloudy mountain range. It's a laurel rainforest (which bears an odd resemblence to the remnants of Killarney's temperate rainforest) with many endemic species.</p>"
 7071 5827 7078
 7079 "urn:ró:album:bath-25"
 7080 "Bath"

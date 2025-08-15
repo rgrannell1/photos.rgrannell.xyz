@@ -17,7 +17,7 @@ import { asUrn } from "js/library/tribble.js";
 export class PhotosPage extends LitElem {
   static get properties() {
     return {
-      triples: { type: Object },
+      triples: { type: Object, state: true },
     };
   }
 

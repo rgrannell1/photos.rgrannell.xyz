@@ -14,11 +14,11 @@ import { Videos } from "../../../services/videos.ts";
 export class VideosPage extends LitElem {
   static get properties() {
     return {
-      triples: { type: Object },
+      triples: { type: Object, state: true },
     };
   }
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     JSONFeed.setIndex();
   }
@@ -30,7 +30,7 @@ export class VideosPage extends LitElem {
   }
 
   render() {
-    const videos = this.getVideos().map((video, idx) => {
+    const videos = this.getVideos().map((video: Record<string, string>, idx: number) => {
       return html`<app-video
       id=${video.id}
       url_poster=${video.poster_url}

@@ -28,12 +28,12 @@ export class AlbumPage extends LitElem {
       maxDate: { type: String },
       imageCount: { type: Number },
       description: { type: String },
-      triples: { type: Array },
+      triples: { type: Object, state: true },
       countries: { type: String },
     };
   }
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
     JSONFeed.setIndex();
   }

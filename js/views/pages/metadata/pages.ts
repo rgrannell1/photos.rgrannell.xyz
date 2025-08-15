@@ -25,7 +25,7 @@ export class MetadataPage extends LitElem {
       image: { type: Object },
       semantic: { type: Object },
       sharing: { state: true, type: Boolean },
-      triples: { type: Array },
+      triples: { type: Object, state: true },
     };
   }
 

@@ -174,10 +174,7 @@ export class Countries {
   }
 }
 
-let triblesUpdated = false;
-let tribbleDb = new TribbleDB([]);
-
-function ratingsAsUrns(triple) {
+export function ratingsAsUrns(triple) {
   if (Triples.getRelation(triple) !== KnownRelations.RATING) {
     return [triple];
   }
@@ -189,7 +186,7 @@ function ratingsAsUrns(triple) {
   ]];
 }
 
-function countriesAsUrns(triple) {
+export function countriesAsUrns(triple) {
   if (Triples.getRelation(triple) !== KnownRelations.COUNTRY) {
     return [triple];
   }
@@ -209,7 +206,7 @@ function countriesAsUrns(triple) {
   ];
 }
 
-function expandCdnUrls(triple) {
+export function expandCdnUrls(triple) {
   for (const relation of ['thumbnail_url', 'full_image', 'poster_url', 'video_url_1080p', 'video_url_480p', 'video_url_720p', 'video_url_unscaled']) {
     if (Triples.getRelation(triple) === relation) {
       return [
@@ -223,18 +220,4 @@ function expandCdnUrls(triple) {
   }
 
   return [triple]
-}
-
-export function getTribbleDB(triples) {
-  if (!triblesUpdated) {
-    tribbleDb.add(triples);
-    tribbleDb = tribbleDb
-      .flatMap(ratingsAsUrns)
-      .flatMap(countriesAsUrns)
-      .flatMap(expandCdnUrls);
-
-    triblesUpdated = true;
-  }
-
-  return tribbleDb;
 }

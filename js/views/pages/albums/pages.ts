@@ -18,7 +18,7 @@ export class AlbumsPage extends LitElem {
   static get properties() {
     return {
       albums: { type: Object },
-      triples: { type: Object },
+      triples: { type: Object, state: true },
     };
   }
   connectedCallback() {

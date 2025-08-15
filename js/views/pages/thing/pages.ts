@@ -11,24 +11,24 @@ import "../../components/photo.ts";
 import { JSONFeed } from "../../../services/json-feed.ts";
 import { LitElem } from "../../../models/lit-element.ts";
 import { BinomialTypes, KnownRelations } from "../../../constants.js";
-import { Binomials, Countries, Things } from "../../../services/things.ts";
+import { Binomials, Things } from "../../../services/things.ts";
 import { Photos } from "../../../services/photos.ts";
 
 export class ThingPage extends LitElem {
   static get properties() {
     return {
       urn: { type: String },
-      triples: { type: Object },
+      triples: { type: Object, state: true },
     };
   }
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
 
     JSONFeed.setIndex();
   }
 
-  urnImages(tdb, query) {
+  urnImages(tdb: any, query: any) {
     const relevantPhotos = tdb.search(query);
     const relevantPhotoIds = relevantPhotos.sources();
 
@@ -41,7 +41,7 @@ export class ThingPage extends LitElem {
     });
   }
 
-  renderSubjectPhotos(images) {
+  renderSubjectPhotos(images: Record<string, string>[]) {
     return images
       .sort((photo0, photo1) => {
         return photo1.created_at - photo0.created_at;
