@@ -1,6 +1,7 @@
 import { html } from "../library/lit.js";
 import { LitElem } from "../models/lit-element.ts";
 import {
+  TribblesArtifact,
   TriplesArtifact,
 } from "../models/artifacts.ts";
 
@@ -21,6 +22,9 @@ import "./pages/videos/pages.ts";
 import { getTribbleDB } from "../services/things.ts";
 
 const triples = new TriplesArtifact();
+
+const tribbles = new TribblesArtifact();
+tribbles.init();
 
 export const DEFAULT_DEPENDENCIES = [
   [triples, LoadMode.EAGER],

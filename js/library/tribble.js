@@ -1,43 +1,3 @@
-// urn.ts
-function parseUrn(urn, namespace = "r\xF3") {
-  if (!urn.startsWith(`urn:${namespace}:`)) {
-    throw new Error(`Invalid URN for namespace ${namespace}: ${urn}`);
-  }
-  const type = urn.split(":")[2];
-  const [urnPart, queryString] = urn.split("?");
-  const id = urnPart.split(":")[3];
-  const qs = queryString ? Object.fromEntries(new URLSearchParams(queryString)) : {};
-  return {
-    type,
-    id,
-    qs
-  };
-}
-function asUrn(value, namespace = "r\xF3") {
-  try {
-    return parseUrn(value, namespace);
-  } catch (_) {
-    return {
-      type: "unknown",
-      id: value,
-      qs: {}
-    };
-  }
-}
-
-// triples.ts
-var Triples = class {
-  static source(triple) {
-    return triple[0];
-  }
-  static relation(triple) {
-    return triple[1];
-  }
-  static target(triple) {
-    return triple[2];
-  }
-};
-
 // sets.ts
 var IndexedSet = class {
   #idx;
@@ -62,6 +22,10 @@ var IndexedSet = class {
     this.#reverseMap.set(this.#idx, value);
     this.#idx++;
     return this.#idx - 1;
+  }
+  setIndex(value, index) {
+    this.#map.set(value, index);
+    this.#reverseMap.set(index, value);
   }
   getIndex(value) {
     return this.#map.get(value);
@@ -102,6 +66,108 @@ var Sets = class {
       }
     }
     return acc;
+  }
+};
+
+// tribble/parse.ts
+var TribbleParser = class {
+  stringIndex;
+  constructor() {
+    this.stringIndex = new IndexedSet();
+  }
+  parseTriple(line) {
+    const match = line.match(/^src (\d+) rel (\d+) tgt (\d+)$/);
+    if (!match) {
+      throw new SyntaxError(`Invalid format for triple line: ${line}`);
+    }
+    ;
+    const src = this.stringIndex.getValue(parseInt(match[1], 10));
+    const rel = this.stringIndex.getValue(parseInt(match[2], 10));
+    const tgt = this.stringIndex.getValue(parseInt(match[3], 10));
+    if (src === void 0 || rel === void 0 || tgt === void 0) {
+      throw new SyntaxError(`Invalid triple reference: ${line}`);
+    }
+    ;
+    return [src, rel, tgt];
+  }
+  parseDeclaration(line) {
+    console.log(line);
+    const match = line.match(/^(\d+) "(.*)"$/);
+    if (!match) {
+      throw new SyntaxError(`Invalid format for declaration line: ${line}`);
+    }
+    const id = match[1];
+    const value = match[2];
+    this.stringIndex.setIndex(value, parseInt(id, 10));
+  }
+  parse(line) {
+    if (line.startsWith("src")) {
+      return this.parseTriple(line);
+    } else {
+      this.parseDeclaration(line);
+      return;
+    }
+  }
+};
+
+// tribble/stringify.ts
+var TribbleStringifier = class {
+  stringIndex;
+  constructor() {
+    this.stringIndex = new IndexedSet();
+  }
+  stringify(triple) {
+    const message = [];
+    const [source, relation, target] = triple;
+    for (const value of [source, relation, target]) {
+      if (!this.stringIndex.has(value)) {
+        const newId = this.stringIndex.add(value);
+        const stringifiedValue = value === "null" || value === null ? JSON.stringify("null") : JSON.stringify(value.toString());
+        message.push(`${newId} ${stringifiedValue}`);
+      }
+    }
+    message.push(`src ${this.stringIndex.getIndex(source)} rel ${this.stringIndex.getIndex(relation)} tgt ${this.stringIndex.getIndex(target)}`);
+    return message.join("\n");
+  }
+};
+
+// urn.ts
+function parseUrn(urn, namespace = "r\xF3") {
+  if (!urn.startsWith(`urn:${namespace}:`)) {
+    throw new Error(`Invalid URN for namespace ${namespace}: ${urn}`);
+  }
+  const type = urn.split(":")[2];
+  const [urnPart, queryString] = urn.split("?");
+  const id = urnPart.split(":")[3];
+  const qs = queryString ? Object.fromEntries(new URLSearchParams(queryString)) : {};
+  return {
+    type,
+    id,
+    qs
+  };
+}
+function asUrn(value, namespace = "r\xF3") {
+  try {
+    return parseUrn(value, namespace);
+  } catch (_) {
+    return {
+      type: "unknown",
+      id: value,
+      qs: {}
+    };
+  }
+}
+
+// triples.ts
+var Triples = class {
+  static source(triple) {
+    return triple[0];
+  }
+  static relation(triple) {
+    return triple[1];
+  }
+  static target(triple) {
+    return triple[2];
   }
 };
 
@@ -721,6 +787,8 @@ var TribbleDB = class _TribbleDB {
 };
 export {
   TribbleDB,
+  TribbleParser,
+  TribbleStringifier,
   asUrn,
   parseUrn
 };
