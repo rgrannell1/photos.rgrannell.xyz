@@ -80,14 +80,12 @@ var TribbleParser = class {
     if (!match) {
       throw new SyntaxError(`Invalid format for triple line: ${line}`);
     }
-    ;
     const src = this.stringIndex.getValue(parseInt(match[1], 10));
     const rel = this.stringIndex.getValue(parseInt(match[2], 10));
     const tgt = this.stringIndex.getValue(parseInt(match[3], 10));
     if (src === void 0 || rel === void 0 || tgt === void 0) {
       throw new SyntaxError(`Invalid triple reference: ${line}`);
     }
-    ;
     return [src, rel, tgt];
   }
   parseDeclaration(line) {
@@ -127,7 +125,9 @@ var TribbleStringifier = class {
         message.push(`${newId} ${stringifiedValue}`);
       }
     }
-    message.push(`${this.stringIndex.getIndex(source)} ${this.stringIndex.getIndex(relation)} ${this.stringIndex.getIndex(target)}`);
+    message.push(
+      `${this.stringIndex.getIndex(source)} ${this.stringIndex.getIndex(relation)} ${this.stringIndex.getIndex(target)}`
+    );
     return message.join("\n");
   }
 };
@@ -158,19 +158,6 @@ function asUrn(value, namespace = "r\xF3") {
     };
   }
 }
-
-// triples.ts
-var Triples = class {
-  static source(triple) {
-    return triple[0];
-  }
-  static relation(triple) {
-    return triple[1];
-  }
-  static target(triple) {
-    return triple[2];
-  }
-};
 
 // metrics.ts
 var IndexPerformanceMetrics = class {
@@ -207,6 +194,7 @@ var Index = class {
   targetId;
   targetQs;
   metrics;
+  stringUrn;
   constructor(triples) {
     this.indexedTriples = [];
     this.stringIndex = new IndexedSet();
@@ -217,76 +205,65 @@ var Index = class {
     this.targetType = /* @__PURE__ */ new Map();
     this.targetId = /* @__PURE__ */ new Map();
     this.targetQs = /* @__PURE__ */ new Map();
-    this.indexTriples(triples);
+    this.stringUrn = /* @__PURE__ */ new Map();
+    this.add(triples);
     this.metrics = new IndexPerformanceMetrics();
-  }
-  /*
-   * Associate each triple onto an appropriate map `Term := <id>: <value>`
-   */
-  indexTriples(triples) {
-    for (let idx = 0; idx < triples.length; idx++) {
-      this.indexTriple(triples[idx], idx);
-    }
-  }
-  /*
-   * Index a single triple at the given index position
-   */
-  indexTriple(triple, idx) {
-    const parsedSource = asUrn(Triples.source(triple));
-    const relation = Triples.relation(triple);
-    const parsedTarget = asUrn(Triples.target(triple));
-    const sourceTypeIdx = this.stringIndex.add(parsedSource.type);
-    const sourceIdIdx = this.stringIndex.add(parsedSource.id);
-    const relationIdx = this.stringIndex.add(relation);
-    const targetTypeIdx = this.stringIndex.add(parsedTarget.type);
-    const targetIdIdx = this.stringIndex.add(parsedTarget.id);
-    this.indexedTriples.push([
-      this.stringIndex.add(Triples.source(triple)),
-      relationIdx,
-      this.stringIndex.add(Triples.target(triple))
-    ]);
-    if (!this.sourceType.has(sourceTypeIdx)) {
-      this.sourceType.set(sourceTypeIdx, /* @__PURE__ */ new Set());
-    }
-    this.sourceType.get(sourceTypeIdx).add(idx);
-    if (!this.sourceId.has(sourceIdIdx)) {
-      this.sourceId.set(sourceIdIdx, /* @__PURE__ */ new Set());
-    }
-    this.sourceId.get(sourceIdIdx).add(idx);
-    for (const [key, val] of Object.entries(parsedSource.qs)) {
-      const qsIdx = this.stringIndex.add(`${key}=${val}`);
-      if (!this.sourceQs.has(qsIdx)) {
-        this.sourceQs.set(qsIdx, /* @__PURE__ */ new Set());
-      }
-      this.sourceQs.get(qsIdx).add(idx);
-    }
-    if (!this.relations.has(relationIdx)) {
-      this.relations.set(relationIdx, /* @__PURE__ */ new Set());
-    }
-    this.relations.get(relationIdx).add(idx);
-    if (!this.targetType.has(targetTypeIdx)) {
-      this.targetType.set(targetTypeIdx, /* @__PURE__ */ new Set());
-    }
-    this.targetType.get(targetTypeIdx).add(idx);
-    if (!this.targetId.has(targetIdIdx)) {
-      this.targetId.set(targetIdIdx, /* @__PURE__ */ new Set());
-    }
-    this.targetId.get(targetIdIdx).add(idx);
-    for (const [key, val] of Object.entries(parsedTarget.qs)) {
-      const qsIdx = this.stringIndex.add(`${key}=${val}`);
-      if (!this.targetQs.has(qsIdx)) {
-        this.targetQs.set(qsIdx, /* @__PURE__ */ new Set());
-      }
-      this.targetQs.get(qsIdx).add(idx);
-    }
   }
   /*
    * Add new triples to the index incrementally
    */
-  add(newTriples) {
+  add(triples) {
     const startIdx = this.indexedTriples.length;
-    for (let idx = 0; idx < newTriples.length; idx++) {
-      this.indexTriple(newTriples[idx], startIdx + idx);
+    for (let jdx = 0; jdx < triples.length; jdx++) {
+      const idx = startIdx + jdx;
+      const triple = triples[jdx];
+      const parsedSource = this.stringUrn.has(triple[0]) ? this.stringUrn.get(triple[0]) : this.stringUrn.set(triple[0], asUrn(triple[0])).get(triple[0]);
+      const relation = triple[1];
+      const parsedTarget = this.stringUrn.has(triple[2]) ? this.stringUrn.get(triple[2]) : this.stringUrn.set(triple[2], asUrn(triple[2])).get(triple[2]);
+      const sourceTypeIdx = this.stringIndex.add(parsedSource.type);
+      const sourceIdIdx = this.stringIndex.add(parsedSource.id);
+      const relationIdx = this.stringIndex.add(relation);
+      const targetTypeIdx = this.stringIndex.add(parsedTarget.type);
+      const targetIdIdx = this.stringIndex.add(parsedTarget.id);
+      this.indexedTriples.push([
+        this.stringIndex.add(triple[0]),
+        relationIdx,
+        this.stringIndex.add(triple[2])
+      ]);
+      if (!this.sourceType.has(sourceTypeIdx)) {
+        this.sourceType.set(sourceTypeIdx, /* @__PURE__ */ new Set());
+      }
+      this.sourceType.get(sourceTypeIdx).add(idx);
+      if (!this.sourceId.has(sourceIdIdx)) {
+        this.sourceId.set(sourceIdIdx, /* @__PURE__ */ new Set());
+      }
+      this.sourceId.get(sourceIdIdx).add(idx);
+      for (const [key, val] of Object.entries(parsedSource.qs)) {
+        const qsIdx = this.stringIndex.add(`${key}=${val}`);
+        if (!this.sourceQs.has(qsIdx)) {
+          this.sourceQs.set(qsIdx, /* @__PURE__ */ new Set());
+        }
+        this.sourceQs.get(qsIdx).add(idx);
+      }
+      if (!this.relations.has(relationIdx)) {
+        this.relations.set(relationIdx, /* @__PURE__ */ new Set());
+      }
+      this.relations.get(relationIdx).add(idx);
+      if (!this.targetType.has(targetTypeIdx)) {
+        this.targetType.set(targetTypeIdx, /* @__PURE__ */ new Set());
+      }
+      this.targetType.get(targetTypeIdx).add(idx);
+      if (!this.targetId.has(targetIdIdx)) {
+        this.targetId.set(targetIdIdx, /* @__PURE__ */ new Set());
+      }
+      this.targetId.get(targetIdIdx).add(idx);
+      for (const [key, val] of Object.entries(parsedTarget.qs)) {
+        const qsIdx = this.stringIndex.add(`${key}=${val}`);
+        if (!this.targetQs.has(qsIdx)) {
+          this.targetQs.set(qsIdx, /* @__PURE__ */ new Set());
+        }
+        this.targetQs.get(qsIdx).add(idx);
+      }
     }
   }
   /*
@@ -383,6 +360,19 @@ var Index = class {
     }
     this.metrics.mapRead();
     return this.targetQs.get(qsIdx);
+  }
+};
+
+// triples.ts
+var Triples = class {
+  static source(triple) {
+    return triple[0];
+  }
+  static relation(triple) {
+    return triple[1];
+  }
+  static target(triple) {
+    return triple[2];
   }
 };
 
