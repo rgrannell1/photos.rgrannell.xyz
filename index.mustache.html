@@ -40,6 +40,7 @@
     <script>
       // reduce blocking requests by injecting this critical data
       window.envConfig = {{{ env }}}
+      window.homepageThumbnails = {{{ homepageThumbnails }}}
     </script>
 
     <div id="stats-data" style="display: none;"></div>
@@ -63,6 +64,20 @@
 
       navigator.serviceWorker.register('/dist/js/sw.js').catch(err => {
         console.error(`⚙️ failed service worker: /sw.js ${err}`)
+      });
+
+      navigator.serviceWorker.ready.then(registration => {
+        if (window.homepageThumbnails) {
+          console.log('sending homepage thumbnails to service worker')
+          registration.active?.postMessage({
+            type: 'homepageThumbnails',
+            data: window.homepageThumbnails
+          });
+        } else {
+          console.log('window not updated')
+        }
+      }).catch(err => {
+        console.error(`⚙️ failed to send homepage thumbnails to service worker: ${err}`)
       });
     } else {
       console.error('⚙️ service worker not supported: /sw.js')

@@ -1,3 +1,4 @@
+
 const CACHE_NAME = "sw-cache";
 const CACHEABLE_RESOURCES = [
   "/icons/android-chrome-192x192.png",
@@ -10,8 +11,19 @@ const CACHEABLE_RESOURCES = [
   // removed the font, it seemed to do something weird here
 ];
 
-// -- let's not cache list of images / albums here. Our CDN will cache them for us,
-// -- and we'll attach them to the window so they'll persist within a page load but not reloads.
+const HOMEPAGE_THUMBNAILS = new Set();
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "homepageThumbnails") {
+    const thumbnails = event.data.thumbnails;
+
+    thumbnails.forEach((url) => {
+      HOMEPAGE_THUMBNAILS.add(url);
+    });
+  }
+});
+
+// -- cache homepage thumbnails
 const UNCACHEABLE_RESOURCES = [];
 
 self.addEventListener("install", function (event) {
@@ -43,6 +55,15 @@ function isCacheable(url) {
    */
   for (const entry of manifestEntries) {
     if (url.includes(`/manifest/${entry}`)) {
+      return true;
+    }
+  }
+
+  /*
+   * We should cache homepage thumbnails
+   */
+  for (const entry of HOMEPAGE_THUMBNAILS) {
+    if (url.includes(entry)) {
       return true;
     }
   }

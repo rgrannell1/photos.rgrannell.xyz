@@ -19,7 +19,7 @@ class Artifacts {
   }
 
   async env() {
-    return await Deno.readTextFile(await this.findFile("env"));
+    return JSON.parse(await Deno.readTextFile(await this.findFile("env")));
   }
   async stats() {
     return await Deno.readTextFile(await this.findFile("stats"));
@@ -52,6 +52,15 @@ function prefetchTargets(env, triples: [string, string, string][]) {
   return albums.slice(0, 5).map(album => `${album.thumbnail_url}`);
 }
 
+function homepageThumbnails(triples: [string, string, string][]) {
+  const tdb = new TribbleDB(triples).flatMap(expandUrns);
+  const albums = tdb.search({
+    source: { type: 'album' }
+  }).objects();
+
+  return albums.map(album => `${album.thumbnail_url}`);
+}
+
 async function buildHTML() {
   const artifacts = new Artifacts("./manifest");
 
@@ -62,9 +71,10 @@ async function buildHTML() {
 
   console.log(render(html, {
     stats,
-    env,
+    env: JSON.stringify(env),
     prefetched: prefetchTargets(env, triples),
-    cdnUrl: JSON.parse(env).photos_url,
+    homepageThumbnails: JSON.stringify(homepageThumbnails(triples)),
+    cdnUrl: env.photos_url,
   }));
 }
 

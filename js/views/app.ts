@@ -59,6 +59,9 @@ export class PhotoApp extends LitElem {
     "thing": Pages.THING,
   };
 
+  sidebarVisible: boolean
+  tribbleDB: object
+
   static get properties() {
     return {
       title: { type: String },
@@ -85,34 +88,30 @@ export class PhotoApp extends LitElem {
     this.setStateFromUrl();
     this.requestUpdate();
 
-    // keep a stable bound handler so removeEventListener works
     this._onPopState = this.handlePopState.bind(this);
-    window.addEventListener("popstate", this._onPopState);
     this.sidebarVisible = false;
+    window.addEventListener("popstate", this._onPopState);
 
     (async () => {
-      const buffer = [];
+      const buffer: Triple[] = [];
       if (!this.tribbleDB) {
         this.tribbleDB = new TribbleDB([]);
       }
 
       for await (const triple of tribbles.stream()) {
-        buffer.push(triple);
+        buffer.push(...[triple].flatMap(processTriples));
 
         if (buffer.length > 500) {
           this.tribbleDB.add(buffer);
           this.tribbleDB = this.tribbleDB;
           buffer.length = 0;
-          this.requestUpdate("tribbleDB");
+          this.requestUpdate();
         }
       }
 
-      // final flush
-      if (buffer.length) {
-        this.tribbleDB.add(buffer);
-      }
-
-      this.tribbleDB = this.tribbleDB.flatMap(processTriples);
+      this.tribbleDB.add(buffer);
+      // don't love this; it forces re-render
+      this.tribbleDB = this.tribbleDB.clone();
 
       this.requestUpdate();
     })();
