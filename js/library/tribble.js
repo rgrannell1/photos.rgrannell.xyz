@@ -89,7 +89,6 @@ var TribbleParser = class {
     return [src, rel, tgt];
   }
   parseDeclaration(line) {
-    console.log(line);
     const match = line.match(/^(\d+) "(.*)"$/);
     if (!match) {
       throw new SyntaxError(`Invalid format for declaration line: ${line}`);

@@ -55,8 +55,6 @@ export class ThingLink extends LitElem {
       relation: KnownRelations.NAME,
     }).firstTarget();
 
-    console.log(this.urn);
-
     if (name) {
       return html`<span>${name}</span>`;
     }
