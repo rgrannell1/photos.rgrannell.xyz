@@ -9,7 +9,7 @@ export class Photos {
    * Determine whether a photo should be eagerly or lazily loaded
    * depending on page position
    */
-  static loadingMode(idx) {
+  static loadingMode(idx: number) {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
@@ -20,7 +20,7 @@ export class Photos {
     return idx > (maxImagesPerRow * maxRowsInFold) + 1 ? "lazy" : "eager";
   }
 
-  static encodeBitmapDataURL(colours) {
+  static encodeBitmapDataURL(colours: string) {
     if (coloursCache.has(colours)) {
       return coloursCache.get(colours);
     }
@@ -33,6 +33,10 @@ export class Photos {
     canvas.height = 2;
 
     const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      console.error('context missing, cannot render colours');
+      return;
+    }
     ctx.fillStyle = coloursList[1];
     ctx.fillRect(0, 0, 1, 1);
     ctx.fillStyle = coloursList[2];

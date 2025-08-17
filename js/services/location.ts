@@ -41,15 +41,15 @@ export class PageLocation {
     window.location.hash = "#/photos";
     document.title = "Photos - photos";
   }
-  static showAlbumUrl(id) {
+  static showAlbumUrl(id: string) {
     window.location.hash = `#/album/${id}`;
     document.title = "Album - photos";
   }
-  static showPhotoUrl(id) {
+  static showPhotoUrl(id: string) {
     window.location.hash = `#/photo/${id}`;
     document.title = "Photo - photos";
   }
-  static showMetadataUrl(id) {
+  static showMetadataUrl(id: string) {
     window.location.hash = `#/metadata/${id}`;
     document.title = "Metadata - photos";
   }
@@ -58,7 +58,7 @@ export class PageLocation {
     document.title = "Videos - photos";
   }
 
-  static showThingUrl(urn) {
+  static showThingUrl(urn: string) {
     window.location.hash = `#/thing/${urn}`;
     // TODO dynamically look up the name for this urn
     document.title = "Thing - photos";
