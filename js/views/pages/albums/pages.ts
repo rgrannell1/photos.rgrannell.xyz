@@ -71,6 +71,8 @@ export class AlbumsPage extends LitElem {
           }
         }
 
+        await new Promise(res => setTimeout(res, 0));
+
         yield html`
           <photo-album
             .triples=${this.triples}
