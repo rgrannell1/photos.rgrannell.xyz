@@ -13,6 +13,7 @@ import { LitElem } from "../../../models/lit-element.ts";
 import { BinomialTypes, KnownRelations } from "../../../constants.js";
 import { Binomials, Things } from "../../../services/things.ts";
 import { Photos } from "../../../services/photos.ts";
+import { URN } from "js/types.ts";
 
 export class ThingPage extends LitElem {
   static get properties() {
@@ -151,14 +152,14 @@ export class ThingPage extends LitElem {
     }
   }
 
-  renderClassification(type) {
+  renderClassification(type: string) {
     return html`<a href="#/thing/${type}:*">${type.charAt(0).toUpperCase()}${
       type.slice(1)
     }</a>`;
   }
 
-  getPhotoQueries(urn) {
-    const target = urn;
+  getPhotoQueries(urn: URN) {
+    const target: Partial<URN> = urn;
     if (target.id === "*") {
       delete target.id;
     }

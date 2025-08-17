@@ -21,7 +21,7 @@ export class PhotosPage extends LitElem {
     };
   }
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
 
     JSONFeed.setIndex();

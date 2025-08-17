@@ -1,5 +1,6 @@
+import { Triple } from "js/types.js";
 import { KnownRelations } from "../constants.js";
-import { parseUrn, TribbleDB } from "../library/tribble.js";
+import { parseUrn } from "../library/tribble.js";
 
 const CONFIG = window.envConfig;
 
@@ -32,7 +33,7 @@ export class Things {
   static isUrn(candidate) {
     return candidate && candidate.startsWith("urn:ró");
   }
-  static parseUrn(urn) {
+  static parseUrn(urn: string) {
     if (!Things.isUrn(urn)) {
       throw new Error(`Invalid URN: ${urn}`);
     }
@@ -130,7 +131,7 @@ export class Binomials {
 export class Countries {
   // TODO deprecate this, as we move away from passing
   // non URN data to the client
-  static details(tdb, name) {
+  static details(tdb: any, name: string) {
     // narrow down the search to triples about country names and flags
     const countriesData = tdb.search({
       source: { type: "country" },
@@ -158,7 +159,7 @@ export class Countries {
     };
   }
 
-  static urnDetails(tdb, urn: string) {
+  static urnDetails(tdb: any, urn: string) {
     const parsed = parseUrn(urn);
 
     // narrow down the search to triples about country names and flags
@@ -174,7 +175,11 @@ export class Countries {
   }
 }
 
-export function ratingsAsUrns(triple) {
+/*
+ * We enter ratings as literals; convert them to URNs
+ *
+ */
+export function ratingsAsUrns(triple: Triple) {
   if (Triples.getRelation(triple) !== KnownRelations.RATING) {
     return [triple];
   }
@@ -186,7 +191,11 @@ export function ratingsAsUrns(triple) {
   ]];
 }
 
-export function countriesAsUrns(triple) {
+/*
+ * Convert `country` relations to URNs
+ *
+ */
+export function countriesAsUrns(triple: Triple) {
   if (Triples.getRelation(triple) !== KnownRelations.COUNTRY) {
     return [triple];
   }
@@ -198,15 +207,17 @@ export function countriesAsUrns(triple) {
     [
       Triples.getSource(triple),
       Triples.getRelation(triple),
-      countryUrn,
-      countryUrn,
-      Triples.getRelation(triple),
-      Triples.getTarget(triple),
+      countryUrn
     ],
   ];
 }
 
-export function expandCdnUrls(triple) {
+/*
+ * We remove CDN hostnames from our URLS; re-add them for relevant
+ * relations
+ *
+ */
+export function expandCdnUrls(triple: Triple) {
   for (
     const relation of [
       "thumbnail_url",
@@ -232,7 +243,12 @@ export function expandCdnUrls(triple) {
   return [triple];
 }
 
-export function expandUrns(triple) {
+/*
+ * For compression, we remove urn prefixes from URNs before transmitting them. Re-add them
+ *
+ * @param triple The triple to expand
+ */
+export function expandUrns(triple: Triple) {
   const [source, relation, target] = triple;
 
   return [[

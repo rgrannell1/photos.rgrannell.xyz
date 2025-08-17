@@ -50,15 +50,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 400;
-  src: url("../fonts/Inter-Regular.woff2") format("woff2");
-  font-display: swap;
-}
-
-
 /*
  * ++++ ++++ ++++ ~~~~ Basic Styles ~~~~ ++++ ++++ ++++
  */
@@ -525,8 +516,11 @@ photo-app {
   gap: 10px;
 }
 
+/*
+ * ++++ ++++ ++++ ~~~~ Things Page ~~~~ ++++ ++++ ++++
+ */
 .thing-link {
-  display: block;;
+  display: block;
 }
 
 .unesco-link,
@@ -572,13 +566,6 @@ photo-app {
 
 .insect-link {
   background-color: #d67c7c;
-}
-
-/* yes this is an enormous waste of bytes, but it's fun to
-   match their styling!... */
-.unesco-link * {
-  font-family: "Inter", "Rukib", sans-serif;
-  word-spacing: normal;
 }
 
 .unesco-links {
