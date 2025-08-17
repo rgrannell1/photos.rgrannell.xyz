@@ -18,6 +18,7 @@ import { TribbleDB } from "js/library/tribble.js";
 
 import {
   countriesAsUrns,
+  expandBirdwatchUrl,
   expandCdnUrls,
   expandUrns,
   ratingsAsUrns,
@@ -29,6 +30,7 @@ const tripleProcessors = [
   ratingsAsUrns,
   countriesAsUrns,
   expandCdnUrls,
+  expandBirdwatchUrl
 ];
 
 function processTriples(triple: Triple): Triple[] {

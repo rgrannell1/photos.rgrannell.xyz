@@ -243,6 +243,20 @@ export function expandCdnUrls(triple: Triple) {
   return [triple];
 }
 
+export function expandBirdwatchUrl(triple: Triple) {
+  if (Triples.getRelation(triple) !== KnownRelations.BIRDWATCH_URL) {
+    return [triple];
+  }
+
+  return [
+    [
+      Triples.getSource(triple),
+      KnownRelations.BIRDWATCH_URL,
+      `https://birdwatchireland.ie/birds/${Triples.getTarget(triple)}`,
+    ]
+  ]
+}
+
 /*
  * For compression, we remove urn prefixes from URNs before transmitting them. Re-add them
  *
