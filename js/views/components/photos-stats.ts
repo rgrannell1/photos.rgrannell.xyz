@@ -1,6 +1,6 @@
 import { STATS_SYMBOL } from "js/constants.js";
-import { html } from "../../../../library/lit.js";
-import { LitElem } from "../../../../models/lit-element.ts";
+import { html } from "../../library/lit.js";
+import { LitElem } from "../../models/lit-element.ts";
 
 export class PhotosStats extends LitElem {
   static get properties() {

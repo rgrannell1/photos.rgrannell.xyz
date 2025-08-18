@@ -4,15 +4,15 @@
  * Details about subjects or places of a photo
  */
 
-import { html } from "../../../library/lit.js";
-import { asUrn, parseUrn } from "../../../library/tribble.js";
+import { html } from "../../library/lit.js";
+import { asUrn, parseUrn } from "../../library/tribble.js";
 
-import "../../components/photo.ts";
-import { JSONFeed } from "../../../services/json-feed.ts";
-import { LitElem } from "../../../models/lit-element.ts";
-import { BinomialTypes, KnownRelations } from "../../../constants.js";
-import { Binomials, Things } from "../../../things/things.ts";
-import { Photos } from "../../../services/photos.ts";
+import "../components/photo.ts";
+import { JSONFeed } from "../../services/json-feed.ts";
+import { LitElem } from "../../models/lit-element.ts";
+import { BinomialTypes, KnownRelations } from "../../constants.js";
+import { Binomials, Things } from "../../things/things.ts";
+import { Photos } from "../../services/photos.ts";
 import { URN } from "js/types.ts";
 
 export class ThingPage extends LitElem {

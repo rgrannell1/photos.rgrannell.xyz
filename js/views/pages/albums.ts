@@ -4,15 +4,15 @@
  * All albums. Shows cover photos in a grid + some basic album information.
  */
 
-import { asyncAppend } from "../../../library/lit.js";
-import { html } from "../../../library/lit.js";
-import { LitElem } from "../../../models/lit-element.ts";
-import { JSONFeed } from "../../../services/json-feed.ts";
-import { Photos } from "../../../services/photos.ts";
+import { asyncAppend } from "../../library/lit.js";
+import { html } from "../../library/lit.js";
+import { LitElem } from "../../models/lit-element.ts";
+import { JSONFeed } from "../../services/json-feed.ts";
+import { Photos } from "../../services/photos.ts";
 
-import "./components/photos-stats.ts";
-import "./components/photo-album.ts";
-import "./components/year-cursor.ts";
+import "../components/photos-stats.ts";
+import "../components/photo-album.ts";
+import "../components/year-cursor.ts";
 
 export class AlbumsPage extends LitElem {
   static get properties() {

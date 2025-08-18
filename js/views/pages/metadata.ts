@@ -7,15 +7,15 @@
  * - Links & Sharing Options
  */
 
-import { html, unsafeHTML } from "../../../library/lit.js";
-import { LitElem } from "../../../models/lit-element.ts";
-import { JSONFeed } from "../../../services/json-feed.ts";
+import { html, unsafeHTML } from "../../library/lit.js";
+import { LitElem } from "../../models/lit-element.ts";
+import { JSONFeed } from "../../services/json-feed.ts";
 
-import "./components/share-button.ts";
-import "../../components/thing-link.ts";
-import "../../components/tag-link.ts";
-import { Things, Triples } from "../../../things/things.ts";
-import { ExifRelations, KnownThings } from "../../../constants.js";
+import "../components/share-button.ts";
+import "../components/thing-link.ts";
+import "../components/tag-link.ts";
+import { Things, Triples } from "../../things/things.ts";
+import { ExifRelations, KnownThings } from "../../constants.js";
 import { parseUrn } from "js/library/tribble.js";
 
 export class MetadataPage extends LitElem {

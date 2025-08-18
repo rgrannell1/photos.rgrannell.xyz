@@ -4,14 +4,13 @@
  * List all photos
  */
 
-import { html } from "../../../library/lit.js";
+import { html } from "../../library/lit.js";
 
-import { asyncAppend } from "../../../library/lit.js";
-import "../../components/photo.ts";
-import "./components/search.ts";
-import { Photos } from "../../../services/photos.ts";
-import { JSONFeed } from "../../../services/json-feed.ts";
-import { LitElem } from "../../../models/lit-element.ts";
+import { asyncAppend } from "../../library/lit.js";
+import "../components/photo.ts";
+import { Photos } from "../../services/photos.ts";
+import { JSONFeed } from "../../services/json-feed.ts";
+import { LitElem } from "../../models/lit-element.ts";
 import { asUrn } from "js/library/tribble.js";
 
 export class PhotosPage extends LitElem {

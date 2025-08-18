@@ -4,13 +4,13 @@
  * List all videos in a grid, with differen quality options available.
  */
 
-import { html } from "../../../library/lit.js";
+import { html } from "../../library/lit.js";
 
-import { asyncAppend } from "../../../library/lit.js";
-import "../../components/video.ts";
-import { JSONFeed } from "../../../services/json-feed.ts";
-import { LitElem } from "../../../models/lit-element.ts";
-import { Videos } from "../../../services/videos.ts";
+import { asyncAppend } from "../../library/lit.js";
+import "../components/video.ts";
+import { JSONFeed } from "../../services/json-feed.ts";
+import { LitElem } from "../../models/lit-element.ts";
+import { Videos } from "../../services/videos.ts";
 
 export class VideosPage extends LitElem {
   static get properties() {

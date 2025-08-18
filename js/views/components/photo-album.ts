@@ -1,9 +1,9 @@
-import { html } from "../../../../library/lit.js";
-import { parseUrn } from "../../../../library/tribble.js";
-import { LitElem } from "../../../../models/lit-element.ts";
-import { Dates } from "../../../../services/dates.ts";
-import { Photos } from "../../../../services/photos.ts";
-import { Countries } from "../../../../things/things.ts";
+import { html } from "../../library/lit.js";
+import { parseUrn } from "../../library/tribble.js";
+import { LitElem } from "../../models/lit-element.ts";
+import { Dates } from "../../services/dates.ts";
+import { Photos } from "../../services/photos.ts";
+import { Countries } from "../../things/things.ts";
 
 export class PhotoAlbum extends LitElem {
   static get properties() {

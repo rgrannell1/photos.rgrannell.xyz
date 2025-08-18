@@ -4,11 +4,11 @@
  * The website's about page.
  */
 
-import { html } from "../../../library/lit.js";
+import { html } from "../../library/lit.js";
 
-import "../../components/photo.ts";
-import { JSONFeed } from "../../../services/json-feed.ts";
-import { LitElem } from "../../../models/lit-element.ts";
+import "../components/photo.ts";
+import { JSONFeed } from "../../services/json-feed.ts";
+import { LitElem } from "../../models/lit-element.ts";
 
 export class AboutPage extends LitElem {
   static get properties() {

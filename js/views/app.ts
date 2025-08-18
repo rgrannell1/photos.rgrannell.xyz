@@ -7,13 +7,13 @@ import { Pages } from "../constants.js";
 
 import "./components/sidebar.ts";
 import "./components/header.ts";
-import "./pages/photos/pages.ts";
-import "./pages/albums/pages.ts";
-import "./pages/album/pages.ts";
-import "./pages/metadata/pages.ts";
-import "./pages/about/pages.ts";
-import "./pages/thing/pages.ts";
-import "./pages/videos/pages.ts";
+import "./pages/photos.ts";
+import "./pages/albums.ts";
+import "./pages/album.ts";
+import "./pages/metadata.ts";
+import "./pages/about.ts";
+import "./pages/thing.ts";
+import "./pages/videos.ts";
 import { TribbleDB } from "js/library/tribble.js";
 
 import {
