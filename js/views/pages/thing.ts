@@ -30,10 +30,19 @@ export class ThingPage extends LitElem {
   }
 
   urnImages(tdb: any, query: any) {
+    console.log(tdb.triples())
     const relevantPhotos = tdb.search(query);
     const relevantPhotoIds = relevantPhotos.sources();
 
-    return Array.from(relevantPhotoIds).flatMap((photoId) => {
+    return Array.from(relevantPhotoIds).flatMap((photoId: string) => {
+      if (photoId.startsWith('urn:ró')) {
+        const match = tdb.search({
+          source: asUrn(photoId),
+        }).firstObject();
+
+        return match ? [match] : [];
+      }
+
       const match = tdb.search({
         source: { id: photoId, type: "photo" },
       }).firstObject();
@@ -282,8 +291,7 @@ export class ThingPage extends LitElem {
     }
 
     const query = {
-      target: targetSearch,
-      //relation: { relation: semanticRelations }, TODO broken
+      target: targetSearch
     };
 
     const queries = this.getPhotoQueries(asUrn(this.urn));

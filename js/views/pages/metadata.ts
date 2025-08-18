@@ -29,7 +29,7 @@ export class MetadataPage extends LitElem {
     };
   }
 
-  connectedCallback() {
+  override connectedCallback() {
     super.connectedCallback();
 
     JSONFeed.setIndex();
