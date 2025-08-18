@@ -15,7 +15,7 @@ import "../../components/thing-link.ts";
 import { Dates } from "../../../services/dates.ts";
 import { Photos } from "../../../services/photos.ts";
 import { JSONFeed } from "../../../services/json-feed.ts";
-import { Countries, Things } from "../../../services/things.ts";
+import { Countries, Things } from "../../../things/things.ts";
 import { LitElem } from "../../../models/lit-element.ts";
 import { KnownRelations, KnownThings } from "../../../constants.js";
 

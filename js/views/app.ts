@@ -22,7 +22,7 @@ import {
   expandCdnUrls,
   expandUrns,
   ratingsAsUrns,
-} from "../services/things.ts";
+} from "../things/things.ts";
 import { Triple } from "js/types.ts";
 
 const tripleProcessors = [

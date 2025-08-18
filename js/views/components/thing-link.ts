@@ -5,10 +5,10 @@ import { KnownRelations, KnownThings } from "../../constants.js";
 
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.ts";
-import { Things } from "../../services/things.ts";
+import { Things } from "../../things/things.ts";
 
 import { BinomialTypes } from "../../constants.js";
-import { Binomials } from "../../services/things.ts";
+import { Binomials } from "../../things/things.ts";
 
 export class UnescoLink extends LitElem {
   static properties = {

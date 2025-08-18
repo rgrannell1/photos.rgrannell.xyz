@@ -3,7 +3,7 @@ import { parseUrn } from "../../../../library/tribble.js";
 import { LitElem } from "../../../../models/lit-element.ts";
 import { Dates } from "../../../../services/dates.ts";
 import { Photos } from "../../../../services/photos.ts";
-import { Countries } from "../../../../services/things.ts";
+import { Countries } from "../../../../things/things.ts";
 
 export class PhotoAlbum extends LitElem {
   static get properties() {

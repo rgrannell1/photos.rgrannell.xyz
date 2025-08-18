@@ -14,7 +14,7 @@ import { JSONFeed } from "../../../services/json-feed.ts";
 import "./components/share-button.ts";
 import "../../components/thing-link.ts";
 import "../../components/tag-link.ts";
-import { Things, Triples } from "../../../services/things.ts";
+import { Things, Triples } from "../../../things/things.ts";
 import { ExifRelations, KnownThings } from "../../../constants.js";
 import { parseUrn } from "js/library/tribble.js";
 

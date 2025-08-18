@@ -52,6 +52,11 @@ export class PhotosPage extends LitElem {
     async function* photosIterable() {
       for (let idx = 0; idx < photos.length; idx++) {
         const photo = photos[idx];
+
+        if (idx % 4 === 0) {
+          await new Promise(res => setTimeout(res, 0));
+        }
+
         yield html`
           <app-photo
             id=${asUrn(photo.id).id}

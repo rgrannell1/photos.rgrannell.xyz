@@ -11,7 +11,7 @@ import "../../components/photo.ts";
 import { JSONFeed } from "../../../services/json-feed.ts";
 import { LitElem } from "../../../models/lit-element.ts";
 import { BinomialTypes, KnownRelations } from "../../../constants.js";
-import { Binomials, Things } from "../../../services/things.ts";
+import { Binomials, Things } from "../../../things/things.ts";
 import { Photos } from "../../../services/photos.ts";
 import { URN } from "js/types.ts";
 
