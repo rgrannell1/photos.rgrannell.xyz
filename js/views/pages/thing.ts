@@ -30,7 +30,6 @@ export class ThingPage extends LitElem {
   }
 
   urnImages(tdb: any, query: any) {
-    console.log(tdb.triples())
     const relevantPhotos = tdb.search(query);
     const relevantPhotoIds = relevantPhotos.sources();
 
@@ -117,12 +116,11 @@ export class ThingPage extends LitElem {
       });
 
     const first = relevantPhotos[0];
-
     if (!first) {
       return "Unknown";
     }
 
-    return new Date(first.created_at).toLocaleDateString("en-IE", {
+    return new Date(parseInt(first.created_at)).toLocaleDateString("en-IE", {
       day: "numeric",
       month: "short",
       year: "numeric",
