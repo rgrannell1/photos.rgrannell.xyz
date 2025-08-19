@@ -18,6 +18,10 @@ import { Things, Triples } from "../../things/things.ts";
 import { ExifRelations, KnownThings } from "../../constants.js";
 import { parseUrn } from "js/library/tribble.js";
 
+function Heading(text: string) {
+  return html`<th class="exif-heading">${text}</th>`
+}
+
 export class MetadataPage extends LitElem {
   static get properties() {
     return {
@@ -37,9 +41,11 @@ export class MetadataPage extends LitElem {
 
   renderAperture(exif) {
     if (exif.f_stop === "Unknown") {
-      return html`<td>Unknown aperture</td>`;
+      return html`<td>Unknown</td>`;
     } else if (exif.f_stop === "0.0") {
       return html`<td>Manual aperture control</td>`;
+    } else if (!exif.f_stop) {
+      return html`<td>Unknown</td>`;
     }
 
     return html`<td>ƒ/${exif.f_stop}</td>`;
@@ -50,6 +56,8 @@ export class MetadataPage extends LitElem {
       return html`${exif.focal_length}`;
     } else if (exif.focal_length === "0") {
       return html`<td>Manual lens</td>`;
+    } else if (!exif.focal_length) {
+      return html`<td>Unknown</td>`;
     } else {
       return html`<td>${exif.focal_length}mm equiv.</td>`;
     }
@@ -131,6 +139,42 @@ export class MetadataPage extends LitElem {
     `;
   }
 
+  renderModel(exif) {
+    if (typeof exif.model === "string") {
+      return html`
+      ${Heading("Camera Model")}
+      <td><thing-link .triples=${this.triples} .urn=${exif.model}></thing-link></td>`;
+    }
+    return html`
+      ${Heading("Camera Model")}
+      <td>Unknown</td>
+    `;
+  }
+
+  renderDimensions(exif) {
+    if (typeof exif.width === "number" && typeof exif.height === "number") {
+      return html`
+        ${Heading("Dimensions")}
+        <td>${exif.width} x ${exif.height}</td>`;
+    }
+    return html`
+      ${Heading("Dimensions")}
+      <td>Unknown</td>
+    `;
+  }
+
+  renderShutterSpeed(exif) {
+    if (typeof exif.shutter_speed === "number") {
+      return html`
+        ${Heading("Shutter Speed")}
+        <td>1/${Math.round(1 / exif.shutter_speed)}</td>`;
+    }
+    return html`
+      ${Heading("Shutter Speed")}
+      <td>Unknown</td>
+    `;
+  }
+
   renderExif(tdb) {
     const exif = tdb.search({
       source: {
@@ -146,6 +190,10 @@ export class MetadataPage extends LitElem {
       return html`<p>No EXIF data available</p>`;
     }
 
+    const date = new Date(parseInt(exif.created_at));
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+    const formattedDate = date.toLocaleDateString('en-US', options);
+
     return html`
     <h3>Exif</h3>
 
@@ -153,26 +201,21 @@ export class MetadataPage extends LitElem {
       <tr>
         <th class="exif-heading">Date-Time</th>
         <td><time>
-        ${exif.created_at}
+        ${formattedDate}
       </time></td>
       </tr>
       <tr>
-        <th class="exif-heading">Camera Model</th>
-        <td><thing-link .triples=${this.triples} urn=${exif.model}></thing-link></td>
+        ${this.renderModel(exif)}
         </tr>
       <tr>
-        <th class="exif-heading">Dimensions</th>
-        <td>${exif.width} x ${exif.height}</td>
+        ${this.renderDimensions(exif)}
       </tr>
       <tr>
         <th class="exif-heading">Focal Length</th>
         ${this.renderFocalLength(exif)}
       </tr>
       <tr>
-        <th class="exif-heading">Shutter Speed</th>
-        <td>1/${
-      exif.exposure_time ? Math.round(1 / exif.exposure_time) : "Unknown"
-    }</td>
+        ${this.renderShutterSpeed(exif)}
       </tr>
       <tr>
         <th class="exif-heading">Aperture</th>
@@ -180,7 +223,7 @@ export class MetadataPage extends LitElem {
         </tr>
       <tr>
         <th class="exif-heading">ISO</th>
-        <td>${exif.iso}</td>
+        <td>${exif.iso ?? 'Unknown'}</td>
       </tr>
     </table>
     `;
