@@ -187,6 +187,7 @@ export class ThingPage extends LitElem {
       queries.push({
         label: "default",
         query: {
+          source: { type: "photo" },
           target: urn,
         },
       });
@@ -288,17 +289,18 @@ export class ThingPage extends LitElem {
       delete targetSearch.id;
     }
 
-    const query = {
-      target: targetSearch,
-    };
-
-    const queries = this.getPhotoQueries(asUrn(this.urn));
+    const photoQueries = this.getPhotoQueries(asUrn(this.urn));
 
     const photoGroups = {};
-    for (const { query, label } of queries) {
+    for (const { query, label } of photoQueries) {
       const relevantPhotos = this.urnImages(tdb, query);
       photoGroups[label] = this.renderSubjectPhotos(relevantPhotos);
     }
+
+    const query = {
+      source: { type: "photo" },
+      target: targetSearch,
+    };
 
     const albums = this.renderSubjectAlbums(tdb, query);
     const photos = this.renderPhotoSection(photoGroups);
