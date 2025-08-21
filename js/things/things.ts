@@ -177,7 +177,6 @@ export class Countries {
 
 /*
  * We enter ratings as literals; convert them to URNs
- *
  */
 export function ratingsAsUrns(triple: Triple) {
   if (Triples.getRelation(triple) !== KnownRelations.RATING) {
@@ -193,7 +192,6 @@ export function ratingsAsUrns(triple: Triple) {
 
 /*
  * Convert `country` relations to URNs
- *
  */
 export function countriesAsUrns(triple: Triple) {
   if (Triples.getRelation(triple) !== KnownRelations.COUNTRY) {
@@ -207,7 +205,40 @@ export function countriesAsUrns(triple: Triple) {
     [
       Triples.getSource(triple),
       Triples.getRelation(triple),
-      countryUrn
+      countryUrn,
+    ],
+  ];
+}
+
+const CURIE_REGEX = /^\[([^\:]*):(.*)\]$/;
+
+export function expandCurie(curies: Record<string, string>, value: string) {
+  if (typeof value !== "string" || !CURIE_REGEX.test(value)) {
+    return value;
+  }
+  const match = value.match(CURIE_REGEX);
+
+  if (!match) {
+    return value;
+  }
+
+  const prefix = match[1];
+  const id = match[2];
+
+  return curies[prefix] ? `${curies[prefix]}${id}` : value;
+}
+
+export function expandTripleCuries(
+  curies: Record<string, string>,
+  triple: Triple,
+) {
+  const [source, relation, target] = triple;
+
+  return [
+    [
+      expandCurie(curies, source),
+      relation,
+      expandCurie(curies, target),
     ],
   ];
 }
@@ -215,7 +246,6 @@ export function countriesAsUrns(triple: Triple) {
 /*
  * We remove CDN hostnames from our URLS; re-add them for relevant
  * relations
- *
  */
 export function expandCdnUrls(triple: Triple) {
   for (
@@ -253,8 +283,8 @@ export function expandBirdwatchUrl(triple: Triple) {
       Triples.getSource(triple),
       KnownRelations.BIRDWATCH_URL,
       `https://birdwatchireland.ie/birds/${Triples.getTarget(triple)}`,
-    ]
-  ]
+    ],
+  ];
 }
 
 /*

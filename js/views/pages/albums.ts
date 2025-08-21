@@ -72,7 +72,7 @@ export class AlbumsPage extends LitElem {
         }
 
         if (idx % 4 === 0) {
-          await new Promise(res => setTimeout(res, 0));
+          await new Promise((res) => setTimeout(res, 0));
         }
 
         yield html`

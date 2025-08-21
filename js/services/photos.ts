@@ -34,7 +34,7 @@ export class Photos {
 
     const ctx = canvas.getContext("2d");
     if (!ctx) {
-      console.error('context missing, cannot render colours');
+      console.error("context missing, cannot render colours");
       return;
     }
     ctx.fillStyle = coloursList[1];

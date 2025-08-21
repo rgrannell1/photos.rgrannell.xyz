@@ -1,4 +1,3 @@
-
 const CACHE_NAME = "sw-cache";
 const CACHEABLE_RESOURCES = [
   "/icons/android-chrome-192x192.png",

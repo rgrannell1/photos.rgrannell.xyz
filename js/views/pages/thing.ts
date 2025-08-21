@@ -34,7 +34,7 @@ export class ThingPage extends LitElem {
     const relevantPhotoIds = relevantPhotos.sources();
 
     return Array.from(relevantPhotoIds).flatMap((photoId: string) => {
-      if (photoId.startsWith('urn:ró')) {
+      if (photoId.startsWith("urn:ró")) {
         const match = tdb.search({
           source: asUrn(photoId),
         }).firstObject();
@@ -289,7 +289,7 @@ export class ThingPage extends LitElem {
     }
 
     const query = {
-      target: targetSearch
+      target: targetSearch,
     };
 
     const queries = this.getPhotoQueries(asUrn(this.urn));

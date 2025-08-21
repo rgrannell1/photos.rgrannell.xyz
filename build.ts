@@ -36,29 +36,33 @@ export function expandUrns(triple) {
   const [source, relation, target] = triple;
 
   return [[
-    typeof source === 'string' && source.startsWith("::") ? `urn:ró:${source.slice(2)}` : source,
+    typeof source === "string" && source.startsWith("::")
+      ? `urn:ró:${source.slice(2)}`
+      : source,
     relation,
-    typeof target === 'string' && target.startsWith("::") ? `urn:ró:${target.slice(2)}` : target,
+    typeof target === "string" && target.startsWith("::")
+      ? `urn:ró:${target.slice(2)}`
+      : target,
   ]];
 }
 
 function prefetchTargets(env, triples: [string, string, string][]) {
   const tdb = new TribbleDB(triples).flatMap(expandUrns);
   const albums = tdb.search({
-    source: { type: 'album' }
+    source: { type: "album" },
   }).objects().sort((album0, album1) => {
     return parseInt(album1.min_date, 10) - parseInt(album0.min_date, 10);
   });
-  return albums.slice(0, 5).map(album => `${album.thumbnail_url}`);
+  return albums.slice(0, 5).map((album) => `${album.thumbnail_url}`);
 }
 
 function homepageThumbnails(triples: [string, string, string][]) {
   const tdb = new TribbleDB(triples).flatMap(expandUrns);
   const albums = tdb.search({
-    source: { type: 'album' }
+    source: { type: "album" },
   }).objects();
 
-  return albums.map(album => `${album.thumbnail_url}`);
+  return albums.map((album) => `${album.thumbnail_url}`);
 }
 
 async function buildHTML() {

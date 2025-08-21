@@ -1,11 +1,11 @@
 import { LitElement } from "../library/lit.js";
 
 export class LitElem extends LitElement {
-  createRenderRoot() {
+  override createRenderRoot() {
     return this;
   }
 
-  broadcast(label, detail) {
+  broadcast(label: string, detail?: any) {
     return () => {
       const dispatched = new CustomEvent(label, {
         detail,

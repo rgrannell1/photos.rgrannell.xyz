@@ -20,22 +20,27 @@ import {
   countriesAsUrns,
   expandBirdwatchUrl,
   expandCdnUrls,
+  expandTripleCuries,
   expandUrns,
   ratingsAsUrns,
 } from "../things/things.ts";
 import { Triple } from "js/types.ts";
 
-const tripleProcessors = [
-  expandUrns,
-  ratingsAsUrns,
-  countriesAsUrns,
-  expandCdnUrls,
-  expandBirdwatchUrl
-];
-
-function processTriples(triple: Triple): Triple[] {
+function processTriples(
+  curies: Record<string, string>,
+  triple: Triple,
+): Triple[] {
   // derive new triples or modify old ones,
   // sequentially apply functions against intermediate results
+
+  const tripleProcessors = [
+    expandUrns,
+    ratingsAsUrns,
+    countriesAsUrns,
+    expandCdnUrls,
+    expandBirdwatchUrl,
+    expandTripleCuries.bind(null, curies),
+  ];
 
   let outputTriples = [triple];
   for (const fn of tripleProcessors) {
@@ -61,8 +66,8 @@ export class PhotoApp extends LitElem {
     "thing": Pages.THING,
   };
 
-  sidebarVisible: boolean
-  tribbleDB: object
+  sidebarVisible: boolean;
+  tribbleDB: object;
 
   static get properties() {
     return {
@@ -79,7 +84,7 @@ export class PhotoApp extends LitElem {
       tribbleDB: {
         type: Object,
         state: true,
-        attribute: false
+        attribute: false,
       },
     };
   }
@@ -100,8 +105,15 @@ export class PhotoApp extends LitElem {
         this.tribbleDB = new TribbleDB([]);
       }
 
+      const curies = {
+        "i": "urn:ró:",
+        "birdwatch": "https://birdwatchireland.ie/birds/",
+        "photos": "https://photos-cdn.rgrannell.xyz/",
+        "wiki": "https://en.wikipedia.org/wiki/"
+      };
+
       for await (const triple of tribbles.stream()) {
-        buffer.push(...[triple].flatMap(processTriples));
+        buffer.push(...[triple].flatMap(processTriples.bind(null, curies)));
 
         if (buffer.length > 500) {
           this.tribbleDB.add(buffer);

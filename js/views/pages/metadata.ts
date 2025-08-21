@@ -19,7 +19,7 @@ import { ExifRelations, KnownThings } from "../../constants.js";
 import { parseUrn } from "js/library/tribble.js";
 
 function Heading(text: string) {
-  return html`<th class="exif-heading">${text}</th>`
+  return html`<th class="exif-heading">${text}</th>`;
 }
 
 export class MetadataPage extends LitElem {
@@ -191,8 +191,14 @@ export class MetadataPage extends LitElem {
     }
 
     const date = new Date(parseInt(exif.created_at));
-    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-    const formattedDate = date.toLocaleDateString('en-US', options);
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    };
+    const formattedDate = date.toLocaleDateString("en-US", options);
 
     return html`
     <h3>Exif</h3>
@@ -223,7 +229,7 @@ export class MetadataPage extends LitElem {
         </tr>
       <tr>
         <th class="exif-heading">ISO</th>
-        <td>${exif.iso ?? 'Unknown'}</td>
+        <td>${exif.iso ?? "Unknown"}</td>
       </tr>
     </table>
     `;

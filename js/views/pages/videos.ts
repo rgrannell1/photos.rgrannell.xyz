@@ -38,7 +38,7 @@ export class VideosPage extends LitElem {
         const video = videos[idx];
 
         if (idx % 4 === 0) {
-          await new Promise(res => setTimeout(res, 0));
+          await new Promise((res) => setTimeout(res, 0));
         }
 
         yield html`<app-video
