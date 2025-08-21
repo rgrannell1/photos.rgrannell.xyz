@@ -3,6 +3,9 @@ import { LitElem } from "../../models/lit-element.ts";
 import { BRAND_TEXT } from "../../constants.js";
 
 export class PhotoHeader extends LitElem {
+  tag!: string;
+  darkMode!: boolean;
+
   static get properties() {
     return {
       darkMode: { type: Boolean },

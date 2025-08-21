@@ -1,16 +1,6 @@
 export class JSONFeed {
-  static getElement() {
-    return document.getElementById("rss");
-  }
-
-  static setTag(tag) {
-    const $rss = this.getElement();
-    if (!$rss || !tag) {
-      return;
-    }
-
-    const feedUrl = `/feeds/tags/${tag}.json`;
-    $rss.href = feedUrl;
+  static getElement(): HTMLAnchorElement | null {
+    return document.getElementById("rss") as HTMLAnchorElement;
   }
 
   static setIndex() {

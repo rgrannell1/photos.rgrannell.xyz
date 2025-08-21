@@ -2,6 +2,15 @@ import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.ts";
 
 export class AppVideo extends LitElem {
+  override id!: string;
+  url!: string;
+  preload!: string;
+  url_poster!: string;
+  url_unscaled!: string;
+  url_1080p!: string;
+  url_720p!: string;
+  url_480p!: string;
+
   static get properties() {
     return {
       id: { type: String },

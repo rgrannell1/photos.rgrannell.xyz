@@ -9,7 +9,7 @@ export class Photos {
    * Determine whether a photo should be eagerly or lazily loaded
    * depending on page position
    */
-  static loadingMode(idx: number) {
+  static loadingMode(idx: number): "eager" | "lazy" {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
@@ -20,7 +20,7 @@ export class Photos {
     return idx > (maxImagesPerRow * maxRowsInFold) + 1 ? "lazy" : "eager";
   }
 
-  static encodeBitmapDataURL(colours: string) {
+  static encodeBitmapDataURL(colours: string): string {
     if (coloursCache.has(colours)) {
       return coloursCache.get(colours);
     }

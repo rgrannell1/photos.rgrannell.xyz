@@ -4,6 +4,13 @@ import { LitElem } from "../../models/lit-element.ts";
 import { Photos } from "../../services/photos.ts";
 
 export class AppPhoto extends LitElem {
+  override id!: string;
+  imageUrl!: string;
+  thumbnailUrl!: string;
+  mosaicColours!: string;
+  summary!: string;
+  loading!: string;
+
   static get properties() {
     return {
       id: { type: String },
@@ -21,10 +28,10 @@ export class AppPhoto extends LitElem {
     `;
   }
 
-  hidePlaceholder(event) {
+  hidePlaceholder(event: any) {
     this.broadcast("photo-loaded", { url: this.thumbnailUrl })();
 
-    const $placeholder = event.target.parentNode.querySelector(
+    const $placeholder = event.target?.parentNode?.querySelector(
       ".thumbnail-placeholder",
     );
     $placeholder.style.zIndex = -1;

@@ -29,9 +29,8 @@ export class Triples {
 }
 
 export class Things {
-  // TODO handle arrays
-  static isUrn(candidate) {
-    return candidate && candidate.startsWith("urn:ró");
+  static isUrn(candidate: unknown): candidate is string {
+    return typeof candidate === "string" && candidate.startsWith("urn:ró");
   }
   static parseUrn(urn: string) {
     if (!Things.isUrn(urn)) {
@@ -52,11 +51,11 @@ export class Things {
     };
   }
 
-  static is(urn, type) {
+  static is(urn: unknown, type: string) {
     return Things.isUrn(urn) && Things.parseUrn(urn).type === type;
   }
 
-  static toURL(urn) {
+  static toURL(urn: unknown) {
     if (!Things.isUrn(urn)) {
       throw new Error(`Invalid URN: ${urn}`);
     }
@@ -65,7 +64,7 @@ export class Things {
     return `#/thing/${type}:${id}`;
   }
 
-  static sameURN(urn1, urn2) {
+  static sameURN(urn1: unknown, urn2: unknown) {
     if (!Things.isUrn(urn1) || !Things.isUrn(urn2)) {
       return false;
     }
@@ -76,15 +75,15 @@ export class Things {
     return parsed1.type === parsed2.type && parsed1.id === parsed2.id;
   }
 
-  static isRating(value) {
+  static isRating(value: string) {
     return /^[⭐]{1,5}$/.test(value);
   }
 
-  static hasId(urn, id) {
+  static hasId(urn: unknown, id: string) {
     return Things.isUrn(urn) && Things.parseUrn(urn).id === id;
   }
 
-  static sameType(urn0, urn1) {
+  static sameType(urn0: unknown, urn1: unknown) {
     if (!Things.isUrn(urn0) || !Things.isUrn(urn1)) {
       return false;
     }
@@ -95,7 +94,7 @@ export class Things {
     return parsed0.type === parsed1.type;
   }
 
-  static isType(urn, type) {
+  static isType(urn: unknown, type: string) {
     if (!Things.isUrn(urn)) {
       return false;
     }
@@ -106,19 +105,19 @@ export class Things {
 }
 
 export class Binomials {
-  static pretty(binomial) {
+  static pretty(binomial: string) {
     const pretty = binomial.replace(/-/g, " ");
     return pretty.charAt(0).toUpperCase() + pretty.slice(1);
   }
 
-  static toCommonName(tdb, binomial) {
+  static toCommonName(tdb: any, binomial: string) {
     return tdb.search({
       source: { id: binomial },
       relation: KnownRelations.NAME,
     }).firstTarget() ?? binomial;
   }
 
-  static birdwatchUrl(tdb, urn) {
+  static birdwatchUrl(tdb: any, urn: string) {
     const { id } = parseUrn(urn);
 
     return tdb.search({

@@ -2,6 +2,10 @@ import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.ts";
 
 export class AlbumShareButton extends LitElem {
+  override title!: string;
+  url!: string;
+  sharing!: boolean;
+
   static get properties() {
     return {
       title: { type: String },
@@ -15,7 +19,7 @@ export class AlbumShareButton extends LitElem {
    *
    * @param {string} url the url of the image to share
    */
-  async shareAlbum(url) {
+  async shareAlbum(url: string) {
     if (!navigator.share) {
       console.error("navigator.share not available");
     } else {
@@ -26,6 +30,8 @@ export class AlbumShareButton extends LitElem {
           title: `${this.title} - photos.rgrannell.xyz`,
           url,
         });
+      } catch (error) {
+        console.error("Error sharing:", error);
       } finally {
         this.sharing = false;
       }

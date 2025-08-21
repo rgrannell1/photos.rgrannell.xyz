@@ -25,6 +25,10 @@ export class PageLocation {
     "#/photos": Pages.PHOTOS,
   };
 
+  static ID_PAGES = new Set([
+    Pages.ALBUM, Pages.METADATA, Pages.THING
+  ])
+
   static router(page: string) {
     if (PageLocation.ROUTES.hasOwnProperty(page)) {
       return PageLocation.ROUTES[page];
@@ -69,10 +73,6 @@ export class PageLocation {
     window.location.hash = `#/thing/${urn}`;
     document.title = "Thing - photos";
   }
-
-  static ID_PAGES = new Set([
-    Pages.ALBUM, Pages.METADATA, Pages.THING
-  ])
 
   static getUrl(): { type: string; id?: string }  {
     const hash = window.location.hash;

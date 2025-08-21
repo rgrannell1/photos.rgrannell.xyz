@@ -11,26 +11,28 @@ import { BinomialTypes } from "../../constants.js";
 import { Binomials } from "../../things/things.ts";
 
 export class UnescoLink extends LitElem {
+  urn!: string;
+
   static properties = {
     urn: { type: String },
   };
 
-  id() {
+  getId() {
     return Things.parseUrn(this.urn)?.id ?? "unknown";
   }
 
   url() {
-    return this.id() ? `https://whc.unesco.org/en/list/${this.id()}` : null;
+    return this.getId() ? `https://whc.unesco.org/en/list/${this.getId()}` : null;
   }
 
   render() {
-    if (!this.id()) {
+    if (!this.getId()) {
       return html`<span>Invalid UNESCO URN</span>`;
     }
     return html`
       <a class="unesco-link" href="${this.url()}" target="_blank" rel="noopener noreferrer">
-        <span class="unesco-text-full">UNESCO World Heritage Site #${this.id()}</span>
-        <span class="unesco-text-short">UNESCO #${this.id()}</span>
+        <span class="unesco-text-full">UNESCO World Heritage Site #${this.getId()}</span>
+        <span class="unesco-text-short">UNESCO #${this.getId()}</span>
       </a>
     `;
   }
@@ -39,9 +41,12 @@ export class UnescoLink extends LitElem {
 customElements.define("unesco-link", UnescoLink);
 
 export class ThingLink extends LitElem {
+  urn!: string;
+  triples!: any;
+
   static properties = {
     urn: { type: String },
-    triples: { type: Array },
+    triples: { type: Object },
   };
 
   name() {

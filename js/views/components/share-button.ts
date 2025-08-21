@@ -2,6 +2,11 @@ import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.ts";
 
 export class ShareButton extends LitElem {
+
+  url!: string;
+  format!: string;
+  sharing!: boolean;
+
   static get properties() {
     return {
       url: { type: String },
@@ -15,7 +20,7 @@ export class ShareButton extends LitElem {
    *
    * @param {string} url the url of the image to share
    */
-  async shareImage(url) {
+  async shareImage(url: string) {
     if (!navigator.share) {
       console.error("navigator.share not available");
     } else {
@@ -33,6 +38,8 @@ export class ShareButton extends LitElem {
             }),
           ],
         });
+      } catch (error) {
+        console.error("Error sharing:", error);
       } finally {
         this.sharing = false;
       }

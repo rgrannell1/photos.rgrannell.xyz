@@ -11,6 +11,11 @@ export class PhotosStats extends LitElem {
 
   render() {
     const $statsData = document.getElementById("stats-data");
+    if (!$statsData) {
+      console.error("No stats data found");
+      return html``;
+    }
+
     const stats = JSON.parse($statsData.innerText);
 
     return html`

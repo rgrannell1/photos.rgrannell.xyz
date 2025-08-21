@@ -2,6 +2,8 @@ import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.ts";
 
 export class Sidebar extends LitElem {
+  visible!: boolean
+
   static get properties() {
     return {
       visible: { type: Boolean },
