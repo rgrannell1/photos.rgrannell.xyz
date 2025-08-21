@@ -3,14 +3,14 @@
  */
 
 export class Dates {
-  static parse(dateTime) {
+  static parse(dateTime: string) {
     let [date, time] = dateTime.split(" ");
     date = date.replace(/:/g, "-");
 
     return new Date(`${date} ${time}`);
   }
 
-  static formatExifDate(dateTime) {
+  static formatExifDate(dateTime: string) {
     if (!dateTime) {
       return dateTime;
     }
@@ -21,29 +21,7 @@ export class Dates {
     return `${date.replace(/\:/g, "/")} ${time}`;
   }
 
-  static findRange(images) {
-    let minimum = Infinity;
-    let maximum = -Infinity;
-
-    for (const image of images) {
-      if (!image.created_at) {
-        continue;
-      }
-
-      const parsedDate = Dates.parse(image.created_at);
-      if (parsedDate < minimum) {
-        minimum = parsedDate;
-      }
-
-      if (parsedDate > maximum) {
-        maximum = parsedDate;
-      }
-    }
-
-    return [minimum, maximum];
-  }
-
-  static dateRange(minDate, maxDate, smallDevice) {
+  static dateRange(minDate: Date | string, maxDate: Date | string, smallDevice: boolean) {
     if (!minDate && !maxDate) {
       return "unknown date";
     }

@@ -3,6 +3,10 @@ import { TribbleParser } from "../library/tribble.js";
 // injected into the HTLM during build-time
 const CONFIG = window.envConfig;
 
+/*
+ * Stream tribbles line-by-line, and yield triples
+ *
+ */
 export class TribblesArtifact {
   url: string;
   constructor(url = `/manifest/tribbles.${CONFIG.publication_id}.txt`) {

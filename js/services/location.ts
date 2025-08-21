@@ -15,18 +15,25 @@ export class PageLocation {
     [Pages.THING]: this.showThingUrl,
   };
 
-  static router(page) {
+  static URL_PREFIX_TO_PAGE = {
+    "#/albums": Pages.ALBUMS,
+    "#/album": Pages.ALBUM,
+    "#/metadata": Pages.METADATA,
+    "#/about": Pages.ABOUT,
+    "#/videos": Pages.VIDEOS,
+    "#/thing": Pages.THING,
+    "#/photos": Pages.PHOTOS,
+  };
+
+  static router(page: string) {
     if (PageLocation.ROUTES.hasOwnProperty(page)) {
       return PageLocation.ROUTES[page];
     }
     throw new Error(`Unknown page: ${page}`);
   }
 
-  static pageUsesId(page) {
-    return page === Pages.ALBUM ||
-      page === Pages.PHOTO ||
-      page === Pages.METADATA ||
-      page === Pages.THING;
+  static pageUsesId(page: string) {
+    return PageLocation.ID_PAGES.has(page);
   }
 
   static showAboutUrl() {
@@ -60,46 +67,32 @@ export class PageLocation {
 
   static showThingUrl(urn: string) {
     window.location.hash = `#/thing/${urn}`;
-    // TODO dynamically look up the name for this urn
     document.title = "Thing - photos";
   }
 
-  static getUrl() {
-    if (window.location.hash.startsWith("#/albums")) {
-      return {
-        type: "albums",
-      };
-    } else if (window.location.hash.startsWith("#/album")) {
-      return {
-        type: "album",
-        id: window.location.hash.split("/")[2],
-      };
-    } else if (window.location.hash.startsWith("#/metadata")) {
-      return {
-        type: "metadata",
-        id: window.location.hash.split("/")[2],
-      };
-    } else if (window.location.hash.startsWith("#/thing")) {
-      return {
-        type: "thing",
-        id: window.location.hash.split("/")[2],
-      };
-    } else if (window.location.hash.startsWith("#/photos")) {
-      return {
-        type: "photos",
-      };
-    } else if (window.location.hash.startsWith("#/about")) {
-      return {
-        type: "about",
-      };
-    } else if (window.location.hash.startsWith("#/videos")) {
-      return {
-        type: "videos",
-      };
-    } else {
-      return {
-        type: "albums",
-      };
+  static ID_PAGES = new Set([
+    Pages.ALBUM, Pages.METADATA, Pages.THING
+  ])
+
+  static getUrl(): { type: string; id?: string }  {
+    const hash = window.location.hash;
+
+    for (const [prefix, page] of Object.entries(PageLocation.URL_PREFIX_TO_PAGE)) {
+      if (hash.startsWith(prefix)) {
+        const res: { type: string; id?: string } = {
+          type: page,
+        };
+
+        if (PageLocation.ID_PAGES.has(page)) {
+          res.id = hash.split("/")[2];
+        }
+
+        return res;
+      }
     }
+
+    return {
+      type: Pages.ALBUMS
+    };
   }
 }
