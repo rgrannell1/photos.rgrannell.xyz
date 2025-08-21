@@ -27,7 +27,10 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
-        "npm:esbuild@^0.23.1"
+        "npm:esbuild@^0.23.1",
+        "npm:express@^5.1.0",
+        "npm:mocha@^11.7.1",
+        "npm:tap@^21.1.0"
       ]
     }
   }

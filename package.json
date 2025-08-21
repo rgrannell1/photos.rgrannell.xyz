@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/rgrannell1/photos.rgrannell.xyz#readme",
   "dependencies": {
+    "express": "^5.1.0",
+    "mocha": "^11.7.1",
+    "tap": "^21.1.0"
   },
   "devDependencies": {
     "esbuild": "^0.23.1"

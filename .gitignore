@@ -1,6 +1,6 @@
 
 .vscode
-
+.tap
 # Local Netlify folder
 .netlify
 node_modules/

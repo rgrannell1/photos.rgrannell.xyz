@@ -5,14 +5,23 @@
 import puppeteer from "puppeteer";
 
 export async function openBrowser() {
-  return puppeteer.launch({ headless: true });
+  return puppeteer.launch({
+    headless: true ,
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--single-process",
+        "--no-zygote",
+      ],
+  });
 }
 
+const ENDPOINT = "http://localhost:5501";
+
 export async function openPage(browser, path) {
-  const ENDPOINT = "http://127.0.0.1:5501";
   const page = await browser.newPage({ headless: true });
 
-  await page.goto(`${ENDPOINT}/index.html#${path}`, {
+  await page.goto(`${ENDPOINT}/index.html${path}`, {
     waitUntil: "networkidle2",
   });
 
