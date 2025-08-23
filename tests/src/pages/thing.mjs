@@ -4,6 +4,10 @@ import { openBrowser, openPage } from "../browser.mjs";
 
 const browser = await openBrowser();
 
+/*
+ * Country testing
+ *
+ */
 await tap.test("Ireland's page title is 'Ireland'", async (test) => {
   const page = await openPage(browser, "#/thing/country:ireland");
 
@@ -31,6 +35,24 @@ await tap.test("At least 450 images use lazy-loading", async (test) => {
   );
 
   test.ok(lazyCount >= 450, `At least 450 images should use lazy-loading, found ${lazyCount}`);
+
+  await page.close();
+  test.end();
+});
+
+
+await tap.test("Known URLs are present", async test => {
+  const page = await openPage(browser, "#/thing/country:ireland");
+
+  const knownUrls = [
+    "https://photos-cdn.rgrannell.xyz/4c92d4b408.webp",
+    "https://photos-cdn.rgrannell.xyz/5e62180f7e.webp"
+  ];
+
+  await Promise.all(knownUrls.map(async url => {
+    const img = await page.$(`img[src="${url}"]`);
+    test.ok(img, `Image with src "${url}" should be present`);
+  }));
 
   await page.close();
   test.end();
