@@ -1,7 +1,11 @@
-import { STATS_SYMBOL } from "js/constants.js";
+
 import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.ts";
 
+/*
+ * Render statistics about the albums
+ *
+ */
 export class PhotosStats extends LitElem {
   static get properties() {
     return {

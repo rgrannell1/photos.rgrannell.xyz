@@ -16,6 +16,9 @@ import { Photos } from "../../services/photos.ts";
 import { URN } from "js/types.ts";
 
 export class ThingPage extends LitElem {
+  urn!: string;
+  triples!: Object;
+
   static get properties() {
     return {
       urn: { type: String },

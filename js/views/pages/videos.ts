@@ -13,6 +13,8 @@ import { LitElem } from "../../models/lit-element.ts";
 import { Videos } from "../../services/videos.ts";
 
 export class VideosPage extends LitElem {
+  triples!: Object;
+
   static get properties() {
     return {
       triples: { type: Object, state: true },

@@ -11,10 +11,6 @@ import { JSONFeed } from "../../services/json-feed.ts";
 import { LitElem } from "../../models/lit-element.ts";
 
 export class AboutPage extends LitElem {
-  static get properties() {
-    return {};
-  }
-
   override connectedCallback() {
     super.connectedCallback();
 

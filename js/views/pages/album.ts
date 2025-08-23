@@ -20,6 +20,16 @@ import { LitElem } from "../../models/lit-element.ts";
 import { KnownRelations, KnownThings } from "../../constants.js";
 
 export class AlbumPage extends LitElem {
+
+  title!: string;
+  id!: string;
+  minDate!: string;
+  maxDate!: string;
+  imageCount!: number;
+  description!: string;
+  triples!: Object;
+  countries!: string;
+
   static get properties() {
     return {
       title: { type: String },

@@ -22,11 +22,16 @@ function Heading(text: string) {
 }
 
 export class MetadataPage extends LitElem {
+
+  id!: string;
+  image!: Object;
+  sharing!: boolean;
+  triples!: Object;
+
   static get properties() {
     return {
       id: { type: String },
       image: { type: Object },
-      semantic: { type: Object },
       sharing: { state: true, type: Boolean },
       triples: { type: Object, state: true },
     };

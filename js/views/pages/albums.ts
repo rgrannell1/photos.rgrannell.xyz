@@ -15,6 +15,9 @@ import "../components/photo-album.ts";
 import "../components/year-cursor.ts";
 
 export class AlbumsPage extends LitElem {
+  albums!: Object;
+  triples!: Object;
+
   static get properties() {
     return {
       albums: { type: Object },

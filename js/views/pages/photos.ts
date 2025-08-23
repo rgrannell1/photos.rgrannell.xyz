@@ -14,6 +14,8 @@ import { LitElem } from "../../models/lit-element.ts";
 import { asUrn } from "js/library/tribble.js";
 
 export class PhotosPage extends LitElem {
+  triples! Object;
+
   static get properties() {
     return {
       triples: { type: Object, state: true },

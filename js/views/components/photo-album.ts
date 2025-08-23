@@ -6,6 +6,18 @@ import { Photos } from "../../services/photos.ts";
 import { Countries } from "../../things/things.ts";
 
 export class PhotoAlbum extends LitElem {
+
+  id!: string;
+  title!: string;
+  triples!: Object;
+  url!: string;
+  mosaicColours!: string;
+  minDate!: string;
+  maxDate!: string;
+  count!: number;
+  countries!: string;
+  loading!: string;
+
   static get properties() {
     return {
       title: { type: String },
