@@ -1,16 +1,5 @@
 // symbols to uniquely define the manifest and metadata
 // in the global window scope
-export const ALBUMS_SYMBOL = Symbol("the albums manifest");
-export const IMAGES_SYMBOL = Symbol("the images manifest");
-export const MANIFEST_SYMBOL = Symbol("the site manifest");
-export const VIDEOS_SYMBOL = Symbol("the videos manifest");
-export const SEMANTIC_SYMBOL = Symbol("the semantic data");
-export const STATS_SYMBOL = Symbol("the album stats");
-export const TRIPLES_SYMBOL = Symbol("the triples data");
-
-export const LOCATION_LATITUDE = 53.33306;
-export const LOCATION_LONGITUDE = -6.24889;
-export const LOCATION_ZOOM = 6;
 
 export const BRAND_TEXT = "photos";
 
@@ -19,14 +8,15 @@ export class LoadMode {
   static LAZY = "lazy";
 }
 
-export class Pages {
-  static PHOTOS = "photos";
-  static ALBUMS = "albums";
-  static ALBUM = "album";
-  static METADATA = "metadata";
-  static ABOUT = "about";
-  static VIDEOS = "videos";
-  static THING = "thing";
+export const Pages = {
+  photos: "photos",
+  albums: "albums",
+  album: "album",
+  metadata: "metadata",
+  about: "about",
+  videos: "videos",
+  thing: "thing",
+  listing: "listing"
 }
 
 export class KnownThings {

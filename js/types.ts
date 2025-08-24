@@ -1,4 +1,6 @@
+
 export type Triple = [string, string, string];
+
 export type URN = {
   id: string;
   type: string;

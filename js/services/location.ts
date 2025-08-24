@@ -1,43 +1,49 @@
 /*
- * Define page routes (poorly)
+ * Define page routes
  */
 
 import { Pages } from "../constants.js";
 
 export class PageLocation {
-  static ROUTES = {
-    [Pages.PHOTOS]: this.showPhotosUrl,
-    [Pages.ALBUMS]: this.showAlbumsUrl,
-    [Pages.ALBUM]: this.showAlbumUrl,
-    [Pages.METADATA]: this.showMetadataUrl,
-    [Pages.ABOUT]: this.showAboutUrl,
-    [Pages.VIDEOS]: this.showVideosUrl,
-    [Pages.THING]: this.showThingUrl,
+  static ROUTES: Record<keyof typeof Pages, CallableFunction> = {
+    photos: this.showPhotosUrl,
+    albums: this.showAlbumsUrl,
+    album: this.showAlbumUrl,
+    metadata: this.showMetadataUrl,
+    about: this.showAboutUrl,
+    videos: this.showVideosUrl,
+    thing: this.showThingUrl,
+    listing: this.showListingUrl
   };
 
-  static URL_PREFIX_TO_PAGE = {
-    "#/albums": Pages.ALBUMS,
-    "#/album": Pages.ALBUM,
-    "#/metadata": Pages.METADATA,
-    "#/about": Pages.ABOUT,
-    "#/videos": Pages.VIDEOS,
-    "#/thing": Pages.THING,
-    "#/photos": Pages.PHOTOS,
+  static URL_PREFIX_TO_PAGE: Record<string, keyof typeof Pages> = {
+    "#/albums": 'albums',
+    "#/album": 'album',
+    "#/metadata": 'metadata',
+    "#/about": 'about',
+    "#/videos": 'videos',
+    "#/thing": 'thing',
+    "#/photos": 'photos',
+    '#/listing': 'listing'
   };
 
-  static ID_PAGES = new Set([
-    Pages.ALBUM, Pages.METADATA, Pages.THING
-  ])
+  static ID_PAGES: Set<keyof typeof Pages> = new Set([
+    'album', 'metadata', 'thing'
+  ]);
+
+  static isPage(value: string): value is keyof typeof Pages {
+    return value in Pages;
+  }
 
   static router(page: string) {
-    if (PageLocation.ROUTES.hasOwnProperty(page)) {
+    if (PageLocation.isPage(page)) {
       return PageLocation.ROUTES[page];
     }
     throw new Error(`Unknown page: ${page}`);
   }
 
   static pageUsesId(page: string) {
-    return PageLocation.ID_PAGES.has(page);
+    return PageLocation.isPage(page) && PageLocation.ID_PAGES.has(page);
   }
 
   static showAboutUrl() {
@@ -74,6 +80,11 @@ export class PageLocation {
     document.title = "Thing - photos";
   }
 
+  static showListingUrl(id: string) {
+    window.location.hash = `#/listing/${id}`;
+    document.title = "Listing - photos";
+  }
+
   static getUrl(): { type: string; id?: string }  {
     const hash = window.location.hash;
 
@@ -92,7 +103,7 @@ export class PageLocation {
     }
 
     return {
-      type: Pages.ALBUMS
+      type: 'albums'
     };
   }
 }

@@ -3,7 +3,6 @@ import { LitElem } from "../models/lit-element.ts";
 import { TribblesArtifact } from "../models/artifacts.ts";
 
 import { PageLocation } from "../services/location.ts";
-import { Pages } from "../constants.js";
 
 import "./components/sidebar.ts";
 import "./components/header.ts";
@@ -14,6 +13,7 @@ import "./pages/metadata.ts";
 import "./pages/about.ts";
 import "./pages/thing.ts";
 import "./pages/videos.ts";
+import "./pages/listing.ts";
 import { TribbleDB } from "js/library/tribble.js";
 
 import {
@@ -53,19 +53,9 @@ function processTriples(
 const tribbles = new TribblesArtifact();
 
 export class PhotoApp extends LitElem {
-  static DEFAULT_PAGE = Pages.ALBUMS;
+  static DEFAULT_PAGE = "albums";
 
-  // TODO dislike, move to constants
-  static LOCATION_TYPE_TO_PAGE = {
-    "album": Pages.ALBUM,
-    "albums": Pages.ALBUMS,
-    "photos": Pages.PHOTOS,
-    "metadata": Pages.METADATA,
-    "about": Pages.ABOUT,
-    "videos": Pages.VIDEOS,
-    "thing": Pages.THING,
-  };
-
+  page: string;
   sidebarVisible: boolean;
   tribbleDB: object;
 
@@ -149,8 +139,8 @@ export class PhotoApp extends LitElem {
   setStateFromUrl() {
     const location = PageLocation.getUrl();
 
-    if (PhotoApp.LOCATION_TYPE_TO_PAGE[location?.type]) {
-      this.page = PhotoApp.LOCATION_TYPE_TO_PAGE[location.type];
+    if (PageLocation.isPage(location?.type)) {
+      this.page = location.type;
     } else {
       console.error("did not match pagetype", location?.type);
       this.page = PhotoApp.DEFAULT_PAGE;
@@ -171,7 +161,7 @@ export class PhotoApp extends LitElem {
       id,
     } = event.detail;
 
-    this.page = Pages.PHOTOS;
+    this.page = "photos";
     this.id = id;
     this.title = title;
 
@@ -195,7 +185,7 @@ export class PhotoApp extends LitElem {
       thumbnailUrl,
     } = event.detail;
 
-    this.page = Pages.METADATA;
+    this.page = "metadata";
     this.id = id;
     this.imageUrl = imageUrl;
     this.thumbnailUrl = thumbnailUrl;
@@ -257,15 +247,15 @@ export class PhotoApp extends LitElem {
       `;
     }
 
-    if (this.page === Pages.ABOUT) {
+    if (this.page === "about") {
       return html`<about-page class="${classes}"></about-page>`;
     }
 
-    if (this.page === Pages.PHOTOS) {
+    if (this.page === "photos") {
       return html`<photos-page .triples=${this.tribbleDB} class="${classes}"></photos-page>`;
     }
 
-    if (this.page === Pages.ALBUM) {
+    if (this.page === "album") {
       if (!this.id) {
         console.error("no album id provided");
       }
@@ -291,7 +281,7 @@ export class PhotoApp extends LitElem {
       `;
     }
 
-    if (this.page === Pages.METADATA) {
+    if (this.page === "metadata") {
       const image = this.tribbleDB.search({
         source: { type: "photo", id: this.id },
       }).firstObject();
@@ -308,18 +298,24 @@ export class PhotoApp extends LitElem {
       `;
     }
 
-    if (this.page === Pages.VIDEOS) {
+    if (this.page === "videos") {
       return html`
       <videos-page .triples=${this.tribbleDB} class="${classes}"></videos-page>
       `;
     }
 
-    if (this.page === Pages.THING) {
+    if (this.page === "thing") {
       return html`
       <thing-page
         .urn=${"urn:ró:" + this.id}
         .triples=${this.tribbleDB}
         class="${classes}"></thing-page>
+      `;
+    }
+
+    if (this.page === "listing") {
+      return html`
+      <listing-page id=${this.id} .triples=${this.tribbleDB} class="${classes}"></listing-page>
       `;
     }
   }

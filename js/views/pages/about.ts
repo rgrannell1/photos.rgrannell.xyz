@@ -1,7 +1,7 @@
 /*
  * /#/about
  *
- * The website's about page.
+ * The website's about page. Displays basic information about licensing
  */
 
 import { html } from "../../library/lit.js";
