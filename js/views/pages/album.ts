@@ -58,7 +58,7 @@ export class AlbumPage extends LitElem {
     return Array.from(albumPhotoSources).flatMap((source: string) => {
       const info = tdb.search({
         source: parseUrn(source),
-      }).firstObject();
+      }).firstObject(true);
 
       return info ? [info] : [];
     });
