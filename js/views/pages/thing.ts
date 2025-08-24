@@ -32,6 +32,10 @@ export class ThingPage extends LitElem {
     JSONFeed.setIndex();
   }
 
+  isValidImage(image: Record<string, any>) {
+    return image && image.thumbnail_url
+  }
+
   urnImages(tdb: any, query: any) {
     const relevantPhotos = tdb.search(query);
     const relevantPhotoIds = relevantPhotos.sources();
@@ -42,14 +46,14 @@ export class ThingPage extends LitElem {
           source: asUrn(photoId),
         }).firstObject();
 
-        return match ? [match] : [];
+        return this.isValidImage(match) ? [match] : [];
       }
 
       const match = tdb.search({
         source: { id: photoId, type: "photo" },
       }).firstObject();
 
-      return match ? [match] : [];
+      return this.isValidImage(match) ? [match] : [];
     });
   }
 
