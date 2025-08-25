@@ -22,7 +22,6 @@ function Heading(text: string) {
 }
 
 export class MetadataPage extends LitElem {
-
   id!: string;
   image!: Object;
   sharing!: boolean;

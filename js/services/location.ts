@@ -13,22 +13,24 @@ export class PageLocation {
     about: this.showAboutUrl,
     videos: this.showVideosUrl,
     thing: this.showThingUrl,
-    listing: this.showListingUrl
+    listing: this.showListingUrl,
   };
 
   static URL_PREFIX_TO_PAGE: Record<string, keyof typeof Pages> = {
-    "#/albums": 'albums',
-    "#/album": 'album',
-    "#/metadata": 'metadata',
-    "#/about": 'about',
-    "#/videos": 'videos',
-    "#/thing": 'thing',
-    "#/photos": 'photos',
-    '#/listing': 'listing'
+    "#/albums": "albums",
+    "#/album": "album",
+    "#/metadata": "metadata",
+    "#/about": "about",
+    "#/videos": "videos",
+    "#/thing": "thing",
+    "#/photos": "photos",
+    "#/listing": "listing",
   };
 
   static ID_PAGES: Set<keyof typeof Pages> = new Set([
-    'album', 'metadata', 'thing'
+    "album",
+    "metadata",
+    "thing",
   ]);
 
   static isPage(value: string): value is keyof typeof Pages {
@@ -85,10 +87,12 @@ export class PageLocation {
     document.title = "Listing - photos";
   }
 
-  static getUrl(): { type: string; id?: string }  {
+  static getUrl(): { type: string; id?: string } {
     const hash = window.location.hash;
 
-    for (const [prefix, page] of Object.entries(PageLocation.URL_PREFIX_TO_PAGE)) {
+    for (
+      const [prefix, page] of Object.entries(PageLocation.URL_PREFIX_TO_PAGE)
+    ) {
       if (hash.startsWith(prefix)) {
         const res: { type: string; id?: string } = {
           type: page,
@@ -103,7 +107,7 @@ export class PageLocation {
     }
 
     return {
-      type: 'albums'
+      type: "albums",
     };
   }
 }

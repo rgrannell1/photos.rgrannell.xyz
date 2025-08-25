@@ -17,8 +17,6 @@ Things page Renders wildcard page names Renders wildcard page content Renders
 Binomial and common species name Renders birdwatch and wikipedia Renders country
 and placetype Renders Wild and captive pictures Links albums
 
-
-
 ```sh
 rs test
 ```

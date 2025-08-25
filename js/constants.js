@@ -16,8 +16,8 @@ export const Pages = {
   about: "about",
   videos: "videos",
   thing: "thing",
-  listing: "listing"
-}
+  listing: "listing",
+};
 
 export class KnownThings {
   static UNESCO = "unesco";

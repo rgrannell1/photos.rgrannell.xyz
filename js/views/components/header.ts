@@ -7,7 +7,7 @@ export class PhotoHeader extends LitElem {
 
   static get properties() {
     return {
-      darkMode: { type: Boolean }
+      darkMode: { type: Boolean },
     };
   }
 
@@ -24,7 +24,7 @@ export class PhotoHeader extends LitElem {
         </svg>
       </a>
     </li>
-    `
+    `;
   }
 
   render() {

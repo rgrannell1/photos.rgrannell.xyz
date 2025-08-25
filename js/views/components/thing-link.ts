@@ -22,7 +22,9 @@ export class UnescoLink extends LitElem {
   }
 
   url() {
-    return this.getId() ? `https://whc.unesco.org/en/list/${this.getId()}` : null;
+    return this.getId()
+      ? `https://whc.unesco.org/en/list/${this.getId()}`
+      : null;
   }
 
   render() {

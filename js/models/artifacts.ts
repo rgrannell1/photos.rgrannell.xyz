@@ -5,7 +5,6 @@ const CONFIG = window.envConfig;
 
 /*
  * Stream tribbles line-by-line, and yield triples
- *
  */
 export class TribblesArtifact {
   url: string;

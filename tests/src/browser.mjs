@@ -6,13 +6,13 @@ import puppeteer from "puppeteer";
 
 export async function openBrowser() {
   return puppeteer.launch({
-    headless: true ,
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--single-process",
-        "--no-zygote",
-      ],
+    headless: true,
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--single-process",
+      "--no-zygote",
+    ],
   });
 }
 

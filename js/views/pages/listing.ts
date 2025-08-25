@@ -24,9 +24,9 @@ class ListingPageService {
    */
   static getDistinctThings(tdb, type: string) {
     const results = tdb.search({
-      source: {type},
-      relation: 'name'
-    }).objects() as {id: string, name: string}[];
+      source: { type },
+      relation: "name",
+    }).objects() as { id: string; name: string }[];
 
     return results.sort((res0, res1) => {
       return res0.name.localeCompare(res1.name);
@@ -35,7 +35,7 @@ class ListingPageService {
 
   static chooseBestImage(tdb, type: string, urn: string): string | undefined {
     const results = tdb.search({
-      source: {type: 'photo'},
+      source: { type: "photo" },
       target: asUrn(urn),
     });
 
@@ -43,16 +43,16 @@ class ListingPageService {
     const ratedPhotos = Array.from(sourceIds).map((source: string) => {
       const result = tdb.search({
         source: asUrn(source),
-        relation: 'rating'
+        relation: "rating",
       });
       const ratings = Array.from(result.targets()).map((rating: string) => {
-        return decodeURIComponent(asUrn(rating).id).length
+        return decodeURIComponent(asUrn(rating).id).length;
       });
 
       return {
         photo: source,
-        rating: Math.max(...ratings)
-      }
+        rating: Math.max(...ratings),
+      };
     }).sort((pair0, pair1) => {
       return pair1.rating - pair0.rating;
     });
@@ -84,7 +84,7 @@ class ThingAlbum extends LitElem {
     <div class="photo-album">
         <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${this.url}" src="${thumbnailDataUrl}"/>
     </div>
-    `
+    `;
   }
 }
 
@@ -101,31 +101,56 @@ export class ListingPage extends LitElem {
     };
   }
 
-  /*
-   * Render the album page. Can differ between different types.
-   *
-   */
-  renderThingAlbum(type: string, urn: string, name: string) {
-    const imageUrn = ListingPageService.chooseBestImage(this.triples, type, urn)
-
-    const image = this.triples.search({
-      source: asUrn(imageUrn)
+  renderMetadata(type: string, urn: string, name: string) {
+    const thingDetails = this.triples.search({
+      source: asUrn(urn)
     }).firstObject();
 
-    console.log(image, 'xxxxxxxxxxxxxx')
+    return html`
+      <div>
+        <p>${name}</p>
+        ${
+          thingDetails.wikipedia ? html`<span><a href="${thingDetails.wikipedia}">[wiki]</a></span>` : ''
+        }
 
-    return html`<thing-album
-      url=${image.thumbnail_url}
-      mosaicColours=${image.mosaic_colours}
-      count=${2}
-      loading="eager"
-      triples=${this.triples}>
-    </thing-album>`;
+        ${
+          thingDetails.birdwatch_url ? html`<span><a href="${thingDetails.birdwatch_url}">[birdwatch]</a></span>` : ''
+        }
+      </div>
+    `;
+  }
+
+
+  /*
+   * Render the album page. Can differ between different types.
+   */
+  renderThingAlbum(type: string, urn: string, name: string, idx: number) {
+    const imageUrn = ListingPageService.chooseBestImage(
+      this.triples,
+      type,
+      urn,
+    );
+
+    const image = this.triples.search({
+      source: asUrn(imageUrn),
+    }).firstObject();
+
+    return html`
+          <photo-album
+            .triples=${this.triples}
+            title="${'no such thing exists'}"
+            url="${image.thumbnail_url}"
+            mosaicColours="${image.mosaic_colours}"
+            id="${"urn:ró:album:fake"}"
+            loading=${Photos.loadingMode(idx)}>
+          ${this.renderMetadata(type, urn, name)}
+            </photo-album>
+
+    `
   }
 
   render() {
     const tdb = this.triples;
-
     this.id = 'bird'
 
     // get all named things
@@ -134,10 +159,16 @@ export class ListingPage extends LitElem {
     // loop over, create albums page
 
     return html`
+    <h1>${this.id.charAt(0).toUpperCase() + this.id.slice(1)}s</h1>
+
     <section class="album-container">
-      ${things.map(thing => this.renderThingAlbum(this.id, thing.id, thing.name))}
+      ${
+      things.map((thing, idx) =>
+        this.renderThingAlbum(this.id, thing.id, thing.name, idx)
+      )
+    }
     </section>
-    `
+    `;
   }
 }
 

@@ -99,7 +99,7 @@ export class PhotoApp extends LitElem {
         "i": "urn:ró:",
         "birdwatch": "https://birdwatchireland.ie/birds/",
         "photos": "https://photos-cdn.rgrannell.xyz/",
-        "wiki": "https://en.wikipedia.org/wiki/"
+        "wiki": "https://en.wikipedia.org/wiki/",
       };
 
       for await (const triple of tribbles.stream()) {

@@ -2,7 +2,6 @@ import { html } from "../../library/lit.js";
 import { LitElem } from "../../models/lit-element.ts";
 
 export class ShareButton extends LitElem {
-
   url!: string;
   format!: string;
   sharing!: boolean;

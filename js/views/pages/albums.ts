@@ -78,17 +78,25 @@ export class AlbumsPage extends LitElem {
           await new Promise((res) => setTimeout(res, 0));
         }
 
+        const metadata = html`
+        <photo-album-metadata
+          .triples=${this.triples}
+            title="${album.title}"
+            minDate="${album.minDate}"
+            maxDate="${album.maxDate}"
+            countries="${album.flags}"
+            count="${album.count}"
+        ></photo-album-metadata>`;
+
         yield html`
           <photo-album
             .triples=${this.triples}
             title="${album.title}"
             url="${album.url}"
             mosaicColours="${album.mosaicColours}"
-            id="${album.id}" count="${album.count}"
-            minDate="${album.minDate}"
-            maxDate="${album.maxDate}"
-            countries="${album.flags}"
+            id="${album.id}"
             loading=${loading}>
+            ${metadata}
             </photo-album>
           `;
       }

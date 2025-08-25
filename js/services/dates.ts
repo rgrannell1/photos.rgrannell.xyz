@@ -21,7 +21,11 @@ export class Dates {
     return `${date.replace(/\:/g, "/")} ${time}`;
   }
 
-  static dateRange(minDate: Date | string, maxDate: Date | string, smallDevice: boolean) {
+  static dateRange(
+    minDate: Date | string,
+    maxDate: Date | string,
+    smallDevice: boolean,
+  ) {
     if (!minDate && !maxDate) {
       return "unknown date";
     }

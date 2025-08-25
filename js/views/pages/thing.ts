@@ -33,7 +33,7 @@ export class ThingPage extends LitElem {
   }
 
   isValidImage(image: Record<string, any>) {
-    return image && image.thumbnail_url
+    return image && image.thumbnail_url;
   }
 
   urnImages(tdb: any, query: any) {
@@ -97,6 +97,16 @@ export class ThingPage extends LitElem {
         return album1.min_date - album0.min_date;
       })
       .map((album) => {
+        const metadata = html`
+        <photo-album-metadata slot="metadata"
+            .triples=${this.triples}
+            title="${album.name}"
+            count="${album.photos_count}"
+            minDate="${album.min_date}"
+            maxDate="${album.max_date}"
+            countries="${album.flags}"
+        ></photo-album-metadata>`;
+
         return html`
           <photo-album
             .triples=${this.triples}
@@ -104,12 +114,9 @@ export class ThingPage extends LitElem {
             url="${album.thumbnail_url}"
             mosaicColours="${album.mosaic}"
             id="${album.id}"
-            count="${album.photos_count}"
-            minDate="${album.min_date}"
-            maxDate="${album.max_date}"
-            countries="${album.flags}"
             loading="eager">
-            </photo-album>
+      ${metadata}
+          </photo-album>
       `;
       });
   }
