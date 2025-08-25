@@ -153,7 +153,6 @@ export class ListingPage extends LitElem {
 
   render() {
     const tdb = this.triples;
-    this.id = "bird";
 
     // get all named things
     const things = ListingPageService.getDistinctThings(tdb, this.id);
@@ -161,12 +160,12 @@ export class ListingPage extends LitElem {
     // loop over, create albums page
 
     return html`
+    <section class="album-metadata">
+      <h1 class="albums-header">${this.id.charAt(0).toUpperCase() + this.id.slice(1)}s</h1>
+      <a href="/#thing/${this.id}:*">See all ${this.id} photos</a>
+    </section>
 
     <section class="album-container">
-      <h1>${this.id.charAt(0).toUpperCase() + this.id.slice(1)}s</h1>
-      <br>
-
-      <a href="/#thing/${this.id}:*">See all ${this.id} photos</a>
 
       ${
       things.map((thing, idx) =>

@@ -15,6 +15,7 @@ import "./pages/thing.ts";
 import "./pages/videos.ts";
 import "./pages/listing.ts";
 import { TribbleDB } from "js/library/tribble.js";
+import { property } from "lit/decorators.js";
 
 import {
   countriesAsUrns,
@@ -55,29 +56,38 @@ const tribbles = new TribblesArtifact();
 export class PhotoApp extends LitElem {
   static DEFAULT_PAGE = "albums";
 
+  @property()
+  title: string;
+
+  @property()
   page: string;
+
+  @property({ state: true })
   sidebarVisible: boolean;
+
+  @property()
   tribbleDB: object;
 
-  static get properties() {
-    return {
-      title: { type: String },
-      page: { type: String },
-      sidebarVisible: { type: Boolean, state: true },
-      id: { type: String },
-      imageUrl: { type: String },
-      thumbnailUrl: { type: String },
-      route: { type: String },
-      params: { type: Object },
-      query: { type: Object },
-      darkMode: { type: Boolean },
-      tribbleDB: {
-        type: Object,
-        state: true,
-        attribute: false,
-      },
-    };
-  }
+  @property()
+  darkMode: boolean;
+
+  @property()
+  id: string;
+
+  @property()
+  imageUrl: string;
+
+  @property()
+  thumbnailUrl: string;
+
+  @property()
+  route: string;
+
+  @property()
+  params: Object;
+
+  @property()
+  query: Object;
 
   connectedCallback() {
     super.connectedCallback();
@@ -314,9 +324,13 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === "listing") {
-      return html`
-      <listing-page id=${this.id} .triples=${this.tribbleDB} class="${classes}"></listing-page>
-      `;
+      if (!this.id) {
+        console.error("no listing provided");
+      } else {
+        return html`
+        <listing-page id=${this.id} .triples=${this.tribbleDB} class="${classes}"></listing-page>
+        `;
+      }
     }
   }
 
