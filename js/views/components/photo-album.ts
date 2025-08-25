@@ -1,19 +1,26 @@
-import { html, LitElement } from "../../library/lit.js";
+import { html, LitElement } from "lit-element";
 import { parseUrn } from "../../library/tribble.js";
 import { LitElem } from "../../models/lit-element.ts";
 import { Dates } from "../../services/dates.ts";
 import { Photos } from "../../services/photos.ts";
 import { Countries } from "../../things/things.ts";
+import { property } from "lit/decorators.js";
 
 // TODO styles are now broken?
 
 export class PhotoAlbum extends LitElement {
-  id!: string;
-  title!: string;
-  triples!: Object;
-  url!: string;
-  mosaicColours!: string;
-  loading!: string;
+  @property()
+  id: string;
+  @property()
+  title: string;
+  @property()
+  triples: Object;
+  @property()
+  url: string;
+  @property()
+  mosaicColours: string;
+  @property()
+  loading: string;
 
   broadcast(label: string, detail?: any) {
     return () => {

@@ -1,18 +1,16 @@
-import { html } from "../../library/lit.js";
+import { html } from "lit-element";
 import { LitElem } from "../../models/lit-element.ts";
+import { property } from "lit/decorators.js";
 
 export class ShareButton extends LitElem {
-  url!: string;
-  format!: string;
-  sharing!: boolean;
+  @property()
+  url: string;
 
-  static get properties() {
-    return {
-      url: { type: String },
-      format: { type: String },
-      sharing: { state: true, type: Boolean },
-    };
-  }
+  @property()
+  format: string;
+
+  @property({ state: true })
+  sharing: boolean;
 
   /*
    * Share an image using the Web Share API, if available.

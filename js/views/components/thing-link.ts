@@ -3,19 +3,17 @@
  */
 import { KnownRelations, KnownThings } from "../../constants.js";
 
-import { html } from "../../library/lit.js";
+import { html } from "lit-element";
 import { LitElem } from "../../models/lit-element.ts";
 import { Things } from "../../things/things.ts";
 
 import { BinomialTypes } from "../../constants.js";
 import { Binomials } from "../../things/things.ts";
+import { property } from "lit/decorators.js";
 
 export class UnescoLink extends LitElem {
-  urn!: string;
-
-  static properties = {
-    urn: { type: String },
-  };
+  @property()
+  urn: string;
 
   getId() {
     return Things.parseUrn(this.urn)?.id ?? "unknown";

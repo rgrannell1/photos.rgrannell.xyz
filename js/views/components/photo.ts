@@ -1,26 +1,27 @@
 import { parseUrn } from "js/library/tribble.js";
-import { html } from "../../library/lit.js";
+import { html } from "lit-element";
+import { property } from "lit/decorators.js";
 import { LitElem } from "../../models/lit-element.ts";
 import { Photos } from "../../services/photos.ts";
 
 export class AppPhoto extends LitElem {
-  override id!: string;
-  imageUrl!: string;
-  thumbnailUrl!: string;
-  mosaicColours!: string;
-  summary!: string;
-  loading!: string;
+  @property()
+  override id?: string;
 
-  static get properties() {
-    return {
-      id: { type: String },
-      imageUrl: { type: String },
-      thumbnailUrl: { type: String },
-      mosaicColours: { type: String },
-      summary: { type: String },
-      loading: { type: String },
-    };
-  }
+  @property()
+  imageUrl?: string;
+
+  @property()
+  thumbnailUrl?: string;
+
+  @property()
+  mosaicColours?: string;
+
+  @property()
+  summary?: string;
+
+  @property()
+  loading?: string = "eager";
 
   renderIcon() {
     return html`

@@ -6,8 +6,8 @@
  * page
  */
 
-import { html, unsafeHTML } from "../../library/lit.js";
-import { asUrn, parseUrn } from "../../library/tribble.js";
+import { html } from "lit-element";
+import { asUrn } from "../../library/tribble.js";
 
 import "../components/photo.ts";
 import "../components/video.ts";
@@ -15,7 +15,6 @@ import "../components/share.ts";
 import "../components/thing-link.ts";
 
 import { LitElem } from "../../models/lit-element.ts";
-import { URN } from "js/types.ts";
 import { Photos } from "js/services/photos.ts";
 
 class ListingPageService {
@@ -103,23 +102,26 @@ export class ListingPage extends LitElem {
 
   renderMetadata(type: string, urn: string, name: string) {
     const thingDetails = this.triples.search({
-      source: asUrn(urn)
+      source: asUrn(urn),
     }).firstObject();
 
     return html`
       <div>
         <p>${name}</p>
         ${
-          thingDetails.wikipedia ? html`<span><a href="${thingDetails.wikipedia}">[wiki]</a></span>` : ''
-        }
+      thingDetails.wikipedia
+        ? html`<span><a href="${thingDetails.wikipedia}">[wiki]</a></span>`
+        : ""
+    }
 
         ${
-          thingDetails.birdwatch_url ? html`<span><a href="${thingDetails.birdwatch_url}">[birdwatch]</a></span>` : ''
-        }
+      thingDetails.birdwatch_url
+        ? html`<span><a href="${thingDetails.birdwatch_url}">[birdwatch]</a></span>`
+        : ""
+    }
       </div>
     `;
   }
-
 
   /*
    * Render the album page. Can differ between different types.
@@ -138,7 +140,7 @@ export class ListingPage extends LitElem {
     return html`
           <photo-album
             .triples=${this.triples}
-            title="${'no such thing exists'}"
+            title="${"no such thing exists"}"
             url="${image.thumbnail_url}"
             mosaicColours="${image.mosaic_colours}"
             id="${"urn:ró:album:fake"}"
@@ -146,12 +148,12 @@ export class ListingPage extends LitElem {
           ${this.renderMetadata(type, urn, name)}
             </photo-album>
 
-    `
+    `;
   }
 
   render() {
     const tdb = this.triples;
-    this.id = 'bird'
+    this.id = "bird";
 
     // get all named things
     const things = ListingPageService.getDistinctThings(tdb, this.id);
@@ -159,9 +161,13 @@ export class ListingPage extends LitElem {
     // loop over, create albums page
 
     return html`
-    <h1>${this.id.charAt(0).toUpperCase() + this.id.slice(1)}s</h1>
 
     <section class="album-container">
+      <h1>${this.id.charAt(0).toUpperCase() + this.id.slice(1)}s</h1>
+      <br>
+
+      <a href="/#thing/${this.id}:*">See all ${this.id} photos</a>
+
       ${
       things.map((thing, idx) =>
         this.renderThingAlbum(this.id, thing.id, thing.name, idx)

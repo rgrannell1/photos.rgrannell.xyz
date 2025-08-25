@@ -1,4 +1,4 @@
-import { LitElement } from "../library/lit.js";
+import { LitElement } from "lit-element";
 
 export class LitElem extends LitElement {
   override createRenderRoot() {

@@ -1,2 +1,50 @@
-var i="sw-cache",s=["/icons/android-chrome-192x192.png","/icons/android-chrome-512x512.png","/icons/apple-touch-icon.png","/icons/favicon-16x16.png","/icons/favicon-32x32.png","/favicon.ico","/favicon-32x32.png"],r=new Set;self.addEventListener("message",n=>{n.data&&n.data.type==="homepageThumbnails"&&n.data.thumbnails.forEach(t=>{r.add(t)})});var a=[];self.addEventListener("install",function(n){n.waitUntil(caches.open(i).then(function(e){return Promise.all(s.map(t=>e.add(t)))}))});function u(n){if(n.includes(".woff2"))return!0;let e=["tribbles"];for(let t of e)if(n.includes(`/manifest/${t}`))return!0;for(let t of r)if(n.includes(t))return!0;return!1}self.addEventListener("fetch",function(n){let e=n.request.url;for(let t of a)if(e.includes(t))return;n.respondWith(caches.match(n.request).then(function(t){return t||fetch(n.request).then(function(c){return u(e)?caches.open(i).then(function(o){return o.put(n.request,c.clone()),c}):c}).catch(c=>{console.error(c)})}))});
+var i = "sw-cache",
+  s = [
+    "/icons/android-chrome-192x192.png",
+    "/icons/android-chrome-512x512.png",
+    "/icons/apple-touch-icon.png",
+    "/icons/favicon-16x16.png",
+    "/icons/favicon-32x32.png",
+    "/favicon.ico",
+    "/favicon-32x32.png",
+  ],
+  r = new Set();
+self.addEventListener("message", (n) => {
+  n.data && n.data.type === "homepageThumbnails" &&
+    n.data.thumbnails.forEach((t) => {
+      r.add(t);
+    });
+});
+var a = [];
+self.addEventListener("install", function (n) {
+  n.waitUntil(
+    caches.open(i).then(function (e) {
+      return Promise.all(s.map((t) => e.add(t)));
+    }),
+  );
+});
+function u(n) {
+  if (n.includes(".woff2")) return !0;
+  let e = ["tribbles"];
+  for (let t of e) if (n.includes(`/manifest/${t}`)) return !0;
+  for (let t of r) if (n.includes(t)) return !0;
+  return !1;
+}
+self.addEventListener("fetch", function (n) {
+  let e = n.request.url;
+  for (let t of a) if (e.includes(t)) return;
+  n.respondWith(
+    caches.match(n.request).then(function (t) {
+      return t || fetch(n.request).then(function (c) {
+        return u(e)
+          ? caches.open(i).then(function (o) {
+            return o.put(n.request, c.clone()), c;
+          })
+          : c;
+      }).catch((c) => {
+        console.error(c);
+      });
+    }),
+  );
+});
 //# sourceMappingURL=sw.js.map

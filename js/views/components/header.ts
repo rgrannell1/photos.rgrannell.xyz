@@ -1,15 +1,11 @@
-import { html } from "../../library/lit.js";
+import { html } from "lit-element";
 import { LitElem } from "../../models/lit-element.ts";
 import { BRAND_TEXT } from "../../constants.js";
+import { property } from "lit/decorators.js";
 
 export class PhotoHeader extends LitElem {
-  darkMode!: boolean;
-
-  static get properties() {
-    return {
-      darkMode: { type: Boolean },
-    };
-  }
+  @property()
+  darkMode: boolean = false;
 
   feedUrl() {
     return `/manifest/atom/atom-index.xml`;

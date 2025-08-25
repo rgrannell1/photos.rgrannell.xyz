@@ -7,9 +7,11 @@
  * - Links & Sharing Options
  */
 
-import { html, unsafeHTML } from "../../library/lit.js";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { html } from "lit-element";
 import { LitElem } from "../../models/lit-element.ts";
 import { JSONFeed } from "../../services/json-feed.ts";
+import { property } from "lit/decorators.js";
 
 import "../components/share-button.ts";
 import "../components/thing-link.ts";
@@ -22,19 +24,14 @@ function Heading(text: string) {
 }
 
 export class MetadataPage extends LitElem {
+  @property()
   id!: string;
+  @property()
   image!: Object;
+  @property({ state: true })
   sharing!: boolean;
+  @property({ state: true })
   triples!: Object;
-
-  static get properties() {
-    return {
-      id: { type: String },
-      image: { type: Object },
-      sharing: { state: true, type: Boolean },
-      triples: { type: Object, state: true },
-    };
-  }
 
   override connectedCallback() {
     super.connectedCallback();

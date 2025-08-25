@@ -1,4 +1,4 @@
-import { html } from "../library/lit.js";
+import { html } from "lit-element";
 import { LitElem } from "../models/lit-element.ts";
 import { TribblesArtifact } from "../models/artifacts.ts";
 

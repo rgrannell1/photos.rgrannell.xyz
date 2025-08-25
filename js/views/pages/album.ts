@@ -4,7 +4,8 @@
  * Each individual album page. Shows photos, videos, and some album metadata
  */
 
-import { html, unsafeHTML } from "../../library/lit.js";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { html } from "lit-element";
 import { parseUrn } from "../../library/tribble.js";
 
 import "../components/photo.ts";
@@ -18,29 +19,25 @@ import { JSONFeed } from "../../services/json-feed.ts";
 import { Countries, Things } from "../../things/things.ts";
 import { LitElem } from "../../models/lit-element.ts";
 import { KnownRelations, KnownThings } from "../../constants.js";
+import { property } from "lit/decorators.js";
 
 export class AlbumPage extends LitElem {
+  @property()
   title!: string;
+  @property()
   id!: string;
+  @property()
   minDate!: string;
+  @property()
   maxDate!: string;
+  @property()
   imageCount!: number;
+  @property()
   description!: string;
+  @property({ state: true })
   triples!: Object;
+  @property()
   countries!: string;
-
-  static get properties() {
-    return {
-      title: { type: String },
-      id: { type: String },
-      minDate: { type: String },
-      maxDate: { type: String },
-      imageCount: { type: Number },
-      description: { type: String },
-      triples: { type: Object, state: true },
-      countries: { type: String },
-    };
-  }
 
   override connectedCallback() {
     super.connectedCallback();

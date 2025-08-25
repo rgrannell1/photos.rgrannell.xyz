@@ -4,23 +4,19 @@
  * List all photos
  */
 
-import { html } from "../../library/lit.js";
+import { html } from "lit";
 
-import { asyncAppend } from "../../library/lit.js";
+import { asyncAppend } from "lit/directives/async-append.js";
 import "../components/photo.ts";
 import { Photos } from "../../services/photos.ts";
 import { JSONFeed } from "../../services/json-feed.ts";
 import { LitElem } from "../../models/lit-element.ts";
 import { asUrn } from "js/library/tribble.js";
+import { property } from "lit/decorators.js";
 
 export class PhotosPage extends LitElem {
+  @property({ state: true })
   triples!: Object;
-
-  static get properties() {
-    return {
-      triples: { type: Object, state: true },
-    };
-  }
 
   override connectedCallback() {
     super.connectedCallback();

@@ -1,14 +1,10 @@
-import { html } from "../../library/lit.js";
+import { html } from "lit-element";
 import { LitElem } from "../../models/lit-element.ts";
+import { property } from "lit/decorators.js";
 
 export class Sidebar extends LitElem {
-  visible!: boolean;
-
-  static get properties() {
-    return {
-      visible: { type: Boolean },
-    };
-  }
+  @property({ type: Boolean, state: true })
+  visible: boolean;
 
   render() {
     const classes = ["photo-sidebar"];

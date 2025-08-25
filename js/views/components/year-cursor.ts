@@ -1,7 +1,9 @@
-import { html } from "../../library/lit.js";
+import { html } from "lit-element";
 import { LitElem } from "../../models/lit-element.ts";
+import { property } from "lit/decorators.js";
 
 export class YearCursor extends LitElem {
+  @property({ type: Array })
   datesCache: {
     position: DOMRect;
     minDate: number;

@@ -1,18 +1,16 @@
-import { html } from "../../library/lit.js";
+import { html } from "lit-element";
 import { LitElem } from "../../models/lit-element.ts";
+import { property } from "lit/decorators.js";
 
 export class AlbumShareButton extends LitElem {
-  override title!: string;
-  url!: string;
-  sharing!: boolean;
+  @property()
+  override title: string;
 
-  static get properties() {
-    return {
-      title: { type: String },
-      url: { type: String },
-      sharing: { state: true, type: Boolean },
-    };
-  }
+  @property()
+  url: string;
+
+  @property({ state: true })
+  sharing: boolean;
 
   /*
    * Share an image using the Web Share API, if available.

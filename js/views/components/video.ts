@@ -1,14 +1,27 @@
-import { html } from "../../library/lit.js";
+import { html } from "lit-element";
 import { LitElem } from "../../models/lit-element.ts";
+import { property } from "lit/decorators.js";
 
 export class AppVideo extends LitElem {
-  override id!: string;
-  url!: string;
-  preload!: string;
-  url_poster!: string;
+  @property()
+  override id: string;
+
+  @property()
+  url: string;
+
+  @property()
+  preload: string;
+
+  @property()
+  url_poster: string;
+
+  @property()
   url_unscaled!: string;
+  @property()
   url_1080p!: string;
+  @property()
   url_720p!: string;
+  @property()
   url_480p!: string;
 
   static get properties() {

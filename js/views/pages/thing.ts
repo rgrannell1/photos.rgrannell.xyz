@@ -4,7 +4,7 @@
  * Details about subjects or places of a photo
  */
 
-import { html } from "../../library/lit.js";
+import { html } from "lit-element";
 import { asUrn, parseUrn } from "../../library/tribble.js";
 
 import "../components/photo.ts";
@@ -14,17 +14,14 @@ import { BinomialTypes, KnownRelations } from "../../constants.js";
 import { Binomials, Things } from "../../things/things.ts";
 import { Photos } from "../../services/photos.ts";
 import { URN } from "js/types.ts";
+import { property } from "lit/decorators.js";
 
 export class ThingPage extends LitElem {
-  urn!: string;
-  triples!: Object;
+  @property()
+  urn: string;
 
-  static get properties() {
-    return {
-      urn: { type: String },
-      triples: { type: Object, state: true },
-    };
-  }
+  @property({ state: true })
+  triples: Object;
 
   override connectedCallback() {
     super.connectedCallback();

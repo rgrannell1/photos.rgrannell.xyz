@@ -4,7 +4,7 @@
  * The website's about page. Displays basic information about licensing
  */
 
-import { html } from "../../library/lit.js";
+import { html } from "lit-element";
 
 import "../components/photo.ts";
 import { JSONFeed } from "../../services/json-feed.ts";
