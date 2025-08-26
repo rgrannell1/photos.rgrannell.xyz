@@ -137,17 +137,20 @@ export class ListingPage extends LitElem {
       source: asUrn(imageUrn),
     }).firstObject();
 
-    return html`
-          <photo-album
-            .triples=${this.triples}
-            title="${"no such thing exists"}"
-            url="${image.thumbnail_url}"
-            mosaicColours="${image.mosaic_colours}"
-            id="${"urn:ró:album:fake"}"
-            loading=${Photos.loadingMode(idx)}>
-          ${this.renderMetadata(type, urn, name)}
-            </photo-album>
+    const parsedId = asUrn(this.id);
+    const idLink = `${parsedId.type}:${parsedId.id}`;
 
+    return html`
+      <photo-album
+        .triples=${this.triples}
+        title="${"no such thing exists"}"
+        url="${image.thumbnail_url}"
+        mosaicColours="${image.mosaic_colours}"
+        id=${idLink}
+        path="#/thing/"
+        loading=${Photos.loadingMode(idx)}>
+      ${this.renderMetadata(type, urn, name)}
+        </photo-album>
     `;
   }
 

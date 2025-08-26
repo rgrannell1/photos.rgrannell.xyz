@@ -22,6 +22,9 @@ export class PhotoAlbum extends LitElement {
   @property()
   loading: string;
 
+  @property()
+  path: string = '/#/album/'
+
   broadcast(label: string, detail?: any) {
     return () => {
       const dispatched = new CustomEvent(label, {
@@ -31,17 +34,6 @@ export class PhotoAlbum extends LitElement {
       });
 
       this.dispatchEvent(dispatched);
-    };
-  }
-
-  static get properties() {
-    return {
-      title: { type: String },
-      triples: { type: Object, state: true },
-      url: { type: String },
-      mosaicColours: { type: String },
-      id: { type: String },
-      loading: { type: String },
     };
   }
 
@@ -91,7 +83,7 @@ export class PhotoAlbum extends LitElement {
     return html`
     <link rel="stylesheet" href="/dist/css/style.css">
     <div class="photo-album">
-      <a href="${"/#/album/" + this.id}" onclick="event.preventDefault();">
+      <a href="${this.path + this.id}" onclick="event.preventDefault();">
         ${this.renderPlaceholder()}
         ${this.renderImage()}
       </a>
