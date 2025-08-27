@@ -16,6 +16,7 @@ import "../components/thing-link.ts";
 
 import { LitElem } from "../../models/lit-element.ts";
 import { Photos } from "js/services/photos.ts";
+import { property } from "lit/decorators.js";
 
 class ListingPageService {
   /*
@@ -66,16 +67,25 @@ class ListingPageService {
 }
 
 class ThingAlbum extends LitElem {
-  static get properties() {
-    return {
-      triples: { type: Object, state: true },
-      url: { type: String },
-      id: { type: String },
-      mosaicColours: { type: String },
-      count: { type: Number },
-      loading: { type: String },
-    };
-  }
+
+  @property({state: true})
+  triples!: Object
+
+  @property()
+  url!: string;
+
+  @property()
+  id!: string;
+
+  @property()
+  mosaicColours!: string;
+
+  @property()
+  count!: number;
+
+  @property()
+  loading!: string;
+
   render() {
     const thumbnailDataUrl = Photos.encodeBitmapDataURL(this.mosaicColours);
 

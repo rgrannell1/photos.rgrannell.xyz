@@ -1,4 +1,4 @@
-import { html, LitElement } from "lit-element";
+import { html, css, LitElement } from "lit-element";
 import { parseUrn } from "../../library/tribble.js";
 import { LitElem } from "../../models/lit-element.ts";
 import { Dates } from "../../services/dates.ts";
@@ -6,22 +6,19 @@ import { Photos } from "../../services/photos.ts";
 import { Countries } from "../../things/things.ts";
 import { property } from "lit/decorators.js";
 
-// TODO styles are now broken?
-
 export class PhotoAlbum extends LitElement {
   @property()
-  id: string;
+  id?: string;
   @property()
-  title: string;
+  title?: string;
   @property()
-  triples: Object;
+  triples?: Object;
   @property()
-  url: string;
+  url?: string;
   @property()
-  mosaicColours: string;
+  mosaicColours?: string;
   @property()
-  loading: string;
-
+  loading?: string;
   @property()
   path: string = '/#/album/'
 
@@ -52,11 +49,15 @@ export class PhotoAlbum extends LitElement {
   }
 
   renderPlaceholder() {
-    const thumbnailDataUrl = Photos.encodeBitmapDataURL(this.mosaicColours);
+    if (this.mosaicColours) {
+      const thumbnailDataUrl = Photos.encodeBitmapDataURL(this.mosaicColours);
 
-    return html`
-    <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${thumbnailDataUrl}"/>
-    `;
+      return html`
+      <img class="thumbnail-image thumbnail-placeholder" width="400" height="400" src="${thumbnailDataUrl}"/>
+      `;
+    }
+
+    return html``;
   }
 
   renderImage() {
@@ -81,7 +82,7 @@ export class PhotoAlbum extends LitElement {
     performance.mark(`start-album-render-${this.url}`);
 
     return html`
-    <link rel="stylesheet" href="/dist/css/style.css">
+    <link rel="stylesheet" href="/dist/css/style.${window.envConfig.build_id}.css">
     <div class="photo-album">
       <a href="${this.path + this.id}" onclick="event.preventDefault();">
         ${this.renderPlaceholder()}
@@ -93,23 +94,20 @@ export class PhotoAlbum extends LitElement {
 }
 
 class PhotoAlbumMetadata extends LitElem {
-  title!: string;
-  triples!: Object;
-  minDate!: string;
-  maxDate!: string;
-  countries!: string;
-  count!: number;
 
-  static get properties() {
-    return {
-      title: { type: String },
-      triples: { type: Object },
-      minDate: { type: String },
-      maxDate: { type: String },
-      countries: { type: String },
-      count: { type: Number },
-    };
-  }
+  @property()
+  title!: string;
+
+  @property()
+  triples!: Object;
+  @property()
+  minDate!: string;
+  @property()
+  maxDate!: string;
+  @property()
+  countries!: string;
+  @property()
+  count!: number;
 
   dateRange() {
     if (!this.minDate && !this.maxDate) {

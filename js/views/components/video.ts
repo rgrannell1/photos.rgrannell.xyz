@@ -24,19 +24,6 @@ export class AppVideo extends LitElem {
   @property()
   url_480p!: string;
 
-  static get properties() {
-    return {
-      id: { type: String },
-      url: { type: String },
-      preload: { type: String },
-      url_poster: { type: String },
-      url_unscaled: { type: String },
-      url_1080p: { type: String },
-      url_720p: { type: String },
-      url_480p: { type: String },
-    };
-  }
-
   render() {
     return html`
     <div>

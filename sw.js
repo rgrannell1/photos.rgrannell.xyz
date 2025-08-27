@@ -45,6 +45,22 @@ function isCacheable(url) {
     return true;
   }
 
+  /*
+   * We can cache JS files, since build-IDs will bust the cache on change
+   * and we don't cache index.html
+   */
+
+  if (url.includes("js/app") || url.includes("js/sw")) {
+    return true;
+  }
+
+  /*
+   * We can cache CSS files, since they also have build-IDs
+   */
+  if (url.includes("css/style")) {
+    return true;
+  }
+
   const manifestEntries = [
     "tribbles",
   ];

@@ -79,6 +79,7 @@ async function buildHTML() {
     prefetched: prefetchTargets(env, triples),
     homepageThumbnails: JSON.stringify(homepageThumbnails(triples)),
     cdnUrl: env.photos_url,
+    buildId: env.build_id
   }));
 }
 

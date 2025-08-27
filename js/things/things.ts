@@ -4,6 +4,7 @@ import { parseUrn } from "../library/tribble.js";
 
 const CONFIG = window.envConfig;
 
+
 export class Triples {
   static isUrnSource(triple: [string, string, string]) {
     return Things.isUrn(triple[0]);
