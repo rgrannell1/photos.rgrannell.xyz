@@ -30,6 +30,9 @@ class Artifacts {
   async html() {
     return await Deno.readTextFile("index.mustache.html");
   }
+  async sw() {
+    return await Deno.readTextFile("sw.mustache.js");
+  }
 }
 
 export function expandUrns(triple) {
@@ -73,7 +76,7 @@ async function buildHTML() {
   const html = await artifacts.html();
   const triples = await artifacts.triples();
 
-  console.log(render(html, {
+  await Deno.writeTextFile("index.html", render(html, {
     stats,
     env: JSON.stringify(env),
     prefetched: prefetchTargets(env, triples),
@@ -83,4 +86,18 @@ async function buildHTML() {
   }));
 }
 
-await buildHTML();
+async function buildSW() {
+  const artifacts = new Artifacts("./manifest");
+  const env = await artifacts.env();
+
+  const sw = await artifacts.sw();
+
+  await Deno.writeTextFile("sw.js", render(sw, {
+    buildId: env.build_id
+  }));
+}
+
+await Promise.all([
+  buildHTML(),
+  buildSW()
+]);

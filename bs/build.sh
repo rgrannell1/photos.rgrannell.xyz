@@ -29,5 +29,10 @@ npx esbuild css/style.css      \
   --loader:.woff2=file         \
   --outfile=dist/css/style.$build_id.css
 
+npx esbuild css/photo-album.css      \
+  --bundle                     \
+  --loader:.ttf=file           \
+  --loader:.woff2=file         \
+  --outfile=dist/css/photo-album.$build_id.css
 
 deno run -A --watch build.ts > index.html

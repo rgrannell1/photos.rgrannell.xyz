@@ -1,10 +1,16 @@
-import { html, css, LitElement } from "lit-element";
+import { html, css, unsafeCSS, LitElement } from "lit-element";
 import { parseUrn } from "../../library/tribble.js";
 import { LitElem } from "../../models/lit-element.ts";
 import { Dates } from "../../services/dates.ts";
 import { Photos } from "../../services/photos.ts";
 import { Countries } from "../../things/things.ts";
 import { property } from "lit/decorators.js";
+
+const response = await fetch(`/dist/css/photo-album.${window.envConfig.build_id}.css`);
+const cssText = await response.text();
+const cssModule = { default: cssText };
+
+const styles = css`${unsafeCSS(cssModule.default)}`
 
 export class PhotoAlbum extends LitElement {
   @property()
@@ -75,6 +81,8 @@ export class PhotoAlbum extends LitElement {
     `;
   }
 
+  static styles = styles;
+
   // TODO, just style this one component in a .css file?
   // I don't like that pattern, though...
 
@@ -82,7 +90,6 @@ export class PhotoAlbum extends LitElement {
     performance.mark(`start-album-render-${this.url}`);
 
     return html`
-    <link rel="stylesheet" href="/dist/css/style.${window.envConfig.build_id}.css">
     <div class="photo-album">
       <a href="${this.path + this.id}" onclick="event.preventDefault();">
         ${this.renderPlaceholder()}
@@ -108,6 +115,8 @@ class PhotoAlbumMetadata extends LitElem {
   countries!: string;
   @property()
   count!: number;
+
+  static styles = styles;
 
   dateRange() {
     if (!this.minDate && !this.maxDate) {

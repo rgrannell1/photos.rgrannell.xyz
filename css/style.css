@@ -197,12 +197,8 @@ photo-app {
   }
 }
 
-.thumbnail-image, .thumbnail-video {
-  height: auto;
-  background-color: var(--image-placeholder-background-color);
-}
-
 .thumbnail-video {
+  background-color: var(--image-placeholder-background-color);
   height: 400px;
   object-fit: cover;
 }
@@ -258,13 +254,7 @@ photo-app {
   display: none;
 }
 
-.photo-album {
-  margin: 10px;
-}
 
-.photo-album a {
-  cursor: pointer;
-}
 
 /* On non-hover devices, just show a metadata overlay */
 @media (hover: none), (pointer: coarse) {
@@ -284,23 +274,13 @@ photo-app {
   }
 }
 
-.photo-album-title {
-  margin: 4px 0px;
-  font-weight: bolder;
-  max-width: max(180px, min(60vw, var(--photo-width)));
-}
-
-.photo-album-date {
-  max-width: max(180px, min(60vw, var(--photo-width)));
-}
-
 .photo-album-description {
   margin-top: 1em;
   max-width: 900px;
   word-spacing: normal;
 }
 
-.photo-album-count, .photo-album-countries {
+.photo-album-countries {
   display: inline;
 }
 
@@ -316,10 +296,6 @@ photo-app {
 
 .album-metadata, .photos-metadata {
   margin-bottom: 25px;
-}
-
-.thumbnail-placeholder {
-  position: absolute;
 }
 
 .album-year-heading {
@@ -367,7 +343,7 @@ photo-app {
     margin-left: 0 !important;
   }
 
-  .thumbnail-image, .thumbnail-video {
+  .thumbnail-video {
     width: max(180px, min(80vw, var(--photo-width)));
     max-width: max(180px, 80vw);
   }
@@ -376,21 +352,9 @@ photo-app {
     display: none;
   }
 
-  .photo-album-metadata p, .photo-album-description {
+  .photo-album-description {
     font-size: 0.8em;
     padding: 2px;
-  }
-
-  .photo-album .photo-album-metadata p {
-    color: white;
-    background-color: black;
-  }
-
-  /* hover metadata over the album */
-  .photo-album-metadata {
-    position: absolute;
-    transform: translate(10px, -100px);
-    z-index: 1;
   }
 
   photo-sidebar[visible="true"] {
@@ -511,11 +475,6 @@ photo-app {
   }
 }
 
-.photo-metadata-inline {
-  display: flex;
-  gap: 10px;
-}
-
 /*
  * ++++ ++++ ++++ ~~~~ Things Page ~~~~ ++++ ++++ ++++
  */
@@ -601,4 +560,84 @@ photo-app {
   .unesco-text-short {
     display: inline;
   }
+}
+
+/* photo album css. not clear if needed in JS or just here */
+
+.photo-album-title {
+  margin: 4px 0px;
+  font-weight: bolder;
+  max-width: max(180px, min(60vw, 400px));
+}
+
+.photo-album-date {
+  max-width: max(180px, min(60vw, 400px));
+}
+
+.photo-album-count {
+  display: inline;
+}
+.photo-album-countries, .photo-album-count {
+  display: inline;
+}
+
+.photo-album-count {
+  color: hsl(0, 0%, 60%);
+}
+
+@media (max-width: 500px) {
+  .photo-album-metadata p {
+    font-size: 0.8em;
+    padding: 2px;
+  }
+
+  .photo-album .photo-album-metadata p {
+    color: white;
+    background-color: black;
+  }
+
+  /* hover metadata over the album */
+  .photo-album-metadata {
+    position: absolute;
+    transform: translate(10px, -100px);
+    z-index: 1;
+  }
+
+  .photo-album-metadata p {
+    font-size: 0.8em;
+    padding: 2px;
+  }
+
+  .photo-album .photo-album-metadata p {
+    color: white;
+    background-color: black;
+  }
+
+  /* hover metadata over the album */
+  .photo-album-metadata {
+    position: absolute;
+    transform: translate(10px, -100px);
+    z-index: 1;
+  }
+
+  .thumbnail-image, .thumbnail-video {
+    width: max(180px, min(80vw, 400px));
+    max-width: max(180px, 80vw);
+  }
+
+}
+
+.photo-metadata-inline {
+  display: flex;
+  gap: 10px;
+}
+
+
+.thumbnail-placeholder {
+  position: absolute;
+}
+
+.thumbnail-image {
+  height: auto;
+  background-color: hsl(0, 0%, 69%);
 }

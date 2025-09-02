@@ -156,12 +156,8 @@ photo-app {
     background-color: var(--hover-background-color);
   }
 }
-.thumbnail-image,
 .thumbnail-video {
-  height: auto;
   background-color: var(--image-placeholder-background-color);
-}
-.thumbnail-video {
   height: 400px;
   object-fit: cover;
 }
@@ -210,12 +206,6 @@ photo-app {
   font-size: 2em;
   display: none;
 }
-.photo-album {
-  margin: 10px;
-}
-.photo-album a {
-  cursor: pointer;
-}
 @media (hover: none), (pointer: coarse) {
   .photo .photo-metadata-popover {
     display: block;
@@ -229,20 +219,11 @@ photo-app {
     filter: brightness(80%);
   }
 }
-.photo-album-title {
-  margin: 4px 0px;
-  font-weight: bolder;
-  max-width: max(180px, min(60vw, var(--photo-width)));
-}
-.photo-album-date {
-  max-width: max(180px, min(60vw, var(--photo-width)));
-}
 .photo-album-description {
   margin-top: 1em;
   max-width: 900px;
   word-spacing: normal;
 }
-.photo-album-count,
 .photo-album-countries {
   display: inline;
 }
@@ -256,9 +237,6 @@ photo-app {
 .album-metadata,
 .photos-metadata {
   margin-bottom: 25px;
-}
-.thumbnail-placeholder {
-  position: absolute;
 }
 .album-year-heading {
   flex-basis: 100%;
@@ -291,7 +269,6 @@ photo-app {
   .photo-album {
     margin-left: 0 !important;
   }
-  .thumbnail-image,
   .thumbnail-video {
     width: max(180px, min(80vw, var(--photo-width)));
     max-width: max(180px, 80vw);
@@ -299,19 +276,9 @@ photo-app {
   photo-sidebar {
     display: none;
   }
-  .photo-album-metadata p,
   .photo-album-description {
     font-size: 0.8em;
     padding: 2px;
-  }
-  .photo-album .photo-album-metadata p {
-    color: white;
-    background-color: black;
-  }
-  .photo-album-metadata {
-    position: absolute;
-    transform: translate(10px, -100px);
-    z-index: 1;
   }
   photo-sidebar[visible=true] {
     display: block;
@@ -395,10 +362,6 @@ photo-app {
     font-weight: bold;
   }
 }
-.photo-metadata-inline {
-  display: flex;
-  gap: 10px;
-}
 .thing-link {
   display: block;
 }
@@ -466,4 +429,66 @@ photo-app {
   .unesco-text-short {
     display: inline;
   }
+}
+.photo-album-title {
+  margin: 4px 0px;
+  font-weight: bolder;
+  max-width: max(180px, min(60vw, 400px));
+}
+.photo-album-date {
+  max-width: max(180px, min(60vw, 400px));
+}
+.photo-album-count {
+  display: inline;
+}
+.photo-album-countries,
+.photo-album-count {
+  display: inline;
+}
+.photo-album-count {
+  color: hsl(0, 0%, 60%);
+}
+@media (max-width: 500px) {
+  .photo-album-metadata p {
+    font-size: 0.8em;
+    padding: 2px;
+  }
+  .photo-album .photo-album-metadata p {
+    color: white;
+    background-color: black;
+  }
+  .photo-album-metadata {
+    position: absolute;
+    transform: translate(10px, -100px);
+    z-index: 1;
+  }
+  .photo-album-metadata p {
+    font-size: 0.8em;
+    padding: 2px;
+  }
+  .photo-album .photo-album-metadata p {
+    color: white;
+    background-color: black;
+  }
+  .photo-album-metadata {
+    position: absolute;
+    transform: translate(10px, -100px);
+    z-index: 1;
+  }
+  .thumbnail-image,
+  .thumbnail-video {
+    width: max(180px, min(80vw, 400px));
+    max-width: max(180px, 80vw);
+  }
+}
+.photo-metadata-inline {
+  display: flex;
+  gap: 10px;
+}
+.thumbnail-placeholder {
+  position: absolute;
+}
+.thumbnail-image {
+  height: auto;
+  background-color: hsl(0, 0%, 69%);
 }
