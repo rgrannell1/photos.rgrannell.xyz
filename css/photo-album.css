@@ -20,7 +20,7 @@
   color: hsl(0, 0%, 60%);
 }
 
-.photo-album-metadata {
+.photo-album-metadata, .thing-metadata {
   margin-bottom: 30px;
 }
 

@@ -116,7 +116,7 @@ export class ListingPage extends LitElem {
     }).firstObject();
 
     return html`
-      <div>
+      <div class="thing-metadata">
         <p>${name}</p>
         ${
       thingDetails.wikipedia
@@ -143,6 +143,20 @@ export class ListingPage extends LitElem {
       urn,
     );
 
+    // TODO
+    const loadThingPage = (urn: string, name: string) => {
+      const parsed = asUrn(urn);
+      const id = `${parsed.type}:${parsed.id}`;
+
+      const dispatched = new CustomEvent('click-thing-album', {
+        detail: { id, name },
+        bubbles: true,
+        composed: true,
+      });
+
+      this.dispatchEvent(dispatched);
+    };
+
     const image = this.triples.search({
       source: asUrn(imageUrn),
     }).firstObject();
@@ -152,6 +166,7 @@ export class ListingPage extends LitElem {
 
     return html`
       <photo-album
+        .onClick=${loadThingPage.bind(null, urn, name)}
         .triples=${this.triples}
         title="${"no such thing exists"}"
         url="${image.thumbnail_url}"

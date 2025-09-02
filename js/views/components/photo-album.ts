@@ -70,7 +70,6 @@ export class PhotoAlbum extends LitElement {
   }
 
   renderImage() {
-    const albumId = parseUrn(this.id);
     return html`
     <img @load=${
       this.hidePlaceholder.bind(this)

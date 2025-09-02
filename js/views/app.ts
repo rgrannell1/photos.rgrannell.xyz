@@ -178,6 +178,19 @@ export class PhotoApp extends LitElem {
     PageLocation.showAlbumUrl(id);
   }
 
+  receiveClickThingAlbum(event: CustomEvent) {
+    const {
+      title,
+      id,
+    } = event.detail;
+
+    this.page = "thing";
+    this.id = id;
+    this.title = title;
+
+    PageLocation.showThingUrl(id);
+  }
+
   /*
    * When we click on the burger menu icon, toggle the sidebar
    */
@@ -365,6 +378,7 @@ export class PhotoApp extends LitElem {
     <body>
       <div class="${topLevelClasses.join(" ")}"
         @click-album=${this.receiveClickAlbum}
+        @click-thing-album=${this.receiveClickThingAlbum}
         @click-burger-menu=${this.receiveClickBurgerMenu}
         @click-photo-metadata=${this.receiveClickPhotoMetadata}
         @switch-theme=${this.receiveSwitchTheme}
