@@ -182,7 +182,7 @@ export class ThingPage extends LitElem {
   }
 
   renderClassification(type: string) {
-    return html`<a href="#/thing/${type}:*">${type.charAt(0).toUpperCase()}${
+    return html`<a href="#/listing/${type}">${type.charAt(0).toUpperCase()}${
       type.slice(1)
     }</a>`;
   }
