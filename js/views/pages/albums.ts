@@ -14,6 +14,7 @@ import "../components/photos-stats.ts";
 import "../components/photo-album.ts";
 import "../components/year-cursor.ts";
 import { property } from "lit/decorators.js";
+import { asUrn } from "js/library/tribble.js";
 
 export class AlbumsPage extends LitElem {
   @property({})
@@ -52,6 +53,16 @@ export class AlbumsPage extends LitElem {
         return album1.maxDate - album0.maxDate;
       });
 
+    const onAlbumClick = album => {
+      const parsedId = asUrn(album.id)
+
+      this.dispatchEvent(new CustomEvent("click-album", {
+        detail: { id: parsedId.id, title: album.title ?? album.name },
+        bubbles: true,
+        composed: true
+      }));
+    }
+
     /*
      * append photo albums to the DOM
      */
@@ -86,8 +97,10 @@ export class AlbumsPage extends LitElem {
             count="${album.count}"
         ></photo-album-metadata>`;
 
+
         yield html`
           <photo-album
+            .onClick=${onAlbumClick.bind(null, album)}
             .triples=${this.triples}
             title="${album.title}"
             url="${album.url}"

@@ -28,6 +28,9 @@ export class PhotoAlbum extends LitElement {
   @property()
   path: string = '/#/album/'
 
+  @property()
+  onClick?: Function;
+
   broadcast(label: string, detail?: any) {
     return () => {
       const dispatched = new CustomEvent(label, {
@@ -72,12 +75,7 @@ export class PhotoAlbum extends LitElement {
     <img @load=${
       this.hidePlaceholder.bind(this)
     } style="z-index: -1" class="u-photo thumbnail-image" width="400" height="400" src="${this.url}" alt="${this.title} - Photo Album Thumbnail" loading="${this.loading}"
-      @click=${
-      this.broadcast("click-album", {
-        id: albumId.id,
-        title: this.title,
-      })
-    }>
+      @click=${this.onClick?.bind(this)}>
     `;
   }
 

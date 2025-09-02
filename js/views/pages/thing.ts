@@ -83,6 +83,16 @@ export class ThingPage extends LitElem {
       return photo.album_id;
     }));
 
+    const onAlbumClick = album => {
+      const parsedId = asUrn(album.id)
+
+      this.dispatchEvent(new CustomEvent("click-album", {
+        detail: { id: parsedId.id, title: album.title ?? album.name },
+        bubbles: true,
+        composed: true
+      }));
+    }
+
     return Array
       .from(albumSet)
       .flatMap((albumId) => {
@@ -95,7 +105,7 @@ export class ThingPage extends LitElem {
       })
       .map((album) => {
         const metadata = html`
-        <photo-album-metadata slot="metadata"
+        <photo-album-metadata
             .triples=${this.triples}
             title="${album.name}"
             count="${album.photos_count}"
@@ -106,6 +116,7 @@ export class ThingPage extends LitElem {
 
         return html`
           <photo-album
+            .onClick=${onAlbumClick.bind(null, album)}
             .triples=${this.triples}
             title="${album.name}"
             url="${album.thumbnail_url}"
