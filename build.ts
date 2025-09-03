@@ -60,7 +60,7 @@ function prefetchTargets(env, triples: [string, string, string][]) {
     return parseInt(album1.min_date, 10) - parseInt(album0.min_date, 10);
   });
 
-  return albums.slice(0, 5).map((album) => `${album.thumbnail_url}`);
+  return albums.slice(0, 11).map((album) => `${album.thumbnail_url}`);
 }
 
 function homepageThumbnails(triples: [string, string, string][]) {
