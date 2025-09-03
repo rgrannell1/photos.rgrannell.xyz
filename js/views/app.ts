@@ -18,6 +18,7 @@ import { TribbleDB } from "js/library/tribble.js";
 import { property } from "lit/decorators.js";
 
 import {
+  CURIES,
   countriesAsUrns,
   expandBirdwatchUrl,
   expandCdnUrls,
@@ -105,15 +106,8 @@ export class PhotoApp extends LitElem {
         this.tribbleDB = new TribbleDB([]);
       }
 
-      const curies = {
-        "i": "urn:ró:",
-        "birdwatch": "https://birdwatchireland.ie/birds/",
-        "photos": "https://photos-cdn.rgrannell.xyz/",
-        "wiki": "https://en.wikipedia.org/wiki/",
-      };
-
       for await (const triple of tribbles.stream()) {
-        buffer.push(...[triple].flatMap(processTriples.bind(null, curies)));
+        buffer.push(...[triple].flatMap(processTriples.bind(null, CURIES)));
 
         if (buffer.length > 500) {
           this.tribbleDB.add(buffer);

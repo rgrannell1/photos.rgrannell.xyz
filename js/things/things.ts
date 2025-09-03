@@ -1,9 +1,10 @@
-import { Triple } from "js/types.js";
+import { Triple } from "../types.ts";
 import { KnownRelations } from "../constants.js";
 import { parseUrn } from "../library/tribble.js";
 
 const CONFIG = window.envConfig;
 
+export { expandTripleCuries, CURIES } from "./curie.ts";
 
 export class Triples {
   static isUrnSource(triple: [string, string, string]) {
@@ -206,39 +207,6 @@ export function countriesAsUrns(triple: Triple) {
       Triples.getSource(triple),
       Triples.getRelation(triple),
       countryUrn,
-    ],
-  ];
-}
-
-const CURIE_REGEX = /^\[([^\:]*):(.*)\]$/;
-
-export function expandCurie(curies: Record<string, string>, value: string) {
-  if (typeof value !== "string" || !CURIE_REGEX.test(value)) {
-    return value;
-  }
-  const match = value.match(CURIE_REGEX);
-
-  if (!match) {
-    return value;
-  }
-
-  const prefix = match[1];
-  const id = match[2];
-
-  return curies[prefix] ? `${curies[prefix]}${id}` : value;
-}
-
-export function expandTripleCuries(
-  curies: Record<string, string>,
-  triple: Triple,
-) {
-  const [source, relation, target] = triple;
-
-  return [
-    [
-      expandCurie(curies, source),
-      relation,
-      expandCurie(curies, target),
     ],
   ];
 }

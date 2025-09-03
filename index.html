@@ -14,7 +14,12 @@
     <link rel="preconnect" href="https://photos-cdn.rgrannell.xyz">
 
     <!-- Preloads -->
-    <link rel="preload" href="/dist/js/app.6ffc7eddc5bcdcc4.js" as="script">
+    <link rel="preload" href="/dist/js/app.27414914d1e85358.js" as="script">
+    <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/3dd12452d2.webp" as="image">
+    <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/e261da6ed7.webp" as="image">
+    <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/88d0b1c0a1.webp" as="image">
+    <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/2196642deb.webp" as="image">
+    <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/da867d06fa.webp" as="image">
 
     <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/manifest/atom/atom-index.xml" />
 
@@ -32,12 +37,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0056b3">
 
-    <link rel="stylesheet" href="/dist/css/style.6ffc7eddc5bcdcc4.css" as="style">
-    <link rel="stylesheet" href="/dist/css/photo-album.6ffc7eddc5bcdcc4.css" as="style">
+    <link rel="stylesheet" href="/dist/css/style.27414914d1e85358.css" as="style">
+    <link rel="stylesheet" href="/dist/css/photo-album.27414914d1e85358.css" as="style">
 
     <script>
       // reduce blocking requests by injecting this critical data
-      window.envConfig = {"photos_url":"https://photos-cdn.rgrannell.xyz","publication_id":"2ccc227e9f","build_id":"6ffc7eddc5bcdcc4"}
+      window.envConfig = {"photos_url":"https://photos-cdn.rgrannell.xyz","publication_id":"2ccc227e9f","build_id":"27414914d1e85358"}
       window.homepageThumbnails = []
     </script>
 
@@ -57,7 +62,7 @@
 )
 
     </script>
-    <script type="module" src="/dist/js/app.6ffc7eddc5bcdcc4.js"></script>
+    <script type="module" src="/dist/js/app.27414914d1e85358.js"></script>
 
     <title>photos.rgrannell.xyz</title>
   </head>
@@ -67,10 +72,10 @@
   <script async fetchpriority="low">
     // -- register a service-worker
     if('serviceWorker' in navigator) {
-      console.log('⚙️ loading service worker: /sw.6ffc7eddc5bcdcc4.js')
+      console.log('⚙️ loading service worker: /sw.27414914d1e85358.js')
 
-      navigator.serviceWorker.register('/dist/js/sw.6ffc7eddc5bcdcc4.js').catch(err => {
-        console.error(`⚙️ failed service worker: /sw.6ffc7eddc5bcdcc4.js ${err}`)
+      navigator.serviceWorker.register('/dist/js/sw.27414914d1e85358.js').catch(err => {
+        console.error(`⚙️ failed service worker: /sw.27414914d1e85358.js ${err}`)
       });
 
       navigator.serviceWorker.ready.then(registration => {
@@ -87,7 +92,7 @@
         console.error(`⚙️ failed to send homepage thumbnails to service worker: ${err}`)
       });
     } else {
-      console.error('⚙️ service worker not supported: /sw.6ffc7eddc5bcdcc4.js')
+      console.error('⚙️ service worker not supported: /sw.27414914d1e85358.js')
     }
   </script>
 </html>

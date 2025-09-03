@@ -2,6 +2,7 @@ import * as path from "jsr:@std/path";
 import { render } from "https://deno.land/x/mustache_ts/mustache.ts";
 
 import { TribbleDB } from "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/dist/mod.ts";
+import { CURIES, expandTripleCuries } from "./js/things/things.ts";
 
 class Artifacts {
   dpath: string;
@@ -50,12 +51,15 @@ export function expandUrns(triple) {
 }
 
 function prefetchTargets(env, triples: [string, string, string][]) {
-  const tdb = new TribbleDB(triples).flatMap(expandUrns);
+  const tdb = new TribbleDB(triples).flatMap(expandUrns).flatMap(expandTripleCuries.bind(null, CURIES));
+
+
   const albums = tdb.search({
     source: { type: "album" },
   }).objects().sort((album0, album1) => {
     return parseInt(album1.min_date, 10) - parseInt(album0.min_date, 10);
   });
+
   return albums.slice(0, 5).map((album) => `${album.thumbnail_url}`);
 }
 
