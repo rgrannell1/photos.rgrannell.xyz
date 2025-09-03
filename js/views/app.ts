@@ -29,7 +29,6 @@ import {
 import { Triple } from "js/types.ts";
 
 function processTriples(
-  curies: Record<string, string>,
   triple: Triple,
 ): Triple[] {
   // derive new triples or modify old ones,
@@ -41,7 +40,7 @@ function processTriples(
     countriesAsUrns,
     expandCdnUrls,
     expandBirdwatchUrl,
-    expandTripleCuries.bind(null, curies),
+    expandTripleCuries.bind(null, CURIES),
   ];
 
   let outputTriples = [triple];
@@ -107,7 +106,7 @@ export class PhotoApp extends LitElem {
       }
 
       for await (const triple of tribbles.stream()) {
-        buffer.push(...[triple].flatMap(processTriples.bind(null, CURIES)));
+        buffer.push(...[triple].flatMap(processTriples));
 
         if (buffer.length > 500) {
           this.tribbleDB.add(buffer);

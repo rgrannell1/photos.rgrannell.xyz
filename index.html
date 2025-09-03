@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://photos-cdn.rgrannell.xyz">
 
     <!-- Preloads -->
-    <link rel="preload" href="/dist/js/app.4b597651db1ce4ba.js" as="script">
+    <link rel="preload" href="/dist/js/app.5ffb9fce8ac21c8c.js" as="script">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/3dd12452d2.webp" as="image">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/e261da6ed7.webp" as="image">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/88d0b1c0a1.webp" as="image">
@@ -43,12 +43,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0056b3">
 
-    <link rel="stylesheet" href="/dist/css/style.4b597651db1ce4ba.css" as="style">
-    <link rel="stylesheet" href="/dist/css/photo-album.4b597651db1ce4ba.css" as="style">
+    <link rel="stylesheet" href="/dist/css/style.5ffb9fce8ac21c8c.css" as="style">
+    <link rel="stylesheet" href="/dist/css/photo-album.5ffb9fce8ac21c8c.css" as="style">
 
     <script>
       // reduce blocking requests by injecting this critical data
-      window.envConfig = {"photos_url":"https://photos-cdn.rgrannell.xyz","publication_id":"770e4744fd","build_id":"4b597651db1ce4ba"}
+      window.envConfig = {"photos_url":"https://photos-cdn.rgrannell.xyz","publication_id":"1276fef393","build_id":"5ffb9fce8ac21c8c"}
       window.homepageThumbnails = []
     </script>
 
@@ -59,7 +59,7 @@
       $statsData.innerText = JSON.stringify({"photos":1178,"albums":103,"years":13,"countries":18,"bird_species":141,"mammal_species":55,"unesco_sites":18})
 
     </script>
-    <script type="module" src="/dist/js/app.4b597651db1ce4ba.js"></script>
+    <script type="module" src="/dist/js/app.5ffb9fce8ac21c8c.js"></script>
 
     <title>photos.rgrannell.xyz</title>
   </head>
@@ -69,10 +69,10 @@
   <script async fetchpriority="low">
     // -- register a service-worker
     if('serviceWorker' in navigator) {
-      console.log('⚙️ loading service worker: /sw.4b597651db1ce4ba.js')
+      console.log('⚙️ loading service worker: /sw.5ffb9fce8ac21c8c.js')
 
-      navigator.serviceWorker.register('/dist/js/sw.4b597651db1ce4ba.js').catch(err => {
-        console.error(`⚙️ failed service worker: /sw.4b597651db1ce4ba.js ${err}`)
+      navigator.serviceWorker.register('/dist/js/sw.5ffb9fce8ac21c8c.js').catch(err => {
+        console.error(`⚙️ failed service worker: /sw.5ffb9fce8ac21c8c.js ${err}`)
       });
 
       navigator.serviceWorker.ready.then(registration => {
@@ -89,7 +89,7 @@
         console.error(`⚙️ failed to send homepage thumbnails to service worker: ${err}`)
       });
     } else {
-      console.error('⚙️ service worker not supported: /sw.4b597651db1ce4ba.js')
+      console.error('⚙️ service worker not supported: /sw.5ffb9fce8ac21c8c.js')
     }
   </script>
 </html>

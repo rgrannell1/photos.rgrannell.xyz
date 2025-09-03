@@ -40,6 +40,10 @@ class ListingPageService {
     });
 
     const sourceIds = results.sources();
+    if (!sourceIds) {
+      console.error('no photos found')
+    }
+
     const ratedPhotos = Array.from(sourceIds).map((source: string) => {
       const result = tdb.search({
         source: asUrn(source),
