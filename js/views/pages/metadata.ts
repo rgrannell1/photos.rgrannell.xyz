@@ -268,7 +268,7 @@ export class MetadataPage extends LitElem {
       <p>
         <a href="${photo.full_image}">[webp]</a>
         <a href="${photo.png_url}">[png]</a>
-        <share-metadata-button format="image/webp" url=${photo.image_url}></share-metadata-button>
+        <share-metadata-button format="image/webp" url=${photo.png_url}></share-metadata-button>
         <a href="#/album/${albumId}">[album]</a>
       </p>
 

@@ -275,7 +275,7 @@ var Xe=Object.defineProperty;var Ze=Object.getOwnPropertyDescriptor;var p=(i,t,e
         <td>${e.iso??"Unknown"}</td>
       </tr>
     </table>
-    `}render(){let t=this.image;console.log(t);let e=t.album_id,s=this.triples,r=s.search({source:{id:E(t.id).id},relation:{predicate:n=>{let o=new Set(["album_id","full_image","mosaic_colours","thumbnail_url"]);return!Me.has(n)&&!o.has(n)}}}).triples();return l`
+    `}render(){let t=this.image,e=t.album_id,s=this.triples,r=s.search({source:{id:E(t.id).id},relation:{predicate:n=>{let o=new Set(["album_id","full_image","mosaic_colours","thumbnail_url"]);return!Me.has(n)&&!o.has(n)}}}).triples();return l`
     <section>
     <h1>Metadata</h1>
 
@@ -284,7 +284,7 @@ var Xe=Object.defineProperty;var Ze=Object.getOwnPropertyDescriptor;var p=(i,t,e
       <p>
         <a href="${t.full_image}">[webp]</a>
         <a href="${t.png_url}">[png]</a>
-        <share-metadata-button format="image/webp" url=${t.image_url}></share-metadata-button>
+        <share-metadata-button format="image/webp" url=${t.png_url}></share-metadata-button>
         <a href="#/album/${e}">[album]</a>
       </p>
 
@@ -537,4 +537,4 @@ lit-html/directive-helpers.js:
    * SPDX-License-Identifier: BSD-3-Clause
    *)
 */
-//# sourceMappingURL=app.cf9f3409526ca9ed.js.map
+//# sourceMappingURL=app.4b597651db1ce4ba.js.map
