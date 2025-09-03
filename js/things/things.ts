@@ -219,6 +219,7 @@ export function expandCdnUrls(triple: Triple) {
   for (
     const relation of [
       "thumbnail_url",
+      "png_url",
       "full_image",
       "poster_url",
       "video_url_1080p",

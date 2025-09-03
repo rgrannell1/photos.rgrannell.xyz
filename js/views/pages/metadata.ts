@@ -102,8 +102,10 @@ export class MetadataPage extends LitElem {
     // TODO remove this when semantic data is cleaned up
     return (new Set([
       "bird_binomial",
+      "mammal_binomial",
       "wildlife",
       "living_conditions",
+      "png_url"
     ])).has(key);
   }
 
@@ -264,7 +266,8 @@ export class MetadataPage extends LitElem {
     <img class="u-photo thumbnail-image" src="${photo.thumbnail_url}"/>
 
       <p>
-        <a href="${photo.full_image}">[full image]</a>
+        <a href="${photo.full_image}">[webp]</a>
+        <a href="${photo.png_url}">[png]</a>
         <share-metadata-button format="image/webp" url=${photo.image_url}></share-metadata-button>
         <a href="#/album/${albumId}">[album]</a>
       </p>
