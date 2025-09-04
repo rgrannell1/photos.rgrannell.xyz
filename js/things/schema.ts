@@ -10,7 +10,11 @@ function countValidator(_: any, relation: string, value: any) {
 }
 
 function urlValidator(_: any, relation: string, value: any) {
-  return undefined
+  const valid = typeof value === 'string' && value.startsWith('/')
+
+  return valid
+    ? undefined
+    : `invalid relation ${relation} for value ${JSON.stringify(value)}`
 }
 
 function deprecatedValidator(_: any, relation: string, value: any) {
@@ -29,6 +33,14 @@ function dimensionValidator(_: any, relation: string, value: any) {
     : `invalid relation ${relation} for value ${JSON.stringify(value)}`
 }
 
+function dateValidator(_: any, relation: string, value: any) {
+  const valid = typeof value === 'string' && /^\d+$/.test(value) && Number(value) > 0;
+
+  return valid
+    ? undefined
+    : `invalid relation ${relation} for value ${JSON.stringify(value)}`;
+}
+
 export const schema: Record<string, TargetValidator> = {
   living_conditions: deprecatedValidator,
   mammal_binomial: deprecatedValidator,
@@ -40,6 +52,15 @@ export const schema: Record<string, TargetValidator> = {
   photos_count: countValidator,
   height: dimensionValidator,
   width: dimensionValidator,
+  max_date: dateValidator,
+  min_date: dateValidator,
+  png_url: urlValidator,
+  poster_url: urlValidator,
+  thumbnail_url: urlValidator,
+  video_url_1080p: urlValidator,
+  video_url_480p: urlValidator,
+  video_url_720p: urlValidator,
+  video_url_unscaled: urlValidator,
 
   album_id: defaultValidator,
   bird_binomial: deprecatedValidator,
@@ -60,23 +81,14 @@ export const schema: Record<string, TargetValidator> = {
   latitude: defaultValidator,
   location: defaultValidator,
   longitude: defaultValidator,
-  max_date: defaultValidator,
-  min_date: defaultValidator,
   model: defaultValidator,
   mosaic: defaultValidator,
   mosaic_colours: defaultValidator,
   name: defaultValidator,
-  png_url: defaultValidator,
-  poster_url: defaultValidator,
   rating: defaultValidator,
   style: defaultValidator,
   subject: defaultValidator,
   summary: defaultValidator,
-  thumbnail_url: defaultValidator,
-  video_url_1080p: defaultValidator,
-  video_url_480p: defaultValidator,
-  video_url_720p: defaultValidator,
-  video_url_unscaled: defaultValidator,
   wikidata: defaultValidator,
   wikipedia: defaultValidator,
   wildlife: defaultValidator
