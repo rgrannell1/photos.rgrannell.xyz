@@ -1,8 +1,7 @@
 import { TribbleParser } from "../library/tribble.js";
 
 // injected into the HTLM during build-time
-const CONFIG = window.envConfig;
-
+const CONFIG = (window as any).envConfig;
 /*
  * Stream tribbles line-by-line, and yield triples
  */

@@ -35,4 +35,4 @@ npx esbuild css/photo-album.css      \
   --loader:.woff2=file         \
   --outfile=dist/css/photo-album.$build_id.css
 
-deno run -A --watch build.ts > index.html
+deno run -A build.ts > index.html

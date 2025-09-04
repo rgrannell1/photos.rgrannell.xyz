@@ -27,6 +27,7 @@ import {
   ratingsAsUrns,
 } from "../things/things.ts";
 import { Triple } from "js/types.ts";
+import { schema } from "js/things/schema.ts";
 
 function processTriples(
   triple: Triple,
@@ -102,7 +103,7 @@ export class PhotoApp extends LitElem {
     (async () => {
       const buffer: Triple[] = [];
       if (!this.tribbleDB) {
-        this.tribbleDB = new TribbleDB([]);
+        this.tribbleDB = new TribbleDB([], schema);
       }
 
       for await (const triple of tribbles.stream()) {

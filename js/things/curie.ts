@@ -8,7 +8,7 @@ export const CURIES = {
   "wiki": "https://en.wikipedia.org/wiki/",
 };
 
-const CURIE_REGEX = /^\[([^\:]*):(.*)\]$/;
+const CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
 
 export function expandCurie(curies: Record<string, string>, value: string) {
   if (typeof value !== "string" || !CURIE_REGEX.test(value)) {
@@ -31,6 +31,11 @@ export function expandTripleCuries(
   triple: Triple,
 ) {
   const [source, relation, target] = triple;
+
+  if (typeof target === "string" && target.includes("birdwatch")) {
+    console.log("Expanding birdwatch URL");
+    console.log(target, expandCurie(curies, target));
+  }
 
   return [
     [
