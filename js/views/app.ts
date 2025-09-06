@@ -14,43 +14,13 @@ import "./pages/about.ts";
 import "./pages/thing.ts";
 import "./pages/videos.ts";
 import "./pages/listing.ts";
+
+
 import { TribbleDB } from "js/library/tribble.js";
 import { property } from "lit/decorators.js";
-
-import {
-  CURIES,
-  countriesAsUrns,
-  expandBirdwatchUrl,
-  expandCdnUrls,
-  expandTripleCuries,
-  expandUrns,
-  ratingsAsUrns,
-} from "../things/things.ts";
-import { Triple } from "js/types.ts";
-import { schema } from "js/things/schema.ts";
-
-function processTriples(
-  triple: Triple,
-): Triple[] {
-  // derive new triples or modify old ones,
-  // sequentially apply functions against intermediate results
-
-  const tripleProcessors = [
-    expandUrns,
-    ratingsAsUrns,
-    countriesAsUrns,
-    expandCdnUrls,
-    expandBirdwatchUrl,
-    expandTripleCuries.bind(null, CURIES),
-  ];
-
-  let outputTriples = [triple];
-  for (const fn of tripleProcessors) {
-    outputTriples = outputTriples.flatMap(fn);
-  }
-
-  return outputTriples;
-}
+import { Triple } from "../types.ts";
+import { schema } from "../things/schema.ts";
+import { processTriples } from "../things/process.ts";
 
 const tribbles = new TribblesArtifact();
 

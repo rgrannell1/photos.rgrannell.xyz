@@ -32,11 +32,6 @@ export function expandTripleCuries(
 ) {
   const [source, relation, target] = triple;
 
-  if (typeof target === "string" && target.includes("birdwatch")) {
-    console.log("Expanding birdwatch URL");
-    console.log(target, expandCurie(curies, target));
-  }
-
   return [
     [
       expandCurie(curies, source),

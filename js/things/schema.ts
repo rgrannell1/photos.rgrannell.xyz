@@ -10,7 +10,7 @@ function countValidator(_: any, relation: string, value: any) {
 }
 
 function urlValidator(_: any, relation: string, value: any) {
-  const valid = typeof value === 'string' && value.startsWith('/')
+  const valid = typeof value === 'string' && (value.startsWith('/') || value.startsWith('http'))
 
   return valid
     ? undefined
@@ -57,6 +57,14 @@ function latitudeValidator(_: any, relation: string, value: any) {
     : `invalid relation ${relation} for value ${JSON.stringify(value)}`;
 }
 
+function countryValidator(_: any, relation: string, value: any) {
+  const valid = typeof value === 'string' && value.startsWith('urn:ró:country');
+
+  return valid
+    ? undefined
+    : `invalid country value ${value}`;
+}
+
 export const schema: Record<string, TargetValidator> = {
   living_conditions: deprecatedValidator,
   mammal_binomial: deprecatedValidator,
@@ -70,21 +78,21 @@ export const schema: Record<string, TargetValidator> = {
   width: dimensionValidator,
   max_date: dateValidator,
   min_date: dateValidator,
-//  png_url: urlValidator,
-//  poster_url: urlValidator,
-//  thumbnail_url: urlValidator,
-//  video_url_1080p: urlValidator,
-//  video_url_480p: urlValidator,
-//  video_url_720p: urlValidator,
-//  video_url_unscaled: urlValidator,
+  png_url: urlValidator,
+  poster_url: urlValidator,
+  thumbnail_url: urlValidator,
+  video_url_1080p: urlValidator,
+  video_url_480p: urlValidator,
+  video_url_720p: urlValidator,
+  video_url_unscaled: urlValidator,
   latitude: latitudeValidator,
   longitude: longitudeValidator,
-//  full_image: urlValidator,
+  full_image: urlValidator,
 
   album_id: defaultValidator,
   bird_binomial: deprecatedValidator,
   birdwatch_url: defaultValidator,
-  country: defaultValidator,
+  country: countryValidator,
   created_at: defaultValidator,
   curie: defaultValidator,
   description: defaultValidator,

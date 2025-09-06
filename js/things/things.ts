@@ -2,7 +2,7 @@ import { Triple } from "../types.ts";
 import { KnownRelations } from "../constants.js";
 import { parseUrn } from "../library/tribble.js";
 
-const CONFIG = window.envConfig;
+const CONFIG = (window as any).envConfig;
 
 export { expandTripleCuries, CURIES } from "./curie.ts";
 
@@ -215,7 +215,7 @@ export function countriesAsUrns(triple: Triple) {
  * We remove CDN hostnames from our URLS; re-add them for relevant
  * relations
  */
-export function expandCdnUrls(triple: Triple) {
+export function expandCdnUrls(cdnUrl: string, triple: Triple) {
   for (
     const relation of [
       "thumbnail_url",
@@ -233,7 +233,7 @@ export function expandCdnUrls(triple: Triple) {
         [
           Triples.getSource(triple),
           relation,
-          `${CONFIG.photos_url}${Triples.getTarget(triple)}`,
+          `${cdnUrl}${Triples.getTarget(triple)}`,
         ],
       ];
     }
