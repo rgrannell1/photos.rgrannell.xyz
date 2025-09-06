@@ -22,7 +22,7 @@ Deno.test("Current artifact file parses as expected", async () => {
   let idx = 0
   for await (const triple of tribbles.stream()) {
     const processed = processTriples(triple as Triple);
-    tdb.add([processed]);
+    tdb.add(processed);
     idx++;
   }
 

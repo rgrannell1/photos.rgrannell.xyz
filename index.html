@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://photos-cdn.rgrannell.xyz">
 
     <!-- Preloads -->
-    <link rel="preload" href="/dist/js/app.1660ea5db3f7b9d6.js" as="script">
+    <link rel="preload" href="/dist/js/app.4e248488207a2eca.js" as="script">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/3dd12452d2.webp" as="image">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/e261da6ed7.webp" as="image">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/88d0b1c0a1.webp" as="image">
@@ -43,12 +43,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0056b3">
 
-    <link rel="stylesheet" href="/dist/css/style.1660ea5db3f7b9d6.css" as="style">
-    <link rel="stylesheet" href="/dist/css/photo-album.1660ea5db3f7b9d6.css" as="style">
+    <link rel="stylesheet" href="/dist/css/style.4e248488207a2eca.css" as="style">
+    <link rel="stylesheet" href="/dist/css/photo-album.4e248488207a2eca.css" as="style">
 
     <script>
       // reduce blocking requests by injecting this critical data
-      window.envConfig = {"photos_url":"https://photos-cdn.rgrannell.xyz","publication_id":"14fe4aff55","build_id":"1660ea5db3f7b9d6"}
+      window.envConfig = {"photos_url":"https://photos-cdn.rgrannell.xyz","publication_id":"27c07ca14c","build_id":"4e248488207a2eca"}
       window.homepageThumbnails = []
     </script>
 
@@ -56,10 +56,10 @@
     <script type="module">
       // this mustashe injection should circumvent blocking on `stats` fetches
       const $statsData = document.getElementById('stats-data');
-      $statsData.innerText = JSON.stringify({"photos":1178,"albums":103,"years":13,"countries":18,"bird_species":141,"mammal_species":55,"unesco_sites":18})
+      $statsData.innerText = JSON.stringify({"photos":1178,"albums":103,"years":13,"countries":18,"bird_species":142,"mammal_species":55,"unesco_sites":18})
 
     </script>
-    <script type="module" src="/dist/js/app.1660ea5db3f7b9d6.js"></script>
+    <script type="module" src="/dist/js/app.4e248488207a2eca.js"></script>
 
     <title>photos.rgrannell.xyz</title>
   </head>
@@ -69,10 +69,10 @@
   <script async fetchpriority="low">
     // -- register a service-worker
     if('serviceWorker' in navigator) {
-      console.log('⚙️ loading service worker: /sw.1660ea5db3f7b9d6.js')
+      console.log('⚙️ loading service worker: /sw.4e248488207a2eca.js')
 
-      navigator.serviceWorker.register('/dist/js/sw.1660ea5db3f7b9d6.js').catch(err => {
-        console.error(`⚙️ failed service worker: /sw.1660ea5db3f7b9d6.js ${err}`)
+      navigator.serviceWorker.register('/dist/js/sw.4e248488207a2eca.js').catch(err => {
+        console.error(`⚙️ failed service worker: /sw.4e248488207a2eca.js ${err}`)
       });
 
       navigator.serviceWorker.ready.then(registration => {
@@ -89,7 +89,7 @@
         console.error(`⚙️ failed to send homepage thumbnails to service worker: ${err}`)
       });
     } else {
-      console.error('⚙️ service worker not supported: /sw.1660ea5db3f7b9d6.js')
+      console.error('⚙️ service worker not supported: /sw.4e248488207a2eca.js')
     }
   </script>
 </html>

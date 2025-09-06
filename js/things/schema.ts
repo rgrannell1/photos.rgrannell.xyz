@@ -65,6 +65,19 @@ function countryValidator(_: any, relation: string, value: any) {
     : `invalid country value ${value}`;
 }
 
+function ratingValidator(_: any, relation: string, value: any) {
+  if (typeof value !== 'string') {
+    return `invalid rating value ${value}`;
+  }
+
+  const decoded = decodeURIComponent(value);
+  const valid = decoded.match(/^⭐{0,5}$/) || decoded.match(/^urn:ró:rating:⭐{0,5}$/)
+
+  return valid
+    ? undefined
+    : `invalid rating value ${value}`;
+}
+
 export const schema: Record<string, TargetValidator> = {
   living_conditions: deprecatedValidator,
   mammal_binomial: deprecatedValidator,
@@ -88,11 +101,12 @@ export const schema: Record<string, TargetValidator> = {
   latitude: latitudeValidator,
   longitude: longitudeValidator,
   full_image: urlValidator,
+  country: countryValidator,
+  rating: ratingValidator,
 
   album_id: defaultValidator,
   bird_binomial: deprecatedValidator,
   birdwatch_url: defaultValidator,
-  country: countryValidator,
   created_at: defaultValidator,
   curie: defaultValidator,
   description: defaultValidator,
@@ -109,7 +123,6 @@ export const schema: Record<string, TargetValidator> = {
   mosaic: defaultValidator,
   mosaic_colours: defaultValidator,
   name: defaultValidator,
-  rating: defaultValidator,
   style: defaultValidator,
   subject: defaultValidator,
   summary: defaultValidator,
