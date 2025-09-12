@@ -452,6 +452,10 @@ photo-app {
   text-decoration: underline;
 }
 
+.photo-share-button[disabled] {
+  cursor: not-allowed;
+}
+
 .photo-tag-list {
   padding-top: 8px;
   margin-left: 20px;
