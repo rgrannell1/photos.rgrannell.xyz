@@ -78,6 +78,15 @@ function ratingValidator(_: any, relation: string, value: any) {
     : `invalid rating value ${value}`;
 }
 
+function flagValidator(_: any, relation: string, value: any) {
+  const validGeneralFlag = typeof value === 'string' && /^[\u{1F1E6}-\u{1F1FF}]+$/u.test(value);
+  // TODO regional flag
+
+  return validGeneralFlag
+    ? undefined
+    : `invalid flag value ${JSON.stringify(value)}`;
+}
+
 export const schema: Record<string, TargetValidator> = {
   living_conditions: deprecatedValidator,
   mammal_binomial: deprecatedValidator,
@@ -104,6 +113,7 @@ export const schema: Record<string, TargetValidator> = {
   country: countryValidator,
   rating: ratingValidator,
 
+  flag: defaultValidator,
   album_id: defaultValidator,
   bird_binomial: deprecatedValidator,
   birdwatch_url: defaultValidator,
@@ -113,7 +123,6 @@ export const schema: Record<string, TargetValidator> = {
   exposure_time: defaultValidator,
   fcode: defaultValidator,
   fcode_name: defaultValidator,
-  flag: defaultValidator,
   flags: defaultValidator,
   focal_length: defaultValidator,
   f_stop: defaultValidator,

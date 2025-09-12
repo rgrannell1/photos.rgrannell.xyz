@@ -32,11 +32,21 @@ export function expandTripleCuries(
 ) {
   const [source, relation, target] = triple;
 
+  const expandedSource = expandCurie(curies, source);
+  const expandedTarget = expandCurie(curies, target);
+
+  if (CURIE_REGEX.test(expandedSource)) {
+    throw new Error(`Source still matches CURIE regex after expansion: "${source}" ${expandedSource}`);
+  }
+  if (CURIE_REGEX.test(expandedTarget)) {
+    throw new Error(`Target still matches CURIE regex after expansion: "${target}" ${expandedTarget}`);
+  }
+
   return [
     [
-      expandCurie(curies, source),
+      expandedSource,
       relation,
-      expandCurie(curies, target),
+      expandedTarget,
     ],
   ];
 }
