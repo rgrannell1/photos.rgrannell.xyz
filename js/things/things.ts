@@ -189,6 +189,23 @@ export function ratingsAsUrns(triple: Triple) {
   ]];
 }
 
+export function placesToCountries(triple: Triple) {
+  if (Triples.getRelation(triple) !== KnownRelations.LOCATION) {
+    return [triple];
+  }
+
+  const place = Triples.getTarget(triple);
+  if (!Things.is(place, "country")) {
+    return [triple];
+  }
+
+  return [[
+    Triples.getSource(triple),
+    KnownRelations.COUNTRY,
+    place,
+  ]];
+}
+
 /*
  * Convert `country` relations to URNs
  */

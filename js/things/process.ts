@@ -3,6 +3,7 @@ import { Triple } from "../types.ts";
 import {
   CURIES,
   countriesAsUrns,
+  placesToCountries,
   expandCdnUrls,
   expandTripleCuries,
   expandUrns,
@@ -19,6 +20,7 @@ export function processTriples(
     expandUrns,
     ratingsAsUrns,
     countriesAsUrns,
+    placesToCountries,
     expandCdnUrls.bind(null, 'https://photos-cdn.rgrannell.xyz'), // todo move
     expandTripleCuries.bind(null, CURIES),
   ];
