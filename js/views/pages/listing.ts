@@ -33,6 +33,16 @@ class ListingPageService {
     });
   }
 
+  static chooseCoverImage(tdb, type: string, urn: string): string | undefined {
+    const results = tdb.search({
+      source: { type: "photo" },
+      relation: "cover",
+      target: asUrn(urn),
+    });
+
+    return results.firstObject()?.id;
+  }
+
   static chooseBestImage(tdb, type: string, urn: string): string | undefined {
     const results = tdb.search({
       source: { type: "photo" },
@@ -43,6 +53,12 @@ class ListingPageService {
     if (!sourceIds) {
       console.error('no photos found')
     }
+
+    const coverImage = this.chooseCoverImage(tdb, type, urn);
+    if (coverImage && sourceIds.has(coverImage)) {
+      return coverImage;
+    }
+    console.log(coverImage, type, urn)
 
     const ratedPhotos = Array.from(sourceIds).map((source: string) => {
       const result = tdb.search({
