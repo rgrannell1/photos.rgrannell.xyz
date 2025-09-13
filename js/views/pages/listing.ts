@@ -194,7 +194,7 @@ export class ListingPage extends LitElem {
     return html`
     <section class="album-metadata">
       <h1 class="albums-header">${this.id.charAt(0).toUpperCase() + this.id.slice(1)}s</h1>
-      <a href="/#thing/${this.id}:*">See all ${this.id} photos</a>
+      <a href="/#/thing/${this.id}:*">See all ${this.id} photos</a>
     </section>
 
     <section class="album-container">

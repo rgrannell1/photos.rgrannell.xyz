@@ -349,7 +349,7 @@ var ns=Object.defineProperty;var os=Object.getOwnPropertyDescriptor;var p=(i,t,e
           ${s}
         </div>
       `]:[])}
-    <div/>`}render(){let t=this.triples,e=t.search({source:{type:"photo"}}).objects(),s=v.parseUrn(this.urn),r=s.type,n=t.search({source:w(this.urn)}).firstObject()??{},o=Object.assign({Classification:this.renderClassification(r)});if(n.country&&(o.Country=l`<thing-link .triples=${this.triples} urn=${n.country}></thing-link>`),n.fcode_name){let q=n.fcode_name;o["Place Type"]=l`${q.charAt(0).toUpperCase()}${q.slice(1)}`}Y.has(r)&&(o["First Photographed"]=l`<span>${this.firstPhotographed(e,t,{target:w(this.urn)})}</span>`);let c=n[_.WIKIPEDIA],a=n[_.BIRDWATCH_URL],d=n[_.LONGITUDE],m=n[_.LATITUDE],u;if(d&&m){let q=`https://www.google.com/maps?q=${m},${d}`;u=l`
+    <div/>`}render(){let t=this.triples,e=t.search({source:{type:"photo"}}).objects(),s=v.parseUrn(this.urn);console.log("loading thing page"),console.log(e,s);let r=s.type,n=t.search({source:w(this.urn)}).firstObject()??{},o=Object.assign({Classification:this.renderClassification(r)});if(n.country&&(o.Country=l`<thing-link .triples=${this.triples} urn=${n.country}></thing-link>`),n.fcode_name){let q=n.fcode_name;o["Place Type"]=l`${q.charAt(0).toUpperCase()}${q.slice(1)}`}Y.has(r)&&(o["First Photographed"]=l`<span>${this.firstPhotographed(e,t,{target:w(this.urn)})}</span>`);let c=n[_.WIKIPEDIA],a=n[_.BIRDWATCH_URL],d=n[_.LONGITUDE],m=n[_.LATITUDE],u;if(d&&m){let q=`https://www.google.com/maps?q=${m},${d}`;u=l`
       <a href="${q}" target="_blank" rel="noopener">[maps]</a>
       `}let f=w(this.urn);f.id==="*"&&delete f.id;let $=this.getPhotoQueries(w(this.urn)),E={};for(let{query:q,label:Xt}of $){let is=this.urnImages(t,q);E[Xt]=this.renderSubjectPhotos(is)}let k={source:{type:"photo"},target:f},Yt=this.renderSubjectAlbums(t,k),rs=this.renderPhotoSection(E);return l`
       <div>
@@ -432,7 +432,7 @@ var ns=Object.defineProperty;var os=Object.getOwnPropertyDescriptor;var p=(i,t,e
     `}render(){let t=this.triples,e=Kt.getDistinctThings(t,this.id);return l`
     <section class="album-metadata">
       <h1 class="albums-header">${this.id.charAt(0).toUpperCase()+this.id.slice(1)}s</h1>
-      <a href="/#thing/${this.id}:*">See all ${this.id} photos</a>
+      <a href="/#/thing/${this.id}:*">See all ${this.id} photos</a>
     </section>
 
     <section class="album-container">
@@ -539,4 +539,4 @@ lit-html/directive-helpers.js:
    * SPDX-License-Identifier: BSD-3-Clause
    *)
 */
-//# sourceMappingURL=app.7747d1e5fc5c2cd5.js.map
+//# sourceMappingURL=app.50d71341ae48be0d.js.map
