@@ -259,9 +259,6 @@ export class ThingPage extends LitElem {
     }).objects();
     const urn = Things.parseUrn(this.urn);
 
-console.log('loading thing page')
-console.log(images, urn)
-
     const type = urn.type;
 
     const urnFacts = tdb.search({

@@ -172,7 +172,7 @@ export class ListingPage extends LitElem {
       <photo-album
         .onClick=${loadThingPage.bind(null, urn, name)}
         .triples=${this.triples}
-        title="${"no such thing exists"}"
+        title="${name}"
         url="${image.thumbnail_url}"
         mosaicColours="${image.mosaic_colours}"
         id=${idLink}

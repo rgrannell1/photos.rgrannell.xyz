@@ -17,7 +17,7 @@ export class PhotosStats extends LitElem {
     return html`
       <p class="photo-stats">${stats.photos} <a href="#/photos">photos</a> ·
         ${stats.albums} albums · ${stats.years} years ·
-        ${stats.countries} <span title="well, roughly">countries</span> ·
+        ${stats.countries} <a href="#/listing/country">countries</a> ·
         ${stats.bird_species} <a href="#/listing/bird">bird species</a> ·
         ${stats.mammal_species} <a href="#/listing/mammal">mammal species</a> ·
         ${stats.unesco_sites} <a href="#/thing/unesco:*">UNESCO sites</a>

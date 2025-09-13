@@ -197,7 +197,7 @@ export function countriesAsUrns(triple: Triple) {
     return [triple];
   }
 
-  const countryId = Triples.getTarget(triple).toLowerCase().replace(" ", "-");
+  const countryId = Triples.getTarget(triple).toLowerCase().replace(/ /g, "-");
   const countryUrn = `urn:ró:country:${countryId}`;
 
   return [
