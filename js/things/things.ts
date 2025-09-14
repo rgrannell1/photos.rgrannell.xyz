@@ -1,6 +1,7 @@
 import { Triple } from "../types.ts";
 import { KnownRelations } from "../constants.js";
 import { parseUrn } from "../library/tribble.js";
+import { Strings } from "../strings.ts";
 
 export { expandTripleCuries, CURIES } from "./curie.ts";
 
@@ -107,7 +108,7 @@ export class Things {
 export class Binomials {
   static pretty(binomial: string) {
     const pretty = binomial.replace(/-/g, " ");
-    return pretty.charAt(0).toUpperCase() + pretty.slice(1);
+    return Strings.capitalise(pretty);
   }
 
   static toCommonName(tdb: any, binomial: string) {

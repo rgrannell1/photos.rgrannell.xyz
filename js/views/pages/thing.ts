@@ -171,9 +171,7 @@ export class ThingPage extends LitElem {
   }
 
   renderClassification(type: string) {
-    return html`<a href="#/listing/${type}">${type.charAt(0).toUpperCase()}${
-      type.slice(1)
-    }</a>`;
+    return html`<a href="#/listing/${type}">${Strings.capitalise(type)}</a>`;
   }
 
   getPhotoQueries(urn: URN) {
@@ -228,7 +226,7 @@ export class ThingPage extends LitElem {
 
         return [html`
         <div class="photo-group">
-          <h4>${label.charAt(0).toUpperCase() + label.slice(1)}</h4>
+          <h4>${Strings.capitalise(label)}</h4>
           ${groupPhotos}
         </div>
       `];
@@ -243,7 +241,7 @@ export class ThingPage extends LitElem {
     // Support bird:* level queries
     const tdb = this.triples;
 
-    const images = ThingsService.photoObjects();
+    const images = ThingsService.photoObjects(tdb);
     const urn = Things.parseUrn(this.urn);
 
     const type = urn.type;
@@ -263,9 +261,7 @@ export class ThingPage extends LitElem {
 
     if (urnFacts.fcode_name) {
       const fcodeName = urnFacts.fcode_name;
-      metadata["Place Type"] = html`${fcodeName.charAt(0).toUpperCase()}${
-        fcodeName.slice(1)
-      }`;
+      metadata["Place Type"] = html`${Strings.capitalise(fcodeName)}`;
     }
 
     if (BinomialTypes.has(type)) {

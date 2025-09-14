@@ -15,8 +15,9 @@ import "../components/share.ts";
 import "../components/thing-link.ts";
 
 import { LitElem } from "../../models/lit-element.ts";
-import { Photos } from "js/services/photos.ts";
+import { Photos } from "../../services/photos.ts";
 import { property } from "lit/decorators.js";
+import { Strings } from "../../strings.ts";
 
 class ListingPageService {
   /*
@@ -209,8 +210,8 @@ export class ListingPage extends LitElem {
 
     return html`
     <section class="album-metadata">
-      <h1 class="albums-header">${this.id.charAt(0).toUpperCase() + this.id.slice(1)}s</h1>
-      <a href="/#/thing/${this.id}:*">See all ${this.id} photos</a>
+      <h1 class="albums-header">${Strings.capitalise(this.id)}s</h1>
+      <a href="/#/thing/${this.id}:*">See all ${Strings.pluralise(this.id)} photos</a>
     </section>
 
     <section class="album-container">
