@@ -40,26 +40,26 @@ export class MetadataPage extends LitElem {
   }
 
   renderAperture(exif) {
-    if (exif.f_stop === "Unknown") {
+    if (exif.fStop === "Unknown") {
       return html`<td>Unknown</td>`;
-    } else if (exif.f_stop === "0.0") {
+    } else if (exif.fStop === "0.0") {
       return html`<td>Manual aperture control</td>`;
-    } else if (!exif.f_stop) {
+    } else if (!exif.fStop) {
       return html`<td>Unknown</td>`;
     }
 
-    return html`<td>ƒ/${exif.f_stop}</td>`;
+    return html`<td>ƒ/${exif.fStop}</td>`;
   }
 
   renderFocalLength(exif) {
-    if (exif.focal_length === "Unknown") {
-      return html`${exif.focal_length}`;
-    } else if (exif.focal_length === "0") {
+    if (exif.focalLength === "Unknown") {
+      return html`${exif.focalLength}`;
+    } else if (exif.focalLength === "0") {
       return html`<td>Manual lens</td>`;
-    } else if (!exif.focal_length) {
+    } else if (!exif.focalLength) {
       return html`<td>Unknown</td>`;
     } else {
-      return html`<td>${exif.focal_length}mm equiv.</td>`;
+      return html`<td>${exif.focalLength}mm equiv.</td>`;
     }
   }
 
@@ -101,11 +101,11 @@ export class MetadataPage extends LitElem {
   isIgnoredKey(key) {
     // TODO remove this when semantic data is cleaned up
     return (new Set([
-      "bird_binomial",
-      "mammal_binomial",
+      "birdBinomial",
+      "mammalBinomial",
       "wildlife",
-      "living_conditions",
-      "png_url"
+      "livingConditions",
+      "pngUrl",
     ])).has(key);
   }
 
@@ -166,10 +166,10 @@ export class MetadataPage extends LitElem {
   }
 
   renderShutterSpeed(exif) {
-    if (typeof exif.shutter_speed === "number") {
+    if (typeof exif.shutterSpeed === "number") {
       return html`
         ${Heading("Shutter Speed")}
-        <td>1/${Math.round(1 / exif.shutter_speed)}</td>`;
+        <td>1/${Math.round(1 / exif.shutterSpeed)}</td>`;
     }
     return html`
       ${Heading("Shutter Speed")}
@@ -192,7 +192,7 @@ export class MetadataPage extends LitElem {
       return html`<p>No EXIF data available</p>`;
     }
 
-    const date = new Date(parseInt(exif.created_at));
+    const date = new Date(parseInt(exif.createdAt));
     const options = {
       year: "numeric",
       month: "long",
@@ -239,7 +239,7 @@ export class MetadataPage extends LitElem {
 
   render() {
     const photo = this.image;
-    const albumId = photo.album_id;
+    const albumId = photo.albumId;
 
     const tdb = this.triples;
     const imageTriples = tdb.search({
@@ -249,10 +249,10 @@ export class MetadataPage extends LitElem {
       relation: {
         predicate: (relation: string) => {
           const TODO = new Set([
-            "album_id",
-            "full_image",
-            "mosaic_colours",
-            "thumbnail_url",
+            "albumId",
+            "fullImage",
+            "mosaicColours",
+            "thumbnailUrl",
           ]);
           return !ExifRelations.has(relation) && !TODO.has(relation);
         },
@@ -263,12 +263,12 @@ export class MetadataPage extends LitElem {
     <section>
     <h1>Metadata</h1>
 
-    <img class="u-photo thumbnail-image" src="${photo.thumbnail_url}"/>
+    <img class="u-photo thumbnail-image" src="${photo.thumbnailUrl}"/>
 
       <p>
-        <a href="${photo.full_image}">[webp]</a>
-        <a href="${photo.png_url}">[png]</a>
-        <share-metadata-button format="image/webp" url=${photo.png_url}></share-metadata-button>
+        <a href="${photo.fullImage}">[webp]</a>
+        <a href="${photo.pngUrl}">[png]</a>
+        <share-metadata-button format="image/webp" url=${photo.pngUrl}></share-metadata-button>
         <a href="#/album/${albumId}">[album]</a>
       </p>
 

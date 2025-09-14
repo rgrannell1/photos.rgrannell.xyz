@@ -52,21 +52,19 @@ export function expandUrns(triple) {
 }
 
 function prefetchTargets(env, triples: [string, string, string][]) {
-  const tdb = new TribbleDB(triples).flatMap(expandUrns).flatMap(expandTripleCuries.bind(null, CURIES));
+  const tdb = new TribbleDB(triples).flatMap(expandUrns).flatMap(
+    expandTripleCuries.bind(null, CURIES),
+  );
 
-  const albums = ThingsService.albumObjects(tdb)
-    .sort((album0, album1) => {
-      return parseInt(album1.min_date, 10) - parseInt(album0.min_date, 10);
-    });
-
-  return albums.slice(0, 11).map((album) => `${album.thumbnail_url}`);
+  const albums = ThingsService.albumObjects(tdb);
+  return albums.slice(0, 11).map((album) => `${album.thumbnailUrl}`);
 }
 
 function homepageThumbnails(triples: [string, string, string][]) {
   const tdb = new TribbleDB(triples).flatMap(expandUrns);
-  const albums = ThingsService.albumObjects(tdb)
+  const albums = ThingsService.albumObjects(tdb);
 
-  return albums.map((album) => `${album.thumbnail_url}`);
+  return albums.map((album) => `${album.thumbnailUrl}`);
 }
 
 async function buildHTML() {
@@ -77,14 +75,17 @@ async function buildHTML() {
   const html = await artifacts.html();
   const triples = await artifacts.triples();
 
-  await Deno.writeTextFile("index.html", render(html, {
-    stats,
-    env: JSON.stringify(env),
-    prefetched: prefetchTargets(env, triples),
-    homepageThumbnails: JSON.stringify(homepageThumbnails(triples)),
-    cdnUrl: env.photos_url,
-    buildId: env.build_id
-  }));
+  await Deno.writeTextFile(
+    "index.html",
+    render(html, {
+      stats,
+      env: JSON.stringify(env),
+      prefetched: prefetchTargets(env, triples),
+      homepageThumbnails: JSON.stringify(homepageThumbnails(triples)),
+      cdnUrl: env.photos_url,
+      buildId: env.build_id,
+    }),
+  );
 }
 
 async function buildSW() {
@@ -93,12 +94,15 @@ async function buildSW() {
 
   const sw = await artifacts.sw();
 
-  await Deno.writeTextFile("sw.js", render(sw, {
-    buildId: env.build_id
-  }));
+  await Deno.writeTextFile(
+    "sw.js",
+    render(sw, {
+      buildId: env.build_id,
+    }),
+  );
 }
 
 await Promise.all([
   buildHTML(),
-  buildSW()
+  buildSW(),
 ]);

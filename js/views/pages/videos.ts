@@ -23,12 +23,6 @@ export class VideosPage extends LitElem {
     JSONFeed.setIndex();
   }
 
-  getVideos() {
-    return this.triples.search({
-      source: { type: "video" },
-    }).objects();
-  }
-
   render() {
     const videos = ThingsService.videoObjects(this.triples);
     async function* videosIterable() {
@@ -41,11 +35,11 @@ export class VideosPage extends LitElem {
 
         yield html`<app-video
           id=${video.id}
-          url_poster=${video.poster_url}
-          url_unscaled=${video.video_url_unscaled}
-          url_1080p=${video.video_url_1080p}
-          url_720p=${video.video_url_720p}
-          url_480p=${video.video_url_480p}
+          urlPoster=${video.posterUrl}
+          urlUnscaled=${video.videoUrlUnscaled}
+          url1080p=${video.videoUrl1080p}
+          url720p=${video.videoUrl720p}
+          url480p=${video.videoUrl480p}
           preload="${Videos.loadingMode(idx)}"
         ></app-video>`;
       }

@@ -31,7 +31,7 @@ export class PageLocation {
     "album",
     "metadata",
     "thing",
-    "listing"
+    "listing",
   ]);
 
   static isPage(value: string): value is keyof typeof Pages {

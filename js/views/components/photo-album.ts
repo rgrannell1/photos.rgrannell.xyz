@@ -1,4 +1,4 @@
-import { html, css, unsafeCSS, LitElement } from "lit-element";
+import { css, html, LitElement, unsafeCSS } from "lit-element";
 import { parseUrn } from "../../library/tribble.js";
 import { LitElem } from "../../models/lit-element.ts";
 import { Dates } from "../../services/dates.ts";
@@ -6,11 +6,13 @@ import { Photos } from "../../services/photos.ts";
 import { Countries } from "../../things/things.ts";
 import { property } from "lit/decorators.js";
 
-const response = await fetch(`/dist/css/photo-album.${window.envConfig.build_id}.css`);
+const response = await fetch(
+  `/dist/css/photo-album.${window.envConfig.build_id}.css`,
+);
 const cssText = await response.text();
 const cssModule = { default: cssText };
 
-const styles = css`${unsafeCSS(cssModule.default)}`
+const styles = css`${unsafeCSS(cssModule.default)}`;
 
 export class PhotoAlbum extends LitElement {
   @property()
@@ -26,7 +28,7 @@ export class PhotoAlbum extends LitElement {
   @property()
   loading?: string;
   @property()
-  path: string = '/#/album/'
+  path: string = "/#/album/";
 
   @property()
   onClick?: Function;
@@ -98,7 +100,6 @@ export class PhotoAlbum extends LitElement {
 }
 
 class PhotoAlbumMetadata extends LitElem {
-
   @property()
   title!: string;
 

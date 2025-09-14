@@ -15,7 +15,6 @@ import "./pages/thing.ts";
 import "./pages/videos.ts";
 import "./pages/listing.ts";
 
-
 import { TribbleDB } from "js/library/tribble.js";
 import { property } from "lit/decorators.js";
 import { Triple } from "../types.ts";
@@ -259,9 +258,9 @@ export class PhotoApp extends LitElem {
         .triples=${this.tribbleDB}
         title=${album.name}
         id=${this.id}
-        minDate=${album.min_date}
-        maxDate=${album.max_date}
-        imageCount=${album.photos_count}
+        minDate=${album.minDate}
+        maxDate=${album.maxDate}
+        imageCount=${album.photosCount}
         description=${album.description}
         countries=${album.flags}
         class="${classes}"></album-page>

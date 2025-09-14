@@ -16,6 +16,7 @@ import "../components/year-cursor.ts";
 import { property } from "lit/decorators.js";
 import { asUrn } from "js/library/tribble.js";
 import { ThingsService } from "js/things/services.ts";
+import { Album } from "js/types.ts";
 
 export class AlbumsPage extends LitElem {
   @property({})
@@ -29,48 +30,33 @@ export class AlbumsPage extends LitElem {
 
     JSONFeed.setIndex();
   }
-  getAlbums() {
-    return ThingsService.albumObjects(this.triples).map((album) => {
-      return {
-        title: album.name,
-        minDate: parseInt(album.min_date),
-        maxDate: parseInt(album.max_date),
-        url: album.thumbnail_url,
-        mosaicColours: album.mosaic,
-        id: album.id,
-        count: album.photos_count,
-        flags: album.flags,
-      };
-    });
-  }
 
   render() {
     performance.mark("start-albums-render");
 
-    const sorted = this.getAlbums()
-      .sort((album0, album1) => {
-        return album1.maxDate - album0.maxDate;
-      });
+    const onAlbumClick = (album: Album) => {
+      const parsedId = asUrn(album.id);
 
-    const onAlbumClick = album => {
-      const parsedId = asUrn(album.id)
+      this.dispatchEvent(
+        new CustomEvent("click-album", {
+          detail: { id: parsedId.id, title: album.name },
+          bubbles: true,
+          composed: true,
+        }),
+      );
+    };
 
-      this.dispatchEvent(new CustomEvent("click-album", {
-        detail: { id: parsedId.id, title: album.title ?? album.name },
-        bubbles: true,
-        composed: true
-      }));
-    }
+    const albums = ThingsService.albumObjects(this.triples);
 
     /*
      * append photo albums to the DOM
      */
     async function* albumIterable() {
-      let year = 2000;
+      let year = 2000; // I didn't have a camera yet...
       const currentYear = new Date().getFullYear();
 
-      for (let idx = 0; idx < sorted.length; idx++) {
-        const album = sorted[idx];
+      for (let idx = 0; idx < albums.length; idx++) {
+        const album = albums[idx];
         const loading = Photos.loadingMode(idx);
 
         const albumYear = new Date(album.minDate).getFullYear();
@@ -89,20 +75,19 @@ export class AlbumsPage extends LitElem {
         const metadata = html`
         <photo-album-metadata
           .triples=${this.triples}
-            title="${album.title}"
+            title="${album.name}"
             minDate="${album.minDate}"
             maxDate="${album.maxDate}"
             countries="${album.flags}"
             count="${album.count}"
         ></photo-album-metadata>`;
 
-
         yield html`
           <photo-album
             .onClick=${onAlbumClick.bind(null, album)}
             .triples=${this.triples}
-            title="${album.title}"
-            url="${album.url}"
+            title="${album.name}"
+            url="${album.thumbnailUrl}"
             mosaicColours="${album.mosaicColours}"
             id="${album.id}"
             loading=${loading}>

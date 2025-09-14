@@ -3,7 +3,7 @@ import { KnownRelations } from "../constants.js";
 import { parseUrn } from "../library/tribble.js";
 import { Strings } from "../strings.ts";
 
-export { expandTripleCuries, CURIES } from "./curie.ts";
+export { CURIES, expandTripleCuries } from "./curie.ts";
 
 export class Triples {
   static isUrnSource(triple: [string, string, string]) {
@@ -234,14 +234,14 @@ export function countriesAsUrns(triple: Triple) {
 export function expandCdnUrls(cdnUrl: string, triple: Triple) {
   for (
     const relation of [
-      "thumbnail_url",
-      "png_url",
-      "full_image",
-      "poster_url",
-      "video_url_1080p",
-      "video_url_480p",
-      "video_url_720p",
-      "video_url_unscaled",
+      "thumbnailUrl",
+      "pngUrl",
+      "fullImage",
+      "posterUrl",
+      "videoUrl1080p",
+      "videoUrl480p",
+      "videoUrl720p",
+      "videoUrlUnscaled",
     ]
   ) {
     if (Triples.getRelation(triple) === relation) {
@@ -271,4 +271,16 @@ export function expandUrns(triple: Triple) {
     relation,
     target.startsWith("::") ? `urn:ró:${target.slice(2)}` : target,
   ]];
+}
+
+/*
+ * Rename relations into a JS-friendly casing format, since we're mapping this stuff onto properties
+ */
+export function renameRelations(triple: Triple) {
+  const [source, relation, target] = triple;
+  return [[
+    source,
+    Strings.camelCase(relation),
+    target
+  ]]
 }

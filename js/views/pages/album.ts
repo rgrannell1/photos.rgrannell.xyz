@@ -47,7 +47,7 @@ export class AlbumPage extends LitElem {
   albumPhotos(tdb) {
     const albumPhotoSources: Set<string> = tdb.search({
       source: { type: "photo" },
-      relation: "album_id",
+      relation: "albumId",
       target: { id: this.id },
     }).sources();
 
@@ -65,7 +65,7 @@ export class AlbumPage extends LitElem {
       source: {
         type: "video",
       },
-      relation: "album_id",
+      relation: "albumId",
       target: {
         id: this.id,
       },
@@ -168,19 +168,19 @@ export class AlbumPage extends LitElem {
         id=${photo.id}
         summary=${photo.summary}
         loading="${Photos.loadingMode(idx)}"
-        thumbnailUrl="${photo.thumbnail_url}"
-        mosaicColours="${photo.mosaic_colours}"
-        imageUrl="${photo.full_image}"></app-photo>`;
+        thumbnailUrl="${photo.thumbnailUrl}"
+        mosaicColours="${photo.mosaicColours}"
+        imageUrl="${photo.fullImage}"></app-photo>`;
     });
 
     const videos = this.albumVideos(tdb).map((video, idx) => {
       return html`<app-video
         id=${video.id}
-        url_poster=${video.poster_url}
-        url_unscaled=${video.video_url_unscaled}
-        url_1080p=${video.video_url_1080p}
-        url_720p=${video.video_url_720p}
-        url_480p=${video.video_url_480p}
+        urlPoster=${video.posterUrl}
+        urlUnscaled=${video.videoUrlUnscaled}
+        url1080p=${video.videoUrl1080p}
+        url720p=${video.videoUrl720p}
+        url480p=${video.videoUrl480p}
         ></app-video>`;
     });
 

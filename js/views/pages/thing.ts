@@ -15,7 +15,7 @@ import { Binomials, Things } from "../../things/things.ts";
 import { Photos } from "../../services/photos.ts";
 import { URN } from "js/types.ts";
 import { property } from "lit/decorators.js";
-import { ThingsService } from "js/things/services.ts";
+import { GoogleMapsService, ThingsService } from "js/things/services.ts";
 import { Strings } from "js/strings.ts";
 
 export class ThingPage extends LitElem {
@@ -32,7 +32,7 @@ export class ThingPage extends LitElem {
   }
 
   isValidImage(image: Record<string, any>) {
-    return image && image.thumbnail_url;
+    return image && image.thumbnailUrl;
   }
 
   urnImages(tdb: any, query: any) {
@@ -59,16 +59,16 @@ export class ThingPage extends LitElem {
   renderSubjectPhotos(images: Record<string, string>[]) {
     return images
       .sort((photo0, photo1) => {
-        return photo1.created_at - photo0.created_at;
+        return photo1.createdAt - photo0.createdAt;
       })
       .map((photo, idx) => {
         return html`
       <app-photo
         id=${photo.id.startsWith("urn:") ? parseUrn(photo.id).id : photo.id}
         loading="${Photos.loadingMode(idx)}"
-        thumbnailUrl="${photo.thumbnail_url}"
-        mosaicColours="${photo.mosaic_colours}"
-        imageUrl="${photo.full_image}"></app-photo>`;
+        thumbnailUrl="${photo.thumbnailUrl}"
+        mosaicColours="${photo.mosaicColours}"
+        imageUrl="${photo.fullImage}"></app-photo>`;
       });
   }
 
@@ -76,18 +76,20 @@ export class ThingPage extends LitElem {
     const filtered = this.urnImages(tdb, search);
 
     const albumSet = new Set(filtered.map((photo) => {
-      return photo.album_id;
+      return photo.albumId;
     }));
 
-    const onAlbumClick = album => {
-      const parsedId = asUrn(album.id)
+    const onAlbumClick = (album) => {
+      const parsedId = asUrn(album.id);
 
-      this.dispatchEvent(new CustomEvent("click-album", {
-        detail: { id: parsedId.id, title: album.title ?? album.name },
-        bubbles: true,
-        composed: true
-      }));
-    }
+      this.dispatchEvent(
+        new CustomEvent("click-album", {
+          detail: { id: parsedId.id, title: album.title ?? album.name },
+          bubbles: true,
+          composed: true,
+        }),
+      );
+    };
 
     return Array
       .from(albumSet)
@@ -96,17 +98,14 @@ export class ThingPage extends LitElem {
           return parseUrn(album.id).id === albumId;
         });
       })
-      .sort((album0, album1) => {
-        return album1.min_date - album0.min_date;
-      })
       .map((album) => {
         const metadata = html`
         <photo-album-metadata
             .triples=${this.triples}
             title="${album.name}"
-            count="${album.photos_count}"
-            minDate="${album.min_date}"
-            maxDate="${album.max_date}"
+            count="${album.count}"
+            minDate="${album.minDate}"
+            maxDate="${album.maxDate}"
             countries="${album.flags}"
         ></photo-album-metadata>`;
 
@@ -115,8 +114,8 @@ export class ThingPage extends LitElem {
             .onClick=${onAlbumClick.bind(null, album)}
             .triples=${this.triples}
             title="${album.name}"
-            url="${album.thumbnail_url}"
-            mosaicColours="${album.mosaic}"
+            url="${album.thumbnailUrl}"
+            mosaicColours="${album.mosaicColours}"
             id="${album.id}"
             loading="eager">
       ${metadata}
@@ -130,7 +129,7 @@ export class ThingPage extends LitElem {
     const relevantPhotos = this
       .urnImages(tdb, query)
       .sort((photo0, photo1) => {
-        return photo0.created_at - photo1.created_at;
+        return photo0.createdAt - photo1.createdAt;
       });
 
     const first = relevantPhotos[0];
@@ -138,7 +137,7 @@ export class ThingPage extends LitElem {
       return "Unknown";
     }
 
-    return new Date(parseInt(first.created_at)).toLocaleDateString("en-IE", {
+    return new Date(parseInt(first.createdAt)).toLocaleDateString("en-IE", {
       day: "numeric",
       month: "short",
       year: "numeric",
@@ -243,7 +242,6 @@ export class ThingPage extends LitElem {
 
     const images = ThingsService.photoObjects(tdb);
     const urn = Things.parseUrn(this.urn);
-
     const type = urn.type;
 
     const urnFacts = tdb.search({
@@ -259,8 +257,8 @@ export class ThingPage extends LitElem {
         html`<thing-link .triples=${this.triples} urn=${urnFacts.country}></thing-link>`;
     }
 
-    if (urnFacts.fcode_name) {
-      const fcodeName = urnFacts.fcode_name;
+    if (urnFacts.fcodeName) {
+      const fcodeName = urnFacts.fcodeName;
       metadata["Place Type"] = html`${Strings.capitalise(fcodeName)}`;
     }
 
@@ -275,17 +273,7 @@ export class ThingPage extends LitElem {
 
     const wikipedia = urnFacts[KnownRelations.WIKIPEDIA];
     const birdwatchUrl = urnFacts[KnownRelations.BIRDWATCH_URL];
-    const longitude = urnFacts[KnownRelations.LONGITUDE];
-    const latitude = urnFacts[KnownRelations.LATITUDE];
-
-    let location;
-    if (longitude && latitude) {
-      const googleMapsUrl =
-        `https://www.google.com/maps?q=${latitude},${longitude}`;
-      location = html`
-      <a href="${googleMapsUrl}" target="_blank" rel="noopener">[maps]</a>
-      `;
-    }
+    const location = GoogleMapsService.getURL(tdb, this.urn);
 
     // TODO; rework photos to allow group by function
     const targetSearch = asUrn(this.urn);
@@ -293,6 +281,8 @@ export class ThingPage extends LitElem {
       // don't filter by ID in this case
       delete targetSearch.id;
     }
+
+    // TODO too much logic in a render function
 
     const photoQueries = this.getPhotoQueries(asUrn(this.urn));
 

@@ -140,12 +140,16 @@ var TribbleStringifier = class {
     for (const value of [source, relation, target]) {
       if (!this.stringIndex.has(value)) {
         const newId = this.stringIndex.add(value);
-        const stringifiedValue = value === "null" || value === null ? JSON.stringify("null") : JSON.stringify(value.toString());
+        const stringifiedValue = value === "null" || value === null
+          ? JSON.stringify("null")
+          : JSON.stringify(value.toString());
         message.push(`${newId} ${stringifiedValue}`);
       }
     }
     message.push(
-      `${this.stringIndex.getIndex(source)} ${this.stringIndex.getIndex(relation)} ${this.stringIndex.getIndex(target)}`
+      `${this.stringIndex.getIndex(source)} ${
+        this.stringIndex.getIndex(relation)
+      } ${this.stringIndex.getIndex(target)}`,
     );
     return message.join("\n");
   }
@@ -159,11 +163,13 @@ function parseUrn(urn, namespace = "r\xF3") {
   const type = urn.split(":")[2];
   const [urnPart, queryString] = urn.split("?");
   const id = urnPart.split(":")[3];
-  const qs = queryString ? Object.fromEntries(new URLSearchParams(queryString)) : {};
+  const qs = queryString
+    ? Object.fromEntries(new URLSearchParams(queryString))
+    : {};
   return {
     type,
     id,
-    qs
+    qs,
   };
 }
 function asUrn(value, namespace = "r\xF3") {
@@ -173,7 +179,7 @@ function asUrn(value, namespace = "r\xF3") {
     return {
       type: "unknown",
       id: value,
-      qs: {}
+      qs: {},
     };
   }
 }
@@ -236,9 +242,13 @@ var Index = class {
     for (let jdx = 0; jdx < triples.length; jdx++) {
       const idx = startIdx + jdx;
       const triple = triples[jdx];
-      const parsedSource = this.stringUrn.has(triple[0]) ? this.stringUrn.get(triple[0]) : this.stringUrn.set(triple[0], asUrn(triple[0])).get(triple[0]);
+      const parsedSource = this.stringUrn.has(triple[0])
+        ? this.stringUrn.get(triple[0])
+        : this.stringUrn.set(triple[0], asUrn(triple[0])).get(triple[0]);
       const relation = triple[1];
-      const parsedTarget = this.stringUrn.has(triple[2]) ? this.stringUrn.get(triple[2]) : this.stringUrn.set(triple[2], asUrn(triple[2])).get(triple[2]);
+      const parsedTarget = this.stringUrn.has(triple[2])
+        ? this.stringUrn.get(triple[2])
+        : this.stringUrn.set(triple[2], asUrn(triple[2])).get(triple[2]);
       const sourceTypeIdx = this.stringIndex.add(parsedSource.type);
       const sourceIdIdx = this.stringIndex.add(parsedSource.id);
       const relationIdx = this.stringIndex.add(relation);
@@ -247,7 +257,7 @@ var Index = class {
       this.indexedTriples.push([
         this.stringIndex.add(triple[0]),
         relationIdx,
-        this.stringIndex.add(triple[2])
+        this.stringIndex.add(triple[2]),
       ]);
       if (!this.sourceType.has(sourceTypeIdx)) {
         this.sourceType.set(sourceTypeIdx, /* @__PURE__ */ new Set());
@@ -298,7 +308,7 @@ var Index = class {
     return this.indexedTriples.map(([sourceIdx, relationIdx, targetIdx]) => [
       this.stringIndex.getValue(sourceIdx),
       this.stringIndex.getValue(relationIdx),
-      this.stringIndex.getValue(targetIdx)
+      this.stringIndex.getValue(targetIdx),
     ]);
   }
   /*
@@ -312,7 +322,7 @@ var Index = class {
     return [
       this.stringIndex.getValue(sourceIdx),
       this.stringIndex.getValue(relationIdx),
-      this.stringIndex.getValue(targetIdx)
+      this.stringIndex.getValue(targetIdx),
     ];
   }
   getTripleIndices(index) {
@@ -401,7 +411,7 @@ function joinSubqueryResults(metrics, acc, tripleResult) {
   if (acc.rows.length === 0 || tripleResult.rows.length === 0) {
     return {
       names: joinedNames,
-      rows: []
+      rows: [],
     };
   }
   const endings = /* @__PURE__ */ new Map();
@@ -422,7 +432,7 @@ function joinSubqueryResults(metrics, acc, tripleResult) {
   }
   const commonLinks = Sets.intersection(metrics, [
     new Set(endings.keys()),
-    new Set(starts.keys())
+    new Set(starts.keys()),
   ]);
   const joinedRows = [];
   for (const link of commonLinks) {
@@ -431,7 +441,7 @@ function joinSubqueryResults(metrics, acc, tripleResult) {
     for (const startRowIndex of startRowIndices) {
       for (const endRowIndex of endRowsIndices) {
         const joinedRow = acc.rows[startRowIndex].concat(
-          tripleResult.rows[endRowIndex]
+          tripleResult.rows[endRowIndex],
         );
         joinedRows.push(joinedRow);
       }
@@ -439,7 +449,7 @@ function joinSubqueryResults(metrics, acc, tripleResult) {
   }
   return {
     names: joinedNames,
-    rows: joinedRows
+    rows: joinedRows,
   };
 }
 var TribbleDB = class _TribbleDB {
@@ -601,7 +611,7 @@ var TribbleDB = class _TribbleDB {
    */
   sources() {
     return new Set(
-      this.index.triples().map(Triples.source)
+      this.index.triples().map(Triples.source),
     );
   }
   /**
@@ -611,7 +621,7 @@ var TribbleDB = class _TribbleDB {
    */
   relations() {
     return new Set(
-      this.index.triples().map(Triples.relation)
+      this.index.triples().map(Triples.relation),
     );
   }
   /**
@@ -621,7 +631,7 @@ var TribbleDB = class _TribbleDB {
    */
   targets() {
     return new Set(
-      this.index.triples().map(Triples.target)
+      this.index.triples().map(Triples.target),
     );
   }
   /*
@@ -658,10 +668,13 @@ var TribbleDB = class _TribbleDB {
   }
   #findMatchingRows(params) {
     const matchingRowSets = [
-      this.cursorIndices
+      this.cursorIndices,
     ];
     const { source, relation, target } = params;
-    if (typeof source === "undefined" && typeof target === "undefined" && typeof relation === "undefined") {
+    if (
+      typeof source === "undefined" && typeof target === "undefined" &&
+      typeof relation === "undefined"
+    ) {
       throw new Error("At least one search parameter must be defined");
     }
     const allowedKeys = ["source", "relation", "target"];
@@ -728,7 +741,9 @@ var TribbleDB = class _TribbleDB {
       }
     }
     if (relation) {
-      const relationDsl = typeof relation === "string" ? { relation: [relation] } : relation;
+      const relationDsl = typeof relation === "string"
+        ? { relation: [relation] }
+        : relation;
       if (relationDsl.relation) {
         const unionedRelations = /* @__PURE__ */ new Set();
         for (const rel of relationDsl.relation) {
@@ -750,7 +765,10 @@ var TribbleDB = class _TribbleDB {
     const matchingTriples = /* @__PURE__ */ new Set();
     for (const index of intersection) {
       const triple = this.index.getTriple(index);
-      if (!source?.predicate && !target?.predicate && !(typeof relation === "object" && relation.predicate)) {
+      if (
+        !source?.predicate && !target?.predicate &&
+        !(typeof relation === "object" && relation.predicate)
+      ) {
         matchingTriples.add(index);
         continue;
       }
@@ -794,7 +812,7 @@ var TribbleDB = class _TribbleDB {
       const pattern = {
         source: tripleSlice[0][1],
         relation: tripleSlice[1][1],
-        target: tripleSlice[2][1]
+        target: tripleSlice[2][1],
       };
       const bindingNames = tripleSlice.map((pair) => pair[0]);
       const tripleRows = this.#findMatchingRows(pattern);
@@ -804,11 +822,11 @@ var TribbleDB = class _TribbleDB {
       });
       subqueryResults.push({
         names: bindingNames,
-        rows: rowData
+        rows: rowData,
       });
     }
     const queryResult = subqueryResults.reduce(
-      joinSubqueryResults.bind(this, this.metrics)
+      joinSubqueryResults.bind(this, this.metrics),
     );
     const outputNames = queryResult.names;
     const objects = [];
@@ -825,14 +843,8 @@ var TribbleDB = class _TribbleDB {
   getMetrics() {
     return {
       index: this.index.metrics,
-      db: this.metrics
+      db: this.metrics,
     };
   }
 };
-export {
-  TribbleDB,
-  TribbleParser,
-  TribbleStringifier,
-  asUrn,
-  parseUrn
-};
+export { asUrn, parseUrn, TribbleDB, TribbleParser, TribbleStringifier };

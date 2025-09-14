@@ -39,24 +39,24 @@ export class KnownRelations {
   static FLAG = "flag";
   static RATING = "rating";
   static NAME = "name";
-  static BIRDWATCH_URL = "birdwatch_url";
+  static BIRDWATCH_URL = "birdwatchUrl";
   static WIKIPEDIA = "wikipedia";
-  static CREATED_AT = "created_at";
+  static CREATED_AT = "createdAt";
   static F_STOP = "f_stop";
-  static FOCAL_LENGTH = "focal_length";
+  static FOCAL_LENGTH = "focalLength";
   static MODEL = "model";
-  static EXPOSURE_TIME = "exposure_time";
+  static EXPOSURE_TIME = "exposureTime";
   static ISO = "iso";
   static WIDTH = "width";
   static HEIGHT = "height";
 }
 
 export const ExifRelations = new Set([
-  "created_at",
-  "f_stop",
-  "focal_length",
+  "createdAt",
+  "fStop",
+  "focalLength",
   "model",
-  "exposure_time",
+  "exposureTime",
   "iso",
   "width",
   "height",

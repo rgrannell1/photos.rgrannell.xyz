@@ -1,12 +1,12 @@
-
 import { Triple } from "../types.ts";
 import {
-  CURIES,
+  renameRelations,
   countriesAsUrns,
-  placesToCountries,
+  CURIES,
   expandCdnUrls,
   expandTripleCuries,
   expandUrns,
+  placesToCountries,
   ratingsAsUrns,
 } from "../things/things.ts";
 
@@ -17,11 +17,12 @@ export function processTriples(
   triple: Triple,
 ): Triple[] {
   const tripleProcessors = [
+    renameRelations,
     expandUrns,
     ratingsAsUrns,
     countriesAsUrns,
     placesToCountries,
-    expandCdnUrls.bind(null, 'https://photos-cdn.rgrannell.xyz'), // todo move
+    expandCdnUrls.bind(null, "https://photos-cdn.rgrannell.xyz"), // todo move
     expandTripleCuries.bind(null, CURIES),
   ];
 
@@ -32,3 +33,5 @@ export function processTriples(
 
   return outputTriples;
 }
+
+// TODO rename relations into a JS-friendly name format

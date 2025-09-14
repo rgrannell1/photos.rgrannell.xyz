@@ -30,16 +30,16 @@ export class PhotosPage extends LitElem {
       source: { type: "photo" },
       relation: {
         relation: [
-          "thumbnail_url",
-          "mosaic_colours",
-          "full_image",
+          "thumbnailUrl",
+          "mosaicColours",
+          "fullImage",
         ],
       },
       target: {
         type: "unknown",
       },
     }).objects().sort((left, right) => {
-      return right.created_at - left.created_at;
+      return right.createdAt - left.createdAt;
     });
   }
 
@@ -58,9 +58,9 @@ export class PhotosPage extends LitElem {
           <app-photo
             id=${asUrn(photo.id).id}
             loading="${Photos.loadingMode(idx)}"
-            thumbnailUrl="${photo.thumbnail_url}"
-            mosaicColours="${photo.mosaic_colours}"
-            imageUrl="${photo.full_image}"></app-photo>`;
+            thumbnailUrl="${photo.thumbnailUrl}"
+            mosaicColours="${photo.mosaicColours}"
+            imageUrl="${photo.fullImage}"></app-photo>`;
       }
     }
 

@@ -18,22 +18,9 @@ import { LitElem } from "../../models/lit-element.ts";
 import { Photos } from "../../services/photos.ts";
 import { property } from "lit/decorators.js";
 import { Strings } from "../../strings.ts";
+import { ThingsService } from "js/things/services.ts";
 
 class ListingPageService {
-  /*
-   * List all things of this type, and the name
-   */
-  static getDistinctThings(tdb, type: string) {
-    const results = tdb.search({
-      source: { type },
-      relation: "name",
-    }).objects() as { id: string; name: string }[];
-
-    return results.sort((res0, res1) => {
-      return res0.name.localeCompare(res1.name);
-    });
-  }
-
   static chooseCoverImage(tdb, type: string, urn: string): string | undefined {
     const results = tdb.search({
       source: { type: "photo" },
@@ -52,14 +39,13 @@ class ListingPageService {
 
     const sourceIds = results.sources();
     if (!sourceIds) {
-      console.error('no photos found')
+      console.error("no photos found");
     }
 
     const coverImage = this.chooseCoverImage(tdb, type, urn);
     if (coverImage && sourceIds.has(coverImage)) {
       return coverImage;
     }
-    console.log(coverImage, type, urn)
 
     const ratedPhotos = Array.from(sourceIds).map((source: string) => {
       const result = tdb.search({
@@ -88,9 +74,8 @@ class ListingPageService {
 }
 
 class ThingAlbum extends LitElem {
-
-  @property({state: true})
-  triples!: Object
+  @property({ state: true })
+  triples!: Object;
 
   @property()
   url!: string;
@@ -147,7 +132,7 @@ export class ListingPage extends LitElem {
 
         ${
       thingDetails.birdwatch_url
-        ? html`<span><a href="${thingDetails.birdwatch_url}">[birdwatch]</a></span>`
+        ? html`<span><a href="${thingDetails.birdwatchUrl}">[birdwatch]</a></span>`
         : ""
     }
       </div>
@@ -164,13 +149,11 @@ export class ListingPage extends LitElem {
       urn,
     );
 
-    // TODO
     const loadThingPage = (urn: string, name: string) => {
-      const parsed = asUrn(urn);
-      const id = `${parsed.type}:${parsed.id}`;
+      const {type, id} = asUrn(urn);
 
-      const dispatched = new CustomEvent('click-thing-album', {
-        detail: { id, name },
+      const dispatched = new CustomEvent("click-thing-album", {
+        detail: { id: `${type}:${id}`, name },
         bubbles: true,
         composed: true,
       });
@@ -185,13 +168,14 @@ export class ListingPage extends LitElem {
     const parsedId = asUrn(this.id);
     const idLink = `${parsedId.type}:${parsedId.id}`;
 
+    // TODO wire into photo parser
     return html`
       <photo-album
         .onClick=${loadThingPage.bind(null, urn, name)}
         .triples=${this.triples}
         title="${name}"
-        url="${image.thumbnail_url}"
-        mosaicColours="${image.mosaic_colours}"
+        url="${image.thumbnailUrl}"
+        mosaicColours="${image.mosaicColours}"
         id=${idLink}
         path="#/thing/"
         loading=${Photos.loadingMode(idx)}>
@@ -202,22 +186,22 @@ export class ListingPage extends LitElem {
 
   render() {
     const tdb = this.triples;
-
-    // get all named things
-    const things = ListingPageService.getDistinctThings(tdb, this.id);
+    const namedThings = ThingsService.getDistinctNames(tdb, this.id);
 
     // loop over, create albums page
 
     return html`
     <section class="album-metadata">
       <h1 class="albums-header">${Strings.capitalise(this.id)}s</h1>
-      <a href="/#/thing/${this.id}:*">See all ${Strings.pluralise(this.id)} photos</a>
+      <a href="/#/thing/${this.id}:*">See all ${
+      Strings.pluralise(this.id)
+    } photos</a>
     </section>
 
     <section class="album-container">
 
       ${
-      things.map((thing, idx) =>
+      namedThings.map((thing, idx) =>
         this.renderThingAlbum(this.id, thing.id, thing.name, idx)
       )
     }

@@ -13,28 +13,28 @@ export class AppVideo extends LitElem {
   preload: string;
 
   @property()
-  url_poster: string;
+  urlPoster: string;
 
   @property()
-  url_unscaled!: string;
+  urlUnscaled!: string;
   @property()
-  url_1080p!: string;
+  url1080p!: string;
   @property()
-  url_720p!: string;
+  url720p!: string;
   @property()
-  url_480p!: string;
+  url480p!: string;
 
   render() {
     return html`
     <div>
-      <video controls class="thumbnail-video" preload="${this.preload}" poster=${this.url_poster}>
-        <source src="${this.url_480p}" type="video/mp4">
+      <video controls class="thumbnail-video" preload="${this.preload}" poster=${this.urlPoster}>
+        <source src="${this.url480p}" type="video/mp4">
       </video>
       <ul>
-        <a href="${this.url_unscaled}">[L]</a>
-        <a href="${this.url_1080p}">[M]</a>
-        <a href="${this.url_720p}">[S]</a>
-        <a href="${this.url_480p}">[XS]</a>
+        <a href="${this.urlUnscaled}">[L]</a>
+        <a href="${this.url1080p}">[M]</a>
+        <a href="${this.url720p}">[S]</a>
+        <a href="${this.url480p}">[XS]</a>
       </ul>
 
     </div>
