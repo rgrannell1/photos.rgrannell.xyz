@@ -131,7 +131,7 @@ export class ListingPage extends LitElem {
     }
 
         ${
-      thingDetails.birdwatchUrl,
+      thingDetails.birdwatchUrl
         ? html`<span><a href="${thingDetails.birdwatchUrl}">[birdwatch]</a></span>`
         : ""
     }
