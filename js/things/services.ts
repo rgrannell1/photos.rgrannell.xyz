@@ -1,4 +1,4 @@
-import { Album } from "../types.ts";
+import { Album, Video } from "../types.ts";
 import { KnownRelations } from "../constants.js";
 import { asUrn } from "../library/tribble.js";
 import { html } from "lit-element";
@@ -55,6 +55,12 @@ function parseAlbum(album: any): Album {
   };
 }
 
+function parseVideo(video: any): Video {
+  return {
+    ...video
+  }
+}
+
 export class ThingsService {
   static getName(tdb, urn: string): string | undefined {
     return getName(tdb, urn);
@@ -73,10 +79,10 @@ export class ThingsService {
   static getGeocoordinates(tdb, urn: string) {
     return getGeocoordinates(tdb, urn);
   }
-  static videoObjects(tdb) {
+  static videoObjects(tdb): Video[] {
     return tdb.search({
       source: { type: "video" },
-    }).objects();
+    }).objects().map(parseVideo);
   }
   static photoObjects(tdb) {
     return tdb.search({

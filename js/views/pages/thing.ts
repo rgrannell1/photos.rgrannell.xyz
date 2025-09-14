@@ -35,7 +35,7 @@ export class ThingPage extends LitElem {
     return image && image.thumbnailUrl;
   }
 
-  urnImages(tdb: any, query: any) {
+  urnImages(tdb: any, query: Record<string, any>) {
     const relevantPhotos = tdb.search(query);
     const relevantPhotoIds = relevantPhotos.sources();
 
@@ -125,7 +125,7 @@ export class ThingPage extends LitElem {
   }
 
   // todo push into semantic layer
-  firstPhotographed(images, tdb, query) {
+  firstPhotographed(tdb, query) {
     const relevantPhotos = this
       .urnImages(tdb, query)
       .sort((photo0, photo1) => {
@@ -265,7 +265,7 @@ export class ThingPage extends LitElem {
     if (BinomialTypes.has(type)) {
       // TODO move to fact layer, not render layer
       metadata["First Photographed"] = html`<span>${
-        this.firstPhotographed(images, tdb, {
+        this.firstPhotographed( tdb, {
           target: asUrn(this.urn),
         })
       }</span>`;

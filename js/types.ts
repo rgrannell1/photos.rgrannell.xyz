@@ -6,6 +6,8 @@ export type URN = {
   qs: Record<string, string>;
 };
 
+// Note; these types are ideal case, we should actually
+// validate this
 export type Album = {
   name: string;
   minDate: number;
@@ -19,7 +21,14 @@ export type Album = {
 
 export type Photo = {};
 
-export type Video = {};
+export type Video = {
+  id: string;
+  posterUrl: string;
+  videoUrlUnscaled: string;
+  videoUrl1080p: string;
+  videoUrl720p: string;
+  videoUrl480p: string;
+};
 
 export type Geoocordinates = {
   longitude: number;
