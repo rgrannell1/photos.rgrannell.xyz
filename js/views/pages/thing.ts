@@ -15,6 +15,8 @@ import { Binomials, Things } from "../../things/things.ts";
 import { Photos } from "../../services/photos.ts";
 import { URN } from "js/types.ts";
 import { property } from "lit/decorators.js";
+import { ThingsService } from "js/things/services.ts";
+import { Strings } from "js/strings.ts";
 
 export class ThingPage extends LitElem {
   @property()
@@ -70,12 +72,6 @@ export class ThingPage extends LitElem {
       });
   }
 
-  getAlbums() {
-    return this.triples.search({
-      source: { type: "album" },
-    }).objects();
-  }
-
   renderSubjectAlbums(tdb, search) {
     const filtered = this.urnImages(tdb, search);
 
@@ -96,7 +92,7 @@ export class ThingPage extends LitElem {
     return Array
       .from(albumSet)
       .flatMap((albumId) => {
-        return this.getAlbums().filter((album) => {
+        return ThingsService.albumObjects(this.triples).filter((album) => {
           return parseUrn(album.id).id === albumId;
         });
       })
@@ -149,14 +145,9 @@ export class ThingPage extends LitElem {
     });
   }
 
+  // TODO move this to a naming service
   renderTitle() {
-    const { id, type } = Things.parseUrn(this.urn);
-
-    const definedName = this.triples.search({
-      source: { id, type },
-      relation: KnownRelations.NAME,
-    }).firstTarget();
-
+    const definedName = ThingsService.getName(this.triples, this.urn);
     if (definedName) {
       return definedName;
     }
@@ -166,9 +157,7 @@ export class ThingPage extends LitElem {
       const value = decodeURIComponent(parsedUrn.id);
 
       if (parsedUrn.id === "*") {
-        return `${parsedUrn.type.charAt(0).toUpperCase()}${
-          parsedUrn.type.slice(1)
-        }`;
+        return Strings.capitalise(parsedUrn.type);
       }
 
       if (BinomialTypes.has(parsedUrn.type)) {
@@ -254,9 +243,7 @@ export class ThingPage extends LitElem {
     // Support bird:* level queries
     const tdb = this.triples;
 
-    const images = tdb.search({
-      source: { type: "photo" },
-    }).objects();
+    const images = ThingsService.photoObjects();
     const urn = Things.parseUrn(this.urn);
 
     const type = urn.type;

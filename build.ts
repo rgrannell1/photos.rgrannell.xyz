@@ -3,6 +3,7 @@ import { render } from "https://deno.land/x/mustache_ts/mustache.ts";
 
 import { TribbleDB } from "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/dist/mod.ts";
 import { CURIES, expandTripleCuries } from "./js/things/things.ts";
+import { ThingsService } from "./js/things/services.ts";
 
 class Artifacts {
   dpath: string;
@@ -53,21 +54,17 @@ export function expandUrns(triple) {
 function prefetchTargets(env, triples: [string, string, string][]) {
   const tdb = new TribbleDB(triples).flatMap(expandUrns).flatMap(expandTripleCuries.bind(null, CURIES));
 
-
-  const albums = tdb.search({
-    source: { type: "album" },
-  }).objects().sort((album0, album1) => {
-    return parseInt(album1.min_date, 10) - parseInt(album0.min_date, 10);
-  });
+  const albums = ThingsService.albumObjects(tdb)
+    .sort((album0, album1) => {
+      return parseInt(album1.min_date, 10) - parseInt(album0.min_date, 10);
+    });
 
   return albums.slice(0, 11).map((album) => `${album.thumbnail_url}`);
 }
 
 function homepageThumbnails(triples: [string, string, string][]) {
   const tdb = new TribbleDB(triples).flatMap(expandUrns);
-  const albums = tdb.search({
-    source: { type: "album" },
-  }).objects();
+  const albums = ThingsService.albumObjects(tdb)
 
   return albums.map((album) => `${album.thumbnail_url}`);
 }

@@ -12,6 +12,7 @@ import { JSONFeed } from "../../services/json-feed.ts";
 import { LitElem } from "../../models/lit-element.ts";
 import { Videos } from "../../services/videos.ts";
 import { property } from "lit/decorators.js";
+import { ThingsService } from "../../things/services.ts";
 
 export class VideosPage extends LitElem {
   @property({ state: true })
@@ -29,8 +30,7 @@ export class VideosPage extends LitElem {
   }
 
   render() {
-    const videos = this.getVideos();
-
+    const videos = ThingsService.videoObjects(this.triples);
     async function* videosIterable() {
       for (let idx = 0; idx < videos.length; idx++) {
         const video = videos[idx];

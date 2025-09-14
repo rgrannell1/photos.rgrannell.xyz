@@ -15,6 +15,7 @@ import "../components/photo-album.ts";
 import "../components/year-cursor.ts";
 import { property } from "lit/decorators.js";
 import { asUrn } from "js/library/tribble.js";
+import { ThingsService } from "js/things/services.ts";
 
 export class AlbumsPage extends LitElem {
   @property({})
@@ -29,9 +30,7 @@ export class AlbumsPage extends LitElem {
     JSONFeed.setIndex();
   }
   getAlbums() {
-    return this.triples.search({
-      source: { type: "album" },
-    }).objects().map((album) => {
+    return ThingsService.albumObjects(this.triples).map((album) => {
       return {
         title: album.name,
         minDate: parseInt(album.min_date),
