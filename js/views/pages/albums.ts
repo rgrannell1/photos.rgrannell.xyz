@@ -79,7 +79,7 @@ export class AlbumsPage extends LitElem {
             minDate="${album.minDate}"
             maxDate="${album.maxDate}"
             countries="${album.flags}"
-            count="${album.count}"
+            count="${album.photosCount}"
         ></photo-album-metadata>`;
 
         yield html`

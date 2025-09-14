@@ -19,7 +19,14 @@ export type Album = {
   flags: string; // TODO
 };
 
-export type Photo = {};
+export type Photo = {
+  albumId: string;
+  fullImage: string;
+  id: string;
+  mosaicColours: string;
+  pngUrl: string;
+  thumbnailUrl: string;
+};
 
 export type Video = {
   id: string;

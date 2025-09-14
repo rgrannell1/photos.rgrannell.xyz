@@ -1,4 +1,4 @@
-import { Album, Video } from "../types.ts";
+import { Album, Photo, Video } from "../types.ts";
 import { KnownRelations } from "../constants.js";
 import { asUrn } from "../library/tribble.js";
 import { html } from "lit-element";
@@ -50,7 +50,7 @@ function parseAlbum(album: any): Album {
     thumbnailUrl: album.thumbnailUrl,
     mosaicColours: album.mosaic,
     id: album.id,
-    count: album.photos_count,
+    photosCount: album.photosCount,
     flags: album.flags,
   };
 }
@@ -58,6 +58,12 @@ function parseAlbum(album: any): Album {
 function parseVideo(video: any): Video {
   return {
     ...video
+  }
+}
+
+function parsePhoto(photo: any): Photo {
+  return {
+    ...photo
   }
 }
 
@@ -84,10 +90,10 @@ export class ThingsService {
       source: { type: "video" },
     }).objects().map(parseVideo);
   }
-  static photoObjects(tdb) {
+  static photoObjects(tdb): Photo[] {
     return tdb.search({
       source: { type: "photo" },
-    }).objects();
+    }).objects().map(parsePhoto);
   }
   static albumObjects(tdb): Album[] {
     return tdb.search({
