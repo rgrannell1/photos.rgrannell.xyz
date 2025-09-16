@@ -20,6 +20,8 @@ import { Countries, Things } from "../../things/things.ts";
 import { LitElem } from "../../models/lit-element.ts";
 import { KnownRelations, KnownThings } from "../../constants.js";
 import { property } from "lit/decorators.js";
+import { ThingsService } from "../../things/services.ts";
+import { Video } from "../../types.ts";
 
 export class AlbumPage extends LitElem {
   @property()
@@ -45,12 +47,7 @@ export class AlbumPage extends LitElem {
   }
 
   albumPhotos(tdb) {
-    const albumPhotoSources: Set<string> = tdb.search({
-      source: { type: "photo" },
-      relation: "albumId",
-      target: { id: this.id },
-    }).sources();
-
+    const albumPhotoSources: Set<string> = ThingsService.getAlbumPhotoSources(tdb, this.id);
     return Array.from(albumPhotoSources).flatMap((source: string) => {
       const info = tdb.search({
         source: parseUrn(source),
@@ -173,7 +170,7 @@ export class AlbumPage extends LitElem {
         imageUrl="${photo.fullImage}"></app-photo>`;
     });
 
-    const videos = this.albumVideos(tdb).map((video, idx) => {
+    const videos = this.albumVideos(tdb).map((video: Video, idx) => {
       return html`<app-video
         id=${video.id}
         urlPoster=${video.posterUrl}

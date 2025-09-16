@@ -13,10 +13,14 @@ import { JSONFeed } from "../../services/json-feed.ts";
 import { LitElem } from "../../models/lit-element.ts";
 import { asUrn } from "js/library/tribble.js";
 import { property } from "lit/decorators.js";
+import { ThingsService } from "js/things/services.ts";
 
 export class PhotosPage extends LitElem {
   @property({ state: true })
   triples!: Object;
+
+  @property()
+  qs!: Record<string, string>;
 
   override connectedCallback() {
     super.connectedCallback();
@@ -24,35 +28,38 @@ export class PhotosPage extends LitElem {
     JSONFeed.setIndex();
   }
 
-  allImages() {
-    // NOTE: this is really slow now!
-    return this.triples.search({
-      source: { type: "photo" },
+  static IMAGE_RELATIONS = [
+    "thumbnailUrl",
+    "mosaicColours",
+    "fullImage",
+  ]
+
+  matchingImages() {
+    return ThingsService.photoObjects(this.triples, {
       relation: {
-        relation: [
-          "thumbnailUrl",
-          "mosaicColours",
-          "fullImage",
-        ],
+        relation: PhotosPage.IMAGE_RELATIONS,
       },
       target: {
         type: "unknown",
       },
-    }).objects().sort((left, right) => {
-      return right.createdAt - left.createdAt;
     });
   }
 
+  async forceRerender(idx: number): Promise<void> {
+    if (idx % 4 === 0) {
+      await new Promise((res) => setTimeout(res, 0));
+    }
+  }
+
   render() {
-    const photos = this.allImages();
+    const photos = this.matchingImages();
+    const that = this;
 
     async function* photosIterable() {
       for (let idx = 0; idx < photos.length; idx++) {
         const photo = photos[idx];
 
-        if (idx % 4 === 0) {
-          await new Promise((res) => setTimeout(res, 0));
-        }
+        await that.forceRerender(idx);
 
         yield html`
           <app-photo

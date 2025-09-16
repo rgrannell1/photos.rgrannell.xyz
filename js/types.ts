@@ -15,7 +15,7 @@ export type Album = {
   thumbnailUrl: string;
   mosaicColours: string;
   id: string;
-  count: number;
+  photosCount: number;
   flags: string; // TODO
 };
 
@@ -26,6 +26,7 @@ export type Photo = {
   mosaicColours: string;
   pngUrl: string;
   thumbnailUrl: string;
+  createdAt: number;
 };
 
 export type Video = {
@@ -41,3 +42,9 @@ export type Geoocordinates = {
   longitude: number;
   latitude: number;
 }
+
+export type PageUrl = {
+  type: string;
+  qs: Record<string, string>;
+  id?: string;
+};

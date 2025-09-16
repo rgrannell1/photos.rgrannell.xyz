@@ -1,4 +1,4 @@
-import { Album, Photo, Video } from "../types.ts";
+import { Album, Geoocordinates, Photo, Video } from "../types.ts";
 import { KnownRelations } from "../constants.js";
 import { asUrn } from "../library/tribble.js";
 import { html } from "lit-element";
@@ -22,7 +22,7 @@ function getName(tdb, urn: string): string | undefined {
   return definedName;
 }
 
-function getGeocoordinates(tdb, urn: string): Geoocordinates | undeifned {
+function getGeocoordinates(tdb, urn: string): Geoocordinates | undefined {
   const { id, type } = asUrn(urn);
 
   const facts = tdb.search({
@@ -67,19 +67,34 @@ function parsePhoto(photo: any): Photo {
   }
 }
 
+function getAlbumPhotoSources(tdb, id: string): Set<string> {
+  return tdb.search({
+    source: { type: "photo" },
+    relation: "albumId",
+    target: { id: id },
+  }).sources();
+}
+
+function getDistinctNames(tdb, type: string) {
+  const results = tdb.search({
+    source: { type },
+    relation: "name",
+  }).objects() as { id: string; name: string }[];
+
+  return results.sort((res0, res1) => {
+    return res0.name.localeCompare(res1.name);
+  });
+}
+
 export class ThingsService {
   static getName(tdb, urn: string): string | undefined {
     return getName(tdb, urn);
   }
+  static getAlbumPhotoSources(tdb, id: string): Set<string> {
+    return getAlbumPhotoSources(tdb, id);
+  }
   static getDistinctNames(tdb, type: string) {
-    const results = tdb.search({
-      source: { type },
-      relation: "name",
-    }).objects() as { id: string; name: string }[];
-
-    return results.sort((res0, res1) => {
-      return res0.name.localeCompare(res1.name);
-    });
+    return getDistinctNames(tdb, type);
   }
 
   static getGeocoordinates(tdb, urn: string) {
@@ -90,10 +105,13 @@ export class ThingsService {
       source: { type: "video" },
     }).objects().map(parseVideo);
   }
-  static photoObjects(tdb): Photo[] {
+  static photoObjects(tdb, query: Record<string, any> = {}): Photo[] {
     return tdb.search({
+      ...query,
       source: { type: "photo" },
-    }).objects().map(parsePhoto);
+    }).objects().map(parsePhoto).sort((left: Photo, right: Photo) => {
+      return right.createdAt - left.createdAt;
+    });
   }
   static albumObjects(tdb): Album[] {
     return tdb.search({
@@ -123,5 +141,11 @@ export class GoogleMapsService {
     }
 
     return undefined;
+  }
+}
+
+export class SearchService {
+  static search(tdb, query: Record<string, string>) {
+    // TODO implement search layer
   }
 }

@@ -3,6 +3,7 @@
  */
 
 import { Pages } from "../constants.js";
+import { PageUrl } from "../types.ts";
 
 export class PageLocation {
   static ROUTES: Record<keyof typeof Pages, CallableFunction> = {
@@ -88,15 +89,37 @@ export class PageLocation {
     document.title = "Listing - photos";
   }
 
-  static getUrl(): { type: string; id?: string } {
+  static extractQueryParams(): Record<string, string> {
+    const params: Record<string, string> = {};
+    const addParams = (query: string) => {
+      const searchParams = new URLSearchParams(query);
+      for (const [key, value] of searchParams.entries()) {
+        params[key] = value;
+      }
+    };
+
+    const hashQueryIdx = window.location.hash.indexOf("?");
+    if (hashQueryIdx !== -1) {
+      addParams(window.location.hash.slice(hashQueryIdx + 1));
+    }
+
+    return params;
+  }
+
+  /*
+   *
+   */
+  static getUrl(): PageUrl {
     const hash = window.location.hash;
 
     for (
       const [prefix, page] of Object.entries(PageLocation.URL_PREFIX_TO_PAGE)
     ) {
       if (hash.startsWith(prefix)) {
-        const res: { type: string; id?: string } = {
+        const qs = PageLocation.extractQueryParams();
+        const res: { type: string; id?: string; qs: Record<string, string> } = {
           type: page,
+          qs
         };
 
         if (PageLocation.ID_PAGES.has(page)) {
@@ -109,6 +132,7 @@ export class PageLocation {
 
     return {
       type: "albums",
+      qs: {}
     };
   }
 }

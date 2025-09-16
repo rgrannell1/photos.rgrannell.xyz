@@ -59,6 +59,9 @@ export class PhotoApp extends LitElem {
   @property()
   query: Object;
 
+  @property()
+  qs: Record<string, string>;
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -120,9 +123,11 @@ export class PhotoApp extends LitElem {
     }
 
     // set additional state from the url
-    if (PageLocation.pageUsesId(this.page)) {
+    if (PageLocation.pageUsesId(this.page) && typeof location.id === "string") {
       this.id = location.id;
     }
+
+    this.qs = location.qs;
   }
 
   /*
@@ -238,7 +243,9 @@ export class PhotoApp extends LitElem {
     }
 
     if (this.page === "photos") {
-      return html`<photos-page .triples=${this.tribbleDB} class="${classes}"></photos-page>`;
+      return html`<photos-page
+        .qs=${this.qs}
+        .triples=${this.tribbleDB} class="${classes}"></photos-page>`;
     }
 
     if (this.page === "album") {
