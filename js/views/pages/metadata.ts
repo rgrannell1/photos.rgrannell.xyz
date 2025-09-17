@@ -18,6 +18,7 @@ import "../components/thing-link.ts";
 import { Things, Triples } from "../../things/things.ts";
 import { ExifRelations, KnownThings } from "../../constants.js";
 import { parseUrn } from "js/library/tribble.js";
+import { Photo } from "js/types.ts";
 
 function Heading(text: string) {
   return html`<th class="exif-heading">${text}</th>`;
@@ -27,7 +28,7 @@ export class MetadataPage extends LitElem {
   @property()
   id!: string;
   @property()
-  image!: Object;
+  image!: Photo;
   @property({ state: true })
   sharing!: boolean;
   @property({ state: true })
@@ -106,6 +107,7 @@ export class MetadataPage extends LitElem {
       "wildlife",
       "livingConditions",
       "pngUrl",
+      "cover"
     ])).has(key);
   }
 
@@ -266,10 +268,10 @@ export class MetadataPage extends LitElem {
     <img class="u-photo thumbnail-image" src="${photo.thumbnailUrl}"/>
 
       <p>
-        <a href="${photo.fullImage}">[webp]</a>
-        <a href="${photo.pngUrl}">[png]</a>
+        <a href="${photo.fullImage}" rel="noreferrer">[webp]</a>
+        <a href="${photo.pngUrl}" rel="noreferrer">[png]</a>
         <share-metadata-button format="image/webp" url=${photo.pngUrl}></share-metadata-button>
-        <a href="#/album/${albumId}">[album]</a>
+        <a href="#/album/${albumId}" rel="noreferrer">[album]</a>
       </p>
 
       ${this.renderSemanticData(imageTriples)}

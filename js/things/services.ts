@@ -147,5 +147,10 @@ export class GoogleMapsService {
 export class SearchService {
   static search(tdb, query: Record<string, string>) {
     // TODO implement search layer
+
+    // name support
+
+
+
   }
 }

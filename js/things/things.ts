@@ -1,5 +1,5 @@
 import { Triple } from "../types.ts";
-import { KnownRelations } from "../constants.js";
+import { CDN_RELATIONS, KnownRelations, KnownThings } from "../constants.js";
 import { parseUrn } from "../library/tribble.js";
 import { Strings } from "../strings.ts";
 
@@ -134,7 +134,7 @@ export class Countries {
   static details(tdb: any, name: string) {
     // narrow down the search to triples about country names and flags
     const countriesData = tdb.search({
-      source: { type: "country" },
+      source: { type: KnownThings.COUNTRY },
       relation: { relation: [KnownRelations.NAME, KnownRelations.FLAG] },
     });
 
@@ -164,7 +164,7 @@ export class Countries {
 
     // narrow down the search to triples about country names and flags
     const name = tdb.search({
-      source: { type: "country", id: parsed.id },
+      source: { type: KnownThings.COUNTRY, id: parsed.id },
       relation: KnownRelations.NAME,
     }).firstTarget();
 
@@ -196,7 +196,7 @@ export function placesToCountries(triple: Triple) {
   }
 
   const place = Triples.getTarget(triple);
-  if (!Things.is(place, "country")) {
+  if (!Things.is(place, KnownThings.COUNTRY)) {
     return [triple];
   }
 
@@ -232,18 +232,7 @@ export function countriesAsUrns(triple: Triple) {
  * relations
  */
 export function expandCdnUrls(cdnUrl: string, triple: Triple) {
-  for (
-    const relation of [
-      "thumbnailUrl",
-      "pngUrl",
-      "fullImage",
-      "posterUrl",
-      "videoUrl1080p",
-      "videoUrl480p",
-      "videoUrl720p",
-      "videoUrlUnscaled",
-    ]
-  ) {
+  for (const relation of CDN_RELATIONS) {
     if (Triples.getRelation(triple) === relation) {
       return [
         [
@@ -260,6 +249,7 @@ export function expandCdnUrls(cdnUrl: string, triple: Triple) {
 
 /*
  * For compression, we remove urn prefixes from URNs before transmitting them. Re-add them
+ * to parts prefixed with `::`
  *
  * @param triple The triple to expand
  */
@@ -283,4 +273,59 @@ export function renameRelations(triple: Triple) {
     Strings.camelCase(relation),
     target
   ]]
+}
+
+/*
+ * Allow search by season
+ */
+export function addSeason(triple: Triple) {
+  if (Triples.getRelation(triple) !== KnownRelations.CREATED_AT) {
+    return [triple];
+  }
+
+  const date = new Date(Triples.getTarget(triple));
+  if (isNaN(date.getTime())) {
+    return [triple];
+  }
+
+  const month = date.getUTCMonth() + 1;
+  let season = "Winter";
+  if (month >= 3 && month <= 5) {
+    season = "Spring";
+  } else if (month >= 6 && month <= 8) {
+    season = "Summer";
+  } else if (month >= 9 && month <= 11) {
+    season = "Autumn";
+  }
+
+  return [
+    triple,
+    [
+      Triples.getSource(triple),
+      KnownRelations.SEASON,
+      season,
+    ],
+  ];
+}
+
+export function addYear(triple: Triple) {
+  if (Triples.getRelation(triple) !== KnownRelations.CREATED_AT) {
+    return [triple];
+  }
+
+  const date = new Date(Triples.getTarget(triple));
+  if (isNaN(date.getTime())) {
+    return [triple];
+  }
+
+  const year = date.getUTCFullYear().toString();
+
+  return [
+    triple,
+    [
+      Triples.getSource(triple),
+      KnownRelations.YEAR,
+      year,
+    ],
+  ];
 }

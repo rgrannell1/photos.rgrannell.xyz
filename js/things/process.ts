@@ -8,6 +8,8 @@ import {
   expandUrns,
   placesToCountries,
   ratingsAsUrns,
+  addSeason,
+  addYear
 } from "../things/things.ts";
 
 /*
@@ -24,6 +26,8 @@ export function processTriples(
     placesToCountries,
     expandCdnUrls.bind(null, "https://photos-cdn.rgrannell.xyz"), // todo move
     expandTripleCuries.bind(null, CURIES),
+    addSeason,
+    addYear
   ];
 
   let outputTriples: Triple[] = [triple];

@@ -28,6 +28,10 @@ export class KnownThings {
   static INSECT = "insect";
   static AMPHIBIAN = "amphibian";
   static GEONAME = "geoname";
+  static PHOTO = "photo";
+  static ALBUM = "album";
+  static VIDEO = "video";
+  static COUNTRY = "country";
 }
 
 export class KnownRelations {
@@ -42,6 +46,7 @@ export class KnownRelations {
   static BIRDWATCH_URL = "birdwatchUrl";
   static WIKIPEDIA = "wikipedia";
   static CREATED_AT = "createdAt";
+  static SEASON = "season";
   static F_STOP = "f_stop";
   static FOCAL_LENGTH = "focalLength";
   static MODEL = "model";
@@ -49,24 +54,45 @@ export class KnownRelations {
   static ISO = "iso";
   static WIDTH = "width";
   static HEIGHT = "height";
+  static THUMBNAIL_URL = "thumbnailUrl";
+  static PNG_URL = "pngUrl";
+  static FULL_IMAGE = "fullImage";
+  static POSTER_URL = "posterUrl";
+  static VIDEO_URL_1080P = "videoUrl1080p";
+  static VIDEO_URL_480P = "videoUrl480p";
+  static VIDEO_URL_720P = "videoUrl720p";
+  static VIDEO_URL_UNSCALED = "videoUrlUnscaled";
+  static YEAR = "year";
 }
 
+
 export const ExifRelations = new Set([
-  "createdAt",
-  "fStop",
-  "focalLength",
-  "model",
-  "exposureTime",
-  "iso",
-  "width",
-  "height",
+  KnownRelations.CREATED_AT,
+  KnownRelations.F_STOP,
+  KnownRelations.FOCAL_LENGTH,
+  KnownRelations.MODEL,
+  KnownRelations.EXPOSURE_TIME,
+  KnownRelations.ISO,
+  KnownRelations.WIDTH,
+  KnownRelations.HEIGHT,
 ]);
 
 export const BinomialTypes = new Set([
-  "bird",
-  "mammal",
-  "reptile",
-  "amphibian",
-  "fish",
-  "insect",
+  KnownThings.BIRD,
+  KnownThings.MAMMAL,
+  KnownThings.REPTILE,
+  KnownThings.AMPHIBIAN,
+  KnownThings.FISH,
+  KnownThings.INSECT,
+]);
+
+export const CDN_RELATIONS = new Set([
+  KnownRelations.THUMBNAIL_URL,
+  KnownRelations.PNG_URL,
+  KnownRelations.FULL_IMAGE,
+  KnownRelations.POSTER_URL,
+  KnownRelations.VIDEO_URL_1080P,
+  KnownRelations.VIDEO_URL_480P,
+  KnownRelations.VIDEO_URL_720P,
+  KnownRelations.VIDEO_URL_UNSCALED
 ]);
