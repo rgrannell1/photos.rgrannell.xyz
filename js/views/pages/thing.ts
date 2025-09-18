@@ -10,8 +10,8 @@ import { asUrn, parseUrn } from "../../library/tribble.js";
 import "../components/photo.ts";
 import { JSONFeed } from "../../services/json-feed.ts";
 import { LitElem } from "../../models/lit-element.ts";
-import { BinomialTypes, KnownRelations } from "../../constants.js";
-import { Binomials, Things } from "../../things/things.ts";
+import { BinomialTypes, KnownRelations, KnownThings } from "../../constants.js";
+import { Binomials, Countries, Things } from "../../things/things.ts";
 import { Photos } from "../../services/photos.ts";
 import { URN } from "js/types.ts";
 import { property } from "lit/decorators.js";
@@ -159,9 +159,20 @@ export class ThingPage extends LitElem {
         return Strings.capitalise(parsedUrn.type);
       }
 
+      if (parsedUrn.type === KnownThings.COUNTRY) {
+        const countryDetails = Countries.urnDetails(this.triples, this.urn);
+
+        if (countryDetails.flag) {
+          return `${countryDetails.flag} ${definedName}`
+        } else {
+          return definedName;
+        }
+      }
+
       if (BinomialTypes.has(parsedUrn.type)) {
         return Binomials.toCommonName(this.triples, value);
       }
+
 
       return value;
     } catch (_) {

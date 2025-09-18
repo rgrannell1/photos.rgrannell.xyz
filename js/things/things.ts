@@ -143,6 +143,9 @@ export class Countries {
       relation: KnownRelations.NAME,
       target: { id: name },
     }).firstSource();
+    if (!urn) {
+      throw new Error(`No urn for country found with name ${name}`);
+    }
 
     const parsed = parseUrn(urn);
 
