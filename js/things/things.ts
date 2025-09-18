@@ -168,9 +168,15 @@ export class Countries {
       relation: KnownRelations.NAME,
     }).firstTarget();
 
+    const flag = tdb.search({
+      source: parsed,
+      relation: KnownRelations.FLAG,
+    }).firstTarget();
+
     return {
       urn,
       name,
+      flag
     };
   }
 }

@@ -5,7 +5,7 @@ import { KnownRelations, KnownThings } from "../../constants.js";
 
 import { html } from "lit-element";
 import { LitElem } from "../../models/lit-element.ts";
-import { Things } from "../../things/things.ts";
+import { Countries, Things } from "../../things/things.ts";
 
 import { BinomialTypes } from "../../constants.js";
 import { Binomials } from "../../things/things.ts";
@@ -40,14 +40,32 @@ export class UnescoLink extends LitElem {
 
 customElements.define("unesco-link", UnescoLink);
 
-export class ThingLink extends LitElem {
+export class CountryLink extends LitElem {
+  @property()
   urn!: string;
-  triples!: any;
 
-  static properties = {
-    urn: { type: String },
-    triples: { type: Object },
-  };
+  @property()
+  name!: string;
+
+  @property()
+  triples!: string;
+
+  render() {
+    const details = Countries.urnDetails(this.triples, this.urn)
+    const href = Things.toURL(this.urn);
+
+    return html`<a class="country-link" href="${href}">${details.flag} ${details.name}</a>`;
+  }
+}
+
+customElements.define("country-link", CountryLink);
+
+export class ThingLink extends LitElem {
+  @property()
+  urn!: string;
+
+  @property()
+  triples!: any;
 
   name() {
     const { type, id } = Things.parseUrn(this.urn);
@@ -87,10 +105,16 @@ export class ThingLink extends LitElem {
       return html`<span>Invalid URN</span>`;
     }
 
+    const url = Things.toURL(this.urn);
+
+    if (Things.is(this.urn, KnownThings.COUNTRY)) {
+      return html`
+        <country-link .triples=${this.triples} urn="${this.urn}" name=${this.name()}></country-link>
+      `;
+    }
+
     return html`
-      <a class="thing-link ${this.linkClass()}" href="${
-      Things.toURL(this.urn)
-    }">${this.name()}</a>
+      <a class="thing-link ${this.linkClass()}" href="${url}">${this.name()}</a>
     `;
   }
 }
