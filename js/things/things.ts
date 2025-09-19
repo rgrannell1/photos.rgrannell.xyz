@@ -266,9 +266,9 @@ export function expandUrns(triple: Triple) {
   const [source, relation, target] = triple;
 
   return [[
-    source.startsWith("::") ? `urn:ró:${source.slice(2)}` : source,
+    typeof source === 'string' && source.startsWith("::") ? `urn:ró:${source.slice(2)}` : source,
     relation,
-    target.startsWith("::") ? `urn:ró:${target.slice(2)}` : target,
+    typeof target === 'string' && target.startsWith("::") ? `urn:ró:${target.slice(2)}` : target,
   ]];
 }
 

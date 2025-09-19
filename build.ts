@@ -2,7 +2,7 @@ import * as path from "jsr:@std/path";
 import { render } from "https://deno.land/x/mustache_ts/mustache.ts";
 
 import { TribbleDB } from "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/dist/mod.ts";
-import { CURIES, expandTripleCuries } from "./js/things/things.ts";
+import { processTriples } from "./js/things/process.ts";
 import { ThingsService } from "./js/things/services.ts";
 
 class Artifacts {
@@ -37,23 +37,9 @@ class Artifacts {
   }
 }
 
-export function expandUrns(triple) {
-  const [source, relation, target] = triple;
-
-  return [[
-    typeof source === "string" && source.startsWith("::")
-      ? `urn:ró:${source.slice(2)}`
-      : source,
-    relation,
-    typeof target === "string" && target.startsWith("::")
-      ? `urn:ró:${target.slice(2)}`
-      : target,
-  ]];
-}
-
 function prefetchTargets(env, triples: [string, string, string][]) {
-  const tdb = new TribbleDB(triples).flatMap(expandUrns).flatMap(
-    expandTripleCuries.bind(null, CURIES),
+  const tdb = new TribbleDB(triples).flatMap(
+    processTriples
   );
 
   const albums = ThingsService.albumObjects(tdb);
@@ -61,7 +47,7 @@ function prefetchTargets(env, triples: [string, string, string][]) {
 }
 
 function homepageThumbnails(triples: [string, string, string][]) {
-  const tdb = new TribbleDB(triples).flatMap(expandUrns);
+  const tdb = new TribbleDB(triples).flatMap(processTriples);
   const albums = ThingsService.albumObjects(tdb);
 
   return albums.map((album) => `${album.thumbnailUrl}`);
@@ -91,7 +77,6 @@ async function buildHTML() {
 async function buildSW() {
   const artifacts = new Artifacts("./manifest");
   const env = await artifacts.env();
-
   const sw = await artifacts.sw();
 
   await Deno.writeTextFile(
