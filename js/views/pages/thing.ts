@@ -159,20 +159,19 @@ export class ThingPage extends LitElem {
         return Strings.capitalise(parsedUrn.type);
       }
 
+      // broken subtly
       if (parsedUrn.type === KnownThings.COUNTRY) {
-        const countryDetails = Countries.urnDetails(this.triples, this.urn);
-
-        if (countryDetails.flag) {
-          return `${countryDetails.flag} ${definedName}`
-        } else {
-          return definedName;
-        }
+          const countryDetails = this.triples.search({ source: parsedUrn }).firstObject();
+          if (countryDetails.flag) {
+            return `${countryDetails.flag} ${definedName}`
+          } else {
+            return definedName;
+          }
       }
 
       if (BinomialTypes.has(parsedUrn.type)) {
         return Binomials.toCommonName(this.triples, value);
       }
-
 
       return value;
     } catch (_) {

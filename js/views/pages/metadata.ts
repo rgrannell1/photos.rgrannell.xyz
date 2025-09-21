@@ -60,11 +60,11 @@ export class MetadataPage extends LitElem {
     } else if (!exif.focalLength) {
       return html`<td>Unknown</td>`;
     } else {
-      return html`<td>${exif.focalLength}mm equiv.</td>`;
+      return html`<td>${exif.focalLength}mm</td>`;
     }
   }
 
-  renderSemanticKey(key) {
+  renderSemanticKey(key: string) {
     return key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
   }
 
