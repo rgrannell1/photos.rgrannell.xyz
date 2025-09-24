@@ -165,8 +165,10 @@ var us=Object.defineProperty;var ms=Object.getOwnPropertyDescriptor;var h=(r,t,e
       </ul>
 
     </div>
-    `}};h([d()],L.prototype,"id",2),h([d()],L.prototype,"url",2),h([d()],L.prototype,"preload",2),h([d()],L.prototype,"urlPoster",2),h([d()],L.prototype,"urlUnscaled",2),h([d()],L.prototype,"url1080p",2),h([d()],L.prototype,"url720p",2),h([d()],L.prototype,"url480p",2);customElements.define("app-video",L);var lt=class extends f{async shareAlbum(t){if(!navigator.share){console.error("navigator.share not available");return}this.sharing=!0;try{await navigator.share({title:`${this.title} - photos.rgrannell.xyz`,url:t})}catch(e){console.error("Error sharing:",e)}finally{this.sharing=!1}}render(){return c`
-      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${this.shareAlbum.bind(this,this.url)}>${this.sharing?"[sharing...]":"[share]"}</button>
+    `}};h([d()],L.prototype,"id",2),h([d()],L.prototype,"url",2),h([d()],L.prototype,"preload",2),h([d()],L.prototype,"urlPoster",2),h([d()],L.prototype,"urlUnscaled",2),h([d()],L.prototype,"url1080p",2),h([d()],L.prototype,"url720p",2),h([d()],L.prototype,"url480p",2);customElements.define("app-video",L);var lt=class extends f{async shareAlbum(t){if(!navigator.share){console.error("navigator.share not available");return}this.sharing=!0;try{let s=await(await fetch(this.url)).blob(),i=new File([s],"image.jpg",{type:s.type});await navigator.share({title:`${this.title} - photos.rgrannell.xyz`,url:t,files:[i]})}catch(e){console.error("Error sharing:",e)}finally{this.sharing=!1}}render(){let t=this.shareAlbum.bind(this,this.url);return c`
+      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${t}>
+        ${this.sharing?"[sharing...]":"[share]"}
+      </button>
       `}};h([d()],lt.prototype,"title",2),h([d()],lt.prototype,"url",2),h([d({state:!0})],lt.prototype,"sharing",2);customElements.define("album-share-button",lt);var Xt=class extends f{getId(){return x.parseUrn(this.urn)?.id??"unknown"}url(){return this.getId()?`https://whc.unesco.org/en/list/${this.getId()}`:null}render(){return this.getId()?c`
       <a class="unesco-link" href="${this.url()}" target="_blank" rel="noopener noreferrer">
         <span class="unesco-text-full">UNESCO World Heritage Site #${this.getId()}</span>
@@ -543,4 +545,4 @@ lit-html/directive-helpers.js:
    * SPDX-License-Identifier: BSD-3-Clause
    *)
 */
-//# sourceMappingURL=app.3bd6b40f100b8ea2.js.map
+//# sourceMappingURL=app.691739fbc027b876.js.map

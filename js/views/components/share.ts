@@ -26,9 +26,14 @@ export class AlbumShareButton extends LitElem {
     this.sharing = true;
 
     try {
+      const response = await fetch(this.url);
+      const blob = await response.blob();
+      const file = new File([blob], "image.jpg", { type: blob.type });
+
       await navigator.share({
         title: `${this.title} - photos.rgrannell.xyz`,
         url,
+        files: [file],
       });
     } catch (error) {
       console.error("Error sharing:", error);
@@ -38,10 +43,11 @@ export class AlbumShareButton extends LitElem {
   }
 
   render() {
+    const onclick = this.shareAlbum.bind(this, this.url);
     return html`
-      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${
-      this.shareAlbum.bind(this, this.url)
-    }>${this.sharing ? "[sharing...]" : "[share]"}</button>
+      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${onclick}>
+        ${this.sharing ? "[sharing...]" : "[share]"}
+      </button>
       `;
   }
 }
