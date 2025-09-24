@@ -12,6 +12,10 @@ export class ShareButton extends LitElem {
   @property({ state: true })
   sharing: boolean;
 
+  handleError(message: string) {
+    alert(message);
+  }
+
   /*
    * Share an image using the Web Share API, if available.
    *
@@ -19,7 +23,7 @@ export class ShareButton extends LitElem {
    */
   async shareImage(url: string) {
     if (!navigator.share) {
-      console.error("navigator.share not available");
+      this.handleError("navigator.share not available");
       return;
     }
 
@@ -27,16 +31,31 @@ export class ShareButton extends LitElem {
 
     try {
       const response = await fetch(url);
+      if (!response.ok) {
+        this.handleError(`failed to fetch image! status: ${response.status}`);
+        return;
+      }
+
       const blob = await response.blob();
       const file = new File([blob], "image.webp", { type: this.format });
+      const shareData: ShareData = {
+        files: [file],
+        title: "Sharing Image",
+      }
 
-      await navigator.share({
-        title: 'Sharing Image',
-        files: [ file ],
-      });
+      if (!navigator.canShare?.(shareData)) {
+        await navigator.share({
+          title: "Sharing Image",
+          text: "Sharing image is not supported on this device.",
+          url: window.location.href,
+        });
+
+        return;
+      }
+
+      await navigator.share(shareData);
     } catch (error) {
-      console.error("Error sharing:", error);
-      alert(error);
+      this.handleError("Error sharing image" + error);
     } finally {
       this.sharing = false;
     }
