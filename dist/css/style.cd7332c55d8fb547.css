@@ -16,6 +16,13 @@
   --nav-border-color: hsl(0, 0%, 0%);
   --image-placeholder-background-color: hsl(0, 0%, 69%);
   --photo-width: 400px;
+  --tag-color-0: #0079d6;
+  --tag-color-1: #0087ff;
+  --tag-color-2: #29b41d;
+  --tag-color-3: #22c6ce;
+  --tag-color-4: #4c55f7;
+  --tag-color-5: #4cbef7;
+  --tag-color-6: #b371ff;
 }
 .dark-mode {
   --secondary-text-color: hsl(0, 0%, 66%);
@@ -377,7 +384,7 @@ photo-app {
 .insect-link {
   color: white;
   font-weight: bolder;
-  padding: 4px 8px;
+  padding: 4px 9px;
   text-decoration: none;
   box-sizing: border-box;
   border-radius: 6px;
@@ -385,25 +392,25 @@ photo-app {
   width: fit-content;
 }
 .unesco-link {
-  background-color: #0079d6;
+  background-color: var(--tag-color-0);
 }
 .bird-link {
-  background-color: #7CCCA0;
+  background-color: var(--tag-color-1);
 }
 .mammal-link {
-  background-color: #7cc8cc;
+  background-color: var(--tag-color-2);
 }
 .reptile-link {
-  background-color: #d6a700;
+  background-color: var(--tag-color-3);
 }
 .fish-link {
-  background-color: #7c7cc8;
+  background-color: var(--tag-color-4);
 }
 .amphibian-link {
-  background-color: #7c7c7c;
+  background-color: var(--tag-color-5);
 }
 .insect-link {
-  background-color: #d67c7c;
+  background-color: var(--tag-color-6);
 }
 .unesco-links {
   list-style: none;

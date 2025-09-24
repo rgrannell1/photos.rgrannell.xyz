@@ -114,7 +114,7 @@ export class ThingLink extends LitElem {
     }
 
     return html`
-      <a class="thing-link ${this.linkClass()}" href="${url}">${this.name()}</a>
+      <a class="thing-link ${this.linkClass()}" title="${this.name()}" href="${url}">${this.name()}</a>
     `;
   }
 }

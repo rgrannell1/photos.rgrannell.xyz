@@ -7,9 +7,9 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-32x32.png",
   "/favicon.ico",
   "/favicon-32x32.png",
-  "/dist/css/photo-album.9a69cae75fa63437.css",
-  "/dist/css/style.9a69cae75fa63437.css",
-  "/dist/js/app.9a69cae75fa63437.js",
+  "/dist/css/photo-album.cd7332c55d8fb547.css",
+  "/dist/css/style.cd7332c55d8fb547.css",
+  "/dist/js/app.cd7332c55d8fb547.js",
 ];
 
 const HOMEPAGE_THUMBNAILS = new Set();
