@@ -221,7 +221,7 @@ var us=Object.defineProperty;var ms=Object.getOwnPropertyDescriptor;var h=(r,t,e
         ${o}
       </section>
     </div>
-    `}};h([d()],P.prototype,"title",2),h([d()],P.prototype,"id",2),h([d()],P.prototype,"minDate",2),h([d()],P.prototype,"maxDate",2),h([d()],P.prototype,"imageCount",2),h([d()],P.prototype,"description",2),h([d({state:!0})],P.prototype,"triples",2),h([d()],P.prototype,"countries",2);customElements.define("album-page",P);var ht=class extends f{async shareImage(t){if(!navigator.share)console.error("navigator.share not available");else{this.sharing=!0;try{let e=await fetch(t),s=new URL(t).pathname;await navigator.share({title:s,files:[new File([await e.blob()],s,{type:this.format})]})}catch(e){console.error("Error sharing:",e)}finally{this.sharing=!1}}}render(){return this.sharing?c`<button class="photo-share-button" disabled>[sharing...]</button>`:c`
+    `}};h([d()],P.prototype,"title",2),h([d()],P.prototype,"id",2),h([d()],P.prototype,"minDate",2),h([d()],P.prototype,"maxDate",2),h([d()],P.prototype,"imageCount",2),h([d()],P.prototype,"description",2),h([d({state:!0})],P.prototype,"triples",2),h([d()],P.prototype,"countries",2);customElements.define("album-page",P);var ht=class extends f{async shareImage(t){if(!navigator.share)console.error("navigator.share not available");else{this.sharing=!0;try{let e=await fetch(t),s=new URL(t).pathname;await navigator.share({title:s,files:[new File([await e.blob()],s,{type:this.format})]})}catch(e){console.error("Error sharing:",e),alert(e)}finally{this.sharing=!1}}}render(){return this.sharing?c`<button class="photo-share-button" disabled>[sharing...]</button>`:c`
       <button class="photo-share-button" ?disabled=${!navigator.share} @click=${this.shareImage.bind(this,this.url)}>[share]</button>
       `}};h([d()],ht.prototype,"url",2),h([d()],ht.prototype,"format",2),h([d({state:!0})],ht.prototype,"sharing",2);customElements.define("share-metadata-button",ht);function pt(r){return c`<th class="exif-heading">${r}</th>`}var rt=class extends f{connectedCallback(){super.connectedCallback(),A.setIndex()}renderAperture(t){return t.fStop==="Unknown"?c`<td>Unknown</td>`:t.fStop==="0.0"?c`<td>Manual aperture control</td>`:t.fStop?c`<td>ƒ/${t.fStop}</td>`:c`<td>Unknown</td>`}renderFocalLength(t){return t.focalLength==="Unknown"?c`${t.focalLength}`:t.focalLength==="0"?c`<td>Manual lens</td>`:t.focalLength?c`<td>${t.focalLength}mm</td>`:c`<td>Unknown</td>`}renderSemanticKey(t){return t.replace(/_/g," ").replace(/\b\w/g,e=>e.toUpperCase())}renderSemanticValue(t,e){if(Array.isArray(e))return c`<ul class="thing-list">
         ${e.map(s=>c`<li>${this.renderSemanticValue.call(this,t,s)}</li>`)}
@@ -543,4 +543,4 @@ lit-html/directive-helpers.js:
    * SPDX-License-Identifier: BSD-3-Clause
    *)
 */
-//# sourceMappingURL=app.6fc1150d9f1c30d2.js.map
+//# sourceMappingURL=app.cc0785a593432c81.js.map

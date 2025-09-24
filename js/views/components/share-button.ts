@@ -37,6 +37,7 @@ export class ShareButton extends LitElem {
         });
       } catch (error) {
         console.error("Error sharing:", error);
+        alert(error);
       } finally {
         this.sharing = false;
       }
