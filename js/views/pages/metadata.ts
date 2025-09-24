@@ -256,6 +256,7 @@ export class MetadataPage extends LitElem {
             "fullImage",
             "mosaicColours",
             "thumbnailUrl",
+            "midImageLossyUrl",
           ]);
           return !ExifRelations.has(relation) && !TODO.has(relation);
         },
@@ -271,7 +272,7 @@ export class MetadataPage extends LitElem {
       <p>
         <a href="${photo.fullImage}" rel="noreferrer">[webp]</a>
         <a href="${photo.pngUrl}" rel="noreferrer">[png]</a>
-        <share-metadata-button format="image/webp" url=${photo.pngUrl}></share-metadata-button>
+        <share-metadata-button format="image/webp" url=${photo.midImageLossyUrl}></share-metadata-button>
         <a href="#/album/${albumId}" rel="noreferrer">[album]</a>
       </p>
 

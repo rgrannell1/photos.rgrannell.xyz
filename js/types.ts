@@ -26,6 +26,7 @@ export type Photo = {
   mosaicColours: string;
   pngUrl: string;
   thumbnailUrl: string;
+  midImageLossyUrl: string;
   createdAt: number;
 };
 
