@@ -46,8 +46,7 @@ export class ShareButton extends LitElem {
       if (!navigator.canShare?.(shareData)) {
         await navigator.share({
           title: "Sharing Image",
-          text: "Sharing image is not supported on this device.",
-          url: window.location.href,
+          url: this.url,
         });
 
         return;
