@@ -20,40 +20,34 @@ export class ShareButton extends LitElem {
   async shareImage(url: string) {
     if (!navigator.share) {
       console.error("navigator.share not available");
-    } else {
-      this.sharing = true;
+      return;
+    }
 
-      try {
-        const response = await fetch(url);
-        const resourceName = (new URL(url)).pathname;
+    this.sharing = true;
 
-        await navigator.share({
-          title: resourceName,
-          files: [
-            new File([await response.blob()], resourceName, {
-              type: this.format,
-            }),
-          ],
-        });
-      } catch (error) {
-        console.error("Error sharing:", error);
-        alert(error);
-      } finally {
-        this.sharing = false;
-      }
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const file = new File([blob], "image.webp", { type: this.format });
+
+      await navigator.share({
+        title: 'Sharing Image',
+        files: [ file ],
+      });
+    } catch (error) {
+      console.error("Error sharing:", error);
+      alert(error);
+    } finally {
+      this.sharing = false;
     }
   }
 
   render() {
-    if (this.sharing) {
-      return html`<button class="photo-share-button" disabled>[sharing...]</button>`;
-    } else {
-      return html`
-      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${
-        this.shareImage.bind(this, this.url)
-      }>[share]</button>
-      `;
-    }
+    return html`
+    <button class="photo-share-button" ?disabled=${!navigator.share} @click=${
+      this.shareImage.bind(this, this.url)
+    }>[${this.sharing ? "sharing..." : "share"}]</button>
+    `;
   }
 }
 
