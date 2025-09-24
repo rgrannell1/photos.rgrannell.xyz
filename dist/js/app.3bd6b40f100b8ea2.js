@@ -165,8 +165,8 @@ var us=Object.defineProperty;var ms=Object.getOwnPropertyDescriptor;var h=(r,t,e
       </ul>
 
     </div>
-    `}};h([d()],L.prototype,"id",2),h([d()],L.prototype,"url",2),h([d()],L.prototype,"preload",2),h([d()],L.prototype,"urlPoster",2),h([d()],L.prototype,"urlUnscaled",2),h([d()],L.prototype,"url1080p",2),h([d()],L.prototype,"url720p",2),h([d()],L.prototype,"url480p",2);customElements.define("app-video",L);var lt=class extends f{async shareAlbum(t){if(!navigator.share)console.error("navigator.share not available");else{this.sharing=!0;try{await navigator.share({title:`${this.title} - photos.rgrannell.xyz`,url:t})}catch(e){console.error("Error sharing:",e)}finally{this.sharing=!1}}}render(){return this.sharing?c`<button class="photo-share-button" disabled>[sharing...]</button>`:c`
-      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${this.shareAlbum.bind(this,this.url)}>[share]</button>
+    `}};h([d()],L.prototype,"id",2),h([d()],L.prototype,"url",2),h([d()],L.prototype,"preload",2),h([d()],L.prototype,"urlPoster",2),h([d()],L.prototype,"urlUnscaled",2),h([d()],L.prototype,"url1080p",2),h([d()],L.prototype,"url720p",2),h([d()],L.prototype,"url480p",2);customElements.define("app-video",L);var lt=class extends f{async shareAlbum(t){if(!navigator.share){console.error("navigator.share not available");return}this.sharing=!0;try{await navigator.share({title:`${this.title} - photos.rgrannell.xyz`,url:t})}catch(e){console.error("Error sharing:",e)}finally{this.sharing=!1}}render(){return c`
+      <button class="photo-share-button" ?disabled=${!navigator.share} @click=${this.shareAlbum.bind(this,this.url)}>${this.sharing?"[sharing...]":"[share]"}</button>
       `}};h([d()],lt.prototype,"title",2),h([d()],lt.prototype,"url",2),h([d({state:!0})],lt.prototype,"sharing",2);customElements.define("album-share-button",lt);var Xt=class extends f{getId(){return x.parseUrn(this.urn)?.id??"unknown"}url(){return this.getId()?`https://whc.unesco.org/en/list/${this.getId()}`:null}render(){return this.getId()?c`
       <a class="unesco-link" href="${this.url()}" target="_blank" rel="noopener noreferrer">
         <span class="unesco-text-full">UNESCO World Heritage Site #${this.getId()}</span>
@@ -543,4 +543,4 @@ lit-html/directive-helpers.js:
    * SPDX-License-Identifier: BSD-3-Clause
    *)
 */
-//# sourceMappingURL=app.cc0785a593432c81.js.map
+//# sourceMappingURL=app.3bd6b40f100b8ea2.js.map

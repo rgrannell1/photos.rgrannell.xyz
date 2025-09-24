@@ -9,6 +9,6 @@ export class Strings {
   }
   static camelCase(str: string): string {
     return str
-      .replace(/[-_ ]+([a-zA-Z0-9])/g, (_, char) => char.toUpperCase())
+      .replace(/[-_ ]+([a-zA-Z0-9])/g, (_, char) => char.toUpperCase());
   }
 }

@@ -57,14 +57,14 @@ function parseAlbum(album: any): Album {
 
 function parseVideo(video: any): Video {
   return {
-    ...video
-  }
+    ...video,
+  };
 }
 
 function parsePhoto(photo: any): Photo {
   return {
-    ...photo
-  }
+    ...photo,
+  };
 }
 
 function getAlbumPhotoSources(tdb, id: string): Set<string> {
@@ -149,8 +149,5 @@ export class SearchService {
     // TODO implement search layer
 
     // name support
-
-
-
   }
 }

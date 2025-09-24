@@ -41,7 +41,7 @@ export type Video = {
 export type Geoocordinates = {
   longitude: number;
   latitude: number;
-}
+};
 
 export type PageUrl = {
   type: string;

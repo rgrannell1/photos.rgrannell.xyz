@@ -65,7 +65,6 @@ export class KnownRelations {
   static YEAR = "year";
 }
 
-
 export const ExifRelations = new Set([
   KnownRelations.CREATED_AT,
   KnownRelations.F_STOP,
@@ -94,5 +93,5 @@ export const CDN_RELATIONS = new Set([
   KnownRelations.VIDEO_URL_1080P,
   KnownRelations.VIDEO_URL_480P,
   KnownRelations.VIDEO_URL_720P,
-  KnownRelations.VIDEO_URL_UNSCALED
+  KnownRelations.VIDEO_URL_UNSCALED,
 ]);

@@ -150,7 +150,7 @@ export class ListingPage extends LitElem {
     );
 
     const loadThingPage = (urn: string, name: string) => {
-      const {type, id} = asUrn(urn);
+      const { type, id } = asUrn(urn);
 
       const dispatched = new CustomEvent("click-thing-album", {
         detail: { id: `${type}:${id}`, name },

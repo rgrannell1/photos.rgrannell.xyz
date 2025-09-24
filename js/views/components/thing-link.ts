@@ -51,7 +51,7 @@ export class CountryLink extends LitElem {
   triples!: string;
 
   render() {
-    const details = Countries.urnDetails(this.triples, this.urn)
+    const details = Countries.urnDetails(this.triples, this.urn);
     const href = Things.toURL(this.urn);
 
     return html`<a class="country-link" href="${href}">${details.flag} ${details.name}</a>`;

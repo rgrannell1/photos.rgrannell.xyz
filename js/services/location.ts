@@ -106,9 +106,7 @@ export class PageLocation {
     return params;
   }
 
-  /*
-   *
-   */
+  /* */
   static getUrl(): PageUrl {
     const hash = window.location.hash;
 
@@ -119,7 +117,7 @@ export class PageLocation {
         const qs = PageLocation.extractQueryParams();
         const res: { type: string; id?: string; qs: Record<string, string> } = {
           type: page,
-          qs
+          qs,
         };
 
         if (PageLocation.ID_PAGES.has(page)) {
@@ -132,7 +130,7 @@ export class PageLocation {
 
     return {
       type: "albums",
-      qs: {}
+      qs: {},
     };
   }
 }

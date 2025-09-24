@@ -161,12 +161,13 @@ export class ThingPage extends LitElem {
 
       // broken subtly
       if (parsedUrn.type === KnownThings.COUNTRY) {
-          const countryDetails = this.triples.search({ source: parsedUrn }).firstObject();
-          if (countryDetails.flag) {
-            return `${countryDetails.flag} ${definedName}`
-          } else {
-            return definedName;
-          }
+        const countryDetails = this.triples.search({ source: parsedUrn })
+          .firstObject();
+        if (countryDetails.flag) {
+          return `${countryDetails.flag} ${definedName}`;
+        } else {
+          return definedName;
+        }
       }
 
       if (BinomialTypes.has(parsedUrn.type)) {
@@ -275,7 +276,7 @@ export class ThingPage extends LitElem {
     if (BinomialTypes.has(type)) {
       // TODO move to fact layer, not render layer
       metadata["First Photographed"] = html`<span>${
-        this.firstPhotographed( tdb, {
+        this.firstPhotographed(tdb, {
           target: asUrn(this.urn),
         })
       }</span>`;

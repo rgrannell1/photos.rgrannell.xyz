@@ -32,7 +32,7 @@ export class PhotosPage extends LitElem {
     "thumbnailUrl",
     "mosaicColours",
     "fullImage",
-  ]
+  ];
 
   matchingImages() {
     return ThingsService.photoObjects(this.triples, {

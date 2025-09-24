@@ -20,32 +20,29 @@ export class AlbumShareButton extends LitElem {
   async shareAlbum(url: string) {
     if (!navigator.share) {
       console.error("navigator.share not available");
-    } else {
-      this.sharing = true;
+      return;
+    }
 
-      try {
-        await navigator.share({
-          title: `${this.title} - photos.rgrannell.xyz`,
-          url,
-        });
-      } catch (error) {
-        console.error("Error sharing:", error);
-      } finally {
-        this.sharing = false;
-      }
+    this.sharing = true;
+
+    try {
+      await navigator.share({
+        title: `${this.title} - photos.rgrannell.xyz`,
+        url,
+      });
+    } catch (error) {
+      console.error("Error sharing:", error);
+    } finally {
+      this.sharing = false;
     }
   }
 
   render() {
-    if (this.sharing) {
-      return html`<button class="photo-share-button" disabled>[sharing...]</button>`;
-    } else {
-      return html`
+    return html`
       <button class="photo-share-button" ?disabled=${!navigator.share} @click=${
-        this.shareAlbum.bind(this, this.url)
-      }>[share]</button>
+      this.shareAlbum.bind(this, this.url)
+    }>${this.sharing ? "[sharing...]" : "[share]"}</button>
       `;
-    }
   }
 }
 

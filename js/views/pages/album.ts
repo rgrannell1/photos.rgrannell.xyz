@@ -47,7 +47,10 @@ export class AlbumPage extends LitElem {
   }
 
   albumPhotos(tdb) {
-    const albumPhotoSources: Set<string> = ThingsService.getAlbumPhotoSources(tdb, this.id);
+    const albumPhotoSources: Set<string> = ThingsService.getAlbumPhotoSources(
+      tdb,
+      this.id,
+    );
     return Array.from(albumPhotoSources).flatMap((source: string) => {
       const info = tdb.search({
         source: parseUrn(source),

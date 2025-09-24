@@ -179,7 +179,7 @@ export class Countries {
     return {
       urn,
       name,
-      flag
+      flag,
     };
   }
 }
@@ -266,9 +266,13 @@ export function expandUrns(triple: Triple) {
   const [source, relation, target] = triple;
 
   return [[
-    typeof source === 'string' && source.startsWith("::") ? `urn:ró:${source.slice(2)}` : source,
+    typeof source === "string" && source.startsWith("::")
+      ? `urn:ró:${source.slice(2)}`
+      : source,
     relation,
-    typeof target === 'string' && target.startsWith("::") ? `urn:ró:${target.slice(2)}` : target,
+    typeof target === "string" && target.startsWith("::")
+      ? `urn:ró:${target.slice(2)}`
+      : target,
   ]];
 }
 
@@ -280,8 +284,8 @@ export function renameRelations(triple: Triple) {
   return [[
     source,
     Strings.camelCase(relation),
-    target
-  ]]
+    target,
+  ]];
 }
 
 /*

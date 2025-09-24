@@ -108,7 +108,7 @@ export class MetadataPage extends LitElem {
       "livingConditions",
       "pngUrl",
       "cover",
-      "fStop"
+      "fStop",
     ])).has(key);
   }
 

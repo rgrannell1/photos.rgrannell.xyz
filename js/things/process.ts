@@ -1,6 +1,7 @@
 import { Triple } from "../types.ts";
 import {
-  renameRelations,
+  addSeason,
+  addYear,
   countriesAsUrns,
   CURIES,
   expandCdnUrls,
@@ -8,8 +9,7 @@ import {
   expandUrns,
   placesToCountries,
   ratingsAsUrns,
-  addSeason,
-  addYear
+  renameRelations,
 } from "../things/things.ts";
 
 /*
@@ -27,7 +27,7 @@ export function processTriples(
     expandCdnUrls.bind(null, "https://photos-cdn.rgrannell.xyz"), // todo move
     expandTripleCuries.bind(null, CURIES),
     addSeason,
-    addYear
+    addYear,
   ];
 
   let outputTriples: Triple[] = [triple];

@@ -39,7 +39,7 @@ class Artifacts {
 
 function prefetchTargets(env, triples: [string, string, string][]) {
   const tdb = new TribbleDB(triples).flatMap(
-    processTriples
+    processTriples,
   );
 
   const albums = ThingsService.albumObjects(tdb);
