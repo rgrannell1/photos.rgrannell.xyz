@@ -23,6 +23,8 @@ export class AboutPage extends LitElem {
       <section class="about-page">
         <h1>About</h1>
 
+        <p>I started taking photos back in 2012, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things <a href="https://photos.rgrannell.xyz/#/thing/rating:⭐⭐⭐⭐⭐">I found beautiful in this world.</a></p>
+
         <h2>Can I use the photos on this site?</h2>
 
         <p>You may use this website and its content for personal, non-commerical purposes only. For example, using photos as a desktop wallpaper is fine, selling these photos is not.</p>

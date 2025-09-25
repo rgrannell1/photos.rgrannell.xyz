@@ -251,6 +251,9 @@ photo-app {
   font-size: 2.5em;
   margin-left: 5px;
 }
+.about-page {
+  margin-right: 40px;
+}
 @media (max-width: 500px) {
   h1 {
     font-size: 2em;
@@ -268,7 +271,7 @@ photo-app {
   .albums-header {
     display: none;
   }
-  section.about-page {
+  .about-page {
     margin-right: 40px;
     h2 {
       font-size: 1.5em;

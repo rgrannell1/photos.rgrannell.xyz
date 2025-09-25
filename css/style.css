@@ -313,6 +313,10 @@ photo-app {
   margin-left: 5px;
 }
 
+.about-page {
+  margin-right: 40px;
+}
+
 /*
  * ++++ ++++ ++++ ~~~~ Page Grid Layout ~~~~ ++++ ++++ ++++
  */
@@ -340,7 +344,7 @@ photo-app {
     display: none;
   }
 
-  section.about-page {
+  .about-page {
     margin-right: 40px;
 
     h2 {
