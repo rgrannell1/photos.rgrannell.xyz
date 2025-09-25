@@ -319,7 +319,7 @@ export class ThingPage extends LitElem {
         <p>
           ${
       BinomialTypes.has(type) && urn.id !== "*"
-        ? html`<span class="thing-binomial">(${
+        ? html`<span class="thing-binomial ${type}-binomial">(${
           Binomials.pretty(urn.id)
         })</span>`
         : html``

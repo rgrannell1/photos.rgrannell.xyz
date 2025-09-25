@@ -102,6 +102,7 @@ h1 {
 .thing-binomial {
   font-size: 2em;
   font-weight: lighter;
+  padding-left: 15px;
 }
 
 h2 {
@@ -501,7 +502,8 @@ photo-app {
 .fish-link,
 .amphibian-link,
 .insect-link {
-  color: white;
+  color: black;
+  border: solid 2px lightgray;
   font-weight: bolder;
   padding: 4px 9px;
   text-decoration: none;
@@ -512,31 +514,31 @@ photo-app {
 }
 
 .unesco-link {
-  background-color: var(--tag-color-0);
+  border-left: 10px solid var(--tag-color-0);
 }
 
-.bird-link {
-  background-color: var(--tag-color-1);
+.bird-link, .bird-binomial {
+  border-left: 10px solid var(--tag-color-1);
 }
 
-.mammal-link {
-  background-color: var(--tag-color-2);
+.mammal-link, .mammal-binomial {
+  border-left: 10px solid var(--tag-color-2);
 }
 
-.reptile-link {
-  background-color: var(--tag-color-3);
+.reptile-link, .reptile-binomial {
+  border-left: 10px solid var(--tag-color-3);
 }
 
-.fish-link {
-  background-color: var(--tag-color-4);
+.fish-link, .fish-binomial {
+  border-left: 10px solid var(--tag-color-4);
 }
 
-.amphibian-link {
-  background-color: var(--tag-color-5);
+.amphibian-link, .amphibian-binomial {
+  border-left: 10px solid var(--tag-color-5);
 }
 
-.insect-link {
-  background-color: var(--tag-color-6);
+.insect-link, .insect-binomial {
+  border-left: 10px solid var(--tag-color-6);
 }
 
 .unesco-links {
