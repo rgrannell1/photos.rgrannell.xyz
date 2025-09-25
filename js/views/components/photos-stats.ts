@@ -20,7 +20,8 @@ export class PhotosStats extends LitElem {
         ${stats.countries} <a href="#/listing/country">countries</a> ·
         ${stats.bird_species} <a href="#/listing/bird">bird species</a> ·
         ${stats.mammal_species} <a href="#/listing/mammal">mammal species</a> ·
-        ${stats.unesco_sites} <a href="#/thing/unesco:*">UNESCO sites</a>
+        a few <a href="#/listing/amphibian">amphibians</a> and <a href="#/listing/reptile">reptiles</a> ·
+        ${stats.unesco_sites} <a href="#/thing/unesco:*">UNESCO sites</a> ·
       </p>
     `;
   }
