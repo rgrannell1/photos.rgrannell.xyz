@@ -2,8 +2,10 @@
  * Define page routes
  */
 
+import { ThingsService } from "js/things/services.ts";
 import { Pages } from "../constants.js";
 import { PageUrl } from "../types.ts";
+import { Strings } from "js/strings.ts";
 
 export class PageLocation {
   static ROUTES: Record<keyof typeof Pages, CallableFunction> = {
@@ -62,15 +64,15 @@ export class PageLocation {
     window.location.hash = "#/photos";
     document.title = "Photos - photos";
   }
-  static showAlbumUrl(id: string) {
+  static showAlbumUrl(id: string, _: any) {
     window.location.hash = `#/album/${id}`;
     document.title = "Album - photos";
   }
-  static showPhotoUrl(id: string) {
+  static showPhotoUrl(id: string, _: any) {
     window.location.hash = `#/photo/${id}`;
     document.title = "Photo - photos";
   }
-  static showMetadataUrl(id: string) {
+  static showMetadataUrl(id: string, _: any) {
     window.location.hash = `#/metadata/${id}`;
     document.title = "Metadata - photos";
   }
@@ -79,12 +81,19 @@ export class PageLocation {
     document.title = "Videos - photos";
   }
 
-  static showThingUrl(urn: string) {
+  static showThingUrl(urn: string, tribbleDB: any) {
     window.location.hash = `#/thing/${urn}`;
-    document.title = "Thing - photos";
+
+    const name = ThingsService.getName(tribbleDB, urn);
+    if (!name) {
+      document.title = "Thing - photos";
+      return;
+    }
+
+    document.title = `${Strings.capitalise(name)} - photos`;
   }
 
-  static showListingUrl(id: string) {
+  static showListingUrl(id: string, _: any) {
     window.location.hash = `#/listing/${id}`;
     document.title = "Listing - photos";
   }

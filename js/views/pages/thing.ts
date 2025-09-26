@@ -17,6 +17,7 @@ import { URN } from "js/types.ts";
 import { property } from "lit/decorators.js";
 import { GoogleMapsService, ThingsService } from "js/things/services.ts";
 import { Strings } from "js/strings.ts";
+import { PageLocation } from "../../services/location.ts";
 
 export class ThingPage extends LitElem {
   @property()
@@ -29,6 +30,17 @@ export class ThingPage extends LitElem {
     super.connectedCallback();
 
     JSONFeed.setIndex();
+    this.updatePageLocation();
+  }
+
+  private updatePageLocation() {
+    const name = ThingsService.getName(this.triples, this.urn);
+    if (!name) {
+      document.title = "Thing - photos";
+      return;
+    }
+
+    document.title = `${Strings.capitalise(name)} - photos`;
   }
 
   isValidImage(image: Record<string, any>) {

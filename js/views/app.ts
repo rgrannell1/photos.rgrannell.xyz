@@ -156,7 +156,7 @@ export class PhotoApp extends LitElem {
     this.id = id;
     this.title = title;
 
-    PageLocation.showThingUrl(id);
+    PageLocation.showThingUrl(id, this.tribbleDB);
   }
 
   /*
