@@ -397,7 +397,8 @@ photo-app {
   width: fit-content;
 }
 .unesco-link {
-  border-left: 10px solid var(--tag-color-0);
+  color: white;
+  background-color: var(--tag-color-0);
 }
 .bird-link,
 .bird-binomial {
@@ -436,9 +437,6 @@ photo-app {
 }
 .unesco-links li {
   list-style-type: none;
-}
-.unesco-links .unesco-link {
-  margin: 5px;
 }
 .unesco-text-short {
   display: none;

@@ -30,7 +30,7 @@ export class UnescoLink extends LitElem {
       return html`<span>Invalid UNESCO URN</span>`;
     }
     return html`
-      <a class="unesco-link" href="${this.url()}" target="_blank" rel="noopener noreferrer">
+      <a class="unesco-link thing-link" href="${this.url()}" target="_blank" rel="noopener noreferrer">
         <span class="unesco-text-full">UNESCO World Heritage Site #${this.getId()}</span>
         <span class="unesco-text-short">UNESCO #${this.getId()}</span>
       </a>

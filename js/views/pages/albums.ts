@@ -17,13 +17,14 @@ import { property } from "lit/decorators.js";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { ThingsService } from "js/things/services.ts";
 import { Album } from "js/types.ts";
+import { TribbleDB } from "@rgrannell1/tribbledb";
 
 export class AlbumsPage extends LitElem {
   @property({})
   albums!: Object;
 
   @property({ state: true })
-  triples!: Object;
+  triples!: TribbleDB;
 
   connectedCallback() {
     super.connectedCallback();

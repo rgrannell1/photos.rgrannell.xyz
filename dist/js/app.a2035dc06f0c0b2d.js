@@ -171,7 +171,7 @@ var ps=Object.defineProperty;var us=Object.getOwnPropertyDescriptor;var h=(r,t,e
         ${this.sharing?"[sharing...]":"[share]"}
       </button>
       `}};h([d()],lt.prototype,"title",2),h([d()],lt.prototype,"url",2),h([d({state:!0})],lt.prototype,"sharing",2);customElements.define("album-share-button",lt);var Xt=class extends f{getId(){return w.parseUrn(this.urn)?.id??"unknown"}url(){return this.getId()?`https://whc.unesco.org/en/list/${this.getId()}`:null}render(){return this.getId()?l`
-      <a class="unesco-link" href="${this.url()}" target="_blank" rel="noopener noreferrer">
+      <a class="unesco-link thing-link" href="${this.url()}" target="_blank" rel="noopener noreferrer">
         <span class="unesco-text-full">UNESCO World Heritage Site #${this.getId()}</span>
         <span class="unesco-text-short">UNESCO #${this.getId()}</span>
       </a>
@@ -548,4 +548,4 @@ lit-html/directive-helpers.js:
    * SPDX-License-Identifier: BSD-3-Clause
    *)
 */
-//# sourceMappingURL=app.a7077b8f5c9704ab.js.map
+//# sourceMappingURL=app.a2035dc06f0c0b2d.js.map

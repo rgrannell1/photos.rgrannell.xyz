@@ -47,7 +47,7 @@ export class AlbumPage extends LitElem {
     JSONFeed.setIndex();
   }
 
-  albumPhotos(tdb) {
+  albumPhotos(tdb: TribbleDB) {
     const albumPhotoSources: Set<string> = ThingsService.getAlbumPhotoSources(
       tdb,
       this.id,
@@ -61,7 +61,7 @@ export class AlbumPage extends LitElem {
     });
   }
 
-  albumVideos(tdb) {
+  albumVideos(tdb: TribbleDB) {
     const albumVideoIds: Set<string> = tdb.search({
       source: {
         type: "video",
@@ -87,7 +87,7 @@ export class AlbumPage extends LitElem {
       : `${this.imageCount} photos`;
   }
 
-  thingsLinks(tdb) {
+  thingsLinks(tdb: TribbleDB) {
     const groups = {};
     const albumPhotos = this.albumPhotos(tdb);
 
