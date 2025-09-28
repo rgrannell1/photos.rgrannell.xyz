@@ -499,6 +499,10 @@ photo-app {
   display: block;
 }
 
+.thing-link:hover {
+  filter: brightness(80%);
+}
+
 .unesco-link,
 .bird-link,
 .mammal-link,
@@ -576,6 +580,8 @@ photo-app {
     display: inline;
   }
 }
+
+
 
 /* photo album css. not clear if needed in JS or just here */
 

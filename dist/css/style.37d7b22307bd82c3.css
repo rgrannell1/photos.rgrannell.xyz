@@ -379,6 +379,9 @@ photo-app {
 .thing-link {
   display: block;
 }
+.thing-link:hover {
+  filter: brightness(80%);
+}
 .unesco-link,
 .bird-link,
 .mammal-link,
