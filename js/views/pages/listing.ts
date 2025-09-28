@@ -29,7 +29,7 @@ class ListingPageService {
       target: asUrn(urn),
     });
 
-    return results.firstObject()?.id;
+    return results.firstObject()?.id as string | undefined;
   }
 
   static chooseBestImage(tdb: TribbleDB, type: string, urn: string): string | undefined {
@@ -113,14 +113,30 @@ class ThingAlbum extends LitElem {
 customElements.define("thing-album", ThingAlbum);
 
 export class ListingPage extends LitElem {
+  @property()
   id!: string;
+
+  @property({ state: true })
   triples!: TribbleDB;
 
-  static get properties() {
-    return {
-      id: { type: String },
-      triples: { type: Object, state: true },
-    };
+  getTitle() {
+    return Strings.capitalise(this.id);
+  }
+
+  getThingAlbumTitle(urn: string, name: string) {
+    const thingDetails = this.triples.search({
+      source: asUrn(urn),
+    }).firstObject();
+
+    if (!thingDetails) {
+      return name;
+    }
+
+    if (thingDetails.flag) {
+      return `${name} ${thingDetails.flag}`;
+    }
+
+    return name;
   }
 
   renderMetadata(_: string, urn: string, name: string) {
@@ -128,9 +144,13 @@ export class ListingPage extends LitElem {
       source: asUrn(urn),
     }).firstObject();
 
+    if (!thingDetails) {
+      return html`<div class="thing-metadata"><p>${name}</p></div>`;
+    }
+
     return html`
       <div class="thing-metadata">
-        <p>${name}</p>
+        <p>${this.getThingAlbumTitle(urn, name)}</p>
         ${
       thingDetails.wikipedia
         ? html`<span><a href="${thingDetails.wikipedia}">[wiki]</a></span>`
@@ -155,6 +175,11 @@ export class ListingPage extends LitElem {
       type,
       urn,
     );
+
+    if (!imageUrn) {
+      console.error("No image found for", type, urn);
+      return html``;
+    }
 
     const loadThingPage = (urn: string, name: string) => {
       const { type, id } = asUrn(urn);
@@ -196,13 +221,10 @@ export class ListingPage extends LitElem {
     const namedThings = ThingsService.getDistinctNames(tdb, this.id);
 
     // loop over, create albums page
-
     return html`
     <section class="album-metadata">
-      <h1 class="albums-header">${Strings.capitalise(this.id)}s</h1>
-      <a href="/#/thing/${this.id}:*">See all ${
-      Strings.pluralise(this.id)
-    } photos</a>
+      <h1 class="albums-header">${this.getTitle()}s</h1>
+      <a href="/#/thing/${this.id}:*">See all ${this.id} photos</a>
     </section>
 
     <section class="album-container">
