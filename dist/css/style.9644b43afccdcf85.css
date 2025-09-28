@@ -196,7 +196,8 @@ photo-app {
   width: var(--photo-width);
 }
 @media (hover: hover) {
-  .photo:hover {
+  .photo:hover,
+  photo-album:hover {
     filter: brightness(80%);
   }
 }
