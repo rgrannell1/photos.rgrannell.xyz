@@ -58,7 +58,7 @@ export class ThingPage extends LitElem {
     return image && image.thumbnailUrl;
   }
 
-  urnImages(tdb: any, query: Record<string, any>) {
+  urnImages(tdb: TribbleDB, query: Record<string, any>) {
     const relevantPhotos = tdb.search(query);
     const relevantPhotoIds = relevantPhotos.sources();
 
