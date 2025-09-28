@@ -288,6 +288,48 @@ export class ThingPage extends LitElem {
     <div/>`;
   }
 
+  thingCountries() {
+    const tdb = this.triples;
+    const parsed = Things.parseUrn(this.urn);
+
+    if (parsed.id === "*") {
+      return [];
+    }
+
+    // get photos with this urn
+    const photoUrns = tdb.search({
+      source: { type: "photo" },
+      target: { id: parsed.id, type: parsed.type },
+    }).sources();
+
+    const countries = [...photoUrns].flatMap((photoUrn) => {
+      const photoCountries = tdb.search({
+        source: asUrn(photoUrn),
+        relation: KnownRelations.COUNTRY,
+      }).targets();
+
+      const flags = [...photoCountries].flatMap((countryUrn) => {
+        const countryFacts = tdb.search({
+          source: asUrn(countryUrn),
+        }).firstObject();
+
+        if (countryFacts && countryFacts.flag) {
+          return countryFacts.flag;
+        }
+
+        return [];
+      });
+
+      if (flags.length > 0) {
+        return flags;
+      }
+
+      return [];
+    });
+
+    return Array.from(new Set(countries));
+  }
+
   render() {
     // Show a Name, URN, Description,
     // Wikilinks, and all images with this ARN
@@ -322,6 +364,14 @@ export class ThingPage extends LitElem {
           target: asUrn(this.urn),
         })
       }</span>`;
+    }
+
+    const thingCountries = this.thingCountries();
+    if (thingCountries.length > 0) {
+      const thingLinks = thingCountries.map((flag) => {
+        return html`<span>${flag}</span>`;
+      });
+      metadata["Seen In"] = html`<ul>${thingCountries}</ul>`;
     }
 
     const wikipedia = urnFacts[KnownRelations.WIKIPEDIA];
