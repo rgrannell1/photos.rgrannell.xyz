@@ -4,6 +4,7 @@
     "specifiers": {
       "jsr:@std/assert@^0.218.2": "jsr:@std/assert@0.218.2",
       "jsr:@std/path": "jsr:@std/path@0.218.2",
+      "npm:@rgrannell1/tribbledb@^0.0.1": "npm:@rgrannell1/tribbledb@0.0.1",
       "npm:esbuild@^0.25.9": "npm:esbuild@0.25.9",
       "npm:express@^5.1.0": "npm:express@5.1.0",
       "npm:lit-element@^4.2.1": "npm:lit-element@4.2.1",
@@ -299,6 +300,10 @@
       },
       "@pkgjs/parseargs@0.11.0": {
         "integrity": "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==",
+        "dependencies": {}
+      },
+      "@rgrannell1/tribbledb@0.0.1": {
+        "integrity": "sha512-d25zehuP8LltR7y2VSgiQ2SdlfLuPJum3fTn9O7hykYHVB8RCRStQCLXACIpnw8D38HKcjb7lZPDVieETCFt9A==",
         "dependencies": {}
       },
       "@sigstore/bundle@2.3.2": {
@@ -3522,11 +3527,22 @@
     "https://deno.land/std@0.224.0/path/windows/to_file_url.ts": "40e560ee4854fe5a3d4d12976cef2f4e8914125c81b11f1108e127934ced502e",
     "https://deno.land/std@0.224.0/path/windows/to_namespaced_path.ts": "4ffa4fb6fae321448d5fe810b3ca741d84df4d7897e61ee29be961a6aac89a4c",
     "https://deno.land/x/mustache_ts@v0.4.1.1/mustache.ts": "228a1138f55735e399b2232c87bcbb415ee462a067a10c71c14ae207c0b36a78",
-    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/dist/mod.ts": "be6c9069c311311356b31806e7eaef6e0746a3f39e152624650dba6ac7f5e193"
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/dist/mod.ts": "be6c9069c311311356b31806e7eaef6e0746a3f39e152624650dba6ac7f5e193",
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/src/indices/index.ts": "89875f1cd4025eaeac285f343ae3c9dff30545be9f353fa1bf153a662524c5f9",
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/src/metrics.ts": "760e4fb3eb1b285e5dbff825adab4f43e0133794e138cc588a0074df3d5c5779",
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/src/mod.ts": "ca5cb8a58f023bc2c040e43b547c8f0da04362d5086a4eb7b73698aed3426e1b",
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/src/sets.ts": "ea9a88977774fba91840623f19f85009c465516c07c6cd5bf99691289af7f681",
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/src/tribble-db.ts": "30c35ded68a390fa4f4ebff7d1257f60d52a5c4656e84e74ff119aee5bc4132f",
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/src/tribble/parse.ts": "e75fdd0314d04eb4e382c200d40dfa1b05989b209b46b34fb6a08c75b1de24f4",
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/src/tribble/stringify.ts": "bbe974f1a1e5158725cc329d09649ebd060b5c30d9e7fb2868aa6efbb8a89994",
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/src/triples.ts": "02efbd5514d767f5bf4f066956382d8963988f7bf4f4509cb9dab4cb6a285b8e",
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/src/types.ts": "9fa54b5592cf638dffb4d346b406ce72fc62e01b78a05f9406d36107b0b082bd",
+    "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/src/urn.ts": "8dbef77b27b2dcb1ab6316ae9e9edc77495c207eac83787bb5d3aba35422f7fc"
   },
   "workspace": {
     "packageJson": {
       "dependencies": [
+        "npm:@rgrannell1/tribbledb@^0.0.1",
         "npm:esbuild@^0.25.9",
         "npm:express@^5.1.0",
         "npm:lit-element@^4.2.1",

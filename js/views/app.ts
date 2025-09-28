@@ -15,7 +15,7 @@ import "./pages/thing.ts";
 import "./pages/videos.ts";
 import "./pages/listing.ts";
 
-import { TribbleDB } from "js/library/tribble.js";
+import { TribbleDB } from "@rgrannell1/tribbledb";
 import { property } from "lit/decorators.js";
 import { Triple } from "../types.ts";
 import { schema } from "../things/schema.ts";
@@ -70,7 +70,7 @@ export class PhotoApp extends LitElem {
 
     this._onPopState = this.handlePopState.bind(this);
     this.sidebarVisible = false;
-    window.addEventListener("popstate", this._onPopState);
+    globalThis.addEventListener("popstate", this._onPopState);
 
     (async () => {
       const buffer: Triple[] = [];
@@ -100,7 +100,7 @@ export class PhotoApp extends LitElem {
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    window.removeEventListener("popstate", this._onPopState);
+    globalThis.removeEventListener("popstate", this._onPopState);
   }
 
   handlePopState() {
@@ -162,14 +162,14 @@ export class PhotoApp extends LitElem {
   /*
    * When we click on the burger menu icon, toggle the sidebar
    */
-  async receiveClickBurgerMenu() {
+  receiveClickBurgerMenu() {
     this.sidebarVisible = !this.sidebarVisible;
   }
 
   /*
    * When we click on a photo's info icon, navigate to the photo's metadata page
    */
-  async receiveClickPhotoMetadata(event: CustomEvent) {
+  receiveClickPhotoMetadata(event: CustomEvent) {
     const {
       id,
       imageUrl,

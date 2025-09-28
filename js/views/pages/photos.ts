@@ -11,7 +11,7 @@ import "../components/photo.ts";
 import { Photos } from "../../services/photos.ts";
 import { JSONFeed } from "../../services/json-feed.ts";
 import { LitElem } from "../../models/lit-element.ts";
-import { asUrn } from "js/library/tribble.js";
+import { asUrn } from "@rgrannell1/tribbledb";
 import { property } from "lit/decorators.js";
 import { ThingsService } from "js/things/services.ts";
 

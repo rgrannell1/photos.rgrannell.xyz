@@ -1,7 +1,7 @@
 import * as path from "jsr:@std/path";
 import { render } from "https://deno.land/x/mustache_ts/mustache.ts";
 
-import { TribbleDB } from "https://raw.githubusercontent.com/rgrannell1/tribbledb/refs/heads/main/dist/mod.ts";
+import { TribbleDB } from "@rgrannell1/tribbledb";
 import { processTriples } from "./js/things/process.ts";
 import { ThingsService } from "./js/things/services.ts";
 

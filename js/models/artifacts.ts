@@ -1,4 +1,4 @@
-import { TribbleParser } from "../library/tribble.js";
+import { TribbleParser } from "@rgrannell1/tribbledb";
 
 // injected into the HTLM during build-time
 const CONFIG = (window as any).envConfig;

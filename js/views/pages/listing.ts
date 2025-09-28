@@ -7,7 +7,7 @@
  */
 
 import { html } from "lit-element";
-import { asUrn } from "../../library/tribble.js";
+import { asUrn } from "@rgrannell1/tribbledb";
 
 import "../components/photo.ts";
 import "../components/video.ts";
@@ -19,9 +19,10 @@ import { Photos } from "../../services/photos.ts";
 import { property } from "lit/decorators.js";
 import { Strings } from "../../strings.ts";
 import { ThingsService } from "js/things/services.ts";
+import { TribbleDB } from "@rgrannell1/tribbledb";
 
 class ListingPageService {
-  static chooseCoverImage(tdb, type: string, urn: string): string | undefined {
+  static chooseCoverImage(tdb: TribbleDB, _type: string, urn: string): string | undefined {
     const results = tdb.search({
       source: { type: "photo" },
       relation: "cover",
@@ -31,7 +32,7 @@ class ListingPageService {
     return results.firstObject()?.id;
   }
 
-  static chooseBestImage(tdb, type: string, urn: string): string | undefined {
+  static chooseBestImage(tdb: TribbleDB, type: string, urn: string): string | undefined {
     const results = tdb.search({
       source: { type: "photo" },
       target: asUrn(urn),
@@ -75,7 +76,7 @@ class ListingPageService {
 
 class ThingAlbum extends LitElem {
   @property({ state: true })
-  triples!: Object;
+  triples!: TribbleDB;
 
   @property()
   url!: string;
@@ -107,7 +108,7 @@ customElements.define("thing-album", ThingAlbum);
 
 export class ListingPage extends LitElem {
   id!: string;
-  triples!: Object;
+  triples!: TribbleDB;
 
   static get properties() {
     return {
@@ -116,7 +117,7 @@ export class ListingPage extends LitElem {
     };
   }
 
-  renderMetadata(type: string, urn: string, name: string) {
+  renderMetadata(_: string, urn: string, name: string) {
     const thingDetails = this.triples.search({
       source: asUrn(urn),
     }).firstObject();

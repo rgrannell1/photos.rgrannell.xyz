@@ -18,7 +18,6 @@ css/                   stylesheets
 feeds/                 JSON feeds are published here by mirror
 icons/                 progressive web app icons
 js/
-  library/             third-party libraries
   models/              data-representations (poorly factored)
   services/            almost all of this can be moved to models
   views/

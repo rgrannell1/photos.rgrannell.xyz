@@ -1,5 +1,5 @@
 import { css, html, LitElement, unsafeCSS } from "lit-element";
-import { parseUrn } from "../../library/tribble.js";
+import { parseUrn } from "@rgrannell1/tribbledb";
 import { LitElem } from "../../models/lit-element.ts";
 import { Dates } from "../../services/dates.ts";
 import { Photos } from "../../services/photos.ts";
@@ -120,7 +120,7 @@ class PhotoAlbumMetadata extends LitElem {
     if (!this.minDate && !this.maxDate) {
       return "unknown date";
     }
-    const mediaQuery = window.matchMedia("(max-width: 500px)");
+    const mediaQuery = globalThis.matchMedia("(max-width: 500px)");
 
     return Dates.dateRange(this.minDate, this.maxDate, mediaQuery.matches);
   }

@@ -2,7 +2,7 @@ import env from "../manifest/env.json" with { type: "json" };
 (window as any).envConfig = env;
 
 import { resolve } from "https://deno.land/std/path/mod.ts";
-import { TribbleDB } from "../js/library/tribble.js";
+import { TribbleDB } from "tribbledb";
 import { schema } from "../js/things/schema.ts";
 import { processTriples } from "../js/things/process.ts";
 import { TribblesArtifact } from "../js/models/artifacts.ts";

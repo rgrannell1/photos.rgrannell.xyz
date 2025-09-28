@@ -10,8 +10,8 @@ export class Photos {
    * depending on page position
    */
   static loadingMode(idx: number): "eager" | "lazy" {
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+    const viewportWidth = globalThis.innerWidth;
+    const viewportHeight = globalThis.innerHeight;
 
     const imageDimension = 400;
     const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);

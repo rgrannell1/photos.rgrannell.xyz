@@ -18,7 +18,7 @@ export class YearCursor extends LitElem {
 
   _onScroll() {
     const yearCursor = document.getElementById("year-cursor");
-    if (window.scrollY < 200) {
+    if (globalThis.scrollY < 200) {
       if (yearCursor) {
         yearCursor.style.display = "none";
       }
@@ -38,7 +38,7 @@ export class YearCursor extends LitElem {
     // efficiently get the dates below the current window position;
     // collect a list of ones on the same row
     for (let idx = 0; idx < dates.length; idx++) {
-      if (dates[idx].position.top > window.scrollY) {
+      if (dates[idx].position.top > globalThis.scrollY) {
         if (!firstBelowPositionHeight) {
           firstBelowPositionHeight = dates[idx].position.top;
           row.push(dates[idx]);
@@ -91,15 +91,15 @@ export class YearCursor extends LitElem {
 
   override connectedCallback(): void {
     super.connectedCallback();
-    window.addEventListener("scroll", this._onScroll, { passive: true });
-    window.addEventListener("resize", this._clearCacheOnResize, {
+    globalThis.addEventListener("scroll", this._onScroll, { passive: true });
+    globalThis.addEventListener("resize", this._clearCacheOnResize, {
       passive: true,
     });
   }
 
   override disconnectedCallback(): void {
-    window.removeEventListener("scroll", this._onScroll);
-    window.removeEventListener("scroll", this._clearCacheOnResize);
+    globalThis.removeEventListener("scroll", this._onScroll);
+    globalThis.removeEventListener("scroll", this._clearCacheOnResize);
   }
 
   render() {

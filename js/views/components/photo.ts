@@ -1,4 +1,4 @@
-import { parseUrn } from "js/library/tribble.js";
+import { parseUrn } from "@rgrannell1/tribbledb";
 import { html } from "lit-element";
 import { property } from "lit/decorators.js";
 import { LitElem } from "../../models/lit-element.ts";

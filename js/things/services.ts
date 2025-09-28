@@ -1,9 +1,10 @@
 import { Album, Geoocordinates, Photo, Video } from "../types.ts";
 import { KnownRelations } from "../constants.js";
-import { asUrn } from "../library/tribble.js";
+import { asUrn } from "@rgrannell1/tribbledb";
 import { html } from "lit-element";
+import { TribbleDB } from "@rgrannell1/tribbledb";
 
-function getName(tdb, urn: string): string | undefined {
+function getName(tdb: TribbleDB, urn: string): string | undefined {
   const { id, type } = asUrn(urn);
 
   const definedName = tdb.search({
@@ -22,14 +23,12 @@ function getName(tdb, urn: string): string | undefined {
   return definedName;
 }
 
-function getGeocoordinates(tdb, urn: string): Geoocordinates | undefined {
+function getGeocoordinates(tdb: TribbleDB, urn: string): Geoocordinates | undefined {
   const { id, type } = asUrn(urn);
 
   const facts = tdb.search({
     source: { id, type },
-    relation: {
-      relation: [KnownRelations.LONGITUDE, KnownRelations.LATITUDE],
-    },
+    relation: [KnownRelations.LONGITUDE, KnownRelations.LATITUDE],
   }).firstObject();
 
   if (!facts) {
@@ -67,7 +66,7 @@ function parsePhoto(photo: any): Photo {
   };
 }
 
-function getAlbumPhotoSources(tdb, id: string): Set<string> {
+function getAlbumPhotoSources(tdb: TribbleDB, id: string): Set<string> {
   return tdb.search({
     source: { type: "photo" },
     relation: "albumId",
@@ -75,7 +74,7 @@ function getAlbumPhotoSources(tdb, id: string): Set<string> {
   }).sources();
 }
 
-function getDistinctNames(tdb, type: string) {
+function getDistinctNames(tdb: TribbleDB, type: string) {
   const results = tdb.search({
     source: { type },
     relation: "name",
@@ -87,25 +86,25 @@ function getDistinctNames(tdb, type: string) {
 }
 
 export class ThingsService {
-  static getName(tdb, urn: string): string | undefined {
+  static getName(tdb: TribbleDB, urn: string): string | undefined {
     return getName(tdb, urn);
   }
-  static getAlbumPhotoSources(tdb, id: string): Set<string> {
+  static getAlbumPhotoSources(tdb: TribbleDB, id: string): Set<string> {
     return getAlbumPhotoSources(tdb, id);
   }
-  static getDistinctNames(tdb, type: string) {
+  static getDistinctNames(tdb: TribbleDB, type: string) {
     return getDistinctNames(tdb, type);
   }
 
-  static getGeocoordinates(tdb, urn: string) {
+  static getGeocoordinates(tdb: TribbleDB, urn: string) {
     return getGeocoordinates(tdb, urn);
   }
-  static videoObjects(tdb): Video[] {
+  static videoObjects(tdb: TribbleDB): Video[] {
     return tdb.search({
       source: { type: "video" },
     }).objects().map(parseVideo);
   }
-  static photoObjects(tdb, query: Record<string, any> = {}): Photo[] {
+  static photoObjects(tdb: TribbleDB, query: Record<string, any> = {}): Photo[] {
     return tdb.search({
       ...query,
       source: { type: "photo" },
@@ -113,7 +112,7 @@ export class ThingsService {
       return right.createdAt - left.createdAt;
     });
   }
-  static albumObjects(tdb): Album[] {
+  static albumObjects(tdb: TribbleDB): Album[] {
     return tdb.search({
       source: { type: "album" },
     }).objects().map(parseAlbum)
@@ -124,7 +123,7 @@ export class ThingsService {
 }
 
 export class GoogleMapsService {
-  static getURL(tdb, urn: string): string | undefined {
+  static getURL(tdb: TribbleDB, urn: string): string | undefined {
     const res = ThingsService.getGeocoordinates(tdb, urn);
     if (!res) {
       return undefined;
@@ -145,7 +144,7 @@ export class GoogleMapsService {
 }
 
 export class SearchService {
-  static search(tdb, query: Record<string, string>) {
+  static search(tdb: TribbleDB, query: Record<string, string>) {
     // TODO implement search layer
 
     // name support

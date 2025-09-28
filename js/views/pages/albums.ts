@@ -14,7 +14,7 @@ import "../components/photos-stats.ts";
 import "../components/photo-album.ts";
 import "../components/year-cursor.ts";
 import { property } from "lit/decorators.js";
-import { asUrn } from "js/library/tribble.js";
+import { asUrn } from "@rgrannell1/tribbledb";
 import { ThingsService } from "js/things/services.ts";
 import { Album } from "js/types.ts";
 

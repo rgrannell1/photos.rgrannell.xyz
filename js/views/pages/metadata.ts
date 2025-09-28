@@ -17,8 +17,9 @@ import "../components/share-button.ts";
 import "../components/thing-link.ts";
 import { Things, Triples } from "../../things/things.ts";
 import { ExifRelations, KnownThings } from "../../constants.js";
-import { parseUrn } from "js/library/tribble.js";
+import { parseUrn } from "@rgrannell1/tribbledb";
 import { Photo } from "js/types.ts";
+import { TribbleDB } from "@rgrannell1/tribbledb";
 
 function Heading(text: string) {
   return html`<th class="exif-heading">${text}</th>`;
@@ -32,7 +33,7 @@ export class MetadataPage extends LitElem {
   @property({ state: true })
   sharing!: boolean;
   @property({ state: true })
-  triples!: Object;
+  triples!: TribbleDB;
 
   override connectedCallback() {
     super.connectedCallback();

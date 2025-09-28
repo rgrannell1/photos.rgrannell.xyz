@@ -1,6 +1,6 @@
 import { Triple } from "../types.ts";
 import { CDN_RELATIONS, KnownRelations, KnownThings } from "../constants.js";
-import { parseUrn } from "../library/tribble.js";
+import { parseUrn } from "@rgrannell1/tribbledb";
 import { Strings } from "../strings.ts";
 
 export { CURIES, expandTripleCuries } from "./curie.ts";

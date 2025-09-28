@@ -5,26 +5,26 @@
  */
 
 import { html } from "lit-element";
-import { asUrn, parseUrn } from "../../library/tribble.js";
+import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
 
 import "../components/photo.ts";
 import { JSONFeed } from "../../services/json-feed.ts";
 import { LitElem } from "../../models/lit-element.ts";
 import { BinomialTypes, KnownRelations, KnownThings } from "../../constants.js";
-import { Binomials, Countries, Things } from "../../things/things.ts";
+import { Binomials, Things } from "../../things/things.ts";
 import { Photos } from "../../services/photos.ts";
 import { URN } from "js/types.ts";
 import { property } from "lit/decorators.js";
 import { GoogleMapsService, ThingsService } from "js/things/services.ts";
 import { Strings } from "js/strings.ts";
-import { PageLocation } from "../../services/location.ts";
+import { TribbleDB } from "@rgrannell1/tribbledb";
 
 export class ThingPage extends LitElem {
   @property()
-  urn: string;
+  urn!: string;
 
   @property({ state: true })
-  triples: Object;
+  triples!: TribbleDB;
 
   override connectedCallback() {
     super.connectedCallback();
@@ -84,7 +84,7 @@ export class ThingPage extends LitElem {
       });
   }
 
-  renderSubjectAlbums(tdb, search) {
+  renderSubjectAlbums(tdb: TribbleDB, search) {
     const filtered = this.urnImages(tdb, search);
 
     const albumSet = new Set(filtered.map((photo) => {
@@ -137,7 +137,7 @@ export class ThingPage extends LitElem {
   }
 
   // todo push into semantic layer
-  firstPhotographed(tdb, query) {
+  firstPhotographed(tdb: TribbleDB, query: Record<string, any>) {
     const relevantPhotos = this
       .urnImages(tdb, query)
       .sort((photo0, photo1) => {
@@ -263,7 +263,6 @@ export class ThingPage extends LitElem {
     // Support bird:* level queries
     const tdb = this.triples;
 
-    const images = ThingsService.photoObjects(tdb);
     const urn = Things.parseUrn(this.urn);
     const type = urn.type;
 

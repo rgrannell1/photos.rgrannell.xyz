@@ -6,7 +6,7 @@
 
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { html } from "lit-element";
-import { parseUrn } from "../../library/tribble.js";
+import { parseUrn } from "@rgrannell1/tribbledb";
 
 import "../components/photo.ts";
 import "../components/video.ts";
@@ -22,6 +22,7 @@ import { KnownRelations, KnownThings } from "../../constants.js";
 import { property } from "lit/decorators.js";
 import { ThingsService } from "../../things/services.ts";
 import { Video } from "../../types.ts";
+import { TribbleDB } from "@rgrannell1/tribbledb";
 
 export class AlbumPage extends LitElem {
   @property()
@@ -37,7 +38,7 @@ export class AlbumPage extends LitElem {
   @property()
   description!: string;
   @property({ state: true })
-  triples!: Object;
+  triples!: TribbleDB;
   @property()
   countries!: string;
 
@@ -154,7 +155,7 @@ export class AlbumPage extends LitElem {
   render() {
     const tdb = this.triples;
 
-    const mediaQuery = window.matchMedia("(max-width: 500px)");
+    const mediaQuery = globalThis.matchMedia("(max-width: 500px)");
     const range = Dates.dateRange(
       this.minDate,
       this.maxDate,
@@ -173,7 +174,7 @@ export class AlbumPage extends LitElem {
         imageUrl="${photo.fullImage}"></app-photo>`;
     });
 
-    const videos = this.albumVideos(tdb).map((video: Video, idx) => {
+    const videos = this.albumVideos(tdb).map((video: Video, _idx) => {
       return html`<app-video
         id=${video.id}
         urlPoster=${video.posterUrl}
