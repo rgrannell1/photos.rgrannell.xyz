@@ -39,6 +39,8 @@ export class MetadataPage extends LitElem {
     super.connectedCallback();
 
     JSONFeed.setIndex();
+
+    document.title = "Metadata - photos";
   }
 
   renderAperture(exif) {

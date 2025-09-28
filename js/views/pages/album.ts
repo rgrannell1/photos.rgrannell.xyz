@@ -45,6 +45,8 @@ export class AlbumPage extends LitElem {
   override connectedCallback() {
     super.connectedCallback();
     JSONFeed.setIndex();
+
+    document.title = `${this.title} - photos`;
   }
 
   albumPhotos(tdb: TribbleDB) {

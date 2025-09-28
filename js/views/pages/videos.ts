@@ -13,14 +13,17 @@ import { LitElem } from "../../models/lit-element.ts";
 import { Videos } from "../../services/videos.ts";
 import { property } from "lit/decorators.js";
 import { ThingsService } from "../../things/services.ts";
+import { TribbleDB } from "@rgrannell1/tribbledb";
 
 export class VideosPage extends LitElem {
   @property({ state: true })
-  triples: Object;
+  triples!: TribbleDB;
 
   override connectedCallback() {
     super.connectedCallback();
     JSONFeed.setIndex();
+
+    document.title = "Videos- photos";
   }
 
   render() {

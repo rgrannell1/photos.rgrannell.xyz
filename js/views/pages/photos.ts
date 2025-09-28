@@ -14,10 +14,11 @@ import { LitElem } from "../../models/lit-element.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { property } from "lit/decorators.js";
 import { ThingsService } from "js/things/services.ts";
+import { TribbleDB } from "@rgrannell1/tribbledb";
 
 export class PhotosPage extends LitElem {
   @property({ state: true })
-  triples!: Object;
+  triples!: TribbleDB;
 
   @property()
   qs!: Record<string, string>;
@@ -26,6 +27,8 @@ export class PhotosPage extends LitElem {
     super.connectedCallback();
 
     JSONFeed.setIndex();
+
+    document.title = "Photos - photos";
   }
 
   static IMAGE_RELATIONS = [

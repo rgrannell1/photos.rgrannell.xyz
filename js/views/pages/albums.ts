@@ -30,6 +30,8 @@ export class AlbumsPage extends LitElem {
     super.connectedCallback();
 
     JSONFeed.setIndex();
+
+    document.title = "Albums - photos";
   }
 
   render() {

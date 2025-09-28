@@ -93,6 +93,12 @@ class ThingAlbum extends LitElem {
   @property()
   loading!: string;
 
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    document.title = "Listing - photos";
+  }
+
   render() {
     const thumbnailDataUrl = Photos.encodeBitmapDataURL(this.mosaicColours);
 

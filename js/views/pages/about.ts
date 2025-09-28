@@ -15,6 +15,7 @@ export class AboutPage extends LitElem {
     super.connectedCallback();
 
     JSONFeed.setIndex();
+    document.title = "About - photos";
   }
 
   render() {
