@@ -283,6 +283,11 @@ photo-app {
   }
 }
 
+.thing-description {
+  margin-top: 1em;
+  word-spacing: normal;
+}
+
 .photo-album-description {
   margin-top: 1em;
   max-width: 900px;

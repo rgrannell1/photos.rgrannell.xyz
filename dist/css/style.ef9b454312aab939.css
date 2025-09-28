@@ -228,6 +228,10 @@ photo-app {
     filter: brightness(80%);
   }
 }
+.thing-description {
+  margin-top: 1em;
+  word-spacing: normal;
+}
 .photo-album-description {
   margin-top: 1em;
   max-width: 900px;

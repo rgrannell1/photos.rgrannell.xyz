@@ -26,6 +26,17 @@ export class ThingPage extends LitElem {
   @property({ state: true })
   triples!: TribbleDB;
 
+  static TYPE_VIEW = {
+    unesco: {
+      title: "🏛️ Unesco World Heritage Sites",
+      description: "Photos from some of the most outstanding places on earth.",
+    },
+    country: {
+      title: "🌍 Countries",
+      description: "All photos are taken in some country...",
+    }
+  }
+
   override connectedCallback() {
     super.connectedCallback();
 
@@ -156,6 +167,26 @@ export class ThingPage extends LitElem {
     });
   }
 
+  renderTypeTitle(type: string) {
+    const lowered = type.toLowerCase();
+
+    if (ThingPage.TYPE_VIEW.hasOwnProperty(lowered)) {
+      return ThingPage.TYPE_VIEW[lowered as keyof typeof ThingPage.TYPE_VIEW].title;
+    }
+
+    return Strings.capitalise(type);
+  }
+
+  renderTypeDescription(type: string) {
+    const lowered = type.toLowerCase();
+
+    if (ThingPage.TYPE_VIEW.hasOwnProperty(lowered)) {
+      return ThingPage.TYPE_VIEW[lowered as keyof typeof ThingPage.TYPE_VIEW].description;
+    }
+
+    return "";
+  }
+
   // TODO move this to a naming service
   renderTitle() {
     const definedName = ThingsService.getName(this.triples, this.urn);
@@ -168,7 +199,7 @@ export class ThingPage extends LitElem {
       const value = decodeURIComponent(parsedUrn.id);
 
       if (parsedUrn.id === "*") {
-        return Strings.capitalise(parsedUrn.type);
+        return this.renderTypeTitle(parsedUrn.type);
       }
 
       // broken subtly
@@ -271,7 +302,7 @@ export class ThingPage extends LitElem {
     }).firstObject() ?? {};
 
     const metadata = Object.assign({
-      "Classification": this.renderClassification(type),
+      "Classification": this.renderClassification(type)
     });
 
     if (urnFacts.country) {
@@ -327,12 +358,14 @@ export class ThingPage extends LitElem {
       <section class="thing-page">
         <h1>${this.renderTitle()}</h1>
 
+        <p class="thing-description">${this.renderTypeDescription(type)}</p>
+
         <p>
           ${
       BinomialTypes.has(type) && urn.id !== "*"
-        ? html`<span class="thing-binomial ${type}-binomial">(${
+        ? html`<span class="thing-binomial ${type}-binomial">${
           Binomials.pretty(urn.id)
-        })</span>`
+        }</span>`
         : html``
     }
         </p>
