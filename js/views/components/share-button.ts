@@ -13,6 +13,9 @@ export class ShareButton extends LitElem {
   sharing: boolean;
 
   handleError(message: string) {
+    if (message.includes('Shared canceled')) {
+      return;
+    }
     alert(message);
   }
 
