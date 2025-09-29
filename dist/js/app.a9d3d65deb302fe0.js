@@ -328,11 +328,11 @@ var ms=Object.defineProperty;var gs=Object.getOwnPropertyDescriptor;var d=(r,t,e
         loading="${U.loadingMode(s)}"
         thumbnailUrl="${e.thumbnailUrl}"
         mosaicColours="${e.mosaicColours}"
-        imageUrl="${e.fullImage}"></app-photo>`)}renderSubjectAlbums(t,e){let s=this.urnImages(t,e),i=new Set(s.map(o=>o.albumId)),n=o=>{let c=x(o.id);this.dispatchEvent(new CustomEvent("click-album",{detail:{id:c.id,title:o.title??o.name},bubbles:!0,composed:!0}))};return Array.from(i).flatMap(o=>E.albumObjects(this.triples).filter(c=>I(c.id).id===o)).map(o=>{let c=l`
+        imageUrl="${e.fullImage}"></app-photo>`)}renderSubjectAlbums(t,e){let s=this.urnImages(t,e),i=new Set(s.map(o=>o.albumId)),n=o=>{let c=x(o.id);this.dispatchEvent(new CustomEvent("click-album",{detail:{id:c.id,title:o.title??o.name},bubbles:!0,composed:!0}))};return Array.from(i).flatMap(o=>E.albumObjects(this.triples).filter(c=>I(c.id).id===o)).map(o=>{console.log(o);let c=l`
         <photo-album-metadata
             .triples=${this.triples}
             title="${o.name}"
-            count="${o.count}"
+            count="${o.photosCount}"
             minDate="${o.minDate}"
             maxDate="${o.maxDate}"
             countries="${o.flags}"
@@ -550,4 +550,4 @@ lit-html/directive-helpers.js:
    * SPDX-License-Identifier: BSD-3-Clause
    *)
 */
-//# sourceMappingURL=app.2ce90b4e409362cf.js.map
+//# sourceMappingURL=app.a9d3d65deb302fe0.js.map
