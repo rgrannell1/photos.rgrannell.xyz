@@ -358,7 +358,7 @@ var ms=Object.defineProperty;var gs=Object.getOwnPropertyDescriptor;var d=(r,t,e
           ${s}
         </div>
       `]:[])}
-    <div/>`}thingCountries(){let t=this.triples,e=w.parseUrn(this.urn);if(e.id==="*")return[];let i=[...t.search({source:{type:"photo"},target:{id:e.id,type:e.type}}).sources()].flatMap(n=>Array.from(t.search({source:x(n),relation:g.COUNTRY}).targets()));return Array.from(new Set(i))}render(){let t=this.triples,e=w.parseUrn(this.urn),s=e.type,i=t.search({source:x(this.urn)}).firstObject()??{},n=Object.assign({Classification:this.renderClassification(s)});if(i.country&&(n.Country=l`<thing-link .triples=${this.triples} urn=${i.country}></thing-link>`),i.fcodeName){let B=i.fcodeName;n["Place Type"]=l`${A.capitalise(B)}`}et.has(s)&&(n["First Photographed"]=l`<span>${this.firstPhotographed(t,{target:x(this.urn)})}</span>`);let o=this.thingCountries();if(o.length>0){let B=o.map(ut=>l`<country-link .triples=${this.triples} urn=${ut}></country-link>`);n["Seen In"]=l`<ul>${B}</ul>`}let c=i[g.WIKIPEDIA],a=i[g.BIRDWATCH_URL],p=Vt.getURL(t,this.urn),m=x(this.urn);m.id==="*"&&delete m.id;let u=this.getPhotoQueries(x(this.urn)),b={};for(let{query:B,label:ut}of u){let us=this.urnImages(t,B);b[ut]=this.renderSubjectPhotos(us)}let y={source:{type:"photo"},target:m},_=this.renderSubjectAlbums(t,y),k=this.renderPhotoSection(b);return l`
+    <div/>`}thingCountries(){let t=this.triples,e=w.parseUrn(this.urn);if(e.id==="*")return[];let i=[...t.search({source:{type:"photo"},target:{id:e.id,type:e.type}}).sources()].flatMap(n=>Array.from(t.search({source:x(n),relation:g.COUNTRY}).targets()));return Array.from(new Set(i))}render(){let t=this.triples,e=w.parseUrn(this.urn),s=e.type,i=t.search({source:x(this.urn)}).firstObject()??{},n=Object.assign({Classification:this.renderClassification(s)});if(i.country&&(n.Country=l`<thing-link .triples=${this.triples} urn=${i.country}></thing-link>`),i.fcodeName){let B=i.fcodeName;n["Place Type"]=l`${A.capitalise(B)}`}et.has(s)&&(n["First Photographed"]=l`<span>${this.firstPhotographed(t,{target:x(this.urn)})}</span>`);let o=this.thingCountries();if(o.length>0&&s!==$.GEONAME){let B=o.map(ut=>l`<country-link .triples=${this.triples} urn=${ut}></country-link>`);n["Seen In"]=l`<ul>${B}</ul>`}let c=i[g.WIKIPEDIA],a=i[g.BIRDWATCH_URL],p=Vt.getURL(t,this.urn),m=x(this.urn);m.id==="*"&&delete m.id;let u=this.getPhotoQueries(x(this.urn)),b={};for(let{query:B,label:ut}of u){let us=this.urnImages(t,B);b[ut]=this.renderSubjectPhotos(us)}let y={source:{type:"photo"},target:m},_=this.renderSubjectAlbums(t,y),k=this.renderPhotoSection(b);return l`
       <div>
       <section class="thing-page">
         <h1>${this.renderTitle()}</h1>
@@ -548,4 +548,4 @@ lit-html/directive-helpers.js:
    * SPDX-License-Identifier: BSD-3-Clause
    *)
 */
-//# sourceMappingURL=app.93e9953b91cf78fd.js.map
+//# sourceMappingURL=app.74ffe0a398403876.js.map

@@ -355,10 +355,11 @@ export class ThingPage extends LitElem {
     }
 
     const thingCountries = this.thingCountries();
-    if (thingCountries.length > 0) {
+    if (thingCountries.length > 0 && type !== KnownThings.GEONAME) {
       const countryLinks = thingCountries.map((country) => {
         return html`<country-link .triples=${this.triples} urn=${country}></country-link>`;
       });
+
       metadata["Seen In"] = html`<ul>${countryLinks}</ul>`;
     }
 
