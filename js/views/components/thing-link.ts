@@ -45,9 +45,6 @@ export class CountryLink extends LitElem {
   urn!: string;
 
   @property()
-  name!: string;
-
-  @property()
   triples!: string;
 
   render() {
@@ -109,7 +106,7 @@ export class ThingLink extends LitElem {
 
     if (Things.is(this.urn, KnownThings.COUNTRY)) {
       return html`
-        <country-link .triples=${this.triples} urn="${this.urn}" name=${this.name()}></country-link>
+        <country-link .triples=${this.triples} urn="${this.urn}"></country-link>
       `;
     }
 

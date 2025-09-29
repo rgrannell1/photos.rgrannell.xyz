@@ -206,6 +206,11 @@ export class ThingPage extends LitElem {
       if (parsedUrn.type === KnownThings.COUNTRY) {
         const countryDetails = this.triples.search({ source: parsedUrn })
           .firstObject();
+
+        if (!countryDetails) {
+          return value;
+        }
+
         if (countryDetails.flag) {
           return `${countryDetails.flag} ${definedName}`;
         } else {
@@ -303,28 +308,10 @@ export class ThingPage extends LitElem {
     }).sources();
 
     const countries = [...photoUrns].flatMap((photoUrn) => {
-      const photoCountries = tdb.search({
+      return Array.from(tdb.search({
         source: asUrn(photoUrn),
         relation: KnownRelations.COUNTRY,
-      }).targets();
-
-      const flags = [...photoCountries].flatMap((countryUrn) => {
-        const countryFacts = tdb.search({
-          source: asUrn(countryUrn),
-        }).firstObject();
-
-        if (countryFacts && countryFacts.flag) {
-          return countryFacts.flag;
-        }
-
-        return [];
-      });
-
-      if (flags.length > 0) {
-        return flags;
-      }
-
-      return [];
+      }).targets());
     });
 
     return Array.from(new Set(countries));
@@ -368,10 +355,10 @@ export class ThingPage extends LitElem {
 
     const thingCountries = this.thingCountries();
     if (thingCountries.length > 0) {
-      const thingLinks = thingCountries.map((flag) => {
-        return html`<span>${flag}</span>`;
+      const countryLinks = thingCountries.map((country) => {
+        return html`<country-link .triples=${this.triples} urn=${country}></country-link>`;
       });
-      metadata["Seen In"] = html`<ul>${thingCountries}</ul>`;
+      metadata["Seen In"] = html`<ul>${countryLinks}</ul>`;
     }
 
     const wikipedia = urnFacts[KnownRelations.WIKIPEDIA];
