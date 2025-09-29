@@ -363,9 +363,7 @@ var ms=Object.defineProperty;var gs=Object.getOwnPropertyDescriptor;var d=(r,t,e
       <section class="thing-page">
         <h1>${this.renderTitle()}</h1>
 
-        <p class="thing-description">${this.renderTypeDescription(s)}</p>
-
-        <p>
+        ${e.id==="*"?l`<p class="thing-description">${this.renderTypeDescription(s)}</p>`:l``}
           ${et.has(s)&&e.id!=="*"?l`<span class="thing-binomial ${s}-binomial">${rt.pretty(e.id)}</span>`:l``}
         </p>
         <br>
@@ -550,4 +548,4 @@ lit-html/directive-helpers.js:
    * SPDX-License-Identifier: BSD-3-Clause
    *)
 */
-//# sourceMappingURL=app.a9d3d65deb302fe0.js.map
+//# sourceMappingURL=app.89c7605bbfc70ad6.js.map

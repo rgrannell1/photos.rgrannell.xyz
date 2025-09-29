@@ -396,9 +396,11 @@ export class ThingPage extends LitElem {
       <section class="thing-page">
         <h1>${this.renderTitle()}</h1>
 
-        <p class="thing-description">${this.renderTypeDescription(type)}</p>
-
-        <p>
+        ${
+          urn.id === "*"
+            ? html`<p class="thing-description">${this.renderTypeDescription(type)}</p>`
+            : html``
+        }
           ${
       BinomialTypes.has(type) && urn.id !== "*"
         ? html`<span class="thing-binomial ${type}-binomial">${
