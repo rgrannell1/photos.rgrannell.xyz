@@ -318,6 +318,18 @@ export class ThingPage extends LitElem {
     return Array.from(new Set(countries));
   }
 
+  renderPlacesIn(tdb: TribbleDB, urnFacts: Record<string, any>) {
+    if (!urnFacts.in) {
+      return html``;
+    }
+  }
+
+  renderPlacesContained(tdb: TribbleDB, urnFacts: Record<string, any>) {
+    if (!urnFacts.contains) {
+      return html``;
+    }
+  }
+
   render() {
     // Show a Name, URN, Description,
     // Wikilinks, and all images with this ARN
@@ -345,6 +357,20 @@ export class ThingPage extends LitElem {
       metadata["Place Type"] = html`${Strings.capitalise(fcodeName)}`;
     }
 
+    if (urnFacts.in) {
+      if (Array.isArray(urnFacts.in)) {
+        metadata["Located In"] = html`
+          <ul class="thing-list">
+        ${urnFacts.in.map((urn) =>
+          html`<li><thing-link .triples=${this.triples} urn=${urn}></thing-link></li>`
+        )}
+          </ul>
+        `;
+      } else {
+        metadata["Located In"] = html`<thing-link .triples=${this.triples} urn=${urnFacts.in}></thing-link>`;
+      }
+    }
+
     if (BinomialTypes.has(type)) {
       // TODO move to fact layer, not render layer
       metadata["First Photographed"] = html`<span>${
@@ -355,12 +381,24 @@ export class ThingPage extends LitElem {
     }
 
     const thingCountries = this.thingCountries();
-    if (thingCountries.length > 0 && type !== KnownThings.GEONAME) {
+
+    if (thingCountries.length > 0 && type !== KnownThings.PLACE && type !== KnownThings.COUNTRY) {
       const countryLinks = thingCountries.map((country) => {
         return html`<country-link .triples=${this.triples} urn=${country}></country-link>`;
       });
 
       metadata["Seen In"] = html`<ul>${countryLinks}</ul>`;
+    }
+
+    if (urnFacts?.feature) {
+      if (!Array.isArray(urnFacts.feature)) {
+        urnFacts.feature = [urnFacts.feature];
+      }
+
+      const items = urnFacts.feature?.map(feature => {
+        return html`<span><thing-link .triples=${this.triples} urn=${feature}></thing-link></span>`;
+      });
+      metadata["Place Details"] = html`${items}`;
     }
 
     const wikipedia = urnFacts[KnownRelations.WIKIPEDIA];
@@ -375,7 +413,6 @@ export class ThingPage extends LitElem {
     }
 
     // TODO too much logic in a render function
-
     const photoQueries = this.getPhotoQueries(asUrn(this.urn));
 
     const photoGroups = {};
@@ -439,6 +476,9 @@ export class ThingPage extends LitElem {
     }
         </table>
 
+        ${this.renderPlacesIn(this.triples, urnFacts)}
+        ${this.renderPlacesContained(this.triples, urnFacts)}
+
         <br>
         ${photos}
 
@@ -456,3 +496,4 @@ export class ThingPage extends LitElem {
 }
 
 customElements.define("thing-page", ThingPage);
+//  render `In` and `Contains`

@@ -342,3 +342,18 @@ export function addYear(triple: Triple) {
     ],
   ];
 }
+
+export function addContains(triple: Triple) {
+  if (Triples.getRelation(triple) !== KnownRelations.IN) {
+    return [triple];
+  }
+
+  return [
+    triple,
+    [
+      Triples.getTarget(triple),
+      KnownRelations.CONTAINS,
+      Triples.getSource(triple),
+    ],
+  ];
+}

@@ -27,7 +27,7 @@ export class KnownThings {
   static FISH = "fish";
   static INSECT = "insect";
   static AMPHIBIAN = "amphibian";
-  static GEONAME = "geoname";
+  static PLACE = "place";
   static PHOTO = "photo";
   static ALBUM = "album";
   static VIDEO = "video";
@@ -64,6 +64,8 @@ export class KnownRelations {
   static VIDEO_URL_720P = "videoUrl720p";
   static VIDEO_URL_UNSCALED = "videoUrlUnscaled";
   static YEAR = "year";
+  static CONTAINS = "contains";
+  static IN = "in";
 }
 
 export const ExifRelations = new Set([

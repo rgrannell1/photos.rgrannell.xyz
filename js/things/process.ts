@@ -10,6 +10,7 @@ import {
   placesToCountries,
   ratingsAsUrns,
   renameRelations,
+  addContains
 } from "../things/things.ts";
 
 /*
@@ -26,6 +27,7 @@ export function processTriples(
     placesToCountries,
     expandCdnUrls.bind(null, "https://photos-cdn.rgrannell.xyz"), // todo move
     expandTripleCuries.bind(null, CURIES),
+    addContains,
     addSeason,
     addYear,
   ];
