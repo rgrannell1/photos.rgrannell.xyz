@@ -20,7 +20,6 @@ export class Photos {
 
   /*
    * Convert a mosaic colour string into a bitmap data URL
-   *
    */
   static encodeBitmapDataURL(colours: string): string {
     if (coloursCache.has(colours)) {
