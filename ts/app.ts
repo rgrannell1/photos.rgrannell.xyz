@@ -17,7 +17,7 @@ export function App(page: m.Component): m.Component<AppState> {
           m(Header, state),
           m("div", [
             m(Sidebar, { visible: state.sidebarVisible }),
-            page
+            page,
           ]),
         ]),
       ]);

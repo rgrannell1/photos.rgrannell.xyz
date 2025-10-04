@@ -1,12 +1,8 @@
-
-type PhotoAlbumState = {
-
-}
+type PhotoAlbumState = {};
 
 export function PhotoAlbum() {
   return {
     view() {
-
-    }
-  }
+    },
+  };
 }

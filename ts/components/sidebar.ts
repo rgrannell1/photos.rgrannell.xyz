@@ -10,8 +10,8 @@ function SidebarItem() {
     view(vnode: m.Vnode<SidebarItemAttrs>) {
       return m("li", {
         class: "sidebar-item",
-        onclick () {
-          m.route.set(vnode.attrs.route)
+        onclick() {
+          m.route.set(vnode.attrs.route);
         },
       }, vnode.attrs.name);
     },
@@ -40,8 +40,8 @@ export function Sidebar() {
             m(SidebarItem, { name: "VIDEOS", route: "/videos" }),
             m(SidebarItem, { name: "ALBUMS", route: "/albums" }),
             m(SidebarItem, { name: "ABOUT", route: "/about" }),
-          ])
-        ])
+          ]),
+        ]),
       ]);
     },
   };

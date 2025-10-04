@@ -1,10 +1,7 @@
+import m from "mithril";
+import { AlbumStats } from "../components/album-stats.ts";
 
-import m from "mithril"
-import { AlbumStats } from "../components/album-stats.ts"
-
-type AlbumsPageState = {
-
-}
+type AlbumsPageState = {};
 
 export function AlbumsPage() {
   return {
@@ -14,13 +11,13 @@ export function AlbumsPage() {
     view(vnode: m.Vnode<AlbumsPageState>) {
       const $md = m("section.album-metadata", [
         m("h1.albums-header", "Albums"),
-        m(AlbumStats)
+        m(AlbumStats),
       ]);
 
       return m("div", [
         $md,
-        m("section.album-container", [])
+        m("section.album-container", []),
       ]);
-    }
-  }
+    },
+  };
 }
