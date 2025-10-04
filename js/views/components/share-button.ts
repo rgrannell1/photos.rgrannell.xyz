@@ -13,7 +13,7 @@ export class ShareButton extends LitElem {
   sharing: boolean;
 
   handleError(message: string) {
-    if (message.includes('Shared canceled')) {
+    if (message.includes("Shared canceled")) {
       return;
     }
     alert(message);
@@ -44,7 +44,7 @@ export class ShareButton extends LitElem {
       const shareData: ShareData = {
         files: [file],
         title: "Sharing Image",
-      }
+      };
 
       if (!navigator.canShare?.(shareData)) {
         await navigator.share({

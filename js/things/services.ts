@@ -23,7 +23,10 @@ function getName(tdb: TribbleDB, urn: string): string | undefined {
   return definedName;
 }
 
-function getGeocoordinates(tdb: TribbleDB, urn: string): Geoocordinates | undefined {
+function getGeocoordinates(
+  tdb: TribbleDB,
+  urn: string,
+): Geoocordinates | undefined {
   const { id, type } = asUrn(urn);
 
   const facts = tdb.search({
@@ -104,7 +107,10 @@ export class ThingsService {
       source: { type: "video" },
     }).objects().map(parseVideo);
   }
-  static photoObjects(tdb: TribbleDB, query: Record<string, any> = {}): Photo[] {
+  static photoObjects(
+    tdb: TribbleDB,
+    query: Record<string, any> = {},
+  ): Photo[] {
     return tdb.search({
       ...query,
       source: { type: "photo" },

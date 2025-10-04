@@ -22,7 +22,11 @@ import { ThingsService } from "js/things/services.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 
 class ListingPageService {
-  static chooseCoverImage(tdb: TribbleDB, _type: string, urn: string): string | undefined {
+  static chooseCoverImage(
+    tdb: TribbleDB,
+    _type: string,
+    urn: string,
+  ): string | undefined {
     const results = tdb.search({
       source: { type: "photo" },
       relation: "cover",
@@ -32,7 +36,11 @@ class ListingPageService {
     return results.firstObject()?.id as string | undefined;
   }
 
-  static chooseBestImage(tdb: TribbleDB, type: string, urn: string): string | undefined {
+  static chooseBestImage(
+    tdb: TribbleDB,
+    type: string,
+    urn: string,
+  ): string | undefined {
     const results = tdb.search({
       source: { type: "photo" },
       target: asUrn(urn),

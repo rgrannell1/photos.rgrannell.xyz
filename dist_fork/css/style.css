@@ -1,0 +1,546 @@
+/* css/style.css */
+:root {
+  color-scheme: dark light;
+}
+:root {
+  --secondary-text-color: hsl(0, 0%, 60%);
+  --font-colour: hsla(0, 0%, 0%, 0.8);
+  --navbar-font-colour: hsl(0, 0%, 0%);
+  --background-color: hsl(0, 0%, 96%);
+  --link-color: hsl(211, 100%, 35%);
+  --disabled-link-color: hsl(0, 0%, 38%);
+  --brand-color: #0056b3;
+  --link-background-color: hsl(211, 100%, 95%);
+  --hover-background-color: hsl(210, 100%, 84%);
+  --marker-color: hsl(0, 0%, 56%);
+  --nav-border-color: hsl(0, 0%, 0%);
+  --image-placeholder-background-color: hsl(0, 0%, 69%);
+  --photo-width: 400px;
+  --tag-color-0: #0079d6;
+  --tag-color-1: #0087ff;
+  --tag-color-2: #29b41d;
+  --tag-color-3: #22c6ce;
+  --tag-color-4: #4c55f7;
+  --tag-color-5: #4cbef7;
+  --tag-color-6: #b371ff;
+}
+.dark-mode {
+  --secondary-text-color: hsl(0, 0%, 66%);
+  --font-colour: hsl(0, 0%, 100%);
+  --navbar-font-colour: hsl(0, 0%, 100%);
+  --background-color: hsl(0, 0%, 8%);
+  --link-color: hsl(211, 84%, 74%);
+  --disabled-link-color: hsl(0, 0%, 60%);
+  --brand-color: hsl(211, 100%, 78%);
+  --link-background-color: hsl(211, 87%, 62%);
+  --hover-background-color: hsl(211, 87%, 62%);
+  --marker-color: hsl(0, 0%, 100%);
+  --nav-border-color: hsl(0, 0%, 100%);
+  --image-placeholder-background-color: hsl(0, 0%, 25%);
+}
+@font-face {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./Rubik-Regular-MPIWAPB2.woff2") format("woff2");
+  font-display: swap;
+}
+html * {
+  font-family: "Rubik", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+section {
+  margin-left: 2em;
+}
+.no-margin {
+  margin: 0;
+}
+a {
+  color: var(--link-color);
+}
+main a {
+  background-color: var(--link-background-color);
+}
+li {
+  list-style: square;
+}
+li::marker {
+  font-size: 0.75em;
+  color: var(--marker-color);
+}
+h1 {
+  font-size: 3em;
+  font-weight: lighter;
+}
+.thing-binomial {
+  font-size: 2em;
+  font-weight: lighter;
+  padding-left: 15px;
+}
+h2 {
+  font-size: 2em;
+  margin-top: 1.35em;
+  margin-bottom: 0.25em;
+}
+h3 {
+  margin-top: 1.35em;
+}
+h3,
+h4,
+h5,
+h6 {
+  font-size: 1.5em;
+}
+html,
+body {
+  height: 100%;
+  background-color: var(--background-color);
+}
+button {
+  all: unset;
+  color: var(--link-color);
+  cursor: pointer;
+}
+button:disabled {
+  color: var(--disabled-link-color);
+}
+.photos-app {
+  font-size: 1.2em;
+  color: var(--font-colour);
+  word-spacing: 0.27ex;
+  background-color: var(--background-color);
+  padding-bottom: 100px;
+}
+photo-app {
+  width: max(180px, min(60vw, var(--photo-width)));
+  max-width: max(180px, 60vw);
+}
+.burger {
+  padding: 10px;
+}
+.brand {
+  padding: 0px 20px;
+}
+.dark-light-button-toggle {
+  cursor: pointer;
+}
+.header li a,
+.header li .dark-light-button-toggle {
+  display: block;
+  color: var(--navbar-font-colour);
+  text-align: left;
+  padding: 4px 15px;
+  padding: 4px 0px;
+  text-decoration: none;
+}
+.brand,
+.burger,
+.dark-light-button-toggle {
+  font-size: 0.75em;
+  color: var(--brand-color);
+  cursor: pointer;
+}
+.header {
+  padding: 15px 0px;
+  font-size: 1.5em;
+  padding-right: 25px;
+  ul {
+    overflow: hidden;
+    padding: 1px;
+    margin: 0px;
+  }
+  li {
+    list-style-type: none;
+    float: left;
+  }
+}
+@media (hover: hover) {
+  .burger:hover {
+    background-color: var(--hover-background-color);
+    cursor: pointer;
+  }
+  .dark-light-button-toggle:hover {
+    background-color: var(--hover-background-color);
+  }
+}
+.thumbnail-video {
+  background-color: var(--image-placeholder-background-color);
+  height: 400px;
+  object-fit: cover;
+}
+.album-container,
+.photo-container,
+.video-container {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 10px;
+}
+#year-cursor {
+  position: fixed;
+  top: 0;
+  right: 10px;
+  display: none;
+  padding: 3px;
+  font-size: 0.8em;
+}
+.photo {
+  margin: 5px;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  flex: content;
+}
+.thumbnail-video {
+  margin: 5px;
+  width: var(--photo-width);
+}
+@media (hover: hover) {
+  .photo:hover,
+  photo-album:hover {
+    filter: brightness(80%);
+  }
+}
+.photo-icon {
+  fill: white;
+}
+.photo-metadata-popover {
+  position: absolute;
+  padding: 6px 6px;
+  top: 0%;
+  right: 0%;
+  z-index: 1;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 2em;
+  display: none;
+}
+@media (hover: none), (pointer: coarse) {
+  .photo .photo-metadata-popover {
+    display: block;
+  }
+}
+@media (hover: hover) {
+  .photo:hover .photo-metadata-popover {
+    display: block;
+  }
+  .photo-album img:hover {
+    filter: brightness(80%);
+  }
+}
+.thing-description {
+  margin-top: 1em;
+  word-spacing: normal;
+}
+.photo-album-description {
+  margin-top: 1em;
+  max-width: 900px;
+  word-spacing: normal;
+}
+.photo-album-countries {
+  display: inline;
+}
+.photo-album-count,
+.photo-stats {
+  color: var(--secondary-text-color);
+}
+.photo-stats {
+  margin-right: 2em;
+}
+.album-metadata,
+.photos-metadata {
+  margin-bottom: 25px;
+}
+.album-year-heading {
+  flex-basis: 100%;
+  font-size: 2.5em;
+  margin-left: 5px;
+}
+.about-page {
+  margin-right: 40px;
+}
+@media (max-width: 500px) {
+  h1 {
+    font-size: 2em;
+  }
+  #year-cursor {
+    background-color: black;
+    color: white;
+  }
+  .album-year-heading {
+    font-size: 2em;
+  }
+  .thing-binomial {
+    font-size: 1.5em;
+  }
+  .albums-header {
+    display: none;
+  }
+  .about-page {
+    margin-right: 40px;
+    h2 {
+      font-size: 1.5em;
+    }
+  }
+  .photo-album {
+    margin-left: 0 !important;
+  }
+  .thumbnail-video {
+    width: max(180px, min(80vw, var(--photo-width)));
+    max-width: max(180px, 80vw);
+  }
+  photo-sidebar {
+    display: none;
+  }
+  .photo-album-description {
+    font-size: 0.8em;
+    padding: 2px;
+  }
+  photo-sidebar[visible=true] {
+    display: block;
+  }
+  .page {
+    display: block;
+  }
+  .page.sidebar-visible {
+    display: none;
+  }
+  .app-container {
+    display: grid;
+    grid-template-columns: 0px 1fr 0px;
+  }
+  .app-container.sidebar-visible {
+    display: grid;
+    grid-template-columns: 1fr 0px 0px;
+  }
+}
+@media (min-width: 501px) {
+  .app-container {
+    display: grid;
+    grid-template-columns: 200px 1fr 10px;
+  }
+  .burger {
+    display: none;
+  }
+  locations-page {
+    margin-right: 0px;
+  }
+}
+@media (min-width: 1301px) {
+  locations-page {
+    margin-right: 200px;
+  }
+  .video-container {
+    margin-top: 60px;
+  }
+}
+@media (hover: hover) {
+  .sidebar-item:hover {
+    background-color: var(--hover-background-color);
+    cursor: pointer;
+  }
+}
+.sidebar-item {
+  padding: 20px;
+}
+.photo-sidebar {
+  grid-row: 1;
+  grid-column: 1;
+  margin-top: min(5vh, 80px);
+}
+.dark-light-button-toggle {
+  cursor: pointer;
+}
+.page {
+  grid-row: 1;
+  grid-column: 2;
+  margin-top: min(5, 80px);
+}
+.photo-share-button {
+  text-decoration: underline;
+}
+.photo-share-button[disabled] {
+  cursor: not-allowed;
+}
+.photo-tag-list {
+  padding-top: 8px;
+  margin-left: 20px;
+}
+.metadata-table {
+  margin: 10px 0;
+  th,
+  td {
+    padding: 4px 8px;
+    text-align: left;
+  }
+  th {
+    font-weight: bold;
+  }
+  caption {
+    caption-side: top;
+    font-weight: bold;
+  }
+}
+.thing-link {
+  display: block;
+}
+.thing-link:hover {
+  filter: brightness(80%);
+}
+.unesco-link,
+.bird-link,
+.mammal-link,
+.reptile-link,
+.fish-link,
+.amphibian-link,
+.insect-link {
+  color: black;
+  border: solid 2px lightgray;
+  font-weight: bolder;
+  padding: 4px 9px;
+  text-decoration: none;
+  box-sizing: border-box;
+  border-radius: 6px;
+  margin: 2px;
+  width: fit-content;
+}
+.unesco-link {
+  color: white;
+  background-color: var(--tag-color-0);
+}
+.bird-link,
+.bird-binomial {
+  border-left: 10px solid var(--tag-color-1);
+}
+.mammal-link,
+.mammal-binomial {
+  border-left: 10px solid var(--tag-color-2);
+}
+.reptile-link,
+.reptile-binomial {
+  border-left: 10px solid var(--tag-color-3);
+}
+.fish-link,
+.fish-binomial {
+  border-left: 10px solid var(--tag-color-4);
+}
+.amphibian-link,
+.amphibian-binomial {
+  border-left: 10px solid var(--tag-color-5);
+}
+.insect-link,
+.insect-binomial {
+  border-left: 10px solid var(--tag-color-6);
+}
+.unesco-links {
+  list-style: none;
+  margin: 30px 0px;
+  align-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+}
+.thing-list li {
+  list-style-type: none;
+  padding: 3px;
+}
+.unesco-links li {
+  list-style-type: none;
+}
+.unesco-text-short {
+  display: none;
+}
+@media (max-width: 750px) {
+  .unesco-text-full {
+    display: none;
+  }
+  .unesco-text-short {
+    display: inline;
+  }
+}
+.photo-album-title {
+  margin: 4px 0px;
+  font-weight: bolder;
+  max-width: max(180px, min(60vw, 400px));
+}
+.photo-album-date {
+  max-width: max(180px, min(60vw, 400px));
+}
+.photo-album-count {
+  display: inline;
+}
+.photo-album-countries,
+.photo-album-count {
+  display: inline;
+}
+.photo-album-count {
+  color: hsl(0, 0%, 60%);
+}
+@media (max-width: 500px) {
+  .photo-album-metadata p {
+    font-size: 0.8em;
+    padding: 2px;
+  }
+  .photo-album .photo-album-metadata p {
+    color: white;
+    background-color: black;
+  }
+  .photo-album-metadata {
+    position: absolute;
+    transform: translate(10px, -100px);
+    z-index: 1;
+  }
+  .photo-album-metadata p {
+    font-size: 0.8em;
+    padding: 2px;
+  }
+  .photo-album .photo-album-metadata p {
+    color: white;
+    background-color: black;
+  }
+  .photo-album-metadata {
+    position: absolute;
+    transform: translate(10px, -100px);
+    z-index: 1;
+  }
+  .thumbnail-image,
+  .thumbnail-video {
+    width: max(180px, min(80vw, 400px));
+    max-width: max(180px, 80vw);
+  }
+}
+.photo-metadata-inline {
+  display: flex;
+  gap: 10px;
+}
+.thumbnail-placeholder {
+  position: absolute;
+}
+.thumbnail-image {
+  height: auto;
+  background-color: hsl(0, 0%, 69%);
+}
+@media (min-width: 600px) {
+  .unesco-links {
+    max-width: 400px;
+  }
+}
+@media (min-width: 1000px) {
+  .unesco-links {
+    max-width: 800px;
+  }
+}
+@media (min-width: 1400px) {
+  .unesco-links {
+    max-width: 1200px;
+  }
+}
+@media (min-width: 1800px) {
+  .unesco-links {
+    max-width: 1600px;
+  }
+}
+@media (min-width: 2200px) {
+  .unesco-links {
+    max-width: 1800px;
+  }
+}

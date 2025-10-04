@@ -34,8 +34,8 @@ export class ThingPage extends LitElem {
     country: {
       title: "🌍 Countries",
       description: "All photos are taken in some country...",
-    }
-  }
+    },
+  };
 
   override connectedCallback() {
     super.connectedCallback();
@@ -122,7 +122,7 @@ export class ThingPage extends LitElem {
         });
       })
       .map((album) => {
-        console.log(album)
+        console.log(album);
         const metadata = html`
         <photo-album-metadata
             .triples=${this.triples}
@@ -172,7 +172,8 @@ export class ThingPage extends LitElem {
     const lowered = type.toLowerCase();
 
     if (ThingPage.TYPE_VIEW.hasOwnProperty(lowered)) {
-      return ThingPage.TYPE_VIEW[lowered as keyof typeof ThingPage.TYPE_VIEW].title;
+      return ThingPage.TYPE_VIEW[lowered as keyof typeof ThingPage.TYPE_VIEW]
+        .title;
     }
 
     return Strings.capitalise(type);
@@ -182,7 +183,8 @@ export class ThingPage extends LitElem {
     const lowered = type.toLowerCase();
 
     if (ThingPage.TYPE_VIEW.hasOwnProperty(lowered)) {
-      return ThingPage.TYPE_VIEW[lowered as keyof typeof ThingPage.TYPE_VIEW].description;
+      return ThingPage.TYPE_VIEW[lowered as keyof typeof ThingPage.TYPE_VIEW]
+        .description;
     }
 
     return "";
@@ -309,10 +311,12 @@ export class ThingPage extends LitElem {
     }).sources();
 
     const countries = [...photoUrns].flatMap((photoUrn) => {
-      return Array.from(tdb.search({
-        source: asUrn(photoUrn),
-        relation: KnownRelations.COUNTRY,
-      }).targets());
+      return Array.from(
+        tdb.search({
+          source: asUrn(photoUrn),
+          relation: KnownRelations.COUNTRY,
+        }).targets(),
+      );
     });
 
     return Array.from(new Set(countries));
@@ -344,7 +348,7 @@ export class ThingPage extends LitElem {
     }).firstObject() ?? {};
 
     const metadata = Object.assign({
-      "Classification": this.renderClassification(type)
+      "Classification": this.renderClassification(type),
     });
 
     if (urnFacts.country) {
@@ -361,13 +365,16 @@ export class ThingPage extends LitElem {
       if (Array.isArray(urnFacts.in)) {
         metadata["Located In"] = html`
           <ul class="thing-list">
-        ${urnFacts.in.map((urn) =>
-          html`<li><thing-link .triples=${this.triples} urn=${urn}></thing-link></li>`
-        )}
+        ${
+          urnFacts.in.map((urn) =>
+            html`<li><thing-link .triples=${this.triples} urn=${urn}></thing-link></li>`
+          )
+        }
           </ul>
         `;
       } else {
-        metadata["Located In"] = html`<thing-link .triples=${this.triples} urn=${urnFacts.in}></thing-link>`;
+        metadata["Located In"] =
+          html`<thing-link .triples=${this.triples} urn=${urnFacts.in}></thing-link>`;
       }
     }
 
@@ -382,7 +389,10 @@ export class ThingPage extends LitElem {
 
     const thingCountries = this.thingCountries();
 
-    if (thingCountries.length > 0 && type !== KnownThings.PLACE && type !== KnownThings.COUNTRY) {
+    if (
+      thingCountries.length > 0 && type !== KnownThings.PLACE &&
+      type !== KnownThings.COUNTRY
+    ) {
       const countryLinks = thingCountries.map((country) => {
         return html`<country-link .triples=${this.triples} urn=${country}></country-link>`;
       });
@@ -395,7 +405,7 @@ export class ThingPage extends LitElem {
         urnFacts.feature = [urnFacts.feature];
       }
 
-      const items = urnFacts.feature?.map(feature => {
+      const items = urnFacts.feature?.map((feature) => {
         return html`<span><thing-link .triples=${this.triples} urn=${feature}></thing-link></span>`;
       });
       metadata["Place Details"] = html`${items}`;
@@ -435,10 +445,12 @@ export class ThingPage extends LitElem {
         <h1>${this.renderTitle()}</h1>
 
         ${
-          urn.id === "*"
-            ? html`<p class="thing-description">${this.renderTypeDescription(type)}</p>`
-            : html``
-        }
+      urn.id === "*"
+        ? html`<p class="thing-description">${
+          this.renderTypeDescription(type)
+        }</p>`
+        : html``
+    }
           ${
       BinomialTypes.has(type) && urn.id !== "*"
         ? html`<span class="thing-binomial ${type}-binomial">${

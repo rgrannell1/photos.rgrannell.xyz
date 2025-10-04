@@ -1,5 +1,6 @@
 import { Triple } from "../types.ts";
 import {
+  addContains,
   addSeason,
   addYear,
   countriesAsUrns,
@@ -10,7 +11,6 @@ import {
   placesToCountries,
   ratingsAsUrns,
   renameRelations,
-  addContains
 } from "../things/things.ts";
 
 /*
