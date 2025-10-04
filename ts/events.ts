@@ -30,3 +30,7 @@ export function listen(
 ) {
   document.addEventListener(label, callback);
 }
+
+export function block(event: Event) {
+  event?.preventDefault();
+}

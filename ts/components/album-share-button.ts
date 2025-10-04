@@ -22,16 +22,16 @@ async function shareAlbum(
     return;
   }
 
-    try {
-      await navigator.share({
-        title: `${title} - photos.rgrannell.xyz`,
-        url,
-      });
-    } catch (error) {
-      console.error("Error sharing:", error);
-    } finally {
-      state.sharing = false;
-    }
+  try {
+    await navigator.share({
+      title: `${title} - photos.rgrannell.xyz`,
+      url,
+    });
+  } catch (error) {
+    console.error("Error sharing:", error);
+  } finally {
+    state.sharing = false;
+  }
 }
 
 function buttonText(state: { sharing: boolean }) {
