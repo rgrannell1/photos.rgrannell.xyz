@@ -23,12 +23,13 @@ function loadImage(url: string, event: Event) {
 type ImageAttrs = {
   thumbnailUrl: string;
   loading: "eager" | "lazy";
+  onclick?: (e: Event) => void;
 };
 
 function Image() {
   return {
     view(vnode: m.Vnode<ImageAttrs>) {
-      const { thumbnailUrl, loading } = vnode.attrs;
+      const { thumbnailUrl, loading, onclick } = vnode.attrs;
 
       return m("img.thumbnail-image", {
         load: loadImage.bind(null, thumbnailUrl),
@@ -36,6 +37,7 @@ function Image() {
         height: PHOTO_HEIGHT,
         src: thumbnailUrl,
         loading: loading,
+        onclick,
       });
     },
   };
@@ -64,15 +66,18 @@ type ImagePairAttrs = {
   thumbnailUrl: string;
   thumbnailDataUrl: string;
   loading: "eager" | "lazy";
+  onclick?: (e: Event) => void;
 };
 
-function ImagePair() {
+export function ImagePair() {
   return {
     view(vnode: m.Vnode<ImagePairAttrs>) {
       const {
         imageUrl,
         thumbnailUrl,
         thumbnailDataUrl,
+        loading,
+        onclick,
       } = vnode.attrs;
 
       return m("a", {
@@ -81,7 +86,7 @@ function ImagePair() {
         rel: "external",
       }, [
         m(PlaceholderImage, { thumbnailDataUrl }),
-        m(Image, { thumbnailUrl }),
+        m(Image, { thumbnailUrl, loading, onclick }),
       ]);
     },
   };
