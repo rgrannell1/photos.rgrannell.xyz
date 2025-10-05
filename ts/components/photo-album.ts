@@ -1,8 +1,41 @@
-type PhotoAlbumState = {};
 
-export function PhotoAlbum() {
+import m from "mithril";
+import { Windows } from "../services/window.ts";
+import { Dates } from "../services/dates.ts";
+
+type PhotoAlbumMetadataAttrs = {
+  title: string;
+  minDate?: number;
+  maxDate?: number;
+  count: number;
+  flags: string;
+};
+
+export function PhotoAlbumMetadata() {
+  function dateRange(minDate?: number, maxDate?: number) {
+    if (!minDate || !maxDate) {
+      return "unknown date";
+    }
+
+    const isSmall = Windows.isSmallerThan(500);
+    return Dates.dateRange(minDate, maxDate, isSmall);
+  }
+
   return {
-    view() {
-    },
+    view(vnode: m.Vnode<PhotoAlbumMetadataAttrs>) {
+      const { title, minDate, maxDate, count, flags } = vnode.attrs;
+      const text = count === 1 ? "photo" : "photos";
+
+      return m("div.photo-album-metadata", [
+        m("p.photo-album-title", title),
+        m("p.photo-album-date", [
+          m("time", dateRange(minDate, maxDate)),
+        ]),
+        m("div.photo-metadata-inline", [
+          m("p.photo-album-count", `${count} ${text}`),
+          m("p.photo-album-countries", flags)
+        ])
+      ])
+    }
   };
 }

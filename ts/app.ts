@@ -11,7 +11,7 @@ type AppState = {
 
 export function App(page: m.Component): m.Component<AppState> {
   return {
-    view(vnode: m.Vnode<AppState>) {
+    view() {
       return m("body", [
         m("div", [
           m(Header, state),

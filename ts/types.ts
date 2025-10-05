@@ -8,3 +8,14 @@ export type State = {
   darkMode: boolean;
   sidebarVisible: boolean;
 };
+
+export type Album = {
+  name: string;
+  minDate: number;
+  maxDate: number;
+  thumbnailUrl: string;
+  mosaicColours: string;
+  id: string;
+  photosCount: number;
+  flags: string; // TODO
+};

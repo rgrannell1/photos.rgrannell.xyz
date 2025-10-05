@@ -2,6 +2,9 @@ import m from "mithril";
 
 export function AboutPage() {
   return {
+    oninit() {
+      document.title = "About - photos";
+    },
     view() {
       return m("div", [
         m("section.about-page", [
