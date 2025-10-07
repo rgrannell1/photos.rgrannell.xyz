@@ -8,6 +8,7 @@ import {
   PhotoAlbumMetadataAttrs,
 } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum, PhotoAlbumAttrs } from "../components/photo-album.ts";
+import { Windows } from "../services/window.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];
@@ -15,7 +16,7 @@ type AlbumsListAttrs = {
 
 function AlbumsList() {
   const albumComponents: m.Vnode<
-    PhotoAlbumMetadataAttrs | PhotoAlbumAttrs
+    unknown
   >[] = [];
 
   function albumYear(album: Album) {
@@ -24,18 +25,18 @@ function AlbumsList() {
 
   return {
     view(vnode: m.Vnode<AlbumsListAttrs>) {
-      let year = 2000; // I didn't have a camera yet...
+      let year = 2000;
       const { albums } = vnode.attrs;
 
       for (let idx = 0; idx < albums.length; idx++) {
         const album = albums[idx];
         const loading = Photos.loadingMode(idx);
 
+        // push year header if a new year
         if (year !== albumYear(album)) {
           year = albumYear(album);
 
           const $h2 = m("h2.album-year-header", year.toString());
-
           albumComponents.push($h2);
         }
 
@@ -71,7 +72,7 @@ type AlbumsPageState = {
 export function AlbumsPage() {
   return {
     oninit() {
-      document.title = "Albums - photos";
+      Windows.setTitle("Albums - photos");
     },
     view(vnode: m.Vnode<AlbumsPageState>) {
       const $md = m("section.album-metadata", [
@@ -79,13 +80,14 @@ export function AlbumsPage() {
         m(AlbumStats),
       ]);
 
-      return m("div", [
-        $md,
-        m("section.album-container", [
-          m("h1.albums-header", "Albums"),
+      const $albumContainer = m("section.album-container", [
           m(YearCursor),
           m(AlbumsList, { albums: vnode.attrs.albums }),
-        ]),
+        ])
+
+      return m("div", [
+        $md,
+        $albumContainer
       ]);
     },
   };

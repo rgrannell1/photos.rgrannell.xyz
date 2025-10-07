@@ -31,6 +31,9 @@ export function listen(
   document.addEventListener(label, callback);
 }
 
+/*
+ * Prevent default action for an event.
+ */
 export function block(event: Event) {
   event?.preventDefault();
 }

@@ -1,4 +1,7 @@
 import m from "mithril";
+import stats from "../stats.json" with { type: "json" };
+
+
 
 function validateState(stats: unknown) {
   if (typeof stats !== "object" || stats === null) {
@@ -29,12 +32,6 @@ function validateState(stats: unknown) {
 }
 
 export function AlbumStats() {
-  const $statsData = document.getElementById("stats-data");
-  if (!$statsData) {
-    throw new Error("No stats data found");
-  }
-
-  const stats = JSON.parse($statsData.innerText);
   validateState(stats);
 
   return {

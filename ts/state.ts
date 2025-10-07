@@ -1,17 +1,13 @@
 import { State } from "./types.ts";
+import { DarkModes } from "./services/dark-mode.ts";
 
-export class DarkModes {
-  static load() {
-    return localStorage.getItem("darkMode") === "true";
-  }
-
-  static save(value: boolean) {
-    return localStorage.setItem("darkMode", `${value}`);
-  }
-}
-
+/*
+ * Load the application state from localStorage or return defaults.
+ *
+ */
 export function loadState(): State {
   return {
     darkMode: DarkModes.load(),
+    sidebarVisible: false,
   };
 }

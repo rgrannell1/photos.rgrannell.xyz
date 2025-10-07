@@ -1,9 +1,10 @@
 import m from "mithril";
+import { Windows } from "../services/window.ts";
 
 export function AboutPage() {
   return {
     oninit() {
-      document.title = "About - photos";
+      Windows.setTitle("About - photos");
     },
     view() {
       return m("div", [

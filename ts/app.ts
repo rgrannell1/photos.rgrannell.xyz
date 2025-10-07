@@ -2,22 +2,23 @@ import m from "mithril";
 import { Header } from "./components/header.ts";
 import { loadState } from "./state.ts";
 import { Sidebar } from "./components/sidebar.ts";
+import { AlbumsPage } from "./pages/albums.ts";
 
 const state = loadState();
 
-type AppState = {
-  page: m.Component;
-};
+type AppAttrs = { };
 
-export function App(page: m.Component): m.Component<AppState> {
+export function App(): m.Component<AppAttrs> {
   return {
-    view() {
+    view(vnode) {
       return m("body", [
         m("div", [
           m(Header, state),
           m("div", [
             m(Sidebar, { visible: state.sidebarVisible }),
-            page,
+            m(AlbumsPage, {
+              albums: []
+            }),
           ]),
         ]),
       ]);
