@@ -32,7 +32,7 @@ function Image() {
       const { thumbnailUrl, loading, onclick } = vnode.attrs;
 
       return m("img.thumbnail-image", {
-        load: loadImage.bind(null, thumbnailUrl),
+        onload: loadImage.bind(null, thumbnailUrl),
         width: PHOTO_WIDTH,
         height: PHOTO_HEIGHT,
         src: thumbnailUrl,

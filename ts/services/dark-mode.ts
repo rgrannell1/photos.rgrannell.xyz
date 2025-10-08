@@ -1,3 +1,8 @@
+
+/*
+ * Manages dark mode preference in local storage
+ *
+ */
 export class DarkModes {
   static load() {
     return localStorage.getItem("darkMode") === "true";

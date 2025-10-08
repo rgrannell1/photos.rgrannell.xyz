@@ -3238,7 +3238,7 @@ function Image() {
     view(vnode) {
       const { thumbnailUrl, loading, onclick: onclick2 } = vnode.attrs;
       return (0, import_mithril6.default)("img.thumbnail-image", {
-        load: loadImage.bind(null, thumbnailUrl),
+        onload: loadImage.bind(null, thumbnailUrl),
         width: PHOTO_WIDTH,
         height: PHOTO_HEIGHT,
         src: thumbnailUrl,

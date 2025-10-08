@@ -187,6 +187,10 @@ export function addInverseRelations(triple: Triple) {
   return [triple];
 }
 
+/*
+ * Expand curies
+ *
+ */
 export function expandCurie(curies: Record<string, string>, value: string) {
   if (typeof value !== "string" || !CURIE_REGEX.test(value)) {
     return value;
@@ -231,6 +235,10 @@ export function expandTripleCuries(
   ];
 }
 
+/*
+ * Compose all triple modifiers together.
+ *
+ */
 export function deriveTriples(
   triple: Triple,
 ): Triple[] {
