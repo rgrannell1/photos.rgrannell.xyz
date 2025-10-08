@@ -1,4 +1,3 @@
-
 export class DarkModes {
   static load() {
     return localStorage.getItem("darkMode") === "true";

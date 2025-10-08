@@ -81,13 +81,13 @@ export function AlbumsPage() {
       ]);
 
       const $albumContainer = m("section.album-container", [
-          m(YearCursor),
-          m(AlbumsList, { albums: vnode.attrs.albums }),
-        ])
+        m(YearCursor),
+        m(AlbumsList, { albums: vnode.attrs.albums }),
+      ]);
 
       return m("div", [
         $md,
-        $albumContainer
+        $albumContainer,
       ]);
     },
   };

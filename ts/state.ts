@@ -3,7 +3,6 @@ import { DarkModes } from "./services/dark-mode.ts";
 
 /*
  * Load the application state from localStorage or return defaults.
- *
  */
 export function loadState(): State {
   return {

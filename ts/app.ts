@@ -6,7 +6,7 @@ import { AlbumsPage } from "./pages/albums.ts";
 
 const state = loadState();
 
-type AppAttrs = { };
+type AppAttrs = {};
 
 export function App(): m.Component<AppAttrs> {
   return {
@@ -17,7 +17,7 @@ export function App(): m.Component<AppAttrs> {
           m("div", [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(AlbumsPage, {
-              albums: []
+              albums: [],
             }),
           ]),
         ]),

@@ -1,7 +1,5 @@
-
 /*
  * Window lookup
- *
  */
 export class Windows {
   static isSmallerThan(width: number = 500): boolean {
