@@ -3,9 +3,9 @@ import { Header } from "./components/header.ts";
 import { loadState } from "./state.ts";
 import { Sidebar } from "./components/sidebar.ts";
 import { AlbumsPage } from "./pages/albums.ts";
+import { readAlbums } from "./services/albums.ts";
 
-const state = loadState();
-
+const state = await loadState();
 type AppAttrs = {};
 
 export function App(): m.Component<AppAttrs> {
@@ -17,7 +17,7 @@ export function App(): m.Component<AppAttrs> {
           m("div", [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(AlbumsPage, {
-              albums: [],
+              albums: readAlbums(state.data),
             }),
           ]),
         ]),

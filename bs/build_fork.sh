@@ -3,7 +3,6 @@ npx esbuild ts/index.ts \
   --bundle                  \
   --outfile=dist_fork/js/app.js  \
   --format=esm              \
-  --minify                  \
   --sourcemap
 
 npx esbuild css/style.css      \

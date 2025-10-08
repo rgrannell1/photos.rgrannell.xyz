@@ -1,4 +1,4 @@
-export function maybeParseInt(value: string | number): number {
+export function asInt(value: string | number): number {
   if (typeof value === "number") {
     return value;
   }

@@ -99,3 +99,7 @@ export const CDN_RELATIONS = new Set([
   KnownRelations.VIDEO_URL_720P,
   KnownRelations.VIDEO_URL_UNSCALED,
 ]);
+
+export const RelationSymmetries = [
+  [KnownRelations.IN, KnownRelations.CONTAINS],
+]

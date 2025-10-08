@@ -1,8 +1,7 @@
-import { TribbleDB } from "@rgrannell1/tribbledb";
+import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { Album } from "../types.ts";
-import { TripleObject } from "@rgrannell1/tribbledb";
 import { z } from "zod";
-import { maybeParseInt } from "../numbers.ts";
+import { asInt } from "../numbers.ts";
 
 const AlbumSchema = z.object({
   name: z.string(),
@@ -25,12 +24,12 @@ function parseAlbum(album: TripleObject): Album {
 
   return {
     name: result.data.name,
-    minDate: maybeParseInt(result.data.minDate),
-    maxDate: maybeParseInt(result.data.maxDate),
+    minDate: asInt(result.data.minDate),
+    maxDate: asInt(result.data.maxDate),
     thumbnailUrl: result.data.thumbnailUrl,
     mosaicColours: result.data.mosaic,
     id: result.data.id,
-    photosCount: maybeParseInt(result.data.photosCount),
+    photosCount: asInt(result.data.photosCount),
     flags: result.data.flags,
   };
 }

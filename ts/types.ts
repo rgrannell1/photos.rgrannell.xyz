@@ -1,3 +1,5 @@
+import { TribbleDB } from "@rgrannell1/tribbledb";
+
 export type ApplicationEvents =
   | "click_burger_menu"
   | "switch_theme"
@@ -5,6 +7,7 @@ export type ApplicationEvents =
   | "photo_loaded";
 
 export type State = {
+  data: TribbleDB;
   darkMode: boolean;
   sidebarVisible: boolean;
 };
