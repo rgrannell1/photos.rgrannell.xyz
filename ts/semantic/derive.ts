@@ -1,17 +1,15 @@
 import { Triple } from "@rgrannell1/tribbledb";
 
-import { CDN_RELATIONS, KnownRelations, RelationSymmetries } from "../constants.ts";
+import {
+  CDN_RELATIONS,
+  CURIE_REGEX,
+  CURIES,
+  ENDPOINT,
+  KnownRelations,
+  RelationSymmetries,
+} from "../constants.ts";
 import { Strings } from "../strings.ts";
 
-export const CURIES = {
-  "i": "urn:ró:",
-  "birdwatch": "https://birdwatchireland.ie/birds/",
-  "photos": "https://photos-cdn.rgrannell.xyz/",
-  "wiki": "https://en.wikipedia.org/wiki/",
-};
-
-const CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
-const ENDPOINT = "https://photos-cdn.rgrannell.xyz";
 
 /*
  * Convert star ratings into URNs.
@@ -64,7 +62,6 @@ export function expandCdnUrls(triple: Triple): Triple[] {
     return [triple];
   }
 
-
   return [[
     src,
     rel,
@@ -79,7 +76,7 @@ export function convertRelationCasing(triple: Triple): Triple[] {
     src,
     Strings.camelCase(rel),
     tgt,
-  ]]
+  ]];
 }
 
 /*
@@ -99,10 +96,8 @@ export function expandUrns(triple: Triple): Triple[] {
   ]];
 }
 
-
 /*
  * Allow search by season
- *
  */
 export function addSeason(triple: Triple) {
   const [src, rel, tgt] = triple;
@@ -138,7 +133,6 @@ export function addSeason(triple: Triple) {
 
 /*
  * Add years as a relation, when a date is present
- *
  */
 export function addYear(triple: Triple) {
   const [src, rel, tgt] = triple;
@@ -171,13 +165,13 @@ export function addYear(triple: Triple) {
 export function addInverseRelations(triple: Triple) {
   const [src, rel, tgt] = triple;
 
-  for (const [left, right] of RelationSymmetries) {
-    if (rel === left) {
+  for (const [to, from] of RelationSymmetries) {
+    if (rel === to) {
       return [
         triple,
         [
           tgt,
-          right,
+          from,
           src,
         ],
       ];
@@ -189,7 +183,6 @@ export function addInverseRelations(triple: Triple) {
 
 /*
  * Expand curies
- *
  */
 export function expandCurie(curies: Record<string, string>, value: string) {
   if (typeof value !== "string" || !CURIE_REGEX.test(value)) {

@@ -50,3 +50,13 @@ export const CDN_RELATIONS = new Set([
 export const RelationSymmetries = [
   [KnownRelations.IN, KnownRelations.CONTAINS],
 ];
+
+export const CURIES = {
+  "i": "urn:ró:",
+  "birdwatch": "https://birdwatchireland.ie/birds/",
+  "photos": "https://photos-cdn.rgrannell.xyz/",
+  "wiki": "https://en.wikipedia.org/wiki/",
+};
+
+export const CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
+export const ENDPOINT = "https://photos-cdn.rgrannell.xyz";

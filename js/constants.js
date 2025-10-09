@@ -102,4 +102,4 @@ export const CDN_RELATIONS = new Set([
 
 export const RelationSymmetries = [
   [KnownRelations.IN, KnownRelations.CONTAINS],
-]
+];

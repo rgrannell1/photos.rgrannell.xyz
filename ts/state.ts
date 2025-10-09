@@ -5,12 +5,17 @@ import { deriveTriples } from "./semantic/derive.ts";
 
 async function loadData() {
   const schema = {};
-  const db = await loadTriples("/manifest/tribbles.eab0f8c457.txt", schema, deriveTriples);
+  const db = await loadTriples(
+    "/manifest/tribbles.eab0f8c457.txt",
+    schema,
+    deriveTriples,
+  );
   return db;
 }
 
 /*
  * Load the application state from localStorage or return defaults.
+ *
  */
 export async function loadState(): Promise<State> {
   return {

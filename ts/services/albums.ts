@@ -14,6 +14,10 @@ const AlbumSchema = z.object({
   flags: z.any(),
 });
 
+/*
+ * Read album-data
+ *
+ */
 function parseAlbum(album: TripleObject): Album {
   const result = AlbumSchema.safeParse(album);
   if (!result.success) {
@@ -36,6 +40,7 @@ function parseAlbum(album: TripleObject): Album {
 
 /*
  * Read albums from the TribbleDB
+ *
  */
 export function readAlbums(tdb: TribbleDB): Album[] {
   return tdb.search({
