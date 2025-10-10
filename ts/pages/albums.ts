@@ -89,7 +89,7 @@ export function AlbumsPage() {
       ]);
 
       const $albumContainer = m("section.album-container", [
-        m(YearCursor),
+        //m(YearCursor),
         m(AlbumsList, { albums: vnode.attrs.albums }),
       ]);
 

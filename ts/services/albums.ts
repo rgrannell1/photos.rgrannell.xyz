@@ -2,7 +2,7 @@ import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { Album } from "../types.ts";
 import { z } from "zod";
 import { asInt } from "../numbers.ts";
-import { countryNameToUrn, nameToUrn, urnToFlag } from "../semantic/names.ts";
+import { countryNameToUrn, urnToFlag } from "../semantic/names.ts";
 
 const AlbumSchema = z.object({
   name: z.string(),
@@ -17,6 +17,10 @@ const AlbumSchema = z.object({
 
 /*
  * Read album-data
+ *
+ * @param tdb The TribbleDB instance to read from.
+ * @param album The raw album object from the TribbleDB.
+ * @returns The parsed album.
  */
 function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
   const result = AlbumSchema.safeParse(album);
@@ -30,15 +34,19 @@ function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
     ? result.data.flags
     : [result.data.flags];
 
-  const countries = countryNames.map((countryName: string) => {
+  const countries = countryNames.flatMap((countryName: string) => {
     const urn = countryNameToUrn(tdb, countryName);
     const flag = urn ? urnToFlag(tdb, urn) : undefined;
 
-    return {
+    if (!urn || !flag) {
+      return [];
+    }
+
+    return [{
       urn,
       name: countryName,
       flag,
-    };
+    }];
   });
 
   return {

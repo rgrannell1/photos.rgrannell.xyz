@@ -228,6 +228,8 @@ export function expandTripleCuries(
 
 /*
  * Compose all triple modifiers together.
+ *
+ * @param triple The input triple to modify.
  */
 export function deriveTriples(
   triple: Triple,

@@ -13,9 +13,11 @@ export function CountryLink() {
     view(vnode: m.Vnode<CountryLinkAttrs>) {
       const { flag, urn, name, mode } = vnode.attrs;
 
-      if (mode === "flag" && urn) {
+      if (mode === "flag") {
         return m("a.country-link", { href: urnToUrl(urn) }, flag);
       }
+
+      return m("a.country-link", { href: urnToUrl(urn) }, `${flag} ${name}`);
     },
   };
 }

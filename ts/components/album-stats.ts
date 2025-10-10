@@ -38,6 +38,8 @@ export function AlbumStats() {
         `${stats.photos} `,
         m("a", { href: "#/photos" }, "photos"),
         " · ",
+        m("a", { href: "#/videos" }, "videos"),
+        " · ",
         `${stats.albums} albums · ${stats.years} years · `,
         `${stats.countries} `,
         m("a", { href: "#/listing/country" }, "countries"),

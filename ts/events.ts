@@ -33,6 +33,8 @@ export function listen(
 
 /*
  * Prevent default action for an event.
+ *
+ * @param event The event to block.
  */
 export function block(event: Event) {
   event?.preventDefault();
