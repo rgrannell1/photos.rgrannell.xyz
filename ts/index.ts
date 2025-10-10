@@ -1,10 +1,7 @@
 import m from "mithril";
-import { App } from "./app.ts";
-import { AlbumsPage } from "./pages/albums.ts";
-import { AboutPage } from "./pages/about.ts";
-
+import { AboutApp, AlbumsApp } from "./app.ts";
 
 m.route(document.body, '/albums', {
-  '/albums': App(AlbumsPage),
-  '/about': App(AboutPage),
+  '/albums': AlbumsApp,
+  '/about': AboutApp,
 });

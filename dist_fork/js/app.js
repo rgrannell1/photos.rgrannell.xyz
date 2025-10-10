@@ -1614,7 +1614,7 @@ var require_mithril = __commonJS({
 var import_mithril12 = __toESM(require_mithril());
 
 // ts/app.ts
-var import_mithril10 = __toESM(require_mithril());
+var import_mithril11 = __toESM(require_mithril());
 
 // ts/components/header.ts
 var import_mithril = __toESM(require_mithril());
@@ -7169,65 +7169,45 @@ function readAlbums(tdb2) {
   });
 }
 
-// ts/app.ts
-var state = await loadState();
-function App() {
-  return {
-    view() {
-      return (0, import_mithril10.default)("body", [
-        (0, import_mithril10.default)("div", [
-          (0, import_mithril10.default)(Header, state),
-          (0, import_mithril10.default)("div.app-container", [
-            (0, import_mithril10.default)(Sidebar, { visible: state.sidebarVisible }),
-            (0, import_mithril10.default)(AlbumsPage, {
-              albums: readAlbums(state.data)
-            })
-          ])
-        ])
-      ]);
-    }
-  };
-}
-
 // ts/pages/about.ts
-var import_mithril11 = __toESM(require_mithril());
+var import_mithril10 = __toESM(require_mithril());
 function AboutPage() {
   return {
     oninit() {
       Windows.setTitle("About - photos");
     },
     view() {
-      return (0, import_mithril11.default)("div", [
-        (0, import_mithril11.default)("section.about-page", [
-          (0, import_mithril11.default)("h1", "About"),
-          (0, import_mithril11.default)(
+      return (0, import_mithril10.default)("div", [
+        (0, import_mithril10.default)("section.about-page", [
+          (0, import_mithril10.default)("h1", "About"),
+          (0, import_mithril10.default)(
             "p",
             "I started taking photos back in 2012, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things ",
-            (0, import_mithril11.default)("a", {
+            (0, import_mithril10.default)("a", {
               href: "https://photos.rgrannell.xyz/#/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50"
             }, "I found beautiful in this world.")
           ),
-          (0, import_mithril11.default)("h2", "Can I use the photos on this site?"),
-          (0, import_mithril11.default)(
+          (0, import_mithril10.default)("h2", "Can I use the photos on this site?"),
+          (0, import_mithril10.default)(
             "p",
             "You may use this website and its content for personal, non-commerical purposes only. For example, using photos as a desktop wallpaper is fine, selling these photos is not."
           ),
-          (0, import_mithril11.default)("h2", "Can I use data from this site to train AI?"),
-          (0, import_mithril11.default)(
+          (0, import_mithril10.default)("h2", "Can I use data from this site to train AI?"),
+          (0, import_mithril10.default)(
             "p",
             "No, absolutely not. The ",
-            (0, import_mithril11.default)(
+            (0, import_mithril10.default)(
               "a",
               { href: "http://photos.rgrannell.xyz/robots.txt" },
               "robots.txt"
             ),
             " file for this site explicitly prohibits this."
           ),
-          (0, import_mithril11.default)("h2", "What is your contact information?"),
-          (0, import_mithril11.default)(
+          (0, import_mithril10.default)("h2", "What is your contact information?"),
+          (0, import_mithril10.default)(
             "p",
             "See ",
-            (0, import_mithril11.default)("a", { href: "https://rgrannell.xyz/" }, "my personal site"),
+            (0, import_mithril10.default)("a", { href: "https://rgrannell.xyz/" }, "my personal site"),
             " for contact details."
           )
         ])
@@ -7236,9 +7216,44 @@ function AboutPage() {
   };
 }
 
+// ts/app.ts
+var state = await loadState();
+function AlbumsApp() {
+  return {
+    view(vnode) {
+      return (0, import_mithril11.default)("body", [
+        (0, import_mithril11.default)("div", [
+          (0, import_mithril11.default)(Header, state),
+          (0, import_mithril11.default)("div.app-container", [
+            (0, import_mithril11.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril11.default)(AlbumsPage, {
+              albums: readAlbums(state.data)
+            })
+          ])
+        ])
+      ]);
+    }
+  };
+}
+function AboutApp() {
+  return {
+    view() {
+      return (0, import_mithril11.default)("body", [
+        (0, import_mithril11.default)("div", [
+          (0, import_mithril11.default)(Header, state),
+          (0, import_mithril11.default)("div.app-container", [
+            (0, import_mithril11.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril11.default)(AboutPage)
+          ])
+        ])
+      ]);
+    }
+  };
+}
+
 // ts/index.ts
 import_mithril12.default.route(document.body, "/albums", {
-  "/albums": App(AlbumsPage),
-  "/about": App(AboutPage)
+  "/albums": AlbumsApp,
+  "/about": AboutApp
 });
 //# sourceMappingURL=app.js.map
