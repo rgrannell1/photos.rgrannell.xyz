@@ -2,6 +2,7 @@ import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { Album } from "../types.ts";
 import { z } from "zod";
 import { asInt } from "../numbers.ts";
+import { countryNameToUrn, nameToUrn, urnToFlag } from "../semantic/names.ts";
 
 const AlbumSchema = z.object({
   name: z.string(),
@@ -18,13 +19,28 @@ const AlbumSchema = z.object({
  * Read album-data
  *
  */
-function parseAlbum(album: TripleObject): Album {
+function parseAlbum(tdb: TribbleDB,album: TripleObject): Album {
   const result = AlbumSchema.safeParse(album);
   if (!result.success) {
     throw new Error(
       `Invalid album object: ${JSON.stringify(result.error.issues)}`,
     );
   }
+
+  const countryNames = Array.isArray(result.data.flags)
+    ? result.data.flags
+    : [result.data.flags];
+
+  const countries = countryNames.map((countryName: string) => {
+    const urn =  countryNameToUrn(tdb, countryName);
+    const flag = urn ? urnToFlag(tdb, urn) : undefined;
+
+    return {
+      urn,
+      name: countryName,
+      flag
+    }
+  });
 
   return {
     name: result.data.name,
@@ -34,7 +50,7 @@ function parseAlbum(album: TripleObject): Album {
     mosaicColours: result.data.mosaic,
     id: result.data.id,
     photosCount: asInt(result.data.photosCount),
-    flags: result.data.flags,
+    countries,
   };
 }
 
@@ -45,7 +61,8 @@ function parseAlbum(album: TripleObject): Album {
 export function readAlbums(tdb: TribbleDB): Album[] {
   return tdb.search({
     source: { type: "album" },
-  }).objects().map(parseAlbum)
+  }).objects()
+    .map(parseAlbum.bind(null, tdb))
     .sort((album0: Album, album1: Album) => {
       return album1.minDate - album0.minDate;
     });

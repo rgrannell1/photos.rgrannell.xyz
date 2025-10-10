@@ -1052,9 +1052,9 @@ var require_build2 = __commonJS({
       var path = template.slice(0, pathEnd);
       var query = {};
       Object.assign(query, params);
-      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m11, key, variadic) {
+      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m12, key, variadic) {
         delete query[key];
-        if (params[key] == null) return m11;
+        if (params[key] == null) return m12;
         return variadic ? params[key] : encodeURIComponent(String(params[key]));
       });
       var newQueryIndex = resolved.indexOf("?");
@@ -1326,8 +1326,8 @@ var require_compileTemplate = __commonJS({
         // don't also accidentally escape `-` and make it harder to detect it to
         // ban it from template parameters.
         /:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
-        function(m11, key, extra) {
-          if (key == null) return "\\" + m11;
+        function(m12, key, extra) {
+          if (key == null) return "\\" + m12;
           keys.push({ k: key, r: extra === "..." });
           if (extra === "...") return "(.*)";
           if (extra === ".") return "([^/]+)\\.";
@@ -1381,7 +1381,7 @@ var require_router = __commonJS({
   "node_modules/mithril/api/router.js"(exports, module) {
     "use strict";
     var Vnode2 = require_vnode();
-    var m11 = require_hyperscript();
+    var m12 = require_hyperscript();
     var buildPathname = require_build2();
     var parsePathname = require_parse2();
     var compileTemplate = require_compileTemplate();
@@ -1524,7 +1524,7 @@ var require_router = __commonJS({
       route.prefix = "#!";
       route.Link = {
         view: function(vnode) {
-          var child = m11(
+          var child = m12(
             vnode.attrs.selector || "a",
             censor(vnode.attrs, ["options", "params", "selector", "onclick"]),
             vnode.children
@@ -1587,34 +1587,34 @@ var require_mithril = __commonJS({
     var request = require_request2();
     var mountRedraw = require_mount_redraw2();
     var domFor = require_domFor();
-    var m11 = function m12() {
+    var m12 = function m13() {
       return hyperscript.apply(this, arguments);
     };
-    m11.m = hyperscript;
-    m11.trust = hyperscript.trust;
-    m11.fragment = hyperscript.fragment;
-    m11.Fragment = "[";
-    m11.mount = mountRedraw.mount;
-    m11.route = require_route();
-    m11.render = require_render2();
-    m11.redraw = mountRedraw.redraw;
-    m11.request = request.request;
-    m11.parseQueryString = require_parse();
-    m11.buildQueryString = require_build();
-    m11.parsePathname = require_parse2();
-    m11.buildPathname = require_build2();
-    m11.vnode = require_vnode();
-    m11.censor = require_censor();
-    m11.domFor = domFor.domFor;
-    module.exports = m11;
+    m12.m = hyperscript;
+    m12.trust = hyperscript.trust;
+    m12.fragment = hyperscript.fragment;
+    m12.Fragment = "[";
+    m12.mount = mountRedraw.mount;
+    m12.route = require_route();
+    m12.render = require_render2();
+    m12.redraw = mountRedraw.redraw;
+    m12.request = request.request;
+    m12.parseQueryString = require_parse();
+    m12.buildQueryString = require_build();
+    m12.parsePathname = require_parse2();
+    m12.buildPathname = require_build2();
+    m12.vnode = require_vnode();
+    m12.censor = require_censor();
+    m12.domFor = domFor.domFor;
+    module.exports = m12;
   }
 });
 
 // ts/index.ts
-var import_mithril10 = __toESM(require_mithril());
+var import_mithril11 = __toESM(require_mithril());
 
 // ts/app.ts
-var import_mithril9 = __toESM(require_mithril());
+var import_mithril10 = __toESM(require_mithril());
 
 // ts/components/header.ts
 var import_mithril = __toESM(require_mithril());
@@ -1804,6 +1804,43 @@ var Sets = class {
       }
     }
     return acc;
+  }
+};
+var TribbleParser = class {
+  stringIndex;
+  constructor() {
+    this.stringIndex = new IndexedSet();
+  }
+  parseTriple(line) {
+    const match = line.match(/^(\d+) (\d+) (\d+)$/);
+    if (!match) {
+      throw new SyntaxError(`Invalid format for triple line: ${line}`);
+    }
+    const src = this.stringIndex.getValue(parseInt(match[1], 10));
+    const rel = this.stringIndex.getValue(parseInt(match[2], 10));
+    const tgt = this.stringIndex.getValue(parseInt(match[3], 10));
+    if (src === void 0 || rel === void 0 || tgt === void 0) {
+      throw new SyntaxError(`Invalid triple reference: ${line}`);
+    }
+    return [src, rel, tgt];
+  }
+  parseDeclaration(line) {
+    const match = line.match(/^(\d+) "(.*)"$/);
+    if (!match) {
+      throw new SyntaxError(`Invalid format for declaration line: ${line}`);
+    }
+    const id = match[1];
+    const value = match[2];
+    this.stringIndex.setIndex(value, parseInt(id, 10));
+  }
+  parse(line) {
+    const isTriple = /^(\d+)\s(\d+)\s(\d+)$/;
+    if (isTriple.test(line)) {
+      return this.parseTriple(line);
+    } else {
+      this.parseDeclaration(line);
+      return;
+    }
   }
 };
 function parseUrn(urn, namespace = "r\xF3") {
@@ -2302,40 +2339,77 @@ var TribbleDB = class _TribbleDB {
     }
     return objs;
   }
+  nodeAsDSL(node) {
+    if (typeof node === "undefined") {
+      return void 0;
+    }
+    if (typeof node === "string") {
+      return { type: "unknown", id: node };
+    }
+    return node;
+  }
+  relationAsDSL(relation) {
+    if (typeof relation === "undefined") {
+      return void 0;
+    }
+    if (typeof relation === "string") {
+      return { relation: [relation] };
+    }
+    if (Array.isArray(relation)) {
+      return { relation };
+    }
+    return relation;
+  }
+  searchParamsToObject(params) {
+    if (!Array.isArray(params)) {
+      return params;
+    }
+    const [source, relation, target] = params;
+    return {
+      source: this.nodeAsDSL(source),
+      relation: this.relationAsDSL(relation),
+      target: this.nodeAsDSL(target)
+    };
+  }
   #findMatchingRows(params) {
     const matchingRowSets = [
       this.cursorIndices
     ];
-    const { source, relation, target } = params;
+    const { source, relation, target } = this.searchParamsToObject(params);
     if (typeof source === "undefined" && typeof target === "undefined" && typeof relation === "undefined") {
       throw new Error("At least one search parameter must be defined");
     }
     const allowedKeys = ["source", "relation", "target"];
-    for (const key of Object.keys(params)) {
-      if (!Object.prototype.hasOwnProperty.call(params, key)) continue;
-      if (!allowedKeys.includes(key)) {
-        throw new Error(`Unexpected search parameter: ${key}`);
+    if (!Array.isArray(params)) {
+      for (const key of Object.keys(params)) {
+        if (!Object.prototype.hasOwnProperty.call(params, key)) continue;
+        if (!allowedKeys.includes(key)) {
+          throw new Error(`Unexpected search parameter: ${key}`);
+        }
       }
     }
-    if (source) {
-      if (source.type) {
-        const sourceTypeSet = this.index.getSourceTypeSet(source.type);
+    const expandedSource = this.nodeAsDSL(source);
+    const expandedRelation = this.relationAsDSL(relation);
+    const expandedTarget = this.nodeAsDSL(target);
+    if (expandedSource) {
+      if (expandedSource.type) {
+        const sourceTypeSet = this.index.getSourceTypeSet(expandedSource.type);
         if (sourceTypeSet) {
           matchingRowSets.push(sourceTypeSet);
         } else {
           return /* @__PURE__ */ new Set();
         }
       }
-      if (source.id) {
-        const sourceIdSet = this.index.getSourceIdSet(source.id);
+      if (expandedSource.id) {
+        const sourceIdSet = this.index.getSourceIdSet(expandedSource.id);
         if (sourceIdSet) {
           matchingRowSets.push(sourceIdSet);
         } else {
           return /* @__PURE__ */ new Set();
         }
       }
-      if (source.qs) {
-        for (const [key, val] of Object.entries(source.qs)) {
+      if (expandedSource.qs) {
+        for (const [key, val] of Object.entries(expandedSource.qs)) {
           const sourceQsSet = this.index.getSourceQsSet(key, val);
           if (sourceQsSet) {
             matchingRowSets.push(sourceQsSet);
@@ -2345,25 +2419,25 @@ var TribbleDB = class _TribbleDB {
         }
       }
     }
-    if (target) {
-      if (target.type) {
-        const targetTypeSet = this.index.getTargetTypeSet(target.type);
+    if (expandedTarget) {
+      if (expandedTarget.type) {
+        const targetTypeSet = this.index.getTargetTypeSet(expandedTarget.type);
         if (targetTypeSet) {
           matchingRowSets.push(targetTypeSet);
         } else {
           return /* @__PURE__ */ new Set();
         }
       }
-      if (target.id) {
-        const targetIdSet = this.index.getTargetIdSet(target.id);
+      if (expandedTarget.id) {
+        const targetIdSet = this.index.getTargetIdSet(expandedTarget.id);
         if (targetIdSet) {
           matchingRowSets.push(targetIdSet);
         } else {
           return /* @__PURE__ */ new Set();
         }
       }
-      if (target.qs) {
-        for (const [key, val] of Object.entries(target.qs)) {
+      if (expandedTarget.qs) {
+        for (const [key, val] of Object.entries(expandedTarget.qs)) {
           const targetQsSet = this.index.getTargetQsSet(key, val);
           if (targetQsSet) {
             matchingRowSets.push(targetQsSet);
@@ -2373,11 +2447,10 @@ var TribbleDB = class _TribbleDB {
         }
       }
     }
-    if (relation) {
-      const relationDsl = typeof relation === "string" ? { relation: [relation] } : relation;
-      if (relationDsl.relation) {
+    if (expandedRelation) {
+      if (expandedRelation.relation) {
         const unionedRelations = /* @__PURE__ */ new Set();
-        for (const rel of relationDsl.relation) {
+        for (const rel of expandedRelation.relation) {
           const relationSet = this.index.getRelationSet(rel);
           if (relationSet) {
             for (const elem of relationSet) {
@@ -2396,19 +2469,19 @@ var TribbleDB = class _TribbleDB {
     const matchingTriples = /* @__PURE__ */ new Set();
     for (const index of intersection) {
       const triple = this.index.getTriple(index);
-      if (!source?.predicate && !target?.predicate && !(typeof relation === "object" && relation.predicate)) {
+      if (!expandedSource?.predicate && !expandedTarget?.predicate && !expandedRelation?.predicate) {
         matchingTriples.add(index);
         continue;
       }
       let isValid2 = true;
-      if (source?.predicate) {
-        isValid2 = isValid2 && source.predicate(Triples.source(triple));
+      if (expandedSource?.predicate) {
+        isValid2 = isValid2 && expandedSource.predicate(Triples.source(triple));
       }
-      if (target?.predicate) {
-        isValid2 = isValid2 && target.predicate(Triples.target(triple));
+      if (expandedTarget?.predicate) {
+        isValid2 = isValid2 && expandedTarget.predicate(Triples.target(triple));
       }
-      if (typeof relation === "object" && relation.predicate) {
-        isValid2 = isValid2 && relation.predicate(Triples.relation(triple));
+      if (typeof expandedRelation === "object" && expandedRelation.predicate) {
+        isValid2 = isValid2 && expandedRelation.predicate(Triples.relation(triple));
       }
       if (isValid2) {
         matchingTriples.add(index);
@@ -2473,104 +2546,6 @@ var TribbleDB = class _TribbleDB {
       index: this.index.metrics,
       db: this.metrics
     };
-  }
-};
-
-// node_modules/tribbledb/dist/mod.js
-var IndexedSet2 = class {
-  #idx;
-  #map;
-  #reverseMap;
-  constructor() {
-    this.#idx = 0;
-    this.#map = /* @__PURE__ */ new Map();
-    this.#reverseMap = /* @__PURE__ */ new Map();
-  }
-  /*
-   * Return the underlying map of values to indices
-   */
-  map() {
-    return this.#map;
-  }
-  /*
-   * Return the underlying map of indices to values
-   */
-  reverseMap() {
-    return this.#reverseMap;
-  }
-  /*
-   * Add a value to the set, and return its index
-   */
-  add(value) {
-    if (this.#map.has(value)) {
-      return this.#map.get(value);
-    }
-    this.#map.set(value, this.#idx);
-    this.#reverseMap.set(this.#idx, value);
-    this.#idx++;
-    return this.#idx - 1;
-  }
-  /**
-   * Set the index for a value in the set
-   */
-  setIndex(value, index) {
-    this.#map.set(value, index);
-    this.#reverseMap.set(index, value);
-  }
-  /**
-   * Get the index for a value in the set
-   */
-  getIndex(value) {
-    return this.#map.get(value);
-  }
-  /**
-   * Set the values for an index in the set
-   */
-  getValue(idx) {
-    return this.#reverseMap.get(idx);
-  }
-  /**
-   * Does this structure have a value?
-   */
-  has(value) {
-    return this.#map.has(value);
-  }
-};
-var TribbleParser = class {
-  stringIndex;
-  constructor() {
-    this.stringIndex = new IndexedSet2();
-  }
-  parseTriple(line) {
-    const match = line.match(/^(\d+) (\d+) (\d+)$/);
-    if (!match) {
-      throw new SyntaxError(`Invalid format for triple line: ${line}`);
-    }
-    const src = this.stringIndex.getValue(parseInt(match[1], 10));
-    const rel = this.stringIndex.getValue(parseInt(match[2], 10));
-    const tgt = this.stringIndex.getValue(parseInt(match[3], 10));
-    if (src === void 0 || rel === void 0 || tgt === void 0) {
-      throw new SyntaxError(`Invalid triple reference: ${line}`);
-    }
-    return [src, rel, tgt];
-  }
-  parseDeclaration(line) {
-    const match = line.match(/^(\d+) "(.*)"$/);
-    if (!match) {
-      throw new SyntaxError(`Invalid format for declaration line: ${line}`);
-    }
-    const id = match[1];
-    const value = match[2];
-    this.stringIndex.setIndex(value, parseInt(id, 10));
-  }
-  parse(line) {
-    const isTriple = /^(\d+)\s(\d+)\s(\d+)$/;
-    if (isTriple.test(line)) {
-      return this.parseTriple(line);
-    } else {
-      this.parseDeclaration(line);
-      return;
-    }
   }
 };
 
@@ -2719,6 +2694,10 @@ var KnownRelations = class {
   }
   static {
     this.IN = "in";
+  }
+  static {
+    // horrible
+    this.FLAGS = "flags";
   }
 };
 var CDN_RELATIONS = /* @__PURE__ */ new Set([
@@ -2984,7 +2963,7 @@ function Sidebar() {
 }
 
 // ts/pages/albums.ts
-var import_mithril8 = __toESM(require_mithril());
+var import_mithril9 = __toESM(require_mithril());
 
 // ts/components/album-stats.ts
 var import_mithril3 = __toESM(require_mithril());
@@ -3312,14 +3291,35 @@ function PhotoAlbum() {
   };
 }
 
+// ts/components/country-link.ts
+var import_mithril8 = __toESM(require_mithril());
+
+// ts/semantic/urn.ts
+function urnToUrl(urn) {
+  const { type, id } = asUrn(urn);
+  return `#/thing/${type}:${id}`;
+}
+
+// ts/components/country-link.ts
+function CountryLink() {
+  return {
+    view(vnode) {
+      const { flag, urn, name, mode } = vnode.attrs;
+      if (mode === "flag" && urn) {
+        return (0, import_mithril8.default)("a.country-link", { href: urnToUrl(urn) }, flag);
+      }
+    }
+  };
+}
+
 // ts/pages/albums.ts
 function AlbumsList() {
-  const albumComponents = [];
   function albumYear(album) {
     return new Date(album.minDate).getFullYear();
   }
   return {
     view(vnode) {
+      const albumComponents = [];
       let year = 2005;
       const { albums } = vnode.attrs;
       for (let idx = 0; idx < albums.length; idx++) {
@@ -3328,18 +3328,24 @@ function AlbumsList() {
         if (year !== albumYear(album)) {
           year = albumYear(album);
           if (year !== (/* @__PURE__ */ new Date()).getFullYear()) {
-            const $h2 = (0, import_mithril8.default)("h2.album-year-header", year.toString());
+            const $h2 = (0, import_mithril9.default)("h2.album-year-header", year.toString());
             albumComponents.push($h2);
           }
         }
-        const $md = (0, import_mithril8.default)(PhotoAlbumMetadata, {
+        const $countryLinks = album.countries.map((country) => {
+          return (0, import_mithril9.default)(CountryLink, {
+            ...country,
+            mode: "flag"
+          });
+        });
+        const $md = (0, import_mithril9.default)(PhotoAlbumMetadata, {
           title: album.name,
           minDate: album.minDate,
           maxDate: album.maxDate,
           count: album.photosCount,
-          countryLinks: []
+          countryLinks: $countryLinks
         });
-        const $album = (0, import_mithril8.default)(PhotoAlbum, {
+        const $album = (0, import_mithril9.default)(PhotoAlbum, {
           imageUrl: album.thumbnailUrl,
           thumbnailUrl: album.thumbnailUrl,
           thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
@@ -3350,7 +3356,7 @@ function AlbumsList() {
         albumComponents.push($album);
         albumComponents.push($md);
       }
-      return (0, import_mithril8.default)("section", albumComponents);
+      return (0, import_mithril9.default)("section", albumComponents);
     }
   };
 }
@@ -3360,15 +3366,15 @@ function AlbumsPage() {
       Windows.setTitle("Albums - photos");
     },
     view(vnode) {
-      const $md = (0, import_mithril8.default)("section.album-metadata", [
-        (0, import_mithril8.default)("h1.albums-header", "Albums"),
-        (0, import_mithril8.default)(AlbumStats)
+      const $md = (0, import_mithril9.default)("section.album-metadata", [
+        (0, import_mithril9.default)("h1.albums-header", "Albums"),
+        (0, import_mithril9.default)(AlbumStats)
       ]);
-      const $albumContainer = (0, import_mithril8.default)("section.album-container", [
-        (0, import_mithril8.default)(YearCursor),
-        (0, import_mithril8.default)(AlbumsList, { albums: vnode.attrs.albums })
+      const $albumContainer = (0, import_mithril9.default)("section.album-container", [
+        (0, import_mithril9.default)(YearCursor),
+        (0, import_mithril9.default)(AlbumsList, { albums: vnode.attrs.albums })
       ]);
-      return (0, import_mithril8.default)("div", [
+      return (0, import_mithril9.default)("div", [
         $md,
         $albumContainer
       ]);
@@ -3731,7 +3737,7 @@ var makeIssue = (params) => {
     path: fullPath
   };
   let errorMessage = "";
-  const maps = errorMaps.filter((m11) => !!m11).slice().reverse();
+  const maps = errorMaps.filter((m12) => !!m12).slice().reverse();
   for (const map of maps) {
     errorMessage = map(fullIssue, { data, defaultError: errorMessage }).message;
   }
@@ -7101,6 +7107,21 @@ function asInt(value) {
   return parseInt(value, 10);
 }
 
+// ts/semantic/names.ts
+function countryNameToUrn(tdb2, name) {
+  return tdb2.search({
+    source: { type: "country" },
+    relation: KnownRelations.NAME,
+    target: name
+  }).firstSource();
+}
+function urnToFlag(tdb2, urn) {
+  return tdb2.search({
+    source: asUrn(urn),
+    relation: KnownRelations.FLAG
+  }).firstTarget();
+}
+
 // ts/services/albums.ts
 var AlbumSchema = z.object({
   name: z.string(),
@@ -7112,13 +7133,23 @@ var AlbumSchema = z.object({
   photosCount: z.union([z.string(), z.number()]),
   flags: z.any()
 });
-function parseAlbum(album) {
+function parseAlbum(tdb2, album) {
   const result = AlbumSchema.safeParse(album);
   if (!result.success) {
     throw new Error(
       `Invalid album object: ${JSON.stringify(result.error.issues)}`
     );
   }
+  const countryNames = Array.isArray(result.data.flags) ? result.data.flags : [result.data.flags];
+  const countries = countryNames.map((countryName) => {
+    const urn = countryNameToUrn(tdb2, countryName);
+    const flag = urn ? urnToFlag(tdb2, urn) : void 0;
+    return {
+      urn,
+      name: countryName,
+      flag
+    };
+  });
   return {
     name: result.data.name,
     minDate: asInt(result.data.minDate),
@@ -7127,13 +7158,13 @@ function parseAlbum(album) {
     mosaicColours: result.data.mosaic,
     id: result.data.id,
     photosCount: asInt(result.data.photosCount),
-    flags: result.data.flags
+    countries
   };
 }
 function readAlbums(tdb2) {
   return tdb2.search({
     source: { type: "album" }
-  }).objects().map(parseAlbum).sort((album0, album1) => {
+  }).objects().map(parseAlbum.bind(null, tdb2)).sort((album0, album1) => {
     return album1.minDate - album0.minDate;
   });
 }
@@ -7143,12 +7174,12 @@ var state = await loadState();
 function App() {
   return {
     view() {
-      return (0, import_mithril9.default)("body", [
-        (0, import_mithril9.default)("div", [
-          (0, import_mithril9.default)(Header, state),
-          (0, import_mithril9.default)("div.app-container", [
-            (0, import_mithril9.default)(Sidebar, { visible: state.sidebarVisible }),
-            (0, import_mithril9.default)(AlbumsPage, {
+      return (0, import_mithril10.default)("body", [
+        (0, import_mithril10.default)("div", [
+          (0, import_mithril10.default)(Header, state),
+          (0, import_mithril10.default)("div.app-container", [
+            (0, import_mithril10.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril10.default)(AlbumsPage, {
               albums: readAlbums(state.data)
             })
           ])
@@ -7159,5 +7190,5 @@ function App() {
 }
 
 // ts/index.ts
-import_mithril10.default.mount(document.body, App(AlbumsPage));
+import_mithril11.default.mount(document.body, App(AlbumsPage));
 //# sourceMappingURL=app.js.map

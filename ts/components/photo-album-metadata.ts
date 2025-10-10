@@ -1,13 +1,14 @@
 import m from "mithril";
 import { Windows } from "../services/window.ts";
 import { Dates } from "../services/dates.ts";
+import type { CountryLinkAttrs } from "./country-link.ts"
 
 export type PhotoAlbumMetadataAttrs = {
   title: string;
   minDate?: number;
   maxDate?: number;
   count: number;
-  countryLinks: m.Component[];
+  countryLinks: m.Vnode<CountryLinkAttrs, unknown>[];
 };
 
 export function PhotoAlbumMetadata() {

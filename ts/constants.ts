@@ -33,6 +33,8 @@ export class KnownRelations {
   static YEAR = "year";
   static CONTAINS = "contains";
   static IN = "in";
+  // horrible
+  static FLAGS = "flags";
 }
 
 export const CDN_RELATIONS = new Set([

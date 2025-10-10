@@ -8,22 +8,22 @@ import {
 } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { Windows } from "../services/window.ts";
+import { CountryLink } from "../components/country-link.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];
 };
 
 function AlbumsList() {
-  const albumComponents: m.Vnode<
-    unknown, unknown
-  >[] = [];
-
   function albumYear(album: Album) {
     return new Date(album.minDate).getFullYear();
   }
 
   return {
     view(vnode: m.Vnode<AlbumsListAttrs>) {
+      const albumComponents: m.Vnode<
+        unknown, unknown
+      >[] = [];
       let year = 2005;
       const { albums } = vnode.attrs;
 
@@ -41,12 +41,19 @@ function AlbumsList() {
           }
         }
 
+        const $countryLinks = album.countries.map((country) => {
+          return m(CountryLink, {
+            ...country,
+            mode: 'flag'
+          })
+        });
+
         const $md = m(PhotoAlbumMetadata, {
           title: album.name,
           minDate: album.minDate,
           maxDate: album.maxDate,
           count: album.photosCount,
-          countryLinks: [],
+          countryLinks: $countryLinks,
         });
 
         const $album = m(PhotoAlbum, {

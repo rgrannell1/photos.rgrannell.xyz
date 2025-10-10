@@ -3,7 +3,7 @@
  */
 
 import { TribbleDB, Triple } from "@rgrannell1/tribbledb";
-import { TribbleParser } from "tribbledb";
+import { TribbleParser } from "@rgrannell1/tribbledb";
 
 /*
  * Stream triples from a URL

@@ -20,5 +20,9 @@ export type Album = {
   mosaicColours: string;
   id: string;
   photosCount: number;
-  flags: string; // TODO
+  countries: {
+    urn: string | undefined;
+    name: string;
+    flag: string | undefined;
+  }[];
 };
