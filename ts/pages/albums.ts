@@ -1,13 +1,12 @@
-import m from "mithril";
+import m, { Vnode } from "mithril";
 import { AlbumStats } from "../components/album-stats.ts";
 import { YearCursor } from "../components/year-cursor.ts";
 import { Album } from "../types.ts";
 import { Photos } from "../services/photos.ts";
 import {
   PhotoAlbumMetadata,
-  PhotoAlbumMetadataAttrs,
 } from "../components/photo-album-metadata.ts";
-import { PhotoAlbum, PhotoAlbumAttrs } from "../components/photo-album.ts";
+import { PhotoAlbum } from "../components/photo-album.ts";
 import { Windows } from "../services/window.ts";
 
 type AlbumsListAttrs = {
@@ -16,7 +15,7 @@ type AlbumsListAttrs = {
 
 function AlbumsList() {
   const albumComponents: m.Vnode<
-    unknown
+    unknown, unknown
   >[] = [];
 
   function albumYear(album: Album) {
@@ -25,7 +24,7 @@ function AlbumsList() {
 
   return {
     view(vnode: m.Vnode<AlbumsListAttrs>) {
-      let year = 2000;
+      let year = 2005;
       const { albums } = vnode.attrs;
 
       for (let idx = 0; idx < albums.length; idx++) {
@@ -36,8 +35,10 @@ function AlbumsList() {
         if (year !== albumYear(album)) {
           year = albumYear(album);
 
-          const $h2 = m("h2.album-year-header", year.toString());
-          albumComponents.push($h2);
+          if (year !== new Date().getFullYear()) {
+            const $h2 = m("h2.album-year-header", year.toString());
+            albumComponents.push($h2);
+          }
         }
 
         const $md = m(PhotoAlbumMetadata, {
@@ -56,11 +57,11 @@ function AlbumsList() {
           onclick: () => {},
         });
 
-        albumComponents.push($md);
-        albumComponents.push($album);
+        albumComponents.push($album as m.Vnode<unknown, unknown>);
+        albumComponents.push($md as m.Vnode<unknown, unknown>);
       }
 
-      return m("section.album-container", albumComponents);
+      return m("section", albumComponents);
     },
   };
 }

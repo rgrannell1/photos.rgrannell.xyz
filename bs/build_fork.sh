@@ -5,7 +5,7 @@ npx esbuild ts/index.ts \
   --format=esm              \
   --sourcemap
 
-npx esbuild css/style.css      \
+npx esbuild css2/style.css      \
   --bundle                     \
   --loader:.ttf=file           \
   --loader:.woff2=file         \

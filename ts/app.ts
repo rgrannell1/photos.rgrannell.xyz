@@ -10,11 +10,11 @@ type AppAttrs = {};
 
 export function App(): m.Component<AppAttrs> {
   return {
-    view(vnode) {
+    view() {
       return m("body", [
         m("div", [
           m(Header, state),
-          m("div", [
+          m("div.app-container", [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(AlbumsPage, {
               albums: readAlbums(state.data),

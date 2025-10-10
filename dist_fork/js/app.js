@@ -4,120 +4,75 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __commonJS = (cb, mod) =>
-  function __require() {
-    return mod ||
-      (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod),
-      mod.exports;
-  };
+var __commonJS = (cb, mod) => function __require() {
+  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
+};
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from)) {
-      if (!__hasOwnProp.call(to, key) && key !== except) {
-        __defProp(to, key, {
-          get: () => from[key],
-          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
-        });
-      }
-    }
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   }
   return to;
 };
-var __toESM = (
-  mod,
-  isNodeMode,
-  target,
-) => (target = mod != null ? __create(__getProtoOf(mod)) : {},
-  __copyProps(
-    // If the importer is in node compatibility mode or this is not an ESM
-    // file that has been converted to a CommonJS file using a Babel-
-    // compatible transform (i.e. "__esModule" has not been set), then set
-    // "default" to the CommonJS "module.exports" for node compatibility.
-    isNodeMode || !mod || !mod.__esModule
-      ? __defProp(target, "default", { value: mod, enumerable: true })
-      : target,
-    mod,
-  ));
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 
 // node_modules/mithril/render/vnode.js
 var require_vnode = __commonJS({
   "node_modules/mithril/render/vnode.js"(exports, module) {
     "use strict";
-    function Vnode(tag, key, attrs, children, text, dom) {
-      return {
-        tag,
-        key,
-        attrs,
-        children,
-        text,
-        dom,
-        is: void 0,
-        domSize: void 0,
-        state: void 0,
-        events: void 0,
-        instance: void 0,
-      };
+    function Vnode2(tag, key, attrs, children, text, dom) {
+      return { tag, key, attrs, children, text, dom, is: void 0, domSize: void 0, state: void 0, events: void 0, instance: void 0 };
     }
-    Vnode.normalize = function (node) {
-      if (Array.isArray(node)) {
-        return Vnode(
-          "[",
-          void 0,
-          void 0,
-          Vnode.normalizeChildren(node),
-          void 0,
-          void 0,
-        );
-      }
+    Vnode2.normalize = function(node) {
+      if (Array.isArray(node)) return Vnode2("[", void 0, void 0, Vnode2.normalizeChildren(node), void 0, void 0);
       if (node == null || typeof node === "boolean") return null;
       if (typeof node === "object") return node;
-      return Vnode("#", void 0, void 0, String(node), void 0, void 0);
+      return Vnode2("#", void 0, void 0, String(node), void 0, void 0);
     };
-    Vnode.normalizeChildren = function (input) {
+    Vnode2.normalizeChildren = function(input) {
       var children = [];
       if (input.length) {
         var isKeyed = input[0] != null && input[0].key != null;
         for (var i = 1; i < input.length; i++) {
           if ((input[i] != null && input[i].key != null) !== isKeyed) {
             throw new TypeError(
-              isKeyed && (input[i] == null || typeof input[i] === "boolean")
-                ? "In fragments, vnodes must either all have keys or none have keys. You may wish to consider using an explicit keyed empty fragment, m.fragment({key: ...}), instead of a hole."
-                : "In fragments, vnodes must either all have keys or none have keys.",
+              isKeyed && (input[i] == null || typeof input[i] === "boolean") ? "In fragments, vnodes must either all have keys or none have keys. You may wish to consider using an explicit keyed empty fragment, m.fragment({key: ...}), instead of a hole." : "In fragments, vnodes must either all have keys or none have keys."
             );
           }
         }
         for (var i = 0; i < input.length; i++) {
-          children[i] = Vnode.normalize(input[i]);
+          children[i] = Vnode2.normalize(input[i]);
         }
       }
       return children;
     };
-    module.exports = Vnode;
-  },
+    module.exports = Vnode2;
+  }
 });
 
 // node_modules/mithril/render/hyperscriptVnode.js
 var require_hyperscriptVnode = __commonJS({
   "node_modules/mithril/render/hyperscriptVnode.js"(exports, module) {
     "use strict";
-    var Vnode = require_vnode();
-    module.exports = function (attrs, children) {
-      if (
-        attrs == null ||
-        typeof attrs === "object" && attrs.tag == null && !Array.isArray(attrs)
-      ) {
-        if (children.length === 1 && Array.isArray(children[0])) {
-          children = children[0];
-        }
+    var Vnode2 = require_vnode();
+    module.exports = function(attrs, children) {
+      if (attrs == null || typeof attrs === "object" && attrs.tag == null && !Array.isArray(attrs)) {
+        if (children.length === 1 && Array.isArray(children[0])) children = children[0];
       } else {
-        children = children.length === 0 && Array.isArray(attrs)
-          ? attrs
-          : [attrs, ...children];
+        children = children.length === 0 && Array.isArray(attrs) ? attrs : [attrs, ...children];
         attrs = void 0;
       }
-      return Vnode("", attrs && attrs.key, attrs, children);
+      return Vnode2("", attrs && attrs.key, attrs, children);
     };
-  },
+  }
 });
 
 // node_modules/mithril/util/hasOwn.js
@@ -125,7 +80,7 @@ var require_hasOwn = __commonJS({
   "node_modules/mithril/util/hasOwn.js"(exports, module) {
     "use strict";
     module.exports = {}.hasOwnProperty;
-  },
+  }
 });
 
 // node_modules/mithril/render/emptyAttrs.js
@@ -133,7 +88,7 @@ var require_emptyAttrs = __commonJS({
   "node_modules/mithril/render/emptyAttrs.js"(exports, module) {
     "use strict";
     module.exports = {};
-  },
+  }
 });
 
 // node_modules/mithril/render/cachedAttrsIsStaticMap.js
@@ -142,28 +97,26 @@ var require_cachedAttrsIsStaticMap = __commonJS({
     "use strict";
     var emptyAttrs = require_emptyAttrs();
     module.exports = /* @__PURE__ */ new Map([[emptyAttrs, true]]);
-  },
+  }
 });
 
 // node_modules/mithril/render/hyperscript.js
 var require_hyperscript = __commonJS({
   "node_modules/mithril/render/hyperscript.js"(exports, module) {
     "use strict";
-    var Vnode = require_vnode();
+    var Vnode2 = require_vnode();
     var hyperscriptVnode = require_hyperscriptVnode();
     var hasOwn = require_hasOwn();
     var emptyAttrs = require_emptyAttrs();
     var cachedAttrsIsStaticMap = require_cachedAttrsIsStaticMap();
-    var selectorParser =
-      /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g;
+    var selectorParser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g;
     var selectorCache = /* @__PURE__ */ Object.create(null);
     function isEmpty(object) {
       for (var key in object) if (hasOwn.call(object, key)) return false;
       return true;
     }
     function isFormAttributeKey(key) {
-      return key === "value" || key === "checked" || key === "selectedIndex" ||
-        key === "selected";
+      return key === "value" || key === "checked" || key === "selectedIndex" || key === "selected";
     }
     function compileSelector(selector) {
       var match, tag = "div", classes = [], attrs = {}, isStatic = true;
@@ -174,12 +127,7 @@ var require_hyperscript = __commonJS({
         else if (type === ".") classes.push(value);
         else if (match[3][0] === "[") {
           var attrValue = match[6];
-          if (attrValue) {
-            attrValue = attrValue.replace(/\\(["'])/g, "$1").replace(
-              /\\\\/g,
-              "\\",
-            );
-          }
+          if (attrValue) attrValue = attrValue.replace(/\\(["'])/g, "$1").replace(/\\\\/g, "\\");
           if (match[4] === "class") classes.push(attrValue);
           else {
             attrs[match[4]] = attrValue === "" ? attrValue : attrValue || true;
@@ -204,13 +152,7 @@ var require_hyperscript = __commonJS({
       var className = hasClass ? attrs.class : attrs.className;
       if (state2.attrs !== emptyAttrs) {
         attrs = Object.assign({}, state2.attrs, attrs);
-        if (className != null || state2.attrs.className != null) {
-          attrs.className = className != null
-            ? state2.attrs.className != null
-              ? String(state2.attrs.className) + " " + String(className)
-              : className
-            : state2.attrs.className;
-        }
+        if (className != null || state2.attrs.className != null) attrs.className = className != null ? state2.attrs.className != null ? String(state2.attrs.className) + " " + String(className) : className : state2.attrs.className;
       } else {
         if (className != null) attrs.className = className;
       }
@@ -223,57 +165,48 @@ var require_hyperscript = __commonJS({
       return vnode;
     }
     function hyperscript(selector, attrs, ...children) {
-      if (
-        selector == null ||
-        typeof selector !== "string" && typeof selector !== "function" &&
-          typeof selector.view !== "function"
-      ) {
+      if (selector == null || typeof selector !== "string" && typeof selector !== "function" && typeof selector.view !== "function") {
         throw Error("The selector must be either a string or a component.");
       }
       var vnode = hyperscriptVnode(attrs, children);
       if (typeof selector === "string") {
-        vnode.children = Vnode.normalizeChildren(vnode.children);
-        if (selector !== "[") {
-          return execSelector(
-            selectorCache[selector] || compileSelector(selector),
-            vnode,
-          );
-        }
+        vnode.children = Vnode2.normalizeChildren(vnode.children);
+        if (selector !== "[") return execSelector(selectorCache[selector] || compileSelector(selector), vnode);
       }
       if (vnode.attrs == null) vnode.attrs = {};
       vnode.tag = selector;
       return vnode;
     }
     module.exports = hyperscript;
-  },
+  }
 });
 
 // node_modules/mithril/render/trust.js
 var require_trust = __commonJS({
   "node_modules/mithril/render/trust.js"(exports, module) {
     "use strict";
-    var Vnode = require_vnode();
-    module.exports = function (html) {
+    var Vnode2 = require_vnode();
+    module.exports = function(html) {
       if (html == null) html = "";
-      return Vnode("<", void 0, void 0, html, void 0, void 0);
+      return Vnode2("<", void 0, void 0, html, void 0, void 0);
     };
-  },
+  }
 });
 
 // node_modules/mithril/render/fragment.js
 var require_fragment = __commonJS({
   "node_modules/mithril/render/fragment.js"(exports, module) {
     "use strict";
-    var Vnode = require_vnode();
+    var Vnode2 = require_vnode();
     var hyperscriptVnode = require_hyperscriptVnode();
-    module.exports = function (attrs, ...children) {
+    module.exports = function(attrs, ...children) {
       var vnode = hyperscriptVnode(attrs, children);
       if (vnode.attrs == null) vnode.attrs = {};
       vnode.tag = "[";
-      vnode.children = Vnode.normalizeChildren(vnode.children);
+      vnode.children = Vnode2.normalizeChildren(vnode.children);
       return vnode;
     };
-  },
+  }
 });
 
 // node_modules/mithril/hyperscript.js
@@ -284,7 +217,7 @@ var require_hyperscript2 = __commonJS({
     hyperscript.trust = require_trust();
     hyperscript.fragment = require_fragment();
     module.exports = hyperscript;
-  },
+  }
 });
 
 // node_modules/mithril/render/domFor.js
@@ -296,37 +229,35 @@ var require_domFor = __commonJS({
       var dom = vnode.dom;
       var domSize = vnode.domSize;
       var generation = delayedRemoval.get(dom);
-      if (dom != null) {
-        do {
-          var nextSibling = dom.nextSibling;
-          if (delayedRemoval.get(dom) === generation) {
-            yield dom;
-            domSize--;
-          }
-          dom = nextSibling;
-        } while (domSize);
-      }
+      if (dom != null) do {
+        var nextSibling = dom.nextSibling;
+        if (delayedRemoval.get(dom) === generation) {
+          yield dom;
+          domSize--;
+        }
+        dom = nextSibling;
+      } while (domSize);
     }
     module.exports = {
       delayedRemoval,
-      domFor,
+      domFor
     };
-  },
+  }
 });
 
 // node_modules/mithril/render/render.js
 var require_render = __commonJS({
   "node_modules/mithril/render/render.js"(exports, module) {
     "use strict";
-    var Vnode = require_vnode();
+    var Vnode2 = require_vnode();
     var df = require_domFor();
     var delayedRemoval = df.delayedRemoval;
     var domFor = df.domFor;
     var cachedAttrsIsStaticMap = require_cachedAttrsIsStaticMap();
-    module.exports = function () {
+    module.exports = function() {
       var nameSpace = {
         svg: "http://www.w3.org/2000/svg",
-        math: "http://www.w3.org/1998/Math/MathML",
+        math: "http://www.w3.org/1998/Math/MathML"
       };
       var currentRedraw;
       var currentRender;
@@ -337,9 +268,7 @@ var require_render = __commonJS({
         return vnode.attrs && vnode.attrs.xmlns || nameSpace[vnode.tag];
       }
       function checkState(vnode, original) {
-        if (vnode.state !== original) {
-          throw new Error("'vnode.state' must not be modified.");
-        }
+        if (vnode.state !== original) throw new Error("'vnode.state' must not be modified.");
       }
       function callHook(vnode) {
         var original = vnode.state;
@@ -388,25 +317,12 @@ var require_render = __commonJS({
         vnode.dom = getDocument(parent).createTextNode(vnode.children);
         insertDOM(parent, vnode.dom, nextSibling);
       }
-      var possibleParents = {
-        caption: "table",
-        thead: "table",
-        tbody: "table",
-        tfoot: "table",
-        tr: "tbody",
-        th: "tr",
-        td: "tr",
-        colgroup: "table",
-        col: "colgroup",
-      };
+      var possibleParents = { caption: "table", thead: "table", tbody: "table", tfoot: "table", tr: "tbody", th: "tr", td: "tr", colgroup: "table", col: "colgroup" };
       function createHTML(parent, vnode, ns, nextSibling) {
         var match = vnode.children.match(/^\s*?<(\w+)/im) || [];
-        var temp = getDocument(parent).createElement(
-          possibleParents[match[1]] || "div",
-        );
+        var temp = getDocument(parent).createElement(possibleParents[match[1]] || "div");
         if (ns === "http://www.w3.org/2000/svg") {
-          temp.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg">' +
-            vnode.children + "</svg>";
+          temp.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg">' + vnode.children + "</svg>";
           temp = temp.firstChild;
         } else {
           temp.innerHTML = vnode.children;
@@ -435,13 +351,7 @@ var require_render = __commonJS({
         var attrs = vnode.attrs;
         var is = vnode.is;
         ns = getNameSpace(vnode) || ns;
-        var element = ns
-          ? is
-            ? getDocument(parent).createElementNS(ns, tag, { is })
-            : getDocument(parent).createElementNS(ns, tag)
-          : is
-          ? getDocument(parent).createElement(tag, { is })
-          : getDocument(parent).createElement(tag);
+        var element = ns ? is ? getDocument(parent).createElementNS(ns, tag, { is }) : getDocument(parent).createElementNS(ns, tag) : is ? getDocument(parent).createElement(tag, { is }) : getDocument(parent).createElement(tag);
         vnode.dom = element;
         if (attrs != null) {
           setAttrs(vnode, attrs, ns);
@@ -451,9 +361,7 @@ var require_render = __commonJS({
           if (vnode.children != null) {
             var children = vnode.children;
             createNodes(element, children, 0, children.length, hooks, null, ns);
-            if (vnode.tag === "select" && attrs != null) {
-              setLateSelectAttrs(vnode, attrs);
-            }
+            if (vnode.tag === "select" && attrs != null) setLateSelectAttrs(vnode, attrs);
           }
         }
       }
@@ -469,19 +377,12 @@ var require_render = __commonJS({
           sentinel = vnode.tag;
           if (sentinel.$$reentrantLock$$ != null) return;
           sentinel.$$reentrantLock$$ = true;
-          vnode.state = vnode.tag.prototype != null &&
-              typeof vnode.tag.prototype.view === "function"
-            ? new vnode.tag(vnode)
-            : vnode.tag(vnode);
+          vnode.state = vnode.tag.prototype != null && typeof vnode.tag.prototype.view === "function" ? new vnode.tag(vnode) : vnode.tag(vnode);
         }
         initLifecycle(vnode.state, vnode, hooks);
         if (vnode.attrs != null) initLifecycle(vnode.attrs, vnode, hooks);
-        vnode.instance = Vnode.normalize(
-          callHook.call(vnode.state.view, vnode),
-        );
-        if (vnode.instance === vnode) {
-          throw Error("A view cannot return the vnode it received as argument");
-        }
+        vnode.instance = Vnode2.normalize(callHook.call(vnode.state.view, vnode));
+        if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument");
         sentinel.$$reentrantLock$$ = null;
       }
       function createComponent(parent, vnode, hooks, ns, nextSibling) {
@@ -496,85 +397,32 @@ var require_render = __commonJS({
       }
       function updateNodes(parent, old, vnodes, hooks, nextSibling, ns) {
         if (old === vnodes || old == null && vnodes == null) return;
-        else if (old == null || old.length === 0) {
-          createNodes(parent, vnodes, 0, vnodes.length, hooks, nextSibling, ns);
-        } else if (vnodes == null || vnodes.length === 0) {
-          removeNodes(parent, old, 0, old.length);
-        } else {
+        else if (old == null || old.length === 0) createNodes(parent, vnodes, 0, vnodes.length, hooks, nextSibling, ns);
+        else if (vnodes == null || vnodes.length === 0) removeNodes(parent, old, 0, old.length);
+        else {
           var isOldKeyed = old[0] != null && old[0].key != null;
           var isKeyed = vnodes[0] != null && vnodes[0].key != null;
           var start = 0, oldStart = 0;
-          if (!isOldKeyed) {
-            while (oldStart < old.length && old[oldStart] == null) {
-              oldStart++;
-            }
-          }
-          if (!isKeyed) {
-            while (start < vnodes.length && vnodes[start] == null) {
-              start++;
-            }
-          }
+          if (!isOldKeyed) while (oldStart < old.length && old[oldStart] == null) oldStart++;
+          if (!isKeyed) while (start < vnodes.length && vnodes[start] == null) start++;
           if (isOldKeyed !== isKeyed) {
             removeNodes(parent, old, oldStart, old.length);
-            createNodes(
-              parent,
-              vnodes,
-              start,
-              vnodes.length,
-              hooks,
-              nextSibling,
-              ns,
-            );
+            createNodes(parent, vnodes, start, vnodes.length, hooks, nextSibling, ns);
           } else if (!isKeyed) {
-            var commonLength = old.length < vnodes.length
-              ? old.length
-              : vnodes.length;
+            var commonLength = old.length < vnodes.length ? old.length : vnodes.length;
             start = start < oldStart ? start : oldStart;
             for (; start < commonLength; start++) {
               o = old[start];
               v = vnodes[start];
               if (o === v || o == null && v == null) continue;
-              else if (o == null) {
-                createNode(
-                  parent,
-                  v,
-                  hooks,
-                  ns,
-                  getNextSibling(old, start + 1, nextSibling),
-                );
-              } else if (v == null) removeNode(parent, o);
-              else {updateNode(
-                  parent,
-                  o,
-                  v,
-                  hooks,
-                  getNextSibling(old, start + 1, nextSibling),
-                  ns,
-                );}
+              else if (o == null) createNode(parent, v, hooks, ns, getNextSibling(old, start + 1, nextSibling));
+              else if (v == null) removeNode(parent, o);
+              else updateNode(parent, o, v, hooks, getNextSibling(old, start + 1, nextSibling), ns);
             }
-            if (old.length > commonLength) {
-              removeNodes(parent, old, start, old.length);
-            }
-            if (vnodes.length > commonLength) {
-              createNodes(
-                parent,
-                vnodes,
-                start,
-                vnodes.length,
-                hooks,
-                nextSibling,
-                ns,
-              );
-            }
+            if (old.length > commonLength) removeNodes(parent, old, start, old.length);
+            if (vnodes.length > commonLength) createNodes(parent, vnodes, start, vnodes.length, hooks, nextSibling, ns);
           } else {
-            var oldEnd = old.length - 1,
-              end = vnodes.length - 1,
-              map,
-              o,
-              v,
-              oe,
-              ve,
-              topSibling;
+            var oldEnd = old.length - 1, end = vnodes.length - 1, map, o, v, oe, ve, topSibling;
             while (oldEnd >= oldStart && end >= start) {
               oe = old[oldEnd];
               ve = vnodes[end];
@@ -588,16 +436,7 @@ var require_render = __commonJS({
               v = vnodes[start];
               if (o.key !== v.key) break;
               oldStart++, start++;
-              if (o !== v) {
-                updateNode(
-                  parent,
-                  o,
-                  v,
-                  hooks,
-                  getNextSibling(old, oldStart, nextSibling),
-                  ns,
-                );
-              }
+              if (o !== v) updateNode(parent, o, v, hooks, getNextSibling(old, oldStart, nextSibling), ns);
             }
             while (oldEnd >= oldStart && end >= start) {
               if (start === end) break;
@@ -624,26 +463,9 @@ var require_render = __commonJS({
               ve = vnodes[end];
             }
             if (start > end) removeNodes(parent, old, oldStart, oldEnd + 1);
-            else if (oldStart > oldEnd) {
-              createNodes(
-                parent,
-                vnodes,
-                start,
-                end + 1,
-                hooks,
-                nextSibling,
-                ns,
-              );
-            } else {
-              var originalNextSibling = nextSibling,
-                vnodesLength = end - start + 1,
-                oldIndices = new Array(vnodesLength),
-                li = 0,
-                i = 0,
-                pos = 2147483647,
-                matched = 0,
-                map,
-                lisIndices;
+            else if (oldStart > oldEnd) createNodes(parent, vnodes, start, end + 1, hooks, nextSibling, ns);
+            else {
+              var originalNextSibling = nextSibling, vnodesLength = end - start + 1, oldIndices = new Array(vnodesLength), li = 0, i = 0, pos = 2147483647, matched = 0, map, lisIndices;
               for (i = 0; i < vnodesLength; i++) oldIndices[i] = -1;
               for (i = end; i >= start; i--) {
                 if (map == null) map = getKeyMap(old, oldStart, oldEnd + 1);
@@ -654,36 +476,22 @@ var require_render = __commonJS({
                   oldIndices[i - start] = oldIndex;
                   oe = old[oldIndex];
                   old[oldIndex] = null;
-                  if (oe !== ve) {
-                    updateNode(parent, oe, ve, hooks, nextSibling, ns);
-                  }
+                  if (oe !== ve) updateNode(parent, oe, ve, hooks, nextSibling, ns);
                   if (ve.dom != null) nextSibling = ve.dom;
                   matched++;
                 }
               }
               nextSibling = originalNextSibling;
-              if (matched !== oldEnd - oldStart + 1) {
-                removeNodes(parent, old, oldStart, oldEnd + 1);
-              }
-              if (matched === 0) {
-                createNodes(
-                  parent,
-                  vnodes,
-                  start,
-                  end + 1,
-                  hooks,
-                  nextSibling,
-                  ns,
-                );
-              } else {
+              if (matched !== oldEnd - oldStart + 1) removeNodes(parent, old, oldStart, oldEnd + 1);
+              if (matched === 0) createNodes(parent, vnodes, start, end + 1, hooks, nextSibling, ns);
+              else {
                 if (pos === -1) {
                   lisIndices = makeLisIndices(oldIndices);
                   li = lisIndices.length - 1;
                   for (i = end; i >= start; i--) {
                     v = vnodes[i];
-                    if (oldIndices[i - start] === -1) {
-                      createNode(parent, v, hooks, ns, nextSibling);
-                    } else {
+                    if (oldIndices[i - start] === -1) createNode(parent, v, hooks, ns, nextSibling);
+                    else {
                       if (lisIndices[li] === i - start) li--;
                       else moveDOM(parent, v, nextSibling);
                     }
@@ -692,9 +500,7 @@ var require_render = __commonJS({
                 } else {
                   for (i = end; i >= start; i--) {
                     v = vnodes[i];
-                    if (oldIndices[i - start] === -1) {
-                      createNode(parent, v, hooks, ns, nextSibling);
-                    }
+                    if (oldIndices[i - start] === -1) createNode(parent, v, hooks, ns, nextSibling);
                     if (v.dom != null) nextSibling = vnodes[i].dom;
                   }
                 }
@@ -748,14 +554,7 @@ var require_render = __commonJS({
         }
       }
       function updateFragment(parent, old, vnode, hooks, nextSibling, ns) {
-        updateNodes(
-          parent,
-          old.children,
-          vnode.children,
-          hooks,
-          nextSibling,
-          ns,
-        );
+        updateNodes(parent, old.children, vnode.children, hooks, nextSibling, ns);
         var domSize = 0, children = vnode.children;
         vnode.dom = null;
         if (children != null) {
@@ -772,10 +571,7 @@ var require_render = __commonJS({
       function updateElement(old, vnode, hooks, ns) {
         var element = vnode.dom = old.dom;
         ns = getNameSpace(vnode) || ns;
-        if (
-          old.attrs != vnode.attrs ||
-          vnode.attrs != null && !cachedAttrsIsStaticMap.get(vnode.attrs)
-        ) {
+        if (old.attrs != vnode.attrs || vnode.attrs != null && !cachedAttrsIsStaticMap.get(vnode.attrs)) {
           updateAttrs(vnode, old.attrs, vnode.attrs, ns);
         }
         if (!maybeSetContentEditable(vnode)) {
@@ -783,25 +579,13 @@ var require_render = __commonJS({
         }
       }
       function updateComponent(parent, old, vnode, hooks, nextSibling, ns) {
-        vnode.instance = Vnode.normalize(
-          callHook.call(vnode.state.view, vnode),
-        );
-        if (vnode.instance === vnode) {
-          throw Error("A view cannot return the vnode it received as argument");
-        }
+        vnode.instance = Vnode2.normalize(callHook.call(vnode.state.view, vnode));
+        if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument");
         updateLifecycle(vnode.state, vnode, hooks);
         if (vnode.attrs != null) updateLifecycle(vnode.attrs, vnode, hooks);
         if (vnode.instance != null) {
-          if (old.instance == null) {
-            createNode(parent, vnode.instance, hooks, ns, nextSibling);
-          } else {updateNode(
-              parent,
-              old.instance,
-              vnode.instance,
-              hooks,
-              nextSibling,
-              ns,
-            );}
+          if (old.instance == null) createNode(parent, vnode.instance, hooks, ns, nextSibling);
+          else updateNode(parent, old.instance, vnode.instance, hooks, nextSibling, ns);
           vnode.dom = vnode.instance.dom;
           vnode.domSize = vnode.instance.domSize;
         } else if (old.instance != null) {
@@ -885,19 +669,13 @@ var require_render = __commonJS({
         else parent.appendChild(dom);
       }
       function maybeSetContentEditable(vnode) {
-        if (
-          vnode.attrs == null || vnode.attrs.contenteditable == null && // attribute
-            vnode.attrs.contentEditable == null
-        ) return false;
+        if (vnode.attrs == null || vnode.attrs.contenteditable == null && // attribute
+        vnode.attrs.contentEditable == null) return false;
         var children = vnode.children;
-        if (
-          children != null && children.length === 1 && children[0].tag === "<"
-        ) {
+        if (children != null && children.length === 1 && children[0].tag === "<") {
           var content = children[0].children;
           if (vnode.dom.innerHTML !== content) vnode.dom.innerHTML = content;
-        } else if (children != null && children.length !== 0) {
-          throw new Error("Child node of a contenteditable must be trusted.");
-        }
+        } else if (children != null && children.length !== 0) throw new Error("Child node of a contenteditable must be trusted.");
         return true;
       }
       function removeNodes(parent, vnodes, start, end) {
@@ -913,7 +691,7 @@ var require_render = __commonJS({
         var generation = currentRender;
         for (var dom of domFor(vnode)) delayedRemoval.set(dom, generation);
         counter.v++;
-        Promise.resolve(result).finally(function () {
+        Promise.resolve(result).finally(function() {
           checkState(vnode, original);
           tryResumeRemove(parent, vnode, counter);
         });
@@ -926,13 +704,8 @@ var require_render = __commonJS({
       }
       function removeNode(parent, vnode) {
         var counter = { v: 1 };
-        if (
-          typeof vnode.tag !== "string" &&
-          typeof vnode.state.onbeforeremove === "function"
-        ) tryBlockRemove(parent, vnode, vnode.state, counter);
-        if (vnode.attrs && typeof vnode.attrs.onbeforeremove === "function") {
-          tryBlockRemove(parent, vnode, vnode.attrs, counter);
-        }
+        if (typeof vnode.tag !== "string" && typeof vnode.state.onbeforeremove === "function") tryBlockRemove(parent, vnode, vnode.state, counter);
+        if (vnode.attrs && typeof vnode.attrs.onbeforeremove === "function") tryBlockRemove(parent, vnode, vnode.attrs, counter);
         tryResumeRemove(parent, vnode, counter);
       }
       function removeDOM(parent, vnode) {
@@ -944,13 +717,8 @@ var require_render = __commonJS({
         }
       }
       function onremove(vnode) {
-        if (
-          typeof vnode.tag !== "string" &&
-          typeof vnode.state.onremove === "function"
-        ) callHook.call(vnode.state.onremove, vnode);
-        if (vnode.attrs && typeof vnode.attrs.onremove === "function") {
-          callHook.call(vnode.attrs.onremove, vnode);
-        }
+        if (typeof vnode.tag !== "string" && typeof vnode.state.onremove === "function") callHook.call(vnode.state.onremove, vnode);
+        if (vnode.attrs && typeof vnode.attrs.onremove === "function") callHook.call(vnode.attrs.onremove, vnode);
         if (typeof vnode.tag !== "string") {
           if (vnode.instance != null) onremove(vnode.instance);
         } else {
@@ -970,76 +738,39 @@ var require_render = __commonJS({
         }
       }
       function setAttr(vnode, key, old, value, ns) {
-        if (
-          key === "key" || value == null || isLifecycleMethod(key) ||
-          old === value && !isFormAttribute(vnode, key) &&
-            typeof value !== "object"
-        ) return;
-        if (key[0] === "o" && key[1] === "n") {
-          return updateEvent(vnode, key, value);
-        }
-        if (key.slice(0, 6) === "xlink:") {
-          vnode.dom.setAttributeNS(
-            "http://www.w3.org/1999/xlink",
-            key.slice(6),
-            value,
-          );
-        } else if (key === "style") updateStyle(vnode.dom, old, value);
+        if (key === "key" || value == null || isLifecycleMethod(key) || old === value && !isFormAttribute(vnode, key) && typeof value !== "object") return;
+        if (key[0] === "o" && key[1] === "n") return updateEvent(vnode, key, value);
+        if (key.slice(0, 6) === "xlink:") vnode.dom.setAttributeNS("http://www.w3.org/1999/xlink", key.slice(6), value);
+        else if (key === "style") updateStyle(vnode.dom, old, value);
         else if (hasPropertyKey(vnode, key, ns)) {
           if (key === "value") {
-            if (
-              (vnode.tag === "input" || vnode.tag === "textarea") &&
-              vnode.dom.value === "" + value
-            ) return;
-            if (
-              vnode.tag === "select" && old !== null &&
-              vnode.dom.value === "" + value
-            ) return;
-            if (
-              vnode.tag === "option" && old !== null &&
-              vnode.dom.value === "" + value
-            ) return;
-            if (
-              vnode.tag === "input" && vnode.attrs.type === "file" &&
-              "" + value !== ""
-            ) {
+            if ((vnode.tag === "input" || vnode.tag === "textarea") && vnode.dom.value === "" + value) return;
+            if (vnode.tag === "select" && old !== null && vnode.dom.value === "" + value) return;
+            if (vnode.tag === "option" && old !== null && vnode.dom.value === "" + value) return;
+            if (vnode.tag === "input" && vnode.attrs.type === "file" && "" + value !== "") {
               console.error("`value` is read-only on file inputs!");
               return;
             }
           }
-          if (vnode.tag === "input" && key === "type") {
-            vnode.dom.setAttribute(key, value);
-          } else vnode.dom[key] = value;
+          if (vnode.tag === "input" && key === "type") vnode.dom.setAttribute(key, value);
+          else vnode.dom[key] = value;
         } else {
           if (typeof value === "boolean") {
             if (value) vnode.dom.setAttribute(key, "");
             else vnode.dom.removeAttribute(key);
-          } else {vnode.dom.setAttribute(
-              key === "className" ? "class" : key,
-              value,
-            );}
+          } else vnode.dom.setAttribute(key === "className" ? "class" : key, value);
         }
       }
       function removeAttr(vnode, key, old, ns) {
         if (key === "key" || old == null || isLifecycleMethod(key)) return;
         if (key[0] === "o" && key[1] === "n") updateEvent(vnode, key, void 0);
         else if (key === "style") updateStyle(vnode.dom, old, null);
-        else if (
-          hasPropertyKey(vnode, key, ns) && key !== "className" &&
-          key !== "title" &&
-          !(key === "value" &&
-            (vnode.tag === "option" ||
-              vnode.tag === "select" && vnode.dom.selectedIndex === -1 &&
-                vnode.dom === activeElement(vnode.dom))) &&
-          !(vnode.tag === "input" && key === "type")
-        ) {
+        else if (hasPropertyKey(vnode, key, ns) && key !== "className" && key !== "title" && !(key === "value" && (vnode.tag === "option" || vnode.tag === "select" && vnode.dom.selectedIndex === -1 && vnode.dom === activeElement(vnode.dom))) && !(vnode.tag === "input" && key === "type")) {
           vnode.dom[key] = null;
         } else {
           var nsLastIndex = key.indexOf(":");
           if (nsLastIndex !== -1) key = key.slice(nsLastIndex + 1);
-          if (old !== false) {
-            vnode.dom.removeAttribute(key === "className" ? "class" : key);
-          }
+          if (old !== false) vnode.dom.removeAttribute(key === "className" ? "class" : key);
         }
       }
       function setLateSelectAttrs(vnode, attrs) {
@@ -1048,29 +779,21 @@ var require_render = __commonJS({
             if (vnode.dom.selectedIndex !== -1) vnode.dom.value = null;
           } else {
             var normalized = "" + attrs.value;
-            if (
-              vnode.dom.value !== normalized || vnode.dom.selectedIndex === -1
-            ) {
+            if (vnode.dom.value !== normalized || vnode.dom.selectedIndex === -1) {
               vnode.dom.value = normalized;
             }
           }
         }
-        if ("selectedIndex" in attrs) {
-          setAttr(vnode, "selectedIndex", null, attrs.selectedIndex, void 0);
-        }
+        if ("selectedIndex" in attrs) setAttr(vnode, "selectedIndex", null, attrs.selectedIndex, void 0);
       }
       function updateAttrs(vnode, old, attrs, ns) {
         var val;
         if (old != null) {
           if (old === attrs && !cachedAttrsIsStaticMap.has(attrs)) {
-            console.warn(
-              "Don't reuse attrs object, use new object for every redraw, this will throw in next major",
-            );
+            console.warn("Don't reuse attrs object, use new object for every redraw, this will throw in next major");
           }
           for (var key in old) {
-            if (
-              (val = old[key]) != null && (attrs == null || attrs[key] == null)
-            ) {
+            if ((val = old[key]) != null && (attrs == null || attrs[key] == null)) {
               removeAttr(vnode, key, val, ns);
             }
           }
@@ -1082,24 +805,15 @@ var require_render = __commonJS({
         }
       }
       function isFormAttribute(vnode, attr) {
-        return attr === "value" || attr === "checked" ||
-          attr === "selectedIndex" ||
-          attr === "selected" &&
-            (vnode.dom === activeElement(vnode.dom) ||
-              vnode.tag === "option" &&
-                vnode.dom.parentNode === activeElement(vnode.dom));
+        return attr === "value" || attr === "checked" || attr === "selectedIndex" || attr === "selected" && (vnode.dom === activeElement(vnode.dom) || vnode.tag === "option" && vnode.dom.parentNode === activeElement(vnode.dom));
       }
       function isLifecycleMethod(attr) {
-        return attr === "oninit" || attr === "oncreate" ||
-          attr === "onupdate" || attr === "onremove" ||
-          attr === "onbeforeremove" || attr === "onbeforeupdate";
+        return attr === "oninit" || attr === "oncreate" || attr === "onupdate" || attr === "onremove" || attr === "onbeforeremove" || attr === "onbeforeupdate";
       }
       function hasPropertyKey(vnode, key, ns) {
         return ns === void 0 && // If it's a custom element, just keep it.
-          (vnode.tag.indexOf("-") > -1 || vnode.is || // If it's a normal element, let's try to avoid a few browser bugs.
-            key !== "href" && key !== "list" && key !== "form" &&
-              key !== "width" && key !== "height") &&
-          key in vnode.dom;
+        (vnode.tag.indexOf("-") > -1 || vnode.is || // If it's a normal element, let's try to avoid a few browser bugs.
+        key !== "href" && key !== "list" && key !== "form" && key !== "width" && key !== "height") && key in vnode.dom;
       }
       function updateStyle(element, old, style) {
         if (old === style) {
@@ -1112,9 +826,8 @@ var require_render = __commonJS({
           for (var key in style) {
             var value = style[key];
             if (value != null) {
-              if (key.includes("-")) {
-                element.style.setProperty(key, String(value));
-              } else element.style[key] = String(value);
+              if (key.includes("-")) element.style.setProperty(key, String(value));
+              else element.style[key] = String(value);
             }
           }
         } else {
@@ -1137,19 +850,16 @@ var require_render = __commonJS({
         this._ = currentRedraw;
       }
       EventDict.prototype = /* @__PURE__ */ Object.create(null);
-      EventDict.prototype.handleEvent = function (ev) {
+      EventDict.prototype.handleEvent = function(ev) {
         var handler = this["on" + ev.type];
         var result;
-        if (typeof handler === "function") {
-          result = handler.call(ev.currentTarget, ev);
-        } else if (typeof handler.handleEvent === "function") {
-          handler.handleEvent(ev);
-        }
+        if (typeof handler === "function") result = handler.call(ev.currentTarget, ev);
+        else if (typeof handler.handleEvent === "function") handler.handleEvent(ev);
         var self = this;
         if (self._ != null) {
           if (ev.redraw !== false) (0, self._)();
           if (result != null && typeof result.then === "function") {
-            Promise.resolve(result).then(function () {
+            Promise.resolve(result).then(function() {
               if (self._ != null && ev.redraw !== false) (0, self._)();
             });
           }
@@ -1163,55 +873,33 @@ var require_render = __commonJS({
         if (vnode.events != null) {
           vnode.events._ = currentRedraw;
           if (vnode.events[key] === value) return;
-          if (
-            value != null &&
-            (typeof value === "function" || typeof value === "object")
-          ) {
-            if (vnode.events[key] == null) {
-              vnode.dom.addEventListener(key.slice(2), vnode.events, false);
-            }
+          if (value != null && (typeof value === "function" || typeof value === "object")) {
+            if (vnode.events[key] == null) vnode.dom.addEventListener(key.slice(2), vnode.events, false);
             vnode.events[key] = value;
           } else {
-            if (vnode.events[key] != null) {
-              vnode.dom.removeEventListener(key.slice(2), vnode.events, false);
-            }
+            if (vnode.events[key] != null) vnode.dom.removeEventListener(key.slice(2), vnode.events, false);
             vnode.events[key] = void 0;
           }
-        } else if (
-          value != null &&
-          (typeof value === "function" || typeof value === "object")
-        ) {
+        } else if (value != null && (typeof value === "function" || typeof value === "object")) {
           vnode.events = new EventDict();
           vnode.dom.addEventListener(key.slice(2), vnode.events, false);
           vnode.events[key] = value;
         }
       }
       function initLifecycle(source, vnode, hooks) {
-        if (typeof source.oninit === "function") {
-          callHook.call(source.oninit, vnode);
-        }
-        if (typeof source.oncreate === "function") {
-          hooks.push(callHook.bind(source.oncreate, vnode));
-        }
+        if (typeof source.oninit === "function") callHook.call(source.oninit, vnode);
+        if (typeof source.oncreate === "function") hooks.push(callHook.bind(source.oncreate, vnode));
       }
       function updateLifecycle(source, vnode, hooks) {
-        if (typeof source.onupdate === "function") {
-          hooks.push(callHook.bind(source.onupdate, vnode));
-        }
+        if (typeof source.onupdate === "function") hooks.push(callHook.bind(source.onupdate, vnode));
       }
       function shouldNotUpdate(vnode, old) {
         do {
-          if (
-            vnode.attrs != null &&
-            typeof vnode.attrs.onbeforeupdate === "function"
-          ) {
+          if (vnode.attrs != null && typeof vnode.attrs.onbeforeupdate === "function") {
             var force = callHook.call(vnode.attrs.onbeforeupdate, vnode, old);
             if (force !== void 0 && !force) break;
           }
-          if (
-            typeof vnode.tag !== "string" &&
-            typeof vnode.state.onbeforeupdate === "function"
-          ) {
+          if (typeof vnode.tag !== "string" && typeof vnode.state.onbeforeupdate === "function") {
             var force = callHook.call(vnode.state.onbeforeupdate, vnode, old);
             if (force !== void 0 && !force) break;
           }
@@ -1226,14 +914,10 @@ var require_render = __commonJS({
         return true;
       }
       var currentDOM;
-      return function (dom, vnodes, redraw) {
-        if (!dom) {
-          throw new TypeError("DOM element being rendered to does not exist.");
-        }
+      return function(dom, vnodes, redraw) {
+        if (!dom) throw new TypeError("DOM element being rendered to does not exist.");
         if (currentDOM != null && dom.contains(currentDOM)) {
-          throw new TypeError(
-            "Node is currently being rendered to and thus is locked.",
-          );
+          throw new TypeError("Node is currently being rendered to and thus is locked.");
         }
         var prevRedraw = currentRedraw;
         var prevDOM = currentDOM;
@@ -1245,22 +929,10 @@ var require_render = __commonJS({
         currentRender = {};
         try {
           if (dom.vnodes == null) dom.textContent = "";
-          vnodes = Vnode.normalizeChildren(
-            Array.isArray(vnodes) ? vnodes : [vnodes],
-          );
-          updateNodes(
-            dom,
-            dom.vnodes,
-            vnodes,
-            hooks,
-            null,
-            namespace === "http://www.w3.org/1999/xhtml" ? void 0 : namespace,
-          );
+          vnodes = Vnode2.normalizeChildren(Array.isArray(vnodes) ? vnodes : [vnodes]);
+          updateNodes(dom, dom.vnodes, vnodes, hooks, null, namespace === "http://www.w3.org/1999/xhtml" ? void 0 : namespace);
           dom.vnodes = vnodes;
-          if (
-            active != null && activeElement(dom) !== active &&
-            typeof active.focus === "function"
-          ) active.focus();
+          if (active != null && activeElement(dom) !== active && typeof active.focus === "function") active.focus();
           for (var i = 0; i < hooks.length; i++) hooks[i]();
         } finally {
           currentRedraw = prevRedraw;
@@ -1268,36 +940,30 @@ var require_render = __commonJS({
         }
       };
     };
-  },
+  }
 });
 
 // node_modules/mithril/render.js
 var require_render2 = __commonJS({
   "node_modules/mithril/render.js"(exports, module) {
     "use strict";
-    module.exports = require_render()(
-      typeof window !== "undefined" ? window : null,
-    );
-  },
+    module.exports = require_render()(typeof window !== "undefined" ? window : null);
+  }
 });
 
 // node_modules/mithril/api/mount-redraw.js
 var require_mount_redraw = __commonJS({
   "node_modules/mithril/api/mount-redraw.js"(exports, module) {
     "use strict";
-    var Vnode = require_vnode();
-    module.exports = function (render, schedule, console2) {
+    var Vnode2 = require_vnode();
+    module.exports = function(render, schedule, console2) {
       var subscriptions = [];
       var pending = false;
       var offset = -1;
       function sync() {
         for (offset = 0; offset < subscriptions.length; offset += 2) {
           try {
-            render(
-              subscriptions[offset],
-              Vnode(subscriptions[offset + 1]),
-              redraw,
-            );
+            render(subscriptions[offset], Vnode2(subscriptions[offset + 1]), redraw);
           } catch (e) {
             console2.error(e);
           }
@@ -1307,7 +973,7 @@ var require_mount_redraw = __commonJS({
       function redraw() {
         if (!pending) {
           pending = true;
-          schedule(function () {
+          schedule(function() {
             pending = false;
             sync();
           });
@@ -1315,10 +981,7 @@ var require_mount_redraw = __commonJS({
       }
       redraw.sync = sync;
       function mount(root, component) {
-        if (
-          component != null && component.view == null &&
-          typeof component !== "function"
-        ) {
+        if (component != null && component.view == null && typeof component !== "function") {
           throw new TypeError("m.mount expects a component, not a vnode.");
         }
         var index = subscriptions.indexOf(root);
@@ -1329,12 +992,12 @@ var require_mount_redraw = __commonJS({
         }
         if (component != null) {
           subscriptions.push(root, component);
-          render(root, Vnode(component), redraw);
+          render(root, Vnode2(component), redraw);
         }
       }
       return { mount, redraw };
     };
-  },
+  }
 });
 
 // node_modules/mithril/mount-redraw.js
@@ -1342,24 +1005,16 @@ var require_mount_redraw2 = __commonJS({
   "node_modules/mithril/mount-redraw.js"(exports, module) {
     "use strict";
     var render = require_render2();
-    module.exports = require_mount_redraw()(
-      render,
-      typeof requestAnimationFrame !== "undefined"
-        ? requestAnimationFrame
-        : null,
-      typeof console !== "undefined" ? console : null,
-    );
-  },
+    module.exports = require_mount_redraw()(render, typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame : null, typeof console !== "undefined" ? console : null);
+  }
 });
 
 // node_modules/mithril/querystring/build.js
 var require_build = __commonJS({
   "node_modules/mithril/querystring/build.js"(exports, module) {
     "use strict";
-    module.exports = function (object) {
-      if (Object.prototype.toString.call(object) !== "[object Object]") {
-        return "";
-      }
+    module.exports = function(object) {
+      if (Object.prototype.toString.call(object) !== "[object Object]") return "";
       var args = [];
       for (var key in object) {
         destructure(key, object[key]);
@@ -1370,21 +1025,14 @@ var require_build = __commonJS({
           for (var i = 0; i < value.length; i++) {
             destructure(key2 + "[" + i + "]", value[i]);
           }
-        } else if (
-          Object.prototype.toString.call(value) === "[object Object]"
-        ) {
+        } else if (Object.prototype.toString.call(value) === "[object Object]") {
           for (var i in value) {
             destructure(key2 + "[" + i + "]", value[i]);
           }
-        } else {args.push(
-            encodeURIComponent(key2) +
-              (value != null && value !== ""
-                ? "=" + encodeURIComponent(value)
-                : ""),
-          );}
+        } else args.push(encodeURIComponent(key2) + (value != null && value !== "" ? "=" + encodeURIComponent(value) : ""));
       }
     };
-  },
+  }
 });
 
 // node_modules/mithril/pathname/build.js
@@ -1392,11 +1040,9 @@ var require_build2 = __commonJS({
   "node_modules/mithril/pathname/build.js"(exports, module) {
     "use strict";
     var buildQueryString = require_build();
-    module.exports = function (template, params) {
+    module.exports = function(template, params) {
       if (/:([^\/\.-]+)(\.{3})?:/.test(template)) {
-        throw new SyntaxError(
-          "Template parameter names must be separated by either a '/', '-', or '.'.",
-        );
+        throw new SyntaxError("Template parameter names must be separated by either a '/', '-', or '.'.");
       }
       if (params == null) return template;
       var queryIndex = template.indexOf("?");
@@ -1406,38 +1052,25 @@ var require_build2 = __commonJS({
       var path = template.slice(0, pathEnd);
       var query = {};
       Object.assign(query, params);
-      var resolved = path.replace(
-        /:([^\/\.-]+)(\.{3})?/g,
-        function (m11, key, variadic) {
-          delete query[key];
-          if (params[key] == null) return m11;
-          return variadic
-            ? params[key]
-            : encodeURIComponent(String(params[key]));
-        },
-      );
+      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m11, key, variadic) {
+        delete query[key];
+        if (params[key] == null) return m11;
+        return variadic ? params[key] : encodeURIComponent(String(params[key]));
+      });
       var newQueryIndex = resolved.indexOf("?");
       var newHashIndex = resolved.indexOf("#");
       var newQueryEnd = newHashIndex < 0 ? resolved.length : newHashIndex;
       var newPathEnd = newQueryIndex < 0 ? newQueryEnd : newQueryIndex;
       var result = resolved.slice(0, newPathEnd);
       if (queryIndex >= 0) result += template.slice(queryIndex, queryEnd);
-      if (newQueryIndex >= 0) {
-        result += (queryIndex < 0 ? "?" : "&") +
-          resolved.slice(newQueryIndex, newQueryEnd);
-      }
+      if (newQueryIndex >= 0) result += (queryIndex < 0 ? "?" : "&") + resolved.slice(newQueryIndex, newQueryEnd);
       var querystring = buildQueryString(query);
-      if (querystring) {
-        result += (queryIndex < 0 && newQueryIndex < 0 ? "?" : "&") +
-          querystring;
-      }
+      if (querystring) result += (queryIndex < 0 && newQueryIndex < 0 ? "?" : "&") + querystring;
       if (hashIndex >= 0) result += template.slice(hashIndex);
-      if (newHashIndex >= 0) {
-        result += (hashIndex < 0 ? "" : "&") + resolved.slice(newHashIndex);
-      }
+      if (newHashIndex >= 0) result += (hashIndex < 0 ? "" : "&") + resolved.slice(newHashIndex);
       return result;
     };
-  },
+  }
 });
 
 // node_modules/mithril/request/request.js
@@ -1446,46 +1079,29 @@ var require_request = __commonJS({
     "use strict";
     var buildPathname = require_build2();
     var hasOwn = require_hasOwn();
-    module.exports = function ($window, oncompletion) {
+    module.exports = function($window, oncompletion) {
       function PromiseProxy(executor) {
         return new Promise(executor);
       }
       function makeRequest(url, args) {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
           url = buildPathname(url, args.params);
           var method = args.method != null ? args.method.toUpperCase() : "GET";
           var body = args.body;
-          var assumeJSON =
-            (args.serialize == null || args.serialize === JSON.serialize) &&
-            !(body instanceof $window.FormData ||
-              body instanceof $window.URLSearchParams);
-          var responseType = args.responseType ||
-            (typeof args.extract === "function" ? "" : "json");
-          var xhr = new $window.XMLHttpRequest(),
-            aborted = false,
-            isTimeout = false;
+          var assumeJSON = (args.serialize == null || args.serialize === JSON.serialize) && !(body instanceof $window.FormData || body instanceof $window.URLSearchParams);
+          var responseType = args.responseType || (typeof args.extract === "function" ? "" : "json");
+          var xhr = new $window.XMLHttpRequest(), aborted = false, isTimeout = false;
           var original = xhr, replacedAbort;
           var abort = xhr.abort;
-          xhr.abort = function () {
+          xhr.abort = function() {
             aborted = true;
             abort.call(this);
           };
-          xhr.open(
-            method,
-            url,
-            args.async !== false,
-            typeof args.user === "string" ? args.user : void 0,
-            typeof args.password === "string" ? args.password : void 0,
-          );
+          xhr.open(method, url, args.async !== false, typeof args.user === "string" ? args.user : void 0, typeof args.password === "string" ? args.password : void 0);
           if (assumeJSON && body != null && !hasHeader(args, "content-type")) {
-            xhr.setRequestHeader(
-              "Content-Type",
-              "application/json; charset=utf-8",
-            );
+            xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
           }
-          if (
-            typeof args.deserialize !== "function" && !hasHeader(args, "accept")
-          ) {
+          if (typeof args.deserialize !== "function" && !hasHeader(args, "accept")) {
             xhr.setRequestHeader("Accept", "application/json, text/*");
           }
           if (args.withCredentials) xhr.withCredentials = args.withCredentials;
@@ -1496,19 +1112,14 @@ var require_request = __commonJS({
               xhr.setRequestHeader(key, args.headers[key]);
             }
           }
-          xhr.onreadystatechange = function (ev) {
+          xhr.onreadystatechange = function(ev) {
             if (aborted) return;
             if (ev.target.readyState === 4) {
               try {
-                var success =
-                  ev.target.status >= 200 && ev.target.status < 300 ||
-                  ev.target.status === 304 || /^file:\/\//i.test(url);
+                var success = ev.target.status >= 200 && ev.target.status < 300 || ev.target.status === 304 || /^file:\/\//i.test(url);
                 var response = ev.target.response, message;
                 if (responseType === "json") {
-                  if (
-                    !ev.target.responseType &&
-                    typeof args.extract !== "function"
-                  ) {
+                  if (!ev.target.responseType && typeof args.extract !== "function") {
                     try {
                       response = JSON.parse(ev.target.responseText);
                     } catch (e) {
@@ -1534,7 +1145,7 @@ var require_request = __commonJS({
                   }
                   resolve(response);
                 } else {
-                  var completeErrorResponse = function () {
+                  var completeErrorResponse = function() {
                     try {
                       message = ev.target.responseText;
                     } catch (e) {
@@ -1546,7 +1157,7 @@ var require_request = __commonJS({
                     reject(error);
                   };
                   if (xhr.status === 0) {
-                    setTimeout(function () {
+                    setTimeout(function() {
                       if (isTimeout) return;
                       completeErrorResponse();
                     });
@@ -1557,7 +1168,7 @@ var require_request = __commonJS({
               }
             }
           };
-          xhr.ontimeout = function (ev) {
+          xhr.ontimeout = function(ev) {
             isTimeout = true;
             var error = new Error("Request timed out");
             error.code = ev.target.status;
@@ -1567,19 +1178,15 @@ var require_request = __commonJS({
             xhr = args.config(xhr, args, url) || xhr;
             if (xhr !== original) {
               replacedAbort = xhr.abort;
-              xhr.abort = function () {
+              xhr.abort = function() {
                 aborted = true;
                 replacedAbort.call(this);
               };
             }
           }
           if (body == null) xhr.send();
-          else if (typeof args.serialize === "function") {
-            xhr.send(args.serialize(body));
-          } else if (
-            body instanceof $window.FormData ||
-            body instanceof $window.URLSearchParams
-          ) xhr.send(body);
+          else if (typeof args.serialize === "function") xhr.send(args.serialize(body));
+          else if (body instanceof $window.FormData || body instanceof $window.URLSearchParams) xhr.send(body);
           else xhr.send(JSON.stringify(body));
         });
       }
@@ -1587,14 +1194,12 @@ var require_request = __commonJS({
       PromiseProxy.__proto__ = Promise;
       function hasHeader(args, name) {
         for (var key in args.headers) {
-          if (hasOwn.call(args.headers, key) && key.toLowerCase() === name) {
-            return true;
-          }
+          if (hasOwn.call(args.headers, key) && key.toLowerCase() === name) return true;
         }
         return false;
       }
       return {
-        request: function (url, args) {
+        request: function(url, args) {
           if (typeof url !== "string") {
             args = url;
             url = url.url;
@@ -1603,18 +1208,16 @@ var require_request = __commonJS({
           if (args.background === true) return promise;
           var count = 0;
           function complete() {
-            if (--count === 0 && typeof oncompletion === "function") {
-              oncompletion();
-            }
+            if (--count === 0 && typeof oncompletion === "function") oncompletion();
           }
           return wrap(promise);
           function wrap(promise2) {
             var then = promise2.then;
             promise2.constructor = PromiseProxy;
-            promise2.then = function () {
+            promise2.then = function() {
               count++;
               var next = then.apply(promise2, arguments);
-              next.then(complete, function (e) {
+              next.then(complete, function(e) {
                 complete();
                 if (count === 0) throw e;
               });
@@ -1622,10 +1225,10 @@ var require_request = __commonJS({
             };
             return promise2;
           }
-        },
+        }
       };
     };
-  },
+  }
 });
 
 // node_modules/mithril/request.js
@@ -1633,11 +1236,8 @@ var require_request2 = __commonJS({
   "node_modules/mithril/request.js"(exports, module) {
     "use strict";
     var mountRedraw = require_mount_redraw2();
-    module.exports = require_request()(
-      typeof window !== "undefined" ? window : null,
-      mountRedraw.redraw,
-    );
-  },
+    module.exports = require_request()(typeof window !== "undefined" ? window : null, mountRedraw.redraw);
+  }
 });
 
 // node_modules/mithril/querystring/parse.js
@@ -1651,7 +1251,7 @@ var require_parse = __commonJS({
         return str;
       }
     }
-    module.exports = function (string) {
+    module.exports = function(string) {
       if (string === "" || string == null) return {};
       if (string.charAt(0) === "?") string = string.slice(1);
       var entries = string.split("&"), counters = {}, data = {};
@@ -1685,7 +1285,7 @@ var require_parse = __commonJS({
       }
       return data;
     };
-  },
+  }
 });
 
 // node_modules/mithril/pathname/parse.js
@@ -1693,7 +1293,7 @@ var require_parse2 = __commonJS({
   "node_modules/mithril/pathname/parse.js"(exports, module) {
     "use strict";
     var parseQueryString = require_parse();
-    module.exports = function (url) {
+    module.exports = function(url) {
       var queryIndex = url.indexOf("?");
       var hashIndex = url.indexOf("#");
       var queryEnd = hashIndex < 0 ? url.length : hashIndex;
@@ -1705,12 +1305,10 @@ var require_parse2 = __commonJS({
       }
       return {
         path,
-        params: queryIndex < 0
-          ? {}
-          : parseQueryString(url.slice(queryIndex + 1, queryEnd)),
+        params: queryIndex < 0 ? {} : parseQueryString(url.slice(queryIndex + 1, queryEnd))
       };
     };
-  },
+  }
 });
 
 // node_modules/mithril/pathname/compileTemplate.js
@@ -1718,45 +1316,38 @@ var require_compileTemplate = __commonJS({
   "node_modules/mithril/pathname/compileTemplate.js"(exports, module) {
     "use strict";
     var parsePathname = require_parse2();
-    module.exports = function (template) {
+    module.exports = function(template) {
       var templateData = parsePathname(template);
       var templateKeys = Object.keys(templateData.params);
       var keys = [];
-      var regexp = new RegExp(
-        "^" + templateData.path.replace(
-          // I escape literal text so people can use things like `:file.:ext` or
-          // `:lang-:locale` in routes. This is all merged into one pass so I
-          // don't also accidentally escape `-` and make it harder to detect it to
-          // ban it from template parameters.
-          /:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
-          function (m11, key, extra) {
-            if (key == null) return "\\" + m11;
-            keys.push({ k: key, r: extra === "..." });
-            if (extra === "...") return "(.*)";
-            if (extra === ".") return "([^/]+)\\.";
-            return "([^/]+)" + (extra || "");
-          },
-        ) + "\\/?$",
-      );
-      return function (data) {
+      var regexp = new RegExp("^" + templateData.path.replace(
+        // I escape literal text so people can use things like `:file.:ext` or
+        // `:lang-:locale` in routes. This is all merged into one pass so I
+        // don't also accidentally escape `-` and make it harder to detect it to
+        // ban it from template parameters.
+        /:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
+        function(m11, key, extra) {
+          if (key == null) return "\\" + m11;
+          keys.push({ k: key, r: extra === "..." });
+          if (extra === "...") return "(.*)";
+          if (extra === ".") return "([^/]+)\\.";
+          return "([^/]+)" + (extra || "");
+        }
+      ) + "\\/?$");
+      return function(data) {
         for (var i = 0; i < templateKeys.length; i++) {
-          if (
-            templateData.params[templateKeys[i]] !==
-              data.params[templateKeys[i]]
-          ) return false;
+          if (templateData.params[templateKeys[i]] !== data.params[templateKeys[i]]) return false;
         }
         if (!keys.length) return regexp.test(data.path);
         var values = regexp.exec(data.path);
         if (values == null) return false;
         for (var i = 0; i < keys.length; i++) {
-          data.params[keys[i].k] = keys[i].r
-            ? values[i + 1]
-            : decodeURIComponent(values[i + 1]);
+          data.params[keys[i].k] = keys[i].r ? values[i + 1] : decodeURIComponent(values[i + 1]);
         }
         return true;
       };
     };
-  },
+  }
 });
 
 // node_modules/mithril/util/censor.js
@@ -1764,17 +1355,12 @@ var require_censor = __commonJS({
   "node_modules/mithril/util/censor.js"(exports, module) {
     "use strict";
     var hasOwn = require_hasOwn();
-    var magic = new RegExp(
-      "^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$",
-    );
-    module.exports = function (attrs, extras) {
+    var magic = new RegExp("^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$");
+    module.exports = function(attrs, extras) {
       var result = {};
       if (extras != null) {
         for (var key in attrs) {
-          if (
-            hasOwn.call(attrs, key) && !magic.test(key) &&
-            extras.indexOf(key) < 0
-          ) {
+          if (hasOwn.call(attrs, key) && !magic.test(key) && extras.indexOf(key) < 0) {
             result[key] = attrs[key];
           }
         }
@@ -1787,14 +1373,14 @@ var require_censor = __commonJS({
       }
       return result;
     };
-  },
+  }
 });
 
 // node_modules/mithril/api/router.js
 var require_router = __commonJS({
   "node_modules/mithril/api/router.js"(exports, module) {
     "use strict";
-    var Vnode = require_vnode();
+    var Vnode2 = require_vnode();
     var m11 = require_hyperscript();
     var buildPathname = require_build2();
     var parsePathname = require_parse2();
@@ -1807,12 +1393,8 @@ var require_router = __commonJS({
         return component;
       }
     }
-    module.exports = function ($window, mountRedraw) {
-      var callAsync = $window == null
-        ? null
-        : typeof $window.setImmediate === "function"
-        ? $window.setImmediate
-        : $window.setTimeout;
+    module.exports = function($window, mountRedraw) {
+      var callAsync = $window == null ? null : typeof $window.setImmediate === "function" ? $window.setImmediate : $window.setTimeout;
       var p = Promise.resolve();
       var scheduled = false;
       var ready = false;
@@ -1820,15 +1402,15 @@ var require_router = __commonJS({
       var dom, compiled, fallbackRoute;
       var currentResolver, component, attrs, currentPath, lastUpdate;
       var RouterRoot = {
-        onremove: function () {
+        onremove: function() {
           ready = hasBeenResolved = false;
           $window.removeEventListener("popstate", fireAsync, false);
         },
-        view: function () {
-          var vnode = Vnode(component, attrs.key, attrs);
+        view: function() {
+          var vnode = Vnode2(component, attrs.key, attrs);
           if (currentResolver) return currentResolver.render(vnode);
           return [vnode];
-        },
+        }
       };
       var SKIP = route.SKIP = {};
       function resolveRoute() {
@@ -1841,10 +1423,7 @@ var require_router = __commonJS({
             if (prefix[0] !== "/") prefix = "/" + prefix;
           }
         }
-        var path = prefix.concat().replace(
-          /(?:%[a-f89][a-f0-9])+/gim,
-          decodeURIComponentSave,
-        ).slice(route.prefix.length);
+        var path = prefix.concat().replace(/(?:%[a-f89][a-f0-9])+/gim, decodeURIComponentSave).slice(route.prefix.length);
         var data = parsePathname(path);
         Object.assign(data.params, $window.history.state);
         function reject(e) {
@@ -1858,14 +1437,10 @@ var require_router = __commonJS({
               var payload = compiled[i].component;
               var matchedRoute = compiled[i].route;
               var localComp = payload;
-              var update = lastUpdate = function (comp) {
+              var update = lastUpdate = function(comp) {
                 if (update !== lastUpdate) return;
                 if (comp === SKIP) return loop(i + 1);
-                component = comp != null &&
-                    (typeof comp.view === "function" ||
-                      typeof comp === "function")
-                  ? comp
-                  : "div";
+                component = comp != null && (typeof comp.view === "function" || typeof comp === "function") ? comp : "div";
                 attrs = data.params, currentPath = path, lastUpdate = null;
                 currentResolver = payload.render ? payload : null;
                 if (hasBeenResolved) mountRedraw.redraw();
@@ -1878,19 +1453,17 @@ var require_router = __commonJS({
                 payload = {};
                 update(localComp);
               } else if (payload.onmatch) {
-                p.then(function () {
+                p.then(function() {
                   return payload.onmatch(data.params, path, matchedRoute);
                 }).then(update, path === fallbackRoute ? null : reject);
-              } else {update(
-                  /* "div" */
-                );}
+              } else update(
+                /* "div" */
+              );
               return;
             }
           }
           if (path === fallbackRoute) {
-            throw new Error(
-              "Could not resolve default route " + fallbackRoute + ".",
-            );
+            throw new Error("Could not resolve default route " + fallbackRoute + ".");
           }
           route.set(fallbackRoute, null, { replace: true });
         }
@@ -1902,35 +1475,25 @@ var require_router = __commonJS({
         }
       }
       function route(root, defaultRoute, routes) {
-        if (!root) {
-          throw new TypeError("DOM element being rendered to does not exist.");
-        }
-        compiled = Object.keys(routes).map(function (route2) {
-          if (route2[0] !== "/") {
-            throw new SyntaxError("Routes must start with a '/'.");
-          }
+        if (!root) throw new TypeError("DOM element being rendered to does not exist.");
+        compiled = Object.keys(routes).map(function(route2) {
+          if (route2[0] !== "/") throw new SyntaxError("Routes must start with a '/'.");
           if (/:([^\/\.-]+)(\.{3})?:/.test(route2)) {
-            throw new SyntaxError(
-              "Route parameter names must be separated with either '/', '.', or '-'.",
-            );
+            throw new SyntaxError("Route parameter names must be separated with either '/', '.', or '-'.");
           }
           return {
             route: route2,
             component: routes[route2],
-            check: compileTemplate(route2),
+            check: compileTemplate(route2)
           };
         });
         fallbackRoute = defaultRoute;
         if (defaultRoute != null) {
           var defaultData = parsePathname(defaultRoute);
-          if (
-            !compiled.some(function (i) {
-              return i.check(defaultData);
-            })
-          ) {
-            throw new ReferenceError(
-              "Default route doesn't match any known routes.",
-            );
+          if (!compiled.some(function(i) {
+            return i.check(defaultData);
+          })) {
+            throw new ReferenceError("Default route doesn't match any known routes.");
           }
         }
         dom = root;
@@ -1938,7 +1501,7 @@ var require_router = __commonJS({
         ready = true;
         resolveRoute();
       }
-      route.set = function (path, data, options) {
+      route.set = function(path, data, options) {
         if (lastUpdate != null) {
           options = options || {};
           options.replace = true;
@@ -1949,23 +1512,22 @@ var require_router = __commonJS({
           fireAsync();
           var state2 = options ? options.state : null;
           var title = options ? options.title : null;
-          if (options && options.replace) {
-            $window.history.replaceState(state2, title, route.prefix + path);
-          } else $window.history.pushState(state2, title, route.prefix + path);
+          if (options && options.replace) $window.history.replaceState(state2, title, route.prefix + path);
+          else $window.history.pushState(state2, title, route.prefix + path);
         } else {
           $window.location.href = route.prefix + path;
         }
       };
-      route.get = function () {
+      route.get = function() {
         return currentPath;
       };
       route.prefix = "#!";
       route.Link = {
-        view: function (vnode) {
+        view: function(vnode) {
           var child = m11(
             vnode.attrs.selector || "a",
             censor(vnode.attrs, ["options", "params", "selector", "onclick"]),
-            vnode.children,
+            vnode.children
           );
           var options, onclick2, href;
           if (child.attrs.disabled = Boolean(child.attrs.disabled)) {
@@ -1976,7 +1538,7 @@ var require_router = __commonJS({
             onclick2 = vnode.attrs.onclick;
             href = buildPathname(child.attrs.href, vnode.attrs.params);
             child.attrs.href = route.prefix + href;
-            child.attrs.onclick = function (e) {
+            child.attrs.onclick = function(e) {
               var result;
               if (typeof onclick2 === "function") {
                 result = onclick2.call(e.currentTarget, e);
@@ -1988,8 +1550,7 @@ var require_router = __commonJS({
                 // Skip if `onclick` prevented default
                 result !== false && !e.defaultPrevented && // Ignore everything but left clicks
                 (e.button === 0 || e.which === 0 || e.which === 1) && // Let the browser handle `target=_blank`, etc.
-                (!e.currentTarget.target ||
-                  e.currentTarget.target === "_self") && // No modifier keys
+                (!e.currentTarget.target || e.currentTarget.target === "_self") && // No modifier keys
                 !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey
               ) {
                 e.preventDefault();
@@ -1999,14 +1560,14 @@ var require_router = __commonJS({
             };
           }
           return child;
-        },
+        }
       };
-      route.param = function (key) {
+      route.param = function(key) {
         return attrs && key != null ? attrs[key] : attrs;
       };
       return route;
     };
-  },
+  }
 });
 
 // node_modules/mithril/route.js
@@ -2014,11 +1575,8 @@ var require_route = __commonJS({
   "node_modules/mithril/route.js"(exports, module) {
     "use strict";
     var mountRedraw = require_mount_redraw2();
-    module.exports = require_router()(
-      typeof window !== "undefined" ? window : null,
-      mountRedraw,
-    );
-  },
+    module.exports = require_router()(typeof window !== "undefined" ? window : null, mountRedraw);
+  }
 });
 
 // node_modules/mithril/index.js
@@ -2049,7 +1607,7 @@ var require_mithril = __commonJS({
     m11.censor = require_censor();
     m11.domFor = domFor.domFor;
     module.exports = m11;
-  },
+  }
 });
 
 // ts/index.ts
@@ -2066,8 +1624,8 @@ function broadcast(label, detail) {
   console.info(`broadcasting event: ${label}`, detail);
   document.dispatchEvent(
     new CustomEvent(label, {
-      detail,
-    }),
+      detail
+    })
   );
 }
 
@@ -2078,48 +1636,37 @@ function BurgerMenu() {
   };
   return {
     view() {
-      return (0, import_mithril.default)(
-        "a",
-        { href: "/", onclick: onclick2 },
-        (0, import_mithril.default)("span.burger", "\u039E"),
-      );
-    },
+      return (0, import_mithril.default)("a", { href: "/", onclick: onclick2 }, (0, import_mithril.default)("span.burger", "\u039E"));
+    }
   };
 }
 function HeaderBrandText() {
   const BRAND_TEXT = "photos";
   return {
     view() {
-      return (0, import_mithril.default)(
-        "a",
-        { href: "/" },
-        (0, import_mithril.default)("span.brand", BRAND_TEXT),
-      );
-    },
+      return (0, import_mithril.default)("a", { href: "/" }, (0, import_mithril.default)("span.brand", BRAND_TEXT));
+    }
   };
 }
 function RSSIcon() {
   const SVG_PATH = (0, import_mithril.default)("path", {
     fill: "#ff9132",
-    d: "M 4.259,23.467c-2.35,0-4.259,1.917-4.259,4.252c0,2.349, 1.909,4.244, 4.259,4.244 c 2.358,0, 4.265-1.895, 4.265-4.244C 8.525,25.383, 6.618,23.467, 4.259,23.467zM 0.005,10.873l0,6.133 c 3.993,0, 7.749,1.562, 10.577,4.391c 2.825,2.822, 4.384,6.595, 4.384,10.603l 6.16,0 C 21.125,20.349, 11.648,10.873, 0.005,10.873zM 0.012,0l0,6.136 c 14.243,0, 25.836,11.604, 25.836,25.864L 32,32 C 32,14.36, 17.648,0, 0.012,0z",
+    d: "M 4.259,23.467c-2.35,0-4.259,1.917-4.259,4.252c0,2.349, 1.909,4.244, 4.259,4.244 c 2.358,0, 4.265-1.895, 4.265-4.244C 8.525,25.383, 6.618,23.467, 4.259,23.467zM 0.005,10.873l0,6.133 c 3.993,0, 7.749,1.562, 10.577,4.391c 2.825,2.822, 4.384,6.595, 4.384,10.603l 6.16,0 C 21.125,20.349, 11.648,10.873, 0.005,10.873zM 0.012,0l0,6.136 c 14.243,0, 25.836,11.604, 25.836,25.864L 32,32 C 32,14.36, 17.648,0, 0.012,0z"
   });
   return {
     view() {
-      return (0, import_mithril.default)("a.rss", {
-        title: "rss",
-        href: "/manifest/atom-index.xml",
-      }, [
+      return (0, import_mithril.default)("a.rss", { title: "rss", href: "/manifest/atom-index.xml" }, [
         (0, import_mithril.default)("svg", {
           alt: "rss",
           width: "25px",
           height: "25px",
           viewBox: "0 0 32 32",
-          style: "position: relative; top: 5px;",
+          style: "position: relative; top: 5px;"
         }, [
-          SVG_PATH,
-        ]),
+          SVG_PATH
+        ])
       ]);
-    },
+    }
   };
 }
 function ThemeSwitch() {
@@ -2132,10 +1679,10 @@ function ThemeSwitch() {
         (0, import_mithril.default)("span.brand.switch", {
           onclick: () => {
             broadcast("switch_theme", {});
-          },
-        }, text),
+          }
+        }, text)
       );
-    },
+    }
   };
 }
 function Header() {
@@ -2143,31 +1690,19 @@ function Header() {
     view(vnode) {
       return (0, import_mithril.default)("nav.header", { role: "navigation" }, [
         (0, import_mithril.default)("ul", [
-          (0, import_mithril.default)(
-            "li",
-            {},
-            (0, import_mithril.default)(BurgerMenu()),
-          ),
-          (0, import_mithril.default)(
-            "li",
-            {},
-            (0, import_mithril.default)(HeaderBrandText()),
-          ),
-          (0, import_mithril.default)(
-            "li.rss-tag",
-            { style: "float: right" },
-            (0, import_mithril.default)(RSSIcon()),
-          ),
+          (0, import_mithril.default)("li", {}, (0, import_mithril.default)(BurgerMenu())),
+          (0, import_mithril.default)("li", {}, (0, import_mithril.default)(HeaderBrandText())),
+          (0, import_mithril.default)("li.rss-tag", { style: "float: right" }, (0, import_mithril.default)(RSSIcon())),
           (0, import_mithril.default)(
             "li",
             { style: "float: right" },
             (0, import_mithril.default)(ThemeSwitch(), {
-              darkMode: vnode.attrs.darkMode,
-            }),
-          ),
-        ]),
+              darkMode: vnode.attrs.darkMode
+            })
+          )
+        ])
       ]);
-    },
+    }
   };
 }
 
@@ -2278,13 +1813,11 @@ function parseUrn(urn, namespace = "r\xF3") {
   const type = urn.split(":")[2];
   const [urnPart, queryString] = urn.split("?");
   const id = urnPart.split(":")[3];
-  const qs = queryString
-    ? Object.fromEntries(new URLSearchParams(queryString))
-    : {};
+  const qs = queryString ? Object.fromEntries(new URLSearchParams(queryString)) : {};
   return {
     type,
     id,
-    qs,
+    qs
   };
 }
 function asUrn(value, namespace = "r\xF3") {
@@ -2294,7 +1827,7 @@ function asUrn(value, namespace = "r\xF3") {
     return {
       type: "unknown",
       id: value,
-      qs: {},
+      qs: {}
     };
   }
 }
@@ -2353,13 +1886,9 @@ var Index = class {
     for (let jdx = 0; jdx < triples.length; jdx++) {
       const idx = startIdx + jdx;
       const triple = triples[jdx];
-      const parsedSource = this.stringUrn.has(triple[0])
-        ? this.stringUrn.get(triple[0])
-        : this.stringUrn.set(triple[0], asUrn(triple[0])).get(triple[0]);
+      const parsedSource = this.stringUrn.has(triple[0]) ? this.stringUrn.get(triple[0]) : this.stringUrn.set(triple[0], asUrn(triple[0])).get(triple[0]);
       const relation = triple[1];
-      const parsedTarget = this.stringUrn.has(triple[2])
-        ? this.stringUrn.get(triple[2])
-        : this.stringUrn.set(triple[2], asUrn(triple[2])).get(triple[2]);
+      const parsedTarget = this.stringUrn.has(triple[2]) ? this.stringUrn.get(triple[2]) : this.stringUrn.set(triple[2], asUrn(triple[2])).get(triple[2]);
       const sourceTypeIdx = this.stringIndex.add(parsedSource.type);
       const sourceIdIdx = this.stringIndex.add(parsedSource.id);
       const relationIdx = this.stringIndex.add(relation);
@@ -2368,7 +1897,7 @@ var Index = class {
       this.indexedTriples.push([
         this.stringIndex.add(triple[0]),
         relationIdx,
-        this.stringIndex.add(triple[2]),
+        this.stringIndex.add(triple[2])
       ]);
       if (!this.sourceType.has(sourceTypeIdx)) {
         this.sourceType.set(sourceTypeIdx, /* @__PURE__ */ new Set());
@@ -2419,7 +1948,7 @@ var Index = class {
     return this.indexedTriples.map(([sourceIdx, relationIdx, targetIdx]) => [
       this.stringIndex.getValue(sourceIdx),
       this.stringIndex.getValue(relationIdx),
-      this.stringIndex.getValue(targetIdx),
+      this.stringIndex.getValue(targetIdx)
     ]);
   }
   /*
@@ -2433,7 +1962,7 @@ var Index = class {
     return [
       this.stringIndex.getValue(sourceIdx),
       this.stringIndex.getValue(relationIdx),
-      this.stringIndex.getValue(targetIdx),
+      this.stringIndex.getValue(targetIdx)
     ];
   }
   getTripleIndices(index) {
@@ -2518,7 +2047,7 @@ function joinSubqueryResults(metrics, acc, tripleResult) {
   if (acc.rows.length === 0 || tripleResult.rows.length === 0) {
     return {
       names: joinedNames,
-      rows: [],
+      rows: []
     };
   }
   const endings = /* @__PURE__ */ new Map();
@@ -2539,7 +2068,7 @@ function joinSubqueryResults(metrics, acc, tripleResult) {
   }
   const commonLinks = Sets.intersection(metrics, [
     new Set(endings.keys()),
-    new Set(starts.keys()),
+    new Set(starts.keys())
   ]);
   const joinedRows = [];
   for (const link of commonLinks) {
@@ -2548,7 +2077,7 @@ function joinSubqueryResults(metrics, acc, tripleResult) {
     for (const startRowIndex of startRowIndices) {
       for (const endRowIndex of endRowsIndices) {
         const joinedRow = acc.rows[startRowIndex].concat(
-          tripleResult.rows[endRowIndex],
+          tripleResult.rows[endRowIndex]
         );
         joinedRows.push(joinedRow);
       }
@@ -2556,7 +2085,7 @@ function joinSubqueryResults(metrics, acc, tripleResult) {
   }
   return {
     names: joinedNames,
-    rows: joinedRows,
+    rows: joinedRows
   };
 }
 var TribbleDB = class _TribbleDB {
@@ -2718,7 +2247,7 @@ var TribbleDB = class _TribbleDB {
    */
   sources() {
     return new Set(
-      this.index.triples().map(Triples.source),
+      this.index.triples().map(Triples.source)
     );
   }
   /**
@@ -2728,7 +2257,7 @@ var TribbleDB = class _TribbleDB {
    */
   relations() {
     return new Set(
-      this.index.triples().map(Triples.relation),
+      this.index.triples().map(Triples.relation)
     );
   }
   /**
@@ -2738,7 +2267,7 @@ var TribbleDB = class _TribbleDB {
    */
   targets() {
     return new Set(
-      this.index.triples().map(Triples.target),
+      this.index.triples().map(Triples.target)
     );
   }
   /*
@@ -2775,13 +2304,10 @@ var TribbleDB = class _TribbleDB {
   }
   #findMatchingRows(params) {
     const matchingRowSets = [
-      this.cursorIndices,
+      this.cursorIndices
     ];
     const { source, relation, target } = params;
-    if (
-      typeof source === "undefined" && typeof target === "undefined" &&
-      typeof relation === "undefined"
-    ) {
+    if (typeof source === "undefined" && typeof target === "undefined" && typeof relation === "undefined") {
       throw new Error("At least one search parameter must be defined");
     }
     const allowedKeys = ["source", "relation", "target"];
@@ -2848,9 +2374,7 @@ var TribbleDB = class _TribbleDB {
       }
     }
     if (relation) {
-      const relationDsl = typeof relation === "string"
-        ? { relation: [relation] }
-        : relation;
+      const relationDsl = typeof relation === "string" ? { relation: [relation] } : relation;
       if (relationDsl.relation) {
         const unionedRelations = /* @__PURE__ */ new Set();
         for (const rel of relationDsl.relation) {
@@ -2872,10 +2396,7 @@ var TribbleDB = class _TribbleDB {
     const matchingTriples = /* @__PURE__ */ new Set();
     for (const index of intersection) {
       const triple = this.index.getTriple(index);
-      if (
-        !source?.predicate && !target?.predicate &&
-        !(typeof relation === "object" && relation.predicate)
-      ) {
+      if (!source?.predicate && !target?.predicate && !(typeof relation === "object" && relation.predicate)) {
         matchingTriples.add(index);
         continue;
       }
@@ -2919,7 +2440,7 @@ var TribbleDB = class _TribbleDB {
       const pattern = {
         source: tripleSlice[0][1],
         relation: tripleSlice[1][1],
-        target: tripleSlice[2][1],
+        target: tripleSlice[2][1]
       };
       const bindingNames = tripleSlice.map((pair) => pair[0]);
       const tripleRows = this.#findMatchingRows(pattern);
@@ -2929,11 +2450,11 @@ var TribbleDB = class _TribbleDB {
       });
       subqueryResults.push({
         names: bindingNames,
-        rows: rowData,
+        rows: rowData
       });
     }
     const queryResult = subqueryResults.reduce(
-      joinSubqueryResults.bind(this, this.metrics),
+      joinSubqueryResults.bind(this, this.metrics)
     );
     const outputNames = queryResult.names;
     const objects = [];
@@ -2950,7 +2471,7 @@ var TribbleDB = class _TribbleDB {
   getMetrics() {
     return {
       index: this.index.metrics,
-      db: this.metrics,
+      db: this.metrics
     };
   }
 };
@@ -3209,11 +2730,19 @@ var CDN_RELATIONS = /* @__PURE__ */ new Set([
   KnownRelations.VIDEO_URL_1080P,
   KnownRelations.VIDEO_URL_480P,
   KnownRelations.VIDEO_URL_720P,
-  KnownRelations.VIDEO_URL_UNSCALED,
+  KnownRelations.VIDEO_URL_UNSCALED
 ]);
 var RelationSymmetries = [
-  [KnownRelations.IN, KnownRelations.CONTAINS],
+  [KnownRelations.IN, KnownRelations.CONTAINS]
 ];
+var CURIES = {
+  "i": "urn:r\xF3:",
+  "birdwatch": "https://birdwatchireland.ie/birds/",
+  "photos": "https://photos-cdn.rgrannell.xyz/",
+  "wiki": "https://en.wikipedia.org/wiki/"
+};
+var CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
+var ENDPOINT = "https://photos-cdn.rgrannell.xyz";
 
 // ts/strings.ts
 var Strings = class {
@@ -3229,14 +2758,6 @@ var Strings = class {
 };
 
 // ts/semantic/derive.ts
-var CURIES = {
-  "i": "urn:r\xF3:",
-  "birdwatch": "https://birdwatchireland.ie/birds/",
-  "photos": "https://photos-cdn.rgrannell.xyz/",
-  "wiki": "https://en.wikipedia.org/wiki/",
-};
-var CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
-var ENDPOINT = "https://photos-cdn.rgrannell.xyz";
 function convertRatingsToUrns(triple) {
   const [src, rel, tgt] = triple;
   if (rel !== KnownRelations.RATING) {
@@ -3245,7 +2766,7 @@ function convertRatingsToUrns(triple) {
   return [[
     src,
     rel,
-    `urn:r\xF3:rating:${encodeURIComponent(tgt)}`,
+    `urn:r\xF3:rating:${encodeURIComponent(tgt)}`
   ]];
 }
 function convertCountriesToUrns(triple) {
@@ -3258,7 +2779,7 @@ function convertCountriesToUrns(triple) {
   return [[
     src,
     rel,
-    countryUrn,
+    countryUrn
   ]];
 }
 function expandCdnUrls(triple) {
@@ -3272,7 +2793,7 @@ function expandCdnUrls(triple) {
   return [[
     src,
     rel,
-    `${ENDPOINT}${tgt}`,
+    `${ENDPOINT}${tgt}`
   ]];
 }
 function convertRelationCasing(triple) {
@@ -3280,19 +2801,15 @@ function convertRelationCasing(triple) {
   return [[
     src,
     Strings.camelCase(rel),
-    tgt,
+    tgt
   ]];
 }
 function expandUrns(triple) {
   const [src, rel, tgt] = triple;
   return [[
-    typeof src === "string" && src.startsWith("::")
-      ? `urn:r\xF3:${src.slice(2)}`
-      : src,
+    typeof src === "string" && src.startsWith("::") ? `urn:r\xF3:${src.slice(2)}` : src,
     rel,
-    typeof tgt === "string" && tgt.startsWith("::")
-      ? `urn:r\xF3:${tgt.slice(2)}`
-      : tgt,
+    typeof tgt === "string" && tgt.startsWith("::") ? `urn:r\xF3:${tgt.slice(2)}` : tgt
   ]];
 }
 function addSeason(triple) {
@@ -3318,8 +2835,8 @@ function addSeason(triple) {
     [
       src,
       KnownRelations.SEASON,
-      season,
-    ],
+      season
+    ]
   ];
 }
 function addYear(triple) {
@@ -3337,21 +2854,21 @@ function addYear(triple) {
     [
       src,
       KnownRelations.YEAR,
-      year,
-    ],
+      year
+    ]
   ];
 }
 function addInverseRelations(triple) {
   const [src, rel, tgt] = triple;
-  for (const [left, right] of RelationSymmetries) {
-    if (rel === left) {
+  for (const [to, from] of RelationSymmetries) {
+    if (rel === to) {
       return [
         triple,
         [
           tgt,
-          right,
-          src,
-        ],
+          from,
+          src
+        ]
       ];
     }
   }
@@ -3375,20 +2892,20 @@ function expandTripleCuries(triple) {
   const expandedTarget = expandCurie(CURIES, tgt);
   if (CURIE_REGEX.test(expandedSource)) {
     throw new Error(
-      `Source still matches CURIE regex after expansion: "${src}" ${expandedSource}`,
+      `Source still matches CURIE regex after expansion: "${src}" ${expandedSource}`
     );
   }
   if (CURIE_REGEX.test(expandedTarget)) {
     throw new Error(
-      `Target still matches CURIE regex after expansion: "${tgt}" ${expandedTarget}`,
+      `Target still matches CURIE regex after expansion: "${tgt}" ${expandedTarget}`
     );
   }
   return [
     [
       expandedSource,
       rel,
-      expandedTarget,
-    ],
+      expandedTarget
+    ]
   ];
 }
 function deriveTriples(triple) {
@@ -3401,7 +2918,7 @@ function deriveTriples(triple) {
     addSeason,
     addYear,
     addInverseRelations,
-    expandTripleCuries,
+    expandTripleCuries
   ];
   let outputTriples = [triple];
   for (const fn of tripleProcessors) {
@@ -3416,7 +2933,7 @@ async function loadData() {
   const db = await loadTriples(
     "/manifest/tribbles.eab0f8c457.txt",
     schema,
-    deriveTriples,
+    deriveTriples
   );
   return db;
 }
@@ -3424,7 +2941,7 @@ async function loadState() {
   return {
     darkMode: DarkModes.load(),
     sidebarVisible: false,
-    data: await loadData(),
+    data: await loadData()
   };
 }
 
@@ -3437,9 +2954,9 @@ function SidebarItem() {
         class: "sidebar-item",
         onclick() {
           import_mithril2.default.route.set(vnode.attrs.route);
-        },
+        }
       }, vnode.attrs.name);
-    },
+    }
   };
 }
 function Sidebar() {
@@ -3452,31 +2969,17 @@ function Sidebar() {
   }
   return {
     view(vnode) {
-      return (0, import_mithril2.default)("aside", {
-        class: classes(vnode.attrs.visible),
-      }, [
+      return (0, import_mithril2.default)("aside", { class: classes(vnode.attrs.visible) }, [
         (0, import_mithril2.default)("nav", [
           (0, import_mithril2.default)("ul", [
-            (0, import_mithril2.default)(SidebarItem, {
-              name: "PHOTOS",
-              route: "/photos",
-            }),
-            (0, import_mithril2.default)(SidebarItem, {
-              name: "VIDEOS",
-              route: "/videos",
-            }),
-            (0, import_mithril2.default)(SidebarItem, {
-              name: "ALBUMS",
-              route: "/albums",
-            }),
-            (0, import_mithril2.default)(SidebarItem, {
-              name: "ABOUT",
-              route: "/about",
-            }),
-          ]),
-        ]),
+            (0, import_mithril2.default)(SidebarItem, { name: "PHOTOS", route: "/photos" }),
+            (0, import_mithril2.default)(SidebarItem, { name: "VIDEOS", route: "/videos" }),
+            (0, import_mithril2.default)(SidebarItem, { name: "ALBUMS", route: "/albums" }),
+            (0, import_mithril2.default)(SidebarItem, { name: "ABOUT", route: "/about" })
+          ])
+        ])
       ]);
-    },
+    }
   };
 }
 
@@ -3497,7 +3000,7 @@ var stats_default = {
   reptile_species: 5,
   amphibian_species: 3,
   fish_species: 1,
-  unesco_sites: 8,
+  unesco_sites: 8
 };
 
 // ts/components/album-stats.ts
@@ -3514,7 +3017,7 @@ function validateState(stats) {
     "mammal_species",
     "amphibian_species",
     "reptile_species",
-    "unesco_sites",
+    "unesco_sites"
   ];
   for (const key of keys) {
     if (!(key in stats)) {
@@ -3535,46 +3038,22 @@ function AlbumStats() {
         " \xB7 ",
         `${stats_default.albums} albums \xB7 ${stats_default.years} years \xB7 `,
         `${stats_default.countries} `,
-        (0, import_mithril3.default)(
-          "a",
-          { href: "#/listing/country" },
-          "countries",
-        ),
+        (0, import_mithril3.default)("a", { href: "#/listing/country" }, "countries"),
         " \xB7 ",
         `${stats_default.bird_species} `,
-        (0, import_mithril3.default)(
-          "a",
-          { href: "#/listing/bird" },
-          "bird species",
-        ),
+        (0, import_mithril3.default)("a", { href: "#/listing/bird" }, "bird species"),
         " \xB7 ",
         `${stats_default.mammal_species} `,
-        (0, import_mithril3.default)(
-          "a",
-          { href: "#/listing/mammal" },
-          "mammal species",
-        ),
+        (0, import_mithril3.default)("a", { href: "#/listing/mammal" }, "mammal species"),
         " \xB7 a few ",
-        (0, import_mithril3.default)(
-          "a",
-          { href: "#/listing/amphibian" },
-          "amphibians",
-        ),
+        (0, import_mithril3.default)("a", { href: "#/listing/amphibian" }, "amphibians"),
         " and ",
-        (0, import_mithril3.default)(
-          "a",
-          { href: "#/listing/reptile" },
-          "reptiles",
-        ),
+        (0, import_mithril3.default)("a", { href: "#/listing/reptile" }, "reptiles"),
         " \xB7 ",
         `${stats_default.unesco_sites} `,
-        (0, import_mithril3.default)(
-          "a",
-          { href: "#/thing/unesco:*" },
-          "UNESCO sites",
-        ),
+        (0, import_mithril3.default)("a", { href: "#/thing/unesco:*" }, "UNESCO sites")
       ]);
-    },
+    }
   };
 }
 
@@ -3582,7 +3061,7 @@ function AlbumStats() {
 function YearCursor() {
   return {
     view() {
-    },
+    }
   };
 }
 
@@ -3609,7 +3088,7 @@ var Photos = class {
       return coloursCache.get(colours);
     }
     const coloursList = colours.split("#").map(
-      (colour) => `#${colour}`,
+      (colour) => `#${colour}`
     );
     const canvas = document.createElement("canvas");
     canvas.width = 2;
@@ -3663,30 +3142,26 @@ var Dates = class {
     if (!minDate && !maxDate) {
       return "unknown date";
     }
-    const parsedMinDate = minDate instanceof Date
-      ? minDate
-      : new Date(parseFloat(minDate));
-    const parsedMaxDate = maxDate instanceof Date
-      ? maxDate
-      : new Date(parseFloat(maxDate));
+    const parsedMinDate = minDate instanceof Date ? minDate : new Date(parseFloat(minDate));
+    const parsedMaxDate = maxDate instanceof Date ? maxDate : new Date(parseFloat(maxDate));
     if (smallDevice) {
       const optsShort = {
         day: "numeric",
-        month: "short",
+        month: "short"
       };
       const from = parsedMinDate.toLocaleDateString("en-IE", optsShort);
       const to = parsedMaxDate.toLocaleDateString("en-IE", optsShort);
       const minDay = parsedMinDate.toLocaleDateString("en-IE", {
-        day: "numeric",
+        day: "numeric"
       });
       const maxDay = parsedMaxDate.toLocaleDateString("en-IE", {
-        day: "numeric",
+        day: "numeric"
       });
       const minMonth = parsedMinDate.toLocaleDateString("en-IE", {
-        month: "short",
+        month: "short"
       });
       const maxMonth = parsedMaxDate.toLocaleDateString("en-IE", {
-        month: "short",
+        month: "short"
       });
       const minYear = parsedMinDate.getFullYear();
       const maxYear = parsedMaxDate.getFullYear();
@@ -3703,7 +3178,7 @@ var Dates = class {
       const opts = {
         year: "numeric",
         month: "short",
-        day: "numeric",
+        day: "numeric"
       };
       const from = parsedMinDate.toLocaleDateString("en-IE", opts);
       const to = parsedMaxDate.toLocaleDateString("en-IE", opts);
@@ -3731,17 +3206,14 @@ function PhotoAlbumMetadata() {
       return (0, import_mithril4.default)("div.photo-album-metadata", [
         (0, import_mithril4.default)("p.photo-album-title", title),
         (0, import_mithril4.default)("p.photo-album-date", [
-          (0, import_mithril4.default)("time", dateRange(minDate, maxDate)),
+          (0, import_mithril4.default)("time", dateRange(minDate, maxDate))
         ]),
         (0, import_mithril4.default)("div.photo-metadata-inline", [
-          (0, import_mithril4.default)(
-            "p.photo-album-count",
-            `${count} ${text}`,
-          ),
-          (0, import_mithril4.default)("p.photo-album-countries", countryLinks),
-        ]),
+          (0, import_mithril4.default)("p.photo-album-count", `${count} ${text}`),
+          (0, import_mithril4.default)("p.photo-album-countries", countryLinks)
+        ])
       ]);
-    },
+    }
   };
 }
 
@@ -3758,7 +3230,7 @@ var import_mithril5 = __toESM(require_mithril());
 function loadImage(url, event) {
   broadcast("photo_loaded", { url });
   const $placeholder = event.target?.parentNode?.querySelector(
-    ".thumbnail-placeholder",
+    ".thumbnail-placeholder"
   );
   if (!$placeholder) {
     return;
@@ -3775,24 +3247,21 @@ function Image() {
         height: PHOTO_HEIGHT,
         src: thumbnailUrl,
         loading,
-        onclick: onclick2,
+        onclick: onclick2
       });
-    },
+    }
   };
 }
 function PlaceholderImage() {
   return {
     view(vnode) {
       const { thumbnailDataUrl } = vnode.attrs;
-      return (0, import_mithril6.default)(
-        "img.u-photo.thumbnail-image.thumbnail-placeholder",
-        {
-          width: PHOTO_WIDTH,
-          height: PHOTO_HEIGHT,
-          src: thumbnailDataUrl,
-        },
-      );
-    },
+      return (0, import_mithril6.default)("img.u-photo.thumbnail-image.thumbnail-placeholder", {
+        width: PHOTO_WIDTH,
+        height: PHOTO_HEIGHT,
+        src: thumbnailDataUrl
+      });
+    }
   };
 }
 function ImagePair() {
@@ -3803,21 +3272,17 @@ function ImagePair() {
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
-        onclick: onclick2,
+        onclick: onclick2
       } = vnode.attrs;
       return (0, import_mithril6.default)("a", {
         href: imageUrl,
         target: "_blank",
-        rel: "external",
+        rel: "external"
       }, [
         (0, import_mithril6.default)(PlaceholderImage, { thumbnailDataUrl }),
-        (0, import_mithril6.default)(Image, {
-          thumbnailUrl,
-          loading,
-          onclick: onclick2,
-        }),
+        (0, import_mithril6.default)(Image, { thumbnailUrl, loading, onclick: onclick2 })
       ]);
-    },
+    }
   };
 }
 
@@ -3831,7 +3296,7 @@ function PhotoAlbum() {
         thumbnailDataUrl,
         loading,
         child,
-        onclick: onclick2,
+        onclick: onclick2
       } = vnode.attrs;
       return (0, import_mithril7.default)("div.photo-album", [
         (0, import_mithril7.default)(ImagePair, {
@@ -3839,11 +3304,11 @@ function PhotoAlbum() {
           thumbnailUrl,
           thumbnailDataUrl,
           loading,
-          onclick: onclick2,
+          onclick: onclick2
         }),
-        child,
+        child
       ]);
-    },
+    }
   };
 }
 
@@ -3855,25 +3320,24 @@ function AlbumsList() {
   }
   return {
     view(vnode) {
-      let year = 2e3;
+      let year = 2005;
       const { albums } = vnode.attrs;
       for (let idx = 0; idx < albums.length; idx++) {
         const album = albums[idx];
         const loading = Photos.loadingMode(idx);
         if (year !== albumYear(album)) {
           year = albumYear(album);
-          const $h2 = (0, import_mithril8.default)(
-            "h2.album-year-header",
-            year.toString(),
-          );
-          albumComponents.push($h2);
+          if (year !== (/* @__PURE__ */ new Date()).getFullYear()) {
+            const $h2 = (0, import_mithril8.default)("h2.album-year-header", year.toString());
+            albumComponents.push($h2);
+          }
         }
         const $md = (0, import_mithril8.default)(PhotoAlbumMetadata, {
           title: album.name,
           minDate: album.minDate,
           maxDate: album.maxDate,
           count: album.photosCount,
-          countryLinks: [],
+          countryLinks: []
         });
         const $album = (0, import_mithril8.default)(PhotoAlbum, {
           imageUrl: album.thumbnailUrl,
@@ -3881,16 +3345,13 @@ function AlbumsList() {
           thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
           loading,
           onclick: () => {
-          },
+          }
         });
-        albumComponents.push($md);
         albumComponents.push($album);
+        albumComponents.push($md);
       }
-      return (0, import_mithril8.default)(
-        "section.album-container",
-        albumComponents,
-      );
-    },
+      return (0, import_mithril8.default)("section", albumComponents);
+    }
   };
 }
 function AlbumsPage() {
@@ -3901,28 +3362,23 @@ function AlbumsPage() {
     view(vnode) {
       const $md = (0, import_mithril8.default)("section.album-metadata", [
         (0, import_mithril8.default)("h1.albums-header", "Albums"),
-        (0, import_mithril8.default)(AlbumStats),
+        (0, import_mithril8.default)(AlbumStats)
       ]);
-      const $albumContainer = (0, import_mithril8.default)(
-        "section.album-container",
-        [
-          (0, import_mithril8.default)(YearCursor),
-          (0, import_mithril8.default)(AlbumsList, {
-            albums: vnode.attrs.albums,
-          }),
-        ],
-      );
+      const $albumContainer = (0, import_mithril8.default)("section.album-container", [
+        (0, import_mithril8.default)(YearCursor),
+        (0, import_mithril8.default)(AlbumsList, { albums: vnode.attrs.albums })
+      ]);
       return (0, import_mithril8.default)("div", [
         $md,
-        $albumContainer,
+        $albumContainer
       ]);
-    },
+    }
   };
 }
 
 // ../node_modules/zod/lib/index.mjs
 var util;
-(function (util2) {
+(function(util2) {
   util2.assertEqual = (val) => val;
   function assertIs(_arg) {
   }
@@ -3939,9 +3395,7 @@ var util;
     return obj;
   };
   util2.getValidEnumValues = (obj) => {
-    const validKeys = util2.objectKeys(obj).filter((k) =>
-      typeof obj[obj[k]] !== "number"
-    );
+    const validKeys = util2.objectKeys(obj).filter((k) => typeof obj[obj[k]] !== "number");
     const filtered = {};
     for (const k of validKeys) {
       filtered[k] = obj[k];
@@ -3949,37 +3403,29 @@ var util;
     return util2.objectValues(filtered);
   };
   util2.objectValues = (obj) => {
-    return util2.objectKeys(obj).map(function (e) {
+    return util2.objectKeys(obj).map(function(e) {
       return obj[e];
     });
   };
-  util2.objectKeys = typeof Object.keys === "function"
-    ? (obj) => Object.keys(obj)
-    : (object) => {
-      const keys = [];
-      for (const key in object) {
-        if (Object.prototype.hasOwnProperty.call(object, key)) {
-          keys.push(key);
-        }
+  util2.objectKeys = typeof Object.keys === "function" ? (obj) => Object.keys(obj) : (object) => {
+    const keys = [];
+    for (const key in object) {
+      if (Object.prototype.hasOwnProperty.call(object, key)) {
+        keys.push(key);
       }
-      return keys;
-    };
+    }
+    return keys;
+  };
   util2.find = (arr, checker) => {
     for (const item of arr) {
-      if (checker(item)) {
+      if (checker(item))
         return item;
-      }
     }
     return void 0;
   };
-  util2.isInteger = typeof Number.isInteger === "function"
-    ? (val) => Number.isInteger(val)
-    : (val) =>
-      typeof val === "number" && isFinite(val) && Math.floor(val) === val;
+  util2.isInteger = typeof Number.isInteger === "function" ? (val) => Number.isInteger(val) : (val) => typeof val === "number" && isFinite(val) && Math.floor(val) === val;
   function joinValues(array, separator = " | ") {
-    return array.map((val) => typeof val === "string" ? `'${val}'` : val).join(
-      separator,
-    );
+    return array.map((val) => typeof val === "string" ? `'${val}'` : val).join(separator);
   }
   util2.joinValues = joinValues;
   util2.jsonStringifyReplacer = (_, value) => {
@@ -3990,11 +3436,11 @@ var util;
   };
 })(util || (util = {}));
 var objectUtil;
-(function (objectUtil2) {
+(function(objectUtil2) {
   objectUtil2.mergeShapes = (first, second) => {
     return {
       ...first,
-      ...second,
+      ...second
       // second overwrites first
     };
   };
@@ -4019,7 +3465,7 @@ var ZodParsedType = util.arrayToEnum([
   "void",
   "never",
   "map",
-  "set",
+  "set"
 ]);
 var getParsedType = (data) => {
   const t = typeof data;
@@ -4045,10 +3491,7 @@ var getParsedType = (data) => {
       if (data === null) {
         return ZodParsedType.null;
       }
-      if (
-        data.then && typeof data.then === "function" && data.catch &&
-        typeof data.catch === "function"
-      ) {
+      if (data.then && typeof data.then === "function" && data.catch && typeof data.catch === "function") {
         return ZodParsedType.promise;
       }
       if (typeof Map !== "undefined" && data instanceof Map) {
@@ -4081,7 +3524,7 @@ var ZodIssueCode = util.arrayToEnum([
   "too_big",
   "invalid_intersection_types",
   "not_multiple_of",
-  "not_finite",
+  "not_finite"
 ]);
 var quotelessJson = (obj) => {
   const json = JSON.stringify(obj, null, 2);
@@ -4110,7 +3553,7 @@ var ZodError = class extends Error {
     return this.issues;
   }
   format(_mapper) {
-    const mapper = _mapper || function (issue) {
+    const mapper = _mapper || function(issue) {
       return issue.message;
     };
     const fieldErrors = { _errors: [] };
@@ -4186,27 +3629,19 @@ var errorMap = (issue, _ctx) => {
       }
       break;
     case ZodIssueCode.invalid_literal:
-      message = `Invalid literal value, expected ${
-        JSON.stringify(issue.expected, util.jsonStringifyReplacer)
-      }`;
+      message = `Invalid literal value, expected ${JSON.stringify(issue.expected, util.jsonStringifyReplacer)}`;
       break;
     case ZodIssueCode.unrecognized_keys:
-      message = `Unrecognized key(s) in object: ${
-        util.joinValues(issue.keys, ", ")
-      }`;
+      message = `Unrecognized key(s) in object: ${util.joinValues(issue.keys, ", ")}`;
       break;
     case ZodIssueCode.invalid_union:
       message = `Invalid input`;
       break;
     case ZodIssueCode.invalid_union_discriminator:
-      message = `Invalid discriminator value. Expected ${
-        util.joinValues(issue.options)
-      }`;
+      message = `Invalid discriminator value. Expected ${util.joinValues(issue.options)}`;
       break;
     case ZodIssueCode.invalid_enum_value:
-      message = `Invalid enum value. Expected ${
-        util.joinValues(issue.options)
-      }, received '${issue.received}'`;
+      message = `Invalid enum value. Expected ${util.joinValues(issue.options)}, received '${issue.received}'`;
       break;
     case ZodIssueCode.invalid_arguments:
       message = `Invalid function arguments`;
@@ -4220,18 +3655,14 @@ var errorMap = (issue, _ctx) => {
     case ZodIssueCode.invalid_string:
       if (typeof issue.validation === "object") {
         if ("includes" in issue.validation) {
-          message =
-            `Invalid input: must include "${issue.validation.includes}"`;
+          message = `Invalid input: must include "${issue.validation.includes}"`;
           if (typeof issue.validation.position === "number") {
-            message =
-              `${message} at one or more positions greater than or equal to ${issue.validation.position}`;
+            message = `${message} at one or more positions greater than or equal to ${issue.validation.position}`;
           }
         } else if ("startsWith" in issue.validation) {
-          message =
-            `Invalid input: must start with "${issue.validation.startsWith}"`;
+          message = `Invalid input: must start with "${issue.validation.startsWith}"`;
         } else if ("endsWith" in issue.validation) {
-          message =
-            `Invalid input: must end with "${issue.validation.endsWith}"`;
+          message = `Invalid input: must end with "${issue.validation.endsWith}"`;
         } else {
           util.assertNever(issue.validation);
         }
@@ -4242,70 +3673,30 @@ var errorMap = (issue, _ctx) => {
       }
       break;
     case ZodIssueCode.too_small:
-      if (issue.type === "array") {
-        message = `Array must contain ${
-          issue.exact ? "exactly" : issue.inclusive ? `at least` : `more than`
-        } ${issue.minimum} element(s)`;
-      } else if (issue.type === "string") {
-        message = `String must contain ${
-          issue.exact ? "exactly" : issue.inclusive ? `at least` : `over`
-        } ${issue.minimum} character(s)`;
-      } else if (issue.type === "number") {
-        message = `Number must be ${
-          issue.exact
-            ? `exactly equal to `
-            : issue.inclusive
-            ? `greater than or equal to `
-            : `greater than `
-        }${issue.minimum}`;
-      } else if (issue.type === "date") {
-        message = `Date must be ${
-          issue.exact
-            ? `exactly equal to `
-            : issue.inclusive
-            ? `greater than or equal to `
-            : `greater than `
-        }${new Date(Number(issue.minimum))}`;
-      } else {
+      if (issue.type === "array")
+        message = `Array must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `more than`} ${issue.minimum} element(s)`;
+      else if (issue.type === "string")
+        message = `String must contain ${issue.exact ? "exactly" : issue.inclusive ? `at least` : `over`} ${issue.minimum} character(s)`;
+      else if (issue.type === "number")
+        message = `Number must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${issue.minimum}`;
+      else if (issue.type === "date")
+        message = `Date must be ${issue.exact ? `exactly equal to ` : issue.inclusive ? `greater than or equal to ` : `greater than `}${new Date(Number(issue.minimum))}`;
+      else
         message = "Invalid input";
-      }
       break;
     case ZodIssueCode.too_big:
-      if (issue.type === "array") {
-        message = `Array must contain ${
-          issue.exact ? `exactly` : issue.inclusive ? `at most` : `less than`
-        } ${issue.maximum} element(s)`;
-      } else if (issue.type === "string") {
-        message = `String must contain ${
-          issue.exact ? `exactly` : issue.inclusive ? `at most` : `under`
-        } ${issue.maximum} character(s)`;
-      } else if (issue.type === "number") {
-        message = `Number must be ${
-          issue.exact
-            ? `exactly`
-            : issue.inclusive
-            ? `less than or equal to`
-            : `less than`
-        } ${issue.maximum}`;
-      } else if (issue.type === "bigint") {
-        message = `BigInt must be ${
-          issue.exact
-            ? `exactly`
-            : issue.inclusive
-            ? `less than or equal to`
-            : `less than`
-        } ${issue.maximum}`;
-      } else if (issue.type === "date") {
-        message = `Date must be ${
-          issue.exact
-            ? `exactly`
-            : issue.inclusive
-            ? `smaller than or equal to`
-            : `smaller than`
-        } ${new Date(Number(issue.maximum))}`;
-      } else {
+      if (issue.type === "array")
+        message = `Array must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `less than`} ${issue.maximum} element(s)`;
+      else if (issue.type === "string")
+        message = `String must contain ${issue.exact ? `exactly` : issue.inclusive ? `at most` : `under`} ${issue.maximum} character(s)`;
+      else if (issue.type === "number")
+        message = `Number must be ${issue.exact ? `exactly` : issue.inclusive ? `less than or equal to` : `less than`} ${issue.maximum}`;
+      else if (issue.type === "bigint")
+        message = `BigInt must be ${issue.exact ? `exactly` : issue.inclusive ? `less than or equal to` : `less than`} ${issue.maximum}`;
+      else if (issue.type === "date")
+        message = `Date must be ${issue.exact ? `exactly` : issue.inclusive ? `smaller than or equal to` : `smaller than`} ${new Date(Number(issue.maximum))}`;
+      else
         message = "Invalid input";
-      }
       break;
     case ZodIssueCode.custom:
       message = `Invalid input`;
@@ -4337,7 +3728,7 @@ var makeIssue = (params) => {
   const fullPath = [...path, ...issueData.path || []];
   const fullIssue = {
     ...issueData,
-    path: fullPath,
+    path: fullPath
   };
   let errorMessage = "";
   const maps = errorMaps.filter((m11) => !!m11).slice().reverse();
@@ -4347,7 +3738,7 @@ var makeIssue = (params) => {
   return {
     ...issueData,
     path: fullPath,
-    message: issueData.message || errorMessage,
+    message: issueData.message || errorMessage
   };
 };
 var EMPTY_PATH = [];
@@ -4360,9 +3751,9 @@ function addIssueToContext(ctx, issueData) {
       ctx.common.contextualErrorMap,
       ctx.schemaErrorMap,
       getErrorMap(),
-      errorMap,
+      errorMap
       // then global default map
-    ].filter((x) => !!x),
+    ].filter((x) => !!x)
   });
   ctx.common.issues.push(issue);
 }
@@ -4371,24 +3762,20 @@ var ParseStatus = class _ParseStatus {
     this.value = "valid";
   }
   dirty() {
-    if (this.value === "valid") {
+    if (this.value === "valid")
       this.value = "dirty";
-    }
   }
   abort() {
-    if (this.value !== "aborted") {
+    if (this.value !== "aborted")
       this.value = "aborted";
-    }
   }
   static mergeArray(status, results) {
     const arrayValue = [];
     for (const s of results) {
-      if (s.status === "aborted") {
+      if (s.status === "aborted")
         return INVALID;
-      }
-      if (s.status === "dirty") {
+      if (s.status === "dirty")
         status.dirty();
-      }
       arrayValue.push(s.value);
     }
     return { status: status.value, value: arrayValue };
@@ -4398,7 +3785,7 @@ var ParseStatus = class _ParseStatus {
     for (const pair of pairs) {
       syncPairs.push({
         key: await pair.key,
-        value: await pair.value,
+        value: await pair.value
       });
     }
     return _ParseStatus.mergeObjectSync(status, syncPairs);
@@ -4407,22 +3794,15 @@ var ParseStatus = class _ParseStatus {
     const finalObject = {};
     for (const pair of pairs) {
       const { key, value } = pair;
-      if (key.status === "aborted") {
+      if (key.status === "aborted")
         return INVALID;
-      }
-      if (value.status === "aborted") {
+      if (value.status === "aborted")
         return INVALID;
-      }
-      if (key.status === "dirty") {
+      if (key.status === "dirty")
         status.dirty();
-      }
-      if (value.status === "dirty") {
+      if (value.status === "dirty")
         status.dirty();
-      }
-      if (
-        key.value !== "__proto__" &&
-        (typeof value.value !== "undefined" || pair.alwaysSet)
-      ) {
+      if (key.value !== "__proto__" && (typeof value.value !== "undefined" || pair.alwaysSet)) {
         finalObject[key.value] = value.value;
       }
     }
@@ -4430,7 +3810,7 @@ var ParseStatus = class _ParseStatus {
   }
 };
 var INVALID = Object.freeze({
-  status: "aborted",
+  status: "aborted"
 });
 var DIRTY = (value) => ({ status: "dirty", value });
 var OK = (value) => ({ status: "valid", value });
@@ -4439,15 +3819,9 @@ var isDirty = (x) => x.status === "dirty";
 var isValid = (x) => x.status === "valid";
 var isAsync = (x) => typeof Promise !== "undefined" && x instanceof Promise;
 var errorUtil;
-(function (errorUtil2) {
-  errorUtil2.errToObj = (message) =>
-    typeof message === "string" ? { message } : message || {};
-  errorUtil2.toString = (message) =>
-    typeof message === "string"
-      ? message
-      : message === null || message === void 0
-      ? void 0
-      : message.message;
+(function(errorUtil2) {
+  errorUtil2.errToObj = (message) => typeof message === "string" ? { message } : message || {};
+  errorUtil2.toString = (message) => typeof message === "string" ? message : message === null || message === void 0 ? void 0 : message.message;
 })(errorUtil || (errorUtil = {}));
 var ParseInputLazyPath = class {
   constructor(parent, value, path, key) {
@@ -4478,50 +3852,31 @@ var handleResult = (ctx, result) => {
     return {
       success: false,
       get error() {
-        if (this._error) {
+        if (this._error)
           return this._error;
-        }
         const error = new ZodError(ctx.common.issues);
         this._error = error;
         return this._error;
-      },
+      }
     };
   }
 };
 function processCreateParams(params) {
-  if (!params) {
+  if (!params)
     return {};
-  }
-  const {
-    errorMap: errorMap2,
-    invalid_type_error,
-    required_error,
-    description,
-  } = params;
+  const { errorMap: errorMap2, invalid_type_error, required_error, description } = params;
   if (errorMap2 && (invalid_type_error || required_error)) {
-    throw new Error(
-      `Can't use "invalid_type_error" or "required_error" in conjunction with custom error map.`,
-    );
+    throw new Error(`Can't use "invalid_type_error" or "required_error" in conjunction with custom error map.`);
   }
-  if (errorMap2) {
+  if (errorMap2)
     return { errorMap: errorMap2, description };
-  }
   const customMap = (iss, ctx) => {
-    if (iss.code !== "invalid_type") {
+    if (iss.code !== "invalid_type")
       return { message: ctx.defaultError };
-    }
     if (typeof ctx.data === "undefined") {
-      return {
-        message: required_error !== null && required_error !== void 0
-          ? required_error
-          : ctx.defaultError,
-      };
+      return { message: required_error !== null && required_error !== void 0 ? required_error : ctx.defaultError };
     }
-    return {
-      message: invalid_type_error !== null && invalid_type_error !== void 0
-        ? invalid_type_error
-        : ctx.defaultError,
-    };
+    return { message: invalid_type_error !== null && invalid_type_error !== void 0 ? invalid_type_error : ctx.defaultError };
   };
   return { errorMap: customMap, description };
 }
@@ -4567,7 +3922,7 @@ var ZodType = class {
       parsedType: getParsedType(input.data),
       schemaErrorMap: this._def.errorMap,
       path: input.path,
-      parent: input.parent,
+      parent: input.parent
     };
   }
   _processInputParams(input) {
@@ -4579,8 +3934,8 @@ var ZodType = class {
         parsedType: getParsedType(input.data),
         schemaErrorMap: this._def.errorMap,
         path: input.path,
-        parent: input.parent,
-      },
+        parent: input.parent
+      }
     };
   }
   _parseSync(input) {
@@ -4596,9 +3951,8 @@ var ZodType = class {
   }
   parse(data, params) {
     const result = this.safeParse(data, params);
-    if (result.success) {
+    if (result.success)
       return result.data;
-    }
     throw result.error;
   }
   safeParse(data, params) {
@@ -4606,52 +3960,39 @@ var ZodType = class {
     const ctx = {
       common: {
         issues: [],
-        async:
-          (_a = params === null || params === void 0
-                ? void 0
-                : params.async) !== null && _a !== void 0
-            ? _a
-            : false,
-        contextualErrorMap: params === null || params === void 0
-          ? void 0
-          : params.errorMap,
+        async: (_a = params === null || params === void 0 ? void 0 : params.async) !== null && _a !== void 0 ? _a : false,
+        contextualErrorMap: params === null || params === void 0 ? void 0 : params.errorMap
       },
       path: (params === null || params === void 0 ? void 0 : params.path) || [],
       schemaErrorMap: this._def.errorMap,
       parent: null,
       data,
-      parsedType: getParsedType(data),
+      parsedType: getParsedType(data)
     };
     const result = this._parseSync({ data, path: ctx.path, parent: ctx });
     return handleResult(ctx, result);
   }
   async parseAsync(data, params) {
     const result = await this.safeParseAsync(data, params);
-    if (result.success) {
+    if (result.success)
       return result.data;
-    }
     throw result.error;
   }
   async safeParseAsync(data, params) {
     const ctx = {
       common: {
         issues: [],
-        contextualErrorMap: params === null || params === void 0
-          ? void 0
-          : params.errorMap,
-        async: true,
+        contextualErrorMap: params === null || params === void 0 ? void 0 : params.errorMap,
+        async: true
       },
       path: (params === null || params === void 0 ? void 0 : params.path) || [],
       schemaErrorMap: this._def.errorMap,
       parent: null,
       data,
-      parsedType: getParsedType(data),
+      parsedType: getParsedType(data)
     };
     const maybeAsyncResult = this._parse({ data, path: ctx.path, parent: ctx });
-    const result =
-      await (isAsync(maybeAsyncResult)
-        ? maybeAsyncResult
-        : Promise.resolve(maybeAsyncResult));
+    const result = await (isAsync(maybeAsyncResult) ? maybeAsyncResult : Promise.resolve(maybeAsyncResult));
     return handleResult(ctx, result);
   }
   refine(check, message) {
@@ -4666,11 +4007,10 @@ var ZodType = class {
     };
     return this._refinement((val, ctx) => {
       const result = check(val);
-      const setError = () =>
-        ctx.addIssue({
-          code: ZodIssueCode.custom,
-          ...getIssueProperties(val),
-        });
+      const setError = () => ctx.addIssue({
+        code: ZodIssueCode.custom,
+        ...getIssueProperties(val)
+      });
       if (typeof Promise !== "undefined" && result instanceof Promise) {
         return result.then((data) => {
           if (!data) {
@@ -4692,11 +4032,7 @@ var ZodType = class {
   refinement(check, refinementData) {
     return this._refinement((val, ctx) => {
       if (!check(val)) {
-        ctx.addIssue(
-          typeof refinementData === "function"
-            ? refinementData(val, ctx)
-            : refinementData,
-        );
+        ctx.addIssue(typeof refinementData === "function" ? refinementData(val, ctx) : refinementData);
         return false;
       } else {
         return true;
@@ -4707,7 +4043,7 @@ var ZodType = class {
     return new ZodEffects({
       schema: this,
       typeName: ZodFirstPartyTypeKind.ZodEffects,
-      effect: { type: "refinement", refinement },
+      effect: { type: "refinement", refinement }
     });
   }
   superRefine(refinement) {
@@ -4739,7 +4075,7 @@ var ZodType = class {
       ...processCreateParams(this._def),
       schema: this,
       typeName: ZodFirstPartyTypeKind.ZodEffects,
-      effect: { type: "transform", transform },
+      effect: { type: "transform", transform }
     });
   }
   default(def) {
@@ -4748,14 +4084,14 @@ var ZodType = class {
       ...processCreateParams(this._def),
       innerType: this,
       defaultValue: defaultValueFunc,
-      typeName: ZodFirstPartyTypeKind.ZodDefault,
+      typeName: ZodFirstPartyTypeKind.ZodDefault
     });
   }
   brand() {
     return new ZodBranded({
       typeName: ZodFirstPartyTypeKind.ZodBranded,
       type: this,
-      ...processCreateParams(this._def),
+      ...processCreateParams(this._def)
     });
   }
   catch(def) {
@@ -4764,14 +4100,14 @@ var ZodType = class {
       ...processCreateParams(this._def),
       innerType: this,
       catchValue: catchValueFunc,
-      typeName: ZodFirstPartyTypeKind.ZodCatch,
+      typeName: ZodFirstPartyTypeKind.ZodCatch
     });
   }
   describe(description) {
     const This = this.constructor;
     return new This({
       ...this._def,
-      description,
+      description
     });
   }
   pipe(target) {
@@ -4790,43 +4126,29 @@ var ZodType = class {
 var cuidRegex = /^c[^\s-]{8,}$/i;
 var cuid2Regex = /^[a-z][a-z0-9]*$/;
 var ulidRegex = /[0-9A-HJKMNP-TV-Z]{26}/;
-var uuidRegex =
-  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i;
-var emailRegex =
-  /^(?!\.)(?!.*\.\.)([A-Z0-9_+-\.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i;
+var uuidRegex = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/i;
+var emailRegex = /^(?!\.)(?!.*\.\.)([A-Z0-9_+-\.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9\-]*\.)+[A-Z]{2,}$/i;
 var emojiRegex = /^(\p{Extended_Pictographic}|\p{Emoji_Component})+$/u;
-var ipv4Regex =
-  /^(((25[0-5])|(2[0-4][0-9])|(1[0-9]{2})|([0-9]{1,2}))\.){3}((25[0-5])|(2[0-4][0-9])|(1[0-9]{2})|([0-9]{1,2}))$/;
-var ipv6Regex =
-  /^(([a-f0-9]{1,4}:){7}|::([a-f0-9]{1,4}:){0,6}|([a-f0-9]{1,4}:){1}:([a-f0-9]{1,4}:){0,5}|([a-f0-9]{1,4}:){2}:([a-f0-9]{1,4}:){0,4}|([a-f0-9]{1,4}:){3}:([a-f0-9]{1,4}:){0,3}|([a-f0-9]{1,4}:){4}:([a-f0-9]{1,4}:){0,2}|([a-f0-9]{1,4}:){5}:([a-f0-9]{1,4}:){0,1})([a-f0-9]{1,4}|(((25[0-5])|(2[0-4][0-9])|(1[0-9]{2})|([0-9]{1,2}))\.){3}((25[0-5])|(2[0-4][0-9])|(1[0-9]{2})|([0-9]{1,2})))$/;
+var ipv4Regex = /^(((25[0-5])|(2[0-4][0-9])|(1[0-9]{2})|([0-9]{1,2}))\.){3}((25[0-5])|(2[0-4][0-9])|(1[0-9]{2})|([0-9]{1,2}))$/;
+var ipv6Regex = /^(([a-f0-9]{1,4}:){7}|::([a-f0-9]{1,4}:){0,6}|([a-f0-9]{1,4}:){1}:([a-f0-9]{1,4}:){0,5}|([a-f0-9]{1,4}:){2}:([a-f0-9]{1,4}:){0,4}|([a-f0-9]{1,4}:){3}:([a-f0-9]{1,4}:){0,3}|([a-f0-9]{1,4}:){4}:([a-f0-9]{1,4}:){0,2}|([a-f0-9]{1,4}:){5}:([a-f0-9]{1,4}:){0,1})([a-f0-9]{1,4}|(((25[0-5])|(2[0-4][0-9])|(1[0-9]{2})|([0-9]{1,2}))\.){3}((25[0-5])|(2[0-4][0-9])|(1[0-9]{2})|([0-9]{1,2})))$/;
 var datetimeRegex = (args) => {
   if (args.precision) {
     if (args.offset) {
-      return new RegExp(
-        `^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{${args.precision}}(([+-]\\d{2}(:?\\d{2})?)|Z)$`,
-      );
+      return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{${args.precision}}(([+-]\\d{2}(:?\\d{2})?)|Z)$`);
     } else {
-      return new RegExp(
-        `^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{${args.precision}}Z$`,
-      );
+      return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{${args.precision}}Z$`);
     }
   } else if (args.precision === 0) {
     if (args.offset) {
-      return new RegExp(
-        `^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(([+-]\\d{2}(:?\\d{2})?)|Z)$`,
-      );
+      return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(([+-]\\d{2}(:?\\d{2})?)|Z)$`);
     } else {
       return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$`);
     }
   } else {
     if (args.offset) {
-      return new RegExp(
-        `^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?(([+-]\\d{2}(:?\\d{2})?)|Z)$`,
-      );
+      return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?(([+-]\\d{2}(:?\\d{2})?)|Z)$`);
     } else {
-      return new RegExp(
-        `^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$`,
-      );
+      return new RegExp(`^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$`);
     }
   }
 };
@@ -4842,28 +4164,24 @@ function isValidIP(ip, version) {
 var ZodString = class _ZodString extends ZodType {
   constructor() {
     super(...arguments);
-    this._regex = (regex, validation, message) =>
-      this.refinement((data) => regex.test(data), {
-        validation,
-        code: ZodIssueCode.invalid_string,
-        ...errorUtil.errToObj(message),
-      });
+    this._regex = (regex, validation, message) => this.refinement((data) => regex.test(data), {
+      validation,
+      code: ZodIssueCode.invalid_string,
+      ...errorUtil.errToObj(message)
+    });
     this.nonempty = (message) => this.min(1, errorUtil.errToObj(message));
-    this.trim = () =>
-      new _ZodString({
-        ...this._def,
-        checks: [...this._def.checks, { kind: "trim" }],
-      });
-    this.toLowerCase = () =>
-      new _ZodString({
-        ...this._def,
-        checks: [...this._def.checks, { kind: "toLowerCase" }],
-      });
-    this.toUpperCase = () =>
-      new _ZodString({
-        ...this._def,
-        checks: [...this._def.checks, { kind: "toUpperCase" }],
-      });
+    this.trim = () => new _ZodString({
+      ...this._def,
+      checks: [...this._def.checks, { kind: "trim" }]
+    });
+    this.toLowerCase = () => new _ZodString({
+      ...this._def,
+      checks: [...this._def.checks, { kind: "toLowerCase" }]
+    });
+    this.toUpperCase = () => new _ZodString({
+      ...this._def,
+      checks: [...this._def.checks, { kind: "toUpperCase" }]
+    });
   }
   _parse(input) {
     if (this._def.coerce) {
@@ -4877,8 +4195,8 @@ var ZodString = class _ZodString extends ZodType {
         {
           code: ZodIssueCode.invalid_type,
           expected: ZodParsedType.string,
-          received: ctx2.parsedType,
-        },
+          received: ctx2.parsedType
+        }
         //
       );
       return INVALID;
@@ -4895,7 +4213,7 @@ var ZodString = class _ZodString extends ZodType {
             type: "string",
             inclusive: true,
             exact: false,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -4908,7 +4226,7 @@ var ZodString = class _ZodString extends ZodType {
             type: "string",
             inclusive: true,
             exact: false,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -4924,7 +4242,7 @@ var ZodString = class _ZodString extends ZodType {
               type: "string",
               inclusive: true,
               exact: true,
-              message: check.message,
+              message: check.message
             });
           } else if (tooSmall) {
             addIssueToContext(ctx, {
@@ -4933,7 +4251,7 @@ var ZodString = class _ZodString extends ZodType {
               type: "string",
               inclusive: true,
               exact: true,
-              message: check.message,
+              message: check.message
             });
           }
           status.dirty();
@@ -4944,7 +4262,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "email",
             code: ZodIssueCode.invalid_string,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -4954,7 +4272,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "emoji",
             code: ZodIssueCode.invalid_string,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -4964,7 +4282,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "uuid",
             code: ZodIssueCode.invalid_string,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -4974,7 +4292,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "cuid",
             code: ZodIssueCode.invalid_string,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -4984,7 +4302,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "cuid2",
             code: ZodIssueCode.invalid_string,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -4994,7 +4312,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "ulid",
             code: ZodIssueCode.invalid_string,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5006,7 +4324,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "url",
             code: ZodIssueCode.invalid_string,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5018,7 +4336,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "regex",
             code: ZodIssueCode.invalid_string,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5030,7 +4348,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.invalid_string,
             validation: { includes: check.value, position: check.position },
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5044,7 +4362,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.invalid_string,
             validation: { startsWith: check.value },
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5054,7 +4372,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.invalid_string,
             validation: { endsWith: check.value },
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5065,7 +4383,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.invalid_string,
             validation: "datetime",
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5075,7 +4393,7 @@ var ZodString = class _ZodString extends ZodType {
           addIssueToContext(ctx, {
             validation: "ip",
             code: ZodIssueCode.invalid_string,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5088,7 +4406,7 @@ var ZodString = class _ZodString extends ZodType {
   _addCheck(check) {
     return new _ZodString({
       ...this._def,
-      checks: [...this._def.checks, check],
+      checks: [...this._def.checks, check]
     });
   }
   email(message) {
@@ -5122,80 +4440,64 @@ var ZodString = class _ZodString extends ZodType {
         kind: "datetime",
         precision: null,
         offset: false,
-        message: options,
+        message: options
       });
     }
     return this._addCheck({
       kind: "datetime",
-      precision: typeof (options === null || options === void 0
-          ? void 0
-          : options.precision) === "undefined"
-        ? null
-        : options === null || options === void 0
-        ? void 0
-        : options.precision,
-      offset: (_a = options === null || options === void 0
-              ? void 0
-              : options.offset) !== null && _a !== void 0
-        ? _a
-        : false,
-      ...errorUtil.errToObj(
-        options === null || options === void 0 ? void 0 : options.message,
-      ),
+      precision: typeof (options === null || options === void 0 ? void 0 : options.precision) === "undefined" ? null : options === null || options === void 0 ? void 0 : options.precision,
+      offset: (_a = options === null || options === void 0 ? void 0 : options.offset) !== null && _a !== void 0 ? _a : false,
+      ...errorUtil.errToObj(options === null || options === void 0 ? void 0 : options.message)
     });
   }
   regex(regex, message) {
     return this._addCheck({
       kind: "regex",
       regex,
-      ...errorUtil.errToObj(message),
+      ...errorUtil.errToObj(message)
     });
   }
   includes(value, options) {
     return this._addCheck({
       kind: "includes",
       value,
-      position: options === null || options === void 0
-        ? void 0
-        : options.position,
-      ...errorUtil.errToObj(
-        options === null || options === void 0 ? void 0 : options.message,
-      ),
+      position: options === null || options === void 0 ? void 0 : options.position,
+      ...errorUtil.errToObj(options === null || options === void 0 ? void 0 : options.message)
     });
   }
   startsWith(value, message) {
     return this._addCheck({
       kind: "startsWith",
       value,
-      ...errorUtil.errToObj(message),
+      ...errorUtil.errToObj(message)
     });
   }
   endsWith(value, message) {
     return this._addCheck({
       kind: "endsWith",
       value,
-      ...errorUtil.errToObj(message),
+      ...errorUtil.errToObj(message)
     });
   }
   min(minLength, message) {
     return this._addCheck({
       kind: "min",
       value: minLength,
-      ...errorUtil.errToObj(message),
+      ...errorUtil.errToObj(message)
     });
   }
   max(maxLength, message) {
     return this._addCheck({
       kind: "max",
       value: maxLength,
-      ...errorUtil.errToObj(message),
+      ...errorUtil.errToObj(message)
     });
   }
   length(len, message) {
     return this._addCheck({
       kind: "length",
       value: len,
-      ...errorUtil.errToObj(message),
+      ...errorUtil.errToObj(message)
     });
   }
   get isDatetime() {
@@ -5229,9 +4531,8 @@ var ZodString = class _ZodString extends ZodType {
     let min = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "min") {
-        if (min === null || ch.value > min) {
+        if (min === null || ch.value > min)
           min = ch.value;
-        }
       }
     }
     return min;
@@ -5240,9 +4541,8 @@ var ZodString = class _ZodString extends ZodType {
     let max = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "max") {
-        if (max === null || ch.value < max) {
+        if (max === null || ch.value < max)
           max = ch.value;
-        }
       }
     }
     return max;
@@ -5253,12 +4553,8 @@ ZodString.create = (params) => {
   return new ZodString({
     checks: [],
     typeName: ZodFirstPartyTypeKind.ZodString,
-    coerce:
-      (_a = params === null || params === void 0 ? void 0 : params.coerce) !==
-          null && _a !== void 0
-        ? _a
-        : false,
-    ...processCreateParams(params),
+    coerce: (_a = params === null || params === void 0 ? void 0 : params.coerce) !== null && _a !== void 0 ? _a : false,
+    ...processCreateParams(params)
   });
 };
 function floatSafeRemainder(val, step) {
@@ -5286,7 +4582,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
       addIssueToContext(ctx2, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.number,
-        received: ctx2.parsedType,
+        received: ctx2.parsedType
       });
       return INVALID;
     }
@@ -5300,14 +4596,12 @@ var ZodNumber = class _ZodNumber extends ZodType {
             code: ZodIssueCode.invalid_type,
             expected: "integer",
             received: "float",
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
       } else if (check.kind === "min") {
-        const tooSmall = check.inclusive
-          ? input.data < check.value
-          : input.data <= check.value;
+        const tooSmall = check.inclusive ? input.data < check.value : input.data <= check.value;
         if (tooSmall) {
           ctx = this._getOrReturnCtx(input, ctx);
           addIssueToContext(ctx, {
@@ -5316,14 +4610,12 @@ var ZodNumber = class _ZodNumber extends ZodType {
             type: "number",
             inclusive: check.inclusive,
             exact: false,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
       } else if (check.kind === "max") {
-        const tooBig = check.inclusive
-          ? input.data > check.value
-          : input.data >= check.value;
+        const tooBig = check.inclusive ? input.data > check.value : input.data >= check.value;
         if (tooBig) {
           ctx = this._getOrReturnCtx(input, ctx);
           addIssueToContext(ctx, {
@@ -5332,7 +4624,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
             type: "number",
             inclusive: check.inclusive,
             exact: false,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5342,7 +4634,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.not_multiple_of,
             multipleOf: check.value,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5351,7 +4643,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
           ctx = this._getOrReturnCtx(input, ctx);
           addIssueToContext(ctx, {
             code: ZodIssueCode.not_finite,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5382,21 +4674,21 @@ var ZodNumber = class _ZodNumber extends ZodType {
           kind,
           value,
           inclusive,
-          message: errorUtil.toString(message),
-        },
-      ],
+          message: errorUtil.toString(message)
+        }
+      ]
     });
   }
   _addCheck(check) {
     return new _ZodNumber({
       ...this._def,
-      checks: [...this._def.checks, check],
+      checks: [...this._def.checks, check]
     });
   }
   int(message) {
     return this._addCheck({
       kind: "int",
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   positive(message) {
@@ -5404,7 +4696,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
       kind: "min",
       value: 0,
       inclusive: false,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   negative(message) {
@@ -5412,7 +4704,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
       kind: "max",
       value: 0,
       inclusive: false,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   nonpositive(message) {
@@ -5420,7 +4712,7 @@ var ZodNumber = class _ZodNumber extends ZodType {
       kind: "max",
       value: 0,
       inclusive: true,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   nonnegative(message) {
@@ -5428,20 +4720,20 @@ var ZodNumber = class _ZodNumber extends ZodType {
       kind: "min",
       value: 0,
       inclusive: true,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   multipleOf(value, message) {
     return this._addCheck({
       kind: "multipleOf",
       value,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   finite(message) {
     return this._addCheck({
       kind: "finite",
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   safe(message) {
@@ -5449,21 +4741,20 @@ var ZodNumber = class _ZodNumber extends ZodType {
       kind: "min",
       inclusive: true,
       value: Number.MIN_SAFE_INTEGER,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     })._addCheck({
       kind: "max",
       inclusive: true,
       value: Number.MAX_SAFE_INTEGER,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   get minValue() {
     let min = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "min") {
-        if (min === null || ch.value > min) {
+        if (min === null || ch.value > min)
           min = ch.value;
-        }
       }
     }
     return min;
@@ -5472,33 +4763,26 @@ var ZodNumber = class _ZodNumber extends ZodType {
     let max = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "max") {
-        if (max === null || ch.value < max) {
+        if (max === null || ch.value < max)
           max = ch.value;
-        }
       }
     }
     return max;
   }
   get isInt() {
-    return !!this._def.checks.find((ch) =>
-      ch.kind === "int" || ch.kind === "multipleOf" && util.isInteger(ch.value)
-    );
+    return !!this._def.checks.find((ch) => ch.kind === "int" || ch.kind === "multipleOf" && util.isInteger(ch.value));
   }
   get isFinite() {
     let max = null, min = null;
     for (const ch of this._def.checks) {
-      if (
-        ch.kind === "finite" || ch.kind === "int" || ch.kind === "multipleOf"
-      ) {
+      if (ch.kind === "finite" || ch.kind === "int" || ch.kind === "multipleOf") {
         return true;
       } else if (ch.kind === "min") {
-        if (min === null || ch.value > min) {
+        if (min === null || ch.value > min)
           min = ch.value;
-        }
       } else if (ch.kind === "max") {
-        if (max === null || ch.value < max) {
+        if (max === null || ch.value < max)
           max = ch.value;
-        }
       }
     }
     return Number.isFinite(min) && Number.isFinite(max);
@@ -5508,9 +4792,8 @@ ZodNumber.create = (params) => {
   return new ZodNumber({
     checks: [],
     typeName: ZodFirstPartyTypeKind.ZodNumber,
-    coerce: (params === null || params === void 0 ? void 0 : params.coerce) ||
-      false,
-    ...processCreateParams(params),
+    coerce: (params === null || params === void 0 ? void 0 : params.coerce) || false,
+    ...processCreateParams(params)
   });
 };
 var ZodBigInt = class _ZodBigInt extends ZodType {
@@ -5529,7 +4812,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
       addIssueToContext(ctx2, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.bigint,
-        received: ctx2.parsedType,
+        received: ctx2.parsedType
       });
       return INVALID;
     }
@@ -5537,9 +4820,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
     const status = new ParseStatus();
     for (const check of this._def.checks) {
       if (check.kind === "min") {
-        const tooSmall = check.inclusive
-          ? input.data < check.value
-          : input.data <= check.value;
+        const tooSmall = check.inclusive ? input.data < check.value : input.data <= check.value;
         if (tooSmall) {
           ctx = this._getOrReturnCtx(input, ctx);
           addIssueToContext(ctx, {
@@ -5547,14 +4828,12 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
             type: "bigint",
             minimum: check.value,
             inclusive: check.inclusive,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
       } else if (check.kind === "max") {
-        const tooBig = check.inclusive
-          ? input.data > check.value
-          : input.data >= check.value;
+        const tooBig = check.inclusive ? input.data > check.value : input.data >= check.value;
         if (tooBig) {
           ctx = this._getOrReturnCtx(input, ctx);
           addIssueToContext(ctx, {
@@ -5562,7 +4841,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
             type: "bigint",
             maximum: check.value,
             inclusive: check.inclusive,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5572,7 +4851,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
           addIssueToContext(ctx, {
             code: ZodIssueCode.not_multiple_of,
             multipleOf: check.value,
-            message: check.message,
+            message: check.message
           });
           status.dirty();
         }
@@ -5603,15 +4882,15 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
           kind,
           value,
           inclusive,
-          message: errorUtil.toString(message),
-        },
-      ],
+          message: errorUtil.toString(message)
+        }
+      ]
     });
   }
   _addCheck(check) {
     return new _ZodBigInt({
       ...this._def,
-      checks: [...this._def.checks, check],
+      checks: [...this._def.checks, check]
     });
   }
   positive(message) {
@@ -5619,7 +4898,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
       kind: "min",
       value: BigInt(0),
       inclusive: false,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   negative(message) {
@@ -5627,7 +4906,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
       kind: "max",
       value: BigInt(0),
       inclusive: false,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   nonpositive(message) {
@@ -5635,7 +4914,7 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
       kind: "max",
       value: BigInt(0),
       inclusive: true,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   nonnegative(message) {
@@ -5643,23 +4922,22 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
       kind: "min",
       value: BigInt(0),
       inclusive: true,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   multipleOf(value, message) {
     return this._addCheck({
       kind: "multipleOf",
       value,
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   get minValue() {
     let min = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "min") {
-        if (min === null || ch.value > min) {
+        if (min === null || ch.value > min)
           min = ch.value;
-        }
       }
     }
     return min;
@@ -5668,9 +4946,8 @@ var ZodBigInt = class _ZodBigInt extends ZodType {
     let max = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "max") {
-        if (max === null || ch.value < max) {
+        if (max === null || ch.value < max)
           max = ch.value;
-        }
       }
     }
     return max;
@@ -5681,12 +4958,8 @@ ZodBigInt.create = (params) => {
   return new ZodBigInt({
     checks: [],
     typeName: ZodFirstPartyTypeKind.ZodBigInt,
-    coerce:
-      (_a = params === null || params === void 0 ? void 0 : params.coerce) !==
-          null && _a !== void 0
-        ? _a
-        : false,
-    ...processCreateParams(params),
+    coerce: (_a = params === null || params === void 0 ? void 0 : params.coerce) !== null && _a !== void 0 ? _a : false,
+    ...processCreateParams(params)
   });
 };
 var ZodBoolean = class extends ZodType {
@@ -5700,7 +4973,7 @@ var ZodBoolean = class extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.boolean,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -5710,9 +4983,8 @@ var ZodBoolean = class extends ZodType {
 ZodBoolean.create = (params) => {
   return new ZodBoolean({
     typeName: ZodFirstPartyTypeKind.ZodBoolean,
-    coerce: (params === null || params === void 0 ? void 0 : params.coerce) ||
-      false,
-    ...processCreateParams(params),
+    coerce: (params === null || params === void 0 ? void 0 : params.coerce) || false,
+    ...processCreateParams(params)
   });
 };
 var ZodDate = class _ZodDate extends ZodType {
@@ -5726,14 +4998,14 @@ var ZodDate = class _ZodDate extends ZodType {
       addIssueToContext(ctx2, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.date,
-        received: ctx2.parsedType,
+        received: ctx2.parsedType
       });
       return INVALID;
     }
     if (isNaN(input.data.getTime())) {
       const ctx2 = this._getOrReturnCtx(input);
       addIssueToContext(ctx2, {
-        code: ZodIssueCode.invalid_date,
+        code: ZodIssueCode.invalid_date
       });
       return INVALID;
     }
@@ -5749,7 +5021,7 @@ var ZodDate = class _ZodDate extends ZodType {
             inclusive: true,
             exact: false,
             minimum: check.value,
-            type: "date",
+            type: "date"
           });
           status.dirty();
         }
@@ -5762,7 +5034,7 @@ var ZodDate = class _ZodDate extends ZodType {
             inclusive: true,
             exact: false,
             maximum: check.value,
-            type: "date",
+            type: "date"
           });
           status.dirty();
         }
@@ -5772,36 +5044,35 @@ var ZodDate = class _ZodDate extends ZodType {
     }
     return {
       status: status.value,
-      value: new Date(input.data.getTime()),
+      value: new Date(input.data.getTime())
     };
   }
   _addCheck(check) {
     return new _ZodDate({
       ...this._def,
-      checks: [...this._def.checks, check],
+      checks: [...this._def.checks, check]
     });
   }
   min(minDate, message) {
     return this._addCheck({
       kind: "min",
       value: minDate.getTime(),
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   max(maxDate, message) {
     return this._addCheck({
       kind: "max",
       value: maxDate.getTime(),
-      message: errorUtil.toString(message),
+      message: errorUtil.toString(message)
     });
   }
   get minDate() {
     let min = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "min") {
-        if (min === null || ch.value > min) {
+        if (min === null || ch.value > min)
           min = ch.value;
-        }
       }
     }
     return min != null ? new Date(min) : null;
@@ -5810,9 +5081,8 @@ var ZodDate = class _ZodDate extends ZodType {
     let max = null;
     for (const ch of this._def.checks) {
       if (ch.kind === "max") {
-        if (max === null || ch.value < max) {
+        if (max === null || ch.value < max)
           max = ch.value;
-        }
       }
     }
     return max != null ? new Date(max) : null;
@@ -5821,10 +5091,9 @@ var ZodDate = class _ZodDate extends ZodType {
 ZodDate.create = (params) => {
   return new ZodDate({
     checks: [],
-    coerce: (params === null || params === void 0 ? void 0 : params.coerce) ||
-      false,
+    coerce: (params === null || params === void 0 ? void 0 : params.coerce) || false,
     typeName: ZodFirstPartyTypeKind.ZodDate,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodSymbol = class extends ZodType {
@@ -5835,7 +5104,7 @@ var ZodSymbol = class extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.symbol,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -5845,7 +5114,7 @@ var ZodSymbol = class extends ZodType {
 ZodSymbol.create = (params) => {
   return new ZodSymbol({
     typeName: ZodFirstPartyTypeKind.ZodSymbol,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodUndefined = class extends ZodType {
@@ -5856,7 +5125,7 @@ var ZodUndefined = class extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.undefined,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -5866,7 +5135,7 @@ var ZodUndefined = class extends ZodType {
 ZodUndefined.create = (params) => {
   return new ZodUndefined({
     typeName: ZodFirstPartyTypeKind.ZodUndefined,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodNull = class extends ZodType {
@@ -5877,7 +5146,7 @@ var ZodNull = class extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.null,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -5887,7 +5156,7 @@ var ZodNull = class extends ZodType {
 ZodNull.create = (params) => {
   return new ZodNull({
     typeName: ZodFirstPartyTypeKind.ZodNull,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodAny = class extends ZodType {
@@ -5902,7 +5171,7 @@ var ZodAny = class extends ZodType {
 ZodAny.create = (params) => {
   return new ZodAny({
     typeName: ZodFirstPartyTypeKind.ZodAny,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodUnknown = class extends ZodType {
@@ -5917,7 +5186,7 @@ var ZodUnknown = class extends ZodType {
 ZodUnknown.create = (params) => {
   return new ZodUnknown({
     typeName: ZodFirstPartyTypeKind.ZodUnknown,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodNever = class extends ZodType {
@@ -5926,7 +5195,7 @@ var ZodNever = class extends ZodType {
     addIssueToContext(ctx, {
       code: ZodIssueCode.invalid_type,
       expected: ZodParsedType.never,
-      received: ctx.parsedType,
+      received: ctx.parsedType
     });
     return INVALID;
   }
@@ -5934,7 +5203,7 @@ var ZodNever = class extends ZodType {
 ZodNever.create = (params) => {
   return new ZodNever({
     typeName: ZodFirstPartyTypeKind.ZodNever,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodVoid = class extends ZodType {
@@ -5945,7 +5214,7 @@ var ZodVoid = class extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.void,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -5955,7 +5224,7 @@ var ZodVoid = class extends ZodType {
 ZodVoid.create = (params) => {
   return new ZodVoid({
     typeName: ZodFirstPartyTypeKind.ZodVoid,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodArray = class _ZodArray extends ZodType {
@@ -5966,7 +5235,7 @@ var ZodArray = class _ZodArray extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.array,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -5981,7 +5250,7 @@ var ZodArray = class _ZodArray extends ZodType {
           type: "array",
           inclusive: true,
           exact: true,
-          message: def.exactLength.message,
+          message: def.exactLength.message
         });
         status.dirty();
       }
@@ -5994,7 +5263,7 @@ var ZodArray = class _ZodArray extends ZodType {
           type: "array",
           inclusive: true,
           exact: false,
-          message: def.minLength.message,
+          message: def.minLength.message
         });
         status.dirty();
       }
@@ -6007,24 +5276,20 @@ var ZodArray = class _ZodArray extends ZodType {
           type: "array",
           inclusive: true,
           exact: false,
-          message: def.maxLength.message,
+          message: def.maxLength.message
         });
         status.dirty();
       }
     }
     if (ctx.common.async) {
       return Promise.all([...ctx.data].map((item, i) => {
-        return def.type._parseAsync(
-          new ParseInputLazyPath(ctx, item, ctx.path, i),
-        );
+        return def.type._parseAsync(new ParseInputLazyPath(ctx, item, ctx.path, i));
       })).then((result2) => {
         return ParseStatus.mergeArray(status, result2);
       });
     }
     const result = [...ctx.data].map((item, i) => {
-      return def.type._parseSync(
-        new ParseInputLazyPath(ctx, item, ctx.path, i),
-      );
+      return def.type._parseSync(new ParseInputLazyPath(ctx, item, ctx.path, i));
     });
     return ParseStatus.mergeArray(status, result);
   }
@@ -6034,19 +5299,19 @@ var ZodArray = class _ZodArray extends ZodType {
   min(minLength, message) {
     return new _ZodArray({
       ...this._def,
-      minLength: { value: minLength, message: errorUtil.toString(message) },
+      minLength: { value: minLength, message: errorUtil.toString(message) }
     });
   }
   max(maxLength, message) {
     return new _ZodArray({
       ...this._def,
-      maxLength: { value: maxLength, message: errorUtil.toString(message) },
+      maxLength: { value: maxLength, message: errorUtil.toString(message) }
     });
   }
   length(len, message) {
     return new _ZodArray({
       ...this._def,
-      exactLength: { value: len, message: errorUtil.toString(message) },
+      exactLength: { value: len, message: errorUtil.toString(message) }
     });
   }
   nonempty(message) {
@@ -6060,7 +5325,7 @@ ZodArray.create = (schema, params) => {
     maxLength: null,
     exactLength: null,
     typeName: ZodFirstPartyTypeKind.ZodArray,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 function deepPartialify(schema) {
@@ -6072,12 +5337,12 @@ function deepPartialify(schema) {
     }
     return new ZodObject({
       ...schema._def,
-      shape: () => newShape,
+      shape: () => newShape
     });
   } else if (schema instanceof ZodArray) {
     return new ZodArray({
       ...schema._def,
-      type: deepPartialify(schema.element),
+      type: deepPartialify(schema.element)
     });
   } else if (schema instanceof ZodOptional) {
     return ZodOptional.create(deepPartialify(schema.unwrap()));
@@ -6097,9 +5362,8 @@ var ZodObject = class _ZodObject extends ZodType {
     this.augment = this.extend;
   }
   _getCached() {
-    if (this._cached !== null) {
+    if (this._cached !== null)
       return this._cached;
-    }
     const shape = this._def.shape();
     const keys = util.objectKeys(shape);
     return this._cached = { shape, keys };
@@ -6111,17 +5375,14 @@ var ZodObject = class _ZodObject extends ZodType {
       addIssueToContext(ctx2, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.object,
-        received: ctx2.parsedType,
+        received: ctx2.parsedType
       });
       return INVALID;
     }
     const { status, ctx } = this._processInputParams(input);
     const { shape, keys: shapeKeys } = this._getCached();
     const extraKeys = [];
-    if (
-      !(this._def.catchall instanceof ZodNever &&
-        this._def.unknownKeys === "strip")
-    ) {
+    if (!(this._def.catchall instanceof ZodNever && this._def.unknownKeys === "strip")) {
       for (const key in ctx.data) {
         if (!shapeKeys.includes(key)) {
           extraKeys.push(key);
@@ -6134,10 +5395,8 @@ var ZodObject = class _ZodObject extends ZodType {
       const value = ctx.data[key];
       pairs.push({
         key: { status: "valid", value: key },
-        value: keyValidator._parse(
-          new ParseInputLazyPath(ctx, value, ctx.path, key),
-        ),
-        alwaysSet: key in ctx.data,
+        value: keyValidator._parse(new ParseInputLazyPath(ctx, value, ctx.path, key)),
+        alwaysSet: key in ctx.data
       });
     }
     if (this._def.catchall instanceof ZodNever) {
@@ -6146,18 +5405,18 @@ var ZodObject = class _ZodObject extends ZodType {
         for (const key of extraKeys) {
           pairs.push({
             key: { status: "valid", value: key },
-            value: { status: "valid", value: ctx.data[key] },
+            value: { status: "valid", value: ctx.data[key] }
           });
         }
       } else if (unknownKeys === "strict") {
         if (extraKeys.length > 0) {
           addIssueToContext(ctx, {
             code: ZodIssueCode.unrecognized_keys,
-            keys: extraKeys,
+            keys: extraKeys
           });
           status.dirty();
         }
-      } else if (unknownKeys === "strip");
+      } else if (unknownKeys === "strip") ;
       else {
         throw new Error(`Internal ZodObject error: invalid unknownKeys value.`);
       }
@@ -6168,10 +5427,10 @@ var ZodObject = class _ZodObject extends ZodType {
         pairs.push({
           key: { status: "valid", value: key },
           value: catchall._parse(
-            new ParseInputLazyPath(ctx, value, ctx.path, key),
+            new ParseInputLazyPath(ctx, value, ctx.path, key)
             //, ctx.child(key), value, getParsedType(value)
           ),
-          alwaysSet: key in ctx.data,
+          alwaysSet: key in ctx.data
         });
       }
     }
@@ -6183,7 +5442,7 @@ var ZodObject = class _ZodObject extends ZodType {
           syncPairs.push({
             key,
             value: await pair.value,
-            alwaysSet: pair.alwaysSet,
+            alwaysSet: pair.alwaysSet
           });
         }
         return syncPairs;
@@ -6202,42 +5461,31 @@ var ZodObject = class _ZodObject extends ZodType {
     return new _ZodObject({
       ...this._def,
       unknownKeys: "strict",
-      ...message !== void 0
-        ? {
-          errorMap: (issue, ctx) => {
-            var _a, _b, _c, _d;
-            const defaultError =
-              (_c = (_b = (_a = this._def).errorMap) === null || _b === void 0
-                    ? void 0
-                    : _b.call(_a, issue, ctx).message) !== null && _c !== void 0
-                ? _c
-                : ctx.defaultError;
-            if (issue.code === "unrecognized_keys") {
-              return {
-                message: (_d = errorUtil.errToObj(message).message) !== null &&
-                    _d !== void 0
-                  ? _d
-                  : defaultError,
-              };
-            }
+      ...message !== void 0 ? {
+        errorMap: (issue, ctx) => {
+          var _a, _b, _c, _d;
+          const defaultError = (_c = (_b = (_a = this._def).errorMap) === null || _b === void 0 ? void 0 : _b.call(_a, issue, ctx).message) !== null && _c !== void 0 ? _c : ctx.defaultError;
+          if (issue.code === "unrecognized_keys")
             return {
-              message: defaultError,
+              message: (_d = errorUtil.errToObj(message).message) !== null && _d !== void 0 ? _d : defaultError
             };
-          },
+          return {
+            message: defaultError
+          };
         }
-        : {},
+      } : {}
     });
   }
   strip() {
     return new _ZodObject({
       ...this._def,
-      unknownKeys: "strip",
+      unknownKeys: "strip"
     });
   }
   passthrough() {
     return new _ZodObject({
       ...this._def,
-      unknownKeys: "passthrough",
+      unknownKeys: "passthrough"
     });
   }
   // const AugmentFactory =
@@ -6262,8 +5510,8 @@ var ZodObject = class _ZodObject extends ZodType {
       ...this._def,
       shape: () => ({
         ...this._def.shape(),
-        ...augmentation,
-      }),
+        ...augmentation
+      })
     });
   }
   /**
@@ -6277,9 +5525,9 @@ var ZodObject = class _ZodObject extends ZodType {
       catchall: merging._def.catchall,
       shape: () => ({
         ...this._def.shape(),
-        ...merging._def.shape(),
+        ...merging._def.shape()
       }),
-      typeName: ZodFirstPartyTypeKind.ZodObject,
+      typeName: ZodFirstPartyTypeKind.ZodObject
     });
     return merged;
   }
@@ -6345,7 +5593,7 @@ var ZodObject = class _ZodObject extends ZodType {
   catchall(index) {
     return new _ZodObject({
       ...this._def,
-      catchall: index,
+      catchall: index
     });
   }
   pick(mask) {
@@ -6357,7 +5605,7 @@ var ZodObject = class _ZodObject extends ZodType {
     });
     return new _ZodObject({
       ...this._def,
-      shape: () => shape,
+      shape: () => shape
     });
   }
   omit(mask) {
@@ -6369,7 +5617,7 @@ var ZodObject = class _ZodObject extends ZodType {
     });
     return new _ZodObject({
       ...this._def,
-      shape: () => shape,
+      shape: () => shape
     });
   }
   /**
@@ -6390,7 +5638,7 @@ var ZodObject = class _ZodObject extends ZodType {
     });
     return new _ZodObject({
       ...this._def,
-      shape: () => newShape,
+      shape: () => newShape
     });
   }
   required(mask) {
@@ -6409,7 +5657,7 @@ var ZodObject = class _ZodObject extends ZodType {
     });
     return new _ZodObject({
       ...this._def,
-      shape: () => newShape,
+      shape: () => newShape
     });
   }
   keyof() {
@@ -6422,7 +5670,7 @@ ZodObject.create = (shape, params) => {
     unknownKeys: "strip",
     catchall: ZodNever.create(),
     typeName: ZodFirstPartyTypeKind.ZodObject,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 ZodObject.strictCreate = (shape, params) => {
@@ -6431,7 +5679,7 @@ ZodObject.strictCreate = (shape, params) => {
     unknownKeys: "strict",
     catchall: ZodNever.create(),
     typeName: ZodFirstPartyTypeKind.ZodObject,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 ZodObject.lazycreate = (shape, params) => {
@@ -6440,7 +5688,7 @@ ZodObject.lazycreate = (shape, params) => {
     unknownKeys: "strip",
     catchall: ZodNever.create(),
     typeName: ZodFirstPartyTypeKind.ZodObject,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodUnion = class extends ZodType {
@@ -6459,12 +5707,10 @@ var ZodUnion = class extends ZodType {
           return result.result;
         }
       }
-      const unionErrors = results.map((result) =>
-        new ZodError(result.ctx.common.issues)
-      );
+      const unionErrors = results.map((result) => new ZodError(result.ctx.common.issues));
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_union,
-        unionErrors,
+        unionErrors
       });
       return INVALID;
     }
@@ -6474,17 +5720,17 @@ var ZodUnion = class extends ZodType {
           ...ctx,
           common: {
             ...ctx.common,
-            issues: [],
+            issues: []
           },
-          parent: null,
+          parent: null
         };
         return {
           result: await option._parseAsync({
             data: ctx.data,
             path: ctx.path,
-            parent: childCtx,
+            parent: childCtx
           }),
-          ctx: childCtx,
+          ctx: childCtx
         };
       })).then(handleResults);
     } else {
@@ -6495,14 +5741,14 @@ var ZodUnion = class extends ZodType {
           ...ctx,
           common: {
             ...ctx.common,
-            issues: [],
+            issues: []
           },
-          parent: null,
+          parent: null
         };
         const result = option._parseSync({
           data: ctx.data,
           path: ctx.path,
-          parent: childCtx,
+          parent: childCtx
         });
         if (result.status === "valid") {
           return result;
@@ -6520,7 +5766,7 @@ var ZodUnion = class extends ZodType {
       const unionErrors = issues.map((issues2) => new ZodError(issues2));
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_union,
-        unionErrors,
+        unionErrors
       });
       return INVALID;
     }
@@ -6533,7 +5779,7 @@ ZodUnion.create = (types, params) => {
   return new ZodUnion({
     options: types,
     typeName: ZodFirstPartyTypeKind.ZodUnion,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var getDiscriminator = (type) => {
@@ -6564,7 +5810,7 @@ var ZodDiscriminatedUnion = class _ZodDiscriminatedUnion extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.object,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -6575,7 +5821,7 @@ var ZodDiscriminatedUnion = class _ZodDiscriminatedUnion extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_union_discriminator,
         options: Array.from(this.optionsMap.keys()),
-        path: [discriminator],
+        path: [discriminator]
       });
       return INVALID;
     }
@@ -6583,13 +5829,13 @@ var ZodDiscriminatedUnion = class _ZodDiscriminatedUnion extends ZodType {
       return option._parseAsync({
         data: ctx.data,
         path: ctx.path,
-        parent: ctx,
+        parent: ctx
       });
     } else {
       return option._parseSync({
         data: ctx.data,
         path: ctx.path,
-        parent: ctx,
+        parent: ctx
       });
     }
   }
@@ -6615,17 +5861,11 @@ var ZodDiscriminatedUnion = class _ZodDiscriminatedUnion extends ZodType {
     for (const type of options) {
       const discriminatorValues = getDiscriminator(type.shape[discriminator]);
       if (!discriminatorValues) {
-        throw new Error(
-          `A discriminator value for key \`${discriminator}\` could not be extracted from all schema options`,
-        );
+        throw new Error(`A discriminator value for key \`${discriminator}\` could not be extracted from all schema options`);
       }
       for (const value of discriminatorValues) {
         if (optionsMap.has(value)) {
-          throw new Error(
-            `Discriminator property ${
-              String(discriminator)
-            } has duplicate value ${String(value)}`,
-          );
+          throw new Error(`Discriminator property ${String(discriminator)} has duplicate value ${String(value)}`);
         }
         optionsMap.set(value, type);
       }
@@ -6635,7 +5875,7 @@ var ZodDiscriminatedUnion = class _ZodDiscriminatedUnion extends ZodType {
       discriminator,
       options,
       optionsMap,
-      ...processCreateParams(params),
+      ...processCreateParams(params)
     });
   }
 };
@@ -6646,9 +5886,7 @@ function mergeValues(a, b) {
     return { valid: true, data: a };
   } else if (aType === ZodParsedType.object && bType === ZodParsedType.object) {
     const bKeys = util.objectKeys(b);
-    const sharedKeys = util.objectKeys(a).filter((key) =>
-      bKeys.indexOf(key) !== -1
-    );
+    const sharedKeys = util.objectKeys(a).filter((key) => bKeys.indexOf(key) !== -1);
     const newObj = { ...a, ...b };
     for (const key of sharedKeys) {
       const sharedValue = mergeValues(a[key], b[key]);
@@ -6673,9 +5911,7 @@ function mergeValues(a, b) {
       newArray.push(sharedValue.data);
     }
     return { valid: true, data: newArray };
-  } else if (
-    aType === ZodParsedType.date && bType === ZodParsedType.date && +a === +b
-  ) {
+  } else if (aType === ZodParsedType.date && bType === ZodParsedType.date && +a === +b) {
     return { valid: true, data: a };
   } else {
     return { valid: false };
@@ -6691,7 +5927,7 @@ var ZodIntersection = class extends ZodType {
       const merged = mergeValues(parsedLeft.value, parsedRight.value);
       if (!merged.valid) {
         addIssueToContext(ctx, {
-          code: ZodIssueCode.invalid_intersection_types,
+          code: ZodIssueCode.invalid_intersection_types
         });
         return INVALID;
       }
@@ -6705,27 +5941,24 @@ var ZodIntersection = class extends ZodType {
         this._def.left._parseAsync({
           data: ctx.data,
           path: ctx.path,
-          parent: ctx,
+          parent: ctx
         }),
         this._def.right._parseAsync({
           data: ctx.data,
           path: ctx.path,
-          parent: ctx,
-        }),
+          parent: ctx
+        })
       ]).then(([left, right]) => handleParsed(left, right));
     } else {
-      return handleParsed(
-        this._def.left._parseSync({
-          data: ctx.data,
-          path: ctx.path,
-          parent: ctx,
-        }),
-        this._def.right._parseSync({
-          data: ctx.data,
-          path: ctx.path,
-          parent: ctx,
-        }),
-      );
+      return handleParsed(this._def.left._parseSync({
+        data: ctx.data,
+        path: ctx.path,
+        parent: ctx
+      }), this._def.right._parseSync({
+        data: ctx.data,
+        path: ctx.path,
+        parent: ctx
+      }));
     }
   }
 };
@@ -6734,7 +5967,7 @@ ZodIntersection.create = (left, right, params) => {
     left,
     right,
     typeName: ZodFirstPartyTypeKind.ZodIntersection,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodTuple = class _ZodTuple extends ZodType {
@@ -6744,7 +5977,7 @@ var ZodTuple = class _ZodTuple extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.array,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -6754,7 +5987,7 @@ var ZodTuple = class _ZodTuple extends ZodType {
         minimum: this._def.items.length,
         inclusive: true,
         exact: false,
-        type: "array",
+        type: "array"
       });
       return INVALID;
     }
@@ -6765,18 +5998,15 @@ var ZodTuple = class _ZodTuple extends ZodType {
         maximum: this._def.items.length,
         inclusive: true,
         exact: false,
-        type: "array",
+        type: "array"
       });
       status.dirty();
     }
     const items = [...ctx.data].map((item, itemIndex) => {
       const schema = this._def.items[itemIndex] || this._def.rest;
-      if (!schema) {
+      if (!schema)
         return null;
-      }
-      return schema._parse(
-        new ParseInputLazyPath(ctx, item, ctx.path, itemIndex),
-      );
+      return schema._parse(new ParseInputLazyPath(ctx, item, ctx.path, itemIndex));
     }).filter((x) => !!x);
     if (ctx.common.async) {
       return Promise.all(items).then((results) => {
@@ -6792,7 +6022,7 @@ var ZodTuple = class _ZodTuple extends ZodType {
   rest(rest) {
     return new _ZodTuple({
       ...this._def,
-      rest,
+      rest
     });
   }
 };
@@ -6804,7 +6034,7 @@ ZodTuple.create = (schemas, params) => {
     items: schemas,
     typeName: ZodFirstPartyTypeKind.ZodTuple,
     rest: null,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodRecord = class _ZodRecord extends ZodType {
@@ -6820,7 +6050,7 @@ var ZodRecord = class _ZodRecord extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.object,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -6830,9 +6060,7 @@ var ZodRecord = class _ZodRecord extends ZodType {
     for (const key in ctx.data) {
       pairs.push({
         key: keyType._parse(new ParseInputLazyPath(ctx, key, ctx.path, key)),
-        value: valueType._parse(
-          new ParseInputLazyPath(ctx, ctx.data[key], ctx.path, key),
-        ),
+        value: valueType._parse(new ParseInputLazyPath(ctx, ctx.data[key], ctx.path, key))
       });
     }
     if (ctx.common.async) {
@@ -6850,14 +6078,14 @@ var ZodRecord = class _ZodRecord extends ZodType {
         keyType: first,
         valueType: second,
         typeName: ZodFirstPartyTypeKind.ZodRecord,
-        ...processCreateParams(third),
+        ...processCreateParams(third)
       });
     }
     return new _ZodRecord({
       keyType: ZodString.create(),
       valueType: first,
       typeName: ZodFirstPartyTypeKind.ZodRecord,
-      ...processCreateParams(second),
+      ...processCreateParams(second)
     });
   }
 };
@@ -6874,7 +6102,7 @@ var ZodMap = class extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.map,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -6882,12 +6110,8 @@ var ZodMap = class extends ZodType {
     const valueType = this._def.valueType;
     const pairs = [...ctx.data.entries()].map(([key, value], index) => {
       return {
-        key: keyType._parse(
-          new ParseInputLazyPath(ctx, key, ctx.path, [index, "key"]),
-        ),
-        value: valueType._parse(
-          new ParseInputLazyPath(ctx, value, ctx.path, [index, "value"]),
-        ),
+        key: keyType._parse(new ParseInputLazyPath(ctx, key, ctx.path, [index, "key"])),
+        value: valueType._parse(new ParseInputLazyPath(ctx, value, ctx.path, [index, "value"]))
       };
     });
     if (ctx.common.async) {
@@ -6928,7 +6152,7 @@ ZodMap.create = (keyType, valueType, params) => {
     valueType,
     keyType,
     typeName: ZodFirstPartyTypeKind.ZodMap,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodSet = class _ZodSet extends ZodType {
@@ -6938,7 +6162,7 @@ var ZodSet = class _ZodSet extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.set,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -6951,7 +6175,7 @@ var ZodSet = class _ZodSet extends ZodType {
           type: "set",
           inclusive: true,
           exact: false,
-          message: def.minSize.message,
+          message: def.minSize.message
         });
         status.dirty();
       }
@@ -6964,7 +6188,7 @@ var ZodSet = class _ZodSet extends ZodType {
           type: "set",
           inclusive: true,
           exact: false,
-          message: def.maxSize.message,
+          message: def.maxSize.message
         });
         status.dirty();
       }
@@ -6973,19 +6197,15 @@ var ZodSet = class _ZodSet extends ZodType {
     function finalizeSet(elements2) {
       const parsedSet = /* @__PURE__ */ new Set();
       for (const element of elements2) {
-        if (element.status === "aborted") {
+        if (element.status === "aborted")
           return INVALID;
-        }
-        if (element.status === "dirty") {
+        if (element.status === "dirty")
           status.dirty();
-        }
         parsedSet.add(element.value);
       }
       return { status: status.value, value: parsedSet };
     }
-    const elements = [...ctx.data.values()].map((item, i) =>
-      valueType._parse(new ParseInputLazyPath(ctx, item, ctx.path, i))
-    );
+    const elements = [...ctx.data.values()].map((item, i) => valueType._parse(new ParseInputLazyPath(ctx, item, ctx.path, i)));
     if (ctx.common.async) {
       return Promise.all(elements).then((elements2) => finalizeSet(elements2));
     } else {
@@ -6995,13 +6215,13 @@ var ZodSet = class _ZodSet extends ZodType {
   min(minSize, message) {
     return new _ZodSet({
       ...this._def,
-      minSize: { value: minSize, message: errorUtil.toString(message) },
+      minSize: { value: minSize, message: errorUtil.toString(message) }
     });
   }
   max(maxSize, message) {
     return new _ZodSet({
       ...this._def,
-      maxSize: { value: maxSize, message: errorUtil.toString(message) },
+      maxSize: { value: maxSize, message: errorUtil.toString(message) }
     });
   }
   size(size, message) {
@@ -7017,7 +6237,7 @@ ZodSet.create = (valueType, params) => {
     minSize: null,
     maxSize: null,
     typeName: ZodFirstPartyTypeKind.ZodSet,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodFunction = class _ZodFunction extends ZodType {
@@ -7031,7 +6251,7 @@ var ZodFunction = class _ZodFunction extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.function,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -7043,12 +6263,12 @@ var ZodFunction = class _ZodFunction extends ZodType {
           ctx.common.contextualErrorMap,
           ctx.schemaErrorMap,
           getErrorMap(),
-          errorMap,
+          errorMap
         ].filter((x) => !!x),
         issueData: {
           code: ZodIssueCode.invalid_arguments,
-          argumentsError: error,
-        },
+          argumentsError: error
+        }
       });
     }
     function makeReturnsIssue(returns, error) {
@@ -7059,31 +6279,26 @@ var ZodFunction = class _ZodFunction extends ZodType {
           ctx.common.contextualErrorMap,
           ctx.schemaErrorMap,
           getErrorMap(),
-          errorMap,
+          errorMap
         ].filter((x) => !!x),
         issueData: {
           code: ZodIssueCode.invalid_return_type,
-          returnTypeError: error,
-        },
+          returnTypeError: error
+        }
       });
     }
     const params = { errorMap: ctx.common.contextualErrorMap };
     const fn = ctx.data;
     if (this._def.returns instanceof ZodPromise) {
       const me = this;
-      return OK(async function (...args) {
+      return OK(async function(...args) {
         const error = new ZodError([]);
-        const parsedArgs = await me._def.args.parseAsync(args, params).catch(
-          (e) => {
-            error.addIssue(makeArgsIssue(args, e));
-            throw error;
-          },
-        );
+        const parsedArgs = await me._def.args.parseAsync(args, params).catch((e) => {
+          error.addIssue(makeArgsIssue(args, e));
+          throw error;
+        });
         const result = await Reflect.apply(fn, this, parsedArgs);
-        const parsedReturns = await me._def.returns._def.type.parseAsync(
-          result,
-          params,
-        ).catch((e) => {
+        const parsedReturns = await me._def.returns._def.type.parseAsync(result, params).catch((e) => {
           error.addIssue(makeReturnsIssue(result, e));
           throw error;
         });
@@ -7091,7 +6306,7 @@ var ZodFunction = class _ZodFunction extends ZodType {
       });
     } else {
       const me = this;
-      return OK(function (...args) {
+      return OK(function(...args) {
         const parsedArgs = me._def.args.safeParse(args, params);
         if (!parsedArgs.success) {
           throw new ZodError([makeArgsIssue(args, parsedArgs.error)]);
@@ -7114,13 +6329,13 @@ var ZodFunction = class _ZodFunction extends ZodType {
   args(...items) {
     return new _ZodFunction({
       ...this._def,
-      args: ZodTuple.create(items).rest(ZodUnknown.create()),
+      args: ZodTuple.create(items).rest(ZodUnknown.create())
     });
   }
   returns(returnType) {
     return new _ZodFunction({
       ...this._def,
-      returns: returnType,
+      returns: returnType
     });
   }
   implement(func) {
@@ -7136,7 +6351,7 @@ var ZodFunction = class _ZodFunction extends ZodType {
       args: args ? args : ZodTuple.create([]).rest(ZodUnknown.create()),
       returns: returns || ZodUnknown.create(),
       typeName: ZodFirstPartyTypeKind.ZodFunction,
-      ...processCreateParams(params),
+      ...processCreateParams(params)
     });
   }
 };
@@ -7154,7 +6369,7 @@ ZodLazy.create = (getter, params) => {
   return new ZodLazy({
     getter,
     typeName: ZodFirstPartyTypeKind.ZodLazy,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodLiteral = class extends ZodType {
@@ -7164,7 +6379,7 @@ var ZodLiteral = class extends ZodType {
       addIssueToContext(ctx, {
         received: ctx.data,
         code: ZodIssueCode.invalid_literal,
-        expected: this._def.value,
+        expected: this._def.value
       });
       return INVALID;
     }
@@ -7178,14 +6393,14 @@ ZodLiteral.create = (value, params) => {
   return new ZodLiteral({
     value,
     typeName: ZodFirstPartyTypeKind.ZodLiteral,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 function createZodEnum(values, params) {
   return new ZodEnum({
     values,
     typeName: ZodFirstPartyTypeKind.ZodEnum,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 }
 var ZodEnum = class _ZodEnum extends ZodType {
@@ -7196,7 +6411,7 @@ var ZodEnum = class _ZodEnum extends ZodType {
       addIssueToContext(ctx, {
         expected: util.joinValues(expectedValues),
         received: ctx.parsedType,
-        code: ZodIssueCode.invalid_type,
+        code: ZodIssueCode.invalid_type
       });
       return INVALID;
     }
@@ -7206,7 +6421,7 @@ var ZodEnum = class _ZodEnum extends ZodType {
       addIssueToContext(ctx, {
         received: ctx.data,
         code: ZodIssueCode.invalid_enum_value,
-        options: expectedValues,
+        options: expectedValues
       });
       return INVALID;
     }
@@ -7248,15 +6463,12 @@ var ZodNativeEnum = class extends ZodType {
   _parse(input) {
     const nativeEnumValues = util.getValidEnumValues(this._def.values);
     const ctx = this._getOrReturnCtx(input);
-    if (
-      ctx.parsedType !== ZodParsedType.string &&
-      ctx.parsedType !== ZodParsedType.number
-    ) {
+    if (ctx.parsedType !== ZodParsedType.string && ctx.parsedType !== ZodParsedType.number) {
       const expectedValues = util.objectValues(nativeEnumValues);
       addIssueToContext(ctx, {
         expected: util.joinValues(expectedValues),
         received: ctx.parsedType,
-        code: ZodIssueCode.invalid_type,
+        code: ZodIssueCode.invalid_type
       });
       return INVALID;
     }
@@ -7265,7 +6477,7 @@ var ZodNativeEnum = class extends ZodType {
       addIssueToContext(ctx, {
         received: ctx.data,
         code: ZodIssueCode.invalid_enum_value,
-        options: expectedValues,
+        options: expectedValues
       });
       return INVALID;
     }
@@ -7279,7 +6491,7 @@ ZodNativeEnum.create = (values, params) => {
   return new ZodNativeEnum({
     values,
     typeName: ZodFirstPartyTypeKind.ZodNativeEnum,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodPromise = class extends ZodType {
@@ -7288,23 +6500,19 @@ var ZodPromise = class extends ZodType {
   }
   _parse(input) {
     const { ctx } = this._processInputParams(input);
-    if (
-      ctx.parsedType !== ZodParsedType.promise && ctx.common.async === false
-    ) {
+    if (ctx.parsedType !== ZodParsedType.promise && ctx.common.async === false) {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.promise,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
-    const promisified = ctx.parsedType === ZodParsedType.promise
-      ? ctx.data
-      : Promise.resolve(ctx.data);
+    const promisified = ctx.parsedType === ZodParsedType.promise ? ctx.data : Promise.resolve(ctx.data);
     return OK(promisified.then((data) => {
       return this._def.type.parseAsync(data, {
         path: ctx.path,
-        errorMap: ctx.common.contextualErrorMap,
+        errorMap: ctx.common.contextualErrorMap
       });
     }));
   }
@@ -7313,7 +6521,7 @@ ZodPromise.create = (schema, params) => {
   return new ZodPromise({
     type: schema,
     typeName: ZodFirstPartyTypeKind.ZodPromise,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodEffects = class extends ZodType {
@@ -7321,9 +6529,7 @@ var ZodEffects = class extends ZodType {
     return this._def.schema;
   }
   sourceType() {
-    return this._def.schema._def.typeName === ZodFirstPartyTypeKind.ZodEffects
-      ? this._def.schema.sourceType()
-      : this._def.schema;
+    return this._def.schema._def.typeName === ZodFirstPartyTypeKind.ZodEffects ? this._def.schema.sourceType() : this._def.schema;
   }
   _parse(input) {
     const { status, ctx } = this._processInputParams(input);
@@ -7339,7 +6545,7 @@ var ZodEffects = class extends ZodType {
       },
       get path() {
         return ctx.path;
-      },
+      }
     };
     checkCtx.addIssue = checkCtx.addIssue.bind(checkCtx);
     if (effect.type === "preprocess") {
@@ -7347,7 +6553,7 @@ var ZodEffects = class extends ZodType {
       if (ctx.common.issues.length) {
         return {
           status: "dirty",
-          value: ctx.data,
+          value: ctx.data
         };
       }
       if (ctx.common.async) {
@@ -7355,14 +6561,14 @@ var ZodEffects = class extends ZodType {
           return this._def.schema._parseAsync({
             data: processed2,
             path: ctx.path,
-            parent: ctx,
+            parent: ctx
           });
         });
       } else {
         return this._def.schema._parseSync({
           data: processed,
           path: ctx.path,
-          parent: ctx,
+          parent: ctx
         });
       }
     }
@@ -7373,9 +6579,7 @@ var ZodEffects = class extends ZodType {
           return Promise.resolve(result);
         }
         if (result instanceof Promise) {
-          throw new Error(
-            "Async refinement encountered during synchronous parse operation. Use .parseAsync instead.",
-          );
+          throw new Error("Async refinement encountered during synchronous parse operation. Use .parseAsync instead.");
         }
         return acc;
       };
@@ -7383,28 +6587,20 @@ var ZodEffects = class extends ZodType {
         const inner = this._def.schema._parseSync({
           data: ctx.data,
           path: ctx.path,
-          parent: ctx,
+          parent: ctx
         });
-        if (inner.status === "aborted") {
+        if (inner.status === "aborted")
           return INVALID;
-        }
-        if (inner.status === "dirty") {
+        if (inner.status === "dirty")
           status.dirty();
-        }
         executeRefinement(inner.value);
         return { status: status.value, value: inner.value };
       } else {
-        return this._def.schema._parseAsync({
-          data: ctx.data,
-          path: ctx.path,
-          parent: ctx,
-        }).then((inner) => {
-          if (inner.status === "aborted") {
+        return this._def.schema._parseAsync({ data: ctx.data, path: ctx.path, parent: ctx }).then((inner) => {
+          if (inner.status === "aborted")
             return INVALID;
-          }
-          if (inner.status === "dirty") {
+          if (inner.status === "dirty")
             status.dirty();
-          }
           return executeRefinement(inner.value).then(() => {
             return { status: status.value, value: inner.value };
           });
@@ -7416,30 +6612,20 @@ var ZodEffects = class extends ZodType {
         const base = this._def.schema._parseSync({
           data: ctx.data,
           path: ctx.path,
-          parent: ctx,
+          parent: ctx
         });
-        if (!isValid(base)) {
+        if (!isValid(base))
           return base;
-        }
         const result = effect.transform(base.value, checkCtx);
         if (result instanceof Promise) {
-          throw new Error(
-            `Asynchronous transform encountered during synchronous parse operation. Use .parseAsync instead.`,
-          );
+          throw new Error(`Asynchronous transform encountered during synchronous parse operation. Use .parseAsync instead.`);
         }
         return { status: status.value, value: result };
       } else {
-        return this._def.schema._parseAsync({
-          data: ctx.data,
-          path: ctx.path,
-          parent: ctx,
-        }).then((base) => {
-          if (!isValid(base)) {
+        return this._def.schema._parseAsync({ data: ctx.data, path: ctx.path, parent: ctx }).then((base) => {
+          if (!isValid(base))
             return base;
-          }
-          return Promise.resolve(effect.transform(base.value, checkCtx)).then((
-            result,
-          ) => ({ status: status.value, value: result }));
+          return Promise.resolve(effect.transform(base.value, checkCtx)).then((result) => ({ status: status.value, value: result }));
         });
       }
     }
@@ -7451,7 +6637,7 @@ ZodEffects.create = (schema, effect, params) => {
     schema,
     typeName: ZodFirstPartyTypeKind.ZodEffects,
     effect,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 ZodEffects.createWithPreprocess = (preprocess, schema, params) => {
@@ -7459,7 +6645,7 @@ ZodEffects.createWithPreprocess = (preprocess, schema, params) => {
     schema,
     effect: { type: "preprocess", transform: preprocess },
     typeName: ZodFirstPartyTypeKind.ZodEffects,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodOptional = class extends ZodType {
@@ -7478,7 +6664,7 @@ ZodOptional.create = (type, params) => {
   return new ZodOptional({
     innerType: type,
     typeName: ZodFirstPartyTypeKind.ZodOptional,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodNullable = class extends ZodType {
@@ -7497,7 +6683,7 @@ ZodNullable.create = (type, params) => {
   return new ZodNullable({
     innerType: type,
     typeName: ZodFirstPartyTypeKind.ZodNullable,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var ZodDefault = class extends ZodType {
@@ -7510,7 +6696,7 @@ var ZodDefault = class extends ZodType {
     return this._def.innerType._parse({
       data,
       path: ctx.path,
-      parent: ctx,
+      parent: ctx
     });
   }
   removeDefault() {
@@ -7521,10 +6707,8 @@ ZodDefault.create = (type, params) => {
   return new ZodDefault({
     innerType: type,
     typeName: ZodFirstPartyTypeKind.ZodDefault,
-    defaultValue: typeof params.default === "function"
-      ? params.default
-      : () => params.default,
-    ...processCreateParams(params),
+    defaultValue: typeof params.default === "function" ? params.default : () => params.default,
+    ...processCreateParams(params)
   });
 };
 var ZodCatch = class extends ZodType {
@@ -7534,28 +6718,26 @@ var ZodCatch = class extends ZodType {
       ...ctx,
       common: {
         ...ctx.common,
-        issues: [],
-      },
+        issues: []
+      }
     };
     const result = this._def.innerType._parse({
       data: newCtx.data,
       path: newCtx.path,
       parent: {
-        ...newCtx,
-      },
+        ...newCtx
+      }
     });
     if (isAsync(result)) {
       return result.then((result2) => {
         return {
           status: "valid",
-          value: result2.status === "valid"
-            ? result2.value
-            : this._def.catchValue({
-              get error() {
-                return new ZodError(newCtx.common.issues);
-              },
-              input: newCtx.data,
-            }),
+          value: result2.status === "valid" ? result2.value : this._def.catchValue({
+            get error() {
+              return new ZodError(newCtx.common.issues);
+            },
+            input: newCtx.data
+          })
         };
       });
     } else {
@@ -7565,8 +6747,8 @@ var ZodCatch = class extends ZodType {
           get error() {
             return new ZodError(newCtx.common.issues);
           },
-          input: newCtx.data,
-        }),
+          input: newCtx.data
+        })
       };
     }
   }
@@ -7578,10 +6760,8 @@ ZodCatch.create = (type, params) => {
   return new ZodCatch({
     innerType: type,
     typeName: ZodFirstPartyTypeKind.ZodCatch,
-    catchValue: typeof params.catch === "function"
-      ? params.catch
-      : () => params.catch,
-    ...processCreateParams(params),
+    catchValue: typeof params.catch === "function" ? params.catch : () => params.catch,
+    ...processCreateParams(params)
   });
 };
 var ZodNaN = class extends ZodType {
@@ -7592,7 +6772,7 @@ var ZodNaN = class extends ZodType {
       addIssueToContext(ctx, {
         code: ZodIssueCode.invalid_type,
         expected: ZodParsedType.nan,
-        received: ctx.parsedType,
+        received: ctx.parsedType
       });
       return INVALID;
     }
@@ -7602,7 +6782,7 @@ var ZodNaN = class extends ZodType {
 ZodNaN.create = (params) => {
   return new ZodNaN({
     typeName: ZodFirstPartyTypeKind.ZodNaN,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var BRAND = Symbol("zod_brand");
@@ -7613,7 +6793,7 @@ var ZodBranded = class extends ZodType {
     return this._def.type._parse({
       data,
       path: ctx.path,
-      parent: ctx,
+      parent: ctx
     });
   }
   unwrap() {
@@ -7628,11 +6808,10 @@ var ZodPipeline = class _ZodPipeline extends ZodType {
         const inResult = await this._def.in._parseAsync({
           data: ctx.data,
           path: ctx.path,
-          parent: ctx,
+          parent: ctx
         });
-        if (inResult.status === "aborted") {
+        if (inResult.status === "aborted")
           return INVALID;
-        }
         if (inResult.status === "dirty") {
           status.dirty();
           return DIRTY(inResult.value);
@@ -7640,7 +6819,7 @@ var ZodPipeline = class _ZodPipeline extends ZodType {
           return this._def.out._parseAsync({
             data: inResult.value,
             path: ctx.path,
-            parent: ctx,
+            parent: ctx
           });
         }
       };
@@ -7649,22 +6828,21 @@ var ZodPipeline = class _ZodPipeline extends ZodType {
       const inResult = this._def.in._parseSync({
         data: ctx.data,
         path: ctx.path,
-        parent: ctx,
+        parent: ctx
       });
-      if (inResult.status === "aborted") {
+      if (inResult.status === "aborted")
         return INVALID;
-      }
       if (inResult.status === "dirty") {
         status.dirty();
         return {
           status: "dirty",
-          value: inResult.value,
+          value: inResult.value
         };
       } else {
         return this._def.out._parseSync({
           data: inResult.value,
           path: ctx.path,
-          parent: ctx,
+          parent: ctx
         });
       }
     }
@@ -7673,7 +6851,7 @@ var ZodPipeline = class _ZodPipeline extends ZodType {
     return new _ZodPipeline({
       in: a,
       out: b,
-      typeName: ZodFirstPartyTypeKind.ZodPipeline,
+      typeName: ZodFirstPartyTypeKind.ZodPipeline
     });
   }
 };
@@ -7690,36 +6868,27 @@ ZodReadonly.create = (type, params) => {
   return new ZodReadonly({
     innerType: type,
     typeName: ZodFirstPartyTypeKind.ZodReadonly,
-    ...processCreateParams(params),
+    ...processCreateParams(params)
   });
 };
 var custom = (check, params = {}, fatal) => {
-  if (check) {
+  if (check)
     return ZodAny.create().superRefine((data, ctx) => {
       var _a, _b;
       if (!check(data)) {
-        const p = typeof params === "function"
-          ? params(data)
-          : typeof params === "string"
-          ? { message: params }
-          : params;
-        const _fatal =
-          (_b = (_a = p.fatal) !== null && _a !== void 0 ? _a : fatal) !==
-              null && _b !== void 0
-            ? _b
-            : true;
+        const p = typeof params === "function" ? params(data) : typeof params === "string" ? { message: params } : params;
+        const _fatal = (_b = (_a = p.fatal) !== null && _a !== void 0 ? _a : fatal) !== null && _b !== void 0 ? _b : true;
         const p2 = typeof p === "string" ? { message: p } : p;
         ctx.addIssue({ code: "custom", ...p2, fatal: _fatal });
       }
     });
-  }
   return ZodAny.create();
 };
 var late = {
-  object: ZodObject.lazycreate,
+  object: ZodObject.lazycreate
 };
 var ZodFirstPartyTypeKind;
-(function (ZodFirstPartyTypeKind2) {
+(function(ZodFirstPartyTypeKind2) {
   ZodFirstPartyTypeKind2["ZodString"] = "ZodString";
   ZodFirstPartyTypeKind2["ZodNumber"] = "ZodNumber";
   ZodFirstPartyTypeKind2["ZodNaN"] = "ZodNaN";
@@ -7758,7 +6927,7 @@ var ZodFirstPartyTypeKind;
   ZodFirstPartyTypeKind2["ZodReadonly"] = "ZodReadonly";
 })(ZodFirstPartyTypeKind || (ZodFirstPartyTypeKind = {}));
 var instanceOfType = (cls, params = {
-  message: `Input not instance of ${cls.name}`,
+  message: `Input not instance of ${cls.name}`
 }) => custom((data) => data instanceof cls, params);
 var stringType = ZodString.create;
 var numberType = ZodNumber.create;
@@ -7800,13 +6969,12 @@ var oboolean = () => booleanType().optional();
 var coerce = {
   string: ((arg) => ZodString.create({ ...arg, coerce: true })),
   number: ((arg) => ZodNumber.create({ ...arg, coerce: true })),
-  boolean: ((arg) =>
-    ZodBoolean.create({
-      ...arg,
-      coerce: true,
-    })),
+  boolean: ((arg) => ZodBoolean.create({
+    ...arg,
+    coerce: true
+  })),
   bigint: ((arg) => ZodBigInt.create({ ...arg, coerce: true })),
-  date: ((arg) => ZodDate.create({ ...arg, coerce: true })),
+  date: ((arg) => ZodDate.create({ ...arg, coerce: true }))
 };
 var NEVER = INVALID;
 var z = /* @__PURE__ */ Object.freeze({
@@ -7922,7 +7090,7 @@ var z = /* @__PURE__ */ Object.freeze({
   NEVER,
   ZodIssueCode,
   quotelessJson,
-  ZodError,
+  ZodError
 });
 
 // ts/numbers.ts
@@ -7942,13 +7110,13 @@ var AlbumSchema = z.object({
   mosaic: z.any(),
   id: z.string(),
   photosCount: z.union([z.string(), z.number()]),
-  flags: z.any(),
+  flags: z.any()
 });
 function parseAlbum(album) {
   const result = AlbumSchema.safeParse(album);
   if (!result.success) {
     throw new Error(
-      `Invalid album object: ${JSON.stringify(result.error.issues)}`,
+      `Invalid album object: ${JSON.stringify(result.error.issues)}`
     );
   }
   return {
@@ -7959,12 +7127,12 @@ function parseAlbum(album) {
     mosaicColours: result.data.mosaic,
     id: result.data.id,
     photosCount: asInt(result.data.photosCount),
-    flags: result.data.flags,
+    flags: result.data.flags
   };
 }
 function readAlbums(tdb2) {
   return tdb2.search({
-    source: { type: "album" },
+    source: { type: "album" }
   }).objects().map(parseAlbum).sort((album0, album1) => {
     return album1.minDate - album0.minDate;
   });
@@ -7974,21 +7142,19 @@ function readAlbums(tdb2) {
 var state = await loadState();
 function App() {
   return {
-    view(vnode) {
+    view() {
       return (0, import_mithril9.default)("body", [
         (0, import_mithril9.default)("div", [
           (0, import_mithril9.default)(Header, state),
-          (0, import_mithril9.default)("div", [
-            (0, import_mithril9.default)(Sidebar, {
-              visible: state.sidebarVisible,
-            }),
+          (0, import_mithril9.default)("div.app-container", [
+            (0, import_mithril9.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril9.default)(AlbumsPage, {
-              albums: readAlbums(state.data),
-            }),
-          ]),
-        ]),
+              albums: readAlbums(state.data)
+            })
+          ])
+        ])
       ]);
-    },
+    }
   };
 }
 
