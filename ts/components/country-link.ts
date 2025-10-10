@@ -1,6 +1,3 @@
-
-
-
 import m from "mithril";
 import { urnToUrl } from "../semantic/urn";
 
@@ -16,9 +13,9 @@ export function CountryLink() {
     view(vnode: m.Vnode<CountryLinkAttrs>) {
       const { flag, urn, name, mode } = vnode.attrs;
 
-      if (mode === 'flag' && urn) {
-        return m('a.country-link', { href: urnToUrl(urn) }, flag)
+      if (mode === "flag" && urn) {
+        return m("a.country-link", { href: urnToUrl(urn) }, flag);
       }
-    }
-  }
+    },
+  };
 }

@@ -3,9 +3,7 @@ import { AlbumStats } from "../components/album-stats.ts";
 import { YearCursor } from "../components/year-cursor.ts";
 import { Album } from "../types.ts";
 import { Photos } from "../services/photos.ts";
-import {
-  PhotoAlbumMetadata,
-} from "../components/photo-album-metadata.ts";
+import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { Windows } from "../services/window.ts";
 import { CountryLink } from "../components/country-link.ts";
@@ -22,7 +20,8 @@ function AlbumsList() {
   return {
     view(vnode: m.Vnode<AlbumsListAttrs>) {
       const albumComponents: m.Vnode<
-        unknown, unknown
+        unknown,
+        unknown
       >[] = [];
       let year = 2005;
       const { albums } = vnode.attrs;
@@ -44,8 +43,8 @@ function AlbumsList() {
         const $countryLinks = album.countries.map((country) => {
           return m(CountryLink, {
             ...country,
-            mode: 'flag'
-          })
+            mode: "flag",
+          });
         });
 
         const $md = m(PhotoAlbumMetadata, {
@@ -61,6 +60,7 @@ function AlbumsList() {
           thumbnailUrl: album.thumbnailUrl,
           thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
           loading: loading,
+          minDate: album.minDate,
           onclick: () => {},
         });
 

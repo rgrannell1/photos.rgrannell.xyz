@@ -8,6 +8,7 @@ export type PhotoAlbumAttrs = {
   loading: "eager" | "lazy";
   child?: m.Children;
   onclick?: (e: Event) => void;
+  minDate?: number;
 };
 
 export function PhotoAlbum() {
@@ -19,10 +20,11 @@ export function PhotoAlbum() {
         thumbnailDataUrl,
         loading,
         child,
+        minDate,
         onclick,
       } = vnode.attrs;
 
-      return m("div.photo-album", [
+      return m("div.photo-album", { 'data-min-date': minDate }, [
         m(ImagePair, {
           imageUrl,
           thumbnailUrl,

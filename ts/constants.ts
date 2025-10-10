@@ -62,3 +62,5 @@ export const CURIES = {
 
 export const CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
 export const ENDPOINT = "https://photos-cdn.rgrannell.xyz";
+
+export const SCROLL_HIDE_THRESHOLD = 200;

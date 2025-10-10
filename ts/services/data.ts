@@ -7,7 +7,6 @@ import { TribbleParser } from "@rgrannell1/tribbledb";
 
 /*
  * Stream triples from a URL
- *
  */
 export async function* streamTribbles(url: string) {
   const parser = new TribbleParser();
@@ -49,7 +48,6 @@ let tdb: TribbleDB | null = null;
 
 /*
  * Load triples from a URL
- *
  */
 export async function loadTriples(
   url: string,

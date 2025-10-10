@@ -17,9 +17,8 @@ const AlbumSchema = z.object({
 
 /*
  * Read album-data
- *
  */
-function parseAlbum(tdb: TribbleDB,album: TripleObject): Album {
+function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
   const result = AlbumSchema.safeParse(album);
   if (!result.success) {
     throw new Error(
@@ -32,14 +31,14 @@ function parseAlbum(tdb: TribbleDB,album: TripleObject): Album {
     : [result.data.flags];
 
   const countries = countryNames.map((countryName: string) => {
-    const urn =  countryNameToUrn(tdb, countryName);
+    const urn = countryNameToUrn(tdb, countryName);
     const flag = urn ? urnToFlag(tdb, urn) : undefined;
 
     return {
       urn,
       name: countryName,
-      flag
-    }
+      flag,
+    };
   });
 
   return {
@@ -56,7 +55,6 @@ function parseAlbum(tdb: TribbleDB,album: TripleObject): Album {
 
 /*
  * Read albums from the TribbleDB
- *
  */
 export function readAlbums(tdb: TribbleDB): Album[] {
   return tdb.search({

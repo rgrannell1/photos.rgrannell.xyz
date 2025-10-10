@@ -10,7 +10,6 @@ import {
 } from "../constants.ts";
 import { Strings } from "../strings.ts";
 
-
 /*
  * Convert star ratings into URNs.
  */
@@ -160,7 +159,6 @@ export function addYear(triple: Triple) {
 
 /*
  * Reverse relationships
- *
  */
 export function addInverseRelations(triple: Triple) {
   const [src, rel, tgt] = triple;
@@ -230,7 +228,6 @@ export function expandTripleCuries(
 
 /*
  * Compose all triple modifiers together.
- *
  */
 export function deriveTriples(
   triple: Triple,
