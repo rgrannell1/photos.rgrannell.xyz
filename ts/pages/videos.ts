@@ -1,6 +1,6 @@
 import m from "mithril";
 import type { Video as VideoType } from "../types.ts";
-import { Video } from "../components/video.ts";
+import { Video, VideoAttrs } from "../components/video.ts";
 
 type VideosPageAttrs = {
   videos: VideoType[];
@@ -15,7 +15,7 @@ export function VideosPage() {
         : `${videos.length} videos`;
 
       const $videosList = videos.map((video) => {
-        return m(Video, { ...video });
+        return m(Video, { ...video, preload: 'auto' } satisfies VideoAttrs);
       });
 
       return m(

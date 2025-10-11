@@ -4,11 +4,13 @@
     "specifiers": {
       "jsr:@std/assert@^0.218.2": "jsr:@std/assert@0.218.2",
       "jsr:@std/path": "jsr:@std/path@0.218.2",
-      "npm:@rgrannell1/tribbledb@^0.0.1": "npm:@rgrannell1/tribbledb@0.0.1",
+      "npm:@rgrannell1/tribbledb@^0.0.3": "npm:@rgrannell1/tribbledb@0.0.3",
+      "npm:@types/mithril@^2.2.7": "npm:@types/mithril@2.2.7",
       "npm:esbuild@^0.25.9": "npm:esbuild@0.25.9",
       "npm:express@^5.1.0": "npm:express@5.1.0",
       "npm:lit-element@^4.2.1": "npm:lit-element@4.2.1",
       "npm:lit@^3.3.1": "npm:lit@3.3.1",
+      "npm:mithril@^2.3.7": "npm:mithril@2.3.7",
       "npm:mocha@^11.7.1": "npm:mocha@11.7.2",
       "npm:tap@^21.1.0": "npm:tap@21.1.0_@tapjs+core@4.0.1"
     },
@@ -302,8 +304,8 @@
         "integrity": "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==",
         "dependencies": {}
       },
-      "@rgrannell1/tribbledb@0.0.1": {
-        "integrity": "sha512-d25zehuP8LltR7y2VSgiQ2SdlfLuPJum3fTn9O7hykYHVB8RCRStQCLXACIpnw8D38HKcjb7lZPDVieETCFt9A==",
+      "@rgrannell1/tribbledb@0.0.3": {
+        "integrity": "sha512-WEHq8FoYAey2F0bvlkwwbrRreKOPY+VU6QGcwYsV1sCWFJxmtsnO979juhDXHH+x6CEULjyUI7hO4zVnNWzPsg==",
         "dependencies": {}
       },
       "@sigstore/bundle@2.3.2": {
@@ -1429,6 +1431,10 @@
         "integrity": "sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==",
         "dependencies": {}
       },
+      "@types/mithril@2.2.7": {
+        "integrity": "sha512-uetxoYizBMHPELl6DSZUfO6Q/aOm+h0NUCv9bVAX2iAxfrdBSOvU9KKFl+McTtxR13F+BReYLY814pJsZvnSxg==",
+        "dependencies": {}
+      },
       "@types/node@18.16.19": {
         "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
         "dependencies": {}
@@ -2463,6 +2469,10 @@
           "minipass": "minipass@3.3.6",
           "yallist": "yallist@4.0.0"
         }
+      },
+      "mithril@2.3.7": {
+        "integrity": "sha512-igRr/o79tNDTL2wa4ta16V7B0A0KdtjPcRVBdw2BMHF0c08xpCk4GxN+Ws04NYq2kGDBA0En1QHF/dgCw1oIIw==",
+        "dependencies": {}
       },
       "mkdirp@1.0.4": {
         "integrity": "sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==",
@@ -3542,11 +3552,13 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
-        "npm:@rgrannell1/tribbledb@^0.0.1",
+        "npm:@rgrannell1/tribbledb@^0.0.3",
+        "npm:@types/mithril@^2.2.7",
         "npm:esbuild@^0.25.9",
         "npm:express@^5.1.0",
         "npm:lit-element@^4.2.1",
         "npm:lit@^3.3.1",
+        "npm:mithril@^2.3.7",
         "npm:mocha@^11.7.1",
         "npm:tap@^21.1.0"
       ]

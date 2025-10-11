@@ -1,6 +1,6 @@
 import m from "mithril";
 
-type VideoAttrs = {
+export type VideoAttrs = {
   preload: string;
   posterUrl: string;
   videoUrl1080p: string;
