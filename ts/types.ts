@@ -4,12 +4,14 @@ export type ApplicationEvents =
   | "click_burger_menu"
   | "switch_theme"
   | "click_photo_metadata"
-  | "photo_loaded";
+  | "photo_loaded"
+  | "click_album";
 
 export type State = {
   data: TribbleDB;
   darkMode: boolean;
   sidebarVisible: boolean;
+  currentAlbum: string | undefined;
 };
 
 export type Album = {

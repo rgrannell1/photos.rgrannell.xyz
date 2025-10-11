@@ -1,4 +1,4 @@
-import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { Album } from "../types.ts";
 import { z } from "zod";
 import { asInt } from "../numbers.ts";
@@ -72,4 +72,13 @@ export function readAlbums(tdb: TribbleDB): Album[] {
     .sort((album0: Album, album1: Album) => {
       return album1.minDate - album0.minDate;
     });
+}
+
+
+export function readAlbumsById(tdb: TribbleDB, id: string): Album | undefined {
+  return tdb.search({
+    source: asUrn(id),
+  }).objects()
+    .map(parseAlbum.bind(null, tdb))[0];
+
 }

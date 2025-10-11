@@ -15,7 +15,7 @@ export function VideosPage() {
         : `${videos.length} videos`;
 
       const $videosList = videos.map((video) => {
-        return m(Video, { ...video, preload: 'auto' } satisfies VideoAttrs);
+        return m(Video, { ...video, preload: "auto" } satisfies VideoAttrs);
       });
 
       return m(

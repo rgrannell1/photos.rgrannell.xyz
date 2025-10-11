@@ -21,7 +21,6 @@ export function Video() {
         videoUrlUnscaled,
       } = vnode.attrs;
 
-
       const $source = m("source", {
         src: videoUrl480p,
         type: "video/mp4",
@@ -40,7 +39,7 @@ export function Video() {
           preload,
           poster: posterUrl,
         }, $source),
-        $resolutionLinks
+        $resolutionLinks,
       ]);
     },
   };

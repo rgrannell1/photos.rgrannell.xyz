@@ -7,6 +7,7 @@ import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { Windows } from "../services/window.ts";
 import { CountryLink } from "../components/country-link.ts";
+import { block, broadcast } from "../events.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];
@@ -15,6 +16,11 @@ type AlbumsListAttrs = {
 function AlbumsList() {
   function albumYear(album: Album) {
     return new Date(album.minDate).getFullYear();
+  }
+
+  function onAlbumClick(id: string, title: string, event: Event) {
+    broadcast("click_album", { id, title });
+    block(event);
   }
 
   return {
@@ -61,7 +67,7 @@ function AlbumsList() {
           thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
           loading: loading,
           minDate: album.minDate,
-          onclick: () => {},
+          onclick: onAlbumClick.bind(null, album.id, album.name),
         });
 
         albumComponents.push($album as m.Vnode<unknown, unknown>);

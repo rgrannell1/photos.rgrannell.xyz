@@ -6,7 +6,7 @@ import { deriveTriples } from "./semantic/derive.ts";
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    "/manifest/tribbles.eab0f8c457.txt",
+    "/manifest/tribbles.c47017e786.txt",
     schema,
     deriveTriples,
   );
@@ -21,5 +21,6 @@ export async function loadState(): Promise<State> {
     darkMode: DarkModes.load(),
     sidebarVisible: false,
     data: await loadData(),
+    currentAlbum: undefined,
   };
 }

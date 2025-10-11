@@ -2,7 +2,7 @@ import m from "mithril";
 
 type AlbumShareButtonAttrs = {
   url: string;
-  title: string;
+  name: string;
 };
 
 function handleError(message: string) {
@@ -15,7 +15,7 @@ function handleError(message: string) {
 async function shareAlbum(
   state: { sharing: boolean },
   url: string,
-  title: string,
+  name: string,
 ) {
   if (!navigator.share) {
     handleError("navigator.share not available");
@@ -24,7 +24,7 @@ async function shareAlbum(
 
   try {
     await navigator.share({
-      title: `${title} - photos.rgrannell.xyz`,
+      title: `${name} - photos.rgrannell.xyz`,
       url,
     });
   } catch (error) {
@@ -45,11 +45,11 @@ export function AlbumShareButton() {
 
   return {
     view(vnode: m.Vnode<AlbumShareButtonAttrs>) {
-      const { url, title } = vnode.attrs;
+      const { url, name } = vnode.attrs;
 
       return m("button.photo-share-button", {
         disabled: !navigator.share,
-        onclick: shareAlbum.bind(null, localState, url, title),
+        onclick: shareAlbum.bind(null, localState, url, name),
       }, buttonText(localState));
     },
   };
