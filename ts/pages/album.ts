@@ -8,6 +8,7 @@ import { Video, VideoAttrs } from "../components/video.ts";
 import type { Photo as PhotoType, Video as VideoType } from "../types.ts";
 import { Photo, PhotoAttrs } from "../components/photo.ts";
 import { Photos } from "../services/photos.ts";
+import { AlbumsButton } from "../components/albums-button.ts";
 
 type AlbumAttrs = {
   name: string;
@@ -60,10 +61,12 @@ export function AlbumPage() {
 
       const $albumMetadata = m("section.photos-metadata", [
         m("h1", name),
-        m("p.photo-album-count", m("time", dateRange)),
+        m("p.photo-album-date", m("time", dateRange)),
         m("p.photo-album-count", photoCountMessage),
-        m("photo-album-countries", $countryLinks),
-        m("photo-album-description", m.trust(description)),
+        m("p.photo-album-countries", $countryLinks),
+        m("p.photo-album-description", m.trust(description)),
+        m(AlbumShareButton, { url: location.href, name }),
+        m(AlbumsButton)
       ]);
 
       const $photosList = photos.map((photo, idx) => {
@@ -86,7 +89,7 @@ export function AlbumPage() {
       return m(
         "div",
         $albumMetadata,
-        m(AlbumShareButton, { url: location.href, name }),
+
         m("section.photo-container", $photosList),
         m("section.video-container", $videosList),
       );

@@ -1052,9 +1052,9 @@ var require_build2 = __commonJS({
       var path = template.slice(0, pathEnd);
       var query = {};
       Object.assign(query, params);
-      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m17, key, variadic) {
+      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m18, key, variadic) {
         delete query[key];
-        if (params[key] == null) return m17;
+        if (params[key] == null) return m18;
         return variadic ? params[key] : encodeURIComponent(String(params[key]));
       });
       var newQueryIndex = resolved.indexOf("?");
@@ -1326,8 +1326,8 @@ var require_compileTemplate = __commonJS({
         // don't also accidentally escape `-` and make it harder to detect it to
         // ban it from template parameters.
         /:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
-        function(m17, key, extra) {
-          if (key == null) return "\\" + m17;
+        function(m18, key, extra) {
+          if (key == null) return "\\" + m18;
           keys.push({ k: key, r: extra === "..." });
           if (extra === "...") return "(.*)";
           if (extra === ".") return "([^/]+)\\.";
@@ -1381,7 +1381,7 @@ var require_router = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/router.js"(exports, module) {
     "use strict";
     var Vnode2 = require_vnode();
-    var m17 = require_hyperscript();
+    var m18 = require_hyperscript();
     var buildPathname = require_build2();
     var parsePathname = require_parse2();
     var compileTemplate = require_compileTemplate();
@@ -1524,7 +1524,7 @@ var require_router = __commonJS({
       route.prefix = "#!";
       route.Link = {
         view: function(vnode) {
-          var child = m17(
+          var child = m18(
             vnode.attrs.selector || "a",
             censor(vnode.attrs, ["options", "params", "selector", "onclick"]),
             vnode.children
@@ -1587,34 +1587,34 @@ var require_mithril = __commonJS({
     var request = require_request2();
     var mountRedraw = require_mount_redraw2();
     var domFor = require_domFor();
-    var m17 = function m18() {
+    var m18 = function m19() {
       return hyperscript.apply(this, arguments);
     };
-    m17.m = hyperscript;
-    m17.trust = hyperscript.trust;
-    m17.fragment = hyperscript.fragment;
-    m17.Fragment = "[";
-    m17.mount = mountRedraw.mount;
-    m17.route = require_route();
-    m17.render = require_render2();
-    m17.redraw = mountRedraw.redraw;
-    m17.request = request.request;
-    m17.parseQueryString = require_parse();
-    m17.buildQueryString = require_build();
-    m17.parsePathname = require_parse2();
-    m17.buildPathname = require_build2();
-    m17.vnode = require_vnode();
-    m17.censor = require_censor();
-    m17.domFor = domFor.domFor;
-    module.exports = m17;
+    m18.m = hyperscript;
+    m18.trust = hyperscript.trust;
+    m18.fragment = hyperscript.fragment;
+    m18.Fragment = "[";
+    m18.mount = mountRedraw.mount;
+    m18.route = require_route();
+    m18.render = require_render2();
+    m18.redraw = mountRedraw.redraw;
+    m18.request = request.request;
+    m18.parseQueryString = require_parse();
+    m18.buildQueryString = require_build();
+    m18.parsePathname = require_parse2();
+    m18.buildPathname = require_build2();
+    m18.vnode = require_vnode();
+    m18.censor = require_censor();
+    m18.domFor = domFor.domFor;
+    module.exports = m18;
   }
 });
 
 // ts/index.ts
-var import_mithril16 = __toESM(require_mithril());
+var import_mithril17 = __toESM(require_mithril());
 
 // ts/app.ts
-var import_mithril15 = __toESM(require_mithril());
+var import_mithril16 = __toESM(require_mithril());
 
 // ts/components/header.ts
 var import_mithril = __toESM(require_mithril());
@@ -3400,7 +3400,7 @@ var makeIssue = (params) => {
     path: fullPath
   };
   let errorMessage = "";
-  const maps = errorMaps.filter((m17) => !!m17).slice().reverse();
+  const maps = errorMaps.filter((m18) => !!m18).slice().reverse();
   for (const map of maps) {
     errorMessage = map(fullIssue, { data, defaultError: errorMessage }).message;
   }
@@ -7482,7 +7482,7 @@ function VideosPage() {
 }
 
 // ts/pages/album.ts
-var import_mithril14 = __toESM(require_mithril());
+var import_mithril15 = __toESM(require_mithril());
 
 // ts/components/album-share-button.ts
 var import_mithril13 = __toESM(require_mithril());
@@ -7526,6 +7526,16 @@ function AlbumShareButton() {
   };
 }
 
+// ts/components/albums-button.ts
+var import_mithril14 = __toESM(require_mithril());
+function AlbumsButton() {
+  return {
+    view() {
+      return (0, import_mithril14.default)("a", { href: "/albums" }, "[albums]");
+    }
+  };
+}
+
 // ts/pages/album.ts
 function AlbumPage() {
   return {
@@ -7550,20 +7560,22 @@ function AlbumPage() {
       );
       const photoCountMessage = photosCount === 1 ? "1 photo" : `${photosCount} photos`;
       const $countryLinks = countries.map((country) => {
-        return (0, import_mithril14.default)(CountryLink, {
+        return (0, import_mithril15.default)(CountryLink, {
           ...country,
           mode: "flag"
         });
       });
-      const $albumMetadata = (0, import_mithril14.default)("section.photos-metadata", [
-        (0, import_mithril14.default)("h1", name),
-        (0, import_mithril14.default)("p.photo-album-count", (0, import_mithril14.default)("time", dateRange)),
-        (0, import_mithril14.default)("p.photo-album-count", photoCountMessage),
-        (0, import_mithril14.default)("photo-album-countries", $countryLinks),
-        (0, import_mithril14.default)("photo-album-description", import_mithril14.default.trust(description))
+      const $albumMetadata = (0, import_mithril15.default)("section.photos-metadata", [
+        (0, import_mithril15.default)("h1", name),
+        (0, import_mithril15.default)("p.photo-album-date", (0, import_mithril15.default)("time", dateRange)),
+        (0, import_mithril15.default)("p.photo-album-count", photoCountMessage),
+        (0, import_mithril15.default)("p.photo-album-countries", $countryLinks),
+        (0, import_mithril15.default)("p.photo-album-description", import_mithril15.default.trust(description)),
+        (0, import_mithril15.default)(AlbumShareButton, { url: location.href, name }),
+        (0, import_mithril15.default)(AlbumsButton)
       ]);
       const $photosList = photos.map((photo, idx) => {
-        return (0, import_mithril14.default)(
+        return (0, import_mithril15.default)(
           Photo,
           {
             id: photo.id,
@@ -7576,14 +7588,13 @@ function AlbumPage() {
         );
       });
       const $videosList = videos.map((video) => {
-        return (0, import_mithril14.default)(Video, { ...video, preload: "auto" });
+        return (0, import_mithril15.default)(Video, { ...video, preload: "auto" });
       });
-      return (0, import_mithril14.default)(
+      return (0, import_mithril15.default)(
         "div",
         $albumMetadata,
-        (0, import_mithril14.default)(AlbumShareButton, { url: location.href, name }),
-        (0, import_mithril14.default)("section.photo-container", $photosList),
-        (0, import_mithril14.default)("section.video-container", $videosList)
+        (0, import_mithril15.default)("section.photo-container", $photosList),
+        (0, import_mithril15.default)("section.video-container", $videosList)
       );
     }
   };
@@ -7599,19 +7610,19 @@ function AlbumsApp() {
         const parsed = asUrn(id);
         const pageTitle = `Album - ${title}`;
         state.currentAlbum = id;
-        import_mithril15.default.route.set(`/album/${parsed.id}`, {
+        import_mithril16.default.route.set(`/album/${parsed.id}`, {
           id,
           title: pageTitle
         });
       });
     },
     view(vnode) {
-      return (0, import_mithril15.default)("body", [
-        (0, import_mithril15.default)("div", [
-          (0, import_mithril15.default)(Header, state),
-          (0, import_mithril15.default)("div.app-container", [
-            (0, import_mithril15.default)(Sidebar, { visible: state.sidebarVisible }),
-            (0, import_mithril15.default)(AlbumsPage, {
+      return (0, import_mithril16.default)("body", [
+        (0, import_mithril16.default)("div", [
+          (0, import_mithril16.default)(Header, state),
+          (0, import_mithril16.default)("div.app-container", [
+            (0, import_mithril16.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril16.default)(AlbumsPage, {
               albums: readAlbums(state.data)
             })
           ])
@@ -7624,20 +7635,20 @@ function AlbumApp() {
   return {
     view() {
       if (!state.currentAlbum) {
-        return (0, import_mithril15.default)("p", "No album selected");
+        return (0, import_mithril16.default)("p", "No album selected");
       }
       const album = readAlbumById(state.data, state.currentAlbum);
       const photos = readAlbumPhotosById(state.data, state.currentAlbum);
       const videos = readAlbumVideosById(state.data, state.currentAlbum);
       if (!album) {
-        return (0, import_mithril15.default)("p", "Album not found");
+        return (0, import_mithril16.default)("p", "Album not found");
       }
-      return (0, import_mithril15.default)("body", [
-        (0, import_mithril15.default)("div", [
-          (0, import_mithril15.default)(Header, state),
-          (0, import_mithril15.default)("div.app-container", [
-            (0, import_mithril15.default)(Sidebar, { visible: state.sidebarVisible }),
-            (0, import_mithril15.default)(AlbumPage, {
+      return (0, import_mithril16.default)("body", [
+        (0, import_mithril16.default)("div", [
+          (0, import_mithril16.default)(Header, state),
+          (0, import_mithril16.default)("div.app-container", [
+            (0, import_mithril16.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril16.default)(AlbumPage, {
               ...album,
               photos,
               videos
@@ -7651,12 +7662,12 @@ function AlbumApp() {
 function AboutApp() {
   return {
     view() {
-      return (0, import_mithril15.default)("body", [
-        (0, import_mithril15.default)("div", [
-          (0, import_mithril15.default)(Header, state),
-          (0, import_mithril15.default)("div.app-container", [
-            (0, import_mithril15.default)(Sidebar, { visible: state.sidebarVisible }),
-            (0, import_mithril15.default)(AboutPage)
+      return (0, import_mithril16.default)("body", [
+        (0, import_mithril16.default)("div", [
+          (0, import_mithril16.default)(Header, state),
+          (0, import_mithril16.default)("div.app-container", [
+            (0, import_mithril16.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril16.default)(AboutPage)
           ])
         ])
       ]);
@@ -7666,12 +7677,12 @@ function AboutApp() {
 function VideosApp() {
   return {
     view() {
-      return (0, import_mithril15.default)("body", [
-        (0, import_mithril15.default)("div", [
-          (0, import_mithril15.default)(Header, state),
-          (0, import_mithril15.default)("div.app-container", [
-            (0, import_mithril15.default)(Sidebar, { visible: state.sidebarVisible }),
-            (0, import_mithril15.default)(VideosPage, {
+      return (0, import_mithril16.default)("body", [
+        (0, import_mithril16.default)("div", [
+          (0, import_mithril16.default)(Header, state),
+          (0, import_mithril16.default)("div.app-container", [
+            (0, import_mithril16.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril16.default)(VideosPage, {
               videos: readVideos(state.data)
             })
           ])
@@ -7682,7 +7693,7 @@ function VideosApp() {
 }
 
 // ts/index.ts
-import_mithril16.default.route(document.body, "/albums", {
+import_mithril17.default.route(document.body, "/albums", {
   "/albums": AlbumsApp,
   "/about": AboutApp,
   "/videos": VideosApp,
