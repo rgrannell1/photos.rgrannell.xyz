@@ -3,7 +3,13 @@ import { Header } from "./components/header.ts";
 import { loadState } from "./state.ts";
 import { Sidebar } from "./components/sidebar.ts";
 import { AlbumsPage } from "./pages/albums.ts";
-import { readAlbums, readAlbumsById } from "./services/albums.ts";
+import {
+  readAlbumById,
+  readAlbumPhotosById,
+  readAlbums,
+  readAlbumsById,
+  readAlbumVideosById,
+} from "./services/albums.ts";
 import { AboutPage } from "./pages/about.ts";
 import { VideosPage } from "./pages/videos.ts";
 import { readVideos } from "./services/videos.ts";
@@ -53,7 +59,9 @@ export function AlbumApp(): m.Component<AppAttrs> {
       if (!state.currentAlbum) {
         return m("p", "No album selected");
       }
-      const album = readAlbumsById(state.data, state.currentAlbum)
+      const album = readAlbumById(state.data, state.currentAlbum);
+      const photos = readAlbumPhotosById(state.data, state.currentAlbum);
+      const videos = readAlbumVideosById(state.data, state.currentAlbum);
 
       if (!album) {
         return m("p", "Album not found");
@@ -65,7 +73,9 @@ export function AlbumApp(): m.Component<AppAttrs> {
           m("div.app-container", [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(AlbumPage, {
-              ...album
+              ...album,
+              photos,
+              videos,
             }),
           ]),
         ]),

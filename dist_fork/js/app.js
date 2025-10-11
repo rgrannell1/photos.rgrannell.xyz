@@ -1529,22 +1529,22 @@ var require_router = __commonJS({
             censor(vnode.attrs, ["options", "params", "selector", "onclick"]),
             vnode.children
           );
-          var options, onclick2, href;
+          var options, onclick, href;
           if (child.attrs.disabled = Boolean(child.attrs.disabled)) {
             child.attrs.href = null;
             child.attrs["aria-disabled"] = "true";
           } else {
             options = vnode.attrs.options;
-            onclick2 = vnode.attrs.onclick;
+            onclick = vnode.attrs.onclick;
             href = buildPathname(child.attrs.href, vnode.attrs.params);
             child.attrs.href = route.prefix + href;
             child.attrs.onclick = function(e) {
               var result;
-              if (typeof onclick2 === "function") {
-                result = onclick2.call(e.currentTarget, e);
-              } else if (onclick2 == null || typeof onclick2 !== "object") {
-              } else if (typeof onclick2.handleEvent === "function") {
-                onclick2.handleEvent(e);
+              if (typeof onclick === "function") {
+                result = onclick.call(e.currentTarget, e);
+              } else if (onclick == null || typeof onclick !== "object") {
+              } else if (typeof onclick.handleEvent === "function") {
+                onclick.handleEvent(e);
               }
               if (
                 // Skip if `onclick` prevented default
@@ -1637,12 +1637,12 @@ function block(event) {
 
 // ts/components/header.ts
 function BurgerMenu() {
-  const onclick2 = (_) => {
+  const onclick = (_) => {
     broadcast("click_burger_menu", {});
   };
   return {
     view() {
-      return (0, import_mithril.default)("a", { href: "/", onclick: onclick2 }, (0, import_mithril.default)("span.burger", "\u039E"));
+      return (0, import_mithril.default)("a", { href: "/", onclick }, (0, import_mithril.default)("span.burger", "\u039E"));
     }
   };
 }
@@ -3040,350 +3040,6 @@ function AlbumStats() {
         " \xB7 ",
         `${stats_default.unesco_sites} `,
         (0, import_mithril3.default)("a", { href: "#/thing/unesco:*" }, "UNESCO sites")
-      ]);
-    }
-  };
-}
-
-// ts/services/photos.ts
-var coloursCache = /* @__PURE__ */ new Map();
-var Photos = class {
-  /*
-   * Determine whether a photo should be eagerly or lazily loaded
-   * depending on page position
-   */
-  static loadingMode(idx) {
-    const viewportWidth = globalThis.innerWidth;
-    const viewportHeight = globalThis.innerHeight;
-    const imageDimension = PHOTO_WIDTH;
-    const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
-    const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
-    return idx > maxImagesPerRow * maxRowsInFold + 1 ? "lazy" : "eager";
-  }
-  /*
-   * Convert a mosaic colour string into a bitmap data URL
-   */
-  static encodeBitmapDataURL(colours) {
-    if (coloursCache.has(colours)) {
-      return coloursCache.get(colours);
-    }
-    const coloursList = colours.split("#").map(
-      (colour) => `#${colour}`
-    );
-    const canvas = document.createElement("canvas");
-    canvas.width = 2;
-    canvas.height = 2;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      throw new Error("context missing");
-    }
-    ctx.fillStyle = coloursList[1];
-    ctx.fillRect(0, 0, 1, 1);
-    ctx.fillStyle = coloursList[2];
-    ctx.fillRect(1, 0, 1, 1);
-    ctx.fillStyle = coloursList[3];
-    ctx.fillRect(0, 1, 1, 1);
-    ctx.fillStyle = coloursList[4];
-    ctx.fillRect(1, 1, 1, 1);
-    coloursCache.set(colours, canvas.toDataURL("image/png"));
-    return coloursCache.get(colours);
-  }
-};
-
-// ts/components/photo-album-metadata.ts
-var import_mithril4 = __toESM(require_mithril());
-
-// ts/services/window.ts
-var Windows = class {
-  static isSmallerThan(width = 500) {
-    return globalThis.matchMedia(`(max-width: ${width}px)`).matches;
-  }
-  static setTitle(title) {
-    document.title = title;
-  }
-};
-
-// ts/services/dates.ts
-var Dates = class {
-  static parse(dateTime) {
-    let [date, time] = dateTime.split(" ");
-    date = date.replace(/:/g, "-");
-    return /* @__PURE__ */ new Date(`${date} ${time}`);
-  }
-  static formatExifDate(dateTime) {
-    if (!dateTime) {
-      return dateTime;
-    }
-    const createdAt = new Date(dateTime).toISOString();
-    const [date, time] = createdAt.split("T")[0].replace(/\:/g, "-");
-    return `${date.replace(/\:/g, "/")} ${time}`;
-  }
-  static dateRange(minDate, maxDate, smallDevice) {
-    if (!minDate && !maxDate) {
-      return "unknown date";
-    }
-    const parsedMinDate = minDate instanceof Date ? minDate : new Date(parseFloat(minDate));
-    const parsedMaxDate = maxDate instanceof Date ? maxDate : new Date(parseFloat(maxDate));
-    if (smallDevice) {
-      const optsShort = {
-        day: "numeric",
-        month: "short"
-      };
-      const from = parsedMinDate.toLocaleDateString("en-IE", optsShort);
-      const to = parsedMaxDate.toLocaleDateString("en-IE", optsShort);
-      const minDay = parsedMinDate.toLocaleDateString("en-IE", {
-        day: "numeric"
-      });
-      const maxDay = parsedMaxDate.toLocaleDateString("en-IE", {
-        day: "numeric"
-      });
-      const minMonth = parsedMinDate.toLocaleDateString("en-IE", {
-        month: "short"
-      });
-      const maxMonth = parsedMaxDate.toLocaleDateString("en-IE", {
-        month: "short"
-      });
-      const minYear = parsedMinDate.getFullYear();
-      const maxYear = parsedMaxDate.getFullYear();
-      const monthsEqual = minMonth === maxMonth;
-      const yearsEqual = minYear === maxYear;
-      if (from === to) {
-        return `${from} ${minYear}`;
-      } else if (monthsEqual && yearsEqual) {
-        return `${minDay} - ${maxDay} ${maxMonth} ${minYear}`;
-      } else {
-        return `${from} ${minYear} - ${to} ${maxYear}`;
-      }
-    } else {
-      const opts = {
-        year: "numeric",
-        month: "short",
-        day: "numeric"
-      };
-      const from = parsedMinDate.toLocaleDateString("en-IE", opts);
-      const to = parsedMaxDate.toLocaleDateString("en-IE", opts);
-      if (from === to) {
-        return from;
-      }
-      return `${from} \u2014 ${to}`;
-    }
-  }
-};
-
-// ts/components/photo-album-metadata.ts
-function PhotoAlbumMetadata() {
-  function dateRange(minDate, maxDate) {
-    if (!minDate || !maxDate) {
-      return "unknown date";
-    }
-    const isSmall = Windows.isSmallerThan(500);
-    return Dates.dateRange(minDate, maxDate, isSmall);
-  }
-  return {
-    view(vnode) {
-      const { title, minDate, maxDate, count, countryLinks } = vnode.attrs;
-      const text = count === 1 ? "photo" : "photos";
-      return (0, import_mithril4.default)("div.photo-album-metadata", [
-        (0, import_mithril4.default)("p.photo-album-title", title),
-        (0, import_mithril4.default)("p.photo-album-date", [
-          (0, import_mithril4.default)("time", dateRange(minDate, maxDate))
-        ]),
-        (0, import_mithril4.default)("div.photo-metadata-inline", [
-          (0, import_mithril4.default)("p.photo-album-count", `${count} ${text}`),
-          (0, import_mithril4.default)("p.photo-album-countries", countryLinks)
-        ])
-      ]);
-    }
-  };
-}
-
-// ts/components/photo-album.ts
-var import_mithril7 = __toESM(require_mithril());
-
-// ts/components/photo.ts
-var import_mithril6 = __toESM(require_mithril());
-
-// ts/components/metadata-icon.ts
-var import_mithril5 = __toESM(require_mithril());
-
-// ts/components/photo.ts
-function loadImage(url, event) {
-  broadcast("photo_loaded", { url });
-  const $placeholder = event.target?.parentNode?.querySelector(
-    ".thumbnail-placeholder"
-  );
-  if (!$placeholder) {
-    return;
-  }
-  $placeholder.style.zIndex = "-1";
-}
-function Image() {
-  return {
-    view(vnode) {
-      const { thumbnailUrl, loading, onclick: onclick2 } = vnode.attrs;
-      return (0, import_mithril6.default)("img.thumbnail-image", {
-        onload: loadImage.bind(null, thumbnailUrl),
-        width: PHOTO_WIDTH,
-        height: PHOTO_HEIGHT,
-        src: thumbnailUrl,
-        loading,
-        onclick: onclick2
-      });
-    }
-  };
-}
-function PlaceholderImage() {
-  return {
-    view(vnode) {
-      const { thumbnailDataUrl } = vnode.attrs;
-      return (0, import_mithril6.default)("img.u-photo.thumbnail-image.thumbnail-placeholder", {
-        width: PHOTO_WIDTH,
-        height: PHOTO_HEIGHT,
-        src: thumbnailDataUrl
-      });
-    }
-  };
-}
-function ImagePair() {
-  return {
-    view(vnode) {
-      const {
-        imageUrl,
-        thumbnailUrl,
-        thumbnailDataUrl,
-        loading,
-        onclick: onclick2
-      } = vnode.attrs;
-      return (0, import_mithril6.default)("a", {
-        href: imageUrl,
-        target: "_blank",
-        rel: "external"
-      }, [
-        (0, import_mithril6.default)(PlaceholderImage, { thumbnailDataUrl }),
-        (0, import_mithril6.default)(Image, { thumbnailUrl, loading, onclick: onclick2 })
-      ]);
-    }
-  };
-}
-
-// ts/components/photo-album.ts
-function PhotoAlbum() {
-  return {
-    view(vnode) {
-      const {
-        imageUrl,
-        thumbnailUrl,
-        thumbnailDataUrl,
-        loading,
-        child,
-        minDate,
-        onclick: onclick2
-      } = vnode.attrs;
-      return (0, import_mithril7.default)("div.photo-album", { "data-min-date": minDate }, [
-        (0, import_mithril7.default)(ImagePair, {
-          imageUrl,
-          thumbnailUrl,
-          thumbnailDataUrl,
-          loading,
-          onclick: onclick2
-        }),
-        child
-      ]);
-    }
-  };
-}
-
-// ts/components/country-link.ts
-var import_mithril8 = __toESM(require_mithril());
-
-// ts/semantic/urn.ts
-function urnToUrl(urn) {
-  const { type, id } = asUrn(urn);
-  return `#/thing/${type}:${id}`;
-}
-
-// ts/components/country-link.ts
-function CountryLink() {
-  return {
-    view(vnode) {
-      const { flag, urn, name, mode } = vnode.attrs;
-      if (mode === "flag") {
-        return (0, import_mithril8.default)("a.country-link", { href: urnToUrl(urn) }, flag);
-      }
-      return (0, import_mithril8.default)("a.country-link", { href: urnToUrl(urn) }, `${flag} ${name}`);
-    }
-  };
-}
-
-// ts/pages/albums.ts
-function AlbumsList() {
-  function albumYear(album) {
-    return new Date(album.minDate).getFullYear();
-  }
-  function onAlbumClick(id, title, event) {
-    broadcast("click_album", { id, title });
-    block(event);
-  }
-  return {
-    view(vnode) {
-      const albumComponents = [];
-      let year = 2005;
-      const { albums } = vnode.attrs;
-      for (let idx = 0; idx < albums.length; idx++) {
-        const album = albums[idx];
-        const loading = Photos.loadingMode(idx);
-        if (year !== albumYear(album)) {
-          year = albumYear(album);
-          if (year !== (/* @__PURE__ */ new Date()).getFullYear()) {
-            const $h2 = (0, import_mithril9.default)("h2.album-year-header", year.toString());
-            albumComponents.push($h2);
-          }
-        }
-        const $countryLinks = album.countries.map((country) => {
-          return (0, import_mithril9.default)(CountryLink, {
-            ...country,
-            mode: "flag"
-          });
-        });
-        const $md = (0, import_mithril9.default)(PhotoAlbumMetadata, {
-          title: album.name,
-          minDate: album.minDate,
-          maxDate: album.maxDate,
-          count: album.photosCount,
-          countryLinks: $countryLinks
-        });
-        const $album = (0, import_mithril9.default)(PhotoAlbum, {
-          imageUrl: album.thumbnailUrl,
-          thumbnailUrl: album.thumbnailUrl,
-          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
-          loading,
-          minDate: album.minDate,
-          onclick: onAlbumClick.bind(null, album.id, album.name)
-        });
-        albumComponents.push($album);
-        albumComponents.push($md);
-      }
-      return (0, import_mithril9.default)("section", albumComponents);
-    }
-  };
-}
-function AlbumsPage() {
-  return {
-    oninit() {
-      Windows.setTitle("Albums - photos");
-    },
-    view(vnode) {
-      const $md = (0, import_mithril9.default)("section.album-metadata", [
-        (0, import_mithril9.default)("h1.albums-header", "Albums"),
-        (0, import_mithril9.default)(AlbumStats)
-      ]);
-      const $albumContainer = (0, import_mithril9.default)("section.album-container", [
-        //m(YearCursor),
-        (0, import_mithril9.default)(AlbumsList, { albums: vnode.attrs.albums })
-      ]);
-      return (0, import_mithril9.default)("div", [
-        $md,
-        $albumContainer
       ]);
     }
   };
@@ -7106,6 +6762,476 @@ var z = /* @__PURE__ */ Object.freeze({
   ZodError
 });
 
+// ts/services/photos.ts
+var coloursCache = /* @__PURE__ */ new Map();
+var Photos = class {
+  /*
+   * Determine whether a photo should be eagerly or lazily loaded
+   * depending on page position
+   */
+  static loadingMode(idx) {
+    const viewportWidth = globalThis.innerWidth;
+    const viewportHeight = globalThis.innerHeight;
+    const imageDimension = PHOTO_WIDTH;
+    const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
+    const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
+    return idx > maxImagesPerRow * maxRowsInFold + 1 ? "lazy" : "eager";
+  }
+  /*
+   * Convert a mosaic colour string into a bitmap data URL
+   */
+  static encodeBitmapDataURL(colours) {
+    if (coloursCache.has(colours)) {
+      return coloursCache.get(colours);
+    }
+    const coloursList = colours.split("#").map(
+      (colour) => `#${colour}`
+    );
+    const canvas = document.createElement("canvas");
+    canvas.width = 2;
+    canvas.height = 2;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      throw new Error("context missing");
+    }
+    ctx.fillStyle = coloursList[1];
+    ctx.fillRect(0, 0, 1, 1);
+    ctx.fillStyle = coloursList[2];
+    ctx.fillRect(1, 0, 1, 1);
+    ctx.fillStyle = coloursList[3];
+    ctx.fillRect(0, 1, 1, 1);
+    ctx.fillStyle = coloursList[4];
+    ctx.fillRect(1, 1, 1, 1);
+    coloursCache.set(colours, canvas.toDataURL("image/png"));
+    return coloursCache.get(colours);
+  }
+};
+var PhotoSchema = z.object({
+  albumId: z.string(),
+  country: z.union([z.string(), z.array(z.string())]).optional(),
+  createdAt: z.string(),
+  exposureTime: z.string().optional(),
+  fStop: z.string().optional(),
+  focalLength: z.string().optional(),
+  fullImage: z.string(),
+  height: z.string().optional(),
+  id: z.string(),
+  iso: z.string().optional(),
+  location: z.union([z.string(), z.array(z.string())]).optional(),
+  midImageLossyUrl: z.string(),
+  model: z.string().optional(),
+  mosaicColours: z.string(),
+  pngUrl: z.string(),
+  rating: z.string().optional(),
+  style: z.string().optional(),
+  thumbnailUrl: z.string(),
+  width: z.string().optional(),
+  description: z.string().optional()
+});
+function parsePhoto(tdb2, photo) {
+  console.log(photo);
+  const result = PhotoSchema.safeParse(photo);
+  if (!result.success) {
+    throw new Error(
+      `Invalid photo object: ${JSON.stringify(result.error.issues)}`
+    );
+  }
+  return {
+    albumId: result.data.albumId,
+    country: result.data.country,
+    createdAt: result.data.createdAt,
+    exposureTime: result.data.exposureTime,
+    fStop: result.data.fStop,
+    focalLength: result.data.focalLength,
+    fullImage: result.data.fullImage,
+    height: result.data.height,
+    id: result.data.id,
+    iso: result.data.iso,
+    location: result.data.location,
+    midImageLossyUrl: result.data.midImageLossyUrl,
+    model: result.data.model,
+    mosaicColours: result.data.mosaicColours,
+    pngUrl: result.data.pngUrl,
+    rating: result.data.rating,
+    style: result.data.style,
+    thumbnailUrl: result.data.thumbnailUrl,
+    width: result.data.width,
+    description: result.data.description
+  };
+}
+
+// ts/components/photo-album-metadata.ts
+var import_mithril4 = __toESM(require_mithril());
+
+// ts/services/window.ts
+var Windows = class {
+  static isSmallerThan(width = 500) {
+    return globalThis.matchMedia(`(max-width: ${width}px)`).matches;
+  }
+  static setTitle(title) {
+    document.title = title;
+  }
+};
+
+// ts/services/dates.ts
+var Dates = class {
+  static parse(dateTime) {
+    let [date, time] = dateTime.split(" ");
+    date = date.replace(/:/g, "-");
+    return /* @__PURE__ */ new Date(`${date} ${time}`);
+  }
+  static formatExifDate(dateTime) {
+    if (!dateTime) {
+      return dateTime;
+    }
+    const createdAt = new Date(dateTime).toISOString();
+    const [date, time] = createdAt.split("T")[0].replace(/\:/g, "-");
+    return `${date.replace(/\:/g, "/")} ${time}`;
+  }
+  static dateRange(minDate, maxDate, smallDevice) {
+    if (!minDate && !maxDate) {
+      return "unknown date";
+    }
+    const parsedMinDate = minDate instanceof Date ? minDate : new Date(parseFloat(minDate));
+    const parsedMaxDate = maxDate instanceof Date ? maxDate : new Date(parseFloat(maxDate));
+    if (smallDevice) {
+      const optsShort = {
+        day: "numeric",
+        month: "short"
+      };
+      const from = parsedMinDate.toLocaleDateString("en-IE", optsShort);
+      const to = parsedMaxDate.toLocaleDateString("en-IE", optsShort);
+      const minDay = parsedMinDate.toLocaleDateString("en-IE", {
+        day: "numeric"
+      });
+      const maxDay = parsedMaxDate.toLocaleDateString("en-IE", {
+        day: "numeric"
+      });
+      const minMonth = parsedMinDate.toLocaleDateString("en-IE", {
+        month: "short"
+      });
+      const maxMonth = parsedMaxDate.toLocaleDateString("en-IE", {
+        month: "short"
+      });
+      const minYear = parsedMinDate.getFullYear();
+      const maxYear = parsedMaxDate.getFullYear();
+      const monthsEqual = minMonth === maxMonth;
+      const yearsEqual = minYear === maxYear;
+      if (from === to) {
+        return `${from} ${minYear}`;
+      } else if (monthsEqual && yearsEqual) {
+        return `${minDay} - ${maxDay} ${maxMonth} ${minYear}`;
+      } else {
+        return `${from} ${minYear} - ${to} ${maxYear}`;
+      }
+    } else {
+      const opts = {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      };
+      const from = parsedMinDate.toLocaleDateString("en-IE", opts);
+      const to = parsedMaxDate.toLocaleDateString("en-IE", opts);
+      if (from === to) {
+        return from;
+      }
+      return `${from} \u2014 ${to}`;
+    }
+  }
+};
+
+// ts/components/photo-album-metadata.ts
+function PhotoAlbumMetadata() {
+  function dateRange(minDate, maxDate) {
+    if (!minDate || !maxDate) {
+      return "unknown date";
+    }
+    const isSmall = Windows.isSmallerThan(500);
+    return Dates.dateRange(minDate, maxDate, isSmall);
+  }
+  return {
+    view(vnode) {
+      const { title, minDate, maxDate, count, countryLinks } = vnode.attrs;
+      const text = count === 1 ? "photo" : "photos";
+      return (0, import_mithril4.default)("div.photo-album-metadata", [
+        (0, import_mithril4.default)("p.photo-album-title", title),
+        (0, import_mithril4.default)("p.photo-album-date", [
+          (0, import_mithril4.default)("time", dateRange(minDate, maxDate))
+        ]),
+        (0, import_mithril4.default)("div.photo-metadata-inline", [
+          (0, import_mithril4.default)("p.photo-album-count", `${count} ${text}`),
+          (0, import_mithril4.default)("p.photo-album-countries", countryLinks)
+        ])
+      ]);
+    }
+  };
+}
+
+// ts/components/photo-album.ts
+var import_mithril7 = __toESM(require_mithril());
+
+// ts/components/photo.ts
+var import_mithril6 = __toESM(require_mithril());
+
+// ts/components/metadata-icon.ts
+var import_mithril5 = __toESM(require_mithril());
+function InfoSVG() {
+  return (0, import_mithril5.default)("svg.photo-icon", {
+    height: 40,
+    width: 40,
+    preserveAspectRatio: "xMinYMin",
+    viewBox: "-2 -2 24 24",
+    xmlns: "http://www.w3.org/2000/svg"
+  }, [
+    (0, import_mithril5.default)("path", {
+      d: "m10 20c-5.523 0-10-4.477-10-10s4.477-10 10-10 10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-10a1 1 0 0 1 1 1v5a1 1 0 0 1 -2 0v-5a1 1 0 0 1 1-1zm0-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+    })
+  ]);
+}
+function MetadataIcon() {
+  function onclick(photoMetadata, _) {
+    broadcast("click_photo_metadata", { ...photoMetadata });
+  }
+  return {
+    view(vnode) {
+      const { id, imageUrl, thumbnailUrl, mosaicColours } = vnode.attrs;
+      const photoMetadata = {
+        id,
+        imageUrl,
+        thumbnailUrl,
+        thumbnailDataUrl: Photos.encodeBitmapDataURL(mosaicColours)
+      };
+      (0, import_mithril5.default)("div.photo-metadata-popover", {
+        onclick: onclick.bind(null, photoMetadata)
+      }, [
+        InfoSVG()
+      ]);
+    }
+  };
+}
+
+// ts/components/photo.ts
+function loadImage(url, event) {
+  broadcast("photo_loaded", { url });
+  const $placeholder = event.target?.parentNode?.querySelector(
+    ".thumbnail-placeholder"
+  );
+  if (!$placeholder) {
+    return;
+  }
+  $placeholder.style.zIndex = "-1";
+}
+function Image() {
+  return {
+    view(vnode) {
+      const { thumbnailUrl, loading, onclick } = vnode.attrs;
+      return (0, import_mithril6.default)("img.thumbnail-image", {
+        onload: loadImage.bind(null, thumbnailUrl),
+        width: PHOTO_WIDTH,
+        height: PHOTO_HEIGHT,
+        src: thumbnailUrl,
+        loading,
+        onclick
+      });
+    }
+  };
+}
+function PlaceholderImage() {
+  return {
+    view(vnode) {
+      const { thumbnailDataUrl } = vnode.attrs;
+      return (0, import_mithril6.default)("img.u-photo.thumbnail-image.thumbnail-placeholder", {
+        width: PHOTO_WIDTH,
+        height: PHOTO_HEIGHT,
+        src: thumbnailDataUrl
+      });
+    }
+  };
+}
+function ImagePair() {
+  return {
+    view(vnode) {
+      const {
+        imageUrl,
+        thumbnailUrl,
+        thumbnailDataUrl,
+        loading,
+        onclick
+      } = vnode.attrs;
+      return (0, import_mithril6.default)("a", {
+        href: imageUrl,
+        target: "_blank",
+        rel: "external"
+      }, [
+        (0, import_mithril6.default)(PlaceholderImage, { thumbnailDataUrl }),
+        (0, import_mithril6.default)(Image, { thumbnailUrl, loading, onclick })
+      ]);
+    }
+  };
+}
+function formatId(id) {
+  return id.startsWith("urn:") ? parseUrn(id).id : id;
+}
+function Photo() {
+  return {
+    view(vnode) {
+      const id = formatId(vnode.attrs.id);
+      const {
+        imageUrl,
+        thumbnailUrl,
+        mosaicColours,
+        loading
+      } = vnode.attrs;
+      const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
+      const $mdIcon = (0, import_mithril6.default)(MetadataIcon, {
+        id,
+        imageUrl,
+        thumbnailUrl,
+        mosaicColours
+      });
+      const $imagePage = (0, import_mithril6.default)(ImagePair, {
+        imageUrl,
+        thumbnailUrl,
+        thumbnailDataUrl,
+        loading
+      });
+      return (0, import_mithril6.default)("div.photo", {}, [
+        (0, import_mithril6.default)("a", {
+          href: `#/metadata/${id}`,
+          onclick: block
+          // TODO emit event
+        }, [
+          $mdIcon,
+          $imagePage
+        ])
+      ]);
+    }
+  };
+}
+
+// ts/components/photo-album.ts
+function PhotoAlbum() {
+  return {
+    view(vnode) {
+      const {
+        imageUrl,
+        thumbnailUrl,
+        thumbnailDataUrl,
+        loading,
+        child,
+        minDate,
+        onclick
+      } = vnode.attrs;
+      return (0, import_mithril7.default)("div.photo-album", { "data-min-date": minDate }, [
+        (0, import_mithril7.default)(ImagePair, {
+          imageUrl,
+          thumbnailUrl,
+          thumbnailDataUrl,
+          loading,
+          onclick
+        }),
+        child
+      ]);
+    }
+  };
+}
+
+// ts/components/country-link.ts
+var import_mithril8 = __toESM(require_mithril());
+
+// ts/semantic/urn.ts
+function urnToUrl(urn) {
+  const { type, id } = asUrn(urn);
+  return `#/thing/${type}:${id}`;
+}
+
+// ts/components/country-link.ts
+function CountryLink() {
+  return {
+    view(vnode) {
+      const { flag, urn, name, mode } = vnode.attrs;
+      if (mode === "flag") {
+        return (0, import_mithril8.default)("a.country-link", { href: urnToUrl(urn) }, flag);
+      }
+      return (0, import_mithril8.default)("a.country-link", { href: urnToUrl(urn) }, `${flag} ${name}`);
+    }
+  };
+}
+
+// ts/pages/albums.ts
+function AlbumsList() {
+  function albumYear(album) {
+    return new Date(album.minDate).getFullYear();
+  }
+  function onAlbumClick(id, title, event) {
+    broadcast("click_album", { id, title });
+    block(event);
+  }
+  return {
+    view(vnode) {
+      const albumComponents = [];
+      let year = 2005;
+      const { albums } = vnode.attrs;
+      for (let idx = 0; idx < albums.length; idx++) {
+        const album = albums[idx];
+        const loading = Photos.loadingMode(idx);
+        if (year !== albumYear(album)) {
+          year = albumYear(album);
+          if (year !== (/* @__PURE__ */ new Date()).getFullYear()) {
+            const $h2 = (0, import_mithril9.default)("h2.album-year-header", year.toString());
+            albumComponents.push($h2);
+          }
+        }
+        const $countryLinks = album.countries.map((country) => {
+          return (0, import_mithril9.default)(CountryLink, {
+            ...country,
+            mode: "flag"
+          });
+        });
+        const $md = (0, import_mithril9.default)(PhotoAlbumMetadata, {
+          title: album.name,
+          minDate: album.minDate,
+          maxDate: album.maxDate,
+          count: album.photosCount,
+          countryLinks: $countryLinks
+        });
+        const $album = (0, import_mithril9.default)(PhotoAlbum, {
+          imageUrl: album.thumbnailUrl,
+          thumbnailUrl: album.thumbnailUrl,
+          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
+          loading,
+          minDate: album.minDate,
+          onclick: onAlbumClick.bind(null, album.id, album.name)
+        });
+        albumComponents.push($album);
+        albumComponents.push($md);
+      }
+      return (0, import_mithril9.default)("section", albumComponents);
+    }
+  };
+}
+function AlbumsPage() {
+  return {
+    oninit() {
+      Windows.setTitle("Albums - photos");
+    },
+    view(vnode) {
+      const $md = (0, import_mithril9.default)("section.album-metadata", [
+        (0, import_mithril9.default)("h1.albums-header", "Albums"),
+        (0, import_mithril9.default)(AlbumStats)
+      ]);
+      const $albumContainer = (0, import_mithril9.default)("section.album-container", [
+        //m(YearCursor),
+        (0, import_mithril9.default)(AlbumsList, { albums: vnode.attrs.albums })
+      ]);
+      return (0, import_mithril9.default)("div", [
+        $md,
+        $albumContainer
+      ]);
+    }
+  };
+}
+
 // ts/numbers.ts
 function asInt(value) {
   if (typeof value === "number") {
@@ -7127,6 +7253,41 @@ function urnToFlag(tdb2, urn) {
     source: asUrn(urn),
     relation: KnownRelations.FLAG
   }).firstTarget();
+}
+
+// ts/services/videos.ts
+var VideoSchema = z.object({
+  id: z.string(),
+  albumId: z.string(),
+  description: z.string(),
+  posterUrl: z.string().url(),
+  videoUrl1080p: z.string().url(),
+  videoUrl480p: z.string().url(),
+  videoUrl720p: z.string().url(),
+  videoUrlUnscaled: z.string().url()
+});
+function parseVideo(tdb2, video) {
+  const result = VideoSchema.safeParse(video);
+  if (!result.success) {
+    throw new Error(
+      `Invalid video object: ${JSON.stringify(result.error.issues)}`
+    );
+  }
+  return {
+    id: result.data.id,
+    albumId: result.data.albumId,
+    description: result.data.description,
+    posterUrl: result.data.posterUrl,
+    videoUrl1080p: result.data.videoUrl1080p,
+    videoUrl480p: result.data.videoUrl480p,
+    videoUrl720p: result.data.videoUrl720p,
+    videoUrlUnscaled: result.data.videoUrlUnscaled
+  };
+}
+function readVideos(tdb2) {
+  return tdb2.search({
+    source: { type: "video" }
+  }).objects().map(parseVideo.bind(null, tdb2));
 }
 
 // ts/services/albums.ts
@@ -7178,10 +7339,40 @@ function readAlbums(tdb2) {
     return album1.minDate - album0.minDate;
   });
 }
-function readAlbumsById(tdb2, id) {
+function readAlbumById(tdb2, id) {
   return tdb2.search({
     source: asUrn(id)
   }).objects().map(parseAlbum.bind(null, tdb2))[0];
+}
+function readAlbumPhotosById(tdb2, id) {
+  const photoSources = Array.from(
+    tdb2.search({
+      source: { type: "photo" },
+      relation: "albumId",
+      target: { id: asUrn(id).id }
+    }).sources()
+  );
+  return photoSources.flatMap((source) => {
+    const info = tdb2.search({
+      source: asUrn(source)
+    }).firstObject(false);
+    return info ? [parsePhoto(tdb2, info)] : [];
+  });
+}
+function readAlbumVideosById(tdb2, id) {
+  const videoSources = Array.from(
+    tdb2.search({
+      source: { type: "video" },
+      relation: "albumId",
+      target: asUrn(id)
+    }).sources()
+  );
+  return videoSources.flatMap((source) => {
+    const info = tdb2.search({
+      source: asUrn(source)
+    }).firstObject(true);
+    return info ? [parseVideo(tdb2, info)] : [];
+  });
 }
 
 // ts/pages/about.ts
@@ -7290,41 +7481,6 @@ function VideosPage() {
   };
 }
 
-// ts/services/videos.ts
-var VideoSchema = z.object({
-  id: z.string(),
-  albumId: z.string(),
-  description: z.string(),
-  posterUrl: z.string().url(),
-  videoUrl1080p: z.string().url(),
-  videoUrl480p: z.string().url(),
-  videoUrl720p: z.string().url(),
-  videoUrlUnscaled: z.string().url()
-});
-function parseVideo(tdb2, video) {
-  const result = VideoSchema.safeParse(video);
-  if (!result.success) {
-    throw new Error(
-      `Invalid video object: ${JSON.stringify(result.error.issues)}`
-    );
-  }
-  return {
-    id: result.data.id,
-    albumId: result.data.albumId,
-    description: result.data.description,
-    posterUrl: result.data.posterUrl,
-    videoUrl1080p: result.data.videoUrl1080p,
-    videoUrl480p: result.data.videoUrl480p,
-    videoUrl720p: result.data.videoUrl720p,
-    videoUrlUnscaled: result.data.videoUrlUnscaled
-  };
-}
-function readVideos(tdb2) {
-  return tdb2.search({
-    source: { type: "video" }
-  }).objects().map(parseVideo.bind(null, tdb2));
-}
-
 // ts/pages/album.ts
 var import_mithril14 = __toESM(require_mithril());
 
@@ -7377,7 +7533,16 @@ function AlbumPage() {
       Windows.setTitle("Album - photos");
     },
     view(vnode) {
-      const { name, minDate, maxDate, photosCount, description, countries } = vnode.attrs;
+      const {
+        name,
+        minDate,
+        maxDate,
+        photosCount,
+        description,
+        countries,
+        photos,
+        videos
+      } = vnode.attrs;
       const dateRange = Dates.dateRange(
         minDate,
         maxDate,
@@ -7397,8 +7562,22 @@ function AlbumPage() {
         (0, import_mithril14.default)("photo-album-countries", $countryLinks),
         (0, import_mithril14.default)("photo-album-description", import_mithril14.default.trust(description))
       ]);
-      const $photosList = [];
-      const $videosList = [];
+      const $photosList = photos.map((photo, idx) => {
+        return (0, import_mithril14.default)(
+          Photo,
+          {
+            id: photo.id,
+            imageUrl: photo.fullImage,
+            thumbnailUrl: photo.thumbnailUrl,
+            mosaicColours: photo.mosaicColours,
+            summary: photo.description,
+            loading: Photos.loadingMode(idx)
+          }
+        );
+      });
+      const $videosList = videos.map((video) => {
+        return (0, import_mithril14.default)(Video, { ...video, preload: "auto" });
+      });
       return (0, import_mithril14.default)(
         "div",
         $albumMetadata,
@@ -7447,9 +7626,9 @@ function AlbumApp() {
       if (!state.currentAlbum) {
         return (0, import_mithril15.default)("p", "No album selected");
       }
-      const album = readAlbumsById(state.data, state.currentAlbum);
-      console.log(album);
-      console.log("xxxxxxxxxxxx");
+      const album = readAlbumById(state.data, state.currentAlbum);
+      const photos = readAlbumPhotosById(state.data, state.currentAlbum);
+      const videos = readAlbumVideosById(state.data, state.currentAlbum);
       if (!album) {
         return (0, import_mithril15.default)("p", "Album not found");
       }
@@ -7459,7 +7638,9 @@ function AlbumApp() {
           (0, import_mithril15.default)("div.app-container", [
             (0, import_mithril15.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril15.default)(AlbumPage, {
-              ...album
+              ...album,
+              photos,
+              videos
             })
           ])
         ])

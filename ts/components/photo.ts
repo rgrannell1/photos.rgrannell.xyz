@@ -4,6 +4,7 @@ import { parseUrn } from "@rgrannell1/tribbledb";
 import { block, broadcast } from "../events.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../constants.ts";
+import { Photos } from "../services/photos.ts";
 
 function loadImage(url: string, event: Event) {
   broadcast("photo_loaded", { url });
@@ -96,7 +97,7 @@ function formatId(id: string): string {
   return id.startsWith("urn:") ? parseUrn(id).id : id;
 }
 
-type PhotoAttrs = {
+export type PhotoAttrs = {
   id: string;
   imageUrl: string;
   thumbnailUrl: string;
@@ -109,16 +110,36 @@ export function Photo() {
   return {
     view(vnode: m.Vnode<PhotoAttrs>) {
       const id = formatId(vnode.attrs.id);
+      const {
+        imageUrl,
+        thumbnailUrl,
+        mosaicColours,
+        loading,
+      } = vnode.attrs;
 
-      return m("div.photo", { onclick }, [
-        m("a", [
-          {
-            href: `#/metadata/${id}`,
-            onclick: block,
-          },
-          m(MetadataIcon),
+      const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
+
+      const $mdIcon = m(MetadataIcon, {
+        id,
+        imageUrl,
+        thumbnailUrl,
+        mosaicColours,
+      });
+      const $imagePage = m(ImagePair, {
+        imageUrl,
+        thumbnailUrl,
+        thumbnailDataUrl,
+        loading,
+      });
+
+      return m("div.photo", {}, [
+        m("a", {
+          href: `#/metadata/${id}`,
+          onclick: block, // TODO emit event
+        }, [
+          $mdIcon,
+          $imagePage,
         ]),
-        m(ImagePair),
       ]);
     },
   };

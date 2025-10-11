@@ -39,3 +39,26 @@ export type Video = {
   videoUrl1080p: string;
   videoUrlUnscaled: string;
 };
+
+export type Photo = {
+  albumId: string;
+  country?: string | string[];
+  createdAt: string;
+  exposureTime?: string;
+  fStop?: string;
+  focalLength?: string;
+  fullImage: string;
+  height?: string;
+  id: string;
+  iso?: string;
+  location?: string | string[];
+  midImageLossyUrl: string;
+  model?: string;
+  mosaicColours: string;
+  pngUrl: string;
+  rating?: string;
+  style?: string;
+  thumbnailUrl: string;
+  width?: string;
+  description?: string;
+};

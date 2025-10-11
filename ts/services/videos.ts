@@ -13,7 +13,7 @@ const VideoSchema = z.object({
   videoUrlUnscaled: z.string().url(),
 });
 
-function parseVideo(tdb: TribbleDB, video: TripleObject): Video {
+export function parseVideo(tdb: TribbleDB, video: TripleObject): Video {
   const result = VideoSchema.safeParse(video);
   if (!result.success) {
     throw new Error(

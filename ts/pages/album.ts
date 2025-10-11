@@ -3,6 +3,11 @@ import { Windows } from "../services/window.ts";
 import { Dates } from "../services/dates.ts";
 import { AlbumShareButton } from "../components/album-share-button.ts";
 import { CountryLink } from "../components/country-link.ts";
+import { Video, VideoAttrs } from "../components/video.ts";
+
+import type { Photo as PhotoType, Video as VideoType } from "../types.ts";
+import { Photo, PhotoAttrs } from "../components/photo.ts";
+import { Photos } from "../services/photos.ts";
 
 type AlbumAttrs = {
   name: string;
@@ -15,6 +20,8 @@ type AlbumAttrs = {
     name: string;
     flag: string | undefined;
   }[];
+  videos: VideoType[];
+  photos: PhotoType[];
 };
 
 export function AlbumPage() {
@@ -23,8 +30,16 @@ export function AlbumPage() {
       Windows.setTitle("Album - photos");
     },
     view(vnode: m.Vnode<AlbumAttrs>) {
-      const { name, minDate, maxDate, photosCount, description, countries } =
-        vnode.attrs;
+      const {
+        name,
+        minDate,
+        maxDate,
+        photosCount,
+        description,
+        countries,
+        photos,
+        videos,
+      } = vnode.attrs;
 
       const dateRange = Dates.dateRange(
         minDate,
@@ -51,8 +66,22 @@ export function AlbumPage() {
         m("photo-album-description", m.trust(description)),
       ]);
 
-      const $photosList = []
-      const $videosList = []
+      const $photosList = photos.map((photo, idx) => {
+        return m(
+          Photo,
+          {
+            id: photo.id,
+            imageUrl: photo.fullImage,
+            thumbnailUrl: photo.thumbnailUrl,
+            mosaicColours: photo.mosaicColours,
+            summary: photo.description,
+            loading: Photos.loadingMode(idx),
+          } satisfies PhotoAttrs,
+        );
+      });
+      const $videosList = videos.map((video) => {
+        return m(Video, { ...video, preload: "auto" } satisfies VideoAttrs);
+      });
 
       return m(
         "div",

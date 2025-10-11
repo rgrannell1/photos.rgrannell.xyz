@@ -3,6 +3,9 @@ import { Album } from "../types.ts";
 import { z } from "zod";
 import { asInt } from "../numbers.ts";
 import { countryNameToUrn, urnToFlag } from "../semantic/names.ts";
+import type { Photo, Video } from "../types.ts";
+import { parseVideo } from "./videos.ts";
+import { parsePhoto } from "./photos.ts";
 
 const AlbumSchema = z.object({
   name: z.string(),
@@ -74,11 +77,44 @@ export function readAlbums(tdb: TribbleDB): Album[] {
     });
 }
 
-
-export function readAlbumsById(tdb: TribbleDB, id: string): Album | undefined {
+export function readAlbumById(tdb: TribbleDB, id: string): Album | undefined {
   return tdb.search({
     source: asUrn(id),
   }).objects()
     .map(parseAlbum.bind(null, tdb))[0];
+}
 
+export function readAlbumPhotosById(tdb: TribbleDB, id: string): Photo[] {
+  const photoSources = Array.from(
+    tdb.search({
+      source: { type: "photo" },
+      relation: "albumId",
+      target: { id: asUrn(id).id },
+    }).sources(),
+  );
+
+  return photoSources.flatMap((source: string) => {
+    const info = tdb.search({
+      source: asUrn(source),
+    }).firstObject(false);
+
+    return info ? [parsePhoto(tdb, info)] : [];
+  });
+}
+export function readAlbumVideosById(tdb: TribbleDB, id: string): Video[] {
+  const videoSources = Array.from(
+    tdb.search({
+      source: { type: "video" },
+      relation: "albumId",
+      target: asUrn(id),
+    }).sources(),
+  );
+
+  return videoSources.flatMap((source: string) => {
+    const info = tdb.search({
+      source: asUrn(source),
+    }).firstObject(true);
+
+    return info ? [parseVideo(tdb, info)] : [];
+  });
 }

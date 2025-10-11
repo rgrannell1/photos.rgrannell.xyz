@@ -8,7 +8,6 @@ export function urnToUrl(urn: string) {
   return `#/thing/${type}:${id}`;
 }
 
-
 export function urn(type: string, id: string) {
   return `urn:ró:${type}:${id}`;
 }
