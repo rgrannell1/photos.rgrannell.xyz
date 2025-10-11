@@ -24,7 +24,7 @@ export function PhotoAlbum() {
         onclick,
       } = vnode.attrs;
 
-      return m("div.photo-album", { 'data-min-date': minDate }, [
+      return m("div.photo-album", { "data-min-date": minDate }, [
         m(ImagePair, {
           imageUrl,
           thumbnailUrl,

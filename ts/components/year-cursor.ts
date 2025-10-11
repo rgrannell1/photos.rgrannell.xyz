@@ -18,7 +18,7 @@ function getDates(): DateEntry[] {
     const minDate = date.getAttribute("data-min-date");
     if (!minDate) {
       return [];
-    };
+    }
 
     return [{
       position: date.getBoundingClientRect(),
@@ -36,8 +36,8 @@ export function YearCursor() {
       const onScroll = () => {
         const yearCursor = document.getElementById("year-cursor");
         if (!yearCursor) {
-          return
-        };
+          return;
+        }
 
         // hide if near top of page
         if (globalThis.scrollY < SCROLL_HIDE_THRESHOLD) {
@@ -66,8 +66,8 @@ export function YearCursor() {
         }
 
         if (row.length === 0) {
-          return
-        };
+          return;
+        }
 
         const minimumDate = Math.min(...row.map((item) => item.minDate));
         const dateSummary = new Date(minimumDate);

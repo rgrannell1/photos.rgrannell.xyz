@@ -5,6 +5,8 @@ import { Sidebar } from "./components/sidebar.ts";
 import { AlbumsPage } from "./pages/albums.ts";
 import { readAlbums } from "./services/albums.ts";
 import { AboutPage } from "./pages/about.ts";
+import { VideosPage } from "./pages/videos.ts";
+import { readVideos } from "./services/videos.ts";
 
 const state = await loadState();
 type AppAttrs = {};
@@ -36,6 +38,24 @@ export function AboutApp(): m.Component<AppAttrs> {
           m("div.app-container", [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(AboutPage),
+          ]),
+        ]),
+      ]);
+    },
+  };
+}
+
+export function VideosApp(): m.Component<AppAttrs> {
+  return {
+    view() {
+      return m("body", [
+        m("div", [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(VideosPage, {
+              videos: readVideos(state.data),
+            }),
           ]),
         ]),
       ]);

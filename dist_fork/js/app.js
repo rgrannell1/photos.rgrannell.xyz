@@ -1052,9 +1052,9 @@ var require_build2 = __commonJS({
       var path = template.slice(0, pathEnd);
       var query = {};
       Object.assign(query, params);
-      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m13, key, variadic) {
+      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m15, key, variadic) {
         delete query[key];
-        if (params[key] == null) return m13;
+        if (params[key] == null) return m15;
         return variadic ? params[key] : encodeURIComponent(String(params[key]));
       });
       var newQueryIndex = resolved.indexOf("?");
@@ -1326,8 +1326,8 @@ var require_compileTemplate = __commonJS({
         // don't also accidentally escape `-` and make it harder to detect it to
         // ban it from template parameters.
         /:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
-        function(m13, key, extra) {
-          if (key == null) return "\\" + m13;
+        function(m15, key, extra) {
+          if (key == null) return "\\" + m15;
           keys.push({ k: key, r: extra === "..." });
           if (extra === "...") return "(.*)";
           if (extra === ".") return "([^/]+)\\.";
@@ -1381,7 +1381,7 @@ var require_router = __commonJS({
   "node_modules/mithril/api/router.js"(exports, module) {
     "use strict";
     var Vnode2 = require_vnode();
-    var m13 = require_hyperscript();
+    var m15 = require_hyperscript();
     var buildPathname = require_build2();
     var parsePathname = require_parse2();
     var compileTemplate = require_compileTemplate();
@@ -1524,7 +1524,7 @@ var require_router = __commonJS({
       route.prefix = "#!";
       route.Link = {
         view: function(vnode) {
-          var child = m13(
+          var child = m15(
             vnode.attrs.selector || "a",
             censor(vnode.attrs, ["options", "params", "selector", "onclick"]),
             vnode.children
@@ -1587,34 +1587,34 @@ var require_mithril = __commonJS({
     var request = require_request2();
     var mountRedraw = require_mount_redraw2();
     var domFor = require_domFor();
-    var m13 = function m14() {
+    var m15 = function m16() {
       return hyperscript.apply(this, arguments);
     };
-    m13.m = hyperscript;
-    m13.trust = hyperscript.trust;
-    m13.fragment = hyperscript.fragment;
-    m13.Fragment = "[";
-    m13.mount = mountRedraw.mount;
-    m13.route = require_route();
-    m13.render = require_render2();
-    m13.redraw = mountRedraw.redraw;
-    m13.request = request.request;
-    m13.parseQueryString = require_parse();
-    m13.buildQueryString = require_build();
-    m13.parsePathname = require_parse2();
-    m13.buildPathname = require_build2();
-    m13.vnode = require_vnode();
-    m13.censor = require_censor();
-    m13.domFor = domFor.domFor;
-    module.exports = m13;
+    m15.m = hyperscript;
+    m15.trust = hyperscript.trust;
+    m15.fragment = hyperscript.fragment;
+    m15.Fragment = "[";
+    m15.mount = mountRedraw.mount;
+    m15.route = require_route();
+    m15.render = require_render2();
+    m15.redraw = mountRedraw.redraw;
+    m15.request = request.request;
+    m15.parseQueryString = require_parse();
+    m15.buildQueryString = require_build();
+    m15.parsePathname = require_parse2();
+    m15.buildPathname = require_build2();
+    m15.vnode = require_vnode();
+    m15.censor = require_censor();
+    m15.domFor = domFor.domFor;
+    module.exports = m15;
   }
 });
 
 // ts/index.ts
-var import_mithril12 = __toESM(require_mithril());
+var import_mithril14 = __toESM(require_mithril());
 
 // ts/app.ts
-var import_mithril11 = __toESM(require_mithril());
+var import_mithril13 = __toESM(require_mithril());
 
 // ts/components/header.ts
 var import_mithril = __toESM(require_mithril());
@@ -3734,7 +3734,7 @@ var makeIssue = (params) => {
     path: fullPath
   };
   let errorMessage = "";
-  const maps = errorMaps.filter((m13) => !!m13).slice().reverse();
+  const maps = errorMaps.filter((m15) => !!m15).slice().reverse();
   for (const map of maps) {
     errorMessage = map(fullIssue, { data, defaultError: errorMessage }).message;
   }
@@ -7216,17 +7216,111 @@ function AboutPage() {
   };
 }
 
+// ts/pages/videos.ts
+var import_mithril12 = __toESM(require_mithril());
+
+// ts/components/video.ts
+var import_mithril11 = __toESM(require_mithril());
+function Video() {
+  return {
+    view(vnode) {
+      const {
+        preload,
+        posterUrl,
+        videoUrl1080p,
+        videoUrl480p,
+        videoUrl720p,
+        videoUrlUnscaled
+      } = vnode.attrs;
+      const $source = (0, import_mithril11.default)("source", {
+        src: videoUrl480p,
+        type: "video/mp4"
+      });
+      const $resolutionLinks = (0, import_mithril11.default)("ul", [
+        (0, import_mithril11.default)("a", { href: videoUrlUnscaled }, "[L]"),
+        (0, import_mithril11.default)("a", { href: videoUrl1080p }, "[M]"),
+        (0, import_mithril11.default)("a", { href: videoUrl720p }, "[S]"),
+        (0, import_mithril11.default)("a", { href: videoUrl480p }, "[XS]")
+      ]);
+      return (0, import_mithril11.default)("div", [
+        (0, import_mithril11.default)("video.thumbnail-video", {
+          controls: true,
+          preload,
+          poster: posterUrl
+        }, $source),
+        $resolutionLinks
+      ]);
+    }
+  };
+}
+
+// ts/pages/videos.ts
+function VideosPage() {
+  return {
+    view(vnode) {
+      const videos = vnode.attrs.videos;
+      const videoLengthText = videos.length === 1 ? "1 video" : `${videos.length} videos`;
+      const $videosList = videos.map((video) => {
+        return (0, import_mithril12.default)(Video, { ...video });
+      });
+      return (0, import_mithril12.default)(
+        "div",
+        (0, import_mithril12.default)("section.photos-metadata", [
+          (0, import_mithril12.default)("h1", "Videos"),
+          (0, import_mithril12.default)("p.photo-album-count", videoLengthText)
+        ]),
+        (0, import_mithril12.default)("section.photo-container", $videosList)
+      );
+    }
+  };
+}
+
+// ts/services/videos.ts
+var VideoSchema = z.object({
+  id: z.string(),
+  albumId: z.string(),
+  description: z.string(),
+  posterUrl: z.string().url(),
+  videoUrl1080p: z.string().url(),
+  videoUrl480p: z.string().url(),
+  videoUrl720p: z.string().url(),
+  videoUrlUnscaled: z.string().url()
+});
+function parseVideo(tdb2, video) {
+  const result = VideoSchema.safeParse(video);
+  if (!result.success) {
+    throw new Error(
+      `Invalid video object: ${JSON.stringify(result.error.issues)}`
+    );
+  }
+  return {
+    id: result.data.id,
+    albumId: result.data.albumId,
+    description: result.data.description,
+    posterUrl: result.data.posterUrl,
+    videoUrl1080p: result.data.videoUrl1080p,
+    videoUrl480p: result.data.videoUrl480p,
+    videoUrl720p: result.data.videoUrl720p,
+    videoUrlUnscaled: result.data.videoUrlUnscaled
+  };
+}
+function readVideos(tdb2) {
+  return tdb2.search({
+    source: { type: "video" }
+  }).objects().map(parseVideo.bind(null, tdb2));
+}
+
 // ts/app.ts
 var state = await loadState();
 function AlbumsApp() {
   return {
     view(vnode) {
-      return (0, import_mithril11.default)("body", [
-        (0, import_mithril11.default)("div", [
-          (0, import_mithril11.default)(Header, state),
-          (0, import_mithril11.default)("div.app-container", [
-            (0, import_mithril11.default)(Sidebar, { visible: state.sidebarVisible }),
-            (0, import_mithril11.default)(AlbumsPage, {
+      return (0, import_mithril13.default)("body", [
+        (0, import_mithril13.default)("div", [
+          (0, import_mithril13.default)(Header, state),
+          (0, import_mithril13.default)("div.app-container", [
+            (0, import_mithril13.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril13.default)(AlbumsPage, {
               albums: readAlbums(state.data)
             })
           ])
@@ -7238,12 +7332,29 @@ function AlbumsApp() {
 function AboutApp() {
   return {
     view() {
-      return (0, import_mithril11.default)("body", [
-        (0, import_mithril11.default)("div", [
-          (0, import_mithril11.default)(Header, state),
-          (0, import_mithril11.default)("div.app-container", [
-            (0, import_mithril11.default)(Sidebar, { visible: state.sidebarVisible }),
-            (0, import_mithril11.default)(AboutPage)
+      return (0, import_mithril13.default)("body", [
+        (0, import_mithril13.default)("div", [
+          (0, import_mithril13.default)(Header, state),
+          (0, import_mithril13.default)("div.app-container", [
+            (0, import_mithril13.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril13.default)(AboutPage)
+          ])
+        ])
+      ]);
+    }
+  };
+}
+function VideosApp() {
+  return {
+    view() {
+      return (0, import_mithril13.default)("body", [
+        (0, import_mithril13.default)("div", [
+          (0, import_mithril13.default)(Header, state),
+          (0, import_mithril13.default)("div.app-container", [
+            (0, import_mithril13.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril13.default)(VideosPage, {
+              videos: readVideos(state.data)
+            })
           ])
         ])
       ]);
@@ -7252,8 +7363,9 @@ function AboutApp() {
 }
 
 // ts/index.ts
-import_mithril12.default.route(document.body, "/albums", {
+import_mithril14.default.route(document.body, "/albums", {
   "/albums": AlbumsApp,
-  "/about": AboutApp
+  "/about": AboutApp,
+  "/videos": VideosApp
 });
 //# sourceMappingURL=app.js.map

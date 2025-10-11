@@ -1,7 +1,8 @@
 import m from "mithril";
-import { AboutApp, AlbumsApp } from "./app.ts";
+import { AboutApp, AlbumsApp, VideosApp } from "./app.ts";
 
-m.route(document.body, '/albums', {
-  '/albums': AlbumsApp,
-  '/about': AboutApp,
+m.route(document.body, "/albums", {
+  "/albums": AlbumsApp,
+  "/about": AboutApp,
+  "/videos": VideosApp,
 });

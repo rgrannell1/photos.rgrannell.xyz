@@ -3,28 +3,35 @@ import m from "mithril";
 type VideoAttrs = {
   preload: string;
   posterUrl: string;
-  urlUnscaled: string;
-  url1080p: string;
-  url720p: string;
-  url480p: string;
+  videoUrl1080p: string;
+  videoUrl480p: string;
+  videoUrl720p: string;
+  videoUrlUnscaled: string;
 };
 
 export function Video() {
   return {
     view(vnode: m.Vnode<VideoAttrs>) {
-      const { preload, posterUrl, urlUnscaled, url1080p, url720p, url480p } =
-        vnode.attrs;
+      const {
+        preload,
+        posterUrl,
+        videoUrl1080p,
+        videoUrl480p,
+        videoUrl720p,
+        videoUrlUnscaled,
+      } = vnode.attrs;
+
 
       const $source = m("source", {
-        src: url480p,
+        src: videoUrl480p,
         type: "video/mp4",
       });
 
       const $resolutionLinks = m("ul", [
-        m("a", { href: urlUnscaled }, "[L]"),
-        m("a", { href: url1080p }, "[M]"),
-        m("a", { href: url720p }, "[S]"),
-        m("a", { href: url480p }, "[XS]"),
+        m("a", { href: videoUrlUnscaled }, "[L]"),
+        m("a", { href: videoUrl1080p }, "[M]"),
+        m("a", { href: videoUrl720p }, "[S]"),
+        m("a", { href: videoUrl480p }, "[XS]"),
       ]);
 
       return m("div", [
@@ -33,8 +40,8 @@ export function Video() {
           preload,
           poster: posterUrl,
         }, $source),
-      ]),
-        $resolutionLinks;
+        $resolutionLinks
+      ]);
     },
   };
 }

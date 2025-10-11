@@ -26,3 +26,14 @@ export type Album = {
     flag: string | undefined;
   }[];
 };
+
+export type Video = {
+  id: string;
+  albumId: string;
+  description: string;
+  posterUrl: string;
+  videoUrl480p: string;
+  videoUrl720p: string;
+  videoUrl1080p: string;
+  videoUrlUnscaled: string;
+};
