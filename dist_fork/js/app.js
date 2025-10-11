@@ -7364,13 +7364,13 @@ function readAlbumVideosById(tdb2, id) {
     tdb2.search({
       source: { type: "video" },
       relation: "albumId",
-      target: asUrn(id)
+      target: { id: asUrn(id).id }
     }).sources()
   );
   return videoSources.flatMap((source) => {
     const info = tdb2.search({
       source: asUrn(source)
-    }).firstObject(true);
+    }).firstObject(false);
     return info ? [parseVideo(tdb2, info)] : [];
   });
 }
