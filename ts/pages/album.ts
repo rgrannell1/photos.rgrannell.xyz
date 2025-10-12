@@ -15,7 +15,9 @@ type AlbumAttrs = {
   minDate: number;
   maxDate: number;
   photosCount: number;
-  description: string;
+  videosCount: number;
+  description?: string;
+  summary: string;
   countries: {
     urn: string | undefined;
     name: string;
@@ -64,7 +66,7 @@ export function AlbumPage() {
         m("p.photo-album-date", m("time", dateRange)),
         m("p.photo-album-count", photoCountMessage),
         m("p.photo-album-countries", $countryLinks),
-        m("p.photo-album-description", m.trust(description)),
+        m("p.photo-album-description", m.trust(description ?? "")),
         m(AlbumShareButton, { url: location.href, name }),
         m(AlbumsButton)
       ]);

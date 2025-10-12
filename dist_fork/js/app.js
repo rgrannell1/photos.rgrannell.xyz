@@ -7304,13 +7304,15 @@ function readVideos(tdb2) {
 // ts/services/albums.ts
 var AlbumSchema = z.object({
   name: z.string(),
-  minDate: z.union([z.string(), z.number()]),
-  maxDate: z.union([z.string(), z.number()]),
+  minDate: z.string(),
+  maxDate: z.string(),
   thumbnailUrl: z.string(),
   mosaic: z.any(),
   id: z.string(),
-  photosCount: z.union([z.string(), z.number()]),
-  flags: z.any()
+  photosCount: z.string(),
+  videosCount: z.string(),
+  flags: z.any(),
+  description: z.string().optional()
 });
 function parseAlbum(tdb2, album) {
   const result = AlbumSchema.safeParse(album);
@@ -7340,6 +7342,8 @@ function parseAlbum(tdb2, album) {
     mosaicColours: result.data.mosaic,
     id: result.data.id,
     photosCount: asInt(result.data.photosCount),
+    videosCount: asInt(result.data.videosCount),
+    description: result.data.description ?? "",
     countries
   };
 }
@@ -7582,7 +7586,7 @@ function AlbumPage() {
         (0, import_mithril15.default)("p.photo-album-date", (0, import_mithril15.default)("time", dateRange)),
         (0, import_mithril15.default)("p.photo-album-count", photoCountMessage),
         (0, import_mithril15.default)("p.photo-album-countries", $countryLinks),
-        (0, import_mithril15.default)("p.photo-album-description", import_mithril15.default.trust(description)),
+        (0, import_mithril15.default)("p.photo-album-description", import_mithril15.default.trust(description ?? "")),
         (0, import_mithril15.default)(AlbumShareButton, { url: location.href, name }),
         (0, import_mithril15.default)(AlbumsButton)
       ]);
@@ -7658,6 +7662,7 @@ function AlbumApp() {
       if (!album) {
         return (0, import_mithril16.default)("p", "Album not found");
       }
+      console.log(album);
       return (0, import_mithril16.default)("body", [
         (0, import_mithril16.default)("div.photos-app", [
           (0, import_mithril16.default)(Header, state),

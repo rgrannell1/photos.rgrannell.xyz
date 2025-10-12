@@ -15,6 +15,7 @@ async function loadData() {
 
 /*
  * Load the application state from localStorage or return defaults.
+ *
  */
 export async function loadState(): Promise<State> {
   return {

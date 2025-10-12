@@ -23,6 +23,8 @@ export type Album = {
   mosaicColours: string;
   id: string;
   photosCount: number;
+  videosCount: number;
+  description: string;
   countries: {
     urn: string | undefined;
     name: string;

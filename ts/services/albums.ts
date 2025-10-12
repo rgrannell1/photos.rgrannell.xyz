@@ -9,13 +9,15 @@ import { parsePhoto } from "./photos.ts";
 
 const AlbumSchema = z.object({
   name: z.string(),
-  minDate: z.union([z.string(), z.number()]),
-  maxDate: z.union([z.string(), z.number()]),
+  minDate: z.string(),
+  maxDate: z.string(),
   thumbnailUrl: z.string(),
   mosaic: z.any(),
   id: z.string(),
-  photosCount: z.union([z.string(), z.number()]),
+  photosCount: z.string(),
+  videosCount: z.string(),
   flags: z.any(),
+  description: z.string().optional(),
 });
 
 /*
@@ -60,6 +62,8 @@ function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
     mosaicColours: result.data.mosaic,
     id: result.data.id,
     photosCount: asInt(result.data.photosCount),
+    videosCount: asInt(result.data.videosCount),
+    description: result.data.description ?? "",
     countries,
   };
 }
