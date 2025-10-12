@@ -70,11 +70,13 @@ function AlbumsList() {
           onclick: onAlbumClick.bind(null, album.id, album.name),
         });
 
-        albumComponents.push($album as m.Vnode<unknown, unknown>);
-        albumComponents.push($md as m.Vnode<unknown, unknown>);
+        albumComponents.push(m("div", [
+          $album,
+          $md
+        ]));
       }
 
-      return m("section", albumComponents);
+      return m("section.album-container", albumComponents);
     },
   };
 }
@@ -100,10 +102,8 @@ export function AlbumsPage() {
 
       return m("div", [
         $md,
-        m("section.album-container", [
           //m(YearCursor),
-          m(AlbumsList, { albums }),
-        ])
+          m(AlbumsList, { albums })
       ]);
     },
   };

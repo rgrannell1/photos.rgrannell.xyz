@@ -1634,6 +1634,12 @@ function listen(label, callback) {
 function block(event) {
   event?.preventDefault();
 }
+function navigate(route) {
+  return (event) => {
+    broadcast("navigate", { route });
+    block(event);
+  };
+}
 
 // ts/components/header.ts
 function BurgerMenu() {
@@ -7150,10 +7156,15 @@ function CountryLink() {
   return {
     view(vnode) {
       const { flag, urn, name, mode } = vnode.attrs;
-      if (mode === "flag") {
-        return (0, import_mithril8.default)("a.country-link", { href: urnToUrl(urn) }, flag);
+      if (!urn) {
+        return (0, import_mithril8.default)("p");
       }
-      return (0, import_mithril8.default)("a.country-link", { href: urnToUrl(urn) }, `${flag} ${name}`);
+      const parsed = asUrn(urn);
+      const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
+      if (mode === "flag") {
+        return (0, import_mithril8.default)("a.country-link", { href: urnToUrl(urn), onclick }, flag);
+      }
+      return (0, import_mithril8.default)("a.country-link", { href: urnToUrl(urn), onclick }, `${flag} ${name}`);
     }
   };
 }
@@ -7203,10 +7214,12 @@ function AlbumsList() {
           minDate: album.minDate,
           onclick: onAlbumClick.bind(null, album.id, album.name)
         });
-        albumComponents.push($album);
-        albumComponents.push($md);
+        albumComponents.push((0, import_mithril9.default)("div", [
+          $album,
+          $md
+        ]));
       }
-      return (0, import_mithril9.default)("section", albumComponents);
+      return (0, import_mithril9.default)("section.album-container", albumComponents);
     }
   };
 }
@@ -7223,10 +7236,8 @@ function AlbumsPage() {
       ]);
       return (0, import_mithril9.default)("div", [
         $md,
-        (0, import_mithril9.default)("section.album-container", [
-          //m(YearCursor),
-          (0, import_mithril9.default)(AlbumsList, { albums })
-        ])
+        //m(YearCursor),
+        (0, import_mithril9.default)(AlbumsList, { albums })
       ]);
     }
   };
@@ -7390,7 +7401,8 @@ function AboutPage() {
             "p",
             "I started taking photos back in 2012, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things ",
             (0, import_mithril10.default)("a", {
-              href: "https://photos.rgrannell.xyz/#/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50"
+              href: "https://photos.rgrannell.xyz/#/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50",
+              onclick: navigate(`/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50`)
             }, "I found beautiful in this world.")
           ),
           (0, import_mithril10.default)("h2", "Can I use the photos on this site?"),
@@ -7529,15 +7541,9 @@ function AlbumShareButton() {
 // ts/components/albums-button.ts
 var import_mithril14 = __toESM(require_mithril());
 function AlbumsButton() {
-  const onclick = (event) => {
-    broadcast("navigate", {
-      route: "/albums"
-    });
-    block(event);
-  };
   return {
     view() {
-      return (0, import_mithril14.default)("a", { href: "/albums", onclick }, "[albums]");
+      return (0, import_mithril14.default)("a", { href: "/albums", onclick: navigate(`/albums`) }, "[albums]");
     }
   };
 }

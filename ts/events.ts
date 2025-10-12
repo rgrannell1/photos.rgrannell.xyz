@@ -39,3 +39,10 @@ export function listen(
 export function block(event: Event) {
   event?.preventDefault();
 }
+
+export function navigate(route: string) {
+  return (event: Event) => {
+    broadcast("navigate", { route });
+    block(event);
+  }
+}
