@@ -22,7 +22,7 @@ type MetadataIconAttrs = {
 export function MetadataIcon() {
   return {
     view(vnode: m.Vnode<MetadataIconAttrs>) {
-      const { id  } = vnode.attrs;
+      const { id } = vnode.attrs;
 
       return m("div.photo-metadata-popover", {
         onclick: () => broadcast("navigate", { route: `/metadata/${id}` }),

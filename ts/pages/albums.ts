@@ -72,7 +72,7 @@ function AlbumsList() {
 
         albumComponents.push(m("div", [
           $album,
-          $md
+          $md,
         ]));
       }
 
@@ -91,7 +91,6 @@ export function AlbumsPage() {
       Windows.setTitle("Albums - photos");
     },
     view(vnode: m.Vnode<AlbumsPageState>) {
-
       const { albums } = vnode.attrs;
 
       const $md = m("section.album-metadata", [
@@ -99,11 +98,10 @@ export function AlbumsPage() {
         m(AlbumStats),
       ]);
 
-
       return m("div", [
         $md,
-          //m(YearCursor),
-          m(AlbumsList, { albums })
+        //m(YearCursor),
+        m(AlbumsList, { albums }),
       ]);
     },
   };

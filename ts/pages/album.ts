@@ -68,7 +68,7 @@ export function AlbumPage() {
         m("p.photo-album-countries", $countryLinks),
         m("p.photo-album-description", m.trust(description ?? "")),
         m(AlbumShareButton, { url: location.href, name }),
-        m(AlbumsButton)
+        m(AlbumsButton),
       ]);
 
       const $photosList = photos.map((photo, idx) => {

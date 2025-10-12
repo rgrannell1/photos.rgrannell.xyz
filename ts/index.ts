@@ -1,5 +1,13 @@
 import m from "mithril";
-import { AboutApp, AlbumApp, AlbumsApp, VideosApp, PhotosApp, ThingApp, MetadataApp } from "./app.ts";
+import {
+  AboutApp,
+  AlbumApp,
+  AlbumsApp,
+  MetadataApp,
+  PhotosApp,
+  ThingApp,
+  VideosApp,
+} from "./app.ts";
 
 m.route(document.body, "/albums", {
   "/albums": AlbumsApp,
@@ -8,5 +16,5 @@ m.route(document.body, "/albums", {
   "/photos": PhotosApp,
   "/album/:id": AlbumApp,
   "/thing/:id": ThingApp,
-  "/metadata/:id": MetadataApp
+  "/metadata/:id": MetadataApp,
 });

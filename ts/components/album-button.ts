@@ -1,10 +1,9 @@
-
 import m from "mithril";
 import { navigate } from "../events";
 
 type AlbumButtonAttrs = {
   id: string;
-}
+};
 
 /*
  * Links back to the last album page
@@ -16,8 +15,8 @@ export function AlbumButton() {
 
       return m("a", {
         href: `/album/${id}`,
-        onclick: () => navigate(`/album/${id}`)
+        onclick: () => navigate(`/album/${id}`),
       }, "[album]");
-    }
-  }
+    },
+  };
 }

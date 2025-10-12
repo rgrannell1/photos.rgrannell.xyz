@@ -127,12 +127,15 @@ export function Photo() {
         loading,
       });
 
-      return m("div", m("div.photo", {}, [
-        m("a", {onclick: block}, [
-          $mdIcon,
-          $imagePair,
+      return m(
+        "div",
+        m("div.photo", {}, [
+          m("a", { onclick: block }, [
+            $mdIcon,
+            $imagePair,
+          ]),
         ]),
-      ]));
+      );
     },
   };
 }

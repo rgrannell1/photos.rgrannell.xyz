@@ -16,7 +16,7 @@ export function AboutPage() {
             "I started taking photos back in 2012, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things ",
             m("a", {
               href: "https://photos.rgrannell.xyz/#/thing/rating:⭐⭐⭐⭐⭐",
-              onclick: navigate(`/thing/rating:⭐⭐⭐⭐⭐`)
+              onclick: navigate(`/thing/rating:⭐⭐⭐⭐⭐`),
             }, "I found beautiful in this world."),
           ),
           m("h2", "Can I use the photos on this site?"),

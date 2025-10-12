@@ -59,7 +59,7 @@ const PhotoSchema = z.object({
   albumId: z.string(),
   country: z.union([z.string(), z.array(z.string())]).optional(),
   createdAt: z.string(),
-  subject:  z.union([z.string(), z.array(z.string())]).optional(),
+  subject: z.union([z.string(), z.array(z.string())]).optional(),
   exposureTime: z.string().optional(),
   fStop: z.string().optional(),
   focalLength: z.string().optional(),
@@ -79,7 +79,10 @@ const PhotoSchema = z.object({
   description: z.string().optional(),
 });
 
-export function parsePhoto(tdb: TribbleDB, photo: TripleObject): Photo | undefined {
+export function parsePhoto(
+  tdb: TribbleDB,
+  photo: TripleObject,
+): Photo | undefined {
   const result = PhotoSchema.safeParse(photo);
   if (!result.success) {
     console.error(result.error.issues);
@@ -114,7 +117,7 @@ export function parsePhoto(tdb: TribbleDB, photo: TripleObject): Photo | undefin
 export function readPhotos(tdb: TribbleDB): Photo[] {
   return tdb.search({
     source: { type: "photo" },
-  }).objects().flatMap(obj => {
+  }).objects().flatMap((obj) => {
     const photo = parsePhoto(tdb, obj);
     return photo ? [photo] : [];
   });

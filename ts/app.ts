@@ -140,7 +140,6 @@ export function PhotosApp(): m.Component<AppAttrs> {
   };
 }
 
-
 export function ThingApp(): m.Component<AppAttrs> {
   return {
     view() {
@@ -148,15 +147,15 @@ export function ThingApp(): m.Component<AppAttrs> {
         m("div.photos-app", [
           m(Header, state),
           m("div.app-container", [
-            m(Sidebar, { visible: state.sidebarVisible })
-          ])
+            m(Sidebar, { visible: state.sidebarVisible }),
+          ]),
         ]),
-      ])
+      ]);
     },
   };
 }
 
-export function MetadataApp():  m.Component<AppAttrs> {
+export function MetadataApp(): m.Component<AppAttrs> {
   return {
     oninit() {
       const id = m.route.param("id");
@@ -166,22 +165,24 @@ export function MetadataApp():  m.Component<AppAttrs> {
       if (!state.currentPhoto) {
         return m("p", "No photo selected");
       }
+      const photo = readPhotoById(state.data, state.currentPhoto);
+
+      if (!photo) {
+        return m("p", "Photo not found");
+      }
 
       return m("body", [
         m("div.photos-app", [
           m(Header, state),
           m("div.app-container", [
             m(Sidebar, { visible: state.sidebarVisible }),
-            m(MetadataPage, {
-              photo: readPhotoById(state.data, state.currentPhoto)
-            })
-          ])
+            m(MetadataPage, { photo }),
+          ]),
         ]),
-      ])
+      ]);
     },
   };
 }
-
 
 listen("navigate", (event: Event) => {
   const { route } = (event as CustomEvent).detail;

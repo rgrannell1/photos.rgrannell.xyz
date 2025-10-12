@@ -17,6 +17,19 @@ export class Dates {
     return `${date.replace(/\:/g, "/")} ${time}`;
   }
 
+  static formatCreatedAt(dateTime: string): string {
+    const date = new Date(parseInt(dateTime));
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    };
+
+    return date.toLocaleDateString("en-US", options);
+  }
+
   static dateRange(
     minDate: Date | string,
     maxDate: Date | string,

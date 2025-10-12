@@ -13,7 +13,7 @@ export function broadcast(
   detail: CustomEvent["detail"],
 ) {
   console.info(`broadcasting event: ${label}`, detail);
-  if (label === 'navigate') console.trace();
+  if (label === "navigate") console.trace();
 
   document.dispatchEvent(
     new CustomEvent(label, {
@@ -45,5 +45,5 @@ export function navigate(route: string) {
   return (event: Event) => {
     broadcast("navigate", { route });
     block(event);
-  }
+  };
 }

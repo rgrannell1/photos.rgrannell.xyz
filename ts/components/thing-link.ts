@@ -1,4 +1,4 @@
-import {  asUrn } from "@rgrannell1/tribbledb";
+import { asUrn } from "@rgrannell1/tribbledb";
 import m from "mithril";
 import { navigate } from "../events.ts";
 
@@ -13,7 +13,7 @@ export function ThingLink() {
     view(vnode: m.Vnode<ThingLinkAttrs>) {
       const { urn, name, classes } = vnode.attrs;
 
-      const { type, id } = asUrn(urn)
+      const { type, id } = asUrn(urn);
 
       return m("a", {
         href: urn,

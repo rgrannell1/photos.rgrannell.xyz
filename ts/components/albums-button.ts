@@ -1,4 +1,3 @@
-
 import m from "mithril";
 import { navigate } from "../events";
 
@@ -8,7 +7,11 @@ import { navigate } from "../events";
 export function AlbumsButton() {
   return {
     view() {
-      return m("a", { href: "/albums", onclick: navigate(`/albums`) }, "[albums]");
-    }
-  }
+      return m(
+        "a",
+        { href: "/albums", onclick: navigate(`/albums`) },
+        "[albums]",
+      );
+    },
+  };
 }

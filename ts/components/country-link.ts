@@ -15,17 +15,21 @@ export function CountryLink() {
     view(vnode: m.Vnode<CountryLinkAttrs>) {
       const { flag, urn, name, mode } = vnode.attrs;
       if (!urn) {
-        return m('p')
+        return m("p");
       }
 
-      const parsed = asUrn(urn)
+      const parsed = asUrn(urn);
       const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
 
       if (mode === "flag") {
         return m("a.country-link", { href: urnToUrl(urn), onclick }, flag);
       }
 
-      return m("a.country-link", { href: urnToUrl(urn), onclick }, `${flag} ${name}`);
+      return m(
+        "a.country-link",
+        { href: urnToUrl(urn), onclick },
+        `${flag} ${name}`,
+      );
     },
   };
 }
