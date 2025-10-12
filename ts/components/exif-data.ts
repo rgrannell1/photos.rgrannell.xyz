@@ -72,9 +72,15 @@ function ShutterSpeed() {
   return {
     view(vnode: m.Vnode<ExifDataAttrs>) {
       const { photo } = vnode.attrs;
-
-      if (typeof photo.exposureTime === "number") {
-        return m("td", `1/${Math.round(1 / photo.exposureTime)}`);
+      if (typeof photo.exposureTime === "string") {
+        const parsed = parseFloat(photo.exposureTime);
+        if (isNaN(parsed)) {
+          return m("td", "Unknown");
+        } else if (parsed >= 1) {
+          return m("td", `${parsed}s`);
+        } else {
+          return m("td", `1/${Math.round(1 / parsed)}s`);
+        }
       }
 
       return m("td", "Unknown");

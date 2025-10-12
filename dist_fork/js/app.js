@@ -7756,8 +7756,15 @@ function ShutterSpeed() {
   return {
     view(vnode) {
       const { photo } = vnode.attrs;
-      if (typeof photo.exposureTime === "number") {
-        return (0, import_mithril19.default)("td", `1/${Math.round(1 / photo.exposureTime)}`);
+      if (typeof photo.exposureTime === "string") {
+        const parsed = parseFloat(photo.exposureTime);
+        if (isNaN(parsed)) {
+          return (0, import_mithril19.default)("td", "Unknown");
+        } else if (parsed >= 1) {
+          return (0, import_mithril19.default)("td", `${parsed}s`);
+        } else {
+          return (0, import_mithril19.default)("td", `1/${Math.round(1 / parsed)}s`);
+        }
       }
       return (0, import_mithril19.default)("td", "Unknown");
     }
