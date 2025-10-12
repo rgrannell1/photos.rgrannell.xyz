@@ -5,6 +5,7 @@ import { block, broadcast } from "../events.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../constants.ts";
 import { Photos } from "../services/photos.ts";
+import type { Photo as PhotoType } from "../types.ts";
 
 function loadImage(url: string, event: Event) {
   broadcast("photo_loaded", { url });
@@ -63,7 +64,7 @@ function PlaceholderImage() {
 }
 
 type ImagePairAttrs = {
-  imageUrl: string;
+  fullImage: string;
   thumbnailUrl: string;
   thumbnailDataUrl: string;
   loading: "eager" | "lazy";
@@ -74,7 +75,7 @@ export function ImagePair() {
   return {
     view(vnode: m.Vnode<ImagePairAttrs>) {
       const {
-        imageUrl,
+        fullImage,
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
@@ -82,7 +83,7 @@ export function ImagePair() {
       } = vnode.attrs;
 
       return m("a", {
-        href: imageUrl,
+        href: fullImage,
         target: "_blank",
         rel: "external",
       }, [
@@ -98,30 +99,27 @@ function formatId(id: string): string {
 }
 
 export type PhotoAttrs = {
-  id: string;
-  imageUrl: string;
-  thumbnailUrl: string;
-  mosaicColours: string;
-  summary?: string;
+
+  photo: PhotoType;
   loading: "eager" | "lazy";
 };
 
 export function Photo() {
   return {
     view(vnode: m.Vnode<PhotoAttrs>) {
-      const id = formatId(vnode.attrs.id);
+      const { photo, loading } = vnode.attrs;
+      const id = formatId(photo.id);
       const {
-        imageUrl,
+        fullImage,
         thumbnailUrl,
         mosaicColours,
-        loading,
-      } = vnode.attrs;
+      } = photo;
 
       const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
 
       const $mdIcon = m(MetadataIcon, { id });
       const $imagePair = m(ImagePair, {
-        imageUrl,
+        fullImage,
         thumbnailUrl,
         thumbnailDataUrl,
         loading,

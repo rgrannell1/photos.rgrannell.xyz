@@ -75,11 +75,7 @@ export function AlbumPage() {
         return m(
           Photo,
           {
-            id: photo.id,
-            imageUrl: photo.fullImage,
-            thumbnailUrl: photo.thumbnailUrl,
-            mosaicColours: photo.mosaicColours,
-            summary: photo.description,
+            photo,
             loading: Photos.loadingMode(idx),
           } satisfies PhotoAttrs,
         );

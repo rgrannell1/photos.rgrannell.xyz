@@ -7076,14 +7076,14 @@ function ImagePair() {
   return {
     view(vnode) {
       const {
-        imageUrl,
+        fullImage,
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
         onclick
       } = vnode.attrs;
       return (0, import_mithril6.default)("a", {
-        href: imageUrl,
+        href: fullImage,
         target: "_blank",
         rel: "external"
       }, [
@@ -7099,17 +7099,17 @@ function formatId(id) {
 function Photo() {
   return {
     view(vnode) {
-      const id = formatId(vnode.attrs.id);
+      const { photo, loading } = vnode.attrs;
+      const id = formatId(photo.id);
       const {
-        imageUrl,
+        fullImage,
         thumbnailUrl,
-        mosaicColours,
-        loading
-      } = vnode.attrs;
+        mosaicColours
+      } = photo;
       const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
       const $mdIcon = (0, import_mithril6.default)(MetadataIcon, { id });
       const $imagePair = (0, import_mithril6.default)(ImagePair, {
-        imageUrl,
+        fullImage,
         thumbnailUrl,
         thumbnailDataUrl,
         loading
@@ -7614,11 +7614,7 @@ function AlbumPage() {
         return (0, import_mithril15.default)(
           Photo,
           {
-            id: photo.id,
-            imageUrl: photo.fullImage,
-            thumbnailUrl: photo.thumbnailUrl,
-            mosaicColours: photo.mosaicColours,
-            summary: photo.description,
+            photo,
             loading: Photos.loadingMode(idx)
           }
         );
@@ -7647,7 +7643,7 @@ function PhotosList() {
         photos.map((photo, idx) => {
           const loading = Photos.loadingMode(idx);
           return (0, import_mithril16.default)(Photo, {
-            ...photo,
+            photo,
             loading
           });
         })
@@ -7845,7 +7841,7 @@ function MetadataPage() {
       return (0, import_mithril20.default)("section", [
         (0, import_mithril20.default)("h1", "Metadata"),
         (0, import_mithril20.default)(Photo, {
-          ...photo,
+          photo,
           loading: "eager"
         }),
         $links,

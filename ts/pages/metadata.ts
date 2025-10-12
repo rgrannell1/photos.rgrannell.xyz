@@ -25,7 +25,7 @@ export function MetadataPage() {
       return m("section", [
         m("h1", "Metadata"),
         m(Photo, {
-          ...photo,
+          photo,
           loading: "eager",
         }),
         $links,

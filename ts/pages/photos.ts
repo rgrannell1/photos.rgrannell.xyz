@@ -14,7 +14,7 @@ function PhotosList() {
           const loading = Photos.loadingMode(idx);
 
           return m(Photo, {
-            ...photo,
+            photo,
             loading,
           });
         }),
