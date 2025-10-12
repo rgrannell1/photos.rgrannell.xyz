@@ -7645,7 +7645,8 @@ function PhotosList() {
           const loading = Photos.loadingMode(idx);
           return (0, import_mithril16.default)(Photo, {
             photo,
-            loading
+            loading,
+            interactive: true
           });
         })
       );
@@ -7819,6 +7820,8 @@ function ExifData() {
       ]);
       return (0, import_mithril19.default)(
         "div",
+        (0, import_mithril19.default)("h3", "Photo Information"),
+        (0, import_mithril19.default)("table.metadata-table", []),
         (0, import_mithril19.default)("h3", "Exif Data"),
         (0, import_mithril19.default)("table.metadata-table", [
           $dateTime,

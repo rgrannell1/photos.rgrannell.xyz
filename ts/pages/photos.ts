@@ -8,6 +8,7 @@ function PhotosList() {
     view(vnode: m.Vnode<PhotosPageAttrs>) {
       const { photos } = vnode.attrs;
 
+      // TODO: load photos lazily
       return m(
         "section.photo-container",
         photos.map((photo, idx) => {
@@ -16,6 +17,7 @@ function PhotosList() {
           return m(Photo, {
             photo,
             loading,
+            interactive: true,
           });
         }),
       );
