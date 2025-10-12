@@ -41,7 +41,7 @@ function AlbumsList() {
           year = albumYear(album);
 
           if (year !== new Date().getFullYear()) {
-            const $h2 = m("h2.album-year-header", year.toString());
+            const $h2 = m("h2.album-year-heading", year.toString());
             albumComponents.push($h2);
           }
         }

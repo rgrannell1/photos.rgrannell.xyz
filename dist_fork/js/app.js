@@ -7189,7 +7189,7 @@ function AlbumsList() {
         if (year !== albumYear(album)) {
           year = albumYear(album);
           if (year !== (/* @__PURE__ */ new Date()).getFullYear()) {
-            const $h2 = (0, import_mithril9.default)("h2.album-year-header", year.toString());
+            const $h2 = (0, import_mithril9.default)("h2.album-year-heading", year.toString());
             albumComponents.push($h2);
           }
         }
@@ -7703,13 +7703,28 @@ function VideosApp() {
     }
   };
 }
+function ThingApp() {
+  return {
+    view() {
+      return (0, import_mithril16.default)("body", [
+        (0, import_mithril16.default)("div", [
+          (0, import_mithril16.default)(Header, state),
+          (0, import_mithril16.default)("div.app-container", [
+            (0, import_mithril16.default)(Sidebar, { visible: state.sidebarVisible })
+          ])
+        ])
+      ]);
+    }
+  };
+}
 
 // ts/index.ts
 import_mithril17.default.route(document.body, "/albums", {
   "/albums": AlbumsApp,
   "/about": AboutApp,
   "/videos": VideosApp,
-  "/album/:id": AlbumApp
+  "/album/:id": AlbumApp,
+  "/thing/:id": ThingApp
 });
 listen("navigate", (event) => {
   const { route } = event.detail;

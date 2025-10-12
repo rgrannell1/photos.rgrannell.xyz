@@ -1,5 +1,5 @@
 import m from "mithril";
-import { AboutApp, AlbumApp, AlbumsApp, VideosApp } from "./app.ts";
+import { AboutApp, AlbumApp, AlbumsApp, VideosApp, ThingApp } from "./app.ts";
 import { listen } from "./events.ts";
 
 m.route(document.body, "/albums", {
@@ -7,6 +7,7 @@ m.route(document.body, "/albums", {
   "/about": AboutApp,
   "/videos": VideosApp,
   "/album/:id": AlbumApp,
+  "/thing/:id": ThingApp
 });
 
 listen("navigate", (event: Event) => {

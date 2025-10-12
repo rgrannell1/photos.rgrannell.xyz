@@ -117,3 +117,18 @@ export function VideosApp(): m.Component<AppAttrs> {
     },
   };
 }
+
+export function ThingApp(): m.Component<AppAttrs> {
+  return {
+    view() {
+      return m("body", [
+        m("div", [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible })
+          ])
+        ]),
+      ])
+    },
+  };
+}
