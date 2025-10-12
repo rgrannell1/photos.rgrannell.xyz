@@ -10,9 +10,3 @@ m.route(document.body, "/albums", {
   "/thing/:id": ThingApp,
   "/metadata/:id": MetadataApp
 });
-
-listen("navigate", (event: Event) => {
-  const { route } = (event as CustomEvent).detail;
-
-  m.route.set(route);
-});

@@ -7,7 +7,6 @@ import {
   readAlbumById,
   readAlbumPhotosById,
   readAlbums,
-  readAlbumsById,
   readAlbumVideosById,
 } from "./services/albums.ts";
 import { AboutPage } from "./pages/about.ts";
@@ -16,7 +15,6 @@ import { readVideos } from "./services/videos.ts";
 import { listen } from "./events.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
-import { urn } from "./semantic/urn.ts";
 
 const state = await loadState();
 type AppAttrs = {};
@@ -150,3 +148,14 @@ export function MetadataApp():  m.Component<AppAttrs> {
     },
   };
 }
+
+
+listen("navigate", (event: Event) => {
+  const { route } = (event as CustomEvent).detail;
+
+  m.route.set(route);
+});
+
+listen("switch_theme", () => {
+  state.darkMode = !state.darkMode;
+});

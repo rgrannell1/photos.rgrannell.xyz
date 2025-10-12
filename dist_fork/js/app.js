@@ -7719,6 +7719,13 @@ function MetadataApp() {
     }
   };
 }
+listen("navigate", (event) => {
+  const { route } = event.detail;
+  import_mithril16.default.route.set(route);
+});
+listen("switch_theme", () => {
+  state.darkMode = !state.darkMode;
+});
 
 // ts/index.ts
 import_mithril17.default.route(document.body, "/albums", {
@@ -7728,9 +7735,5 @@ import_mithril17.default.route(document.body, "/albums", {
   "/album/:id": AlbumApp,
   "/thing/:id": ThingApp,
   "/metadata/:id": MetadataApp
-});
-listen("navigate", (event) => {
-  const { route } = event.detail;
-  import_mithril17.default.route.set(route);
 });
 //# sourceMappingURL=app.js.map
