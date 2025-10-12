@@ -13,6 +13,7 @@ export type State = {
   darkMode: boolean;
   sidebarVisible: boolean;
   currentAlbum: string | undefined;
+  currentPhoto: string | undefined;
 };
 
 export type Album = {

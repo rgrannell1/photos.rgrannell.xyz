@@ -51,7 +51,7 @@ export class Photos {
   }
 }
 
-import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { Photo } from "../types.ts";
 import { z } from "zod";
 
@@ -118,4 +118,18 @@ export function readPhotos(tdb: TribbleDB): Photo[] {
     const photo = parsePhoto(tdb, obj);
     return photo ? [photo] : [];
   });
+}
+
+export function readPhotoById(tdb: TribbleDB, id: string): Photo | undefined {
+  const parsed = asUrn(id);
+
+  const result = tdb.search({
+    source: { type: "photo", id: parsed.id },
+  }).objects();
+
+  if (result.length === 0) {
+    return undefined;
+  }
+
+  return parsePhoto(tdb, result[0]);
 }

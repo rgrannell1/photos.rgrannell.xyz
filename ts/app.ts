@@ -16,7 +16,8 @@ import { listen } from "./events.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
-import { readPhotos } from "./services/photos.ts";
+import { MetadataPage } from "./pages/metadata.ts";
+import { readPhotoById, readPhotos } from "./services/photos.ts";
 
 const state = await loadState();
 type AppAttrs = {};
@@ -157,12 +158,23 @@ export function ThingApp(): m.Component<AppAttrs> {
 
 export function MetadataApp():  m.Component<AppAttrs> {
   return {
+    oninit() {
+      const id = m.route.param("id");
+      state.currentPhoto = `urn:ró:photo:${id}`;
+    },
     view() {
+      if (!state.currentPhoto) {
+        return m("p", "No photo selected");
+      }
+
       return m("body", [
         m("div.photos-app", [
           m(Header, state),
           m("div.app-container", [
-            m(Sidebar, { visible: state.sidebarVisible })
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(MetadataPage, {
+              photo: readPhotoById(state.data, state.currentPhoto)
+            })
           ])
         ]),
       ])
