@@ -132,7 +132,7 @@ export function Photo() {
         loading,
       });
 
-      return m("div.photo", {}, [
+      return m("div", m("div.photo", {}, [
         m("a", {
           href: `#/metadata/${id}`,
           onclick: block, // TODO emit event
@@ -140,7 +140,7 @@ export function Photo() {
           $mdIcon,
           $imagePage,
         ]),
-      ]);
+      ]));
     },
   };
 }

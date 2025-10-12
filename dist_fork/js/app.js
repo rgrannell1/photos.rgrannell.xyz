@@ -7101,7 +7101,7 @@ function Photo() {
         thumbnailDataUrl,
         loading
       });
-      return (0, import_mithril6.default)("div.photo", {}, [
+      return (0, import_mithril6.default)("div", (0, import_mithril6.default)("div.photo", {}, [
         (0, import_mithril6.default)("a", {
           href: `#/metadata/${id}`,
           onclick: block
@@ -7110,7 +7110,7 @@ function Photo() {
           $mdIcon,
           $imagePage
         ])
-      ]);
+      ]));
     }
   };
 }
@@ -7662,7 +7662,6 @@ function AlbumApp() {
       if (!album) {
         return (0, import_mithril16.default)("p", "Album not found");
       }
-      console.log(album);
       return (0, import_mithril16.default)("body", [
         (0, import_mithril16.default)("div.photos-app", [
           (0, import_mithril16.default)(Header, state),
