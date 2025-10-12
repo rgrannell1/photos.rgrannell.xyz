@@ -140,8 +140,6 @@ button:disabled {
   word-spacing: 0.27ex;
   background-color: var(--background-color);
   padding-bottom: 100px;
-  width: max(180px, min(60vw, var(--photo-width)));
-  max-width: max(180px, 60vw);
 }
 
 /*

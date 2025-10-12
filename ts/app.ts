@@ -31,15 +31,14 @@ export function AlbumsApp(): m.Component<AppAttrs> {
         const pageTitle = `Album - ${title}`;
 
         state.currentAlbum = id;
-        m.route.set(`/album/${parsed.id}`, {
-          id,
+        m.route.set(`/album/${parsed.id}`, undefined, {
           title: pageTitle,
         });
       });
     },
     view(vnode) {
       return m("body", [
-        m("div", [
+        m("div.photos-app", [
           m(Header, state),
           m("div.app-container", [
             m(Sidebar, { visible: state.sidebarVisible }),
@@ -55,6 +54,10 @@ export function AlbumsApp(): m.Component<AppAttrs> {
 
 export function AlbumApp(): m.Component<AppAttrs> {
   return {
+    oninit() {
+      const id = m.route.param("id");
+      state.currentAlbum = `urn:ró:album:${id}`;
+    },
     view() {
       if (!state.currentAlbum) {
         return m("p", "No album selected");
@@ -68,7 +71,7 @@ export function AlbumApp(): m.Component<AppAttrs> {
       }
 
       return m("body", [
-        m("div", [
+        m("div.photos-app", [
           m(Header, state),
           m("div.app-container", [
             m(Sidebar, { visible: state.sidebarVisible }),
@@ -88,7 +91,7 @@ export function AboutApp(): m.Component<AppAttrs> {
   return {
     view() {
       return m("body", [
-        m("div", [
+        m("div.photos-app", [
           m(Header, state),
           m("div.app-container", [
             m(Sidebar, { visible: state.sidebarVisible }),
@@ -104,7 +107,7 @@ export function VideosApp(): m.Component<AppAttrs> {
   return {
     view() {
       return m("body", [
-        m("div", [
+        m("div.photos-app", [
           m(Header, state),
           m("div.app-container", [
             m(Sidebar, { visible: state.sidebarVisible }),
@@ -122,7 +125,7 @@ export function ThingApp(): m.Component<AppAttrs> {
   return {
     view() {
       return m("body", [
-        m("div", [
+        m("div.photos-app", [
           m(Header, state),
           m("div.app-container", [
             m(Sidebar, { visible: state.sidebarVisible })

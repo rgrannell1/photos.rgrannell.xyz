@@ -6816,6 +6816,7 @@ var PhotoSchema = z.object({
   albumId: z.string(),
   country: z.union([z.string(), z.array(z.string())]).optional(),
   createdAt: z.string(),
+  subject: z.string().optional(),
   exposureTime: z.string().optional(),
   fStop: z.string().optional(),
   focalLength: z.string().optional(),
@@ -6835,7 +6836,6 @@ var PhotoSchema = z.object({
   description: z.string().optional()
 });
 function parsePhoto(tdb2, photo) {
-  console.log(photo);
   const result = PhotoSchema.safeParse(photo);
   if (!result.success) {
     throw new Error(
@@ -7622,15 +7622,14 @@ function AlbumsApp() {
         const parsed = asUrn(id);
         const pageTitle = `Album - ${title}`;
         state.currentAlbum = id;
-        import_mithril16.default.route.set(`/album/${parsed.id}`, {
-          id,
+        import_mithril16.default.route.set(`/album/${parsed.id}`, void 0, {
           title: pageTitle
         });
       });
     },
     view(vnode) {
       return (0, import_mithril16.default)("body", [
-        (0, import_mithril16.default)("div", [
+        (0, import_mithril16.default)("div.photos-app", [
           (0, import_mithril16.default)(Header, state),
           (0, import_mithril16.default)("div.app-container", [
             (0, import_mithril16.default)(Sidebar, { visible: state.sidebarVisible }),
@@ -7645,6 +7644,10 @@ function AlbumsApp() {
 }
 function AlbumApp() {
   return {
+    oninit() {
+      const id = import_mithril16.default.route.param("id");
+      state.currentAlbum = `urn:r\xF3:album:${id}`;
+    },
     view() {
       if (!state.currentAlbum) {
         return (0, import_mithril16.default)("p", "No album selected");
@@ -7656,7 +7659,7 @@ function AlbumApp() {
         return (0, import_mithril16.default)("p", "Album not found");
       }
       return (0, import_mithril16.default)("body", [
-        (0, import_mithril16.default)("div", [
+        (0, import_mithril16.default)("div.photos-app", [
           (0, import_mithril16.default)(Header, state),
           (0, import_mithril16.default)("div.app-container", [
             (0, import_mithril16.default)(Sidebar, { visible: state.sidebarVisible }),
@@ -7675,7 +7678,7 @@ function AboutApp() {
   return {
     view() {
       return (0, import_mithril16.default)("body", [
-        (0, import_mithril16.default)("div", [
+        (0, import_mithril16.default)("div.photos-app", [
           (0, import_mithril16.default)(Header, state),
           (0, import_mithril16.default)("div.app-container", [
             (0, import_mithril16.default)(Sidebar, { visible: state.sidebarVisible }),
@@ -7690,7 +7693,7 @@ function VideosApp() {
   return {
     view() {
       return (0, import_mithril16.default)("body", [
-        (0, import_mithril16.default)("div", [
+        (0, import_mithril16.default)("div.photos-app", [
           (0, import_mithril16.default)(Header, state),
           (0, import_mithril16.default)("div.app-container", [
             (0, import_mithril16.default)(Sidebar, { visible: state.sidebarVisible }),
@@ -7707,7 +7710,7 @@ function ThingApp() {
   return {
     view() {
       return (0, import_mithril16.default)("body", [
-        (0, import_mithril16.default)("div", [
+        (0, import_mithril16.default)("div.photos-app", [
           (0, import_mithril16.default)(Header, state),
           (0, import_mithril16.default)("div.app-container", [
             (0, import_mithril16.default)(Sidebar, { visible: state.sidebarVisible })
