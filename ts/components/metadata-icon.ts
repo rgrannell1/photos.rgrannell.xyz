@@ -25,7 +25,7 @@ export function MetadataIcon() {
       const { id } = vnode.attrs;
 
       return m("div.photo-metadata-popover", {
-        onclick: () => broadcast("navigate", { route: `/metadata/${id}` }),
+        onclick: () => broadcast("navigate", { route: `/photo/${id}` }),
       }, InfoSVG());
     },
   };

@@ -16,7 +16,7 @@ import { listen } from "./events.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
-import { MetadataPage } from "./pages/metadata.ts";
+import { PhotoPage } from "./pages/photo.ts";
 import { readPhotoById, readPhotos } from "./services/photos.ts";
 
 const state = await loadState();
@@ -155,7 +155,7 @@ export function ThingApp(): m.Component<AppAttrs> {
   };
 }
 
-export function MetadataApp(): m.Component<AppAttrs> {
+export function PhotoApp(): m.Component<AppAttrs> {
   return {
     oninit() {
       const id = m.route.param("id");
@@ -176,7 +176,7 @@ export function MetadataApp(): m.Component<AppAttrs> {
           m(Header, state),
           m("div.app-container", [
             m(Sidebar, { visible: state.sidebarVisible }),
-            m(MetadataPage, { photo }),
+            m(PhotoPage, { photo }),
           ]),
         ]),
       ]);

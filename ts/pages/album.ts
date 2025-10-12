@@ -77,6 +77,7 @@ export function AlbumPage() {
           {
             photo,
             loading: Photos.loadingMode(idx),
+            interactive: true,
           } satisfies PhotoAttrs,
         );
       });

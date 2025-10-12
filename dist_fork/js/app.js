@@ -7028,7 +7028,7 @@ function MetadataIcon() {
     view(vnode) {
       const { id } = vnode.attrs;
       return (0, import_mithril5.default)("div.photo-metadata-popover", {
-        onclick: () => broadcast("navigate", { route: `/metadata/${id}` })
+        onclick: () => broadcast("navigate", { route: `/photo/${id}` })
       }, InfoSVG());
     }
   };
@@ -7099,7 +7099,7 @@ function formatId(id) {
 function Photo() {
   return {
     view(vnode) {
-      const { photo, loading } = vnode.attrs;
+      const { photo, loading, interactive } = vnode.attrs;
       const id = formatId(photo.id);
       const {
         fullImage,
@@ -7117,10 +7117,10 @@ function Photo() {
       return (0, import_mithril6.default)(
         "div",
         (0, import_mithril6.default)("div.photo", {}, [
-          (0, import_mithril6.default)("a", { onclick: block }, [
+          (0, import_mithril6.default)("a", { onclick: block }, interactive ? [
             $mdIcon,
             $imagePair
-          ])
+          ] : [$imagePair])
         ])
       );
     }
@@ -7615,7 +7615,8 @@ function AlbumPage() {
           Photo,
           {
             photo,
-            loading: Photos.loadingMode(idx)
+            loading: Photos.loadingMode(idx),
+            interactive: true
           }
         );
       });
@@ -7665,7 +7666,7 @@ function PhotosPage() {
   };
 }
 
-// ts/pages/metadata.ts
+// ts/pages/photo.ts
 var import_mithril20 = __toESM(require_mithril());
 
 // ts/components/album-button.ts
@@ -7826,8 +7827,8 @@ function ExifData() {
   };
 }
 
-// ts/pages/metadata.ts
-function MetadataPage() {
+// ts/pages/photo.ts
+function PhotoPage() {
   return {
     view(vnode) {
       const { photo } = vnode.attrs;
@@ -7839,10 +7840,11 @@ function MetadataPage() {
       ]);
       const $exif = (0, import_mithril20.default)(ExifData, { photo });
       return (0, import_mithril20.default)("section", [
-        (0, import_mithril20.default)("h1", "Metadata"),
+        (0, import_mithril20.default)("h1", "Photo"),
         (0, import_mithril20.default)(Photo, {
           photo,
-          loading: "eager"
+          loading: "eager",
+          interactive: false
         }),
         $links,
         $exif
@@ -7976,7 +7978,7 @@ function ThingApp() {
     }
   };
 }
-function MetadataApp() {
+function PhotoApp() {
   return {
     oninit() {
       const id = import_mithril21.default.route.param("id");
@@ -7995,7 +7997,7 @@ function MetadataApp() {
           (0, import_mithril21.default)(Header, state),
           (0, import_mithril21.default)("div.app-container", [
             (0, import_mithril21.default)(Sidebar, { visible: state.sidebarVisible }),
-            (0, import_mithril21.default)(MetadataPage, { photo })
+            (0, import_mithril21.default)(PhotoPage, { photo })
           ])
         ])
       ]);
@@ -8018,6 +8020,6 @@ import_mithril22.default.route(document.body, "/albums", {
   "/photos": PhotosApp,
   "/album/:id": AlbumApp,
   "/thing/:id": ThingApp,
-  "/metadata/:id": MetadataApp
+  "/photo/:id": PhotoApp
 });
 //# sourceMappingURL=app.js.map

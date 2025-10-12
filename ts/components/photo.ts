@@ -99,15 +99,15 @@ function formatId(id: string): string {
 }
 
 export type PhotoAttrs = {
-
   photo: PhotoType;
   loading: "eager" | "lazy";
+  interactive?: boolean;
 };
 
 export function Photo() {
   return {
     view(vnode: m.Vnode<PhotoAttrs>) {
-      const { photo, loading } = vnode.attrs;
+      const { photo, loading, interactive } = vnode.attrs;
       const id = formatId(photo.id);
       const {
         fullImage,
@@ -128,10 +128,10 @@ export function Photo() {
       return m(
         "div",
         m("div.photo", {}, [
-          m("a", { onclick: block }, [
+          m("a", { onclick: block }, interactive ? [
             $mdIcon,
             $imagePair,
-          ]),
+          ] : [ $imagePair ]),
         ]),
       );
     },

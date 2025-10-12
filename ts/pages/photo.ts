@@ -4,13 +4,13 @@ import type { Photo as PhotoType } from "../types.ts";
 import { AlbumButton } from "../components/album-button.ts";
 import { ExifData } from "../components/exif-data.ts";
 
-type MetadataPage = {
+type PhotoPage = {
   photo: PhotoType;
 };
 
-export function MetadataPage() {
+export function PhotoPage() {
   return {
-    view(vnode: m.Vnode<MetadataPage>) {
+    view(vnode: m.Vnode<PhotoPage>) {
       const { photo } = vnode.attrs;
 
       const $links = m("p", [
@@ -23,10 +23,11 @@ export function MetadataPage() {
       const $exif = m(ExifData, { photo });
 
       return m("section", [
-        m("h1", "Metadata"),
+        m("h1", "Photo"),
         m(Photo, {
           photo,
           loading: "eager",
+          interactive: false
         }),
         $links,
         $exif,

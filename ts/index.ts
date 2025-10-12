@@ -3,7 +3,7 @@ import {
   AboutApp,
   AlbumApp,
   AlbumsApp,
-  MetadataApp,
+  PhotoApp,
   PhotosApp,
   ThingApp,
   VideosApp,
@@ -16,5 +16,5 @@ m.route(document.body, "/albums", {
   "/photos": PhotosApp,
   "/album/:id": AlbumApp,
   "/thing/:id": ThingApp,
-  "/metadata/:id": MetadataApp,
+  "/photo/:id": PhotoApp,
 });
