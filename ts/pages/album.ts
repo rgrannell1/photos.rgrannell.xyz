@@ -89,7 +89,6 @@ export function AlbumPage() {
       return m(
         "div",
         $albumMetadata,
-
         m("section.photo-container", $photosList),
         m("section.video-container", $videosList),
       );

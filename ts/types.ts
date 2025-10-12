@@ -5,6 +5,7 @@ export type ApplicationEvents =
   | "switch_theme"
   | "click_photo_metadata"
   | "photo_loaded"
+  | "navigate"
   | "click_album";
 
 export type State = {

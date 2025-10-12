@@ -89,19 +89,21 @@ export function AlbumsPage() {
       Windows.setTitle("Albums - photos");
     },
     view(vnode: m.Vnode<AlbumsPageState>) {
+
+      const { albums } = vnode.attrs;
+
       const $md = m("section.album-metadata", [
         m("h1.albums-header", "Albums"),
         m(AlbumStats),
       ]);
 
-      const $albumContainer = m("section.album-container", [
-        //m(YearCursor),
-        m(AlbumsList, { albums: vnode.attrs.albums }),
-      ]);
 
       return m("div", [
         $md,
-        $albumContainer,
+        m("section.album-container", [
+          //m(YearCursor),
+          m(AlbumsList, { albums }),
+        ])
       ]);
     },
   };

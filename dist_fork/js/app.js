@@ -7216,17 +7216,17 @@ function AlbumsPage() {
       Windows.setTitle("Albums - photos");
     },
     view(vnode) {
+      const { albums } = vnode.attrs;
       const $md = (0, import_mithril9.default)("section.album-metadata", [
         (0, import_mithril9.default)("h1.albums-header", "Albums"),
         (0, import_mithril9.default)(AlbumStats)
       ]);
-      const $albumContainer = (0, import_mithril9.default)("section.album-container", [
-        //m(YearCursor),
-        (0, import_mithril9.default)(AlbumsList, { albums: vnode.attrs.albums })
-      ]);
       return (0, import_mithril9.default)("div", [
         $md,
-        $albumContainer
+        (0, import_mithril9.default)("section.album-container", [
+          //m(YearCursor),
+          (0, import_mithril9.default)(AlbumsList, { albums })
+        ])
       ]);
     }
   };
@@ -7529,9 +7529,15 @@ function AlbumShareButton() {
 // ts/components/albums-button.ts
 var import_mithril14 = __toESM(require_mithril());
 function AlbumsButton() {
+  const onclick = (event) => {
+    broadcast("navigate", {
+      route: "/albums"
+    });
+    block(event);
+  };
   return {
     view() {
-      return (0, import_mithril14.default)("a", { href: "/albums" }, "[albums]");
+      return (0, import_mithril14.default)("a", { href: "/albums", onclick }, "[albums]");
     }
   };
 }
@@ -7698,5 +7704,9 @@ import_mithril17.default.route(document.body, "/albums", {
   "/about": AboutApp,
   "/videos": VideosApp,
   "/album/:id": AlbumApp
+});
+listen("navigate", (event) => {
+  const { route } = event.detail;
+  import_mithril17.default.route.set(route);
 });
 //# sourceMappingURL=app.js.map
