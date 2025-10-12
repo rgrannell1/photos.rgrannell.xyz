@@ -15,6 +15,8 @@ import { readVideos } from "./services/videos.ts";
 import { listen } from "./events.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
+import { PhotosPage } from "./pages/photos.ts";
+import { readPhotos } from "./services/photos.ts";
 
 const state = await loadState();
 type AppAttrs = {};
@@ -118,6 +120,25 @@ export function VideosApp(): m.Component<AppAttrs> {
     },
   };
 }
+
+export function PhotosApp(): m.Component<AppAttrs> {
+  return {
+    view() {
+      return m("body", [
+        m("div.photos-app", [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(PhotosPage, {
+              photos: readPhotos(state.data),
+            }),
+          ]),
+        ]),
+      ]);
+    },
+  };
+}
+
 
 export function ThingApp(): m.Component<AppAttrs> {
   return {

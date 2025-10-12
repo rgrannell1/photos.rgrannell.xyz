@@ -59,7 +59,7 @@ const PhotoSchema = z.object({
   albumId: z.string(),
   country: z.union([z.string(), z.array(z.string())]).optional(),
   createdAt: z.string(),
-  subject: z.string().optional(),
+  subject:  z.union([z.string(), z.array(z.string())]).optional(),
   exposureTime: z.string().optional(),
   fStop: z.string().optional(),
   focalLength: z.string().optional(),
