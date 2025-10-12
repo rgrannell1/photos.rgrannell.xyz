@@ -6839,9 +6839,8 @@ var PhotoSchema = z.object({
 function parsePhoto(tdb2, photo) {
   const result = PhotoSchema.safeParse(photo);
   if (!result.success) {
-    throw new Error(
-      `Invalid photo object: ${JSON.stringify(result.error.issues)}`
-    );
+    console.error(result.error.issues);
+    return void 0;
   }
   return {
     albumId: result.data.albumId,
@@ -6869,7 +6868,10 @@ function parsePhoto(tdb2, photo) {
 function readPhotos(tdb2) {
   return tdb2.search({
     source: { type: "photo" }
-  }).objects().map(parsePhoto.bind(null, tdb2));
+  }).objects().flatMap((obj) => {
+    const photo = parsePhoto(tdb2, obj);
+    return photo ? [photo] : [];
+  });
 }
 
 // ts/components/photo-album-metadata.ts

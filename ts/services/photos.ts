@@ -79,12 +79,12 @@ const PhotoSchema = z.object({
   description: z.string().optional(),
 });
 
-export function parsePhoto(tdb: TribbleDB, photo: TripleObject): Photo {
+export function parsePhoto(tdb: TribbleDB, photo: TripleObject): Photo | undefined {
   const result = PhotoSchema.safeParse(photo);
   if (!result.success) {
-    throw new Error(
-      `Invalid photo object: ${JSON.stringify(result.error.issues)}`,
-    );
+    console.error(result.error.issues);
+
+    return undefined;
   }
 
   return {
@@ -114,5 +114,8 @@ export function parsePhoto(tdb: TribbleDB, photo: TripleObject): Photo {
 export function readPhotos(tdb: TribbleDB): Photo[] {
   return tdb.search({
     source: { type: "photo" },
-  }).objects().map(parsePhoto.bind(null, tdb));
+  }).objects().flatMap(obj => {
+    const photo = parsePhoto(tdb, obj);
+    return photo ? [photo] : [];
+  });
 }
