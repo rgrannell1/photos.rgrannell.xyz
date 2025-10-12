@@ -1622,6 +1622,7 @@ var import_mithril = __toESM(require_mithril());
 // ts/events.ts
 function broadcast(label, detail) {
   console.info(`broadcasting event: ${label}`, detail);
+  if (label === "navigate") console.trace();
   document.dispatchEvent(
     new CustomEvent(label, {
       detail
@@ -6995,23 +6996,12 @@ function InfoSVG() {
   ]);
 }
 function MetadataIcon() {
-  function onclick(photoMetadata, _) {
-    broadcast("click_photo_metadata", { ...photoMetadata });
-  }
   return {
     view(vnode) {
-      const { id, imageUrl, thumbnailUrl, mosaicColours } = vnode.attrs;
-      const photoMetadata = {
-        id,
-        imageUrl,
-        thumbnailUrl,
-        thumbnailDataUrl: Photos.encodeBitmapDataURL(mosaicColours)
-      };
-      (0, import_mithril5.default)("div.photo-metadata-popover", {
-        onclick: onclick.bind(null, photoMetadata)
-      }, [
-        InfoSVG()
-      ]);
+      const { id } = vnode.attrs;
+      return (0, import_mithril5.default)("div.photo-metadata-popover", {
+        onclick: () => broadcast("navigate", { route: `/metadata/${id}` })
+      }, InfoSVG());
     }
   };
 }
@@ -7089,26 +7079,17 @@ function Photo() {
         loading
       } = vnode.attrs;
       const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
-      const $mdIcon = (0, import_mithril6.default)(MetadataIcon, {
-        id,
-        imageUrl,
-        thumbnailUrl,
-        mosaicColours
-      });
-      const $imagePage = (0, import_mithril6.default)(ImagePair, {
+      const $mdIcon = (0, import_mithril6.default)(MetadataIcon, { id });
+      const $imagePair = (0, import_mithril6.default)(ImagePair, {
         imageUrl,
         thumbnailUrl,
         thumbnailDataUrl,
         loading
       });
       return (0, import_mithril6.default)("div", (0, import_mithril6.default)("div.photo", {}, [
-        (0, import_mithril6.default)("a", {
-          href: `#/metadata/${id}`,
-          onclick: block
-          // TODO emit event
-        }, [
+        (0, import_mithril6.default)("a", { onclick: block }, [
           $mdIcon,
-          $imagePage
+          $imagePair
         ])
       ]));
     }
@@ -7724,6 +7705,20 @@ function ThingApp() {
     }
   };
 }
+function MetadataApp() {
+  return {
+    view() {
+      return (0, import_mithril16.default)("body", [
+        (0, import_mithril16.default)("div.photos-app", [
+          (0, import_mithril16.default)(Header, state),
+          (0, import_mithril16.default)("div.app-container", [
+            (0, import_mithril16.default)(Sidebar, { visible: state.sidebarVisible })
+          ])
+        ])
+      ]);
+    }
+  };
+}
 
 // ts/index.ts
 import_mithril17.default.route(document.body, "/albums", {
@@ -7731,7 +7726,8 @@ import_mithril17.default.route(document.body, "/albums", {
   "/about": AboutApp,
   "/videos": VideosApp,
   "/album/:id": AlbumApp,
-  "/thing/:id": ThingApp
+  "/thing/:id": ThingApp,
+  "/metadata/:id": MetadataApp
 });
 listen("navigate", (event) => {
   const { route } = event.detail;

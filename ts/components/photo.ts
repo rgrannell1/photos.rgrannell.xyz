@@ -119,13 +119,8 @@ export function Photo() {
 
       const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
 
-      const $mdIcon = m(MetadataIcon, {
-        id,
-        imageUrl,
-        thumbnailUrl,
-        mosaicColours,
-      });
-      const $imagePage = m(ImagePair, {
+      const $mdIcon = m(MetadataIcon, { id });
+      const $imagePair = m(ImagePair, {
         imageUrl,
         thumbnailUrl,
         thumbnailDataUrl,
@@ -133,12 +128,9 @@ export function Photo() {
       });
 
       return m("div", m("div.photo", {}, [
-        m("a", {
-          href: `#/metadata/${id}`,
-          onclick: block, // TODO emit event
-        }, [
+        m("a", {onclick: block}, [
           $mdIcon,
-          $imagePage,
+          $imagePair,
         ]),
       ]));
     },

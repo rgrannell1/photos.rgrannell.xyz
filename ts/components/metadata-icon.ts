@@ -1,6 +1,5 @@
 import m from "mithril";
 import { broadcast } from "../events.ts";
-import { Photos } from "../services/photos";
 
 function InfoSVG() {
   return m("svg.photo-icon", {
@@ -16,41 +15,18 @@ function InfoSVG() {
   ]);
 }
 
-type PhotoMetadata = {
-  id: string;
-  imageUrl: string;
-  thumbnailUrl: string;
-  thumbnailDataUrl: string;
-};
-
 type MetadataIconAttrs = {
   id: string;
-  imageUrl: string;
-  thumbnailUrl: string;
-  mosaicColours: string;
 };
 
 export function MetadataIcon() {
-  function onclick(photoMetadata: PhotoMetadata, _: Event) {
-    broadcast("click_photo_metadata", { ...photoMetadata });
-  }
-
   return {
     view(vnode: m.Vnode<MetadataIconAttrs>) {
-      const { id, imageUrl, thumbnailUrl, mosaicColours } = vnode.attrs;
+      const { id  } = vnode.attrs;
 
-      const photoMetadata = {
-        id,
-        imageUrl,
-        thumbnailUrl,
-        thumbnailDataUrl: Photos.encodeBitmapDataURL(mosaicColours),
-      };
-
-      m("div.photo-metadata-popover", {
-        onclick: onclick.bind(null, photoMetadata),
-      }, [
-        InfoSVG(),
-      ]);
+      return m("div.photo-metadata-popover", {
+        onclick: () => broadcast("navigate", { route: `/metadata/${id}` }),
+      }, InfoSVG());
     },
   };
 }

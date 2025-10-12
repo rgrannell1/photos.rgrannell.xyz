@@ -135,3 +135,18 @@ export function ThingApp(): m.Component<AppAttrs> {
     },
   };
 }
+
+export function MetadataApp():  m.Component<AppAttrs> {
+  return {
+    view() {
+      return m("body", [
+        m("div.photos-app", [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible })
+          ])
+        ]),
+      ])
+    },
+  };
+}
