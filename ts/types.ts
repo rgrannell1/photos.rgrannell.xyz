@@ -86,6 +86,55 @@ export type Country = {
 
 export type Subject = {
   id: string;
-  name: string;
+  name?: string;
   wikipedia?: string;
 };
+
+export type Bird = {
+  type: "bird";
+  id: string;
+  name?: string;
+  wikipedia?: string;
+};
+
+export type Mammal = {
+  type: "mammal";
+  id: string;
+  name?: string;
+  wikipedia?: string;
+};
+
+export type Reptile = {
+  type: "reptile";
+  id: string;
+  name?: string;
+  wikipedia?: string;
+};
+
+export type Amphibian = {
+  type: "amphibian";
+  id: string;
+  name?: string;
+  wikipedia?: string;
+};
+
+export type Insect = {
+  type: "insect";
+  id: string;
+  name?: string;
+  wikipedia?: string;
+};
+
+export type Thing = (
+  Album |
+  Photo |
+  Video |
+  Place |
+  Country |
+  Subject |
+  Bird |
+  Mammal |
+  Reptile |
+  Amphibian |
+  Insect
+);

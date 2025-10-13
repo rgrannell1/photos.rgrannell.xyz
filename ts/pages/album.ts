@@ -5,7 +5,7 @@ import { AlbumShareButton } from "../components/album-share-button.ts";
 import { CountryLink } from "../components/country-link.ts";
 import { Video, VideoAttrs } from "../components/video.ts";
 
-import type { Photo as PhotoType, Video as VideoType } from "../types.ts";
+import type { Photo as PhotoType, Thing, Video as VideoType } from "../types.ts";
 import { Photo, PhotoAttrs } from "../components/photo.ts";
 import { Photos } from "../services/photos.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
@@ -26,7 +26,8 @@ type AlbumAttrs = {
   }[];
   videos: VideoType[];
   photos: PhotoType[];
-  things: any[]; // TODO
+  subjects: Thing[];
+  locations: Thing[];
 };
 
 export function AlbumPage() {
@@ -44,7 +45,8 @@ export function AlbumPage() {
         countries,
         photos,
         videos,
-        things,
+        subjects,
+        locations
       } = vnode.attrs;
 
       const dateRange = Dates.dateRange(
@@ -72,7 +74,7 @@ export function AlbumPage() {
         m("p.photo-album-description", m.trust(description ?? "")),
         m(AlbumShareButton, { url: location.href, name }),
         m(AlbumsButton),
-        m(AlbumThings, { things })
+        m(AlbumThings, { subjects, locations })
       ]);
 
       const $photosList = photos.map((photo, idx) => {

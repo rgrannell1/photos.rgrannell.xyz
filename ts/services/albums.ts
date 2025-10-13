@@ -1,4 +1,4 @@
-import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import { Album } from "../types.ts";
 import type { Photo, Video } from "../types.ts";
 import { parseVideo } from "../parsers/video.ts";

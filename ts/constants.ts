@@ -40,6 +40,11 @@ export class KnownRelations {
 export class KnownTypes {
   static PLACE = "place";
   static COUNTRY = "country";
+  static BIRD = "bird";
+  static MAMMAL = "mammal";
+  static REPTILE = "reptile";
+  static AMPHIBIAN = "amphibian";
+  static INSECT = "insect";
 }
 
 export const CDN_RELATIONS = new Set([

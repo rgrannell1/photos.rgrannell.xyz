@@ -2719,6 +2719,21 @@ var KnownTypes = class {
   static {
     this.COUNTRY = "country";
   }
+  static {
+    this.BIRD = "bird";
+  }
+  static {
+    this.MAMMAL = "mammal";
+  }
+  static {
+    this.REPTILE = "reptile";
+  }
+  static {
+    this.AMPHIBIAN = "amphibian";
+  }
+  static {
+    this.INSECT = "insect";
+  }
 };
 var CDN_RELATIONS = /* @__PURE__ */ new Set([
   KnownRelations.THUMBNAIL_URL,
@@ -7199,12 +7214,90 @@ function parseVideo(tdb2, video) {
 }
 
 // ts/parsers/subject.ts
-var SubjectSchema = z.object({
+var BirdSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  wikipedia: z.string().optional(),
+  birdwatchUrl: z.union([z.string(), z.array(z.string())]).optional()
+});
+function parseBird(_, subject) {
+  const result = BirdSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return { ...result.data, type: "bird" };
+}
+var MammalSchema = z.object({
   id: z.string(),
   name: z.string(),
   wikipedia: z.string().optional()
 });
+function parseMammal(_, subject) {
+  const result = MammalSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return { ...result.data, type: "mammal" };
+}
+var ReptileSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  wikipedia: z.string().optional()
+});
+function parseReptile(_, subject) {
+  const result = ReptileSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return { ...result.data, type: "reptile" };
+}
+var AmphibianSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  wikipedia: z.string().optional()
+});
+function parseAmphibian(_, subject) {
+  const result = AmphibianSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return { ...result.data, type: "amphibian" };
+}
+var InsectSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  wikipedia: z.string().optional()
+});
+function parseInsect(_, subject) {
+  const result = InsectSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return { ...result.data, type: "insect" };
+}
+var SubjectSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  wikipedia: z.string().optional()
+});
 function parseSubject(_, subject) {
+  const parsed = asUrn(subject.id);
+  if (parsed.type === KnownTypes.BIRD) {
+    return parseBird(_, subject);
+  } else if (parsed.type === KnownTypes.MAMMAL) {
+    return parseMammal(_, subject);
+  } else if (parsed.type === KnownTypes.REPTILE) {
+    return parseReptile(_, subject);
+  } else if (parsed.type === KnownTypes.AMPHIBIAN) {
+    return parseAmphibian(_, subject);
+  } else if (parsed.type === KnownTypes.INSECT) {
+    return parseInsect(_, subject);
+  }
   const result = SubjectSchema.safeParse(subject);
   if (!result.success) {
     console.error(result.error.issues);
@@ -7695,8 +7788,8 @@ function AlbumsButton() {
 function AlbumThings() {
   return {
     view(vnode) {
-      const { things } = vnode.attrs;
-      const { locations, subjects } = things;
+      const { locations, subjects } = vnode.attrs;
+      console.log(subjects);
     }
   };
 }
@@ -7717,7 +7810,8 @@ function AlbumPage() {
         countries,
         photos,
         videos,
-        things
+        subjects,
+        locations
       } = vnode.attrs;
       const dateRange = Dates.dateRange(
         minDate,
@@ -7739,7 +7833,7 @@ function AlbumPage() {
         (0, import_mithril15.default)("p.photo-album-description", import_mithril15.default.trust(description ?? "")),
         (0, import_mithril15.default)(AlbumShareButton, { url: location.href, name }),
         (0, import_mithril15.default)(AlbumsButton),
-        (0, import_mithril15.default)(AlbumThings, { things })
+        (0, import_mithril15.default)(AlbumThings, { subjects, locations })
       ]);
       const $photosList = photos.map((photo, idx) => {
         return (0, import_mithril15.default)(
@@ -8040,6 +8134,7 @@ function AlbumApp() {
       if (!album) {
         return (0, import_mithril21.default)("p", "Album not found");
       }
+      const { subjects, locations } = readThingsByAlbumId(state.data, state.currentAlbum);
       return (0, import_mithril21.default)("body", [
         (0, import_mithril21.default)("div.photos-app", [
           (0, import_mithril21.default)(Header, state),
@@ -8047,7 +8142,8 @@ function AlbumApp() {
             (0, import_mithril21.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril21.default)(AlbumPage, {
               ...album,
-              things: readThingsByAlbumId(state.data, state.currentAlbum),
+              subjects,
+              locations,
               photos,
               videos
             })
