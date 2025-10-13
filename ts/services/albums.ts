@@ -1,72 +1,16 @@
-import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import { Album } from "../types.ts";
-import { z } from "zod";
-import { asInt } from "../numbers.ts";
-import { countryNameToUrn, urnToFlag } from "../semantic/names.ts";
 import type { Photo, Video } from "../types.ts";
-import { parseVideo } from "./videos.ts";
-import { parsePhoto } from "./photos.ts";
+import { parseVideo } from "../parsers/video.ts";
+import { parsePhoto } from "../parsers/photo.ts";
+import { KnownRelations } from "../constants.ts";
 
-const AlbumSchema = z.object({
-  name: z.string(),
-  minDate: z.string(),
-  maxDate: z.string(),
-  thumbnailUrl: z.string(),
-  mosaic: z.any(),
-  id: z.string(),
-  photosCount: z.string(),
-  videosCount: z.string(),
-  flags: z.any(),
-  description: z.string().optional(),
-});
+import { parseAlbum } from "../parsers/album.ts";
 
-/*
- * Read album-data
- *
- * @param tdb The TribbleDB instance to read from.
- * @param album The raw album object from the TribbleDB.
- * @returns The parsed album.
- */
-function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
-  const result = AlbumSchema.safeParse(album);
-  if (!result.success) {
-    throw new Error(
-      `Invalid album object: ${JSON.stringify(result.error.issues)}`,
-    );
-  }
-
-  const countryNames = Array.isArray(result.data.flags)
-    ? result.data.flags
-    : [result.data.flags];
-
-  const countries = countryNames.flatMap((countryName: string) => {
-    const urn = countryNameToUrn(tdb, countryName);
-    const flag = urn ? urnToFlag(tdb, urn) : undefined;
-
-    if (!urn || !flag) {
-      return [];
-    }
-
-    return [{
-      urn,
-      name: countryName,
-      flag,
-    }];
-  });
-
-  return {
-    name: result.data.name,
-    minDate: asInt(result.data.minDate),
-    maxDate: asInt(result.data.maxDate),
-    thumbnailUrl: result.data.thumbnailUrl,
-    mosaicColours: result.data.mosaic,
-    id: result.data.id,
-    photosCount: asInt(result.data.photosCount),
-    videosCount: asInt(result.data.videosCount),
-    description: result.data.description ?? "",
-    countries,
-  };
+export function albumYear(album: Album) {
+  return new Date(album.minDate).getFullYear();
 }
+
 
 /*
  * Read albums from the TribbleDB
@@ -88,24 +32,31 @@ export function readAlbumById(tdb: TribbleDB, id: string): Album | undefined {
     .map(parseAlbum.bind(null, tdb))[0];
 }
 
-export function readAlbumPhotosById(tdb: TribbleDB, id: string): Photo[] {
-  const photoSources = Array.from(
-    tdb.search({
+export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
+  return tdb.search({
       source: { type: "photo" },
       relation: "albumId",
       target: { id: asUrn(id).id },
-    }).sources(),
-  );
+    }).sources()
+}
+
+export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
+  const photoSources = Array.from(readAlbumPhotoIds(tdb, id));
 
   return photoSources.flatMap((source: string) => {
     const info = tdb.search({
       source: asUrn(source),
     }).firstObject(false);
 
-    return info ? [parsePhoto(tdb, info)] : [];
-  });
+    if (!info) {
+      return [];
+    }
+
+    const parsed = parsePhoto(tdb, info)
+    return parsed ? [parsed] : []
+   });
 }
-export function readAlbumVideosById(tdb: TribbleDB, id: string): Video[] {
+export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
   const videoSources = Array.from(
     tdb.search({
       source: { type: "video" },
@@ -121,4 +72,47 @@ export function readAlbumVideosById(tdb: TribbleDB, id: string): Video[] {
 
     return info ? [parseVideo(tdb, info)] : [];
   });
+}
+
+/*
+ * Photos in an album are associated with places (`location` relation) and
+ * with subjects (`subject` relation). This function enumerates information on all of the
+ * things in an album via the relation
+ *
+ * (x) -> [:subject|:location] -> (:photo) - [:albumId] -> (id:album)
+ */
+export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
+  const parsed = asUrn(id);
+  const photoIds = readAlbumPhotoIds(tdb, id);
+
+  const locations = new Set<string>();
+  const subjects = new Set<string>();
+
+  for (const photoId of photoIds) {
+    const pid = asUrn(photoId);
+
+    const obj = tdb.search({
+      source: { type: pid.type, id: pid.id },
+      relation: [KnownRelations.LOCATION, KnownRelations.SUBJECT]
+    }).firstObject(true);
+
+    if (!obj) {
+      continue;
+    }
+
+    const location = obj?.location ?? [];
+    const subject = obj?.subject ?? [];
+
+    for (const loc of location) {
+      locations.add(loc);
+    }
+    for (const subj of subject) {
+      subjects.add(subj);
+    }
+  }
+
+  return {
+    subjects: [],
+    locations: []
+  }
 }

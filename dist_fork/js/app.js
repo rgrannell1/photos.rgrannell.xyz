@@ -28,16 +28,16 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var require_vnode = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/vnode.js"(exports, module) {
     "use strict";
-    function Vnode2(tag, key, attrs, children, text, dom) {
+    function Vnode(tag, key, attrs, children, text, dom) {
       return { tag, key, attrs, children, text, dom, is: void 0, domSize: void 0, state: void 0, events: void 0, instance: void 0 };
     }
-    Vnode2.normalize = function(node) {
-      if (Array.isArray(node)) return Vnode2("[", void 0, void 0, Vnode2.normalizeChildren(node), void 0, void 0);
+    Vnode.normalize = function(node) {
+      if (Array.isArray(node)) return Vnode("[", void 0, void 0, Vnode.normalizeChildren(node), void 0, void 0);
       if (node == null || typeof node === "boolean") return null;
       if (typeof node === "object") return node;
-      return Vnode2("#", void 0, void 0, String(node), void 0, void 0);
+      return Vnode("#", void 0, void 0, String(node), void 0, void 0);
     };
-    Vnode2.normalizeChildren = function(input) {
+    Vnode.normalizeChildren = function(input) {
       var children = [];
       if (input.length) {
         var isKeyed = input[0] != null && input[0].key != null;
@@ -49,12 +49,12 @@ var require_vnode = __commonJS({
           }
         }
         for (var i = 0; i < input.length; i++) {
-          children[i] = Vnode2.normalize(input[i]);
+          children[i] = Vnode.normalize(input[i]);
         }
       }
       return children;
     };
-    module.exports = Vnode2;
+    module.exports = Vnode;
   }
 });
 
@@ -62,7 +62,7 @@ var require_vnode = __commonJS({
 var require_hyperscriptVnode = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscriptVnode.js"(exports, module) {
     "use strict";
-    var Vnode2 = require_vnode();
+    var Vnode = require_vnode();
     module.exports = function(attrs, children) {
       if (attrs == null || typeof attrs === "object" && attrs.tag == null && !Array.isArray(attrs)) {
         if (children.length === 1 && Array.isArray(children[0])) children = children[0];
@@ -70,7 +70,7 @@ var require_hyperscriptVnode = __commonJS({
         children = children.length === 0 && Array.isArray(attrs) ? attrs : [attrs, ...children];
         attrs = void 0;
       }
-      return Vnode2("", attrs && attrs.key, attrs, children);
+      return Vnode("", attrs && attrs.key, attrs, children);
     };
   }
 });
@@ -104,7 +104,7 @@ var require_cachedAttrsIsStaticMap = __commonJS({
 var require_hyperscript = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscript.js"(exports, module) {
     "use strict";
-    var Vnode2 = require_vnode();
+    var Vnode = require_vnode();
     var hyperscriptVnode = require_hyperscriptVnode();
     var hasOwn = require_hasOwn();
     var emptyAttrs = require_emptyAttrs();
@@ -170,7 +170,7 @@ var require_hyperscript = __commonJS({
       }
       var vnode = hyperscriptVnode(attrs, children);
       if (typeof selector === "string") {
-        vnode.children = Vnode2.normalizeChildren(vnode.children);
+        vnode.children = Vnode.normalizeChildren(vnode.children);
         if (selector !== "[") return execSelector(selectorCache[selector] || compileSelector(selector), vnode);
       }
       if (vnode.attrs == null) vnode.attrs = {};
@@ -185,10 +185,10 @@ var require_hyperscript = __commonJS({
 var require_trust = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/trust.js"(exports, module) {
     "use strict";
-    var Vnode2 = require_vnode();
+    var Vnode = require_vnode();
     module.exports = function(html) {
       if (html == null) html = "";
-      return Vnode2("<", void 0, void 0, html, void 0, void 0);
+      return Vnode("<", void 0, void 0, html, void 0, void 0);
     };
   }
 });
@@ -197,13 +197,13 @@ var require_trust = __commonJS({
 var require_fragment = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/fragment.js"(exports, module) {
     "use strict";
-    var Vnode2 = require_vnode();
+    var Vnode = require_vnode();
     var hyperscriptVnode = require_hyperscriptVnode();
     module.exports = function(attrs, ...children) {
       var vnode = hyperscriptVnode(attrs, children);
       if (vnode.attrs == null) vnode.attrs = {};
       vnode.tag = "[";
-      vnode.children = Vnode2.normalizeChildren(vnode.children);
+      vnode.children = Vnode.normalizeChildren(vnode.children);
       return vnode;
     };
   }
@@ -249,7 +249,7 @@ var require_domFor = __commonJS({
 var require_render = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/render.js"(exports, module) {
     "use strict";
-    var Vnode2 = require_vnode();
+    var Vnode = require_vnode();
     var df = require_domFor();
     var delayedRemoval = df.delayedRemoval;
     var domFor = df.domFor;
@@ -381,7 +381,7 @@ var require_render = __commonJS({
         }
         initLifecycle(vnode.state, vnode, hooks);
         if (vnode.attrs != null) initLifecycle(vnode.attrs, vnode, hooks);
-        vnode.instance = Vnode2.normalize(callHook.call(vnode.state.view, vnode));
+        vnode.instance = Vnode.normalize(callHook.call(vnode.state.view, vnode));
         if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument");
         sentinel.$$reentrantLock$$ = null;
       }
@@ -579,7 +579,7 @@ var require_render = __commonJS({
         }
       }
       function updateComponent(parent, old, vnode, hooks, nextSibling, ns) {
-        vnode.instance = Vnode2.normalize(callHook.call(vnode.state.view, vnode));
+        vnode.instance = Vnode.normalize(callHook.call(vnode.state.view, vnode));
         if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument");
         updateLifecycle(vnode.state, vnode, hooks);
         if (vnode.attrs != null) updateLifecycle(vnode.attrs, vnode, hooks);
@@ -929,7 +929,7 @@ var require_render = __commonJS({
         currentRender = {};
         try {
           if (dom.vnodes == null) dom.textContent = "";
-          vnodes = Vnode2.normalizeChildren(Array.isArray(vnodes) ? vnodes : [vnodes]);
+          vnodes = Vnode.normalizeChildren(Array.isArray(vnodes) ? vnodes : [vnodes]);
           updateNodes(dom, dom.vnodes, vnodes, hooks, null, namespace === "http://www.w3.org/1999/xhtml" ? void 0 : namespace);
           dom.vnodes = vnodes;
           if (active != null && activeElement(dom) !== active && typeof active.focus === "function") active.focus();
@@ -955,7 +955,7 @@ var require_render2 = __commonJS({
 var require_mount_redraw = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/mount-redraw.js"(exports, module) {
     "use strict";
-    var Vnode2 = require_vnode();
+    var Vnode = require_vnode();
     module.exports = function(render, schedule, console2) {
       var subscriptions = [];
       var pending = false;
@@ -963,7 +963,7 @@ var require_mount_redraw = __commonJS({
       function sync() {
         for (offset = 0; offset < subscriptions.length; offset += 2) {
           try {
-            render(subscriptions[offset], Vnode2(subscriptions[offset + 1]), redraw);
+            render(subscriptions[offset], Vnode(subscriptions[offset + 1]), redraw);
           } catch (e) {
             console2.error(e);
           }
@@ -992,7 +992,7 @@ var require_mount_redraw = __commonJS({
         }
         if (component != null) {
           subscriptions.push(root, component);
-          render(root, Vnode2(component), redraw);
+          render(root, Vnode(component), redraw);
         }
       }
       return { mount, redraw };
@@ -1380,7 +1380,7 @@ var require_censor = __commonJS({
 var require_router = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/router.js"(exports, module) {
     "use strict";
-    var Vnode2 = require_vnode();
+    var Vnode = require_vnode();
     var m23 = require_hyperscript();
     var buildPathname = require_build2();
     var parsePathname = require_parse2();
@@ -1407,7 +1407,7 @@ var require_router = __commonJS({
           $window.removeEventListener("popstate", fireAsync, false);
         },
         view: function() {
-          var vnode = Vnode2(component, attrs.key, attrs);
+          var vnode = Vnode(component, attrs.key, attrs);
           if (currentResolver) return currentResolver.render(vnode);
           return [vnode];
         }
@@ -1622,7 +1622,6 @@ var import_mithril = __toESM(require_mithril());
 // ts/events.ts
 function broadcast(label, detail) {
   console.info(`broadcasting event: ${label}`, detail);
-  if (label === "navigate") console.trace();
   document.dispatchEvent(
     new CustomEvent(label, {
       detail
@@ -6769,50 +6768,7 @@ var z = /* @__PURE__ */ Object.freeze({
   ZodError
 });
 
-// ts/services/photos.ts
-var coloursCache = /* @__PURE__ */ new Map();
-var Photos = class {
-  /*
-   * Determine whether a photo should be eagerly or lazily loaded
-   * depending on page position
-   */
-  static loadingMode(idx) {
-    const viewportWidth = globalThis.innerWidth;
-    const viewportHeight = globalThis.innerHeight;
-    const imageDimension = PHOTO_WIDTH;
-    const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
-    const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
-    return idx > maxImagesPerRow * maxRowsInFold + 1 ? "lazy" : "eager";
-  }
-  /*
-   * Convert a mosaic colour string into a bitmap data URL
-   */
-  static encodeBitmapDataURL(colours) {
-    if (coloursCache.has(colours)) {
-      return coloursCache.get(colours);
-    }
-    const coloursList = colours.split("#").map(
-      (colour) => `#${colour}`
-    );
-    const canvas = document.createElement("canvas");
-    canvas.width = 2;
-    canvas.height = 2;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      throw new Error("context missing");
-    }
-    ctx.fillStyle = coloursList[1];
-    ctx.fillRect(0, 0, 1, 1);
-    ctx.fillStyle = coloursList[2];
-    ctx.fillRect(1, 0, 1, 1);
-    ctx.fillStyle = coloursList[3];
-    ctx.fillRect(0, 1, 1, 1);
-    ctx.fillStyle = coloursList[4];
-    ctx.fillRect(1, 1, 1, 1);
-    coloursCache.set(colours, canvas.toDataURL("image/png"));
-    return coloursCache.get(colours);
-  }
-};
+// ts/parsers/photo.ts
 var PhotoSchema = z.object({
   albumId: z.string(),
   country: z.union([z.string(), z.array(z.string())]).optional(),
@@ -6865,6 +6821,51 @@ function parsePhoto(tdb2, photo) {
     description: result.data.description
   };
 }
+
+// ts/services/photos.ts
+var coloursCache = /* @__PURE__ */ new Map();
+var Photos = class {
+  /*
+   * Determine whether a photo should be eagerly or lazily loaded
+   * depending on page position
+   */
+  static loadingMode(idx) {
+    const viewportWidth = globalThis.innerWidth;
+    const viewportHeight = globalThis.innerHeight;
+    const imageDimension = PHOTO_WIDTH;
+    const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
+    const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
+    return idx > maxImagesPerRow * maxRowsInFold + 1 ? "lazy" : "eager";
+  }
+  /*
+   * Convert a mosaic colour string into a bitmap data URL
+   */
+  static encodeBitmapDataURL(colours) {
+    if (coloursCache.has(colours)) {
+      return coloursCache.get(colours);
+    }
+    const coloursList = colours.split("#").map(
+      (colour) => `#${colour}`
+    );
+    const canvas = document.createElement("canvas");
+    canvas.width = 2;
+    canvas.height = 2;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      throw new Error("context missing");
+    }
+    ctx.fillStyle = coloursList[1];
+    ctx.fillRect(0, 0, 1, 1);
+    ctx.fillStyle = coloursList[2];
+    ctx.fillRect(1, 0, 1, 1);
+    ctx.fillStyle = coloursList[3];
+    ctx.fillRect(0, 1, 1, 1);
+    ctx.fillStyle = coloursList[4];
+    ctx.fillRect(1, 1, 1, 1);
+    coloursCache.set(colours, canvas.toDataURL("image/png"));
+    return coloursCache.get(colours);
+  }
+};
 function readPhotos(tdb2) {
   return tdb2.search({
     source: { type: "photo" }
@@ -7117,10 +7118,14 @@ function Photo() {
       return (0, import_mithril6.default)(
         "div",
         (0, import_mithril6.default)("div.photo", {}, [
-          (0, import_mithril6.default)("a", { onclick: block }, interactive ? [
-            $mdIcon,
-            $imagePair
-          ] : [$imagePair])
+          (0, import_mithril6.default)(
+            "a",
+            { onclick: block },
+            interactive ? [
+              $mdIcon,
+              $imagePair
+            ] : [$imagePair]
+          )
         ])
       );
     }
@@ -7185,13 +7190,191 @@ function CountryLink() {
   };
 }
 
+// ts/parsers/video.ts
+var VideoSchema = z.object({
+  id: z.string(),
+  albumId: z.string(),
+  description: z.string(),
+  posterUrl: z.string().url(),
+  videoUrl1080p: z.string().url(),
+  videoUrl480p: z.string().url(),
+  videoUrl720p: z.string().url(),
+  videoUrlUnscaled: z.string().url()
+});
+function parseVideo(tdb2, video) {
+  const result = VideoSchema.safeParse(video);
+  if (!result.success) {
+    throw new Error(
+      `Invalid video object: ${JSON.stringify(result.error.issues)}`
+    );
+  }
+  return {
+    id: result.data.id,
+    albumId: result.data.albumId,
+    description: result.data.description,
+    posterUrl: result.data.posterUrl,
+    videoUrl1080p: result.data.videoUrl1080p,
+    videoUrl480p: result.data.videoUrl480p,
+    videoUrl720p: result.data.videoUrl720p,
+    videoUrlUnscaled: result.data.videoUrlUnscaled
+  };
+}
+
+// ts/numbers.ts
+function asInt(value) {
+  if (typeof value === "number") {
+    return value;
+  }
+  return parseInt(value, 10);
+}
+
+// ts/semantic/names.ts
+function countryNameToUrn(tdb2, name) {
+  return tdb2.search({
+    source: { type: "country" },
+    relation: KnownRelations.NAME,
+    target: name
+  }).firstSource();
+}
+function urnToFlag(tdb2, urn) {
+  return tdb2.search({
+    source: asUrn(urn),
+    relation: KnownRelations.FLAG
+  }).firstTarget();
+}
+
+// ts/parsers/album.ts
+var AlbumSchema = z.object({
+  name: z.string(),
+  minDate: z.string(),
+  maxDate: z.string(),
+  thumbnailUrl: z.string(),
+  mosaic: z.any(),
+  id: z.string(),
+  photosCount: z.string(),
+  videosCount: z.string(),
+  flags: z.any(),
+  description: z.string().optional()
+});
+function parseAlbum(tdb2, album) {
+  const result = AlbumSchema.safeParse(album);
+  if (!result.success) {
+    throw new Error(
+      `Invalid album object: ${JSON.stringify(result.error.issues)}`
+    );
+  }
+  const countryNames = Array.isArray(result.data.flags) ? result.data.flags : [result.data.flags];
+  const countries = countryNames.flatMap((countryName) => {
+    const urn = countryNameToUrn(tdb2, countryName);
+    const flag = urn ? urnToFlag(tdb2, urn) : void 0;
+    if (!urn || !flag) {
+      return [];
+    }
+    return [{
+      urn,
+      name: countryName,
+      flag
+    }];
+  });
+  return {
+    name: result.data.name,
+    minDate: asInt(result.data.minDate),
+    maxDate: asInt(result.data.maxDate),
+    thumbnailUrl: result.data.thumbnailUrl,
+    mosaicColours: result.data.mosaic,
+    id: result.data.id,
+    photosCount: asInt(result.data.photosCount),
+    videosCount: asInt(result.data.videosCount),
+    description: result.data.description ?? "",
+    countries
+  };
+}
+
+// ts/services/albums.ts
+function albumYear(album) {
+  return new Date(album.minDate).getFullYear();
+}
+function readAlbums(tdb2) {
+  return tdb2.search({
+    source: { type: "album" }
+  }).objects().map(parseAlbum.bind(null, tdb2)).sort((album0, album1) => {
+    return album1.minDate - album0.minDate;
+  });
+}
+function readAlbumById(tdb2, id) {
+  return tdb2.search({
+    source: asUrn(id)
+  }).objects().map(parseAlbum.bind(null, tdb2))[0];
+}
+function readAlbumPhotoIds(tdb2, id) {
+  return tdb2.search({
+    source: { type: "photo" },
+    relation: "albumId",
+    target: { id: asUrn(id).id }
+  }).sources();
+}
+function readAlbumPhotosByAlbumId(tdb2, id) {
+  const photoSources = Array.from(readAlbumPhotoIds(tdb2, id));
+  return photoSources.flatMap((source) => {
+    const info = tdb2.search({
+      source: asUrn(source)
+    }).firstObject(false);
+    if (!info) {
+      return [];
+    }
+    const parsed = parsePhoto(tdb2, info);
+    return parsed ? [parsed] : [];
+  });
+}
+function readAlbumVideosByAlbumId(tdb2, id) {
+  const videoSources = Array.from(
+    tdb2.search({
+      source: { type: "video" },
+      relation: "albumId",
+      target: { id: asUrn(id).id }
+    }).sources()
+  );
+  return videoSources.flatMap((source) => {
+    const info = tdb2.search({
+      source: asUrn(source)
+    }).firstObject(false);
+    return info ? [parseVideo(tdb2, info)] : [];
+  });
+}
+function readThingsByAlbumId(tdb2, id) {
+  const parsed = asUrn(id);
+  const photoIds = readAlbumPhotoIds(tdb2, id);
+  const locations = /* @__PURE__ */ new Set();
+  const subjects = /* @__PURE__ */ new Set();
+  for (const photoId of photoIds) {
+    const pid = asUrn(photoId);
+    const obj = tdb2.search({
+      source: { type: pid.type, id: pid.id },
+      relation: [KnownRelations.LOCATION, KnownRelations.SUBJECT]
+    }).firstObject(true);
+    if (!obj) {
+      continue;
+    }
+    const location2 = obj?.location ?? [];
+    const subject = obj?.subject ?? [];
+    for (const loc of location2) {
+      locations.add(loc);
+    }
+    for (const subj of subject) {
+      subjects.add(subj);
+    }
+  }
+  return {
+    subjects: [],
+    locations: []
+  };
+}
+
 // ts/pages/albums.ts
 function AlbumsList() {
-  function albumYear(album) {
-    return new Date(album.minDate).getFullYear();
-  }
   function onAlbumClick(id, title, event) {
-    broadcast("click_album", { id, title });
+    const parsed = asUrn(id);
+    broadcast("navigate", { route: `/album/${parsed.id}` });
     block(event);
   }
   return {
@@ -7257,153 +7440,6 @@ function AlbumsPage() {
       ]);
     }
   };
-}
-
-// ts/numbers.ts
-function asInt(value) {
-  if (typeof value === "number") {
-    return value;
-  }
-  return parseInt(value, 10);
-}
-
-// ts/semantic/names.ts
-function countryNameToUrn(tdb2, name) {
-  return tdb2.search({
-    source: { type: "country" },
-    relation: KnownRelations.NAME,
-    target: name
-  }).firstSource();
-}
-function urnToFlag(tdb2, urn) {
-  return tdb2.search({
-    source: asUrn(urn),
-    relation: KnownRelations.FLAG
-  }).firstTarget();
-}
-
-// ts/services/videos.ts
-var VideoSchema = z.object({
-  id: z.string(),
-  albumId: z.string(),
-  description: z.string(),
-  posterUrl: z.string().url(),
-  videoUrl1080p: z.string().url(),
-  videoUrl480p: z.string().url(),
-  videoUrl720p: z.string().url(),
-  videoUrlUnscaled: z.string().url()
-});
-function parseVideo(tdb2, video) {
-  const result = VideoSchema.safeParse(video);
-  if (!result.success) {
-    throw new Error(
-      `Invalid video object: ${JSON.stringify(result.error.issues)}`
-    );
-  }
-  return {
-    id: result.data.id,
-    albumId: result.data.albumId,
-    description: result.data.description,
-    posterUrl: result.data.posterUrl,
-    videoUrl1080p: result.data.videoUrl1080p,
-    videoUrl480p: result.data.videoUrl480p,
-    videoUrl720p: result.data.videoUrl720p,
-    videoUrlUnscaled: result.data.videoUrlUnscaled
-  };
-}
-function readVideos(tdb2) {
-  return tdb2.search({
-    source: { type: "video" }
-  }).objects().map(parseVideo.bind(null, tdb2));
-}
-
-// ts/services/albums.ts
-var AlbumSchema = z.object({
-  name: z.string(),
-  minDate: z.string(),
-  maxDate: z.string(),
-  thumbnailUrl: z.string(),
-  mosaic: z.any(),
-  id: z.string(),
-  photosCount: z.string(),
-  videosCount: z.string(),
-  flags: z.any(),
-  description: z.string().optional()
-});
-function parseAlbum(tdb2, album) {
-  const result = AlbumSchema.safeParse(album);
-  if (!result.success) {
-    throw new Error(
-      `Invalid album object: ${JSON.stringify(result.error.issues)}`
-    );
-  }
-  const countryNames = Array.isArray(result.data.flags) ? result.data.flags : [result.data.flags];
-  const countries = countryNames.flatMap((countryName) => {
-    const urn = countryNameToUrn(tdb2, countryName);
-    const flag = urn ? urnToFlag(tdb2, urn) : void 0;
-    if (!urn || !flag) {
-      return [];
-    }
-    return [{
-      urn,
-      name: countryName,
-      flag
-    }];
-  });
-  return {
-    name: result.data.name,
-    minDate: asInt(result.data.minDate),
-    maxDate: asInt(result.data.maxDate),
-    thumbnailUrl: result.data.thumbnailUrl,
-    mosaicColours: result.data.mosaic,
-    id: result.data.id,
-    photosCount: asInt(result.data.photosCount),
-    videosCount: asInt(result.data.videosCount),
-    description: result.data.description ?? "",
-    countries
-  };
-}
-function readAlbums(tdb2) {
-  return tdb2.search({
-    source: { type: "album" }
-  }).objects().map(parseAlbum.bind(null, tdb2)).sort((album0, album1) => {
-    return album1.minDate - album0.minDate;
-  });
-}
-function readAlbumById(tdb2, id) {
-  return tdb2.search({
-    source: asUrn(id)
-  }).objects().map(parseAlbum.bind(null, tdb2))[0];
-}
-function readAlbumPhotosById(tdb2, id) {
-  const photoSources = Array.from(
-    tdb2.search({
-      source: { type: "photo" },
-      relation: "albumId",
-      target: { id: asUrn(id).id }
-    }).sources()
-  );
-  return photoSources.flatMap((source) => {
-    const info = tdb2.search({
-      source: asUrn(source)
-    }).firstObject(false);
-    return info ? [parsePhoto(tdb2, info)] : [];
-  });
-}
-function readAlbumVideosById(tdb2, id) {
-  const videoSources = Array.from(
-    tdb2.search({
-      source: { type: "video" },
-      relation: "albumId",
-      target: { id: asUrn(id).id }
-    }).sources()
-  );
-  return videoSources.flatMap((source) => {
-    const info = tdb2.search({
-      source: asUrn(source)
-    }).firstObject(false);
-    return info ? [parseVideo(tdb2, info)] : [];
-  });
 }
 
 // ts/pages/about.ts
@@ -7511,6 +7547,13 @@ function VideosPage() {
       );
     }
   };
+}
+
+// ts/services/videos.ts
+function readVideos(tdb2) {
+  return tdb2.search({
+    source: { type: "video" }
+  }).objects().map(parseVideo.bind(null, tdb2));
 }
 
 // ts/pages/album.ts
@@ -7904,8 +7947,8 @@ function AlbumApp() {
         return (0, import_mithril21.default)("p", "No album selected");
       }
       const album = readAlbumById(state.data, state.currentAlbum);
-      const photos = readAlbumPhotosById(state.data, state.currentAlbum);
-      const videos = readAlbumVideosById(state.data, state.currentAlbum);
+      const photos = readAlbumPhotosByAlbumId(state.data, state.currentAlbum);
+      const videos = readAlbumVideosByAlbumId(state.data, state.currentAlbum);
       if (!album) {
         return (0, import_mithril21.default)("p", "Album not found");
       }
@@ -7916,6 +7959,7 @@ function AlbumApp() {
             (0, import_mithril21.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril21.default)(AlbumPage, {
               ...album,
+              things: readThingsByAlbumId(state.data, state.currentAlbum),
               photos,
               videos
             })

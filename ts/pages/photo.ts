@@ -4,13 +4,13 @@ import type { Photo as PhotoType } from "../types.ts";
 import { AlbumButton } from "../components/album-button.ts";
 import { ExifData } from "../components/exif-data.ts";
 
-type PhotoPage = {
+type PhotoPageAttrs = {
   photo: PhotoType;
 };
 
 export function PhotoPage() {
   return {
-    view(vnode: m.Vnode<PhotoPage>) {
+    view(vnode: m.Vnode<PhotoPageAttrs>) {
       const { photo } = vnode.attrs;
 
       const $links = m("p", [
@@ -27,7 +27,7 @@ export function PhotoPage() {
         m(Photo, {
           photo,
           loading: "eager",
-          interactive: false
+          interactive: false,
         }),
         $links,
         $exif,

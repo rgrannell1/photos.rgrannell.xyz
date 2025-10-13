@@ -149,9 +149,7 @@ export function ExifData() {
       return m(
         "div",
         m("h3", "Photo Information"),
-        m("table.metadata-table", [
-
-        ]),
+        m("table.metadata-table", []),
         m("h3", "Exif Data"),
         m("table.metadata-table", [
           $dateTime,
@@ -161,7 +159,7 @@ export function ExifData() {
           $shutterSpeed,
           $aperture,
           $iso,
-        ])
+        ]),
       );
     },
   };

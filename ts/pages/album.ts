@@ -25,6 +25,7 @@ type AlbumAttrs = {
   }[];
   videos: VideoType[];
   photos: PhotoType[];
+  things: any[]; // TODO
 };
 
 export function AlbumPage() {

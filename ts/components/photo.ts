@@ -128,10 +128,16 @@ export function Photo() {
       return m(
         "div",
         m("div.photo", {}, [
-          m("a", { onclick: block }, interactive ? [
-            $mdIcon,
-            $imagePair,
-          ] : [ $imagePair ]),
+          m(
+            "a",
+            { onclick: block },
+            interactive
+              ? [
+                $mdIcon,
+                $imagePair,
+              ]
+              : [$imagePair],
+          ),
         ]),
       );
     },

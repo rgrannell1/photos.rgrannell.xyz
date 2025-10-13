@@ -1,6 +1,5 @@
-import m, { Vnode } from "mithril";
+import m from "mithril";
 import { AlbumStats } from "../components/album-stats.ts";
-import { YearCursor } from "../components/year-cursor.ts";
 import { Album } from "../types.ts";
 import { Photos } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
@@ -8,18 +7,19 @@ import { PhotoAlbum } from "../components/photo-album.ts";
 import { Windows } from "../services/window.ts";
 import { CountryLink } from "../components/country-link.ts";
 import { block, broadcast } from "../events.ts";
+import { albumYear } from "../services/albums.ts";
+import { asUrn } from "@rgrannell1/tribbledb";
 
 type AlbumsListAttrs = {
   albums: Album[];
+  things: any;
 };
 
 function AlbumsList() {
-  function albumYear(album: Album) {
-    return new Date(album.minDate).getFullYear();
-  }
-
   function onAlbumClick(id: string, title: string, event: Event) {
-    broadcast("click_album", { id, title });
+    const parsed = asUrn(id);
+
+    broadcast("navigate", { route: `/album/${parsed.id}` });
     block(event);
   }
 
