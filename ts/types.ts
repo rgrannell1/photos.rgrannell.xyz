@@ -5,8 +5,7 @@ export type ApplicationEvents =
   | "switch_theme"
   | "click_photo_metadata"
   | "photo_loaded"
-  | "navigate"
-  | "click_album";
+  | "navigate";
 
 export type State = {
   data: TribbleDB;
@@ -69,16 +68,24 @@ export type Video = {
 
 export type Place = {
   id: string;
+  type: "place";
   name: string;
   feature?: string | string[];
-  in?: Place[]; // NOTE: deep-parsed by default
+  in?: (Place | Country)[]; // NOTE: deep-parsed by default
   shortName?: string;
   wikipedia?: string;
 };
 
 export type Country = {
   id: string;
+  type: "country";
   flag?: string;
   name: string;
   contains?: string | string[];
+};
+
+export type Subject = {
+  id: string;
+  name: string;
+  wikipedia?: string;
 };

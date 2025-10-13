@@ -41,11 +41,9 @@ export function parsePlace(
     return [parsed];
   });
 
-  console.log(lookedUpRefs);
-  console.log("yyyyyyyyyyyyyy");
-
   return {
     id: result.data.id,
+    type: "place",
     name: result.data.name,
     feature: result.data.feature,
     in: lookedUpRefs,
@@ -73,13 +71,17 @@ export function parseCountry(
 
   return {
     id: result.data.id,
+    type: "country",
     flag: result.data.flag,
     name: result.data.name,
     contains: result.data.contains,
   };
 }
 
-export function parseLocation(tdb: TribbleDB, location: TripleObject) {
+export function parseLocation(
+  tdb: TribbleDB,
+  location: TripleObject,
+): Country | Place | undefined {
   if (!location.id) {
     return undefined;
   }

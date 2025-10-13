@@ -21,14 +21,5 @@ export function parseVideo(tdb: TribbleDB, video: TripleObject): Video {
     );
   }
 
-  return {
-    id: result.data.id,
-    albumId: result.data.albumId,
-    description: result.data.description,
-    posterUrl: result.data.posterUrl,
-    videoUrl1080p: result.data.videoUrl1080p,
-    videoUrl480p: result.data.videoUrl480p,
-    videoUrl720p: result.data.videoUrl720p,
-    videoUrlUnscaled: result.data.videoUrlUnscaled,
-  };
+  return result.data satisfies Video;
 }

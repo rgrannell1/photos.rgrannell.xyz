@@ -7687,30 +7687,9 @@ function parsePhoto(tdb2, photo) {
   const result = PhotoSchema.safeParse(photo);
   if (!result.success) {
     console.error(result.error.issues);
-    return void 0;
+    return;
   }
-  return {
-    albumId: result.data.albumId,
-    country: result.data.country,
-    createdAt: result.data.createdAt,
-    exposureTime: result.data.exposureTime,
-    fStop: result.data.fStop,
-    focalLength: result.data.focalLength,
-    fullImage: result.data.fullImage,
-    height: result.data.height,
-    id: result.data.id,
-    iso: result.data.iso,
-    location: result.data.location,
-    midImageLossyUrl: result.data.midImageLossyUrl,
-    model: result.data.model,
-    mosaicColours: result.data.mosaicColours,
-    pngUrl: result.data.pngUrl,
-    rating: result.data.rating,
-    style: result.data.style,
-    thumbnailUrl: result.data.thumbnailUrl,
-    width: result.data.width,
-    description: result.data.description,
-  };
+  return result.data;
 }
 
 // ts/services/photos.ts
@@ -8116,20 +8095,22 @@ function parseVideo(tdb2, video) {
       `Invalid video object: ${JSON.stringify(result.error.issues)}`,
     );
   }
-  return {
-    id: result.data.id,
-    albumId: result.data.albumId,
-    description: result.data.description,
-    posterUrl: result.data.posterUrl,
-    videoUrl1080p: result.data.videoUrl1080p,
-    videoUrl480p: result.data.videoUrl480p,
-    videoUrl720p: result.data.videoUrl720p,
-    videoUrlUnscaled: result.data.videoUrlUnscaled,
-  };
+  return result.data;
 }
 
 // ts/parsers/subject.ts
-function parseSubject(tdb2, subject) {
+var SubjectSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  wikipedia: z.string().optional(),
+});
+function parseSubject(_, subject) {
+  const result = SubjectSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return result.data;
 }
 
 // ts/services/things.ts
@@ -8169,10 +8150,9 @@ function parsePlace(tdb2, place) {
     }
     return [parsed];
   });
-  console.log(lookedUpRefs);
-  console.log("yyyyyyyyyyyyyy");
   return {
     id: result.data.id,
+    type: "place",
     name: result.data.name,
     feature: result.data.feature,
     in: lookedUpRefs,
@@ -8194,6 +8174,7 @@ function parseCountry(_, country) {
   }
   return {
     id: result.data.id,
+    type: "country",
     flag: result.data.flag,
     name: result.data.name,
     contains: result.data.contains,
