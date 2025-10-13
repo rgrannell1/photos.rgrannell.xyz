@@ -7401,6 +7401,12 @@ function readAlbumVideosByAlbumId(tdb2, id) {
     return info ? [parseVideo(tdb2, info)] : [];
   });
 }
+function readThing(tdb2, id) {
+  const parsed = asUrn(id);
+  return tdb2.search({
+    source: { id: parsed.id, type: parsed.type }
+  }).firstObject();
+}
 function readThingsByAlbumId(tdb2, id) {
   const photoIds = readAlbumPhotoIds(tdb2, id);
   const locations = /* @__PURE__ */ new Set();
@@ -7425,13 +7431,11 @@ function readThingsByAlbumId(tdb2, id) {
   }
   return {
     subjects: Array.from(subjects).flatMap((id2) => {
-      const parsed = asUrn(id2);
-      const obj = tdb2.search({ source: { id: parsed.id, type: parsed.type } }).firstObject();
+      const obj = readThing(tdb2, id2);
       return obj ? [obj] : [];
     }).map(parseSubject.bind(null, tdb2)),
     locations: Array.from(locations).flatMap((id2) => {
-      const parsed = asUrn(id2);
-      const obj = tdb2.search({ source: { id: parsed.id, type: parsed.type } }).firstObject();
+      const obj = readThing(tdb2, id2);
       return obj ? [obj] : [];
     }).map(parseLocation.bind(null, tdb2))
   };

@@ -1,4 +1,4 @@
-import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
+import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { Album } from "../types.ts";
 import type { Photo, Video } from "../types.ts";
 import { parseVideo } from "../parsers/video.ts";
@@ -75,6 +75,14 @@ export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
   });
 }
 
+function readThing(tdb: TribbleDB, id: string): TripleObject | undefined {
+  const parsed = asUrn(id);
+
+  return tdb.search({
+    source: { id: parsed.id, type: parsed.type }
+  }).firstObject();
+}
+
 /*
  * Photos in an album are associated with places (`location` relation) and
  * with subjects (`subject` relation). This function enumerates information on all of the
@@ -114,17 +122,13 @@ export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
   return {
     subjects: Array.from(subjects)
     .flatMap(id => {
-      const parsed = asUrn(id);
-      const obj =  tdb.search({ source: { id: parsed.id, type: parsed.type } }).firstObject()
-
+      const obj =  readThing(tdb, id)
       return obj ? [obj] : [];
     })
     .map(parseSubject.bind(null, tdb)),
     locations: Array.from(locations)
     .flatMap(id => {
-      const parsed = asUrn(id);
-      const obj =  tdb.search({ source: { id: parsed.id, type: parsed.type } }).firstObject()
-
+      const obj =  readThing(tdb, id)
       return obj ? [obj] : [];
     })
     .map(parseLocation.bind(null, tdb))
