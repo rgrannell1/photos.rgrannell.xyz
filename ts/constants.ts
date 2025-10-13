@@ -37,6 +37,11 @@ export class KnownRelations {
   static FLAGS = "flags";
 }
 
+export class KnownTypes {
+  static PLACE = "place";
+  static COUNTRY = "country";
+}
+
 export const CDN_RELATIONS = new Set([
   KnownRelations.THUMBNAIL_URL,
   KnownRelations.PNG_URL,

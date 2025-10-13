@@ -43,6 +43,7 @@ export function AlbumPage() {
         countries,
         photos,
         videos,
+        things // TODO use this
       } = vnode.attrs;
 
       const dateRange = Dates.dateRange(

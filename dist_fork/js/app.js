@@ -2712,6 +2712,14 @@ var KnownRelations = class {
     this.FLAGS = "flags";
   }
 };
+var KnownTypes = class {
+  static {
+    this.PLACE = "place";
+  }
+  static {
+    this.COUNTRY = "country";
+  }
+};
 var CDN_RELATIONS = /* @__PURE__ */ new Set([
   KnownRelations.THUMBNAIL_URL,
   KnownRelations.PNG_URL,
@@ -7220,6 +7228,58 @@ function parseVideo(tdb2, video) {
   };
 }
 
+// ts/parsers/subject.ts
+function parseSubject(tdb2, subject) {
+}
+
+// ts/parsers/location.ts
+var PlaceSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  feature: z.union([z.string(), z.array(z.string())]).optional(),
+  in: z.union([z.string(), z.array(z.string())]).optional(),
+  shortName: z.string().optional(),
+  wikipedia: z.string().optional()
+});
+function parsePlace(_, place) {
+  const result = PlaceSchema.safeParse(place);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return {
+    id: result.data.id,
+    name: result.data.name,
+    feature: result.data.feature,
+    in: result.data.in,
+    shortName: result.data.shortName,
+    wikipedia: result.data.wikipedia
+  };
+}
+var CountrySchema = z.object({});
+function parseCountry(_, place) {
+  const result = PlaceSchema.safeParse(place);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return {
+    id: result.data.id
+  };
+}
+function parseLocation(tdb2, location2) {
+  if (!location2.id) {
+    return void 0;
+  }
+  const id = asUrn(location2.id);
+  if (id.type === KnownTypes.PLACE) {
+    return parsePlace(tdb2, location2);
+  } else if (id.type === KnownTypes.COUNTRY) {
+    return parseCountry(tdb2, location2);
+  }
+  return void 0;
+}
+
 // ts/numbers.ts
 function asInt(value) {
   if (typeof value === "number") {
@@ -7342,7 +7402,6 @@ function readAlbumVideosByAlbumId(tdb2, id) {
   });
 }
 function readThingsByAlbumId(tdb2, id) {
-  const parsed = asUrn(id);
   const photoIds = readAlbumPhotoIds(tdb2, id);
   const locations = /* @__PURE__ */ new Set();
   const subjects = /* @__PURE__ */ new Set();
@@ -7365,8 +7424,16 @@ function readThingsByAlbumId(tdb2, id) {
     }
   }
   return {
-    subjects: [],
-    locations: []
+    subjects: Array.from(subjects).flatMap((id2) => {
+      const parsed = asUrn(id2);
+      const obj = tdb2.search({ source: { id: parsed.id, type: parsed.type } }).firstObject();
+      return obj ? [obj] : [];
+    }).map(parseSubject.bind(null, tdb2)),
+    locations: Array.from(locations).flatMap((id2) => {
+      const parsed = asUrn(id2);
+      const obj = tdb2.search({ source: { id: parsed.id, type: parsed.type } }).firstObject();
+      return obj ? [obj] : [];
+    }).map(parseLocation.bind(null, tdb2))
   };
 }
 
@@ -7630,7 +7697,9 @@ function AlbumPage() {
         description,
         countries,
         photos,
-        videos
+        videos,
+        things
+        // TODO use this
       } = vnode.attrs;
       const dateRange = Dates.dateRange(
         minDate,

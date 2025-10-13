@@ -3,8 +3,9 @@ import { Album } from "../types.ts";
 import type { Photo, Video } from "../types.ts";
 import { parseVideo } from "../parsers/video.ts";
 import { parsePhoto } from "../parsers/photo.ts";
+import { parseSubject } from "../parsers/subject.ts";
+import { parseLocation } from "../parsers/location.ts";
 import { KnownRelations } from "../constants.ts";
-
 import { parseAlbum } from "../parsers/album.ts";
 
 export function albumYear(album: Album) {
@@ -82,7 +83,6 @@ export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
  * (x) -> [:subject|:location] -> (:photo) - [:albumId] -> (id:album)
  */
 export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
-  const parsed = asUrn(id);
   const photoIds = readAlbumPhotoIds(tdb, id);
 
   const locations = new Set<string>();
@@ -112,7 +112,21 @@ export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
   }
 
   return {
-    subjects: [],
-    locations: []
+    subjects: Array.from(subjects)
+    .flatMap(id => {
+      const parsed = asUrn(id);
+      const obj =  tdb.search({ source: { id: parsed.id, type: parsed.type } }).firstObject()
+
+      return obj ? [obj] : [];
+    })
+    .map(parseSubject.bind(null, tdb)),
+    locations: Array.from(locations)
+    .flatMap(id => {
+      const parsed = asUrn(id);
+      const obj =  tdb.search({ source: { id: parsed.id, type: parsed.type } }).firstObject()
+
+      return obj ? [obj] : [];
+    })
+    .map(parseLocation.bind(null, tdb))
   }
 }

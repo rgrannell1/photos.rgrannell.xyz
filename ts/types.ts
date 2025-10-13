@@ -33,17 +33,6 @@ export type Album = {
   }[];
 };
 
-export type Video = {
-  id: string;
-  albumId: string;
-  description: string;
-  posterUrl: string;
-  videoUrl480p: string;
-  videoUrl720p: string;
-  videoUrl1080p: string;
-  videoUrlUnscaled: string;
-};
-
 export type Photo = {
   albumId: string;
   country?: string | string[];
@@ -66,3 +55,27 @@ export type Photo = {
   width?: string;
   description?: string;
 };
+
+export type Video = {
+  id: string;
+  albumId: string;
+  description: string;
+  posterUrl: string;
+  videoUrl480p: string;
+  videoUrl720p: string;
+  videoUrl1080p: string;
+  videoUrlUnscaled: string;
+};
+
+export type Place = {
+  id: string;
+  name: string;
+  feature?: string | string[],
+  in?: string | string[],
+  shortName?: string,
+  wikipedia?: string
+}
+
+export type Country = {
+  id: string;
+}
