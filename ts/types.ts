@@ -70,12 +70,15 @@ export type Video = {
 export type Place = {
   id: string;
   name: string;
-  feature?: string | string[],
-  in?: string | string[],
-  shortName?: string,
-  wikipedia?: string
-}
+  feature?: string | string[];
+  in?: Place[]; // NOTE: deep-parsed by default
+  shortName?: string;
+  wikipedia?: string;
+};
 
 export type Country = {
   id: string;
-}
+  flag?: string;
+  name: string;
+  contains?: string | string[];
+};

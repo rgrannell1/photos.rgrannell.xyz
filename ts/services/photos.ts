@@ -3,7 +3,6 @@ import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import { Photo } from "../types.ts";
 import { parsePhoto } from "../parsers/photo.ts";
 
-
 const coloursCache: Map<string, string> = new Map();
 
 export class Photos {

@@ -7,11 +7,11 @@ import { parseSubject } from "../parsers/subject.ts";
 import { parseLocation } from "../parsers/location.ts";
 import { KnownRelations } from "../constants.ts";
 import { parseAlbum } from "../parsers/album.ts";
+import { readThing } from "./things.ts";
 
 export function albumYear(album: Album) {
   return new Date(album.minDate).getFullYear();
 }
-
 
 /*
  * Read albums from the TribbleDB
@@ -35,10 +35,10 @@ export function readAlbumById(tdb: TribbleDB, id: string): Album | undefined {
 
 export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
   return tdb.search({
-      source: { type: "photo" },
-      relation: "albumId",
-      target: { id: asUrn(id).id },
-    }).sources()
+    source: { type: "photo" },
+    relation: "albumId",
+    target: { id: asUrn(id).id },
+  }).sources();
 }
 
 export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
@@ -53,9 +53,9 @@ export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
       return [];
     }
 
-    const parsed = parsePhoto(tdb, info)
-    return parsed ? [parsed] : []
-   });
+    const parsed = parsePhoto(tdb, info);
+    return parsed ? [parsed] : [];
+  });
 }
 export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
   const videoSources = Array.from(
@@ -73,14 +73,6 @@ export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
 
     return info ? [parseVideo(tdb, info)] : [];
   });
-}
-
-function readThing(tdb: TribbleDB, id: string): TripleObject | undefined {
-  const parsed = asUrn(id);
-
-  return tdb.search({
-    source: { id: parsed.id, type: parsed.type }
-  }).firstObject();
 }
 
 /*
@@ -101,7 +93,7 @@ export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
 
     const obj = tdb.search({
       source: { type: pid.type, id: pid.id },
-      relation: [KnownRelations.LOCATION, KnownRelations.SUBJECT]
+      relation: [KnownRelations.LOCATION, KnownRelations.SUBJECT],
     }).firstObject(true);
 
     if (!obj) {
@@ -121,16 +113,16 @@ export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
 
   return {
     subjects: Array.from(subjects)
-    .flatMap(id => {
-      const obj =  readThing(tdb, id)
-      return obj ? [obj] : [];
-    })
-    .map(parseSubject.bind(null, tdb)),
+      .flatMap((id) => {
+        const obj = readThing(tdb, id);
+        return obj ? [obj] : [];
+      })
+      .map(parseSubject.bind(null, tdb)),
     locations: Array.from(locations)
-    .flatMap(id => {
-      const obj =  readThing(tdb, id)
-      return obj ? [obj] : [];
-    })
-    .map(parseLocation.bind(null, tdb))
-  }
+      .flatMap((id) => {
+        const obj = readThing(tdb, id);
+        return obj ? [obj] : [];
+      })
+      .map(parseLocation.bind(null, tdb)),
+  };
 }
