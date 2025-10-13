@@ -9,6 +9,7 @@ import type { Photo as PhotoType, Video as VideoType } from "../types.ts";
 import { Photo, PhotoAttrs } from "../components/photo.ts";
 import { Photos } from "../services/photos.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
+import { AlbumThings } from "../components/album-things.ts";
 
 type AlbumAttrs = {
   name: string;
@@ -43,7 +44,7 @@ export function AlbumPage() {
         countries,
         photos,
         videos,
-        things, // TODO use this
+        things,
       } = vnode.attrs;
 
       const dateRange = Dates.dateRange(
@@ -71,6 +72,7 @@ export function AlbumPage() {
         m("p.photo-album-description", m.trust(description ?? "")),
         m(AlbumShareButton, { url: location.href, name }),
         m(AlbumsButton),
+        m(AlbumThings, { things })
       ]);
 
       const $photosList = photos.map((photo, idx) => {

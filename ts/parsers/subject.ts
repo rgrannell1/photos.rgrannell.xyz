@@ -3,7 +3,7 @@ import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { Subject } from "../types.ts";
 
 // TODO subjects are varied, but for the moment they have a few common properties
-// In future, type map them individually
+// In future, type map them individually so we can render them in custom ways.
 
 const SubjectSchema = z.object({
   id: z.string(),

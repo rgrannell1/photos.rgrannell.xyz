@@ -12,7 +12,6 @@ import { asUrn } from "@rgrannell1/tribbledb";
 
 type AlbumsListAttrs = {
   albums: Album[];
-  things: any;
 };
 
 function AlbumsList() {
