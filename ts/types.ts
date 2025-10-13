@@ -125,6 +125,34 @@ export type Insect = {
   wikipedia?: string;
 };
 
+function isAnInsect(subject: Subject | Insect): subject is Insect {
+  return (subject as Insect).type === "insect";
+}
+
+function isAnAmphibian(subject: Subject | Amphibian): subject is Amphibian {
+  return (subject as Amphibian).type === "amphibian";
+}
+
+function isAReptile(subject: Subject | Reptile): subject is Reptile {
+  return (subject as Reptile).type === "reptile";
+}
+
+function isAMammal(subject: Subject | Mammal): subject is Mammal {
+  return (subject as Mammal).type === "mammal";
+}
+
+function isABird(subject: Subject | Bird): subject is Bird {
+  return (subject as Bird).type === "bird";
+}
+
+function isAPlace(place: Place | Country): place is Place {
+  return (place as Place).type === "place";
+}
+
+function isACountry(place: Place | Country): place is Country {
+  return (place as Country).type === "country";
+}
+
 export type Thing = (
   Album |
   Photo |
