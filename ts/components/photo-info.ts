@@ -22,7 +22,13 @@ function Description() {
   return {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
       const { photo } = vnode.attrs;
-      return m("td", photo.description || "—");
+
+      const html = photo.description ?? photo.summary;
+      if (html) {
+        return m("td", m.trust(html));
+      }
+
+      return m("td", "—");
     },
   };
 }

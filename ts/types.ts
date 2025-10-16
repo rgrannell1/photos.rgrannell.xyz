@@ -52,7 +52,10 @@ export type Photo = {
   style?: string;
   thumbnailUrl: string;
   width?: string;
+
+  // TODO.
   description?: string;
+  summary?: string;
 };
 
 export type Video = {
