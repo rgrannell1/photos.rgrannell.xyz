@@ -71,6 +71,17 @@ function Style() {
   };
 }
 
+function Subject() {
+  return {
+    view(vnode: m.Vnode<PhotoComponentAttrs>) {
+      const { photo, services } = vnode.attrs;
+
+      const $subject = services.toThingLinks([photo.subject]);
+      return m("td", $subject.length > 0 ? $subject : "—");
+    },
+  };
+}
+
 type PhotoInfoAttrs = {
   photo: PhotoType;
   services: Services;
@@ -97,6 +108,10 @@ export function PhotoInfo() {
         m("tr", [
           m(Heading, { text: "Style" }),
           m(Style, { photo, services }),
+        ]),
+        m("tr", [
+          m(Heading, { text: "Subject" }),
+          //m(Subject, { photo, services }),
         ]),
       ];
 

@@ -3017,7 +3017,6 @@ function toThingLinks(tdb2, urns) {
     if (!thing || !thing.name) {
       return [];
     }
-    console.log(urn, thing.name);
     return [(0, import_mithril3.default)(ThingLink, {
       urn,
       name: Array.isArray(thing.name) ? thing.name[0] : thing.name,
@@ -8198,6 +8197,10 @@ function PhotoInfo() {
         (0, import_mithril21.default)("tr", [
           (0, import_mithril21.default)(Heading2, { text: "Style" }),
           (0, import_mithril21.default)(Style, { photo, services })
+        ]),
+        (0, import_mithril21.default)("tr", [
+          (0, import_mithril21.default)(Heading2, { text: "Subject" })
+          //m(Subject, { photo, services }),
         ])
       ];
       return (0, import_mithril21.default)("table.metadata-table", infoItems);
