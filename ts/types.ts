@@ -1,4 +1,7 @@
-import { TribbleDB } from "@rgrannell1/tribbledb";
+
+import m from "mithril";
+import { ThingLinkAttrs } from "./components/thing-link.ts";
+import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 
 export type ApplicationEvents =
   | "click_burger_menu"
@@ -7,12 +10,20 @@ export type ApplicationEvents =
   | "photo_loaded"
   | "navigate";
 
+export type Services = {
+  readThing: (id: string) => TripleObject | undefined;
+  toThingLinks: (urns: (string | undefined)[]) => m.Vnode<ThingLinkAttrs, {}>[]
+};
+
+
+
 export type State = {
   data: TribbleDB;
   darkMode: boolean;
   sidebarVisible: boolean;
   currentAlbum: string | undefined;
   currentPhoto: string | undefined;
+  services: Services;
 };
 
 export type Album = {

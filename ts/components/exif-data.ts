@@ -1,10 +1,11 @@
 import m from "mithril";
 import { Dates } from "../services/dates.ts";
-import type { Photo as PhotoType } from "../types.ts";
+import type { Photo as PhotoType, Services } from "../types.ts";
 import { ThingLink } from "./thing-link.ts";
 
 type ExifDataAttrs = {
   photo: PhotoType;
+  services: Services;
 };
 
 type HeadingAttrs = {
@@ -23,13 +24,11 @@ function Heading() {
 function CameraModel() {
   return {
     view(vnode: m.Vnode<ExifDataAttrs>) {
-      const { photo } = vnode.attrs;
+      const { photo, services } = vnode.attrs;
 
-      if (photo.model) {
-        return m(
-          "td",
-          m(ThingLink, { urn: photo.model, name: photo.model, classes: [] }),
-        );
+      const $model = services.toThingLinks([photo.model]);
+      if ($model.length > 0) {
+        return m("td", $model);
       }
 
       return m("td", "Unknown");
@@ -109,7 +108,7 @@ function Aperture() {
 export function ExifData() {
   return {
     view(vnode: m.Vnode<ExifDataAttrs>) {
-      const { photo } = vnode.attrs;
+      const { photo, services } = vnode.attrs;
 
       const $dateTime = m("tr", [
         m(Heading, { text: "Date-Time" }),
@@ -118,27 +117,27 @@ export function ExifData() {
 
       const $model = m("tr", [
         m(Heading, { text: "Camera Model" }),
-        m(CameraModel, { photo }),
+        m(CameraModel, { photo, services }),
       ]);
 
       const $dimensions = m("tr", [
         m(Heading, { text: "Dimensions" }),
-        m(ExifDimensions, { photo }),
+        m(ExifDimensions, { photo, services }),
       ]);
 
       const $focalLength = m("tr", [
         m(Heading, { text: "Focal Length" }),
-        m(FocalLength, { photo }),
+        m(FocalLength, { photo, services }),
       ]);
 
       const $shutterSpeed = m("tr", [
         m(Heading, { text: "Shutter Speed" }),
-        m(ShutterSpeed, { photo }),
+        m(ShutterSpeed, { photo, services }),
       ]);
 
       const $aperture = m("tr", [
         m(Heading, { text: "Aperture" }),
-        m(Aperture, { photo }),
+        m(Aperture, { photo, services }),
       ]);
 
       const $iso = m("tr", [

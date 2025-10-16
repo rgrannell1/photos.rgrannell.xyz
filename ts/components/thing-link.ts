@@ -2,7 +2,7 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import m from "mithril";
 import { navigate } from "../events.ts";
 
-type ThingLinkAttrs = {
+export type ThingLinkAttrs = {
   urn: string;
   name: string;
   classes: string[];

@@ -1,5 +1,6 @@
 import m from "mithril";
-import { Photo as PhotoType } from "../types.ts";
+import { Photo as PhotoType, Services } from "../types.ts";
+import { ThingLink } from "./thing-link.ts";
 
 type HeadingAttrs = {
   text: string;
@@ -16,6 +17,7 @@ function Heading() {
 
 type PhotoComponentAttrs = {
   photo: PhotoType;
+  services: Services;
 };
 
 function Description() {
@@ -36,11 +38,13 @@ function Description() {
 function Location() {
   return {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
-      const { photo } = vnode.attrs;
-      const location = Array.isArray(photo.location)
-        ? photo.location.join(", ")
-        : photo.location;
-      return m("td", location || "—");
+      const { photo, services } = vnode.attrs;
+      const locations = Array.isArray(photo.location)
+        ? photo.location
+        : [photo.location];
+
+      const $locations = services.toThingLinks(locations);
+      return m("td", $locations.length > 0 ? $locations : "—");
     },
   };
 }
@@ -48,8 +52,10 @@ function Location() {
 function Rating() {
   return {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
-      const { photo } = vnode.attrs;
-      return m("td", photo.rating || "—");
+      const { photo, services } = vnode.attrs;
+
+      const $rating = services.toThingLinks([photo.rating]);
+      return m("td", $rating.length > 0 ? $rating : "—");
     },
   };
 }
@@ -57,37 +63,40 @@ function Rating() {
 function Style() {
   return {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
-      const { photo } = vnode.attrs;
-      return m("td", photo.style || "—");
+      const { photo, services } = vnode.attrs;
+
+      const $style = services.toThingLinks([photo.style]);
+      return m("td", $style.length > 0 ? $style : "—");
     },
   };
 }
 
 type PhotoInfoAttrs = {
   photo: PhotoType;
+  services: Services;
 };
 
 export function PhotoInfo() {
   return {
     view(vnode: m.Vnode<PhotoInfoAttrs>) {
-      const { photo } = vnode.attrs;
+      const { photo, services } = vnode.attrs;
 
       const infoItems = [
         m("tr", [
           m(Heading, { text: "Description" }),
-          m(Description, { photo }),
+          m(Description, { photo, services }),
         ]),
         m("tr", [
           m(Heading, { text: "Location" }),
-          m(Location, { photo }),
+          m(Location, { photo, services }),
         ]),
         m("tr", [
           m(Heading, { text: "Rating" }),
-          m(Rating, { photo }),
+          m(Rating, { photo, services }),
         ]),
         m("tr", [
           m(Heading, { text: "Style" }),
-          m(Style, { photo }),
+          m(Style, { photo, services }),
         ]),
       ];
 
