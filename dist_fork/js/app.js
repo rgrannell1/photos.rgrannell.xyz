@@ -6859,6 +6859,177 @@ function parsePhoto(tdb2, photo) {
   return result.data;
 }
 
+// ts/services/things.ts
+function readThing(tdb2, id) {
+  const parsed = asUrn(id);
+  return tdb2.search({
+    source: { id: parsed.id, type: parsed.type }
+  }).firstObject();
+}
+
+// ts/parsers/subject.ts
+var BirdSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  wikipedia: z.string().optional(),
+  birdwatchUrl: z.union([z.string(), z.array(z.string())]).optional()
+});
+function parseBird(_, subject) {
+  const result = BirdSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return { ...result.data, type: "bird" };
+}
+var MammalSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  wikipedia: z.string().optional()
+});
+function parseMammal(_, subject) {
+  const result = MammalSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return { ...result.data, type: "mammal" };
+}
+var ReptileSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  wikipedia: z.string().optional()
+});
+function parseReptile(_, subject) {
+  const result = ReptileSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return { ...result.data, type: "reptile" };
+}
+var AmphibianSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  wikipedia: z.string().optional()
+});
+function parseAmphibian(_, subject) {
+  const result = AmphibianSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return { ...result.data, type: "amphibian" };
+}
+var InsectSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  wikipedia: z.string().optional()
+});
+function parseInsect(_, subject) {
+  const result = InsectSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return { ...result.data, type: "insect" };
+}
+var SubjectSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  wikipedia: z.string().optional()
+});
+function parseSubject(_, subject) {
+  const parsed = asUrn(subject.id);
+  if (parsed.type === KnownTypes.BIRD) {
+    return parseBird(_, subject);
+  } else if (parsed.type === KnownTypes.MAMMAL) {
+    return parseMammal(_, subject);
+  } else if (parsed.type === KnownTypes.REPTILE) {
+    return parseReptile(_, subject);
+  } else if (parsed.type === KnownTypes.AMPHIBIAN) {
+    return parseAmphibian(_, subject);
+  } else if (parsed.type === KnownTypes.INSECT) {
+    return parseInsect(_, subject);
+  }
+  const result = SubjectSchema.safeParse(subject);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return result.data;
+}
+
+// ts/parsers/location.ts
+var PlaceSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  feature: z.union([z.string(), z.array(z.string())]).optional(),
+  in: z.union([z.string(), z.array(z.string())]).optional(),
+  shortName: z.string().optional(),
+  wikipedia: z.string().optional()
+});
+function parsePlace(tdb2, place) {
+  const result = PlaceSchema.safeParse(place);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  const refs = result.data.in ? Array.isArray(result.data.in) ? result.data.in : [result.data.in] : [];
+  const lookedUpRefs = refs.flatMap((ref) => {
+    const obj = readThing(tdb2, ref);
+    if (!obj) {
+      return [];
+    }
+    const parsed = parseLocation(tdb2, obj);
+    if (!parsed) {
+      return [];
+    }
+    return [parsed];
+  });
+  return {
+    id: result.data.id,
+    type: "place",
+    name: result.data.name,
+    feature: result.data.feature,
+    in: lookedUpRefs,
+    shortName: result.data.shortName,
+    wikipedia: result.data.wikipedia
+  };
+}
+var CountrySchema = z.object({
+  id: z.string(),
+  flag: z.string().optional(),
+  name: z.string(),
+  contains: z.union([z.string(), z.array(z.string())]).optional()
+});
+function parseCountry(_, country) {
+  const result = CountrySchema.safeParse(country);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return {
+    id: result.data.id,
+    type: "country",
+    flag: result.data.flag,
+    name: result.data.name,
+    contains: result.data.contains
+  };
+}
+function parseLocation(tdb2, location2) {
+  if (!location2.id) {
+    return void 0;
+  }
+  const id = asUrn(location2.id);
+  if (id.type === KnownTypes.PLACE) {
+    return parsePlace(tdb2, location2);
+  } else if (id.type === KnownTypes.COUNTRY) {
+    return parseCountry(tdb2, location2);
+  }
+  return void 0;
+}
+
 // ts/services/photos.ts
 var coloursCache = /* @__PURE__ */ new Map();
 var Photos = class {
@@ -6920,6 +7091,38 @@ function readPhotoById(tdb2, id) {
     return void 0;
   }
   return parsePhoto(tdb2, result[0]);
+}
+function readThingsByPhotoIds(tdb2, photoIds) {
+  const locations = /* @__PURE__ */ new Set();
+  const subjects = /* @__PURE__ */ new Set();
+  for (const photoId of photoIds) {
+    const pid = asUrn(photoId);
+    const obj = tdb2.search({
+      source: { type: pid.type, id: pid.id },
+      relation: [KnownRelations.LOCATION, KnownRelations.SUBJECT]
+    }).firstObject(true);
+    if (!obj) {
+      continue;
+    }
+    const location2 = obj?.location ?? [];
+    const subject = obj?.subject ?? [];
+    for (const loc of location2) {
+      locations.add(loc);
+    }
+    for (const subj of subject) {
+      subjects.add(subj);
+    }
+  }
+  return {
+    subjects: Array.from(subjects).flatMap((id) => {
+      const obj = readThing(tdb2, id);
+      return obj ? [obj] : [];
+    }).map(parseSubject.bind(null, tdb2)),
+    locations: Array.from(locations).flatMap((id) => {
+      const obj = readThing(tdb2, id);
+      return obj ? [obj] : [];
+    }).map(parseLocation.bind(null, tdb2))
+  };
 }
 
 // ts/components/photo-album-metadata.ts
@@ -7248,177 +7451,6 @@ function parseVideo(tdb2, video) {
   return result.data;
 }
 
-// ts/parsers/subject.ts
-var BirdSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  wikipedia: z.string().optional(),
-  birdwatchUrl: z.union([z.string(), z.array(z.string())]).optional()
-});
-function parseBird(_, subject) {
-  const result = BirdSchema.safeParse(subject);
-  if (!result.success) {
-    console.error(result.error.issues);
-    return;
-  }
-  return { ...result.data, type: "bird" };
-}
-var MammalSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  wikipedia: z.string().optional()
-});
-function parseMammal(_, subject) {
-  const result = MammalSchema.safeParse(subject);
-  if (!result.success) {
-    console.error(result.error.issues);
-    return;
-  }
-  return { ...result.data, type: "mammal" };
-}
-var ReptileSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  wikipedia: z.string().optional()
-});
-function parseReptile(_, subject) {
-  const result = ReptileSchema.safeParse(subject);
-  if (!result.success) {
-    console.error(result.error.issues);
-    return;
-  }
-  return { ...result.data, type: "reptile" };
-}
-var AmphibianSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  wikipedia: z.string().optional()
-});
-function parseAmphibian(_, subject) {
-  const result = AmphibianSchema.safeParse(subject);
-  if (!result.success) {
-    console.error(result.error.issues);
-    return;
-  }
-  return { ...result.data, type: "amphibian" };
-}
-var InsectSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  wikipedia: z.string().optional()
-});
-function parseInsect(_, subject) {
-  const result = InsectSchema.safeParse(subject);
-  if (!result.success) {
-    console.error(result.error.issues);
-    return;
-  }
-  return { ...result.data, type: "insect" };
-}
-var SubjectSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  wikipedia: z.string().optional()
-});
-function parseSubject(_, subject) {
-  const parsed = asUrn(subject.id);
-  if (parsed.type === KnownTypes.BIRD) {
-    return parseBird(_, subject);
-  } else if (parsed.type === KnownTypes.MAMMAL) {
-    return parseMammal(_, subject);
-  } else if (parsed.type === KnownTypes.REPTILE) {
-    return parseReptile(_, subject);
-  } else if (parsed.type === KnownTypes.AMPHIBIAN) {
-    return parseAmphibian(_, subject);
-  } else if (parsed.type === KnownTypes.INSECT) {
-    return parseInsect(_, subject);
-  }
-  const result = SubjectSchema.safeParse(subject);
-  if (!result.success) {
-    console.error(result.error.issues);
-    return;
-  }
-  return result.data;
-}
-
-// ts/services/things.ts
-function readThing(tdb2, id) {
-  const parsed = asUrn(id);
-  return tdb2.search({
-    source: { id: parsed.id, type: parsed.type }
-  }).firstObject();
-}
-
-// ts/parsers/location.ts
-var PlaceSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  feature: z.union([z.string(), z.array(z.string())]).optional(),
-  in: z.union([z.string(), z.array(z.string())]).optional(),
-  shortName: z.string().optional(),
-  wikipedia: z.string().optional()
-});
-function parsePlace(tdb2, place) {
-  const result = PlaceSchema.safeParse(place);
-  if (!result.success) {
-    console.error(result.error.issues);
-    return;
-  }
-  const refs = result.data.in ? Array.isArray(result.data.in) ? result.data.in : [result.data.in] : [];
-  const lookedUpRefs = refs.flatMap((ref) => {
-    const obj = readThing(tdb2, ref);
-    if (!obj) {
-      return [];
-    }
-    const parsed = parseLocation(tdb2, obj);
-    if (!parsed) {
-      return [];
-    }
-    return [parsed];
-  });
-  return {
-    id: result.data.id,
-    type: "place",
-    name: result.data.name,
-    feature: result.data.feature,
-    in: lookedUpRefs,
-    shortName: result.data.shortName,
-    wikipedia: result.data.wikipedia
-  };
-}
-var CountrySchema = z.object({
-  id: z.string(),
-  flag: z.string().optional(),
-  name: z.string(),
-  contains: z.union([z.string(), z.array(z.string())]).optional()
-});
-function parseCountry(_, country) {
-  const result = CountrySchema.safeParse(country);
-  if (!result.success) {
-    console.error(result.error.issues);
-    return;
-  }
-  return {
-    id: result.data.id,
-    type: "country",
-    flag: result.data.flag,
-    name: result.data.name,
-    contains: result.data.contains
-  };
-}
-function parseLocation(tdb2, location2) {
-  if (!location2.id) {
-    return void 0;
-  }
-  const id = asUrn(location2.id);
-  if (id.type === KnownTypes.PLACE) {
-    return parsePlace(tdb2, location2);
-  } else if (id.type === KnownTypes.COUNTRY) {
-    return parseCountry(tdb2, location2);
-  }
-  return void 0;
-}
-
 // ts/numbers.ts
 function asInt(value) {
   if (typeof value === "number") {
@@ -7542,36 +7574,7 @@ function readAlbumVideosByAlbumId(tdb2, id) {
 }
 function readThingsByAlbumId(tdb2, id) {
   const photoIds = readAlbumPhotoIds(tdb2, id);
-  const locations = /* @__PURE__ */ new Set();
-  const subjects = /* @__PURE__ */ new Set();
-  for (const photoId of photoIds) {
-    const pid = asUrn(photoId);
-    const obj = tdb2.search({
-      source: { type: pid.type, id: pid.id },
-      relation: [KnownRelations.LOCATION, KnownRelations.SUBJECT]
-    }).firstObject(true);
-    if (!obj) {
-      continue;
-    }
-    const location2 = obj?.location ?? [];
-    const subject = obj?.subject ?? [];
-    for (const loc of location2) {
-      locations.add(loc);
-    }
-    for (const subj of subject) {
-      subjects.add(subj);
-    }
-  }
-  return {
-    subjects: Array.from(subjects).flatMap((id2) => {
-      const obj = readThing(tdb2, id2);
-      return obj ? [obj] : [];
-    }).map(parseSubject.bind(null, tdb2)),
-    locations: Array.from(locations).flatMap((id2) => {
-      const obj = readThing(tdb2, id2);
-      return obj ? [obj] : [];
-    }).map(parseLocation.bind(null, tdb2))
-  };
+  return readThingsByPhotoIds(tdb2, photoIds);
 }
 
 // ts/pages/albums.ts
