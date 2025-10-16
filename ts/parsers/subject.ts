@@ -1,8 +1,7 @@
 import { z } from "zod";
 import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
-import { Bird, Mammal, Reptile, Amphibian, Insect, Subject } from "../types.ts";
+import { Amphibian, Bird, Insect, Mammal, Reptile, Subject } from "../types.ts";
 import { KnownTypes } from "../constants.ts";
-
 
 const BirdSchema = z.object({
   id: z.string(),
@@ -15,14 +14,13 @@ export function parseBird(
   _: TribbleDB,
   subject: TripleObject,
 ): Bird | undefined {
-
   const result = BirdSchema.safeParse(subject);
   if (!result.success) {
     console.error(result.error.issues);
     return;
   }
 
-  return {...result.data, type: 'bird'} satisfies Bird;
+  return { ...result.data, type: "bird" } satisfies Bird;
 }
 
 const MammalSchema = z.object({
@@ -35,14 +33,13 @@ export function parseMammal(
   _: TribbleDB,
   subject: TripleObject,
 ): Mammal | undefined {
-
   const result = MammalSchema.safeParse(subject);
   if (!result.success) {
     console.error(result.error.issues);
     return;
   }
 
-  return {...result.data, type: 'mammal'} satisfies Mammal;
+  return { ...result.data, type: "mammal" } satisfies Mammal;
 }
 
 const ReptileSchema = z.object({
@@ -55,14 +52,13 @@ export function parseReptile(
   _: TribbleDB,
   subject: TripleObject,
 ): Reptile | undefined {
-
   const result = ReptileSchema.safeParse(subject);
   if (!result.success) {
     console.error(result.error.issues);
     return;
   }
 
-  return {...result.data, type: 'reptile'} satisfies Reptile;
+  return { ...result.data, type: "reptile" } satisfies Reptile;
 }
 
 const AmphibianSchema = z.object({
@@ -75,14 +71,13 @@ export function parseAmphibian(
   _: TribbleDB,
   subject: TripleObject,
 ): Amphibian | undefined {
-
   const result = AmphibianSchema.safeParse(subject);
   if (!result.success) {
     console.error(result.error.issues);
     return;
   }
 
-  return {...result.data, type: 'amphibian'} satisfies Amphibian;
+  return { ...result.data, type: "amphibian" } satisfies Amphibian;
 }
 
 const InsectSchema = z.object({
@@ -95,14 +90,13 @@ export function parseInsect(
   _: TribbleDB,
   subject: TripleObject,
 ): Insect | undefined {
-
   const result = InsectSchema.safeParse(subject);
   if (!result.success) {
     console.error(result.error.issues);
     return;
   }
 
-  return {...result.data, type: 'insect'} satisfies Insect;
+  return { ...result.data, type: "insect" } satisfies Insect;
 }
 
 const SubjectSchema = z.object({
@@ -115,7 +109,7 @@ export function parseSubject(
   _: TribbleDB,
   subject: TripleObject,
 ): Subject | undefined {
-  const parsed = asUrn(subject.id as string)
+  const parsed = asUrn(subject.id as string);
 
   if (parsed.type === KnownTypes.BIRD) {
     return parseBird(_, subject);

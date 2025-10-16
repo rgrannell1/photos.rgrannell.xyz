@@ -24,6 +24,7 @@ const PhotoSchema = z.object({
   thumbnailUrl: z.string(),
   width: z.string().optional(),
   description: z.string().optional(),
+  summary: z.string().optional(),
 });
 
 export function parsePhoto(

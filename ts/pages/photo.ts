@@ -3,6 +3,7 @@ import { Photo } from "../components/photo.ts";
 import type { Photo as PhotoType } from "../types.ts";
 import { AlbumButton } from "../components/album-button.ts";
 import { ExifData } from "../components/exif-data.ts";
+import { PhotoInfo } from "../components/photo-info.ts";
 
 type PhotoPageAttrs = {
   photo: PhotoType;
@@ -21,6 +22,7 @@ export function PhotoPage() {
       ]);
 
       const $exif = m(ExifData, { photo });
+      const $photoInfo = m(PhotoInfo, { photo });
 
       return m("section", [
         m("h1", "Photo"),
@@ -30,7 +32,13 @@ export function PhotoPage() {
           interactive: false,
         }),
         $links,
-        $exif,
+        m(
+          "div",
+          m("h3", "Photo Information"),
+          $photoInfo,
+          m("h3", "Exif Data"),
+          $exif,
+        ),
       ]);
     },
   };

@@ -153,16 +153,15 @@ function isACountry(place: Place | Country): place is Country {
   return (place as Country).type === "country";
 }
 
-export type Thing = (
-  Album |
-  Photo |
-  Video |
-  Place |
-  Country |
-  Subject |
-  Bird |
-  Mammal |
-  Reptile |
-  Amphibian |
-  Insect
-);
+export type Thing =
+  | Album
+  | Photo
+  | Video
+  | Place
+  | Country
+  | Subject
+  | Bird
+  | Mammal
+  | Reptile
+  | Amphibian
+  | Insect;

@@ -1,11 +1,10 @@
-
 import m from "mithril";
 import { Thing } from "../types";
 
 type AlbumThingsAttrs = {
-  locations: Thing[]
-  subjects: Thing[]
-}
+  locations: Thing[];
+  subjects: Thing[];
+};
 
 export function AlbumThings() {
   return {
@@ -13,9 +12,9 @@ export function AlbumThings() {
       const { locations, subjects } = vnode.attrs;
 
       //console.log(locations)
-      console.log(subjects)
+      console.log(subjects);
 
       // TODO
-    }
-  }
+    },
+  };
 }

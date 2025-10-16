@@ -33,6 +33,7 @@ export class KnownRelations {
   static YEAR = "year";
   static CONTAINS = "contains";
   static IN = "in";
+  static STYLE = "style";
   // horrible
   static FLAGS = "flags";
 }

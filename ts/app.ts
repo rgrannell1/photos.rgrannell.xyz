@@ -72,7 +72,10 @@ export function AlbumApp(): m.Component<AppAttrs> {
         return m("p", "Album not found");
       }
 
-      const { subjects, locations  } = readThingsByAlbumId(state.data, state.currentAlbum)
+      const { subjects, locations } = readThingsByAlbumId(
+        state.data,
+        state.currentAlbum,
+      );
 
       return m("body", [
         m("div.photos-app", [

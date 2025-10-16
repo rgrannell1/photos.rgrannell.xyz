@@ -47,6 +47,40 @@ export function convertCountriesToUrns(triple: Triple): Triple[] {
   ]];
 }
 
+const styleNames = new Set<string>();
+export function convertStylesToUrns(triple: Triple): Triple[] {
+  const [src, rel, tgt] = triple;
+
+  if (rel !== KnownRelations.STYLE) {
+    return [triple];
+  }
+
+  const id = tgt.toLowerCase().replace(/ /g, "-");
+  const styleUrn = `urn:ró:style:${id}`;
+
+  if (!styleNames.has(tgt)) {
+    styleNames.add(tgt);
+    return [
+      [
+        src,
+        rel,
+        styleUrn,
+      ],
+      [
+        styleUrn,
+        KnownRelations.NAME,
+        tgt,
+      ],
+    ];
+  } else {
+    return [[
+      src,
+      rel,
+      styleUrn,
+    ]];
+  }
+}
+
 /*
  * Expand CDN urls with their endpoint
  */
@@ -237,6 +271,7 @@ export function deriveTriples(
   const tripleProcessors = [
     convertRatingsToUrns,
     convertCountriesToUrns,
+    convertStylesToUrns,
     convertRelationCasing,
     expandCdnUrls,
     expandUrns,
