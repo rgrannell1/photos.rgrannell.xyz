@@ -77,9 +77,9 @@ function ShutterSpeed() {
         if (isNaN(parsed)) {
           return m("td", "Unknown");
         } else if (parsed >= 1) {
-          return m("td", `${parsed}s`);
+          return m("td", `${parsed} s`);
         } else {
-          return m("td", `1/${Math.round(1 / parsed)}s`);
+          return m("td", `1/${Math.round(1 / parsed)} s`);
         }
       }
 

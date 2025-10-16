@@ -8022,9 +8022,9 @@ function ShutterSpeed() {
         if (isNaN(parsed)) {
           return (0, import_mithril19.default)("td", "Unknown");
         } else if (parsed >= 1) {
-          return (0, import_mithril19.default)("td", `${parsed}s`);
+          return (0, import_mithril19.default)("td", `${parsed} s`);
         } else {
-          return (0, import_mithril19.default)("td", `1/${Math.round(1 / parsed)}s`);
+          return (0, import_mithril19.default)("td", `1/${Math.round(1 / parsed)} s`);
         }
       }
       return (0, import_mithril19.default)("td", "Unknown");
@@ -8215,7 +8215,7 @@ function AlbumsApp() {
     },
     view(vnode) {
       return (0, import_mithril22.default)("body", [
-        (0, import_mithril22.default)("div.photos-app", [
+        (0, import_mithril22.default)("div.photos-app", { class: state.darkMode ? "dark-mode" : void 0 }, [
           (0, import_mithril22.default)(Header, state),
           (0, import_mithril22.default)("div.app-container", [
             (0, import_mithril22.default)(Sidebar, { visible: state.sidebarVisible }),
@@ -8249,7 +8249,7 @@ function AlbumApp() {
         state.currentAlbum
       );
       return (0, import_mithril22.default)("body", [
-        (0, import_mithril22.default)("div.photos-app", [
+        (0, import_mithril22.default)("div.photos-app", { class: state.darkMode ? "dark-mode" : void 0 }, [
           (0, import_mithril22.default)(Header, state),
           (0, import_mithril22.default)("div.app-container", [
             (0, import_mithril22.default)(Sidebar, { visible: state.sidebarVisible }),
@@ -8270,7 +8270,7 @@ function AboutApp() {
   return {
     view() {
       return (0, import_mithril22.default)("body", [
-        (0, import_mithril22.default)("div.photos-app", [
+        (0, import_mithril22.default)("div.photos-app", { class: state.darkMode ? "dark-mode" : void 0 }, [
           (0, import_mithril22.default)(Header, state),
           (0, import_mithril22.default)("div.app-container", [
             (0, import_mithril22.default)(Sidebar, { visible: state.sidebarVisible }),
@@ -8285,7 +8285,7 @@ function VideosApp() {
   return {
     view() {
       return (0, import_mithril22.default)("body", [
-        (0, import_mithril22.default)("div.photos-app", [
+        (0, import_mithril22.default)("div.photos-app", { class: state.darkMode ? "dark-mode" : void 0 }, [
           (0, import_mithril22.default)(Header, state),
           (0, import_mithril22.default)("div.app-container", [
             (0, import_mithril22.default)(Sidebar, { visible: state.sidebarVisible }),
@@ -8302,7 +8302,7 @@ function PhotosApp() {
   return {
     view() {
       return (0, import_mithril22.default)("body", [
-        (0, import_mithril22.default)("div.photos-app", [
+        (0, import_mithril22.default)("div.photos-app", { class: state.darkMode ? "dark-mode" : void 0 }, [
           (0, import_mithril22.default)(Header, state),
           (0, import_mithril22.default)("div.app-container", [
             (0, import_mithril22.default)(Sidebar, { visible: state.sidebarVisible }),
@@ -8319,7 +8319,7 @@ function ThingApp() {
   return {
     view() {
       return (0, import_mithril22.default)("body", [
-        (0, import_mithril22.default)("div.photos-app", [
+        (0, import_mithril22.default)("div.photos-app", { class: state.darkMode ? "dark-mode" : void 0 }, [
           (0, import_mithril22.default)(Header, state),
           (0, import_mithril22.default)("div.app-container", [
             (0, import_mithril22.default)(Sidebar, { visible: state.sidebarVisible })
@@ -8344,7 +8344,7 @@ function PhotoApp() {
         return (0, import_mithril22.default)("p", "Photo not found");
       }
       return (0, import_mithril22.default)("body", [
-        (0, import_mithril22.default)("div.photos-app", [
+        (0, import_mithril22.default)("div.photos-app", { class: state.darkMode ? "dark-mode" : void 0 }, [
           (0, import_mithril22.default)(Header, state),
           (0, import_mithril22.default)("div.app-container", [
             (0, import_mithril22.default)(Sidebar, { visible: state.sidebarVisible }),
