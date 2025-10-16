@@ -8,12 +8,14 @@ export function AboutPage() {
       Windows.setTitle("About - photos");
     },
     view() {
+      const years = new Date().getFullYear() - 2012;
+
       return m("div", [
         m("section.about-page", [
           m("h1", "About"),
           m(
             "p",
-            "I started taking photos back in 2012, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things ",
+            `I started taking photos ${years} years ago, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things`,
             m("a", {
               href: "https://photos.rgrannell.xyz/#/thing/rating:⭐⭐⭐⭐⭐",
               onclick: navigate(`/thing/rating:⭐⭐⭐⭐⭐`),

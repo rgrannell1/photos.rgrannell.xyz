@@ -7657,12 +7657,13 @@ function AboutPage() {
       Windows.setTitle("About - photos");
     },
     view() {
+      const years = (/* @__PURE__ */ new Date()).getFullYear() - 2012;
       return (0, import_mithril10.default)("div", [
         (0, import_mithril10.default)("section.about-page", [
           (0, import_mithril10.default)("h1", "About"),
           (0, import_mithril10.default)(
             "p",
-            "I started taking photos back in 2012, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things ",
+            `I started taking photos ${years} years ago, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things`,
             (0, import_mithril10.default)("a", {
               href: "https://photos.rgrannell.xyz/#/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50",
               onclick: navigate(`/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50`)
