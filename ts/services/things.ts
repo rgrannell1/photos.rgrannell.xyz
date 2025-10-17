@@ -14,6 +14,23 @@ export function readThing(
   }).firstObject();
 }
 
+export function readThings(
+  tdb: TribbleDB,
+  ids: Set<string>,
+): TripleObject[] {
+  const things: TripleObject[] = [];
+
+  for (const id of ids) {
+    const thing = readThing(tdb, id);
+    if (thing) {
+      things.push(thing);
+    }
+  }
+
+  return things;
+}
+
+// TODO: remove mithril, move to presenter
 export function toThingLinks(tdb: TribbleDB, urns: (string | undefined)[]): m.Vnode<ThingLinkAttrs, {}>[] {
   return urns.flatMap((urn) => {
     if (!urn) {

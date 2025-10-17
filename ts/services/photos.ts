@@ -1,8 +1,8 @@
 import { KnownRelations, PHOTO_WIDTH } from "../constants";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
-import { Photo } from "../types.ts";
+import { Photo, Place, Subject } from "../types.ts";
 import { parsePhoto } from "../parsers/photo.ts";
-import { readThing } from "./things.ts";
+import { readThing, readThings } from "./things.ts";
 import { parseSubject } from "../parsers/subject.ts";
 import { parseLocation } from "../parsers/location.ts";
 
@@ -66,6 +66,7 @@ export function readPhotos(tdb: TribbleDB): Photo[] {
   });
 }
 
+// TODO: read thing + find general parser pattern
 export function readPhotoById(tdb: TribbleDB, id: string): Photo | undefined {
   const parsed = asUrn(id);
 
@@ -80,7 +81,10 @@ export function readPhotoById(tdb: TribbleDB, id: string): Photo | undefined {
   return parsePhoto(tdb, result[0]);
 }
 
-export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>) {
+export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
+  locations: Place[];
+  subjects: Subject[];
+} {
   const locations = new Set<string>();
   const subjects = new Set<string>();
 
@@ -108,17 +112,11 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>) {
   }
 
   return {
-    subjects: Array.from(subjects)
-      .flatMap((id) => {
-        const obj = readThing(tdb, id);
-        return obj ? [obj] : [];
-      })
-      .map(parseSubject.bind(null, tdb)),
-    locations: Array.from(locations)
-      .flatMap((id) => {
-        const obj = readThing(tdb, id);
-        return obj ? [obj] : [];
-      })
-      .map(parseLocation.bind(null, tdb)),
+    subjects: readThings(tdb, subjects)
+          .map(parseSubject.bind(null, tdb))
+          .filter((subj): subj is Subject => subj !== undefined),
+    locations: readThings(tdb, locations)
+      .map(parseLocation.bind(null, tdb))
+      .filter((loc): loc is Place => loc !== undefined)
   };
 }

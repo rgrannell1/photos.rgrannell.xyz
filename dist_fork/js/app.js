@@ -3022,6 +3022,16 @@ function readThing(tdb2, id) {
     source: { id: parsed.id, type: parsed.type }
   }).firstObject();
 }
+function readThings(tdb2, ids) {
+  const things = [];
+  for (const id of ids) {
+    const thing = readThing(tdb2, id);
+    if (thing) {
+      things.push(thing);
+    }
+  }
+  return things;
+}
 function toThingLinks(tdb2, urns) {
   return urns.flatMap((urn) => {
     if (!urn) {
@@ -7181,14 +7191,8 @@ function readThingsByPhotoIds(tdb2, photoIds) {
     }
   }
   return {
-    subjects: Array.from(subjects).flatMap((id) => {
-      const obj = readThing(tdb2, id);
-      return obj ? [obj] : [];
-    }).map(parseSubject.bind(null, tdb2)),
-    locations: Array.from(locations).flatMap((id) => {
-      const obj = readThing(tdb2, id);
-      return obj ? [obj] : [];
-    }).map(parseLocation.bind(null, tdb2))
+    subjects: readThings(tdb2, subjects).map(parseSubject.bind(null, tdb2)).filter((subj) => subj !== void 0),
+    locations: readThings(tdb2, locations).map(parseLocation.bind(null, tdb2)).filter((loc) => loc !== void 0)
   };
 }
 
