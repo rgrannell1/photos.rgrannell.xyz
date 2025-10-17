@@ -1,6 +1,7 @@
 import m from "mithril";
 import { Photo as PhotoType, Services } from "../types.ts";
 import { ThingLink } from "./thing-link.ts";
+import { arrayify } from "../arrays.ts";
 
 type HeadingAttrs = {
   text: string;
@@ -39,11 +40,8 @@ function Location() {
   return {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
       const { photo, services } = vnode.attrs;
-      const locations = Array.isArray(photo.location)
-        ? photo.location
-        : [photo.location];
 
-      const $locations = services.toThingLinks(locations);
+      const $locations = services.toThingLinks(arrayify(photo.location));
       return m("td", $locations.length > 0 ? $locations : "—");
     },
   };
@@ -76,7 +74,7 @@ function Subject() {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
       const { photo, services } = vnode.attrs;
 
-      const $subject = services.toThingLinks([photo.subject]);
+      const $subject = services.toThingLinks(arrayify(photo.subject));
       return m("td", $subject.length > 0 ? $subject : "—");
     },
   };
@@ -111,7 +109,7 @@ export function PhotoInfo() {
         ]),
         m("tr", [
           m(Heading, { text: "Subject" }),
-          //m(Subject, { photo, services }),
+          m(Subject, { photo, services }),
         ]),
       ];
 

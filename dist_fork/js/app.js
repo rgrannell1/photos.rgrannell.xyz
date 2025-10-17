@@ -3001,6 +3001,20 @@ function ThingLink() {
   };
 }
 
+// ts/arrays.ts
+function arrayify(value) {
+  if (value === void 0) {
+    return [];
+  }
+  return Array.isArray(value) ? value : [value];
+}
+function one(value) {
+  if (value === void 0) {
+    return void 0;
+  }
+  return Array.isArray(value) ? value[0] : value;
+}
+
 // ts/services/things.ts
 function readThing(tdb2, id) {
   const parsed = asUrn(id);
@@ -3017,9 +3031,10 @@ function toThingLinks(tdb2, urns) {
     if (!thing || !thing.name) {
       return [];
     }
+    const id = asUrn(urn);
     return [(0, import_mithril3.default)(ThingLink, {
       urn,
-      name: Array.isArray(thing.name) ? thing.name[0] : thing.name,
+      name: one(thing.name) ?? id.id,
       classes: []
     })];
   });
@@ -7027,7 +7042,7 @@ function parsePlace(tdb2, place) {
     console.error(result.error.issues);
     return;
   }
-  const refs = result.data.in ? Array.isArray(result.data.in) ? result.data.in : [result.data.in] : [];
+  const refs = arrayify(result.data.in);
   const lookedUpRefs = refs.flatMap((ref) => {
     const obj = readThing(tdb2, ref);
     if (!obj) {
@@ -7546,7 +7561,7 @@ function parseAlbum(tdb2, album) {
       `Invalid album object: ${JSON.stringify(result.error.issues)}`
     );
   }
-  const countryNames = Array.isArray(result.data.flags) ? result.data.flags : [result.data.flags];
+  const countryNames = arrayify(result.data.flags);
   const countries = countryNames.flatMap((countryName) => {
     const urn = countryNameToUrn(tdb2, countryName);
     const flag = urn ? urnToFlag(tdb2, urn) : void 0;
@@ -8153,8 +8168,7 @@ function Location() {
   return {
     view(vnode) {
       const { photo, services } = vnode.attrs;
-      const locations = Array.isArray(photo.location) ? photo.location : [photo.location];
-      const $locations = services.toThingLinks(locations);
+      const $locations = services.toThingLinks(arrayify(photo.location));
       return (0, import_mithril21.default)("td", $locations.length > 0 ? $locations : "\u2014");
     }
   };
@@ -8174,6 +8188,15 @@ function Style() {
       const { photo, services } = vnode.attrs;
       const $style = services.toThingLinks([photo.style]);
       return (0, import_mithril21.default)("td", $style.length > 0 ? $style : "\u2014");
+    }
+  };
+}
+function Subject() {
+  return {
+    view(vnode) {
+      const { photo, services } = vnode.attrs;
+      const $subject = services.toThingLinks(arrayify(photo.subject));
+      return (0, import_mithril21.default)("td", $subject.length > 0 ? $subject : "\u2014");
     }
   };
 }
@@ -8199,8 +8222,8 @@ function PhotoInfo() {
           (0, import_mithril21.default)(Style, { photo, services })
         ]),
         (0, import_mithril21.default)("tr", [
-          (0, import_mithril21.default)(Heading2, { text: "Subject" })
-          //m(Subject, { photo, services }),
+          (0, import_mithril21.default)(Heading2, { text: "Subject" }),
+          (0, import_mithril21.default)(Subject, { photo, services })
         ])
       ];
       return (0, import_mithril21.default)("table.metadata-table", infoItems);

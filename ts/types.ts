@@ -63,6 +63,7 @@ export type Photo = {
   style?: string;
   thumbnailUrl: string;
   width?: string;
+  subject?: string | string[];
 
   // TODO.
   description?: string;

@@ -3,6 +3,7 @@ import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { KnownTypes } from "../constants";
 import { Country, Place } from "../types";
 import { readThing } from "../services/things";
+import { arrayify } from "../arrays";
 
 const PlaceSchema = z.object({
   id: z.string(),
@@ -23,9 +24,7 @@ export function parsePlace(
     return;
   }
 
-  const refs = result.data.in
-    ? Array.isArray(result.data.in) ? result.data.in : [result.data.in]
-    : [];
+  const refs = arrayify(result.data.in);
 
   const lookedUpRefs = refs.flatMap((ref) => {
     const obj = readThing(tdb, ref);

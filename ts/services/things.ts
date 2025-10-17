@@ -1,6 +1,7 @@
 import m from "mithril";
 import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { ThingLink, ThingLinkAttrs } from "../components/thing-link.ts";
+import { one } from "../arrays.ts";
 
 export function readThing(
   tdb: TribbleDB,
@@ -23,9 +24,11 @@ export function toThingLinks(tdb: TribbleDB, urns: (string | undefined)[]): m.Vn
       return [];
     }
 
+    const id = asUrn(urn);
+
     return [m(ThingLink, {
       urn,
-      name: Array.isArray(thing.name) ? thing.name[0] : thing.name,
+      name: one(thing.name) ?? id.id,
       classes: [],
     })];
   });

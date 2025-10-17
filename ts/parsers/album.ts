@@ -3,6 +3,7 @@ import { asInt } from "../numbers";
 import { countryNameToUrn, urnToFlag } from "../semantic/names";
 import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { Album } from "../types";
+import { arrayify } from "../arrays";
 
 const AlbumSchema = z.object({
   name: z.string(),
@@ -32,9 +33,7 @@ export function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
     );
   }
 
-  const countryNames = Array.isArray(result.data.flags)
-    ? result.data.flags
-    : [result.data.flags];
+  const countryNames = arrayify(result.data.flags);
 
   const countries = countryNames.flatMap((countryName: string) => {
     const urn = countryNameToUrn(tdb, countryName);
