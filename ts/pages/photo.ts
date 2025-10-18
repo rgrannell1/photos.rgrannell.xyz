@@ -17,7 +17,9 @@ export function PhotoPage() {
 
       const $links = m("p", [
         m("a", { href: photo.fullImage, rel: "noreferrer" }, "[webp]"),
+        " ",
         m("a", { href: photo.pngUrl, rel: "noreferrer" }, "[png]"),
+        " ",
         // [share]
         m(AlbumButton, { id: photo.albumId }),
       ]);

@@ -3054,7 +3054,7 @@ function toThingLinks(tdb2, urns) {
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    "/manifest/tribbles.c47017e786.txt",
+    "/manifest/tribbles.2376d42ac8.txt",
     schema,
     deriveTriples
   );
@@ -8242,7 +8242,9 @@ function PhotoPage() {
       const { photo, services } = vnode.attrs;
       const $links = (0, import_mithril22.default)("p", [
         (0, import_mithril22.default)("a", { href: photo.fullImage, rel: "noreferrer" }, "[webp]"),
+        " ",
         (0, import_mithril22.default)("a", { href: photo.pngUrl, rel: "noreferrer" }, "[png]"),
+        " ",
         // [share]
         (0, import_mithril22.default)(AlbumButton, { id: photo.albumId })
       ]);

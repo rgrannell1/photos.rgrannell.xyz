@@ -8,7 +8,7 @@ import { readThing, toThingLinks } from "./services/things.ts";
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    "/manifest/tribbles.c47017e786.txt",
+    "/manifest/tribbles.2376d42ac8.txt",
     schema,
     deriveTriples,
   );
