@@ -7998,7 +7998,9 @@ function AlbumPage() {
         (0, import_mithril17.default)("p.photo-album-countries", $countryLinks),
         (0, import_mithril17.default)("p.photo-album-description", import_mithril17.default.trust(description ?? "")),
         (0, import_mithril17.default)(AlbumShareButton, { url: location.href, name }),
+        " ",
         (0, import_mithril17.default)(AlbumsButton),
+        " ",
         (0, import_mithril17.default)(AlbumThings, { subjects, locations })
       ]);
       const $photosList = photos.map((photo, idx) => {

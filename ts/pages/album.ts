@@ -77,7 +77,9 @@ export function AlbumPage() {
         m("p.photo-album-countries", $countryLinks),
         m("p.photo-album-description", m.trust(description ?? "")),
         m(AlbumShareButton, { url: location.href, name }),
+        " ",
         m(AlbumsButton),
+        " ",
         m(AlbumThings, { subjects, locations }),
       ]);
 
