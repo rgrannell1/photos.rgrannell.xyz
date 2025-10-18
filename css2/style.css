@@ -33,6 +33,7 @@
   --tag-color-4: #4c55f7;
   --tag-color-5: #4cbef7;
   --tag-color-6: #b371ff;
+  --tag-color-7: #100b2a;
 }
 
 .dark-mode {
@@ -501,6 +502,7 @@ button:disabled {
 .reptile-link,
 .fish-link,
 .amphibian-link,
+.place-link,
 .insect-link {
   color: black;
   border: solid 2px lightgray;
@@ -540,6 +542,10 @@ button:disabled {
 
 .insect-link, .insect-binomial {
   border-left: 10px solid var(--tag-color-6);
+}
+
+.place-link {
+  border-left: 10px solid var(--tag-color-7);
 }
 
 .unesco-links {

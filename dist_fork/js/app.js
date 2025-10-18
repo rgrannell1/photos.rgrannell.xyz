@@ -7738,7 +7738,7 @@ function AboutPage() {
             (0, import_mithril12.default)("a", {
               href: "https://photos.rgrannell.xyz/#/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50",
               onclick: navigate(`/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50`)
-            }, "I found beautiful in this world.")
+            }, " I found beautiful in this world.")
           ),
           (0, import_mithril12.default)("h2", "Can I use the photos on this site?"),
           (0, import_mithril12.default)(

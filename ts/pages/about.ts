@@ -19,7 +19,7 @@ export function AboutPage() {
             m("a", {
               href: "https://photos.rgrannell.xyz/#/thing/rating:⭐⭐⭐⭐⭐",
               onclick: navigate(`/thing/rating:⭐⭐⭐⭐⭐`),
-            }, "I found beautiful in this world."),
+            }, " I found beautiful in this world."),
           ),
           m("h2", "Can I use the photos on this site?"),
           m(
