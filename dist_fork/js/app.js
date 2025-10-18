@@ -2760,6 +2760,46 @@ var CURIES = {
 };
 var CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
 var ENDPOINT = "https://photos-cdn.rgrannell.xyz";
+var PLACE_FEATURES_TO_EMOJI = {
+  aquarium: "\u{1F420}",
+  archaeological: "\u{1F3FA}",
+  beach: "\u{1F3D6}\uFE0F",
+  bridge: "\u{1F309}",
+  canal: "\u{1F6A4}",
+  castle: "\u{1F3F0}",
+  cathedral: "\u26EA",
+  cave: "\u{1F573}\uFE0F",
+  city: "\u{1F3D9}\uFE0F",
+  cliffs: "\u26F0\uFE0F",
+  county: "\u{1F5FA}\uFE0F",
+  district: "\u{1F3D8}\uFE0F",
+  garden: "\u{1F33A}",
+  harbor: "\u2693",
+  island: "\u{1F3DD}\uFE0F",
+  lake: "\u{1F3DE}\uFE0F",
+  monument: "\u{1F5FF}",
+  mosque: "\u{1F54C}",
+  mountain: "\u{1F3D4}\uFE0F",
+  mountains: "\u{1F3D4}\uFE0F",
+  museum: "\u{1F3DB}\uFE0F",
+  national: "\u{1F1FA}\u{1F1F3}",
+  nature: "\u{1F33F}",
+  palace: "\u{1F3EF}",
+  park: "\u{1F333}",
+  port: "\u{1F6F3}\uFE0F",
+  rainforest: "\u{1F334}",
+  square: "\u{1F3E2}",
+  state: "\u{1F3DB}\uFE0F",
+  street: "\u{1F6B6}\u200D\u2642\uFE0F",
+  town: "\u{1F3D8}\uFE0F",
+  train: "\u{1F686}",
+  unesco: "\u{1F3DB}\uFE0F",
+  village: "\u{1F3E1}",
+  volcano: "\u{1F30B}",
+  waterfall: "\u{1F4A6}",
+  wildlife: "\u{1F981}",
+  zoo: "\u{1F993}"
+};
 
 // ts/strings.ts
 var Strings = class {
@@ -2987,19 +3027,6 @@ var import_mithril3 = __toESM(require_mithril());
 
 // ts/components/thing-link.ts
 var import_mithril2 = __toESM(require_mithril());
-function ThingLink() {
-  return {
-    view(vnode) {
-      const { urn, name, classes } = vnode.attrs;
-      const { type, id } = asUrn(urn);
-      return (0, import_mithril2.default)("a", {
-        href: urn,
-        onclick: navigate(`/thing/${type}:${id}`),
-        class: ["thing-link", `${type}-link`].join(" ")
-      }, name);
-    }
-  };
-}
 
 // ts/arrays.ts
 function arrayify(value) {
@@ -3013,6 +3040,35 @@ function one(value) {
     return void 0;
   }
   return Array.isArray(value) ? value[0] : value;
+}
+
+// ts/components/thing-link.ts
+function thingEmoji(urn, name, thing) {
+  const { type } = asUrn(urn);
+  if (type === KnownTypes.PLACE) {
+    const feature = one(thing.feature);
+    const { id: featureId } = asUrn(feature);
+    if (PLACE_FEATURES_TO_EMOJI.hasOwnProperty(featureId)) {
+      return PLACE_FEATURES_TO_EMOJI[featureId];
+    }
+    return "\u{1F4CD}";
+  }
+  return "";
+}
+function ThingLink() {
+  return {
+    view(vnode) {
+      const { urn, name, thing } = vnode.attrs;
+      console.log(thing);
+      const { type, id } = asUrn(urn);
+      const emoji = thingEmoji(urn, name, thing);
+      return (0, import_mithril2.default)("a", {
+        href: urn,
+        onclick: navigate(`/thing/${type}:${id}`),
+        class: ["thing-link", `${type}-link`].join(" ")
+      }, `${emoji}	${name}`);
+    }
+  };
 }
 
 // ts/services/things.ts
@@ -3044,8 +3100,8 @@ function toThingLinks(tdb2, urns) {
     const id = asUrn(urn);
     return [(0, import_mithril3.default)(ThingLink, {
       urn,
-      name: one(thing.name) ?? id.id,
-      classes: []
+      thing: readThing(tdb2, urn),
+      name: one(thing.name) ?? id.id
     })];
   });
 }

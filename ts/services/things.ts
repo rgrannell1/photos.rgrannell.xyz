@@ -45,8 +45,8 @@ export function toThingLinks(tdb: TribbleDB, urns: (string | undefined)[]): m.Vn
 
     return [m(ThingLink, {
       urn,
-      name: one(thing.name) ?? id.id,
-      classes: [],
+      thing: readThing(tdb, urn),
+      name: one(thing.name) ?? id.id
     })];
   });
 }
