@@ -113,10 +113,10 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
 
   return {
     subjects: readThings(tdb, subjects)
-          .map(parseSubject.bind(null, tdb))
-          .filter((subj): subj is Subject => subj !== undefined),
+      .map(parseSubject.bind(null, tdb))
+      .filter((subj): subj is Subject => subj !== undefined),
     locations: readThings(tdb, locations)
       .map(parseLocation.bind(null, tdb))
-      .filter((loc): loc is Place => loc !== undefined)
+      .filter((loc): loc is Place => loc !== undefined),
   };
 }

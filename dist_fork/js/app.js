@@ -2768,7 +2768,7 @@ var PLACE_FEATURES_TO_EMOJI = {
   canal: "\u{1F6A4}",
   castle: "\u{1F3F0}",
   cathedral: "\u26EA",
-  cave: "\u{1F573}\uFE0F",
+  cave: "\u26CF\uFE0F",
   city: "\u{1F3D9}\uFE0F",
   cliffs: "\u26F0\uFE0F",
   county: "\u{1F5FA}\uFE0F",
@@ -2999,8 +2999,16 @@ var HARD_CODED_TRIPLES = [
   ["urn:r\xF3:rating:%E2%AD%90", KnownRelations.NAME, "\u2B50"],
   ["urn:r\xF3:rating:%E2%AD%90%E2%AD%90", KnownRelations.NAME, "\u2B50\u2B50"],
   ["urn:r\xF3:rating:%E2%AD%90%E2%AD%90%E2%AD%90", KnownRelations.NAME, "\u2B50\u2B50\u2B50"],
-  ["urn:r\xF3:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90", KnownRelations.NAME, "\u2B50\u2B50\u2B50\u2B50"],
-  ["urn:r\xF3:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90", KnownRelations.NAME, "\u2B50\u2B50\u2B50\u2B50\u2B50"]
+  [
+    "urn:r\xF3:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90",
+    KnownRelations.NAME,
+    "\u2B50\u2B50\u2B50\u2B50"
+  ],
+  [
+    "urn:r\xF3:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90",
+    KnownRelations.NAME,
+    "\u2B50\u2B50\u2B50\u2B50\u2B50"
+  ]
 ];
 function deriveTriples(triple) {
   const tripleProcessors = [
@@ -3052,199 +3060,23 @@ function thingEmoji(urn, name, thing) {
       return PLACE_FEATURES_TO_EMOJI[featureId];
     }
     return "\u{1F4CD}";
+  } else if (type === KnownTypes.BIRD) {
+    return "\u{1F424}";
   }
   return "";
 }
 function ThingLink() {
   return {
     view(vnode) {
-      const { urn, name, thing } = vnode.attrs;
-      console.log(thing);
+      const { urn, thing } = vnode.attrs;
       const { type, id } = asUrn(urn);
+      const name = one(thing.name) ?? id;
       const emoji = thingEmoji(urn, name, thing);
       return (0, import_mithril2.default)("a", {
         href: urn,
         onclick: navigate(`/thing/${type}:${id}`),
         class: ["thing-link", `${type}-link`].join(" ")
       }, `${emoji}	${name}`);
-    }
-  };
-}
-
-// ts/services/things.ts
-function readThing(tdb2, id) {
-  const parsed = asUrn(id);
-  return tdb2.search({
-    source: { id: parsed.id, type: parsed.type }
-  }).firstObject();
-}
-function readThings(tdb2, ids) {
-  const things = [];
-  for (const id of ids) {
-    const thing = readThing(tdb2, id);
-    if (thing) {
-      things.push(thing);
-    }
-  }
-  return things;
-}
-function toThingLinks(tdb2, urns) {
-  return urns.flatMap((urn) => {
-    if (!urn) {
-      return [];
-    }
-    const thing = readThing(tdb2, urn);
-    if (!thing || !thing.name) {
-      return [];
-    }
-    const id = asUrn(urn);
-    return [(0, import_mithril3.default)(ThingLink, {
-      urn,
-      thing: readThing(tdb2, urn),
-      name: one(thing.name) ?? id.id
-    })];
-  });
-}
-
-// ts/state.ts
-async function loadData() {
-  const schema = {};
-  const db = await loadTriples(
-    "/manifest/tribbles.2376d42ac8.txt",
-    schema,
-    deriveTriples
-  );
-  db.add(HARD_CODED_TRIPLES);
-  return db;
-}
-function loadServices(data) {
-  return {
-    readThing: readThing.bind(null, data),
-    toThingLinks: toThingLinks.bind(null, data)
-  };
-}
-async function loadState() {
-  const data = await loadData();
-  return {
-    darkMode: DarkModes.load(),
-    sidebarVisible: false,
-    data,
-    currentAlbum: void 0,
-    currentPhoto: void 0,
-    services: loadServices(data)
-  };
-}
-
-// ts/components/sidebar.ts
-var import_mithril4 = __toESM(require_mithril());
-function SidebarItem() {
-  return {
-    view(vnode) {
-      return (0, import_mithril4.default)("li", {
-        class: "sidebar-item",
-        onclick() {
-          import_mithril4.default.route.set(vnode.attrs.route);
-        }
-      }, vnode.attrs.name);
-    }
-  };
-}
-function Sidebar() {
-  function classes(visible) {
-    const cls = ["photo-sidebar"];
-    if (visible) {
-      cls.push("sidebar-visible");
-    }
-    return cls.join(" ");
-  }
-  return {
-    view(vnode) {
-      return (0, import_mithril4.default)("aside", { class: classes(vnode.attrs.visible) }, [
-        (0, import_mithril4.default)("nav", [
-          (0, import_mithril4.default)("ul", [
-            (0, import_mithril4.default)(SidebarItem, { name: "PHOTOS", route: "/photos" }),
-            (0, import_mithril4.default)(SidebarItem, { name: "VIDEOS", route: "/videos" }),
-            (0, import_mithril4.default)(SidebarItem, { name: "ALBUMS", route: "/albums" }),
-            (0, import_mithril4.default)(SidebarItem, { name: "ABOUT", route: "/about" })
-          ])
-        ])
-      ]);
-    }
-  };
-}
-
-// ts/pages/albums.ts
-var import_mithril11 = __toESM(require_mithril());
-
-// ts/components/album-stats.ts
-var import_mithril5 = __toESM(require_mithril());
-
-// ts/stats.json
-var stats_default = {
-  photos: 1203,
-  albums: 106,
-  years: 13,
-  countries: 18,
-  bird_species: 142,
-  mammal_species: 55,
-  reptile_species: 5,
-  amphibian_species: 3,
-  fish_species: 1,
-  unesco_sites: 8
-};
-
-// ts/components/album-stats.ts
-function validateState(stats) {
-  if (typeof stats !== "object" || stats === null) {
-    throw new Error("Stats is not an object");
-  }
-  const keys = [
-    "photos",
-    "albums",
-    "years",
-    "countries",
-    "bird_species",
-    "mammal_species",
-    "amphibian_species",
-    "reptile_species",
-    "unesco_sites"
-  ];
-  for (const key of keys) {
-    if (!(key in stats)) {
-      throw new Error(`Stats is missing key: ${key}`);
-    }
-    if (typeof stats[key] !== "number") {
-      throw new Error(`Stats key ${key} is not a number`);
-    }
-  }
-}
-function AlbumStats() {
-  validateState(stats_default);
-  return {
-    view() {
-      return (0, import_mithril5.default)("p.photo-stats", [
-        `${stats_default.photos} `,
-        (0, import_mithril5.default)("a", { href: "#/photos" }, "photos"),
-        " \xB7 ",
-        (0, import_mithril5.default)("a", { href: "#/videos" }, "videos"),
-        " \xB7 ",
-        `${stats_default.albums} albums \xB7 ${stats_default.years} years \xB7 `,
-        `${stats_default.countries} `,
-        (0, import_mithril5.default)("a", { href: "#/listing/country" }, "countries"),
-        " \xB7 ",
-        `${stats_default.bird_species} `,
-        (0, import_mithril5.default)("a", { href: "#/listing/bird" }, "bird species"),
-        " \xB7 ",
-        `${stats_default.mammal_species} `,
-        (0, import_mithril5.default)("a", { href: "#/listing/mammal" }, "mammal species"),
-        " \xB7 a few ",
-        (0, import_mithril5.default)("a", { href: "#/listing/amphibian" }, "amphibians"),
-        " and ",
-        (0, import_mithril5.default)("a", { href: "#/listing/reptile" }, "reptiles"),
-        " \xB7 ",
-        `${stats_default.unesco_sites} `,
-        (0, import_mithril5.default)("a", { href: "#/thing/unesco:*" }, "UNESCO sites")
-      ]);
     }
   };
 }
@@ -6966,6 +6798,143 @@ var z = /* @__PURE__ */ Object.freeze({
   ZodError
 });
 
+// ts/numbers.ts
+function asInt(value) {
+  if (typeof value === "number") {
+    return value;
+  }
+  return parseInt(value, 10);
+}
+
+// ts/semantic/names.ts
+function countryNameToUrn(tdb2, name) {
+  return tdb2.search({
+    source: { type: "country" },
+    relation: KnownRelations.NAME,
+    target: name
+  }).firstSource();
+}
+function urnToFlag(tdb2, urn) {
+  return tdb2.search({
+    source: asUrn(urn),
+    relation: KnownRelations.FLAG
+  }).firstTarget();
+}
+
+// ts/parsers/album.ts
+var AlbumSchema = z.object({
+  name: z.string(),
+  minDate: z.string(),
+  maxDate: z.string(),
+  thumbnailUrl: z.string(),
+  mosaic: z.any(),
+  id: z.string(),
+  photosCount: z.string(),
+  videosCount: z.string(),
+  flags: z.any(),
+  description: z.string().optional()
+});
+function parseAlbum(tdb2, album) {
+  const result = AlbumSchema.safeParse(album);
+  if (!result.success) {
+    throw new Error(
+      `Invalid album object: ${JSON.stringify(result.error.issues)}`
+    );
+  }
+  const countryNames = arrayify(result.data.flags);
+  const countries = countryNames.flatMap((countryName) => {
+    const urn = countryNameToUrn(tdb2, countryName);
+    const flag = urn ? urnToFlag(tdb2, urn) : void 0;
+    if (!urn || !flag) {
+      return [];
+    }
+    return [{
+      urn,
+      name: countryName,
+      flag
+    }];
+  });
+  return {
+    name: result.data.name,
+    minDate: asInt(result.data.minDate),
+    maxDate: asInt(result.data.maxDate),
+    thumbnailUrl: result.data.thumbnailUrl,
+    mosaicColours: result.data.mosaic,
+    id: result.data.id,
+    photosCount: asInt(result.data.photosCount),
+    videosCount: asInt(result.data.videosCount),
+    description: result.data.description ?? "",
+    countries
+  };
+}
+
+// ts/parsers/location.ts
+var PlaceSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  feature: z.union([z.string(), z.array(z.string())]).optional(),
+  in: z.union([z.string(), z.array(z.string())]).optional(),
+  shortName: z.string().optional(),
+  wikipedia: z.string().optional(),
+  unescoId: z.string().optional()
+});
+function parsePlace(tdb2, place) {
+  const result = PlaceSchema.safeParse(place);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  const refs = arrayify(result.data.in);
+  const lookedUpRefs = refs.flatMap((ref) => {
+    const obj = readThing(tdb2, ref);
+    if (!obj) {
+      return [];
+    }
+    const parsed = parseLocation(tdb2, obj);
+    if (!parsed) {
+      return [];
+    }
+    return [parsed];
+  });
+  return {
+    ...result.data,
+    type: "place",
+    in: lookedUpRefs
+  };
+}
+var CountrySchema = z.object({
+  id: z.string(),
+  flag: z.string().optional(),
+  name: z.string(),
+  contains: z.union([z.string(), z.array(z.string())]).optional()
+});
+function parseCountry(_, country) {
+  const result = CountrySchema.safeParse(country);
+  if (!result.success) {
+    console.error(result.error.issues);
+    return;
+  }
+  return {
+    id: result.data.id,
+    type: "country",
+    flag: result.data.flag,
+    name: result.data.name,
+    contains: result.data.contains
+  };
+}
+function parseLocation(tdb2, location2) {
+  if (!location2.id) {
+    return void 0;
+  }
+  const id = asUrn(location2.id);
+  if (id.type === KnownTypes.PLACE) {
+    return parsePlace(tdb2, location2);
+  } else if (id.type === KnownTypes.COUNTRY) {
+    return parseCountry(tdb2, location2);
+  }
+  return void 0;
+}
+
 // ts/parsers/photo.ts
 var PhotoSchema = z.object({
   albumId: z.string(),
@@ -7093,74 +7062,227 @@ function parseSubject(_, subject) {
   return result.data;
 }
 
-// ts/parsers/location.ts
-var PlaceSchema = z.object({
+// ts/parsers/video.ts
+var VideoSchema = z.object({
   id: z.string(),
-  name: z.string(),
-  feature: z.union([z.string(), z.array(z.string())]).optional(),
-  in: z.union([z.string(), z.array(z.string())]).optional(),
-  shortName: z.string().optional(),
-  wikipedia: z.string().optional()
+  albumId: z.string(),
+  description: z.string(),
+  posterUrl: z.string().url(),
+  videoUrl1080p: z.string().url(),
+  videoUrl480p: z.string().url(),
+  videoUrl720p: z.string().url(),
+  videoUrlUnscaled: z.string().url()
 });
-function parsePlace(tdb2, place) {
-  const result = PlaceSchema.safeParse(place);
+function parseVideo(tdb2, video) {
+  const result = VideoSchema.safeParse(video);
   if (!result.success) {
-    console.error(result.error.issues);
-    return;
+    throw new Error(
+      `Invalid video object: ${JSON.stringify(result.error.issues)}`
+    );
   }
-  const refs = arrayify(result.data.in);
-  const lookedUpRefs = refs.flatMap((ref) => {
-    const obj = readThing(tdb2, ref);
-    if (!obj) {
-      return [];
-    }
-    const parsed = parseLocation(tdb2, obj);
-    if (!parsed) {
-      return [];
-    }
-    return [parsed];
-  });
-  return {
-    id: result.data.id,
-    type: "place",
-    name: result.data.name,
-    feature: result.data.feature,
-    in: lookedUpRefs,
-    shortName: result.data.shortName,
-    wikipedia: result.data.wikipedia
-  };
+  return result.data;
 }
-var CountrySchema = z.object({
-  id: z.string(),
-  flag: z.string().optional(),
-  name: z.string(),
-  contains: z.union([z.string(), z.array(z.string())]).optional()
-});
-function parseCountry(_, country) {
-  const result = CountrySchema.safeParse(country);
-  if (!result.success) {
-    console.error(result.error.issues);
-    return;
+
+// ts/services/things.ts
+function readThing(tdb2, id) {
+  const parsed = asUrn(id);
+  return tdb2.search({
+    source: { id: parsed.id, type: parsed.type }
+  }).firstObject();
+}
+function readThings(tdb2, ids) {
+  const things = [];
+  for (const id of ids) {
+    const thing = readThing(tdb2, id);
+    if (thing) {
+      things.push(thing);
+    }
   }
-  return {
-    id: result.data.id,
-    type: "country",
-    flag: result.data.flag,
-    name: result.data.name,
-    contains: result.data.contains
-  };
+  return things;
 }
-function parseLocation(tdb2, location2) {
-  if (!location2.id) {
+function readParsedThing(parser, tdb2, id) {
+  const thing = readThing(tdb2, id);
+  if (!thing) {
     return void 0;
   }
-  const id = asUrn(location2.id);
-  if (id.type === KnownTypes.PLACE) {
-    return parsePlace(tdb2, location2);
-  } else if (id.type === KnownTypes.COUNTRY) {
-    return parseCountry(tdb2, location2);
+  return parser(tdb2, thing);
+}
+var readAlbum = readParsedThing.bind(null, parseAlbum);
+var readCountry = readParsedThing.bind(null, parseCountry);
+var readPlace = readParsedThing.bind(null, parsePlace);
+var readPhoto = readParsedThing.bind(null, parsePhoto);
+var readMammal = readParsedThing.bind(null, parseMammal);
+var readReptile = readParsedThing.bind(null, parseReptile);
+var readAmphibian = readParsedThing.bind(null, parseAmphibian);
+var readInsect = readParsedThing.bind(null, parseInsect);
+var readVideo = readParsedThing.bind(null, parseVideo);
+function toThingLinks(tdb2, urns) {
+  return urns.flatMap((urn) => {
+    if (!urn) {
+      return [];
+    }
+    const thing = readThing(tdb2, urn);
+    if (!thing || !thing.name) {
+      return [];
+    }
+    const id = asUrn(urn);
+    return [(0, import_mithril3.default)(ThingLink, {
+      urn,
+      thing: readThing(tdb2, urn)
+    })];
+  });
+}
+
+// ts/state.ts
+async function loadData() {
+  const schema = {};
+  const db = await loadTriples(
+    "/manifest/tribbles.dd453e3086.txt",
+    schema,
+    deriveTriples
+  );
+  db.add(HARD_CODED_TRIPLES);
+  return db;
+}
+function loadServices(data) {
+  return {
+    readThing: readThing.bind(null, data),
+    readAlbum: readAlbum.bind(null, data),
+    readCountry: readCountry.bind(null, data),
+    readPlace: readPlace.bind(null, data),
+    readPhoto: readPhoto.bind(null, data),
+    readMammal: readMammal.bind(null, data),
+    readReptile: readReptile.bind(null, data),
+    readAmphibian: readAmphibian.bind(null, data),
+    readInsect: readInsect.bind(null, data),
+    readVideo: readVideo.bind(null, data),
+    toThingLinks: toThingLinks.bind(null, data)
+  };
+}
+async function loadState() {
+  const data = await loadData();
+  return {
+    darkMode: DarkModes.load(),
+    sidebarVisible: false,
+    data,
+    currentAlbum: void 0,
+    currentPhoto: void 0,
+    services: loadServices(data)
+  };
+}
+
+// ts/components/sidebar.ts
+var import_mithril4 = __toESM(require_mithril());
+function SidebarItem() {
+  return {
+    view(vnode) {
+      return (0, import_mithril4.default)("li", {
+        class: "sidebar-item",
+        onclick() {
+          import_mithril4.default.route.set(vnode.attrs.route);
+        }
+      }, vnode.attrs.name);
+    }
+  };
+}
+function Sidebar() {
+  function classes(visible) {
+    const cls = ["photo-sidebar"];
+    if (visible) {
+      cls.push("sidebar-visible");
+    }
+    return cls.join(" ");
   }
-  return void 0;
+  return {
+    view(vnode) {
+      return (0, import_mithril4.default)("aside", { class: classes(vnode.attrs.visible) }, [
+        (0, import_mithril4.default)("nav", [
+          (0, import_mithril4.default)("ul", [
+            (0, import_mithril4.default)(SidebarItem, { name: "PHOTOS", route: "/photos" }),
+            (0, import_mithril4.default)(SidebarItem, { name: "VIDEOS", route: "/videos" }),
+            (0, import_mithril4.default)(SidebarItem, { name: "ALBUMS", route: "/albums" }),
+            (0, import_mithril4.default)(SidebarItem, { name: "ABOUT", route: "/about" })
+          ])
+        ])
+      ]);
+    }
+  };
+}
+
+// ts/pages/albums.ts
+var import_mithril11 = __toESM(require_mithril());
+
+// ts/components/album-stats.ts
+var import_mithril5 = __toESM(require_mithril());
+
+// ts/stats.json
+var stats_default = {
+  photos: 1203,
+  albums: 106,
+  years: 13,
+  countries: 18,
+  bird_species: 142,
+  mammal_species: 55,
+  reptile_species: 5,
+  amphibian_species: 3,
+  fish_species: 1,
+  unesco_sites: 8
+};
+
+// ts/components/album-stats.ts
+function validateState(stats) {
+  if (typeof stats !== "object" || stats === null) {
+    throw new Error("Stats is not an object");
+  }
+  const keys = [
+    "photos",
+    "albums",
+    "years",
+    "countries",
+    "bird_species",
+    "mammal_species",
+    "amphibian_species",
+    "reptile_species",
+    "unesco_sites"
+  ];
+  for (const key of keys) {
+    if (!(key in stats)) {
+      throw new Error(`Stats is missing key: ${key}`);
+    }
+    if (typeof stats[key] !== "number") {
+      throw new Error(`Stats key ${key} is not a number`);
+    }
+  }
+}
+function AlbumStats() {
+  validateState(stats_default);
+  return {
+    view() {
+      return (0, import_mithril5.default)("p.photo-stats", [
+        `${stats_default.photos} `,
+        (0, import_mithril5.default)("a", { href: "#/photos" }, "photos"),
+        " \xB7 ",
+        (0, import_mithril5.default)("a", { href: "#/videos" }, "videos"),
+        " \xB7 ",
+        `${stats_default.albums} albums \xB7 ${stats_default.years} years \xB7 `,
+        `${stats_default.countries} `,
+        (0, import_mithril5.default)("a", { href: "#/listing/country" }, "countries"),
+        " \xB7 ",
+        `${stats_default.bird_species} `,
+        (0, import_mithril5.default)("a", { href: "#/listing/bird" }, "bird species"),
+        " \xB7 ",
+        `${stats_default.mammal_species} `,
+        (0, import_mithril5.default)("a", { href: "#/listing/mammal" }, "mammal species"),
+        " \xB7 a few ",
+        (0, import_mithril5.default)("a", { href: "#/listing/amphibian" }, "amphibians"),
+        " and ",
+        (0, import_mithril5.default)("a", { href: "#/listing/reptile" }, "reptiles"),
+        " \xB7 ",
+        `${stats_default.unesco_sites} `,
+        (0, import_mithril5.default)("a", { href: "#/thing/unesco:*" }, "UNESCO sites")
+      ]);
+    }
+  };
 }
 
 // ts/services/photos.ts
@@ -7554,97 +7676,6 @@ function CountryLink() {
         `${flag} ${name}`
       );
     }
-  };
-}
-
-// ts/parsers/video.ts
-var VideoSchema = z.object({
-  id: z.string(),
-  albumId: z.string(),
-  description: z.string(),
-  posterUrl: z.string().url(),
-  videoUrl1080p: z.string().url(),
-  videoUrl480p: z.string().url(),
-  videoUrl720p: z.string().url(),
-  videoUrlUnscaled: z.string().url()
-});
-function parseVideo(tdb2, video) {
-  const result = VideoSchema.safeParse(video);
-  if (!result.success) {
-    throw new Error(
-      `Invalid video object: ${JSON.stringify(result.error.issues)}`
-    );
-  }
-  return result.data;
-}
-
-// ts/numbers.ts
-function asInt(value) {
-  if (typeof value === "number") {
-    return value;
-  }
-  return parseInt(value, 10);
-}
-
-// ts/semantic/names.ts
-function countryNameToUrn(tdb2, name) {
-  return tdb2.search({
-    source: { type: "country" },
-    relation: KnownRelations.NAME,
-    target: name
-  }).firstSource();
-}
-function urnToFlag(tdb2, urn) {
-  return tdb2.search({
-    source: asUrn(urn),
-    relation: KnownRelations.FLAG
-  }).firstTarget();
-}
-
-// ts/parsers/album.ts
-var AlbumSchema = z.object({
-  name: z.string(),
-  minDate: z.string(),
-  maxDate: z.string(),
-  thumbnailUrl: z.string(),
-  mosaic: z.any(),
-  id: z.string(),
-  photosCount: z.string(),
-  videosCount: z.string(),
-  flags: z.any(),
-  description: z.string().optional()
-});
-function parseAlbum(tdb2, album) {
-  const result = AlbumSchema.safeParse(album);
-  if (!result.success) {
-    throw new Error(
-      `Invalid album object: ${JSON.stringify(result.error.issues)}`
-    );
-  }
-  const countryNames = arrayify(result.data.flags);
-  const countries = countryNames.flatMap((countryName) => {
-    const urn = countryNameToUrn(tdb2, countryName);
-    const flag = urn ? urnToFlag(tdb2, urn) : void 0;
-    if (!urn || !flag) {
-      return [];
-    }
-    return [{
-      urn,
-      name: countryName,
-      flag
-    }];
-  });
-  return {
-    name: result.data.name,
-    minDate: asInt(result.data.minDate),
-    maxDate: asInt(result.data.maxDate),
-    thumbnailUrl: result.data.thumbnailUrl,
-    mosaicColours: result.data.mosaic,
-    id: result.data.id,
-    photosCount: asInt(result.data.photosCount),
-    videosCount: asInt(result.data.videosCount),
-    description: result.data.description ?? "",
-    countries
   };
 }
 

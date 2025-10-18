@@ -1,7 +1,17 @@
 import m from "mithril";
 import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { ThingLink, ThingLinkAttrs } from "../components/thing-link.ts";
-import { one } from "../arrays.ts";
+import { Album } from "../types.ts";
+import { parseAlbum } from "../parsers/album.ts";
+import { parseCountry, parsePlace } from "../parsers/location.ts";
+import { parsePhoto } from "../parsers/photo.ts";
+import {
+  parseAmphibian,
+  parseInsect,
+  parseMammal,
+  parseReptile,
+} from "../parsers/subject.ts";
+import { parseVideo } from "../parsers/video.ts";
 
 export function readThing(
   tdb: TribbleDB,
@@ -30,8 +40,35 @@ export function readThings(
   return things;
 }
 
+export function readParsedThing<T>(
+  parser: (tdb: TribbleDB, thing: TripleObject) => T | undefined,
+  tdb: TribbleDB,
+  id: string,
+): T | undefined {
+  const thing = readThing(tdb, id);
+  if (!thing) {
+    return undefined;
+  }
+
+  return parser(tdb, thing);
+}
+
+export const readAlbum = readParsedThing.bind(null, parseAlbum);
+export const readCountry = readParsedThing.bind(null, parseCountry);
+export const readPlace = readParsedThing.bind(null, parsePlace);
+export const readPhoto = readParsedThing.bind(null, parsePhoto);
+
+export const readMammal = readParsedThing.bind(null, parseMammal);
+export const readReptile = readParsedThing.bind(null, parseReptile);
+export const readAmphibian = readParsedThing.bind(null, parseAmphibian);
+export const readInsect = readParsedThing.bind(null, parseInsect);
+export const readVideo = readParsedThing.bind(null, parseVideo);
+
 // TODO: remove mithril, move to presenter
-export function toThingLinks(tdb: TribbleDB, urns: (string | undefined)[]): m.Vnode<ThingLinkAttrs, {}>[] {
+export function toThingLinks(
+  tdb: TribbleDB,
+  urns: (string | undefined)[],
+): m.Vnode<ThingLinkAttrs, {}>[] {
   return urns.flatMap((urn) => {
     if (!urn) {
       return [];
@@ -46,7 +83,6 @@ export function toThingLinks(tdb: TribbleDB, urns: (string | undefined)[]): m.Vn
     return [m(ThingLink, {
       urn,
       thing: readThing(tdb, urn),
-      name: one(thing.name) ?? id.id
     })];
   });
 }

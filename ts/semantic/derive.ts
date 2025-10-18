@@ -262,12 +262,20 @@ export function expandTripleCuries(
 
 // This should be in mirror, but for testing...
 export const HARD_CODED_TRIPLES: Triple[] = [
-  ['urn:ró:rating:%E2%AD%90', KnownRelations.NAME, '⭐'],
-  ['urn:ró:rating:%E2%AD%90%E2%AD%90', KnownRelations.NAME, '⭐⭐'],
-  ['urn:ró:rating:%E2%AD%90%E2%AD%90%E2%AD%90', KnownRelations.NAME, '⭐⭐⭐'],
-  ['urn:ró:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90', KnownRelations.NAME, '⭐⭐⭐⭐'],
-  ['urn:ró:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90', KnownRelations.NAME, '⭐⭐⭐⭐⭐'],
-]
+  ["urn:ró:rating:%E2%AD%90", KnownRelations.NAME, "⭐"],
+  ["urn:ró:rating:%E2%AD%90%E2%AD%90", KnownRelations.NAME, "⭐⭐"],
+  ["urn:ró:rating:%E2%AD%90%E2%AD%90%E2%AD%90", KnownRelations.NAME, "⭐⭐⭐"],
+  [
+    "urn:ró:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90",
+    KnownRelations.NAME,
+    "⭐⭐⭐⭐",
+  ],
+  [
+    "urn:ró:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90",
+    KnownRelations.NAME,
+    "⭐⭐⭐⭐⭐",
+  ],
+];
 
 /*
  * Compose all triple modifiers together.
@@ -287,7 +295,7 @@ export function deriveTriples(
     addSeason,
     addYear,
     addInverseRelations,
-    expandTripleCuries
+    expandTripleCuries,
   ];
 
   let outputTriples: Triple[] = [triple];

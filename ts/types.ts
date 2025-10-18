@@ -1,4 +1,3 @@
-
 import m from "mithril";
 import { ThingLinkAttrs } from "./components/thing-link.ts";
 import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
@@ -12,10 +11,17 @@ export type ApplicationEvents =
 
 export type Services = {
   readThing: (id: string) => TripleObject | undefined;
-  toThingLinks: (urns: (string | undefined)[]) => m.Vnode<ThingLinkAttrs, {}>[]
+  readAlbum: (id: string) => Album | undefined;
+  readCountry: (id: string) => Country | undefined;
+  readPlace: (id: string) => Place | undefined;
+  readPhoto: (id: string) => Photo | undefined;
+  readMammal: (id: string) => Mammal | undefined;
+  readReptile: (id: string) => Reptile | undefined;
+  readAmphibian: (id: string) => Amphibian | undefined;
+  readInsect: (id: string) => Insect | undefined;
+  readVideo: (id: string) => Video | undefined;
+  toThingLinks: (urns: (string | undefined)[]) => m.Vnode<ThingLinkAttrs, {}>[];
 };
-
-
 
 export type State = {
   data: TribbleDB;
@@ -89,6 +95,7 @@ export type Place = {
   in?: (Place | Country)[]; // NOTE: deep-parsed by default
   shortName?: string;
   wikipedia?: string;
+  unescoId?: string;
 };
 
 export type Country = {
@@ -144,7 +151,9 @@ export function isAnInsect(subject: Subject | Insect): subject is Insect {
   return (subject as Insect).type === "insect";
 }
 
-export function isAnAmphibian(subject: Subject | Amphibian): subject is Amphibian {
+export function isAnAmphibian(
+  subject: Subject | Amphibian,
+): subject is Amphibian {
   return (subject as Amphibian).type === "amphibian";
 }
 

@@ -12,6 +12,7 @@ const PlaceSchema = z.object({
   in: z.union([z.string(), z.array(z.string())]).optional(),
   shortName: z.string().optional(),
   wikipedia: z.string().optional(),
+  unescoId: z.string().optional(),
 });
 
 export function parsePlace(
@@ -41,13 +42,9 @@ export function parsePlace(
   });
 
   return {
-    id: result.data.id,
+    ...result.data,
     type: "place",
-    name: result.data.name,
-    feature: result.data.feature,
     in: lookedUpRefs,
-    shortName: result.data.shortName,
-    wikipedia: result.data.wikipedia,
   };
 }
 
