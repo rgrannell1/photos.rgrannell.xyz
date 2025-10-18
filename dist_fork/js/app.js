@@ -2995,7 +2995,7 @@ function ThingLink() {
       return (0, import_mithril2.default)("a", {
         href: urn,
         onclick: navigate(`/thing/${type}:${id}`),
-        classes: [...classes, "thing-link"].join(" ")
+        class: ["thing-link", `${type}-link`].join(" ")
       }, name);
     }
   };

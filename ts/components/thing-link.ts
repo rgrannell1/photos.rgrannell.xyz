@@ -18,7 +18,7 @@ export function ThingLink() {
       return m("a", {
         href: urn,
         onclick: navigate(`/thing/${type}:${id}`),
-        classes: [...classes, "thing-link"].join(" "),
+        class: ['thing-link', `${type}-link`].join(' ')
       }, name);
     },
   };
