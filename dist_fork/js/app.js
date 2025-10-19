@@ -3060,6 +3060,12 @@ function thingEmoji(urn, name, thing) {
       return PLACE_FEATURES_TO_EMOJI[featureId];
     }
     return "\u{1F4CD}";
+  } else if (type === KnownTypes.COUNTRY) {
+    const flag = one(thing.flag);
+    if (flag) {
+      return flag;
+    }
+    return "\u{1F3F3}\uFE0F";
   } else if (type === KnownTypes.BIRD) {
     return "\u{1F424}";
   }
@@ -7090,6 +7096,15 @@ function readThing(tdb2, id) {
     source: { id: parsed.id, type: parsed.type }
   }).firstObject();
 }
+var readAlbum = readParsedThing.bind(null, parseAlbum);
+var readCountry = readParsedThing.bind(null, parseCountry);
+var readPlace = readParsedThing.bind(null, parsePlace);
+var readPhoto = readParsedThing.bind(null, parsePhoto);
+var readMammal = readParsedThing.bind(null, parseMammal);
+var readReptile = readParsedThing.bind(null, parseReptile);
+var readAmphibian = readParsedThing.bind(null, parseAmphibian);
+var readInsect = readParsedThing.bind(null, parseInsect);
+var readVideo = readParsedThing.bind(null, parseVideo);
 function readThings(tdb2, ids) {
   const things = [];
   for (const id of ids) {
@@ -7100,6 +7115,29 @@ function readThings(tdb2, ids) {
   }
   return things;
 }
+var readParsedThings = function(parser, tdb2, ids) {
+  const parsedThings = [];
+  for (const id of ids) {
+    const thing = readThing(tdb2, id);
+    if (!thing) {
+      continue;
+    }
+    const parsed = parser(tdb2, thing);
+    if (parsed) {
+      parsedThings.push(parsed);
+    }
+  }
+  return parsedThings;
+};
+var readParsedAlbums = readParsedThings.bind(null, parseAlbum);
+var readParsedCountries = readParsedThings.bind(null, parseCountry);
+var readParsedPlaces = readParsedThings.bind(null, parsePlace);
+var readParsedPhotos = readParsedThings.bind(null, parsePhoto);
+var readParsedMammals = readParsedThings.bind(null, parseMammal);
+var readParsedReptiles = readParsedThings.bind(null, parseReptile);
+var readParsedAmphibians = readParsedThings.bind(null, parseAmphibian);
+var readParsedInsects = readParsedThings.bind(null, parseInsect);
+var readParsedVideos = readParsedThings.bind(null, parseVideo);
 function readParsedThing(parser, tdb2, id) {
   const thing = readThing(tdb2, id);
   if (!thing) {
@@ -7107,15 +7145,6 @@ function readParsedThing(parser, tdb2, id) {
   }
   return parser(tdb2, thing);
 }
-var readAlbum = readParsedThing.bind(null, parseAlbum);
-var readCountry = readParsedThing.bind(null, parseCountry);
-var readPlace = readParsedThing.bind(null, parsePlace);
-var readPhoto = readParsedThing.bind(null, parsePhoto);
-var readMammal = readParsedThing.bind(null, parseMammal);
-var readReptile = readParsedThing.bind(null, parseReptile);
-var readAmphibian = readParsedThing.bind(null, parseAmphibian);
-var readInsect = readParsedThing.bind(null, parseInsect);
-var readVideo = readParsedThing.bind(null, parseVideo);
 function toThingLinks(tdb2, urns) {
   return urns.flatMap((urn) => {
     if (!urn) {
@@ -8293,6 +8322,15 @@ function Subject() {
     }
   };
 }
+function Country() {
+  return {
+    view(vnode) {
+      const { photo, services } = vnode.attrs;
+      const $countries = services.toThingLinks(arrayify(photo.country));
+      return (0, import_mithril21.default)("td", $countries.length > 0 ? $countries : "\u2014");
+    }
+  };
+}
 function PhotoInfo() {
   return {
     view(vnode) {
@@ -8301,6 +8339,10 @@ function PhotoInfo() {
         (0, import_mithril21.default)("tr", [
           (0, import_mithril21.default)(Heading2, { text: "Description" }),
           (0, import_mithril21.default)(Description, { photo, services })
+        ]),
+        (0, import_mithril21.default)("tr", [
+          (0, import_mithril21.default)(Heading2, { text: "Country" }),
+          (0, import_mithril21.default)(Country, { photo, services })
         ]),
         (0, import_mithril21.default)("tr", [
           (0, import_mithril21.default)(Heading2, { text: "Location" }),

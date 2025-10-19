@@ -24,6 +24,16 @@ export function readThing(
   }).firstObject();
 }
 
+export const readAlbum = readParsedThing.bind(null, parseAlbum);
+export const readCountry = readParsedThing.bind(null, parseCountry);
+export const readPlace = readParsedThing.bind(null, parsePlace);
+export const readPhoto = readParsedThing.bind(null, parsePhoto);
+export const readMammal = readParsedThing.bind(null, parseMammal);
+export const readReptile = readParsedThing.bind(null, parseReptile);
+export const readAmphibian = readParsedThing.bind(null, parseAmphibian);
+export const readInsect = readParsedThing.bind(null, parseInsect);
+export const readVideo = readParsedThing.bind(null, parseVideo);
+
 export function readThings(
   tdb: TribbleDB,
   ids: Set<string>,
@@ -40,6 +50,38 @@ export function readThings(
   return things;
 }
 
+export const readParsedThings = function<T>(
+  parser: (tdb: TribbleDB, thing: TripleObject) => T | undefined,
+  tdb: TribbleDB,
+  ids: Set<string>,
+): T[] {
+  const parsedThings: T[] = [];
+
+  for (const id of ids) {
+    const thing = readThing(tdb, id);
+    if (!thing) {
+      continue;
+    }
+
+    const parsed = parser(tdb, thing);
+    if (parsed) {
+      parsedThings.push(parsed);
+    }
+  }
+
+  return parsedThings;
+};
+
+export const readParsedAlbums = readParsedThings.bind(null, parseAlbum);
+export const readParsedCountries = readParsedThings.bind(null, parseCountry);
+export const readParsedPlaces = readParsedThings.bind(null, parsePlace);
+export const readParsedPhotos = readParsedThings.bind(null, parsePhoto);
+export const readParsedMammals = readParsedThings.bind(null, parseMammal);
+export const readParsedReptiles = readParsedThings.bind(null, parseReptile);
+export const readParsedAmphibians = readParsedThings.bind(null, parseAmphibian);
+export const readParsedInsects = readParsedThings.bind(null, parseInsect);
+export const readParsedVideos = readParsedThings.bind(null, parseVideo);
+
 export function readParsedThing<T>(
   parser: (tdb: TribbleDB, thing: TripleObject) => T | undefined,
   tdb: TribbleDB,
@@ -53,16 +95,6 @@ export function readParsedThing<T>(
   return parser(tdb, thing);
 }
 
-export const readAlbum = readParsedThing.bind(null, parseAlbum);
-export const readCountry = readParsedThing.bind(null, parseCountry);
-export const readPlace = readParsedThing.bind(null, parsePlace);
-export const readPhoto = readParsedThing.bind(null, parsePhoto);
-
-export const readMammal = readParsedThing.bind(null, parseMammal);
-export const readReptile = readParsedThing.bind(null, parseReptile);
-export const readAmphibian = readParsedThing.bind(null, parseAmphibian);
-export const readInsect = readParsedThing.bind(null, parseInsect);
-export const readVideo = readParsedThing.bind(null, parseVideo);
 
 // TODO: remove mithril, move to presenter
 export function toThingLinks(

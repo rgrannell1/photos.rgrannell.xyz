@@ -80,6 +80,17 @@ function Subject() {
   };
 }
 
+function Country() {
+  return {
+    view(vnode: m.Vnode<PhotoComponentAttrs>) {
+      const { photo, services } = vnode.attrs;
+
+      const $countries = services.toThingLinks(arrayify(photo.country));
+      return m("td", $countries.length > 0 ? $countries : "—");
+    }
+  }
+}
+
 type PhotoInfoAttrs = {
   photo: PhotoType;
   services: Services;
@@ -94,6 +105,10 @@ export function PhotoInfo() {
         m("tr", [
           m(Heading, { text: "Description" }),
           m(Description, { photo, services }),
+        ]),
+        m("tr", [
+          m(Heading, { text: "Country" }),
+          m(Country, { photo, services }),
         ]),
         m("tr", [
           m(Heading, { text: "Location" }),

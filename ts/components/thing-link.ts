@@ -24,6 +24,12 @@ export function thingEmoji(urn: string, name: string, thing: any): string {
     }
 
     return "📍";
+  } else if (type === KnownTypes.COUNTRY) {
+    const flag = one(thing.flag);
+    if (flag) {
+      return flag;
+    }
+    return "🏳️";
   } else if (type === KnownTypes.BIRD) {
     return "🐤";
   }
