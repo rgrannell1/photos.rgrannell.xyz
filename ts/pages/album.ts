@@ -15,6 +15,7 @@ import { Photos } from "../services/photos.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
 import { AlbumThings } from "../components/album-things.ts";
 
+// TODO replace with album type
 type AlbumAttrs = {
   name: string;
   minDate: number;

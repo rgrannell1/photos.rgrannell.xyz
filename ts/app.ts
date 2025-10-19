@@ -19,6 +19,7 @@ import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
 import { readPhotoById, readPhotos } from "./services/photos.ts";
+import { ListingPage } from "./pages/listing.ts";
 
 const state = await loadState();
 type AppAttrs = {};
@@ -212,6 +213,35 @@ export function PhotoApp(): m.Component<AppAttrs> {
             m("div.app-container", [
               m(Sidebar, { visible: state.sidebarVisible }),
               m(PhotoPage, { photo, services: state.services }),
+            ]),
+          ],
+        ),
+      ]);
+    },
+  };
+}
+
+export function ListingApp(): m.Component<AppAttrs> {
+  return {
+    oninit() {
+      const type = m.route.param("type");
+      state.currentType = type;
+    },
+
+    view() {
+      if (!state.currentType) {
+        return m("p", "No type selected");
+      }
+
+      return m("body", [
+        m(
+          "div.photos-app",
+          { class: state.darkMode ? "dark-mode" : undefined },
+          [
+            m(Header, state),
+            m("div.app-container", [
+              m(Sidebar, { visible: state.sidebarVisible }),
+              m(ListingPage, { type: state.currentType }),
             ]),
           ],
         ),

@@ -60,6 +60,7 @@ export async function loadState(): Promise<State> {
     data,
     currentAlbum: undefined,
     currentPhoto: undefined,
+    currentType: undefined,
     services: loadServices(data),
   };
 }

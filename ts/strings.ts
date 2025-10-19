@@ -1,11 +1,17 @@
 /* String Utilities */
 
+import { PLURALS } from "./constants.ts";
+
 export class Strings {
   static capitalise(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   static pluralise(str: string): string {
-    return str + "s"; // Y
+    if (PLURALS.has(str)) {
+      return PLURALS.get(str)!;
+    }
+
+    return str + "s";
   }
   static camelCase(str: string): string {
     return str

@@ -24,7 +24,7 @@ function AlbumsList() {
 
   return {
     view(vnode: m.Vnode<AlbumsListAttrs>) {
-      const albumComponents: m.Vnode<
+      const $albumComponents: m.Vnode<
         unknown,
         unknown
       >[] = [];
@@ -41,7 +41,7 @@ function AlbumsList() {
 
           if (year !== new Date().getFullYear()) {
             const $h2 = m("h2.album-year-heading", year.toString());
-            albumComponents.push($h2);
+            $albumComponents.push($h2);
           }
         }
 
@@ -69,13 +69,13 @@ function AlbumsList() {
           onclick: onAlbumClick.bind(null, album.id, album.name),
         });
 
-        albumComponents.push(m("div", [
+        $albumComponents.push(m("div", [
           $album,
           $md,
         ]));
       }
 
-      return m("section.album-container", albumComponents);
+      return m("section.album-container", $albumComponents);
     },
   };
 }

@@ -49,6 +49,17 @@ export class KnownTypes {
   static CAMERA = "camera";
 }
 
+export const NonListableTypes = new Set([
+  KnownTypes.COUNTRY,
+  KnownTypes.CAMERA,
+  KnownTypes.PLACE,
+]);
+
+export const PLURALS = new Map<string, string>([
+  ["country", "countries"],
+]);
+
+
 export const CDN_RELATIONS = new Set([
   KnownRelations.THUMBNAIL_URL,
   KnownRelations.PNG_URL,

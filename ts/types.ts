@@ -29,6 +29,7 @@ export type State = {
   sidebarVisible: boolean;
   currentAlbum: string | undefined;
   currentPhoto: string | undefined;
+  currentType: string | undefined;
   services: Services;
 };
 

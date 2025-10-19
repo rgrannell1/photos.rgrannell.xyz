@@ -1052,9 +1052,9 @@ var require_build2 = __commonJS({
       var path = template.slice(0, pathEnd);
       var query = {};
       Object.assign(query, params);
-      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m25, key, variadic) {
+      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m26, key, variadic) {
         delete query[key];
-        if (params[key] == null) return m25;
+        if (params[key] == null) return m26;
         return variadic ? params[key] : encodeURIComponent(String(params[key]));
       });
       var newQueryIndex = resolved.indexOf("?");
@@ -1326,8 +1326,8 @@ var require_compileTemplate = __commonJS({
         // don't also accidentally escape `-` and make it harder to detect it to
         // ban it from template parameters.
         /:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
-        function(m25, key, extra) {
-          if (key == null) return "\\" + m25;
+        function(m26, key, extra) {
+          if (key == null) return "\\" + m26;
           keys.push({ k: key, r: extra === "..." });
           if (extra === "...") return "(.*)";
           if (extra === ".") return "([^/]+)\\.";
@@ -1381,7 +1381,7 @@ var require_router = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/router.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
-    var m25 = require_hyperscript();
+    var m26 = require_hyperscript();
     var buildPathname = require_build2();
     var parsePathname = require_parse2();
     var compileTemplate = require_compileTemplate();
@@ -1524,7 +1524,7 @@ var require_router = __commonJS({
       route.prefix = "#!";
       route.Link = {
         view: function(vnode) {
-          var child = m25(
+          var child = m26(
             vnode.attrs.selector || "a",
             censor(vnode.attrs, ["options", "params", "selector", "onclick"]),
             vnode.children
@@ -1587,34 +1587,34 @@ var require_mithril = __commonJS({
     var request = require_request2();
     var mountRedraw = require_mount_redraw2();
     var domFor = require_domFor();
-    var m25 = function m26() {
+    var m26 = function m27() {
       return hyperscript.apply(this, arguments);
     };
-    m25.m = hyperscript;
-    m25.trust = hyperscript.trust;
-    m25.fragment = hyperscript.fragment;
-    m25.Fragment = "[";
-    m25.mount = mountRedraw.mount;
-    m25.route = require_route();
-    m25.render = require_render2();
-    m25.redraw = mountRedraw.redraw;
-    m25.request = request.request;
-    m25.parseQueryString = require_parse();
-    m25.buildQueryString = require_build();
-    m25.parsePathname = require_parse2();
-    m25.buildPathname = require_build2();
-    m25.vnode = require_vnode();
-    m25.censor = require_censor();
-    m25.domFor = domFor.domFor;
-    module.exports = m25;
+    m26.m = hyperscript;
+    m26.trust = hyperscript.trust;
+    m26.fragment = hyperscript.fragment;
+    m26.Fragment = "[";
+    m26.mount = mountRedraw.mount;
+    m26.route = require_route();
+    m26.render = require_render2();
+    m26.redraw = mountRedraw.redraw;
+    m26.request = request.request;
+    m26.parseQueryString = require_parse();
+    m26.buildQueryString = require_build();
+    m26.parsePathname = require_parse2();
+    m26.buildPathname = require_build2();
+    m26.vnode = require_vnode();
+    m26.censor = require_censor();
+    m26.domFor = domFor.domFor;
+    module.exports = m26;
   }
 });
 
 // ts/index.ts
-var import_mithril24 = __toESM(require_mithril());
+var import_mithril25 = __toESM(require_mithril());
 
 // ts/app.ts
-var import_mithril23 = __toESM(require_mithril());
+var import_mithril24 = __toESM(require_mithril());
 
 // ts/components/header.ts
 var import_mithril = __toESM(require_mithril());
@@ -2741,6 +2741,14 @@ var KnownTypes = class {
     this.CAMERA = "camera";
   }
 };
+var NonListableTypes = /* @__PURE__ */ new Set([
+  KnownTypes.COUNTRY,
+  KnownTypes.CAMERA,
+  KnownTypes.PLACE
+]);
+var PLURALS = /* @__PURE__ */ new Map([
+  ["country", "countries"]
+]);
 var CDN_RELATIONS = /* @__PURE__ */ new Set([
   KnownRelations.THUMBNAIL_URL,
   KnownRelations.PNG_URL,
@@ -2824,6 +2832,9 @@ var Strings = class {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   static pluralise(str) {
+    if (PLURALS.has(str)) {
+      return PLURALS.get(str);
+    }
     return str + "s";
   }
   static camelCase(str) {
@@ -3478,7 +3489,7 @@ var makeIssue = (params) => {
     path: fullPath
   };
   let errorMessage = "";
-  const maps = errorMaps.filter((m25) => !!m25).slice().reverse();
+  const maps = errorMaps.filter((m26) => !!m26).slice().reverse();
   for (const map of maps) {
     errorMessage = map(fullIssue, { data, defaultError: errorMessage }).message;
   }
@@ -7232,6 +7243,7 @@ async function loadState() {
     data,
     currentAlbum: void 0,
     currentPhoto: void 0,
+    currentType: void 0,
     services: loadServices(data)
   };
 }
@@ -8437,6 +8449,49 @@ function PhotoPage() {
   };
 }
 
+// ts/pages/listing.ts
+var import_mithril23 = __toESM(require_mithril());
+function ListingTitle() {
+  return {
+    view(vnode) {
+      const { type } = vnode.attrs;
+      return (0, import_mithril23.default)("h1.albums-header", `${Strings.capitalise(Strings.pluralise(type))}`);
+    }
+  };
+}
+function ListingThingsButton() {
+  return {
+    view(vnode) {
+      const { type } = vnode.attrs;
+      return (0, import_mithril23.default)("a", {
+        href: `/thing/${type}`
+      }, `See all ${type} photos`);
+    }
+  };
+}
+function ListingPage() {
+  return {
+    view(vnode) {
+      const { type } = vnode.attrs;
+      const $albums = [];
+      const $md = [
+        (0, import_mithril23.default)(ListingTitle, { type })
+      ];
+      if (!NonListableTypes.has(type)) {
+        $md.push(
+          (0, import_mithril23.default)("section.album-metadata", [
+            (0, import_mithril23.default)(ListingThingsButton, { type })
+          ])
+        );
+      }
+      return (0, import_mithril23.default)("div", [
+        (0, import_mithril23.default)("section.album-metadata", $md),
+        (0, import_mithril23.default)("section.album-container", $albums)
+      ]);
+    }
+  };
+}
+
 // ts/app.ts
 var state = await loadState();
 function AlbumsApp() {
@@ -8447,21 +8502,21 @@ function AlbumsApp() {
         const parsed = asUrn(id);
         const pageTitle = `Album - ${title}`;
         state.currentAlbum = id;
-        import_mithril23.default.route.set(`/album/${parsed.id}`, void 0, {
+        import_mithril24.default.route.set(`/album/${parsed.id}`, void 0, {
           title: pageTitle
         });
       });
     },
     view(vnode) {
-      return (0, import_mithril23.default)("body", [
-        (0, import_mithril23.default)(
+      return (0, import_mithril24.default)("body", [
+        (0, import_mithril24.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril23.default)(Header, state),
-            (0, import_mithril23.default)("div.app-container", [
-              (0, import_mithril23.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril23.default)(AlbumsPage, {
+            (0, import_mithril24.default)(Header, state),
+            (0, import_mithril24.default)("div.app-container", [
+              (0, import_mithril24.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril24.default)(AlbumsPage, {
                 albums: readAlbums(state.data)
               })
             ])
@@ -8474,32 +8529,32 @@ function AlbumsApp() {
 function AlbumApp() {
   return {
     oninit() {
-      const id = import_mithril23.default.route.param("id");
+      const id = import_mithril24.default.route.param("id");
       state.currentAlbum = `urn:r\xF3:album:${id}`;
     },
     view() {
       if (!state.currentAlbum) {
-        return (0, import_mithril23.default)("p", "No album selected");
+        return (0, import_mithril24.default)("p", "No album selected");
       }
       const album = readAlbumById(state.data, state.currentAlbum);
       const photos = readAlbumPhotosByAlbumId(state.data, state.currentAlbum);
       const videos = readAlbumVideosByAlbumId(state.data, state.currentAlbum);
       if (!album) {
-        return (0, import_mithril23.default)("p", "Album not found");
+        return (0, import_mithril24.default)("p", "Album not found");
       }
       const { subjects, locations } = readThingsByAlbumId(
         state.data,
         state.currentAlbum
       );
-      return (0, import_mithril23.default)("body", [
-        (0, import_mithril23.default)(
+      return (0, import_mithril24.default)("body", [
+        (0, import_mithril24.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril23.default)(Header, state),
-            (0, import_mithril23.default)("div.app-container", [
-              (0, import_mithril23.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril23.default)(AlbumPage, {
+            (0, import_mithril24.default)(Header, state),
+            (0, import_mithril24.default)("div.app-container", [
+              (0, import_mithril24.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril24.default)(AlbumPage, {
                 ...album,
                 subjects,
                 locations,
@@ -8516,15 +8571,15 @@ function AlbumApp() {
 function AboutApp() {
   return {
     view() {
-      return (0, import_mithril23.default)("body", [
-        (0, import_mithril23.default)(
+      return (0, import_mithril24.default)("body", [
+        (0, import_mithril24.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril23.default)(Header, state),
-            (0, import_mithril23.default)("div.app-container", [
-              (0, import_mithril23.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril23.default)(AboutPage)
+            (0, import_mithril24.default)(Header, state),
+            (0, import_mithril24.default)("div.app-container", [
+              (0, import_mithril24.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril24.default)(AboutPage)
             ])
           ]
         )
@@ -8535,15 +8590,15 @@ function AboutApp() {
 function VideosApp() {
   return {
     view() {
-      return (0, import_mithril23.default)("body", [
-        (0, import_mithril23.default)(
+      return (0, import_mithril24.default)("body", [
+        (0, import_mithril24.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril23.default)(Header, state),
-            (0, import_mithril23.default)("div.app-container", [
-              (0, import_mithril23.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril23.default)(VideosPage, {
+            (0, import_mithril24.default)(Header, state),
+            (0, import_mithril24.default)("div.app-container", [
+              (0, import_mithril24.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril24.default)(VideosPage, {
                 videos: readVideos(state.data)
               })
             ])
@@ -8556,15 +8611,15 @@ function VideosApp() {
 function PhotosApp() {
   return {
     view() {
-      return (0, import_mithril23.default)("body", [
-        (0, import_mithril23.default)(
+      return (0, import_mithril24.default)("body", [
+        (0, import_mithril24.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril23.default)(Header, state),
-            (0, import_mithril23.default)("div.app-container", [
-              (0, import_mithril23.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril23.default)(PhotosPage, {
+            (0, import_mithril24.default)(Header, state),
+            (0, import_mithril24.default)("div.app-container", [
+              (0, import_mithril24.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril24.default)(PhotosPage, {
                 photos: readPhotos(state.data)
               })
             ])
@@ -8577,14 +8632,14 @@ function PhotosApp() {
 function ThingApp() {
   return {
     view() {
-      return (0, import_mithril23.default)("body", [
-        (0, import_mithril23.default)(
+      return (0, import_mithril24.default)("body", [
+        (0, import_mithril24.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril23.default)(Header, state),
-            (0, import_mithril23.default)("div.app-container", [
-              (0, import_mithril23.default)(Sidebar, { visible: state.sidebarVisible })
+            (0, import_mithril24.default)(Header, state),
+            (0, import_mithril24.default)("div.app-container", [
+              (0, import_mithril24.default)(Sidebar, { visible: state.sidebarVisible })
             ])
           ]
         )
@@ -8595,26 +8650,52 @@ function ThingApp() {
 function PhotoApp() {
   return {
     oninit() {
-      const id = import_mithril23.default.route.param("id");
+      const id = import_mithril24.default.route.param("id");
       state.currentPhoto = `urn:r\xF3:photo:${id}`;
     },
     view() {
       if (!state.currentPhoto) {
-        return (0, import_mithril23.default)("p", "No photo selected");
+        return (0, import_mithril24.default)("p", "No photo selected");
       }
       const photo = readPhotoById(state.data, state.currentPhoto);
       if (!photo) {
-        return (0, import_mithril23.default)("p", "Photo not found");
+        return (0, import_mithril24.default)("p", "Photo not found");
       }
-      return (0, import_mithril23.default)("body", [
-        (0, import_mithril23.default)(
+      return (0, import_mithril24.default)("body", [
+        (0, import_mithril24.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril23.default)(Header, state),
-            (0, import_mithril23.default)("div.app-container", [
-              (0, import_mithril23.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril23.default)(PhotoPage, { photo, services: state.services })
+            (0, import_mithril24.default)(Header, state),
+            (0, import_mithril24.default)("div.app-container", [
+              (0, import_mithril24.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril24.default)(PhotoPage, { photo, services: state.services })
+            ])
+          ]
+        )
+      ]);
+    }
+  };
+}
+function ListingApp() {
+  return {
+    oninit() {
+      const type = import_mithril24.default.route.param("type");
+      state.currentType = type;
+    },
+    view() {
+      if (!state.currentType) {
+        return (0, import_mithril24.default)("p", "No type selected");
+      }
+      return (0, import_mithril24.default)("body", [
+        (0, import_mithril24.default)(
+          "div.photos-app",
+          { class: state.darkMode ? "dark-mode" : void 0 },
+          [
+            (0, import_mithril24.default)(Header, state),
+            (0, import_mithril24.default)("div.app-container", [
+              (0, import_mithril24.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril24.default)(ListingPage, { type: state.currentType })
             ])
           ]
         )
@@ -8624,20 +8705,21 @@ function PhotoApp() {
 }
 listen("navigate", (event) => {
   const { route } = event.detail;
-  import_mithril23.default.route.set(route);
+  import_mithril24.default.route.set(route);
 });
 listen("switch_theme", () => {
   state.darkMode = !state.darkMode;
 });
 
 // ts/index.ts
-import_mithril24.default.route(document.body, "/albums", {
+import_mithril25.default.route(document.body, "/albums", {
   "/albums": AlbumsApp,
   "/about": AboutApp,
   "/videos": VideosApp,
   "/photos": PhotosApp,
   "/album/:id": AlbumApp,
   "/thing/:id": ThingApp,
-  "/photo/:id": PhotoApp
+  "/photo/:id": PhotoApp,
+  "/listing/:type": ListingApp
 });
 //# sourceMappingURL=app.js.map
