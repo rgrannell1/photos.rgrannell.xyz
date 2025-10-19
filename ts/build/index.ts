@@ -1,5 +1,5 @@
 import * as path from "jsr:@std/path";
-import * as esbuild from 'https://deno.land/x/esbuild/mod.js'
+import * as esbuild from "https://deno.land/x/esbuild/mod.js";
 
 async function findFile(prefix: string, dpath: string) {
   for await (const dirEntry of Deno.readDir(dpath)) {
@@ -14,20 +14,15 @@ const stats = await findFile("stats", "./manifest");
 const triples = await findFile("triples", "./manifest");
 
 function findPrefetchTargets(tdb) {
-
 }
 
 function findHomepageThumbnails(tdb) {
-
 }
 
 async function buildHTML() {
-
-
 }
 
 async function buildSW() {
-
 }
 
 function onRebuild(error, result) {
@@ -35,7 +30,9 @@ function onRebuild(error, result) {
   if (error) {
     console.error(`[${now}] JS rebuild failed:`, error.message);
   } else {
-    console.log(`[${now}] JS rebuilt (${result?.warnings.length ?? 0} warnings)`);
+    console.log(
+      `[${now}] JS rebuilt (${result?.warnings.length ?? 0} warnings)`,
+    );
   }
 }
 
@@ -64,21 +61,22 @@ export async function buildCSS() {
     outfile: "dist_fork/css/style.css",
   });
 
-
   return await ctx.watch({
     onRebuild(error, result) {
       const now = new Date().toLocaleTimeString();
       if (error) {
         console.error(`[${now}] CSS rebuild failed:`, error.message);
       } else {
-        console.log(`[${now}] CSS rebuilt (${result?.warnings.length ?? 0} warnings)`);
+        console.log(
+          `[${now}] CSS rebuilt (${result?.warnings.length ?? 0} warnings)`,
+        );
       }
-    }
+    },
   });
 }
 
-console.log('Building')
+console.log("Building");
 await Promise.all([
   buildJS(),
-  buildCSS()
+  buildCSS(),
 ]);

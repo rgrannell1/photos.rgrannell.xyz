@@ -50,7 +50,7 @@ export function readThings(
   return things;
 }
 
-export const readParsedThings = function<T>(
+export const readParsedThings = function <T>(
   parser: (tdb: TribbleDB, thing: TripleObject) => T | undefined,
   tdb: TribbleDB,
   ids: Set<string>,
@@ -94,7 +94,6 @@ export function readParsedThing<T>(
 
   return parser(tdb, thing);
 }
-
 
 // TODO: remove mithril, move to presenter
 export function toThingLinks(

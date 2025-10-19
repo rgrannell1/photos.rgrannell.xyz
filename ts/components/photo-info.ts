@@ -87,8 +87,8 @@ function Country() {
 
       const $countries = services.toThingLinks(arrayify(photo.country));
       return m("td", $countries.length > 0 ? $countries : "—");
-    }
-  }
+    },
+  };
 }
 
 type PhotoInfoAttrs = {

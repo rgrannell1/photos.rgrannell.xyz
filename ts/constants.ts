@@ -46,6 +46,7 @@ export class KnownTypes {
   static REPTILE = "reptile";
   static AMPHIBIAN = "amphibian";
   static INSECT = "insect";
+  static CAMERA = "camera";
 }
 
 export const CDN_RELATIONS = new Set([
@@ -116,3 +117,19 @@ export const PLACE_FEATURES_TO_EMOJI = {
   wildlife: "🦁",
   zoo: "🦓",
 };
+
+export const CAMERA_MODELS = new Set([
+  "dc-gh5",
+  "dc-gh6",
+  "dmc-fz72",
+  "dmc-g7",
+  "finepix-f70exr",
+  "xz-1",
+]);
+
+export const PHONE_MODELS = new Set([
+  "pixel-4a",
+  "pixel-7-pro",
+  "pixel-9a",
+  "sm-a520f",
+]);

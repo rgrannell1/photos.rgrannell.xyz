@@ -2737,6 +2737,9 @@ var KnownTypes = class {
   static {
     this.INSECT = "insect";
   }
+  static {
+    this.CAMERA = "camera";
+  }
 };
 var CDN_RELATIONS = /* @__PURE__ */ new Set([
   KnownRelations.THUMBNAIL_URL,
@@ -2800,6 +2803,20 @@ var PLACE_FEATURES_TO_EMOJI = {
   wildlife: "\u{1F981}",
   zoo: "\u{1F993}"
 };
+var CAMERA_MODELS = /* @__PURE__ */ new Set([
+  "dc-gh5",
+  "dc-gh6",
+  "dmc-fz72",
+  "dmc-g7",
+  "finepix-f70exr",
+  "xz-1"
+]);
+var PHONE_MODELS = /* @__PURE__ */ new Set([
+  "pixel-4a",
+  "pixel-7-pro",
+  "pixel-9a",
+  "sm-a520f"
+]);
 
 // ts/strings.ts
 var Strings = class {
@@ -3051,25 +3068,44 @@ function one(value) {
 }
 
 // ts/components/thing-link.ts
+function placeEmoji(thing) {
+  const feature = one(thing.feature);
+  const { id: featureId } = asUrn(feature);
+  if (PLACE_FEATURES_TO_EMOJI.hasOwnProperty(featureId)) {
+    return PLACE_FEATURES_TO_EMOJI[featureId];
+  }
+  return "\u{1F4CD}";
+}
+function countryEmoji(thing) {
+  const flag = one(thing.flag);
+  return flag ?? "\u{1F3F3}\uFE0F";
+}
+function birdEmoji() {
+  return "\u{1F424}";
+}
+function cameraEmoji(thing) {
+  const { id } = asUrn(thing.id);
+  if (CAMERA_MODELS.has(id)) {
+    return "\u{1F4F7}";
+  } else if (PHONE_MODELS.has(id)) {
+    return "\u{1F4F1}";
+  }
+  return "\u{1F4F7}";
+}
 function thingEmoji(urn, name, thing) {
   const { type } = asUrn(urn);
-  if (type === KnownTypes.PLACE) {
-    const feature = one(thing.feature);
-    const { id: featureId } = asUrn(feature);
-    if (PLACE_FEATURES_TO_EMOJI.hasOwnProperty(featureId)) {
-      return PLACE_FEATURES_TO_EMOJI[featureId];
-    }
-    return "\u{1F4CD}";
-  } else if (type === KnownTypes.COUNTRY) {
-    const flag = one(thing.flag);
-    if (flag) {
-      return flag;
-    }
-    return "\u{1F3F3}\uFE0F";
-  } else if (type === KnownTypes.BIRD) {
-    return "\u{1F424}";
+  switch (type) {
+    case KnownTypes.PLACE:
+      return placeEmoji(thing);
+    case KnownTypes.COUNTRY:
+      return countryEmoji(thing);
+    case KnownTypes.BIRD:
+      return birdEmoji();
+    case KnownTypes.CAMERA:
+      return cameraEmoji(thing);
+    default:
+      return "";
   }
-  return "";
 }
 function ThingLink() {
   return {

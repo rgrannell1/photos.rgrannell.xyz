@@ -503,6 +503,10 @@ button:disabled {
 .fish-link,
 .amphibian-link,
 .place-link,
+.camera-link,
+.country-link,
+.rating-link,
+.style-link,
 .insect-link {
   color: black;
   border: solid 2px lightgray;
@@ -544,7 +548,7 @@ button:disabled {
   border-left: 10px solid var(--tag-color-6);
 }
 
-.place-link {
+.place-link, .country-link, .camera-link, .rating-link, .style-link {
   border-left: 10px solid var(--tag-color-7);
 }
 
