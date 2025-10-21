@@ -6,6 +6,9 @@ type AlbumThingsAttrs = {
   subjects: Thing[];
 };
 
+/*
+ *
+ */
 export function AlbumThings() {
   return {
     view(vnode: m.Vnode<AlbumThingsAttrs>) {

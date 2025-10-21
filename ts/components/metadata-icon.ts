@@ -1,6 +1,9 @@
 import m from "mithril";
 import { broadcast } from "../events.ts";
 
+/*
+ *
+ */
 function InfoSVG() {
   return m("svg.photo-icon", {
     height: 40,
@@ -19,6 +22,9 @@ type MetadataIconAttrs = {
   id: string;
 };
 
+/*
+ *
+ */
 export function MetadataIcon() {
   return {
     view(vnode: m.Vnode<MetadataIconAttrs>) {

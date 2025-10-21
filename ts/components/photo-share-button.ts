@@ -5,6 +5,9 @@ type ShareButtonAttrs = {
   format: string;
 };
 
+/*
+ *
+ */
 function handleError(message: string) {
   if (message.includes("Shared canceled")) {
     return;
@@ -12,6 +15,9 @@ function handleError(message: string) {
   alert(message);
 }
 
+/*
+ *
+ */
 async function shareImage(
   state: { sharing: boolean },
   url: string,
@@ -55,10 +61,16 @@ async function shareImage(
   }
 }
 
+/*
+ *
+ */
 function buttonText(state: { sharing: boolean }) {
   return state.sharing ? "[sharing...]" : "[share]";
 }
 
+/*
+ *
+ */
 export function PhotoShareButton() {
   const localState = {
     sharing: false,

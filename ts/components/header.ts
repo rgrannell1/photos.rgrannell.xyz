@@ -5,6 +5,9 @@ type HeaderAttrs = {
   darkMode: boolean;
 };
 
+/*
+ *
+ */
 function BurgerMenu() {
   const onclick = (_: Event) => {
     broadcast("click_burger_menu", {});
@@ -17,6 +20,9 @@ function BurgerMenu() {
   };
 }
 
+/*
+ *
+ */
 function HeaderBrandText() {
   const BRAND_TEXT = "photos";
 
@@ -27,6 +33,9 @@ function HeaderBrandText() {
   };
 }
 
+/*
+ *
+ */
 function RSSIcon() {
   const SVG_PATH = m("path", {
     fill: "#ff9132",
@@ -50,6 +59,9 @@ function RSSIcon() {
   };
 }
 
+/*
+ *
+ */
 function ThemeSwitch() {
   return {
     view(vnode: m.Vnode<HeaderAttrs>) {
@@ -68,6 +80,9 @@ function ThemeSwitch() {
   };
 }
 
+/*
+ *
+ */
 export function Header() {
   return {
     view(vnode: m.Vnode<HeaderAttrs>) {

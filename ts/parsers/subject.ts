@@ -10,6 +10,9 @@ const BirdSchema = z.object({
   birdwatchUrl: z.union([z.string(), z.array(z.string())]).optional(),
 });
 
+/*
+ *
+ */
 export function parseBird(
   _: TribbleDB,
   subject: TripleObject,
@@ -29,6 +32,9 @@ const MammalSchema = z.object({
   wikipedia: z.string().optional(),
 });
 
+/*
+ *
+ */
 export function parseMammal(
   _: TribbleDB,
   subject: TripleObject,
@@ -48,6 +54,9 @@ const ReptileSchema = z.object({
   wikipedia: z.string().optional(),
 });
 
+/*
+ *
+ */
 export function parseReptile(
   _: TribbleDB,
   subject: TripleObject,
@@ -67,6 +76,9 @@ const AmphibianSchema = z.object({
   wikipedia: z.string().optional(),
 });
 
+/*
+ *
+ */
 export function parseAmphibian(
   _: TribbleDB,
   subject: TripleObject,
@@ -86,6 +98,9 @@ const InsectSchema = z.object({
   wikipedia: z.string().optional(),
 });
 
+/*
+ *
+ */
 export function parseInsect(
   _: TribbleDB,
   subject: TripleObject,
@@ -105,6 +120,9 @@ const SubjectSchema = z.object({
   wikipedia: z.string().optional(),
 });
 
+/*
+ *
+ */
 export function parseSubject(
   _: TribbleDB,
   subject: TripleObject,

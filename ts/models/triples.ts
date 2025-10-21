@@ -1,5 +1,8 @@
 import { Triple } from "@rgrannell1/tribbledb";
 
+/*
+ *
+ */
 export class Triples {
   static src(triple: Triple): string {
     return triple[0];

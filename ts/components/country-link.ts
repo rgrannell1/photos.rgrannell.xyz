@@ -10,6 +10,9 @@ export type CountryLinkAttrs = {
   mode: "flag" | "name";
 };
 
+/*
+ *
+ */
 export function CountryLink() {
   return {
     view(vnode: m.Vnode<CountryLinkAttrs>) {

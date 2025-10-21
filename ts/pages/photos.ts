@@ -3,6 +3,9 @@ import { Photo as PhotoType } from "../types.ts";
 import { Photos } from "../services/photos.ts";
 import { Photo } from "../components/photo.ts";
 
+/*
+ *
+ */
 function PhotosList() {
   return {
     view(vnode: m.Vnode<PhotosPageAttrs>) {
@@ -29,6 +32,9 @@ type PhotosPageAttrs = {
   photos: PhotoType[];
 };
 
+/*
+ *
+ */
 export function PhotosPage() {
   return {
     view(vnode: m.Vnode<PhotosPageAttrs>) {

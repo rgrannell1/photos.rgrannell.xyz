@@ -3,6 +3,9 @@ import m from "mithril";
 import { NonListableTypes } from "../constants.ts";
 import { Strings } from "../strings.ts";
 
+/*
+ *
+ */
 function AlbumsList() {
   return {
     view() {
@@ -13,6 +16,9 @@ function AlbumsList() {
   }
 }
 
+/*
+ *
+ */
 function ListingTitle() {
   return {
     view(vnode: m.Vnode<{ type: string }>) {
@@ -22,6 +28,9 @@ function ListingTitle() {
   }
 }
 
+/*
+ *
+ */
 function ListingThingsButton() {
   return {
     view(vnode: m.Vnode<{ type: string }>) {
@@ -37,6 +46,9 @@ type ListingPageAttrs = {
   type: string;
 }
 
+/*
+ *
+ */
 export function ListingPage() {
   return {
     view(vnode: m.Vnode<ListingPageAttrs>) {

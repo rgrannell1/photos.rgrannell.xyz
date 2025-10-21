@@ -1,6 +1,9 @@
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import { KnownRelations } from "../constants";
 
+/*
+ *
+ */
 export function nameToUrn(tdb: TribbleDB, name: string): string | undefined {
   return tdb.search({
     relation: KnownRelations.NAME,
@@ -8,6 +11,9 @@ export function nameToUrn(tdb: TribbleDB, name: string): string | undefined {
   }).firstSource();
 }
 
+/*
+ *
+ */
 export function countryNameToUrn(
   tdb: TribbleDB,
   name: string,
@@ -19,6 +25,9 @@ export function countryNameToUrn(
   }).firstSource();
 }
 
+/*
+ *
+ */
 export function urnToFlag(tdb: TribbleDB, urn: string): string | undefined {
   return tdb.search({
     source: asUrn(urn),

@@ -24,6 +24,9 @@ import { ListingPage } from "./pages/listing.ts";
 const state = await loadState();
 type AppAttrs = {};
 
+/*
+ *
+ */
 export function AlbumsApp(): m.Component<AppAttrs> {
   return {
     oninit() {
@@ -59,6 +62,9 @@ export function AlbumsApp(): m.Component<AppAttrs> {
   };
 }
 
+/*
+ *
+ */
 export function AlbumApp(): m.Component<AppAttrs> {
   return {
     oninit() {
@@ -105,6 +111,9 @@ export function AlbumApp(): m.Component<AppAttrs> {
   };
 }
 
+/*
+ *
+ */
 export function AboutApp(): m.Component<AppAttrs> {
   return {
     view() {
@@ -125,6 +134,9 @@ export function AboutApp(): m.Component<AppAttrs> {
   };
 }
 
+/*
+ *
+ */
 export function VideosApp(): m.Component<AppAttrs> {
   return {
     view() {
@@ -147,6 +159,9 @@ export function VideosApp(): m.Component<AppAttrs> {
   };
 }
 
+/*
+ *
+ */
 export function PhotosApp(): m.Component<AppAttrs> {
   return {
     view() {
@@ -169,6 +184,9 @@ export function PhotosApp(): m.Component<AppAttrs> {
   };
 }
 
+/*
+ *
+ */
 export function ThingApp(): m.Component<AppAttrs> {
   return {
     view() {
@@ -188,6 +206,9 @@ export function ThingApp(): m.Component<AppAttrs> {
   };
 }
 
+/*
+ *
+ */
 export function PhotoApp(): m.Component<AppAttrs> {
   return {
     oninit() {
@@ -221,6 +242,9 @@ export function PhotoApp(): m.Component<AppAttrs> {
   };
 }
 
+/*
+ *
+ */
 export function ListingApp(): m.Component<AppAttrs> {
   return {
     oninit() {

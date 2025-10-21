@@ -30,6 +30,9 @@ function getDates(): DateEntry[] {
   return datesCache;
 }
 
+/*
+ *
+ */
 export function YearCursor() {
   return {
     oncreate(vnode: m.VnodeDOM) {

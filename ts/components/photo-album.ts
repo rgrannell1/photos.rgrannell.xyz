@@ -11,6 +11,9 @@ export type PhotoAlbumAttrs = {
   minDate?: number;
 };
 
+/*
+ *
+ */
 export function PhotoAlbum() {
   return {
     view(vnode: m.Vnode<PhotoAlbumAttrs>) {

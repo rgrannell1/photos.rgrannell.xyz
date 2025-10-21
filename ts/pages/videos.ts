@@ -6,6 +6,9 @@ type VideosPageAttrs = {
   videos: VideoType[];
 };
 
+/*
+ *
+ */
 export function VideosPage() {
   return {
     view(vnode: m.Vnode<VideosPageAttrs>) {

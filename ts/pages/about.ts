@@ -2,6 +2,9 @@ import m from "mithril";
 import { Windows } from "../services/window.ts";
 import { navigate } from "../events.ts";
 
+/*
+ *
+ */
 export function AboutPage() {
   return {
     oninit() {

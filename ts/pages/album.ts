@@ -35,6 +35,9 @@ type AlbumAttrs = {
   locations: Thing[];
 };
 
+/*
+ *
+ */
 export function AlbumPage() {
   return {
     oninit() {

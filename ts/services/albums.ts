@@ -23,6 +23,9 @@ export function readAlbums(tdb: TribbleDB): Album[] {
     });
 }
 
+/*
+ *
+ */
 export function readAlbumById(tdb: TribbleDB, id: string): Album | undefined {
   return tdb.search({
     source: asUrn(id),
@@ -30,6 +33,9 @@ export function readAlbumById(tdb: TribbleDB, id: string): Album | undefined {
     .map(parseAlbum.bind(null, tdb))[0];
 }
 
+/*
+ *
+ */
 export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
   return tdb.search({
     source: { type: "photo" },
@@ -38,6 +44,9 @@ export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
   }).sources();
 }
 
+/*
+ *
+ */
 export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
   const photoSources = Array.from(readAlbumPhotoIds(tdb, id));
 
@@ -54,6 +63,10 @@ export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
     return parsed ? [parsed] : [];
   });
 }
+
+/*
+ *
+ */
 export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
   const videoSources = Array.from(
     tdb.search({

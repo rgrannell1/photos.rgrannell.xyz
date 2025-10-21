@@ -27,6 +27,9 @@ const PhotoSchema = z.object({
   summary: z.string().optional(),
 });
 
+/*
+ *
+ */
 export function parsePhoto(
   tdb: TribbleDB,
   photo: TripleObject,
