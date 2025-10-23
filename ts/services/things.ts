@@ -1,5 +1,5 @@
 import m from "mithril";
-import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, TribbleDB, Triple, TripleObject } from "@rgrannell1/tribbledb";
 import { ThingLink, ThingLinkAttrs } from "../components/thing-link.ts";
 import { Album } from "../types.ts";
 import { parseAlbum } from "../parsers/album.ts";
@@ -12,6 +12,7 @@ import {
   parseReptile,
 } from "../parsers/subject.ts";
 import { parseVideo } from "../parsers/video.ts";
+import { one } from "../arrays.ts";
 
 export function readThing(
   tdb: TribbleDB,
@@ -95,7 +96,30 @@ export function readParsedThing<T>(
   return parser(tdb, thing);
 }
 
-// TODO: remove mithril, move to presenter
+/*
+ * Read all things of a given type that have a name
+ */
+export function readNamedTypeThings<T>(tdb: TribbleDB, type: string): TripleObject[] {
+  const things = tdb.search({
+    source: { type },
+  }).objects();
+
+  return things
+    .filter((thing) => {
+      return Object.prototype.hasOwnProperty.call(thing, "name");
+    })
+    .sort((thinga, thingb) => {
+      const firstName = thinga.name;
+      const secondName = thingb.name;
+
+      const first = one(firstName) as string;
+      const second = one(secondName) as string;
+
+      return first.localeCompare(second);
+    });
+}
+
+// TODO: remove mithril, move to presenter folder!!
 export function toThingLinks(
   tdb: TribbleDB,
   urns: (string | undefined)[],

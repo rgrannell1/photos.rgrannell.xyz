@@ -7192,6 +7192,20 @@ function readParsedThing(parser, tdb2, id) {
   }
   return parser(tdb2, thing);
 }
+function readNamedTypeThings(tdb2, type) {
+  const things = tdb2.search({
+    source: { type }
+  }).objects();
+  return things.filter((thing) => {
+    return Object.prototype.hasOwnProperty.call(thing, "name");
+  }).sort((thinga, thingb) => {
+    const firstName = thinga.name;
+    const secondName = thingb.name;
+    const first = one(firstName);
+    const second = one(secondName);
+    return first.localeCompare(second);
+  });
+}
 function toThingLinks(tdb2, urns) {
   return urns.flatMap((urn) => {
     if (!urn) {
@@ -7456,9 +7470,16 @@ var import_mithril6 = __toESM(require_mithril());
 
 // ts/services/window.ts
 var Windows = class {
+  /*
+  * Check if the window is smaller than a given width
+  * used to detect a mobile device
+  */
   static isSmallerThan(width = 500) {
     return globalThis.matchMedia(`(max-width: ${width}px)`).matches;
   }
+  /*
+  * Set the page's title
+  */
   static setTitle(title) {
     document.title = title;
   }
@@ -7466,11 +7487,17 @@ var Windows = class {
 
 // ts/services/dates.ts
 var Dates = class {
+  /*
+  *
+  */
   static parse(dateTime) {
     let [date, time] = dateTime.split(" ");
     date = date.replace(/:/g, "-");
     return /* @__PURE__ */ new Date(`${date} ${time}`);
   }
+  /*
+  *
+  */
   static formatExifDate(dateTime) {
     if (!dateTime) {
       return dateTime;
@@ -7479,6 +7506,9 @@ var Dates = class {
     const [date, time] = createdAt.split("T")[0].replace(/\:/g, "-");
     return `${date.replace(/\:/g, "/")} ${time}`;
   }
+  /*
+  *
+  */
   static formatCreatedAt(dateTime) {
     const date = new Date(parseInt(dateTime));
     const options = {
@@ -7490,6 +7520,9 @@ var Dates = class {
     };
     return date.toLocaleDateString("en-US", options);
   }
+  /*
+  *
+  */
   static dateRange(minDate, maxDate, smallDevice) {
     if (!minDate && !maxDate) {
       return "unknown date";
@@ -7821,7 +7854,7 @@ function AlbumsList() {
   }
   return {
     view(vnode) {
-      const albumComponents = [];
+      const $albumComponents = [];
       let year = 2005;
       const { albums } = vnode.attrs;
       for (let idx = 0; idx < albums.length; idx++) {
@@ -7831,7 +7864,7 @@ function AlbumsList() {
           year = albumYear(album);
           if (year !== (/* @__PURE__ */ new Date()).getFullYear()) {
             const $h2 = (0, import_mithril11.default)("h2.album-year-heading", year.toString());
-            albumComponents.push($h2);
+            $albumComponents.push($h2);
           }
         }
         const $countryLinks = album.countries.map((country) => {
@@ -7855,12 +7888,12 @@ function AlbumsList() {
           minDate: album.minDate,
           onclick: onAlbumClick.bind(null, album.id, album.name)
         });
-        albumComponents.push((0, import_mithril11.default)("div", [
+        $albumComponents.push((0, import_mithril11.default)("div", [
           $album,
           $md
         ]));
       }
-      return (0, import_mithril11.default)("section.album-container", albumComponents);
+      return (0, import_mithril11.default)("section.album-container", $albumComponents);
     }
   };
 }
@@ -8451,6 +8484,14 @@ function PhotoPage() {
 
 // ts/pages/listing.ts
 var import_mithril23 = __toESM(require_mithril());
+function AlbumsList2() {
+  return {
+    view() {
+      const $albumComponents = [];
+      return (0, import_mithril23.default)("section.album-container", $albumComponents);
+    }
+  };
+}
 function ListingTitle() {
   return {
     view(vnode) {
@@ -8472,7 +8513,7 @@ function ListingThingsButton() {
 function ListingPage() {
   return {
     view(vnode) {
-      const { type } = vnode.attrs;
+      const { type, things } = vnode.attrs;
       const $albums = [];
       const $md = [
         (0, import_mithril23.default)(ListingTitle, { type })
@@ -8486,7 +8527,7 @@ function ListingPage() {
       }
       return (0, import_mithril23.default)("div", [
         (0, import_mithril23.default)("section.album-metadata", $md),
-        (0, import_mithril23.default)("section.album-container", $albums)
+        (0, import_mithril23.default)(AlbumsList2)
       ]);
     }
   };
@@ -8687,6 +8728,7 @@ function ListingApp() {
       if (!state.currentType) {
         return (0, import_mithril24.default)("p", "No type selected");
       }
+      const things = readNamedTypeThings(state.data, state.currentType);
       return (0, import_mithril24.default)("body", [
         (0, import_mithril24.default)(
           "div.photos-app",
@@ -8695,7 +8737,10 @@ function ListingApp() {
             (0, import_mithril24.default)(Header, state),
             (0, import_mithril24.default)("div.app-container", [
               (0, import_mithril24.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril24.default)(ListingPage, { type: state.currentType })
+              (0, import_mithril24.default)(ListingPage, {
+                type: state.currentType,
+                things
+              })
             ])
           ]
         )

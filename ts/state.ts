@@ -17,6 +17,10 @@ import {
   toThingLinks,
 } from "./services/things.ts";
 
+/*
+ * Load data from the tribbles file.
+ *
+ */
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
@@ -32,6 +36,7 @@ async function loadData() {
 
 /*
  * Commonly used services that depend on state
+ *
  */
 function loadServices(data: TribbleDB) {
   return {

@@ -2,8 +2,11 @@
 import m from "mithril";
 import { NonListableTypes } from "../constants.ts";
 import { Strings } from "../strings.ts";
+import { TripleObject } from "@rgrannell1/tribbledb";
 
 /*
+ * Display the component albums and metadata
+ * in the listing page
  *
  */
 function AlbumsList() {
@@ -17,6 +20,8 @@ function AlbumsList() {
 }
 
 /*
+ * Display a pluralised title for the listing page,
+ * e.g "Countries"
  *
  */
 function ListingTitle() {
@@ -29,6 +34,7 @@ function ListingTitle() {
 }
 
 /*
+ * Link to the things page for this type (wildcard)
  *
  */
 function ListingThingsButton() {
@@ -44,15 +50,17 @@ function ListingThingsButton() {
 
 type ListingPageAttrs = {
   type: string;
+  things: TripleObject[];
 }
 
 /*
- *
+ * Render the listing page. It shows
+ * each member of a category (e.g countries)
  */
 export function ListingPage() {
   return {
     view(vnode: m.Vnode<ListingPageAttrs>) {
-      const { type } = vnode.attrs;
+      const { type, things } = vnode.attrs;
       const $albums = []
 
       const $md = [

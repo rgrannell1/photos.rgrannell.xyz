@@ -508,12 +508,10 @@ button:disabled {
 .style-link,
 .insect-link {
   color: black;
-  border: solid 2px lightgray;
   font-weight: bolder;
   padding: 4px 9px;
   text-decoration: none;
   box-sizing: border-box;
-  border-radius: 6px;
   margin: 2px;
   width: fit-content;
 }

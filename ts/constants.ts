@@ -49,17 +49,27 @@ export class KnownTypes {
   static CAMERA = "camera";
 }
 
+/*
+ * It does make sense to say "show every place photo",
+ * so designate some types as non-listable on the Listing page
+ */
 export const NonListableTypes = new Set([
   KnownTypes.COUNTRY,
   KnownTypes.CAMERA,
   KnownTypes.PLACE,
 ]);
 
+/*
+ * A few words have irregular plurals; store them here
+ * so we can display them without saying `Countrys`
+ */
 export const PLURALS = new Map<string, string>([
   ["country", "countries"],
 ]);
 
-
+/*
+ * These relations should all expand to CDN urls
+ */
 export const CDN_RELATIONS = new Set([
   KnownRelations.THUMBNAIL_URL,
   KnownRelations.PNG_URL,
@@ -72,10 +82,17 @@ export const CDN_RELATIONS = new Set([
   KnownRelations.VIDEO_URL_UNSCALED,
 ]);
 
+/*
+ * Some relationships have inverses; store this data here
+ * (though it could be passed in band in the Tribble file in future)
+ */
 export const RelationSymmetries = [
   [KnownRelations.IN, KnownRelations.CONTAINS],
 ];
 
+/*
+ * A list of shortened Curies passed to the UI, and how to expand them
+ */
 export const CURIES = {
   "i": "urn:ró:",
   "birdwatch": "https://birdwatchireland.ie/birds/",
@@ -83,11 +100,18 @@ export const CURIES = {
   "wiki": "https://en.wikipedia.org/wiki/",
 };
 
+// Curies match this pattern
 export const CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
+
+// TODO inject via environmental variable
 export const ENDPOINT = "https://photos-cdn.rgrannell.xyz";
 
 export const SCROLL_HIDE_THRESHOLD = 200;
 
+/*
+ * Places have features, use these features to pick an emoji to represent the place
+ *
+ */
 export const PLACE_FEATURES_TO_EMOJI = {
   aquarium: "🐠",
   archaeological: "🏺",
@@ -129,6 +153,10 @@ export const PLACE_FEATURES_TO_EMOJI = {
   zoo: "🦓",
 };
 
+/*
+ * A list of cameras I've taken photos on
+ *
+ */
 export const CAMERA_MODELS = new Set([
   "dc-gh5",
   "dc-gh6",
@@ -138,6 +166,10 @@ export const CAMERA_MODELS = new Set([
   "xz-1",
 ]);
 
+/*
+ * A list of phones I've taken photos on
+ *
+ */
 export const PHONE_MODELS = new Set([
   "pixel-4a",
   "pixel-7-pro",

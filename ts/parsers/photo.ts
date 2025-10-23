@@ -28,7 +28,11 @@ const PhotoSchema = z.object({
 });
 
 /*
+ * Parse photo from a triple object
  *
+ * @param tdb - The TribbleDB instance
+ * @param photo - The triple object representing the photo
+ * @returns The parsed Photo or undefined if parsing fails
  */
 export function parsePhoto(
   tdb: TribbleDB,

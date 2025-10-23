@@ -41,6 +41,9 @@ export function block(event: Event) {
 }
 
 /*
+ * Broadcast a navigation event and block the default action.
+ *
+ * @param route The route to navigate to.
  *
  */
 export function navigate(route: string) {
