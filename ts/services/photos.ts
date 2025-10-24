@@ -2,7 +2,7 @@ import { KnownRelations, PHOTO_WIDTH } from "../constants";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import { Photo, Place, Subject } from "../types.ts";
 import { parsePhoto } from "../parsers/photo.ts";
-import { readThing, readThings } from "./things.ts";
+import { readParsedThing, readParsedThings, readThings } from "./things.ts";
 import { parseSubject } from "../parsers/subject.ts";
 import { parseLocation } from "../parsers/location.ts";
 
@@ -123,3 +123,13 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
       .filter((loc): loc is Place => loc !== undefined),
   };
 }
+
+export const readPhoto = readParsedThing.bind(
+  null,
+  parsePhoto,
+);
+
+export const readParsedPhotos = readParsedThings.bind(
+  null,
+  parsePhoto,
+);

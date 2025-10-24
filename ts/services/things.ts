@@ -50,6 +50,9 @@ export function readParsedThing<T>(
 
 /*
  * Read an array of things by URN
+ *
+ * @param tdb TribbleDB instance
+ * @param urns Set of URNs to read
  */
 export function readThings(
   tdb: TribbleDB,
@@ -94,6 +97,7 @@ export const readParsedThings = function <T>(
 
 /*
  * Read all things of a given type that have a name
+ *
  */
 export function readNamedTypeThings<T>(
   tdb: TribbleDB,
@@ -118,31 +122,6 @@ export function readNamedTypeThings<T>(
     });
 }
 
-export const readCountry = readParsedThing.bind(
-  null,
-  parseCountry,
-) as ParsedThingReader<Country>;
-export const readPlace = readParsedThing.bind(
-  null,
-  parsePlace,
-) as ParsedThingReader<Place>;
-export const readPhoto = readParsedThing.bind(
-  null,
-  parsePhoto,
-) as ParsedThingReader<Photo>;
-
-export const readParsedCountries = readParsedThings.bind(
-  null,
-  parseCountry,
-) as ParsedThingsReader<Country>;
-export const readParsedPlaces = readParsedThings.bind(
-  null,
-  parsePlace,
-) as ParsedThingsReader<Place>;
-export const readParsedPhotos = readParsedThings.bind(
-  null,
-  parsePhoto,
-) as ParsedThingsReader<Photo>;
 
 // TODO: remove mithril, move to presenter folder!!
 export function toThingLinks(
