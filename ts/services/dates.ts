@@ -1,16 +1,12 @@
 export class Dates {
-  /*
-  *
-  */
+  /* */
   static parse(dateTime: string): Date {
     let [date, time] = dateTime.split(" ");
     date = date.replace(/:/g, "-");
 
     return new Date(`${date} ${time}`);
   }
-  /*
-  *
-  */
+  /* */
   static formatExifDate(dateTime: string): string {
     if (!dateTime) {
       return dateTime;
@@ -21,9 +17,7 @@ export class Dates {
 
     return `${date.replace(/\:/g, "/")} ${time}`;
   }
-  /*
-  *
-  */
+  /* */
   static formatCreatedAt(dateTime: string): string {
     const date = new Date(parseInt(dateTime));
     const options = {
@@ -36,9 +30,7 @@ export class Dates {
 
     return date.toLocaleDateString("en-US", options);
   }
-  /*
-  *
-  */
+  /* */
   static dateRange(
     minDate: Date | string,
     maxDate: Date | string,

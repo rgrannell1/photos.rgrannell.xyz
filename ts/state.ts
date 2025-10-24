@@ -19,7 +19,6 @@ import {
 
 /*
  * Load data from the tribbles file.
- *
  */
 async function loadData() {
   const schema = {};
@@ -36,7 +35,6 @@ async function loadData() {
 
 /*
  * Commonly used services that depend on state
- *
  */
 function loadServices(data: TribbleDB) {
   return {

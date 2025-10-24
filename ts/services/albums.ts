@@ -5,6 +5,7 @@ import { parseVideo } from "../parsers/video.ts";
 import { parsePhoto } from "../parsers/photo.ts";
 import { parseAlbum } from "../parsers/album.ts";
 import { readThingsByPhotoIds } from "./photos.ts";
+import { readParsedThing, readParsedThings } from "./things.ts";
 
 export function albumYear(album: Album) {
   return new Date(album.minDate).getFullYear();
@@ -14,27 +15,18 @@ export function albumYear(album: Album) {
  * Read albums from the TribbleDB
  */
 export function readAlbums(tdb: TribbleDB): Album[] {
-  return tdb.search({
+  const ids = tdb.search({
     source: { type: "album" },
-  }).objects()
-    .map(parseAlbum.bind(null, tdb))
+  }).sources();
+
+  return (readParsedAlbums(tdb, ids) as Album[])
     .sort((album0: Album, album1: Album) => {
       return album1.minDate - album0.minDate;
     });
 }
 
 /*
- *
- */
-export function readAlbumById(tdb: TribbleDB, id: string): Album | undefined {
-  return tdb.search({
-    source: asUrn(id),
-  }).objects()
-    .map(parseAlbum.bind(null, tdb))[0];
-}
-
-/*
- *
+ * Get the photo IDs associated with an album ID
  */
 export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
   return tdb.search({
@@ -44,9 +36,7 @@ export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
   }).sources();
 }
 
-/*
- *
- */
+/* */
 export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
   const photoSources = Array.from(readAlbumPhotoIds(tdb, id));
 
@@ -64,9 +54,7 @@ export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
   });
 }
 
-/*
- *
- */
+/* */
 export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
   const videoSources = Array.from(
     tdb.search({
@@ -97,3 +85,7 @@ export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
 
   return readThingsByPhotoIds(tdb, photoIds);
 }
+
+export const readAlbum = readParsedThing.bind(null, parseAlbum);
+
+export const readParsedAlbums = readParsedThings.bind(null, parseAlbum);

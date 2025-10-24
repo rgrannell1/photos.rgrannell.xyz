@@ -5,9 +5,7 @@ type SidebarItemAttrs = {
   route: string;
 };
 
-/*
- *
- */
+/* */
 function SidebarItem() {
   return {
     view(vnode: m.Vnode<SidebarItemAttrs>) {
@@ -25,9 +23,7 @@ type SidebarAttrs = {
   visible: boolean;
 };
 
-/*
- *
- */
+/* */
 export function Sidebar() {
   function classes(visible: boolean) {
     const cls = ["photo-sidebar"];

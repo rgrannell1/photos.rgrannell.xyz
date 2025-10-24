@@ -7,9 +7,7 @@ import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../constants.ts";
 import { Photos } from "../services/photos.ts";
 import type { Photo as PhotoType } from "../types.ts";
 
-/*
- *
- */
+/* */
 function loadImage(url: string, event: Event) {
   broadcast("photo_loaded", { url });
 
@@ -31,9 +29,7 @@ type ImageAttrs = {
   onclick?: (e: Event) => void;
 };
 
-/*
- *
- */
+/* */
 function Image() {
   return {
     view(vnode: m.Vnode<ImageAttrs>) {
@@ -55,9 +51,7 @@ type PlaceholderImageAttrs = {
   thumbnailDataUrl: string;
 };
 
-/*
- *
- */
+/* */
 function PlaceholderImage() {
   return {
     view(vnode: m.Vnode<PlaceholderImageAttrs>) {
@@ -80,9 +74,7 @@ type ImagePairAttrs = {
   onclick?: (e: Event) => void;
 };
 
-/*
- *
- */
+/* */
 export function ImagePair() {
   return {
     view(vnode: m.Vnode<ImagePairAttrs>) {
@@ -106,9 +98,7 @@ export function ImagePair() {
   };
 }
 
-/*
- *
- */
+/* */
 function formatId(id: string): string {
   return id.startsWith("urn:") ? parseUrn(id).id : id;
 }
@@ -119,9 +109,7 @@ export type PhotoAttrs = {
   interactive?: boolean;
 };
 
-/*
- *
- */
+/* */
 export function Photo() {
   return {
     view(vnode: m.Vnode<PhotoAttrs>) {

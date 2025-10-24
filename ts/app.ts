@@ -4,6 +4,7 @@ import { loadState } from "./state.ts";
 import { Sidebar } from "./components/sidebar.ts";
 import { AlbumsPage } from "./pages/albums.ts";
 import {
+  readAlbum,
   readAlbumById,
   readAlbumPhotosByAlbumId,
   readAlbums,
@@ -21,13 +22,12 @@ import { PhotoPage } from "./pages/photo.ts";
 import { readPhotoById, readPhotos } from "./services/photos.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { readNamedTypeThings } from "./services/things.ts";
+import { Album } from "./types.ts";
 
 const state = await loadState();
 type AppAttrs = {};
 
-/*
- *
- */
+/* */
 export function AlbumsApp(): m.Component<AppAttrs> {
   return {
     oninit() {
@@ -63,9 +63,7 @@ export function AlbumsApp(): m.Component<AppAttrs> {
   };
 }
 
-/*
- *
- */
+/* */
 export function AlbumApp(): m.Component<AppAttrs> {
   return {
     oninit() {
@@ -76,7 +74,7 @@ export function AlbumApp(): m.Component<AppAttrs> {
       if (!state.currentAlbum) {
         return m("p", "No album selected");
       }
-      const album = readAlbumById(state.data, state.currentAlbum);
+      const album = readAlbum(state.data, state.currentAlbum) as Album[];
       const photos = readAlbumPhotosByAlbumId(state.data, state.currentAlbum);
       const videos = readAlbumVideosByAlbumId(state.data, state.currentAlbum);
 
@@ -112,9 +110,7 @@ export function AlbumApp(): m.Component<AppAttrs> {
   };
 }
 
-/*
- *
- */
+/* */
 export function AboutApp(): m.Component<AppAttrs> {
   return {
     view() {
@@ -135,9 +131,7 @@ export function AboutApp(): m.Component<AppAttrs> {
   };
 }
 
-/*
- *
- */
+/* */
 export function VideosApp(): m.Component<AppAttrs> {
   return {
     view() {
@@ -160,9 +154,7 @@ export function VideosApp(): m.Component<AppAttrs> {
   };
 }
 
-/*
- *
- */
+/* */
 export function PhotosApp(): m.Component<AppAttrs> {
   return {
     view() {
@@ -185,9 +177,7 @@ export function PhotosApp(): m.Component<AppAttrs> {
   };
 }
 
-/*
- *
- */
+/* */
 export function ThingApp(): m.Component<AppAttrs> {
   return {
     view() {
@@ -207,9 +197,7 @@ export function ThingApp(): m.Component<AppAttrs> {
   };
 }
 
-/*
- *
- */
+/* */
 export function PhotoApp(): m.Component<AppAttrs> {
   return {
     oninit() {
@@ -243,9 +231,7 @@ export function PhotoApp(): m.Component<AppAttrs> {
   };
 }
 
-/*
- *
- */
+/* */
 export function ListingApp(): m.Component<AppAttrs> {
   return {
     oninit() {
@@ -270,8 +256,8 @@ export function ListingApp(): m.Component<AppAttrs> {
               m(Sidebar, { visible: state.sidebarVisible }),
               m(ListingPage, {
                 type: state.currentType,
-              things
-            }),
+                things,
+              }),
             ]),
           ],
         ),

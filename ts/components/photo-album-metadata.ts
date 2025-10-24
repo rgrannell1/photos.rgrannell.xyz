@@ -11,9 +11,7 @@ export type PhotoAlbumMetadataAttrs = {
   countryLinks: m.Vnode<CountryLinkAttrs, unknown>[];
 };
 
-/*
- *
- */
+/* */
 export function PhotoAlbumMetadata() {
   function dateRange(minDate?: number, maxDate?: number) {
     if (!minDate || !maxDate) {

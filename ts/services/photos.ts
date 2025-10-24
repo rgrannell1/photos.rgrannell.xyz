@@ -57,9 +57,7 @@ export class Photos {
   }
 }
 
-/*
- *
- */
+/* */
 export function readPhotos(tdb: TribbleDB): Photo[] {
   return tdb.search({
     source: { type: "photo" },
@@ -70,9 +68,7 @@ export function readPhotos(tdb: TribbleDB): Photo[] {
 }
 
 // TODO: read thing + find general parser pattern
-/*
- *
- */
+/* */
 export function readPhotoById(tdb: TribbleDB, id: string): Photo | undefined {
   const parsed = asUrn(id);
 
@@ -87,9 +83,7 @@ export function readPhotoById(tdb: TribbleDB, id: string): Photo | undefined {
   return parsePhoto(tdb, result[0]);
 }
 
-/*
- *
- */
+/* */
 export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
   locations: Place[];
   subjects: Subject[];

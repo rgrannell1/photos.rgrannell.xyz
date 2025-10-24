@@ -9,9 +9,7 @@ export type VideoAttrs = {
   videoUrlUnscaled: string;
 };
 
-/*
- *
- */
+/* */
 export function Video() {
   return {
     view(vnode: m.Vnode<VideoAttrs>) {

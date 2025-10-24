@@ -15,9 +15,7 @@ const PlaceSchema = z.object({
   unescoId: z.string().optional(),
 });
 
-/*
- *
- */
+/* */
 export function parsePlace(
   tdb: TribbleDB,
   place: TripleObject,
@@ -58,9 +56,7 @@ const CountrySchema = z.object({
   contains: z.union([z.string(), z.array(z.string())]).optional(),
 });
 
-/*
- *
- */
+/* */
 export function parseCountry(
   _: TribbleDB,
   country: TripleObject,
@@ -80,9 +76,7 @@ export function parseCountry(
   };
 }
 
-/*
- *
- */
+/* */
 export function parseLocation(
   tdb: TribbleDB,
   location: TripleObject,

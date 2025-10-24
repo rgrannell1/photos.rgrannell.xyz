@@ -10,9 +10,7 @@ type PhotoPageAttrs = {
   services: Services;
 };
 
-/*
- *
- */
+/* */
 export function PhotoPage() {
   return {
     view(vnode: m.Vnode<PhotoPageAttrs>) {

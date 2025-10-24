@@ -1,19 +1,26 @@
 import m from "mithril";
-import { asUrn, TribbleDB, Triple, TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { ThingLink, ThingLinkAttrs } from "../components/thing-link.ts";
-import { Album } from "../types.ts";
-import { parseAlbum } from "../parsers/album.ts";
+import { Country, Photo, Place } from "../types.ts";
 import { parseCountry, parsePlace } from "../parsers/location.ts";
 import { parsePhoto } from "../parsers/photo.ts";
-import {
-  parseAmphibian,
-  parseInsect,
-  parseMammal,
-  parseReptile,
-} from "../parsers/subject.ts";
-import { parseVideo } from "../parsers/video.ts";
 import { one } from "../arrays.ts";
 
+// TypeScript isn't following; so lets help it...
+type ParsedThingReader<T> = (
+  tdb: TribbleDB,
+  id: string,
+) => T | undefined;
+
+type ParsedThingsReader<T> = (
+  tdb: TribbleDB,
+  ids: Set<string>,
+) => T[];
+
+/*
+ * Read a thing as an undifferentiated TripleObject
+ * by URN
+ */
 export function readThing(
   tdb: TribbleDB,
   id: string,
@@ -25,64 +32,9 @@ export function readThing(
   }).firstObject();
 }
 
-export const readAlbum = readParsedThing.bind(null, parseAlbum);
-export const readCountry = readParsedThing.bind(null, parseCountry);
-export const readPlace = readParsedThing.bind(null, parsePlace);
-export const readPhoto = readParsedThing.bind(null, parsePhoto);
-export const readMammal = readParsedThing.bind(null, parseMammal);
-export const readReptile = readParsedThing.bind(null, parseReptile);
-export const readAmphibian = readParsedThing.bind(null, parseAmphibian);
-export const readInsect = readParsedThing.bind(null, parseInsect);
-export const readVideo = readParsedThing.bind(null, parseVideo);
-
-export function readThings(
-  tdb: TribbleDB,
-  ids: Set<string>,
-): TripleObject[] {
-  const things: TripleObject[] = [];
-
-  for (const id of ids) {
-    const thing = readThing(tdb, id);
-    if (thing) {
-      things.push(thing);
-    }
-  }
-
-  return things;
-}
-
-export const readParsedThings = function <T>(
-  parser: (tdb: TribbleDB, thing: TripleObject) => T | undefined,
-  tdb: TribbleDB,
-  ids: Set<string>,
-): T[] {
-  const parsedThings: T[] = [];
-
-  for (const id of ids) {
-    const thing = readThing(tdb, id);
-    if (!thing) {
-      continue;
-    }
-
-    const parsed = parser(tdb, thing);
-    if (parsed) {
-      parsedThings.push(parsed);
-    }
-  }
-
-  return parsedThings;
-};
-
-export const readParsedAlbums = readParsedThings.bind(null, parseAlbum);
-export const readParsedCountries = readParsedThings.bind(null, parseCountry);
-export const readParsedPlaces = readParsedThings.bind(null, parsePlace);
-export const readParsedPhotos = readParsedThings.bind(null, parsePhoto);
-export const readParsedMammals = readParsedThings.bind(null, parseMammal);
-export const readParsedReptiles = readParsedThings.bind(null, parseReptile);
-export const readParsedAmphibians = readParsedThings.bind(null, parseAmphibian);
-export const readParsedInsects = readParsedThings.bind(null, parseInsect);
-export const readParsedVideos = readParsedThings.bind(null, parseVideo);
-
+/*
+ * Read and parse a thing by URN
+ */
 export function readParsedThing<T>(
   parser: (tdb: TribbleDB, thing: TripleObject) => T | undefined,
   tdb: TribbleDB,
@@ -97,9 +49,56 @@ export function readParsedThing<T>(
 }
 
 /*
+ * Read an array of things by URN
+ */
+export function readThings(
+  tdb: TribbleDB,
+  urns: Set<string>,
+): TripleObject[] {
+  const things: TripleObject[] = [];
+
+  for (const urn of urns) {
+    const thing = readThing(tdb, urn);
+    if (thing) {
+      things.push(thing);
+    }
+  }
+
+  return things;
+}
+
+/*
+ * Read an array of parsed things by URNs
+ */
+export const readParsedThings = function <T>(
+  parser: (tdb: TribbleDB, thing: TripleObject) => T | undefined,
+  tdb: TribbleDB,
+  urns: Set<string>,
+): T[] {
+  const parsedThings: T[] = [];
+
+  for (const urn of urns) {
+    const thing = readThing(tdb, urn);
+    if (!thing) {
+      continue;
+    }
+
+    const parsed = parser(tdb, thing);
+    if (parsed) {
+      parsedThings.push(parsed);
+    }
+  }
+
+  return parsedThings;
+};
+
+/*
  * Read all things of a given type that have a name
  */
-export function readNamedTypeThings<T>(tdb: TribbleDB, type: string): TripleObject[] {
+export function readNamedTypeThings<T>(
+  tdb: TribbleDB,
+  type: string,
+): TripleObject[] {
   const things = tdb.search({
     source: { type },
   }).objects();
@@ -118,6 +117,32 @@ export function readNamedTypeThings<T>(tdb: TribbleDB, type: string): TripleObje
       return first.localeCompare(second);
     });
 }
+
+export const readCountry = readParsedThing.bind(
+  null,
+  parseCountry,
+) as ParsedThingReader<Country>;
+export const readPlace = readParsedThing.bind(
+  null,
+  parsePlace,
+) as ParsedThingReader<Place>;
+export const readPhoto = readParsedThing.bind(
+  null,
+  parsePhoto,
+) as ParsedThingReader<Photo>;
+
+export const readParsedCountries = readParsedThings.bind(
+  null,
+  parseCountry,
+) as ParsedThingsReader<Country>;
+export const readParsedPlaces = readParsedThings.bind(
+  null,
+  parsePlace,
+) as ParsedThingsReader<Place>;
+export const readParsedPhotos = readParsedThings.bind(
+  null,
+  parsePhoto,
+) as ParsedThingsReader<Photo>;
 
 // TODO: remove mithril, move to presenter folder!!
 export function toThingLinks(

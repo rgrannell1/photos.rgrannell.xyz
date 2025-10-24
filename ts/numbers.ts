@@ -1,4 +1,3 @@
-
 /*
  * Ensure a numberish value is an integer.
  */

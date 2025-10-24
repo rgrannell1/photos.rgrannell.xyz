@@ -15,9 +15,7 @@ export type ThingLinkAttrs = {
   thing: any;
 };
 
-/*
- *
- */
+/* */
 function placeEmoji(thing: any): string {
   const feature = one(thing.feature);
   const { id: featureId } = asUrn(feature);
@@ -31,24 +29,18 @@ function placeEmoji(thing: any): string {
   return "📍";
 }
 
-/*
- *
- */
+/* */
 function countryEmoji(thing: any): string {
   const flag = one(thing.flag);
   return flag ?? "🏳️";
 }
 
-/*
- *
- */
+/* */
 function birdEmoji(): string {
   return "🐤";
 }
 
-/*
- *
- */
+/* */
 function cameraEmoji(thing: any): string {
   const { id } = asUrn(thing.id);
 
@@ -61,9 +53,7 @@ function cameraEmoji(thing: any): string {
   return "📷";
 }
 
-/*
- *
- */
+/* */
 export function thingEmoji(urn: string, name: string, thing: any): string {
   const { type } = asUrn(urn);
 
@@ -81,9 +71,7 @@ export function thingEmoji(urn: string, name: string, thing: any): string {
   }
 }
 
-/*
- *
- */
+/* */
 export function ThingLink() {
   return {
     view(vnode: m.Vnode<ThingLinkAttrs>) {

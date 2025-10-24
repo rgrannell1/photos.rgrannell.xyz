@@ -110,7 +110,6 @@ export const SCROLL_HIDE_THRESHOLD = 200;
 
 /*
  * Places have features, use these features to pick an emoji to represent the place
- *
  */
 export const PLACE_FEATURES_TO_EMOJI = {
   aquarium: "🐠",
@@ -155,7 +154,6 @@ export const PLACE_FEATURES_TO_EMOJI = {
 
 /*
  * A list of cameras I've taken photos on
- *
  */
 export const CAMERA_MODELS = new Set([
   "dc-gh5",
@@ -168,7 +166,6 @@ export const CAMERA_MODELS = new Set([
 
 /*
  * A list of phones I've taken photos on
- *
  */
 export const PHONE_MODELS = new Set([
   "pixel-4a",

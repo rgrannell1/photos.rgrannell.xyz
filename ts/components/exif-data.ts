@@ -12,9 +12,7 @@ type HeadingAttrs = {
   text: string;
 };
 
-/*
- *
- */
+/* */
 function Heading() {
   return {
     view(vnode: m.Vnode<HeadingAttrs>) {
@@ -24,9 +22,7 @@ function Heading() {
   };
 }
 
-/*
- *
- */
+/* */
 function CameraModel() {
   return {
     view(vnode: m.Vnode<ExifDataAttrs>) {

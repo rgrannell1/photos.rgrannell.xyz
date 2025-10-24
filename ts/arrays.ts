@@ -14,7 +14,6 @@ export function arrayify<T>(value: T | T[] | undefined): T[] {
  * Return the first value, or undefined. Often needed in cases where
  * a triple object theoretically could have multiple or missing values (e.g name)
  * but won't in practice.
- *
  */
 export function one<T>(value: T | T[] | undefined): T | undefined {
   if (value === undefined) {

@@ -49,9 +49,7 @@ export function convertCountriesToUrns(triple: Triple): Triple[] {
 
 const styleNames = new Set<string>();
 
-/*
- *
- */
+/* */
 export function convertStylesToUrns(triple: Triple): Triple[] {
   const [src, rel, tgt] = triple;
 
@@ -236,9 +234,7 @@ export function expandCurie(curies: Record<string, string>, value: string) {
   return curies[prefix] ? `${curies[prefix]}${id}` : value;
 }
 
-/*
- *
- */
+/* */
 export function expandTripleCuries(
   triple: Triple,
 ) {

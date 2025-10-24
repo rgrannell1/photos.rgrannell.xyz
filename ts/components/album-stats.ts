@@ -1,9 +1,7 @@
 import m from "mithril";
 import stats from "../stats.json" with { type: "json" };
 
-/*
- *
- */
+/* */
 function validateState(stats: unknown) {
   if (typeof stats !== "object" || stats === null) {
     throw new Error("Stats is not an object");
@@ -32,9 +30,7 @@ function validateState(stats: unknown) {
   }
 }
 
-/*
- *
- */
+/* */
 export function AlbumStats() {
   validateState(stats);
 

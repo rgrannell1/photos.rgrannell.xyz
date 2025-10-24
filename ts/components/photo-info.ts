@@ -6,9 +6,7 @@ type HeadingAttrs = {
   text: string;
 };
 
-/*
- *
- */
+/* */
 function Heading() {
   return {
     view(vnode: m.Vnode<HeadingAttrs>) {
@@ -23,9 +21,7 @@ type PhotoComponentAttrs = {
   services: Services;
 };
 
-/*
- *
- */
+/* */
 function Description() {
   return {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
@@ -41,9 +37,7 @@ function Description() {
   };
 }
 
-/*
- *
- */
+/* */
 function Location() {
   return {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
@@ -55,9 +49,7 @@ function Location() {
   };
 }
 
-/*
- *
- */
+/* */
 function Rating() {
   return {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
@@ -69,9 +61,7 @@ function Rating() {
   };
 }
 
-/*
- *
- */
+/* */
 function Style() {
   return {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
@@ -83,9 +73,7 @@ function Style() {
   };
 }
 
-/*
- *
- */
+/* */
 function Subject() {
   return {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
@@ -97,9 +85,7 @@ function Subject() {
   };
 }
 
-/*
- *
- */
+/* */
 function Country() {
   return {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
@@ -116,9 +102,7 @@ type PhotoInfoAttrs = {
   services: Services;
 };
 
-/*
- *
- */
+/* */
 export function PhotoInfo() {
   return {
     view(vnode: m.Vnode<PhotoInfoAttrs>) {

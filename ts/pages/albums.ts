@@ -14,9 +14,7 @@ type AlbumsListAttrs = {
   albums: Album[];
 };
 
-/*
- *
- */
+/* */
 function AlbumsList() {
   function onAlbumClick(id: string, title: string, event: Event) {
     const parsed = asUrn(id);
@@ -87,9 +85,7 @@ type AlbumsPageState = {
   albums: Album[];
 };
 
-/*
- *
- */
+/* */
 export function AlbumsPage() {
   return {
     oninit() {
