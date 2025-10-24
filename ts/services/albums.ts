@@ -1,11 +1,10 @@
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import { Album } from "../types.ts";
 import type { Photo, Video } from "../types.ts";
-import { parseVideo } from "../parsers/video.ts";
-import { parsePhoto } from "../parsers/photo.ts";
 import { parseAlbum } from "../parsers/album.ts";
-import { readThingsByPhotoIds } from "./photos.ts";
+import { readParsedPhotos, readThingsByPhotoIds } from "./photos.ts";
 import { readParsedThing, readParsedThings } from "./things.ts";
+import { readParsedVideos } from "./videos.ts";
 
 export function albumYear(album: Album) {
   return new Date(album.minDate).getFullYear();
@@ -27,6 +26,9 @@ export function readAlbums(tdb: TribbleDB): Album[] {
 
 /*
  * Get the photo IDs associated with an album ID
+ *
+ * @param tdb TribbleDB instance
+ * @param id Album URN
  */
 export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
   return tdb.search({
@@ -36,41 +38,38 @@ export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
   }).sources();
 }
 
-/* */
+/*
+ * Read photos associated with an album
+ *
+ * @param tdb TribbleDB instance
+ * @param id Album URN
+ */
 export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
-  const photoSources = Array.from(readAlbumPhotoIds(tdb, id));
-
-  return photoSources.flatMap((source: string) => {
-    const info = tdb.search({
-      source: asUrn(source),
-    }).firstObject(false);
-
-    if (!info) {
-      return [];
-    }
-
-    const parsed = parsePhoto(tdb, info);
-    return parsed ? [parsed] : [];
-  });
+  return readParsedPhotos(tdb, readAlbumPhotoIds(tdb, id)) as Photo[];
 }
 
-/* */
+/*
+ * Read videos associated with an album
+ *
+ * @param tdb TribbleDB instance
+ * @param id Album URN
+ */
+export function readAlbumVideoIds(tdb: TribbleDB, id: string): Set<string> {
+  return tdb.search({
+    source: { type: "video" },
+    relation: "albumId",
+    target: { id: asUrn(id).id },
+  }).sources();
+}
+
+/*
+ * Read videos associated with an album
+ *
+ * @param tdb TribbleDB instance
+ * @param id Album URN
+ */
 export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
-  const videoSources = Array.from(
-    tdb.search({
-      source: { type: "video" },
-      relation: "albumId",
-      target: { id: asUrn(id).id },
-    }).sources(),
-  );
-
-  return videoSources.flatMap((source: string) => {
-    const info = tdb.search({
-      source: asUrn(source),
-    }).firstObject(false);
-
-    return info ? [parseVideo(tdb, info)] : [];
-  });
+  return readParsedVideos(tdb, readAlbumVideoIds(tdb, id)) as Video[];
 }
 
 /*
@@ -81,9 +80,7 @@ export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
  * (x) -> [:subject|:location] -> (:photo) - [:albumId] -> (id:album)
  */
 export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
-  const photoIds = readAlbumPhotoIds(tdb, id);
-
-  return readThingsByPhotoIds(tdb, photoIds);
+  return readThingsByPhotoIds(tdb, readAlbumPhotoIds(tdb, id));
 }
 
 export const readAlbum = readParsedThing.bind(null, parseAlbum);

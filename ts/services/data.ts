@@ -7,6 +7,8 @@ import { TribbleParser } from "@rgrannell1/tribbledb";
 
 /*
  * Stream triples from a URL
+ *
+ * @param url The URL to fetch triples from
  */
 export async function* streamTribbles(url: string) {
   const parser = new TribbleParser();

@@ -1,21 +1,7 @@
 import m from "mithril";
 import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { ThingLink, ThingLinkAttrs } from "../components/thing-link.ts";
-import { Country, Photo, Place } from "../types.ts";
-import { parseCountry, parsePlace } from "../parsers/location.ts";
-import { parsePhoto } from "../parsers/photo.ts";
 import { one } from "../arrays.ts";
-
-// TypeScript isn't following; so lets help it...
-type ParsedThingReader<T> = (
-  tdb: TribbleDB,
-  id: string,
-) => T | undefined;
-
-type ParsedThingsReader<T> = (
-  tdb: TribbleDB,
-  ids: Set<string>,
-) => T[];
 
 /*
  * Read a thing as an undifferentiated TripleObject
@@ -97,7 +83,6 @@ export const readParsedThings = function <T>(
 
 /*
  * Read all things of a given type that have a name
- *
  */
 export function readNamedTypeThings<T>(
   tdb: TribbleDB,
@@ -121,7 +106,6 @@ export function readNamedTypeThings<T>(
       return first.localeCompare(second);
     });
 }
-
 
 // TODO: remove mithril, move to presenter folder!!
 export function toThingLinks(
