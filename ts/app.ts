@@ -5,7 +5,6 @@ import { Sidebar } from "./components/sidebar.ts";
 import { AlbumsPage } from "./pages/albums.ts";
 import {
   readAlbum,
-  readAlbumById,
   readAlbumPhotosByAlbumId,
   readAlbums,
   readAlbumVideosByAlbumId,
@@ -43,7 +42,7 @@ export function AlbumsApp(): m.Component<AppAttrs> {
         });
       });
     },
-    view(vnode) {
+    view() {
       return m("body", [
         m(
           "div.photos-app",

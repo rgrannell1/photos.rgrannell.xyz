@@ -1,7 +1,6 @@
 import m from "mithril";
 import { Dates } from "../services/dates.ts";
 import type { Photo as PhotoType, Services } from "../types.ts";
-import { ThingLink } from "./thing-link.ts";
 
 type ExifDataAttrs = {
   photo: PhotoType;

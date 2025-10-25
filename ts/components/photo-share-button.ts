@@ -57,12 +57,14 @@ async function shareImage(
   }
 }
 
-/* */
+/* Returns the button text based on the sharing state */
 function buttonText(state: { sharing: boolean }) {
   return state.sharing ? "[sharing...]" : "[share]";
 }
 
-/* */
+/*
+ * A button to share photos using the Web Share API
+ */
 export function PhotoShareButton() {
   const localState = {
     sharing: false,

@@ -121,8 +121,6 @@ export function toThingLinks(
       return [];
     }
 
-    const id = asUrn(urn);
-
     return [m(ThingLink, {
       urn,
       thing: readThing(tdb, urn),

@@ -1,7 +1,9 @@
 import m from "mithril";
 import stats from "../stats.json" with { type: "json" };
 
-/* */
+/*
+ * We inject this in at runtime, so validate its structure
+ */
 function validateState(stats: unknown) {
   if (typeof stats !== "object" || stats === null) {
     throw new Error("Stats is not an object");
@@ -30,7 +32,9 @@ function validateState(stats: unknown) {
   }
 }
 
-/* */
+/*
+ * Show statistics and links for the album pages
+ */
 export function AlbumStats() {
   validateState(stats);
 

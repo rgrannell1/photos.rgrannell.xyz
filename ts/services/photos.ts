@@ -124,12 +124,16 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
   };
 }
 
-export const readPhoto = readParsedThing.bind(
-  null,
-  parsePhoto,
-);
+export const readPhoto = (
+  tdb: TribbleDB,
+  id: string,
+) => {
+  return readParsedThing(parsePhoto, tdb, id);
+};
 
-export const readParsedPhotos = readParsedThings.bind(
-  null,
-  parsePhoto,
-);
+export const readParsedPhotos = (
+  tdb: TribbleDB,
+  urns: Set<string>,
+) => {
+  return readParsedThings(parsePhoto, tdb, urns);
+};

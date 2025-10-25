@@ -9,6 +9,26 @@ export function nameToUrn(tdb: TribbleDB, name: string): string | undefined {
   }).firstSource();
 }
 
+/*
+ * Convert names to tribble URNs
+ */
+export function namesToUrns(tdb: TribbleDB, names: string[]): Set<string> {
+  const urns: Set<string> = new Set();
+
+  const namesCursor = tdb.search({
+    relation: KnownRelations.NAME,
+  });
+
+  for (const name of names) {
+    const urn = nameToUrn(namesCursor, name);
+    if (urn) {
+      urns.add(urn);
+    }
+  }
+
+  return urns;
+}
+
 /* */
 export function countryNameToUrn(
   tdb: TribbleDB,

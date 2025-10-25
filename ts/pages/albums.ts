@@ -14,12 +14,14 @@ type AlbumsListAttrs = {
   albums: Album[];
 };
 
-/* */
+/*
+ * Construct a list of albums
+ */
 function AlbumsList() {
   function onAlbumClick(id: string, title: string, event: Event) {
     const parsed = asUrn(id);
 
-    broadcast("navigate", { route: `/album/${parsed.id}` });
+    broadcast("navigate", { route: `/album/${parsed.id}`, title });
     block(event);
   }
 

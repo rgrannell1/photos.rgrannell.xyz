@@ -6,6 +6,9 @@ import { readParsedPhotos, readThingsByPhotoIds } from "./photos.ts";
 import { readParsedThing, readParsedThings } from "./things.ts";
 import { readParsedVideos } from "./videos.ts";
 
+/*
+ * Get the album date
+ */
 export function albumYear(album: Album) {
   return new Date(album.minDate).getFullYear();
 }
@@ -45,7 +48,7 @@ export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
  * @param id Album URN
  */
 export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
-  return readParsedPhotos(tdb, readAlbumPhotoIds(tdb, id)) as Photo[];
+  return readParsedPhotos(tdb, readAlbumPhotoIds(tdb, id));
 }
 
 /*
@@ -69,7 +72,7 @@ export function readAlbumVideoIds(tdb: TribbleDB, id: string): Set<string> {
  * @param id Album URN
  */
 export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
-  return readParsedVideos(tdb, readAlbumVideoIds(tdb, id)) as Video[];
+  return readParsedVideos(tdb, readAlbumVideoIds(tdb, id));
 }
 
 /*
@@ -83,6 +86,20 @@ export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
   return readThingsByPhotoIds(tdb, readAlbumPhotoIds(tdb, id));
 }
 
-export const readAlbum = readParsedThing.bind(null, parseAlbum);
+export const readAlbum = (
+  tdb: TribbleDB,
+  id: string,
+) => {
+  return readParsedThing(
+    parseAlbum,
+    tdb,
+    id,
+  );
+};
 
-export const readParsedAlbums = readParsedThings.bind(null, parseAlbum);
+export const readParsedAlbums = (
+  tdb: TribbleDB,
+  urns: Set<string>,
+) => {
+  return readParsedThings(parseAlbum, tdb, urns);
+};

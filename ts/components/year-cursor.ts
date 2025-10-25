@@ -96,7 +96,7 @@ export function YearCursor() {
     },
 
     onremove(vnode: m.VnodeDOM) {
-      const state = vnode.state as any;
+      const state = vnode.state as any; // TODO LLM Slop
       if (state && state._onScroll) {
         globalThis.removeEventListener("scroll", state._onScroll);
       }

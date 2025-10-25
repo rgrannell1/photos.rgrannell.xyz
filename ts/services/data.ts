@@ -27,7 +27,7 @@ export async function* streamTribbles(url: string) {
       break;
     }
     buffer += value;
-    let lines = buffer.split("\n");
+    const lines = buffer.split("\n");
     buffer = lines.pop() ?? "";
     for (const line of lines) {
       const triple = parser.parse(line);

@@ -1,9 +1,10 @@
 import { z } from "zod";
-import { asInt } from "../numbers";
-import { countryNameToUrn, urnToFlag } from "../semantic/names";
+import { asInt } from "../numbers.ts";
+import { namesToUrns } from "../semantic/names.ts";
 import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { Album } from "../types";
 import { arrayify } from "../arrays";
+import { readParsedCountries } from "../services/location";
 
 const AlbumSchema = z.object({
   name: z.string(),
@@ -34,21 +35,8 @@ export function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
   }
 
   const countryNames = arrayify(result.data.flags);
-
-  const countries = countryNames.flatMap((countryName: string) => {
-    const urn = countryNameToUrn(tdb, countryName);
-    const flag = urn ? urnToFlag(tdb, urn) : undefined;
-
-    if (!urn || !flag) {
-      return [];
-    }
-
-    return [{
-      urn,
-      name: countryName,
-      flag,
-    }];
-  });
+  const countryUrns = namesToUrns(tdb, countryNames);
+  const countries = readParsedCountries(tdb, countryUrns);
 
   return {
     name: result.data.name,

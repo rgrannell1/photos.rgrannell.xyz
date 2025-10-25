@@ -43,11 +43,7 @@ export type Album = {
   photosCount: number;
   videosCount: number;
   description: string;
-  countries: {
-    urn: string | undefined;
-    name: string;
-    flag: string | undefined;
-  }[];
+  countries: Country[];
 };
 
 export type Photo = {

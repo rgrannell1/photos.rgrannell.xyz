@@ -1,3 +1,4 @@
+import { TribbleDB } from "@rgrannell1/tribbledb";
 import {
   parseAmphibian,
   parseInsect,
@@ -6,18 +7,58 @@ import {
 } from "../parsers/subject.ts";
 import { readParsedThing, readParsedThings } from "./things.ts";
 
-export const readMammal = readParsedThing.bind(null, parseMammal);
+export const readMammal = (
+  tdb: TribbleDB,
+  id: string,
+) => {
+  return readParsedThing(parseMammal, tdb, id);
+};
 
-export const readReptile = readParsedThing.bind(null, parseReptile);
+export const readReptile = (
+  tdb: TribbleDB,
+  id: string,
+) => {
+  return readParsedThing(parseReptile, tdb, id);
+};
 
-export const readAmphibian = readParsedThing.bind(null, parseAmphibian);
+export const readAmphibian = (
+  tdb: TribbleDB,
+  id: string,
+) => {
+  return readParsedThing(parseMammal, tdb, id);
+};
 
-export const readInsect = readParsedThing.bind(null, parseInsect);
+export const readInsect = (
+  tdb: TribbleDB,
+  id: string,
+) => {
+  return readParsedThing(parseInsect, tdb, id);
+};
 
-export const readParsedMammals = readParsedThings.bind(null, parseMammal);
+export const readParsedMammals = (
+  tdb: TribbleDB,
+  urns: Set<string>,
+) => {
+  return readParsedThings(parseMammal, tdb, urns);
+};
 
-export const readParsedReptiles = readParsedThings.bind(null, parseReptile);
+export const readParsedReptiles = (
+  tdb: TribbleDB,
+  urns: Set<string>,
+) => {
+  return readParsedThings(parseReptile, tdb, urns);
+};
 
-export const readParsedAmphibians = readParsedThings.bind(null, parseAmphibian);
+export const readParsedAmphibians = (
+  tdb: TribbleDB,
+  urns: Set<string>,
+) => {
+  return readParsedThings(parseAmphibian, tdb, urns);
+};
 
-export const readParsedInsects = readParsedThings.bind(null, parseInsect);
+export const readParsedInsects = (
+  tdb: TribbleDB,
+  urns: Set<string>,
+) => {
+  return readParsedThings(parseInsect, tdb, urns);
+};

@@ -1,5 +1,5 @@
-import { asUrn } from "@rgrannell1/tribbledb";
 import m from "mithril";
+import { asUrn } from "@rgrannell1/tribbledb";
 import { navigate } from "../events.ts";
 
 import {
@@ -15,7 +15,11 @@ export type ThingLinkAttrs = {
   thing: any;
 };
 
-/* */
+/*
+ * Pick an emoji based on the place feature
+ *
+ * @param thing The place
+ */
 function placeEmoji(thing: any): string {
   const feature = one(thing.feature);
   const { id: featureId } = asUrn(feature);
@@ -29,18 +33,28 @@ function placeEmoji(thing: any): string {
   return "📍";
 }
 
-/* */
+/*
+ * Pick an flag based on the country definition
+ *
+ * @param thing The country thing
+ */
 function countryEmoji(thing: any): string {
   const flag = one(thing.flag);
   return flag ?? "🏳️";
 }
 
-/* */
+/*
+ * Pick a bird emoji
+ */
 function birdEmoji(): string {
   return "🐤";
 }
 
-/* */
+/*
+ * Pick an emoji for the camera
+ *
+ * @param thing The thing to get the emoji for, based on id
+ */
 function cameraEmoji(thing: any): string {
   const { id } = asUrn(thing.id);
 
