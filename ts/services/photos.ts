@@ -114,6 +114,7 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
     }
   }
 
+  // TODO
   return {
     subjects: readThings(tdb, subjects)
       .map(parseSubject.bind(null, tdb))

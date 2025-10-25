@@ -1,23 +1,11 @@
-import { z } from "zod";
+
 import { asInt } from "../numbers.ts";
 import { namesToUrns } from "../semantic/names.ts";
 import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { Album } from "../types";
 import { arrayify } from "../arrays";
 import { readParsedCountries } from "../services/location";
-
-const AlbumSchema = z.object({
-  name: z.string(),
-  minDate: z.string(),
-  maxDate: z.string(),
-  thumbnailUrl: z.string(),
-  mosaic: z.any(),
-  id: z.string(),
-  photosCount: z.string(),
-  videosCount: z.string(),
-  flags: z.any(),
-  description: z.string().optional(),
-});
+import { AlbumSchema } from "./schemas.ts";
 
 /*
  * Read album-data

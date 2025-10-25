@@ -1,26 +1,11 @@
 import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { z } from "zod";
 import { Video } from "../types";
+import { VideoSchema } from "./schemas";
+import { parseObject } from "./parser";
 
-const VideoSchema = z.object({
-  id: z.string(),
-  albumId: z.string(),
-  description: z.string(),
-  posterUrl: z.string().url(),
-  videoUrl1080p: z.string().url(),
-  videoUrl480p: z.string().url(),
-  videoUrl720p: z.string().url(),
-  videoUrlUnscaled: z.string().url(),
-});
 
 /* */
-export function parseVideo(tdb: TribbleDB, video: TripleObject): Video {
-  const result = VideoSchema.safeParse(video);
-  if (!result.success) {
-    throw new Error(
-      `Invalid video object: ${JSON.stringify(result.error.issues)}`,
-    );
-  }
-
-  return result.data satisfies Video;
+export function parseVideo(tdb: TribbleDB, video: TripleObject): Video | undefined {
+  return parseObject(VideoSchema, "video", video);
 }

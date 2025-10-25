@@ -4,16 +4,9 @@ import { KnownTypes } from "../constants";
 import { Country, Place } from "../types";
 import { readThing } from "../services/things";
 import { arrayify } from "../arrays";
+import { CountrySchema, PlaceSchema } from "./schemas";
+import { parseObject } from "./parser";
 
-const PlaceSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  feature: z.union([z.string(), z.array(z.string())]).optional(),
-  in: z.union([z.string(), z.array(z.string())]).optional(),
-  shortName: z.string().optional(),
-  wikipedia: z.string().optional(),
-  unescoId: z.string().optional(),
-});
 
 /* */
 export function parsePlace(
@@ -49,34 +42,18 @@ export function parsePlace(
   };
 }
 
-const CountrySchema = z.object({
-  id: z.string(),
-  flag: z.string().optional(),
-  name: z.string(),
-  contains: z.union([z.string(), z.array(z.string())]).optional(),
-});
-
-/* */
 export function parseCountry(
   _: TribbleDB,
   country: TripleObject,
 ): Country | undefined {
-  const result = CountrySchema.safeParse(country);
-  if (!result.success) {
-    console.error(result.error.issues);
-    return;
-  }
-
-  return {
-    id: result.data.id,
-    type: "country",
-    flag: result.data.flag,
-    name: result.data.name,
-    contains: result.data.contains,
-  };
+  return parseObject(CountrySchema, "country", country);
 }
 
-/* */
+
+/*
+ * Parse on object identified by a location relation. At the moment, that'
+ * countries and places
+ */
 export function parseLocation(
   tdb: TribbleDB,
   location: TripleObject,
