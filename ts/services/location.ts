@@ -57,7 +57,7 @@ export const readParsedPlaces = (
   );
 };
 
-export const readParsedLocation = (
+export const readParsedLocations = (
   tdb: TribbleDB,
   urns: Set<string>,
 ) => {

@@ -18,7 +18,7 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
-import { readPhotoById, readPhotos } from "./services/photos.ts";
+import { readPhoto, readPhotoById, readPhotos } from "./services/photos.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { readNamedTypeThings } from "./services/things.ts";
 import { Album } from "./types.ts";
@@ -207,7 +207,7 @@ export function PhotoApp(): m.Component<AppAttrs> {
       if (!state.currentPhoto) {
         return m("p", "No photo selected");
       }
-      const photo = readPhotoById(state.data, state.currentPhoto);
+      const photo = readPhoto(state.data, state.currentPhoto);
 
       if (!photo) {
         return m("p", "Photo not found");

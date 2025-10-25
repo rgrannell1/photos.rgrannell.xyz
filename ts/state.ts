@@ -3,19 +3,28 @@ import { DarkModes } from "./services/dark-mode.ts";
 import { loadTriples } from "./services/data.ts";
 import { deriveTriples, HARD_CODED_TRIPLES } from "./semantic/derive.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
+
+import { readAlbum } from "./services/albums.ts";
 import {
-  readAlbum,
   readAmphibian,
-  readCountry,
   readInsect,
   readMammal,
-  readPhoto,
-  readPlace,
-  readReptile,
+  readReptile
+} from "./services/subjects.ts";
+import {
+  readPhoto
+} from "./services/photos.ts";
+import {
   readThing,
-  readVideo,
   toThingLinks,
 } from "./services/things.ts";
+import {
+  readCountry,
+  readPlace,
+} from "./services/location.ts";
+import {
+  readVideo
+} from "./services/videos.ts";
 
 /*
  * Load data from the tribbles file.

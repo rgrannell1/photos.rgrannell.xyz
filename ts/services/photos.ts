@@ -67,23 +67,9 @@ export function readPhotos(tdb: TribbleDB): Photo[] {
   });
 }
 
-// TODO: read thing + find general parser pattern
-/* */
-export function readPhotoById(tdb: TribbleDB, id: string): Photo | undefined {
-  const parsed = asUrn(id);
-
-  const result = tdb.search({
-    source: { type: "photo", id: parsed.id },
-  }).objects();
-
-  if (result.length === 0) {
-    return undefined;
-  }
-
-  return parsePhoto(tdb, result[0]);
-}
-
-/* */
+/*
+ * Read the locations and subjects assaociated with a set of photo ids
+ */
 export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
   locations: Place[];
   subjects: Subject[];
