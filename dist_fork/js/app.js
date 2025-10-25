@@ -7795,18 +7795,19 @@ function urnToUrl(urn) {
 function CountryLink() {
   return {
     view(vnode) {
-      const { flag, urn, name, mode } = vnode.attrs;
-      if (!urn) {
+      const { country, mode } = vnode.attrs;
+      const { id, name, flag } = country;
+      if (!id) {
         return (0, import_mithril10.default)("p");
       }
-      const parsed = asUrn(urn);
+      const parsed = asUrn(id);
       const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
       if (mode === "flag") {
-        return (0, import_mithril10.default)("a.country-link", { href: urnToUrl(urn), onclick }, flag);
+        return (0, import_mithril10.default)("a.country-link", { href: urnToUrl(id), onclick }, flag);
       }
       return (0, import_mithril10.default)(
         "a.country-link",
-        { href: urnToUrl(urn), onclick },
+        { href: urnToUrl(id), onclick },
         `${flag} ${name}`
       );
     }
@@ -7837,7 +7838,7 @@ function AlbumsList() {
         }
         const $countryLinks = album.countries.map((country) => {
           return (0, import_mithril11.default)(CountryLink, {
-            ...country,
+            country,
             mode: "flag"
           });
         });
@@ -8057,7 +8058,6 @@ function AlbumThings() {
   return {
     view(vnode) {
       const { locations, subjects } = vnode.attrs;
-      console.log(subjects);
     }
   };
 }
@@ -8089,7 +8089,7 @@ function AlbumPage() {
       const photoCountMessage = photosCount === 1 ? "1 photo" : `${photosCount} photos`;
       const $countryLinks = countries.map((country) => {
         return (0, import_mithril17.default)(CountryLink, {
-          ...country,
+          country,
           mode: "flag"
         });
       });

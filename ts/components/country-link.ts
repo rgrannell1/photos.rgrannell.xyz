@@ -2,11 +2,10 @@ import m from "mithril";
 import { urnToUrl } from "../semantic/urn.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { navigate } from "../events.ts";
+import { Country } from "../types.ts";
 
 export type CountryLinkAttrs = {
-  urn: string | undefined;
-  name: string;
-  flag: string | undefined;
+  country: Country;
   mode: "flag" | "name";
 };
 
@@ -14,21 +13,23 @@ export type CountryLinkAttrs = {
 export function CountryLink() {
   return {
     view(vnode: m.Vnode<CountryLinkAttrs>) {
-      const { flag, urn, name, mode } = vnode.attrs;
-      if (!urn) {
+      const { country, mode } = vnode.attrs;
+      const { id, name, flag } = country;
+
+      if (!id) {
         return m("p");
       }
 
-      const parsed = asUrn(urn);
+      const parsed = asUrn(id);
       const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
 
       if (mode === "flag") {
-        return m("a.country-link", { href: urnToUrl(urn), onclick }, flag);
+        return m("a.country-link", { href: urnToUrl(id), onclick }, flag);
       }
 
       return m(
         "a.country-link",
-        { href: urnToUrl(urn), onclick },
+        { href: urnToUrl(id), onclick },
         `${flag} ${name}`,
       );
     },

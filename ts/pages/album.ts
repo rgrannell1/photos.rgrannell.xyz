@@ -6,6 +6,7 @@ import { CountryLink } from "../components/country-link.ts";
 import { Video, VideoAttrs } from "../components/video.ts";
 
 import type {
+  Country,
   Photo as PhotoType,
   Thing,
   Video as VideoType,
@@ -24,11 +25,7 @@ type AlbumAttrs = {
   videosCount: number;
   description?: string;
   summary: string;
-  countries: {
-    urn: string | undefined;
-    name: string;
-    flag: string | undefined;
-  }[];
+  countries: Country[];
   videos: VideoType[];
   photos: PhotoType[];
   subjects: Thing[];
@@ -67,7 +64,7 @@ export function AlbumPage() {
 
       const $countryLinks = countries.map((country) => {
         return m(CountryLink, {
-          ...country,
+          country,
           mode: "flag",
         });
       });

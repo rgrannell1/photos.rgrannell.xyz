@@ -12,8 +12,6 @@ export function AlbumThings() {
     view(vnode: m.Vnode<AlbumThingsAttrs>) {
       const { locations, subjects } = vnode.attrs;
 
-      //console.log(locations)
-      console.log(subjects);
 
       // TODO
     },

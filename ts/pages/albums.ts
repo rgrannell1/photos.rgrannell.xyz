@@ -47,10 +47,9 @@ function AlbumsList() {
             $albumComponents.push($h2);
           }
         }
-
         const $countryLinks = album.countries.map((country) => {
           return m(CountryLink, {
-            ...country,
+            country,
             mode: "flag",
           });
         });
