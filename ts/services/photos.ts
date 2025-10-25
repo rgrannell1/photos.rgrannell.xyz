@@ -2,9 +2,9 @@ import { KnownRelations, PHOTO_WIDTH } from "../constants";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import { Photo, Place, Subject } from "../types.ts";
 import { parsePhoto } from "../parsers/photo.ts";
-import { readParsedThing, readParsedThings, readThings } from "./things.ts";
-import { parseSubject } from "../parsers/subject.ts";
-import { parseLocation } from "../parsers/location.ts";
+import { readParsedThing, readParsedThings } from "./things.ts";
+import { readParsedSubjects } from "./subjects.ts";
+import { readParsedLocations } from "./location.ts";
 
 const coloursCache: Map<string, string> = new Map();
 
@@ -114,14 +114,9 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
     }
   }
 
-  // TODO
   return {
-    subjects: readThings(tdb, subjects)
-      .map(parseSubject.bind(null, tdb))
-      .filter((subj): subj is Subject => subj !== undefined),
-    locations: readThings(tdb, locations)
-      .map(parseLocation.bind(null, tdb))
-      .filter((loc): loc is Place => loc !== undefined),
+    subjects: readParsedSubjects(tdb, subjects),
+    locations: readParsedLocations(tdb, locations),
   };
 }
 

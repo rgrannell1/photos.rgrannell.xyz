@@ -4,6 +4,7 @@ import {
   parseInsect,
   parseMammal,
   parseReptile,
+  parseSubject,
 } from "../parsers/subject.ts";
 import { readParsedThing, readParsedThings } from "./things.ts";
 
@@ -33,6 +34,20 @@ export const readInsect = (
   id: string,
 ) => {
   return readParsedThing(parseInsect, tdb, id);
+};
+
+export const readSubject = (
+  tdb: TribbleDB,
+  id: string,
+) => {
+  return readParsedThing(parseSubject, tdb, id);
+}
+
+export const readParsedSubjects = (
+  tdb: TribbleDB,
+  urns: Set<string>,
+) => {
+  return readParsedThings(parseSubject, tdb, urns);
 };
 
 export const readParsedMammals = (

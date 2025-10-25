@@ -28,23 +28,3 @@ export function namesToUrns(tdb: TribbleDB, names: string[]): Set<string> {
 
   return urns;
 }
-
-/* */
-export function countryNameToUrn(
-  tdb: TribbleDB,
-  name: string,
-): string | undefined {
-  return tdb.search({
-    source: { type: "country" },
-    relation: KnownRelations.NAME,
-    target: name,
-  }).firstSource();
-}
-
-/* */
-export function urnToFlag(tdb: TribbleDB, urn: string): string | undefined {
-  return tdb.search({
-    source: asUrn(urn),
-    relation: KnownRelations.FLAG,
-  }).firstTarget();
-}
