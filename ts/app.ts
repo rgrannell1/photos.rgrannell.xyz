@@ -95,7 +95,7 @@ export function AlbumApp(): m.Component<AppAttrs> {
             m("div.app-container", [
               m(Sidebar, { visible: state.sidebarVisible }),
               m(AlbumPage, {
-                ...album,
+                album,
                 subjects,
                 locations,
                 photos,

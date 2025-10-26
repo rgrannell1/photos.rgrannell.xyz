@@ -12,17 +12,16 @@ export function nameToUrn(tdb: TribbleDB, name: string): string | undefined {
 /*
  * Convert names to tribble URNs
  */
-export function namesToUrns(tdb: TribbleDB, names: string[]): Set<string> {
+export function namesToUrns(tdb: TribbleDB, names: Set<string>): Set<string> {
   const urns: Set<string> = new Set();
 
   const namesCursor = tdb.search({
     relation: KnownRelations.NAME,
   });
 
-  for (const name of names) {
-    const urn = nameToUrn(namesCursor, name);
-    if (urn) {
-      urns.add(urn);
+  for (const [urn, _, name] of namesCursor.triples()) {
+    if (names.has(name as string)) {
+      urns.add(urn as string);
     }
   }
 

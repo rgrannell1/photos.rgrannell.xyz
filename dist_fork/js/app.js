@@ -3067,20 +3067,13 @@ function asInt(value) {
 }
 
 // ts/semantic/names.ts
-function nameToUrn(tdb2, name) {
-  return tdb2.search({
-    relation: KnownRelations.NAME,
-    target: name
-  }).firstSource();
-}
 function namesToUrns(tdb2, names) {
   const urns = /* @__PURE__ */ new Set();
   const namesCursor = tdb2.search({
     relation: KnownRelations.NAME
   });
-  for (const name of names) {
-    const urn = nameToUrn(namesCursor, name);
-    if (urn) {
+  for (const [urn, _, name] of namesCursor.triples()) {
+    if (names.has(name)) {
       urns.add(urn);
     }
   }
@@ -7119,7 +7112,7 @@ function parseAlbum(tdb2, album) {
       `Invalid album object: ${JSON.stringify(result.error.issues)}`
     );
   }
-  const countryNames = arrayify(result.data.flags);
+  const countryNames = new Set(arrayify(result.data.flags));
   const countries = readParsedCountries(tdb2, namesToUrns(tdb2, countryNames));
   return {
     name: result.data.name,
@@ -7815,53 +7808,73 @@ function CountryLink() {
 }
 
 // ts/pages/albums.ts
-function AlbumsList() {
-  function onAlbumClick(id, title, event) {
-    const parsed = asUrn(id);
-    broadcast("navigate", { route: `/album/${parsed.id}`, title });
-    block(event);
+function onAlbumClick(id, title, event) {
+  const parsed = asUrn(id);
+  broadcast("navigate", { route: `/album/${parsed.id}`, title });
+  block(event);
+}
+function drawAlbum(state2, album, idx) {
+  const loading = Photos.loadingMode(idx);
+  const $albumComponents = [];
+  if (state2.year !== albumYear(album)) {
+    state2.year = albumYear(album);
+    if (state2.year !== (/* @__PURE__ */ new Date()).getFullYear()) {
+      const $h2 = (0, import_mithril11.default)("h2.album-year-heading", { key: `year-${state2.year}` }, state2.year.toString());
+      $albumComponents.push($h2);
+    }
   }
+  const $countryLinks = album.countries.map((country) => {
+    return (0, import_mithril11.default)(CountryLink, {
+      country,
+      mode: "flag"
+    });
+  });
+  const $md = (0, import_mithril11.default)(PhotoAlbumMetadata, {
+    title: album.name,
+    minDate: album.minDate,
+    maxDate: album.maxDate,
+    count: album.photosCount,
+    countryLinks: $countryLinks
+  });
+  const $album = (0, import_mithril11.default)(PhotoAlbum, {
+    imageUrl: album.thumbnailUrl,
+    thumbnailUrl: album.thumbnailUrl,
+    thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
+    loading,
+    minDate: album.minDate,
+    onclick: onAlbumClick.bind(null, album.id, album.name)
+  });
+  $albumComponents.push(
+    (0, import_mithril11.default)("div", { key: `album-${album.id}` }, [
+      $album,
+      $md
+    ])
+  );
+  return $albumComponents;
+}
+function AlbumsList() {
+  const $albumComponents = [];
+  let initted = false;
   return {
-    view(vnode) {
-      const $albumComponents = [];
-      let year = 2005;
-      const { albums } = vnode.attrs;
-      for (let idx = 0; idx < albums.length; idx++) {
-        const album = albums[idx];
-        const loading = Photos.loadingMode(idx);
-        if (year !== albumYear(album)) {
-          year = albumYear(album);
-          if (year !== (/* @__PURE__ */ new Date()).getFullYear()) {
-            const $h2 = (0, import_mithril11.default)("h2.album-year-heading", year.toString());
-            $albumComponents.push($h2);
-          }
-        }
-        const $countryLinks = album.countries.map((country) => {
-          return (0, import_mithril11.default)(CountryLink, {
-            country,
-            mode: "flag"
-          });
-        });
-        const $md = (0, import_mithril11.default)(PhotoAlbumMetadata, {
-          title: album.name,
-          minDate: album.minDate,
-          maxDate: album.maxDate,
-          count: album.photosCount,
-          countryLinks: $countryLinks
-        });
-        const $album = (0, import_mithril11.default)(PhotoAlbum, {
-          imageUrl: album.thumbnailUrl,
-          thumbnailUrl: album.thumbnailUrl,
-          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
-          loading,
-          minDate: album.minDate,
-          onclick: onAlbumClick.bind(null, album.id, album.name)
-        });
-        $albumComponents.push((0, import_mithril11.default)("div", [
-          $album,
-          $md
-        ]));
+    oninit(vnode) {
+      console.log("hello");
+      if (initted) {
+        return;
       }
+      initted = true;
+      const state2 = { year: 2005 };
+      const { albums } = vnode.attrs;
+      function renderAlbums(idx) {
+        if (idx >= albums.length) {
+          return;
+        }
+        $albumComponents.push(...drawAlbum(state2, albums[idx], idx));
+        import_mithril11.default.redraw();
+        renderAlbums(idx + 1);
+      }
+      renderAlbums(0);
+    },
+    view() {
       return (0, import_mithril11.default)("section.album-container", $albumComponents);
     }
   };
@@ -8070,17 +8083,20 @@ function AlbumPage() {
     },
     view(vnode) {
       const {
-        name,
-        minDate,
-        maxDate,
-        photosCount,
-        description,
-        countries,
+        album,
         photos,
         videos,
         subjects,
         locations
       } = vnode.attrs;
+      const {
+        name,
+        minDate,
+        maxDate,
+        photosCount,
+        description,
+        countries
+      } = album;
       const dateRange = Dates.dateRange(
         minDate,
         maxDate,
@@ -8560,7 +8576,7 @@ function AlbumApp() {
             (0, import_mithril24.default)("div.app-container", [
               (0, import_mithril24.default)(Sidebar, { visible: state.sidebarVisible }),
               (0, import_mithril24.default)(AlbumPage, {
-                ...album,
+                album,
                 subjects,
                 locations,
                 photos,

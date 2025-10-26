@@ -1,6 +1,6 @@
-import { KnownRelations, PHOTO_WIDTH } from "../constants";
+import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
-import { Photo, Place, Subject } from "../types.ts";
+import { Country, Photo, Place, Subject } from "../types.ts";
 import { parsePhoto } from "../parsers/photo.ts";
 import { readParsedThing, readParsedThings } from "./things.ts";
 import { readParsedSubjects } from "./subjects.ts";
@@ -71,7 +71,7 @@ export function readPhotos(tdb: TribbleDB): Photo[] {
  * Read the locations and subjects assaociated with a set of photo ids
  */
 export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
-  locations: Place[];
+  locations: (Country | Place)[];
   subjects: Subject[];
 } {
   const locations = new Set<string>();

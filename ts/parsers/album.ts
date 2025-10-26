@@ -22,7 +22,7 @@ export function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
     );
   }
 
-  const countryNames = arrayify(result.data.flags);
+  const countryNames = new Set(arrayify(result.data.flags));
   const countries = readParsedCountries(tdb, namesToUrns(tdb, countryNames));
 
   return {

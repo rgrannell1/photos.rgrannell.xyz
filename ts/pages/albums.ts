@@ -14,71 +14,103 @@ type AlbumsListAttrs = {
   albums: Album[];
 };
 
+function onAlbumClick(id: string, title: string, event: Event) {
+  const parsed = asUrn(id);
+
+  broadcast("navigate", { route: `/album/${parsed.id}`, title });
+  block(event);
+}
+
+function drawAlbum(state: { year: number }, album: Album, idx: number) {
+  const loading = Photos.loadingMode(idx);
+
+  const $albumComponents: m.Vnode<
+    unknown,
+    unknown
+  >[] = [];
+
+  // push year header if a new year
+  if (state.year !== albumYear(album)) {
+    state.year = albumYear(album);
+
+    if (state.year !== new Date().getFullYear()) {
+      const $h2 = m("h2.album-year-heading", { key: `year-${state.year}` }, state.year.toString());
+      $albumComponents.push($h2);
+    }
+  }
+
+  const $countryLinks = album.countries.map((country) => {
+    return m(CountryLink, {
+      country,
+      mode: "flag",
+    });
+  });
+
+  const $md = m(PhotoAlbumMetadata, {
+    title: album.name,
+    minDate: album.minDate,
+    maxDate: album.maxDate,
+    count: album.photosCount,
+    countryLinks: $countryLinks,
+  });
+
+  const $album = m(PhotoAlbum, {
+    imageUrl: album.thumbnailUrl,
+    thumbnailUrl: album.thumbnailUrl,
+    thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
+    loading: loading,
+    minDate: album.minDate,
+    onclick: onAlbumClick.bind(null, album.id, album.name),
+  });
+
+  $albumComponents.push(
+    m("div", { key: `album-${album.id}` }, [
+      $album,
+      $md,
+    ])
+  );
+
+  return $albumComponents;
+}
+
 /*
  * Construct a list of albums
  */
 function AlbumsList() {
-  function onAlbumClick(id: string, title: string, event: Event) {
-    const parsed = asUrn(id);
+  const $albumComponents: m.Vnode<
+    unknown,
+    unknown
+  >[] = [];
 
-    broadcast("navigate", { route: `/album/${parsed.id}`, title });
-    block(event);
-  }
+  let initted = false;
 
   return {
-    view(vnode: m.Vnode<AlbumsListAttrs>) {
-      const $albumComponents: m.Vnode<
-        unknown,
-        unknown
-      >[] = [];
-      let year = 2005;
+    oninit(vnode: m.Vnode<AlbumsListAttrs>) {
+      console.log('hello')
+      if (initted) {
+        return;
+      }
+      initted = true;
+
+      const state = { year: 2005 };
       const { albums } = vnode.attrs;
 
-      for (let idx = 0; idx < albums.length; idx++) {
-        const album = albums[idx];
-        const loading = Photos.loadingMode(idx);
-
-        // push year header if a new year
-        if (year !== albumYear(album)) {
-          year = albumYear(album);
-
-          if (year !== new Date().getFullYear()) {
-            const $h2 = m("h2.album-year-heading", year.toString());
-            $albumComponents.push($h2);
-          }
+      function renderAlbums(idx: number) {
+        if (idx >= albums.length) {
+          return;
         }
-        const $countryLinks = album.countries.map((country) => {
-          return m(CountryLink, {
-            country,
-            mode: "flag",
-          });
-        });
 
-        const $md = m(PhotoAlbumMetadata, {
-          title: album.name,
-          minDate: album.minDate,
-          maxDate: album.maxDate,
-          count: album.photosCount,
-          countryLinks: $countryLinks,
-        });
+        $albumComponents.push(...drawAlbum(state, albums[idx], idx));
+        m.redraw();
 
-        const $album = m(PhotoAlbum, {
-          imageUrl: album.thumbnailUrl,
-          thumbnailUrl: album.thumbnailUrl,
-          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
-          loading: loading,
-          minDate: album.minDate,
-          onclick: onAlbumClick.bind(null, album.id, album.name),
-        });
-
-        $albumComponents.push(m("div", [
-          $album,
-          $md,
-        ]));
+        renderAlbums(idx + 1);
       }
 
-      return m("section.album-container", $albumComponents);
+      renderAlbums(0);
     },
+    view() {
+      return m("section.album-container", $albumComponents);
+    }
   };
 }
 

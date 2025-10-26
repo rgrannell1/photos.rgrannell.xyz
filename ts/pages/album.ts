@@ -6,6 +6,7 @@ import { CountryLink } from "../components/country-link.ts";
 import { Video, VideoAttrs } from "../components/video.ts";
 
 import type {
+  Album,
   Country,
   Photo as PhotoType,
   Thing,
@@ -18,13 +19,7 @@ import { AlbumThings } from "../components/album-things.ts";
 
 // TODO replace with album type
 type AlbumAttrs = {
-  name: string;
-  minDate: number;
-  maxDate: number;
-  photosCount: number;
-  videosCount: number;
-  description?: string;
-  summary: string;
+  album: Album;
   countries: Country[];
   videos: VideoType[];
   photos: PhotoType[];
@@ -40,17 +35,20 @@ export function AlbumPage() {
     },
     view(vnode: m.Vnode<AlbumAttrs>) {
       const {
+        album,
+        photos,
+        videos,
+        subjects,
+        locations,
+      } = vnode.attrs;
+      const {
         name,
         minDate,
         maxDate,
         photosCount,
         description,
         countries,
-        photos,
-        videos,
-        subjects,
-        locations,
-      } = vnode.attrs;
+      } = album;
 
       const dateRange = Dates.dateRange(
         minDate,
