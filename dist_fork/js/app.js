@@ -1728,7 +1728,7 @@ var DarkModes = class {
   }
 };
 
-// node_modules/@rgrannell1/tribbledb/dist/mod.js
+// node_modules/.deno/@rgrannell1+tribbledb@0.0.8/node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class {
   #idx;
   #map;
@@ -2833,6 +2833,7 @@ var PLACE_FEATURES_TO_EMOJI = {
   mountain: "\u{1F3D4}\uFE0F",
   mountains: "\u{1F3D4}\uFE0F",
   museum: "\u{1F3DB}\uFE0F",
+  monastery: "\u{1F3EF}",
   national: "\u{1F1FA}\u{1F1F3}",
   nature: "\u{1F33F}",
   palace: "\u{1F3EF}",
@@ -7398,7 +7399,7 @@ var readParsedAlbums = (tdb2, urns) => {
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    "/manifest/tribbles.dd453e3086.txt",
+    "/manifest/tribbles.d1a0754ec0.txt",
     schema,
     deriveTriples
   );

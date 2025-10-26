@@ -133,6 +133,7 @@ export const PLACE_FEATURES_TO_EMOJI = {
   mountain: "🏔️",
   mountains: "🏔️",
   museum: "🏛️",
+  monastery: "🏯",
   national: "🇺🇳",
   nature: "🌿",
   palace: "🏯",

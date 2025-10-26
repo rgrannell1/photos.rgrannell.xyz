@@ -32,7 +32,7 @@ import {
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    "/manifest/tribbles.dd453e3086.txt",
+    "/manifest/tribbles.d1a0754ec0.txt",
     schema,
     deriveTriples,
   );
