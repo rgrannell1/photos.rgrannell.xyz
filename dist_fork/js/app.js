@@ -24,9 +24,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/vnode.js
+// node_modules/mithril/render/vnode.js
 var require_vnode = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/vnode.js"(exports, module) {
+  "node_modules/mithril/render/vnode.js"(exports, module) {
     "use strict";
     function Vnode(tag, key, attrs, children, text, dom) {
       return { tag, key, attrs, children, text, dom, is: void 0, domSize: void 0, state: void 0, events: void 0, instance: void 0 };
@@ -58,9 +58,9 @@ var require_vnode = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscriptVnode.js
+// node_modules/mithril/render/hyperscriptVnode.js
 var require_hyperscriptVnode = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscriptVnode.js"(exports, module) {
+  "node_modules/mithril/render/hyperscriptVnode.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
     module.exports = function(attrs, children) {
@@ -75,34 +75,34 @@ var require_hyperscriptVnode = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/util/hasOwn.js
+// node_modules/mithril/util/hasOwn.js
 var require_hasOwn = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/util/hasOwn.js"(exports, module) {
+  "node_modules/mithril/util/hasOwn.js"(exports, module) {
     "use strict";
     module.exports = {}.hasOwnProperty;
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/emptyAttrs.js
+// node_modules/mithril/render/emptyAttrs.js
 var require_emptyAttrs = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/emptyAttrs.js"(exports, module) {
+  "node_modules/mithril/render/emptyAttrs.js"(exports, module) {
     "use strict";
     module.exports = {};
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/cachedAttrsIsStaticMap.js
+// node_modules/mithril/render/cachedAttrsIsStaticMap.js
 var require_cachedAttrsIsStaticMap = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/cachedAttrsIsStaticMap.js"(exports, module) {
+  "node_modules/mithril/render/cachedAttrsIsStaticMap.js"(exports, module) {
     "use strict";
     var emptyAttrs = require_emptyAttrs();
     module.exports = /* @__PURE__ */ new Map([[emptyAttrs, true]]);
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscript.js
+// node_modules/mithril/render/hyperscript.js
 var require_hyperscript = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscript.js"(exports, module) {
+  "node_modules/mithril/render/hyperscript.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
     var hyperscriptVnode = require_hyperscriptVnode();
@@ -181,9 +181,9 @@ var require_hyperscript = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/trust.js
+// node_modules/mithril/render/trust.js
 var require_trust = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/trust.js"(exports, module) {
+  "node_modules/mithril/render/trust.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
     module.exports = function(html) {
@@ -193,9 +193,9 @@ var require_trust = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/fragment.js
+// node_modules/mithril/render/fragment.js
 var require_fragment = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/fragment.js"(exports, module) {
+  "node_modules/mithril/render/fragment.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
     var hyperscriptVnode = require_hyperscriptVnode();
@@ -209,9 +209,9 @@ var require_fragment = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/hyperscript.js
+// node_modules/mithril/hyperscript.js
 var require_hyperscript2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/hyperscript.js"(exports, module) {
+  "node_modules/mithril/hyperscript.js"(exports, module) {
     "use strict";
     var hyperscript = require_hyperscript();
     hyperscript.trust = require_trust();
@@ -220,9 +220,9 @@ var require_hyperscript2 = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/domFor.js
+// node_modules/mithril/render/domFor.js
 var require_domFor = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/domFor.js"(exports, module) {
+  "node_modules/mithril/render/domFor.js"(exports, module) {
     "use strict";
     var delayedRemoval = /* @__PURE__ */ new WeakMap();
     function* domFor(vnode) {
@@ -245,9 +245,9 @@ var require_domFor = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/render.js
+// node_modules/mithril/render/render.js
 var require_render = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/render.js"(exports, module) {
+  "node_modules/mithril/render/render.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
     var df = require_domFor();
@@ -943,17 +943,17 @@ var require_render = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/render.js
+// node_modules/mithril/render.js
 var require_render2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render.js"(exports, module) {
+  "node_modules/mithril/render.js"(exports, module) {
     "use strict";
     module.exports = require_render()(typeof window !== "undefined" ? window : null);
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/mount-redraw.js
+// node_modules/mithril/api/mount-redraw.js
 var require_mount_redraw = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/mount-redraw.js"(exports, module) {
+  "node_modules/mithril/api/mount-redraw.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
     module.exports = function(render, schedule, console2) {
@@ -1000,18 +1000,18 @@ var require_mount_redraw = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/mount-redraw.js
+// node_modules/mithril/mount-redraw.js
 var require_mount_redraw2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/mount-redraw.js"(exports, module) {
+  "node_modules/mithril/mount-redraw.js"(exports, module) {
     "use strict";
     var render = require_render2();
     module.exports = require_mount_redraw()(render, typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame : null, typeof console !== "undefined" ? console : null);
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/querystring/build.js
+// node_modules/mithril/querystring/build.js
 var require_build = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/querystring/build.js"(exports, module) {
+  "node_modules/mithril/querystring/build.js"(exports, module) {
     "use strict";
     module.exports = function(object) {
       if (Object.prototype.toString.call(object) !== "[object Object]") return "";
@@ -1035,9 +1035,9 @@ var require_build = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/build.js
+// node_modules/mithril/pathname/build.js
 var require_build2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/build.js"(exports, module) {
+  "node_modules/mithril/pathname/build.js"(exports, module) {
     "use strict";
     var buildQueryString = require_build();
     module.exports = function(template, params) {
@@ -1073,9 +1073,9 @@ var require_build2 = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/request/request.js
+// node_modules/mithril/request/request.js
 var require_request = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/request/request.js"(exports, module) {
+  "node_modules/mithril/request/request.js"(exports, module) {
     "use strict";
     var buildPathname = require_build2();
     var hasOwn = require_hasOwn();
@@ -1231,18 +1231,18 @@ var require_request = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/request.js
+// node_modules/mithril/request.js
 var require_request2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/request.js"(exports, module) {
+  "node_modules/mithril/request.js"(exports, module) {
     "use strict";
     var mountRedraw = require_mount_redraw2();
     module.exports = require_request()(typeof window !== "undefined" ? window : null, mountRedraw.redraw);
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/querystring/parse.js
+// node_modules/mithril/querystring/parse.js
 var require_parse = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/querystring/parse.js"(exports, module) {
+  "node_modules/mithril/querystring/parse.js"(exports, module) {
     "use strict";
     function decodeURIComponentSave(str) {
       try {
@@ -1288,9 +1288,9 @@ var require_parse = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/parse.js
+// node_modules/mithril/pathname/parse.js
 var require_parse2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/parse.js"(exports, module) {
+  "node_modules/mithril/pathname/parse.js"(exports, module) {
     "use strict";
     var parseQueryString = require_parse();
     module.exports = function(url) {
@@ -1311,9 +1311,9 @@ var require_parse2 = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/compileTemplate.js
+// node_modules/mithril/pathname/compileTemplate.js
 var require_compileTemplate = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/compileTemplate.js"(exports, module) {
+  "node_modules/mithril/pathname/compileTemplate.js"(exports, module) {
     "use strict";
     var parsePathname = require_parse2();
     module.exports = function(template) {
@@ -1350,9 +1350,9 @@ var require_compileTemplate = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/util/censor.js
+// node_modules/mithril/util/censor.js
 var require_censor = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/util/censor.js"(exports, module) {
+  "node_modules/mithril/util/censor.js"(exports, module) {
     "use strict";
     var hasOwn = require_hasOwn();
     var magic = new RegExp("^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$");
@@ -1376,9 +1376,9 @@ var require_censor = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/router.js
+// node_modules/mithril/api/router.js
 var require_router = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/router.js"(exports, module) {
+  "node_modules/mithril/api/router.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
     var m26 = require_hyperscript();
@@ -1570,18 +1570,18 @@ var require_router = __commonJS({
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/route.js
+// node_modules/mithril/route.js
 var require_route = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/route.js"(exports, module) {
+  "node_modules/mithril/route.js"(exports, module) {
     "use strict";
     var mountRedraw = require_mount_redraw2();
     module.exports = require_router()(typeof window !== "undefined" ? window : null, mountRedraw);
   }
 });
 
-// node_modules/.deno/mithril@2.3.7/node_modules/mithril/index.js
+// node_modules/mithril/index.js
 var require_mithril = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/index.js"(exports, module) {
+  "node_modules/mithril/index.js"(exports, module) {
     "use strict";
     var hyperscript = require_hyperscript2();
     var request = require_request2();
@@ -1728,7 +1728,7 @@ var DarkModes = class {
   }
 };
 
-// node_modules/.deno/@rgrannell1+tribbledb@0.0.3/node_modules/@rgrannell1/tribbledb/dist/mod.js
+// node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class {
   #idx;
   #map;
@@ -1817,6 +1817,12 @@ var Sets = class {
     }
     return acc;
   }
+  static append(set0, set1) {
+    for (const item of set1) {
+      set0.add(item);
+    }
+    return set0;
+  }
 };
 var TribbleParser = class {
   stringIndex;
@@ -1859,9 +1865,11 @@ function parseUrn(urn, namespace = "r\xF3") {
   if (!urn.startsWith(`urn:${namespace}:`)) {
     throw new Error(`Invalid URN for namespace ${namespace}: ${urn}`);
   }
-  const type = urn.split(":")[2];
-  const [urnPart, queryString] = urn.split("?");
-  const id = urnPart.split(":")[3];
+  const delimited = urn.split(":");
+  const type = delimited[2];
+  const id = delimited[3];
+  const idx = urn.indexOf("?");
+  const queryString = idx !== -1 ? urn.slice(idx + 1) : "";
   const qs = queryString ? Object.fromEntries(new URLSearchParams(queryString)) : {};
   return {
     type,
@@ -2277,9 +2285,28 @@ var TribbleDB = class _TribbleDB {
   }
   /*
    * Get the first object in the database.
+   *
    */
   firstObject(listOnly = false) {
-    return this.objects(listOnly)[0];
+    let firstId = void 0;
+    let obj = {};
+    for (const [source, relation, target] of this.index.triples()) {
+      if (firstId === void 0) {
+        firstId = source;
+        obj.id = source;
+      }
+      if (firstId !== source) {
+        continue;
+      }
+      if (!obj[relation]) {
+        obj[relation] = listOnly ? [target] : target;
+      } else if (Array.isArray(obj[relation])) {
+        obj[relation].push(target);
+      } else {
+        obj[relation] = [obj[relation], target];
+      }
+    }
+    return obj;
   }
   /*
    * Get all triples in the database.
@@ -2358,6 +2385,9 @@ var TribbleDB = class _TribbleDB {
     if (typeof node === "string") {
       return { type: "unknown", id: node };
     }
+    if (Array.isArray(node)) {
+      return { type: "unknown", id: node };
+    }
     return node;
   }
   relationAsDSL(relation) {
@@ -2413,12 +2443,17 @@ var TribbleDB = class _TribbleDB {
         }
       }
       if (expandedSource.id) {
-        const sourceIdSet = this.index.getSourceIdSet(expandedSource.id);
-        if (sourceIdSet) {
-          matchingRowSets.push(sourceIdSet);
-        } else {
-          return /* @__PURE__ */ new Set();
+        const ids = Array.isArray(expandedSource.id) ? expandedSource.id : [expandedSource.id];
+        const idSet = /* @__PURE__ */ new Set();
+        for (const id of ids) {
+          const sourceIdSet = this.index.getSourceIdSet(id);
+          if (sourceIdSet) {
+            Sets.append(idSet, sourceIdSet);
+          } else {
+            return /* @__PURE__ */ new Set();
+          }
         }
+        matchingRowSets.push(idSet);
       }
       if (expandedSource.qs) {
         for (const [key, val] of Object.entries(expandedSource.qs)) {
@@ -2441,12 +2476,17 @@ var TribbleDB = class _TribbleDB {
         }
       }
       if (expandedTarget.id) {
-        const targetIdSet = this.index.getTargetIdSet(expandedTarget.id);
-        if (targetIdSet) {
-          matchingRowSets.push(targetIdSet);
-        } else {
-          return /* @__PURE__ */ new Set();
+        const ids = Array.isArray(expandedTarget.id) ? expandedTarget.id : [expandedTarget.id];
+        const idSet = /* @__PURE__ */ new Set();
+        for (const id of ids) {
+          const targetIdSet = this.index.getTargetIdSet(id);
+          if (targetIdSet) {
+            Sets.append(idSet, targetIdSet);
+          } else {
+            return /* @__PURE__ */ new Set();
+          }
         }
+        matchingRowSets.push(idSet);
       }
       if (expandedTarget.qs) {
         for (const [key, val] of Object.entries(expandedTarget.qs)) {
@@ -3067,10 +3107,27 @@ function asInt(value) {
 }
 
 // ts/semantic/names.ts
+var NAME_TO_URN_CACHE = /* @__PURE__ */ new Map();
 function namesToUrns(tdb2, names) {
   const urns = /* @__PURE__ */ new Set();
+  if (names.size === 0) {
+    return urns;
+  }
+  ;
+  for (const name of names) {
+    if (NAME_TO_URN_CACHE.has(name)) {
+      const cachedUrn = NAME_TO_URN_CACHE.get(name);
+      if (cachedUrn) {
+        urns.add(cachedUrn);
+      }
+    }
+  }
+  if (urns.size === names.size) {
+    return urns;
+  }
   const namesCursor = tdb2.search({
-    relation: KnownRelations.NAME
+    relation: KnownRelations.NAME,
+    target: Array.from(names)
   });
   for (const [urn, _, name] of namesCursor.triples()) {
     if (names.has(name)) {
@@ -7864,15 +7921,10 @@ function AlbumsList() {
       initted = true;
       const state2 = { year: 2005 };
       const { albums } = vnode.attrs;
-      function renderAlbums(idx) {
-        if (idx >= albums.length) {
-          return;
-        }
+      for (let idx = 0; idx < albums.length; idx++) {
         $albumComponents.push(...drawAlbum(state2, albums[idx], idx));
-        import_mithril11.default.redraw();
-        renderAlbums(idx + 1);
       }
-      renderAlbums(0);
+      import_mithril11.default.redraw();
     },
     view() {
       return (0, import_mithril11.default)("section.album-container", $albumComponents);

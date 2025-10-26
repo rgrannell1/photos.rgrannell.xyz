@@ -1,12 +1,6 @@
 # `photos.rgrannell.xyz`
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/a1a5cde2-e35a-4d64-a01b-6076687edb7a/deploy-status)](https://app.netlify.com/sites/inquisitive-biscuit-b7e81a/deploys)
-
-My personal photo hosting website. It's a [Lit](https://lit.dev/) application
-that displays the albums listed in `manifest.json`. The photos / video are
-hosted in a DigitalOcean Spaces bucket.
-
-The photo library is curated with a second project,
+My personal photo hosting website. The photo library is curated with a second project,
 [mirror](https://github.com/rgrannell1/mirror).
 
 ---

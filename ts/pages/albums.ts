@@ -95,18 +95,11 @@ function AlbumsList() {
       const state = { year: 2005 };
       const { albums } = vnode.attrs;
 
-      function renderAlbums(idx: number) {
-        if (idx >= albums.length) {
-          return;
-        }
-
+      for (let idx = 0; idx < albums.length; idx++) {
         $albumComponents.push(...drawAlbum(state, albums[idx], idx));
-        m.redraw();
-
-        renderAlbums(idx + 1);
       }
 
-      renderAlbums(0);
+      m.redraw();
     },
     view() {
       return m("section.album-container", $albumComponents);

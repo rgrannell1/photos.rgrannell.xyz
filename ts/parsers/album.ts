@@ -7,6 +7,9 @@ import { arrayify } from "../arrays";
 import { readParsedCountries } from "../services/location";
 import { AlbumSchema } from "./schemas.ts";
 
+
+const NAME_TO_URN_CACHE: Map<string, string> = new Map();
+
 /*
  * Read album-data
  *
