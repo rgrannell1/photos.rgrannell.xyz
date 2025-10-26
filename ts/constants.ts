@@ -2,6 +2,7 @@ export const PHOTO_WIDTH = 400;
 export const PHOTO_HEIGHT = 400;
 
 export class KnownRelations {
+  static ALBUM_ID = "albumId";
   static SUBJECT = "subject";
   static LOCATION = "location";
   static LONGITUDE = "longitude";
@@ -47,6 +48,9 @@ export class KnownTypes {
   static AMPHIBIAN = "amphibian";
   static INSECT = "insect";
   static CAMERA = "camera";
+  static PHOTO = "photo";
+  static VIDEO = "video"
+  static ALBUM = "album";
 }
 
 /*

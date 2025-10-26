@@ -1,6 +1,6 @@
 import { State } from "./types.ts";
 import { DarkModes } from "./services/dark-mode.ts";
-import { loadTriples } from "./services/data.ts";
+import { loadTriples } from "./semantic/data.ts";
 import { deriveTriples, HARD_CODED_TRIPLES } from "./semantic/derive.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 

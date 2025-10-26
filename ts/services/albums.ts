@@ -5,6 +5,7 @@ import { parseAlbum } from "../parsers/album.ts";
 import { readParsedPhotos, readThingsByPhotoIds } from "./photos.ts";
 import { readParsedThing, readParsedThings } from "./things.ts";
 import { readParsedVideos } from "./videos.ts";
+import { KnownRelations, KnownTypes } from "../constants.ts";
 
 /*
  * Get the album date
@@ -18,7 +19,7 @@ export function albumYear(album: Album) {
  */
 export function readAlbums(tdb: TribbleDB): Album[] {
   const ids = tdb.search({
-    source: { type: "album" },
+    source: { type: KnownTypes.ALBUM },
   }).sources();
 
   return (readParsedAlbums(tdb, ids) as Album[])
@@ -35,8 +36,8 @@ export function readAlbums(tdb: TribbleDB): Album[] {
  */
 export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
   return tdb.search({
-    source: { type: "photo" },
-    relation: "albumId",
+    source: { type: KnownTypes.PHOTO },
+    relation: KnownRelations.ALBUM_ID,
     target: { id: asUrn(id).id },
   }).sources();
 }
@@ -59,8 +60,8 @@ export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
  */
 export function readAlbumVideoIds(tdb: TribbleDB, id: string): Set<string> {
   return tdb.search({
-    source: { type: "video" },
-    relation: "albumId",
+    source: { type: KnownTypes.VIDEO },
+    relation: KnownRelations.ALBUM_ID,
     target: { id: asUrn(id).id },
   }).sources();
 }

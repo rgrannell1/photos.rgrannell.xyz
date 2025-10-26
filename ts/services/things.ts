@@ -9,9 +9,9 @@ import { one } from "../arrays.ts";
  */
 export function readThing(
   tdb: TribbleDB,
-  id: string,
+  urn: string,
 ): TripleObject | undefined {
-  const parsed = asUrn(id);
+  const parsed = asUrn(urn);
 
   return tdb.search({
     source: { id: parsed.id, type: parsed.type },
@@ -117,6 +117,8 @@ export function toThingLinks(
       return [];
     }
     const thing = readThing(tdb, urn);
+    console.log(thing);
+
     if (!thing || !thing.name) {
       return [];
     }
