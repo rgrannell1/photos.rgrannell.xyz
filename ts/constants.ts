@@ -49,10 +49,10 @@ export class KnownTypes {
   static INSECT = "insect";
   static CAMERA = "camera";
   static PHOTO = "photo";
-  static VIDEO = "video"
+  static VIDEO = "video";
   static ALBUM = "album";
   static UNESCO = "unesco";
-  static FISH = "fish"
+  static FISH = "fish";
 }
 
 /*

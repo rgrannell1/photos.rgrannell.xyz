@@ -9,22 +9,12 @@ import {
   readAmphibian,
   readInsect,
   readMammal,
-  readReptile
+  readReptile,
 } from "./services/subjects.ts";
-import {
-  readPhoto
-} from "./services/photos.ts";
-import {
-  readThing,
-  toThingLinks,
-} from "./services/things.ts";
-import {
-  readCountry,
-  readPlace,
-} from "./services/location.ts";
-import {
-  readVideo
-} from "./services/videos.ts";
+import { readPhoto } from "./services/photos.ts";
+import { readThing, toThingLinks } from "./services/things.ts";
+import { readCountry, readParsedLocations, readPlace } from "./services/location.ts";
+import { readVideo } from "./services/videos.ts";
 
 /*
  * Load data from the tribbles file.
@@ -58,6 +48,7 @@ function loadServices(data: TribbleDB) {
     readInsect: readInsect.bind(null, data),
     readVideo: readVideo.bind(null, data),
     toThingLinks: toThingLinks.bind(null, data),
+    readParsedLocations: readParsedLocations.bind(null, data),
   };
 }
 

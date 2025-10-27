@@ -5,7 +5,7 @@ import { Photos } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { Windows } from "../services/window.ts";
-import { CountryLink } from "../components/country-link.ts";
+import { CountryLink } from "../components/place-links.ts";
 import { block, broadcast } from "../events.ts";
 import { albumYear } from "../services/albums.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
@@ -34,7 +34,11 @@ function drawAlbum(state: { year: number }, album: Album, idx: number) {
     state.year = albumYear(album);
 
     if (state.year !== new Date().getFullYear()) {
-      const $h2 = m("h2.album-year-heading", { key: `year-${state.year}` }, state.year.toString());
+      const $h2 = m(
+        "h2.album-year-heading",
+        { key: `year-${state.year}` },
+        state.year.toString(),
+      );
       $albumComponents.push($h2);
     }
   }
@@ -67,7 +71,7 @@ function drawAlbum(state: { year: number }, album: Album, idx: number) {
     m("div", { key: `album-${album.id}` }, [
       $album,
       $md,
-    ])
+    ]),
   );
 
   return $albumComponents;
@@ -86,7 +90,7 @@ function AlbumsList() {
 
   return {
     oninit(vnode: m.Vnode<AlbumsListAttrs>) {
-      console.log('hello')
+      console.log("hello");
       if (initted) {
         return;
       }
@@ -103,7 +107,7 @@ function AlbumsList() {
     },
     view() {
       return m("section.album-container", $albumComponents);
-    }
+    },
   };
 }
 

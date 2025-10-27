@@ -22,8 +22,8 @@ const NAME_TO_URN_CACHE: Map<string, string> = new Map();
 export function namesToUrns(tdb: TribbleDB, names: Set<string>): Set<string> {
   const urns: Set<string> = new Set();
   if (names.size === 0) {
-    return urns
-  };
+    return urns;
+  }
 
   // lookup cached names first
   for (const name of names) {

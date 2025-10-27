@@ -18,7 +18,6 @@ export const AlbumSchema = z.object({
   description: z.string().optional(),
 });
 
-
 export const CountrySchema = z.object({
   id: z.string(),
   flag: z.string().optional(),
@@ -35,7 +34,6 @@ export const PlaceSchema = z.object({
   wikipedia: z.string().optional(),
   unescoId: z.string().optional(),
 });
-
 
 export const PhotoSchema = z.object({
   albumId: z.string(),

@@ -1,7 +1,7 @@
 # `photos.rgrannell.xyz`
 
-My personal photo hosting website. The photo library is curated with a second project,
-[mirror](https://github.com/rgrannell1/mirror).
+My personal photo hosting website. The photo library is curated with a second
+project, [mirror](https://github.com/rgrannell1/mirror).
 
 ---
 

@@ -4,7 +4,6 @@ import { Photo } from "../types";
 import { PhotoSchema } from "./schemas";
 import { parseObject } from "./parser";
 
-
 /*
  * Parse photo from a triple object
  *

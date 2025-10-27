@@ -7,7 +7,6 @@ import { arrayify } from "../arrays";
 import { CountrySchema, PlaceSchema } from "./schemas";
 import { parseObject } from "./parser";
 
-
 /* */
 export function parsePlace(
   tdb: TribbleDB,
@@ -48,7 +47,6 @@ export function parseCountry(
 ): Country | undefined {
   return parseObject(CountrySchema, "country", country);
 }
-
 
 /*
  * Parse on object identified by a location relation. At the moment, that'

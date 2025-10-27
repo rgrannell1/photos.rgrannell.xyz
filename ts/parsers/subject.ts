@@ -1,10 +1,15 @@
-
 import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { Amphibian, Bird, Insect, Mammal, Reptile, Subject } from "../types.ts";
 import { KnownTypes } from "../constants.ts";
-import { AmphibianSchema, BirdSchema, InsectSchema, MammalSchema, ReptileSchema, SubjectSchema } from "./schemas.ts";
+import {
+  AmphibianSchema,
+  BirdSchema,
+  InsectSchema,
+  MammalSchema,
+  ReptileSchema,
+  SubjectSchema,
+} from "./schemas.ts";
 import { parseObject } from "./parser.ts";
-
 
 /*
  * Parse a bird subject
@@ -42,7 +47,6 @@ export function parseAmphibian(
   return parseObject(AmphibianSchema, "amphibian", subject);
 }
 
-
 /* */
 export function parseInsect(
   _: TribbleDB,
@@ -50,7 +54,6 @@ export function parseInsect(
 ): Insect | undefined {
   return parseObject(InsectSchema, "insect", subject);
 }
-
 
 /* */
 export function parseSubject(

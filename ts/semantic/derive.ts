@@ -138,7 +138,6 @@ export function expandUrns(triple: Triple): Triple[] {
 
 /*
  * Allow search by season
- *
  */
 export function addSeason(triple: Triple) {
   const [src, rel, tgt] = triple;

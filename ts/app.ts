@@ -187,10 +187,10 @@ export function ThingApp(): m.Component<AppAttrs> {
       state.currentUrn = `urn:ró:${pair}`;
 
       const parsed = asUrn(state.currentUrn);
-      if (parsed.id === '*') {
+      if (parsed.id === "*") {
         things = readNamedTypeThings(state.data, pair.split(":")[0]);
       } else {
-        const thing = readThing(state.data, state.currentUrn)
+        const thing = readThing(state.data, state.currentUrn);
         if (thing) {
           things = [thing];
         }
@@ -211,8 +211,9 @@ export function ThingApp(): m.Component<AppAttrs> {
               m(Sidebar, { visible: state.sidebarVisible }),
               m(ThingPage, {
                 urn: state.currentUrn,
-                things
-              })
+                things,
+                services: state.services
+              }),
             ]),
           ],
         ),

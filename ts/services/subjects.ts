@@ -41,7 +41,7 @@ export const readSubject = (
   id: string,
 ) => {
   return readParsedThing(parseSubject, tdb, id);
-}
+};
 
 export const readParsedSubjects = (
   tdb: TribbleDB,

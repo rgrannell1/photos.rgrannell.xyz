@@ -1,5 +1,9 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
-import { parseCountry, parseLocation, parsePlace } from "../parsers/location.ts";
+import {
+  parseCountry,
+  parseLocation,
+  parsePlace,
+} from "../parsers/location.ts";
 import { readParsedThing, readParsedThings } from "./things.ts";
 
 export const readCountry = (
@@ -33,7 +37,7 @@ export const readLocation = (
     tdb,
     id,
   );
-}
+};
 
 export const readParsedCountries = (
   tdb: TribbleDB,
@@ -66,4 +70,4 @@ export const readParsedLocations = (
     tdb,
     urns,
   );
-}
+};

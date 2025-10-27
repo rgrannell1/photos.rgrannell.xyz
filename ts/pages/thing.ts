@@ -1,97 +1,125 @@
-
 import m from "mithril";
 import { ThingTitle } from "../components/thing-title.ts";
-import { TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, TripleObject } from "@rgrannell1/tribbledb";
+import { ExternalLink } from "../components/external-link.ts";
+import { arrayify, one } from "../arrays.ts";
+import { Strings } from "../strings.ts";
+import { Services } from "../types.ts";
+import { LocationLink } from "../components/place-links.ts";
 
 type ThingPageAttrs = {
   urn: string;
-  things: TripleObject[]
-}
-
-/*
- * Construct a description of the thing
- */
-function ThingDescription() {
-  return {
-    view() {
-
-    }
-  }
-}
+  things: TripleObject[];
+  services: Services;
+};
 
 function ThingPlaces() {
   return {
     view() {
-
-    }
-  }
+    },
+  };
 }
 
 function ThingTypeLink() {
   return {
     view() {
-
-    }
-  }
+    },
+  };
 }
 
-function Urls() {
+/*
+ * Links to external sites about the thing
+ *
+ */
+function ThingUrls() {
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const { things } = vnode.attrs;
 
       if (things.length !== 1) {
-        return m("ul")
+        return m("ul");
       }
 
-      const [thing]= things;
-
+      const [thing] = things;
       const $links = [];
-      if (thing.wikipedia) {
-        $links.push(m('a', {
-          href: thing.wikipedia,
-          target: '_blank',
-          rel: 'noopener'
-        }, '[wikipedia]'));
+
+      const wikipedia = one(thing.wikipedia);
+      if (wikipedia) {
+        $links.push(m(ExternalLink, { href: wikipedia, text: "[wikipedia]" }));
       }
 
-      if (thing.birdwatchUrl) {
-        $links.push(m('a', {
-          href: thing.birdwatchUrl,
-          target: '_blank',
-          rel: 'noopener'
-        }, '[birdwatch]'));
+      const birdwatch = one(thing.birdwatchUrl);
+      if (birdwatch) {
+        $links.push(m(ExternalLink, { href: birdwatch, text: "[birdwatch]" }));
       }
 
-      return m("ul", $links)
-    }
-  }
+      return m("ul", $links);
+    },
+  };
 }
 
-function Metadata() {
+function ThingMetadata() {
+  const metadata: Record<string, any> = {};
 
+  return {
+    oninit(vnode: m.Vnode<ThingPageAttrs>) {
+      const { urn, things, services } = vnode.attrs;
+      const parsed = asUrn(urn);
+
+      metadata.Classification = m('a', {
+        href: `#/listing/${parsed.type}`,
+      }, Strings.capitalise(parsed.type));
+
+      const places = new Set(things.flatMap(thing => {
+        return arrayify(thing.in);
+      }));
+
+      if (places.size > 0) {
+        const locations = services.readParsedLocations(places);
+
+        metadata['Located In'] = m("ul", locations.map(location => {
+          return m(LocationLink, { location, mode: 'name' })
+        }));
+      }
+
+    },
+    view(vnode: m.Vnode<ThingPageAttrs>) {
+      const { urn, things } = vnode.attrs;
+
+      const $rows = Object.entries(metadata).map(([key, value]) => {
+        return m("tr", [
+          m("th.exif-heading", key),
+          m("td", value),
+        ])
+      });
+
+      return m("div", [
+        m("h3", "Details"),
+        m("table.metadata-table", $rows),
+      ]);
+    },
+  };
 }
 
 function AlbumSection() {
-
 }
 
 function PhotoSection() {
-
 }
 
 export function ThingPage() {
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const { urn, things } = vnode.attrs;
+      const { urn, things, services } = vnode.attrs;
 
       return m("div", [
         m("section.thing-page", [
           m(ThingTitle, { urn, things }),
-          m(Urls, { urn, things }),
-          m(ThingDescription),
-        ])
+          m("br"),
+          m(ThingUrls, { urn, things, services }),
+          m(ThingMetadata, { urn, things, services }),
+        ]),
       ]);
-    }
-  }
+    },
+  };
 }

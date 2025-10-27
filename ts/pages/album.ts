@@ -2,7 +2,7 @@ import m from "mithril";
 import { Windows } from "../services/window.ts";
 import { Dates } from "../services/dates.ts";
 import { AlbumShareButton } from "../components/album-share-button.ts";
-import { CountryLink } from "../components/country-link.ts";
+import { CountryLink } from "../components/place-links.ts";
 import { Video, VideoAttrs } from "../components/video.ts";
 
 import type {
