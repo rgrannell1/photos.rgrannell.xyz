@@ -11,7 +11,7 @@ import { TribbleParser } from "@rgrannell1/tribbledb";
  *
  * @param url The URL to fetch triples from
  */
-export async function* streamTribbles(url: string) {
+export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
   const parser = new TribbleParser();
   const res = await fetch(url);
   if (!res.body) {
@@ -21,6 +21,10 @@ export async function* streamTribbles(url: string) {
   const decoder = new TextDecoderStream();
   const reader = res.body.pipeThrough(decoder).getReader();
   let buffer = "";
+
+  // rather than yield 20k times, yield a few larger batches...
+  // experimentally, 500 items seems about right
+  const tripleBuffer: Triple[] = [];
 
   while (true) {
     const { value, done } = await reader.read();
@@ -33,7 +37,12 @@ export async function* streamTribbles(url: string) {
     for (const line of lines) {
       const triple = parser.parse(line);
       if (triple !== undefined) {
-        yield triple;
+        tripleBuffer.push(triple);
+      }
+
+      if (tripleBuffer.length >= 500) {
+        yield [...tripleBuffer];
+        tripleBuffer.length = 0;
       }
     }
   }
@@ -42,38 +51,39 @@ export async function* streamTribbles(url: string) {
   if (buffer.length > 0) {
     const triple = parser.parse(buffer);
     if (triple !== undefined) {
-      yield triple;
+      tripleBuffer.push(triple);
     }
+  }
+
+  // and yield any leftover triples
+  if (tripleBuffer.length > 0) {
+    yield [...tripleBuffer];
   }
 }
 
 let tdb: TribbleDB | null = null;
 
 /*
- * Load triples from a URL
+ * Load triples from a URL. This takes about 500ms to run (Oct 27 2025) and
+ * takes about 60% of load-time of the page. This needs to be reworked, as in the litelemet
+ * version, to incrementally stream load the database while allowing the page to render.
+ *
+ * For now, lets make blocking load faster than 500ms...
  */
 export async function loadTriples(
   url: string,
   schema: Record<string, any> = {},
   fn: (triple: Triple) => Triple[] = (x) => [x],
 ): Promise<TribbleDB> {
-  const buffer: Triple[] = [];
-
   if (!tdb) {
     tdb = new TribbleDB([], schema);
   }
 
-  for await (const triple of streamTribbles(url)) {
-    buffer.push(...[triple].flatMap(fn));
-
-    if (buffer.length > 1_000) {
-      tdb.add(buffer);
-      buffer.length = 0;
-      m.redraw()
+  for await (const triples of streamTribbles(url)) {
+    for (const triple of triples) {
+      tdb.add(fn(triple));
     }
   }
-
-  tdb.add(buffer);
 
   return tdb;
 }

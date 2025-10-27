@@ -51,6 +51,7 @@ export class KnownTypes {
   static PHOTO = "photo";
   static VIDEO = "video"
   static ALBUM = "album";
+  static UNESCO = "unesco";
 }
 
 /*
