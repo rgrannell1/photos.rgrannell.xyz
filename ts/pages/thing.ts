@@ -1,5 +1,5 @@
 import m from "mithril";
-import { ThingTitle } from "../components/thing-title.ts";
+import { ThingSubtitle, ThingTitle } from "../components/thing-title.ts";
 import { asUrn, TripleObject } from "@rgrannell1/tribbledb";
 import { ExternalLink } from "../components/external-link.ts";
 import { arrayify, one } from "../arrays.ts";
@@ -93,10 +93,11 @@ function ThingMetadata() {
       // -- add feature information
       const features = services.readThings(new Set(arrayify(thing.feature)))
 
-      metadata['Place Features'] = m("ul", features.map(feature => {
-        return m("li", m(ThingLink, { urn: one(feature.id)!, thing: feature }));
-      }));
-
+      if (features.length > 0) {
+        metadata['Place Features'] = m("ul", features.map(feature => {
+          return m("li", m(ThingLink, { urn: one(feature.id)!, thing: feature }));
+        }));
+      }
     },
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const { urn, things } = vnode.attrs;
@@ -130,6 +131,7 @@ export function ThingPage() {
       return m("div", [
         m("section.thing-page", [
           m(ThingTitle, { urn, things }),
+          m(ThingSubtitle, { urn }),
           m("br"),
           m(ThingUrls, { urn, things, services }),
           m(ThingMetadata, { urn, things, services }),

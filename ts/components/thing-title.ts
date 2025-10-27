@@ -1,7 +1,7 @@
-import { parseUrn, TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, parseUrn, TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
 import { Strings } from "../strings.ts";
-import { KnownTypes } from "../constants.ts";
+import { BinomialTypes, KnownTypes } from "../constants.ts";
 import { one } from "../arrays.ts";
 import { countryEmoji, placeEmoji } from "./thing-link.ts";
 
@@ -46,4 +46,16 @@ export function ThingTitle() {
       return m("h1", title);
     },
   };
+}
+
+export function ThingSubtitle() {
+  return {
+    view(vnode: m.Vnode<{urn: string}>) {
+      const parsed = asUrn(vnode.attrs.urn);
+
+      return BinomialTypes.has(parsed.type) && parsed.id !== '*'
+        ? m('span', { class: `thing-binomial ${parsed.type}-binomial` }, Strings.binomial(parsed.id))
+        : m('span')
+    }
+  }
 }

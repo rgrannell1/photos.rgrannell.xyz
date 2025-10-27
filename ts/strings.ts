@@ -17,4 +17,9 @@ export class Strings {
     return str
       .replace(/[-_ ]+([a-zA-Z0-9])/g, (_, char) => char.toUpperCase());
   }
+
+  static binomial(binomial: string) {
+    const pretty = binomial.replace(/-/g, " ");
+    return Strings.capitalise(pretty);
+  }
 }

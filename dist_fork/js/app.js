@@ -2939,7 +2939,7 @@ var BinomialTypes = /* @__PURE__ */ new Set([
 ]);
 
 // ts/strings.ts
-var Strings = class {
+var Strings = class _Strings {
   static capitalise(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
@@ -2951,6 +2951,10 @@ var Strings = class {
   }
   static camelCase(str) {
     return str.replace(/[-_ ]+([a-zA-Z0-9])/g, (_, char) => char.toUpperCase());
+  }
+  static binomial(binomial) {
+    const pretty = binomial.replace(/-/g, " ");
+    return _Strings.capitalise(pretty);
   }
 };
 
@@ -8729,6 +8733,14 @@ function ThingTitle() {
     }
   };
 }
+function ThingSubtitle() {
+  return {
+    view(vnode) {
+      const parsed = asUrn(vnode.attrs.urn);
+      return BinomialTypes.has(parsed.type) && parsed.id !== "*" ? (0, import_mithril24.default)("span", { class: `thing-binomial ${parsed.type}-binomial` }, Strings.binomial(parsed.id)) : (0, import_mithril24.default)("span");
+    }
+  };
+}
 
 // ts/components/external-link.ts
 var import_mithril25 = __toESM(require_mithril());
@@ -8788,9 +8800,11 @@ function ThingMetadata() {
       }
       const [thing] = things;
       const features = services.readThings(new Set(arrayify(thing.feature)));
-      metadata["Place Features"] = (0, import_mithril26.default)("ul", features.map((feature) => {
-        return (0, import_mithril26.default)("li", (0, import_mithril26.default)(ThingLink, { urn: one(feature.id), thing: feature }));
-      }));
+      if (features.length > 0) {
+        metadata["Place Features"] = (0, import_mithril26.default)("ul", features.map((feature) => {
+          return (0, import_mithril26.default)("li", (0, import_mithril26.default)(ThingLink, { urn: one(feature.id), thing: feature }));
+        }));
+      }
     },
     view(vnode) {
       const { urn, things } = vnode.attrs;
@@ -8814,6 +8828,7 @@ function ThingPage() {
       return (0, import_mithril26.default)("div", [
         (0, import_mithril26.default)("section.thing-page", [
           (0, import_mithril26.default)(ThingTitle, { urn, things }),
+          (0, import_mithril26.default)(ThingSubtitle, { urn }),
           (0, import_mithril26.default)("br"),
           (0, import_mithril26.default)(ThingUrls, { urn, things, services }),
           (0, import_mithril26.default)(ThingMetadata, { urn, things, services })
