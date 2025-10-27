@@ -1,3 +1,8 @@
+/*
+ * We want to limit how much we send to the server,
+ * so some triples are modified or derived client-side
+ */
+
 import { Triple } from "@rgrannell1/tribbledb";
 
 import {
@@ -133,6 +138,7 @@ export function expandUrns(triple: Triple): Triple[] {
 
 /*
  * Allow search by season
+ *
  */
 export function addSeason(triple: Triple) {
   const [src, rel, tgt] = triple;
@@ -195,6 +201,8 @@ export function addYear(triple: Triple) {
 
 /*
  * Reverse relationships
+ *
+ * some relations imply other; X parent-of Y implies Y child-of X
  */
 export function addInverseRelations(triple: Triple) {
   const [src, rel, tgt] = triple;
@@ -234,7 +242,9 @@ export function expandCurie(curies: Record<string, string>, value: string) {
   return curies[prefix] ? `${curies[prefix]}${id}` : value;
 }
 
-/* */
+/*
+ * Some URNs are sent in CURIE format to compact them; expand
+ */
 export function expandTripleCuries(
   triple: Triple,
 ) {
@@ -282,6 +292,8 @@ export const HARD_CODED_TRIPLES: Triple[] = [
 
 /*
  * Compose all triple modifiers together.
+ *
+ * This is a bottleneck (takes roughly 100ms to run)
  *
  * @param triple The input triple to modify.
  */

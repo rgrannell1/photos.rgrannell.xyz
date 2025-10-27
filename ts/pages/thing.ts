@@ -1,13 +1,6 @@
 
 import m from "mithril";
-
-function ThingTitle() {
-  return {
-    view() {
-      return m("h1");
-    }
-  }
-}
+import { ThingTitle } from "../components/thing-title.ts";
 
 /*
  * Construct a description of the thing
