@@ -3,7 +3,7 @@
     // Target and module settings for modern web browsers
     "target": "ES2020",
     "module": "ES2020",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
 
     // Include DOM types for web development
     "lib": ["DOM", "DOM.Iterable", "ES2020"],
@@ -46,17 +46,17 @@
     "resolveJsonModule": true,
     "allowJs": true,
     "checkJs": false,
+    "verbatimModuleSyntax": true,
 
     // Experimental decorators for lit-element if needed
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-
-    "baseUrl": "./"
+    "emitDecoratorMetadata": true
   },
 
   // Include all TypeScript files
   "include": [
     "js/**/*.ts",
+    "ts/**/*.ts",
     "js/**/*.js",
     "*.ts"
   ],

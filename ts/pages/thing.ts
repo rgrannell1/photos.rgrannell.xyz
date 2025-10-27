@@ -46,12 +46,12 @@ function ThingUrls() {
 
       const wikipedia = one(thing.wikipedia);
       if (wikipedia) {
-        $links.push(m(ExternalLink, { href: wikipedia, text: "[wikipedia]" }));
+        $links.push(m("li", m(ExternalLink, { href: wikipedia, text: "[wikipedia]" })));
       }
 
       const birdwatch = one(thing.birdwatchUrl);
       if (birdwatch) {
-        $links.push(m(ExternalLink, { href: birdwatch, text: "[birdwatch]" }));
+        $links.push(m("li", m(ExternalLink, { href: birdwatch, text: "[birdwatch]" })));
       }
 
       // -- add google maps URL
@@ -95,13 +95,12 @@ function ThingMetadata() {
 
       if (features.length > 0) {
         metadata['Place Features'] = m("ul", features.map(feature => {
-          return m("li", m(ThingLink, { urn: one(feature.id)!, thing: feature }));
+          const urn = one(feature.id)!;
+          return m("li", {key: `feature-${urn}`}, m(ThingLink, { urn, thing: feature }));
         }));
       }
     },
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const { urn, things } = vnode.attrs;
-
       const $rows = Object.entries(metadata).map(([key, value]) => {
         return m("tr", [
           m("th.exif-heading", key),

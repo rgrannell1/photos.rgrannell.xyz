@@ -46,6 +46,7 @@ function drawAlbum(state: { year: number }, album: Album, idx: number) {
   const $countryLinks = album.countries.map((country) => {
     return m(CountryLink, {
       country,
+      key: `album-country-${album.id}-${country.id}`,
       mode: "flag",
     });
   });

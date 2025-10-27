@@ -1,12 +1,9 @@
 import m from "mithril";
+import type { Video } from "../types";
 
 export type VideoAttrs = {
   preload: string;
-  posterUrl: string;
-  videoUrl1080p: string;
-  videoUrl480p: string;
-  videoUrl720p: string;
-  videoUrlUnscaled: string;
+  video: Video;
 };
 
 /* */
@@ -15,12 +12,15 @@ export function Video() {
     view(vnode: m.Vnode<VideoAttrs>) {
       const {
         preload,
+        video,
+      } = vnode.attrs;
+      const {
         posterUrl,
         videoUrl1080p,
         videoUrl480p,
         videoUrl720p,
         videoUrlUnscaled,
-      } = vnode.attrs;
+      } = video;
 
       const $source = m("source", {
         src: videoUrl480p,
@@ -34,7 +34,7 @@ export function Video() {
         m("a", { href: videoUrl480p }, "[XS]"),
       ]);
 
-      return m("div", [
+      return m("div", {key: `video-${video.id}`}, [
         m("video.thumbnail-video", {
           controls: true,
           preload,

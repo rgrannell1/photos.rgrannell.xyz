@@ -16,6 +16,7 @@ function PhotosList() {
           const loading = Photos.loadingMode(idx);
 
           return m(Photo, {
+            key: `photo-${photo.id}`,
             photo,
             loading,
             interactive: true,
