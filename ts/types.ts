@@ -22,6 +22,7 @@ export type Services = {
   readVideo: (id: string) => Video | undefined;
   toThingLinks: (urns: (string | undefined)[]) => m.Vnode<ThingLinkAttrs, {}>[];
   readParsedLocations: (urns: Set<string>) => (Place | Country)[];
+  readThings: (urns: Set<string>) => TripleObject[];
 };
 
 export type State = {

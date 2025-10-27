@@ -12,7 +12,7 @@ import {
   readReptile,
 } from "./services/subjects.ts";
 import { readPhoto } from "./services/photos.ts";
-import { readThing, toThingLinks } from "./services/things.ts";
+import { readThing, readThings, toThingLinks } from "./services/things.ts";
 import { readCountry, readParsedLocations, readPlace } from "./services/location.ts";
 import { readVideo } from "./services/videos.ts";
 
@@ -22,7 +22,7 @@ import { readVideo } from "./services/videos.ts";
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    "/manifest/tribbles.d1a0754ec0.txt",
+    "/manifest/tribbles.df1acbb716.txt",
     schema,
     deriveTriples,
   );
@@ -49,6 +49,7 @@ function loadServices(data: TribbleDB) {
     readVideo: readVideo.bind(null, data),
     toThingLinks: toThingLinks.bind(null, data),
     readParsedLocations: readParsedLocations.bind(null, data),
+    readThings: readThings.bind(null, data),
   };
 }
 

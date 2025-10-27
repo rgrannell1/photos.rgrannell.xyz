@@ -53,6 +53,7 @@ export class KnownTypes {
   static ALBUM = "album";
   static UNESCO = "unesco";
   static FISH = "fish";
+  static PLACE_FEATURE = "place_feature";
 }
 
 /*

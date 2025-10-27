@@ -33,6 +33,18 @@ export function placeEmoji(thing: any): string {
   return "📍";
 }
 
+export function placeFeatureEmoji(featureUrn: string): string {
+  const { id: featureId } = asUrn(featureUrn);
+
+  if (PLACE_FEATURES_TO_EMOJI.hasOwnProperty(featureId)) {
+    return PLACE_FEATURES_TO_EMOJI[
+      featureId as keyof typeof PLACE_FEATURES_TO_EMOJI
+    ];
+  }
+
+  return "📍";
+}
+
 /*
  * Pick an flag based on the country definition
  *
@@ -80,6 +92,8 @@ export function thingEmoji(urn: string, name: string, thing: any): string {
       return birdEmoji();
     case KnownTypes.CAMERA:
       return cameraEmoji(thing);
+    case KnownTypes.PLACE_FEATURE:
+      return placeFeatureEmoji(urn);
     default:
       return "";
   }

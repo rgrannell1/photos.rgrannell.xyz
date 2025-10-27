@@ -6,6 +6,7 @@ import { arrayify, one } from "../arrays.ts";
 import { Strings } from "../strings.ts";
 import { Services } from "../types.ts";
 import { LocationLink } from "../components/place-links.ts";
+import { ThingLink } from "../components/thing-link.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -53,6 +54,8 @@ function ThingUrls() {
         $links.push(m(ExternalLink, { href: birdwatch, text: "[birdwatch]" }));
       }
 
+      // -- add google maps URL
+
       return m("ul", $links);
     },
   };
@@ -66,14 +69,13 @@ function ThingMetadata() {
       const { urn, things, services } = vnode.attrs;
       const parsed = asUrn(urn);
 
+      // -- add the thing type
       metadata.Classification = m('a', {
         href: `#/listing/${parsed.type}`,
       }, Strings.capitalise(parsed.type));
 
-      const places = new Set(things.flatMap(thing => {
-        return arrayify(thing.in);
-      }));
-
+      // -- add the location of the thing
+      const places = new Set(things.flatMap(thing => arrayify(thing.in)));
       if (places.size > 0) {
         const locations = services.readParsedLocations(places);
 
@@ -81,6 +83,19 @@ function ThingMetadata() {
           return m(LocationLink, { location, mode: 'name' })
         }));
       }
+
+      if (things.length !== 1) {
+        return;
+      }
+
+      const [thing] = things;
+
+      // -- add feature information
+      const features = services.readThings(new Set(arrayify(thing.feature)))
+
+      metadata['Place Features'] = m("ul", features.map(feature => {
+        return m("li", m(ThingLink, { urn: one(feature.id)!, thing: feature }));
+      }));
 
     },
     view(vnode: m.Vnode<ThingPageAttrs>) {

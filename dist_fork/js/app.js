@@ -1728,7 +1728,7 @@ var DarkModes = class {
   }
 };
 
-// node_modules/@rgrannell1/tribbledb/dist/mod.js
+// node_modules/.deno/@rgrannell1+tribbledb@0.0.11/node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class {
   #idx;
   #map;
@@ -2840,6 +2840,9 @@ var KnownTypes = class {
   static {
     this.FISH = "fish";
   }
+  static {
+    this.PLACE_FEATURE = "place_feature";
+  }
 };
 var NonListableTypes = /* @__PURE__ */ new Set([
   KnownTypes.COUNTRY,
@@ -3232,6 +3235,13 @@ function placeEmoji(thing) {
   }
   return "\u{1F4CD}";
 }
+function placeFeatureEmoji(featureUrn) {
+  const { id: featureId } = asUrn(featureUrn);
+  if (PLACE_FEATURES_TO_EMOJI.hasOwnProperty(featureId)) {
+    return PLACE_FEATURES_TO_EMOJI[featureId];
+  }
+  return "\u{1F4CD}";
+}
 function countryEmoji(thing) {
   const flag = one(thing.flag);
   return flag ?? "\u{1F3F3}\uFE0F";
@@ -3259,6 +3269,8 @@ function thingEmoji(urn, name, thing) {
       return birdEmoji();
     case KnownTypes.CAMERA:
       return cameraEmoji(thing);
+    case KnownTypes.PLACE_FEATURE:
+      return placeFeatureEmoji(urn);
     default:
       return "";
   }
@@ -3292,6 +3304,16 @@ function readParsedThing(parser, tdb2, id) {
     return void 0;
   }
   return parser(tdb2, thing);
+}
+function readThings(tdb2, urns) {
+  const things = [];
+  for (const urn of urns) {
+    const thing = readThing(tdb2, urn);
+    if (thing) {
+      things.push(thing);
+    }
+  }
+  return things;
 }
 var readParsedThings = function(parser, tdb2, urns) {
   const parsedThings = [];
@@ -7467,7 +7489,7 @@ var readParsedAlbums = (tdb2, urns) => {
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    "/manifest/tribbles.d1a0754ec0.txt",
+    "/manifest/tribbles.df1acbb716.txt",
     schema,
     deriveTriples
   );
@@ -7487,7 +7509,8 @@ function loadServices(data) {
     readInsect: readInsect.bind(null, data),
     readVideo: readVideo.bind(null, data),
     toThingLinks: toThingLinks.bind(null, data),
-    readParsedLocations: readParsedLocations.bind(null, data)
+    readParsedLocations: readParsedLocations.bind(null, data),
+    readThings: readThings.bind(null, data)
   };
 }
 async function loadState() {
@@ -8753,15 +8776,21 @@ function ThingMetadata() {
       metadata.Classification = (0, import_mithril26.default)("a", {
         href: `#/listing/${parsed.type}`
       }, Strings.capitalise(parsed.type));
-      const places = new Set(things.flatMap((thing) => {
-        return arrayify(thing.in);
-      }));
+      const places = new Set(things.flatMap((thing2) => arrayify(thing2.in)));
       if (places.size > 0) {
         const locations = services.readParsedLocations(places);
         metadata["Located In"] = (0, import_mithril26.default)("ul", locations.map((location2) => {
           return (0, import_mithril26.default)(LocationLink, { location: location2, mode: "name" });
         }));
       }
+      if (things.length !== 1) {
+        return;
+      }
+      const [thing] = things;
+      const features = services.readThings(new Set(arrayify(thing.feature)));
+      metadata["Place Features"] = (0, import_mithril26.default)("ul", features.map((feature) => {
+        return (0, import_mithril26.default)("li", (0, import_mithril26.default)(ThingLink, { urn: one(feature.id), thing: feature }));
+      }));
     },
     view(vnode) {
       const { urn, things } = vnode.attrs;
