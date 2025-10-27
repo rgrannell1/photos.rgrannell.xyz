@@ -1,6 +1,7 @@
 
 import m from "mithril";
 import { ThingTitle } from "../components/thing-title.ts";
+import { TripleObject } from "@rgrannell1/tribbledb";
 
 /*
  * Construct a description of the thing
@@ -45,14 +46,22 @@ function PhotoSection() {
 
 }
 
+type ThingPageAttrs = {
+  urn: string;
+  things: TripleObject[]
+}
+
 export function ThingPage() {
-  return m("div", [
-    m("section.thing-page", [
-      m(
-        /*
-         * Construct a description of the thing
-         */ThingTitle),
-      m(ThingDescription),
-    ])
-  ]);
+  return {
+    view(vnode: m.Vnode<ThingPageAttrs>) {
+      const { urn, things } = vnode.attrs;
+
+      return m("div", [
+        m("section.thing-page", [
+          m(ThingTitle, { urn, things }),
+          m(ThingDescription),
+        ])
+      ]);
+    }
+  }
 }

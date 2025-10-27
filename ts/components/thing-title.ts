@@ -1,11 +1,14 @@
 
-import { parseUrn } from "@rgrannell1/tribbledb";
+import { parseUrn, TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
 import { Strings } from "../strings.ts";
+import { KnownTypes } from "../constants.ts";
+import { one } from "../arrays.ts";
+import { placeEmoji, countryEmoji } from "./thing-link.ts";
 
 type ThingTitleAttrs = {
   urn: string;
-  things: unknown[];
+  things: TripleObject[];
 }
 
 export function ThingTitle() {
@@ -19,10 +22,26 @@ export function ThingTitle() {
       // if type:*, fall back to pretty render of type information
       if (parsed.id === '*') {
         title = Strings.capitalise(Strings.pluralise(parsed.type));
+        return;
       }
 
-      // if country, add a flag
-      // if an animal, add a binomial
+      if (things.length === 0) {
+        title = urn;
+        return;
+      }
+
+      const [thing] = things;
+      const name = one(thing.name) ?? parsed.id;
+
+      if (parsed.type === KnownTypes.COUNTRY) {
+        title = `${countryEmoji(thing)} ${name}`;
+        return
+      } else if (parsed.type === KnownTypes.PLACE) {
+        title = `${placeEmoji(thing)} ${name}`
+        return
+      }
+
+      title = name;
     },
     view(vnode: m.Vnode<ThingTitleAttrs>) {
       return m("h1", title);

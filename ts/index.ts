@@ -16,7 +16,7 @@ m.route(document.body, "/albums", {
   "/videos": VideosApp,
   "/photos": PhotosApp,
   "/album/:id": AlbumApp,
-  "/thing/:id": ThingApp,
+  "/thing/:pair": ThingApp,
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp,
 });

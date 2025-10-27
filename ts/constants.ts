@@ -52,6 +52,7 @@ export class KnownTypes {
   static VIDEO = "video"
   static ALBUM = "album";
   static UNESCO = "unesco";
+  static FISH = "fish"
 }
 
 /*
@@ -178,4 +179,13 @@ export const PHONE_MODELS = new Set([
   "pixel-7-pro",
   "pixel-9a",
   "sm-a520f",
+]);
+
+export const BinomialTypes = new Set([
+  KnownTypes.BIRD,
+  KnownTypes.MAMMAL,
+  KnownTypes.REPTILE,
+  KnownTypes.AMPHIBIAN,
+  KnownTypes.FISH,
+  KnownTypes.INSECT,
 ]);

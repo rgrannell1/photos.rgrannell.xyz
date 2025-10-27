@@ -14,14 +14,15 @@ import { AboutPage } from "./pages/about.ts";
 import { VideosPage } from "./pages/videos.ts";
 import { readVideos } from "./services/videos.ts";
 import { listen } from "./events.ts";
-import { asUrn } from "@rgrannell1/tribbledb";
+import { asUrn, TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
 import { readPhoto, readPhotoById, readPhotos } from "./services/photos.ts";
 import { ListingPage } from "./pages/listing.ts";
-import { readNamedTypeThings } from "./services/things.ts";
+import { readNamedTypeThings, readThing } from "./services/things.ts";
 import { Album } from "./types.ts";
+import { ThingPage } from "./pages/thing.ts";
 
 const state = await loadState();
 type AppAttrs = {};
@@ -178,8 +179,28 @@ export function PhotosApp(): m.Component<AppAttrs> {
 
 /* */
 export function ThingApp(): m.Component<AppAttrs> {
+  let things: TripleObject[] = [];
+
   return {
+    oninit() {
+      const pair = m.route.param("pair");
+      state.currentUrn = `urn:ró:${pair}`;
+
+      const parsed = asUrn(state.currentUrn);
+      if (parsed.id === '*') {
+        things = readNamedTypeThings(state.data, pair.split(":")[0]);
+      } else {
+        const thing = readThing(state.data, state.currentUrn)
+        if (thing) {
+          things = [thing];
+        }
+      }
+    },
     view() {
+      if (!state.currentUrn) {
+        return m("p", "No thing selected");
+      }
+
       return m("body", [
         m(
           "div.photos-app",
@@ -188,6 +209,10 @@ export function ThingApp(): m.Component<AppAttrs> {
             m(Header, state),
             m("div.app-container", [
               m(Sidebar, { visible: state.sidebarVisible }),
+              m(ThingPage, {
+                urn: state.currentUrn,
+                things
+              })
             ]),
           ],
         ),

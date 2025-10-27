@@ -20,7 +20,7 @@ export type ThingLinkAttrs = {
  *
  * @param thing The place
  */
-function placeEmoji(thing: any): string {
+export function placeEmoji(thing: any): string {
   const feature = one(thing.feature);
   const { id: featureId } = asUrn(feature);
 
@@ -38,7 +38,7 @@ function placeEmoji(thing: any): string {
  *
  * @param thing The country thing
  */
-function countryEmoji(thing: any): string {
+export function countryEmoji(thing: any): string {
   const flag = one(thing.flag);
   return flag ?? "🏳️";
 }
