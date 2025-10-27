@@ -8678,6 +8678,33 @@ function ThingDescription() {
     }
   };
 }
+function Urls() {
+  return {
+    view(vnode) {
+      const { things } = vnode.attrs;
+      if (things.length !== 1) {
+        return (0, import_mithril25.default)("ul");
+      }
+      const [thing] = things;
+      const $links = [];
+      if (thing.wikipedia) {
+        $links.push((0, import_mithril25.default)("a", {
+          href: thing.wikipedia,
+          target: "_blank",
+          rel: "noopener"
+        }, "[wikipedia]"));
+      }
+      if (thing.birdwatchUrl) {
+        $links.push((0, import_mithril25.default)("a", {
+          href: thing.birdwatchUrl,
+          target: "_blank",
+          rel: "noopener"
+        }, "[birdwatch]"));
+      }
+      return (0, import_mithril25.default)("ul", $links);
+    }
+  };
+}
 function ThingPage() {
   return {
     view(vnode) {
@@ -8685,6 +8712,7 @@ function ThingPage() {
       return (0, import_mithril25.default)("div", [
         (0, import_mithril25.default)("section.thing-page", [
           (0, import_mithril25.default)(ThingTitle, { urn, things }),
+          (0, import_mithril25.default)(Urls, { urn, things }),
           (0, import_mithril25.default)(ThingDescription)
         ])
       ]);
