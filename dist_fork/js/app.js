@@ -2536,6 +2536,20 @@ var TribbleDB = class _TribbleDB {
   }
 };
 
+// ts/arrays.ts
+function arrayify(value) {
+  if (value === void 0) {
+    return [];
+  }
+  return Array.isArray(value) ? value : [value];
+}
+function one(value) {
+  if (value === void 0) {
+    return void 0;
+  }
+  return Array.isArray(value) ? value[0] : value;
+}
+
 // ts/constants.ts
 var PHOTO_WIDTH = 400;
 var PHOTO_HEIGHT = 400;
@@ -2782,21 +2796,7 @@ var BinomialTypes = /* @__PURE__ */ new Set([
   KnownTypes.INSECT
 ]);
 
-// ts/arrays.ts
-function arrayify(value) {
-  if (value === void 0) {
-    return [];
-  }
-  return Array.isArray(value) ? value : [value];
-}
-function one(value) {
-  if (value === void 0) {
-    return void 0;
-  }
-  return Array.isArray(value) ? value[0] : value;
-}
-
-// ts/components/thing-link.ts
+// ts/services/emoji.ts
 function placeEmoji(thing) {
   const feature = one(thing.feature);
   const { id: featureId } = asUrn(feature);
@@ -2845,6 +2845,8 @@ function thingEmoji(urn, name, thing) {
       return "";
   }
 }
+
+// ts/components/thing-link.ts
 function ThingLink() {
   return {
     view(vnode) {
@@ -7941,7 +7943,7 @@ function PhotoAlbum() {
 // ts/components/place-links.ts
 var import_mithril12 = __toESM(require_mithril());
 
-// ts/semantic/urn.ts
+// ts/models/urn.ts
 function urnToUrl(urn) {
   const { type, id } = asUrn(urn);
   return `#/thing/${type}:${id}`;
@@ -7952,10 +7954,11 @@ function CountryLink() {
   return {
     view(vnode) {
       const { country, mode } = vnode.attrs;
-      const { id, name, flag } = country;
+      const { id, name } = country;
       if (!id) {
         return (0, import_mithril12.default)("p");
       }
+      const flag = countryEmoji(country);
       const parsed = asUrn(id);
       const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
       if (mode === "flag") {
@@ -8575,7 +8578,7 @@ function Subject3() {
     }
   };
 }
-function Country4() {
+function Country3() {
   return {
     view(vnode) {
       const { photo, services } = vnode.attrs;
@@ -8595,7 +8598,7 @@ function PhotoInfo() {
         ]),
         (0, import_mithril24.default)("tr", [
           (0, import_mithril24.default)(Heading2, { text: "Country" }),
-          (0, import_mithril24.default)(Country4, { photo, services })
+          (0, import_mithril24.default)(Country3, { photo, services })
         ]),
         (0, import_mithril24.default)("tr", [
           (0, import_mithril24.default)(Heading2, { text: "Location" }),

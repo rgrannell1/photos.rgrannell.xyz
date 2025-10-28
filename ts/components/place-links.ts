@@ -5,7 +5,7 @@ import { navigate } from "../events.ts";
 import { isACountry } from "../types.ts";
 import type { Country, Place } from "../types.ts";
 import { one } from "../arrays.ts";
-import { countryEmoji, placeEmoji } from "./thing-link.ts";
+import { countryEmoji, placeEmoji } from "../services/emoji.ts";
 
 export type CountryLinkAttrs = {
   country: Country;
