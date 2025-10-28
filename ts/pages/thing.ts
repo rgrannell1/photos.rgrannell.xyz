@@ -62,7 +62,7 @@ function ThingUrls() {
 }
 
 function ThingMetadata() {
-  const metadata: Record<string, any> = {};
+  const metadata: Record<string, m.Children> = {};
 
   return {
     oninit(vnode: m.Vnode<ThingPageAttrs>) {

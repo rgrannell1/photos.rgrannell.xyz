@@ -18,7 +18,7 @@ import { asUrn, TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
-import { readPhoto, readPhotoById, readPhotos } from "./services/photos.ts";
+import { readPhoto, readPhotos } from "./services/photos.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { readNamedTypeThings, readThing } from "./services/things.ts";
 import { Album } from "./types.ts";

@@ -3,7 +3,7 @@
  * so some triples are modified or derived client-side
  */
 
-import { Triple } from "@rgrannell1/tribbledb";
+import type { Triple } from "@rgrannell1/tribbledb";
 
 import {
   CDN_RELATIONS,

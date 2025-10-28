@@ -69,6 +69,8 @@ let tdb: TribbleDB | null = null;
  * version, to incrementally stream load the database while allowing the page to render.
  *
  * For now, lets make blocking load faster than 500ms...
+ *
+ * October 28 2025: about 250ms now
  */
 export async function loadTriples(
   url: string,

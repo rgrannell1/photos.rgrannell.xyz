@@ -8186,7 +8186,7 @@ function VideosPage() {
       const videos = vnode.attrs.videos;
       const videoLengthText = videos.length === 1 ? "1 video" : `${videos.length} videos`;
       const $videosList = videos.map((video) => {
-        return (0, import_mithril16.default)(Video3, { ...video, preload: "auto" });
+        return (0, import_mithril16.default)(Video3, { video, preload: "auto" });
       });
       return (0, import_mithril16.default)(
         "div",
