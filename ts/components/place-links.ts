@@ -1,26 +1,32 @@
 import m from "mithril";
-import { urnToUrl } from "../semantic/urn.ts";
+import { urnToUrl } from "../models/urn.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { navigate } from "../events.ts";
-import { Country, isACountry, Place } from "../types.ts";
+import { isACountry } from "../types.ts";
+import type { Country, Place } from "../types.ts";
 import { one } from "../arrays.ts";
-import { placeEmoji } from "./thing-link.ts";
+import { countryEmoji, placeEmoji } from "./thing-link.ts";
 
 export type CountryLinkAttrs = {
   country: Country;
   mode: "flag" | "name";
 };
 
-/* */
+/*
+ * Construct a link to a country. Reuse existing emoji lookup logic
+ *
+ */
 export function CountryLink() {
   return {
     view(vnode: m.Vnode<CountryLinkAttrs>) {
       const { country, mode } = vnode.attrs;
-      const { id, name, flag } = country;
+      const { id, name } = country;
 
       if (!id) {
         return m("p");
       }
+
+      const flag = countryEmoji(country);
 
       const parsed = asUrn(id);
       const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
@@ -38,6 +44,10 @@ export function CountryLink() {
   };
 }
 
+/*
+ * Create a link to a place. Reuse existing emoji lookup logic
+ *
+ */
 export function PlaceLink() {
   return {
     view(vnode: m.Vnode<{ location: Place, mode: "flag" | "name" }>) {
@@ -58,6 +68,10 @@ export function PlaceLink() {
   }
 }
 
+/*
+ * Create a link to a country / place
+ *
+ */
 export function LocationLink() {
   return {
     view(vnode: m.Vnode<{ location: Country | Place, mode: "flag" | "name" }>) {

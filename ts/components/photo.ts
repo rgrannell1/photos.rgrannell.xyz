@@ -7,7 +7,10 @@ import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../constants.ts";
 import { Photos } from "../services/photos.ts";
 import type { Photo as PhotoType } from "../types.ts";
 
-/* */
+/*
+ * Broadcast an event when a photo loads, and swap out the placeholder
+ *
+ */
 function loadImage(url: string, event: Event) {
   broadcast("photo_loaded", { url });
 
@@ -29,7 +32,9 @@ type ImageAttrs = {
   onclick?: (e: Event) => void;
 };
 
-/* */
+/*
+ * The thumbnail image itself
+ */
 function Image() {
   return {
     view(vnode: m.Vnode<ImageAttrs>) {
@@ -51,7 +56,9 @@ type PlaceholderImageAttrs = {
   thumbnailDataUrl: string;
 };
 
-/* */
+/*
+ * The placeholder data URL
+ */
 function PlaceholderImage() {
   return {
     view(vnode: m.Vnode<PlaceholderImageAttrs>) {
@@ -74,7 +81,10 @@ type ImagePairAttrs = {
   onclick?: (e: Event) => void;
 };
 
-/* */
+/*
+ * The underlying pair of images. One is the actual thumbnail, which
+ * takes time to load. The other will be a grid data URL that instantly loads.
+ */
 export function ImagePair() {
   return {
     view(vnode: m.Vnode<ImagePairAttrs>) {
@@ -109,7 +119,11 @@ export type PhotoAttrs = {
   interactive?: boolean;
 };
 
-/* */
+/*
+ * Represents a photo, with a metadata link and the fake-progressive-loading
+ * features (https://rgrannell.xyz/replacing-google-photos) to make images appear blank for
+ * less time.
+ */
 export function Photo() {
   return {
     view(vnode: m.Vnode<PhotoAttrs>) {
@@ -121,6 +135,7 @@ export function Photo() {
         mosaicColours,
       } = photo;
 
+      // encode a grid of colours into a data URL
       const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
 
       const $mdIcon = m(MetadataIcon, { id });
