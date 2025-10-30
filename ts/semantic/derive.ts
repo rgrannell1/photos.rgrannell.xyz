@@ -222,10 +222,16 @@ export function addInverseRelations(triple: Triple) {
   return [triple];
 }
 
+const CURIE_CACHE = new Map<string, string>();
+
 /*
  * Expand curies
  */
 export function expandCurie(curies: Record<string, string>, value: string) {
+  if (CURIE_CACHE.has(value)) {
+    return CURIE_CACHE.get(value)!;
+  }
+
   if (typeof value !== "string" || !CURIE_REGEX.test(value)) {
     return value;
   }
@@ -238,7 +244,10 @@ export function expandCurie(curies: Record<string, string>, value: string) {
   const prefix = match[1];
   const id = match[2];
 
-  return curies[prefix] ? `${curies[prefix]}${id}` : value;
+  const result = curies[prefix] ? `${curies[prefix]}${id}` : value;
+
+  CURIE_CACHE.set(value, result);
+  return result;
 }
 
 /*
@@ -249,25 +258,11 @@ export function expandTripleCuries(
 ) {
   const [src, rel, tgt] = triple;
 
-  const expandedSource = expandCurie(CURIES, src);
-  const expandedTarget = expandCurie(CURIES, tgt);
-
-  if (CURIE_REGEX.test(expandedSource)) {
-    throw new Error(
-      `Source still matches CURIE regex after expansion: "${src}" ${expandedSource}`,
-    );
-  }
-  if (CURIE_REGEX.test(expandedTarget)) {
-    throw new Error(
-      `Target still matches CURIE regex after expansion: "${tgt}" ${expandedTarget}`,
-    );
-  }
-
   return [
     [
-      expandedSource,
+      expandCurie(CURIES, src),
       rel,
-      expandedTarget,
+      expandCurie(CURIES, tgt),
     ],
   ];
 }
@@ -314,7 +309,13 @@ export function deriveTriples(
 
   let outputTriples: Triple[] = [triple];
   for (const fn of tripleProcessors) {
-    outputTriples = outputTriples.flatMap(fn as any);
+    let nextStep: Triple[] = [];
+
+    for (const triple of outputTriples) {
+      nextStep.push(...fn(triple));
+    }
+
+    outputTriples = nextStep;
   }
 
   return outputTriples;

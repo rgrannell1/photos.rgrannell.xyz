@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex">
+
+    <meta charset="utf-8">
+    <meta name="application-name" content="photos.rgrannell.xyz">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="Description" content="My personal photo library">
+    <link rel="canonical" href="https://photos.rgrannell.xyz/">
+
+    <!-- Preconnects -->
+    <link rel="preconnect" href="{{{ cdnUrl }}}">
+
+    <!-- Preloads -->
+    <link rel="preload" href="/dist_fork/js/app.js" as="script">
+    {{#prefetched}}
+    <link rel="preload" fetchpriority="high" href="{{{.}}}" as="image">
+    {{/prefetched}}
+
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/manifest/atom/atom-index.xml" />
+
+    <!-- OpenGraph Attributes -->
+    <meta property="og:title" content="photos.rgrannell.xyz">
+    <meta property="og:description" content="My personal photo library">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_IE">
+    <meta property="og:url" content="https://photos.rgrannell.xyz">
+    <meta property="og:site_name" content="photos.rgrannell.xyz">
+
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="shortcut icon" type="image/png" href="/icons/favicon-32x32.png"/ defer="" fetchpriorty="low">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0056b3">
+
+    <link rel="stylesheet" href="/dist_fork/css/style.{{ buildId }}.css" as="style">
+
+    <script>
+      // reduce blocking requests by injecting this critical data
+      window.envConfig = {{{ env }}}
+      window.homepageThumbnails = {{{ homepageThumbnails }}}
+    </script>
+
+    <div id="stats-data" style="display: none;"></div>
+    <script type="module">
+      // this mustashe injection should circumvent blocking on `stats` fetches
+      const $statsData = document.getElementById('stats-data');
+      $statsData.innerText = JSON.stringify({{{ stats }}})
+
+    </script>
+    <script type="module" src="/dist_fork/js/app.{{ buildId }}.js"></script>
+
+    <title>photos.rgrannell.xyz</title>
+  </head>
+
+  <body></body>
+
+  <script async fetchpriority="low">
+    // -- register a service-worker
+    if('serviceWorker' in navigator) {
+      console.log('⚙️ loading service worker: /sw.{{ buildId }}.js')
+
+      navigator.serviceWorker.register('/dist_fork/js/sw.{{ buildId }}.js').catch(err => {
+        console.error(`⚙️ failed service worker: /sw.{{ buildId }}.js ${err}`)
+      });
+
+      navigator.serviceWorker.ready.then(registration => {
+        if (window.homepageThumbnails) {
+          console.log('sending homepage thumbnails to service worker')
+          registration.active?.postMessage({
+            type: 'homepageThumbnails',
+            data: window.homepageThumbnails
+          });
+        } else {
+          console.log('window not updated')
+        }
+      }).catch(err => {
+        console.error(`⚙️ failed to send homepage thumbnails to service worker: ${err}`)
+      });
+    } else {
+      console.error('⚙️ service worker not supported: /sw.{{ buildId }}.js')
+    }
+  </script>
+</html>

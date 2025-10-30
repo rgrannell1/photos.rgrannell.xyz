@@ -1625,7 +1625,7 @@ var import_mithril2 = __toESM(require_mithril());
 // ts/components/thing-link.ts
 var import_mithril = __toESM(require_mithril());
 
-// node_modules/.deno/@rgrannell1+tribbledb@0.0.11/node_modules/@rgrannell1/tribbledb/dist/mod.js
+// node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class {
   #idx;
   #map;
@@ -2015,52 +2015,6 @@ var Triples = class {
     return triple[2];
   }
 };
-function joinSubqueryResults(metrics, acc, tripleResult) {
-  const joinedNames = acc.names.concat(tripleResult.names);
-  if (acc.rows.length === 0 || tripleResult.rows.length === 0) {
-    return {
-      names: joinedNames,
-      rows: []
-    };
-  }
-  const endings = /* @__PURE__ */ new Map();
-  const starts = /* @__PURE__ */ new Map();
-  for (let idx = 0; idx < acc.rows.length; idx++) {
-    const refId = acc.rows[idx][2];
-    if (!endings.has(refId)) {
-      endings.set(refId, []);
-    }
-    endings.get(refId).push(idx);
-  }
-  for (let idx = 0; idx < tripleResult.rows.length; idx++) {
-    const refId = tripleResult.rows[idx][0];
-    if (!starts.has(refId)) {
-      starts.set(refId, []);
-    }
-    starts.get(refId).push(idx);
-  }
-  const commonLinks = Sets.intersection(metrics, [
-    new Set(endings.keys()),
-    new Set(starts.keys())
-  ]);
-  const joinedRows = [];
-  for (const link of commonLinks) {
-    const startRowIndices = starts.get(link);
-    const endRowsIndices = endings.get(link);
-    for (const startRowIndex of startRowIndices) {
-      for (const endRowIndex of endRowsIndices) {
-        const joinedRow = acc.rows[startRowIndex].concat(
-          tripleResult.rows[endRowIndex]
-        );
-        joinedRows.push(joinedRow);
-      }
-    }
-  }
-  return {
-    names: joinedNames,
-    rows: joinedRows
-  };
-}
 var TribbleDB = class _TribbleDB {
   index;
   triplesCount;
@@ -2092,7 +2046,6 @@ var TribbleDB = class _TribbleDB {
   }
   /*
    * Convert an array of triples to a TribbleDB.
-   *
    */
   static of(triples) {
     return new _TribbleDB(triples);
@@ -2205,7 +2158,6 @@ var TribbleDB = class _TribbleDB {
   }
   /*
    * Get the first object in the database.
-   *
    */
   firstObject(listOnly = false) {
     let firstId = void 0;
@@ -2283,8 +2235,6 @@ var TribbleDB = class _TribbleDB {
    * Internal function; convert all triples to an object representation.
    *
    * @param listOnly - Whether to always represent relation values as lists.
-   *
-   *
    */
   #object(listOnly = false) {
     const objs = {};
@@ -2304,7 +2254,6 @@ var TribbleDB = class _TribbleDB {
   }
   /*
    * Convert a node to a node DSL object.
-   *
    */
   nodeAsDSL(node) {
     if (typeof node === "undefined") {
@@ -2320,7 +2269,6 @@ var TribbleDB = class _TribbleDB {
   }
   /*
    * Convert a relation input to a relation DSL object
-   *
    */
   relationAsDSL(relation) {
     if (typeof relation === "undefined") {
@@ -2431,40 +2379,41 @@ var TribbleDB = class _TribbleDB {
         }
       }
     }
-    if (expandedRelation) {
-      if (expandedRelation.relation) {
-        const unionedRelations = /* @__PURE__ */ new Set();
-        for (const rel of expandedRelation.relation) {
-          const relationSet = this.index.getRelationSet(rel);
-          if (relationSet) {
-            for (const elem of relationSet) {
-              unionedRelations.add(elem);
-            }
+    if (expandedRelation && expandedRelation.relation) {
+      const unionedRelations = /* @__PURE__ */ new Set();
+      for (const rel of expandedRelation.relation) {
+        const relationSet = this.index.getRelationSet(rel);
+        if (relationSet) {
+          for (const elem of relationSet) {
+            unionedRelations.add(elem);
           }
         }
-        if (unionedRelations.size > 0) {
-          matchingRowSets.push(unionedRelations);
-        } else {
-          return /* @__PURE__ */ new Set();
-        }
+      }
+      if (unionedRelations.size > 0) {
+        matchingRowSets.push(unionedRelations);
+      } else {
+        return /* @__PURE__ */ new Set();
       }
     }
     const intersection = Sets.intersection(this.metrics, matchingRowSets);
     const matchingTriples = /* @__PURE__ */ new Set();
+    const hasSourcePredicate = expandedSource?.predicate !== void 0;
+    const hasTargetPredicate = expandedTarget?.predicate !== void 0;
+    const hasRelationPredicate = typeof expandedRelation === "object" && expandedRelation.predicate !== void 0;
     for (const index of intersection) {
       const triple = this.index.getTriple(index);
-      if (!expandedSource?.predicate && !expandedTarget?.predicate && !expandedRelation?.predicate) {
+      if (!hasSourcePredicate && !hasTargetPredicate && !hasRelationPredicate) {
         matchingTriples.add(index);
         continue;
       }
       let isValid2 = true;
-      if (expandedSource?.predicate) {
+      if (hasSourcePredicate) {
         isValid2 = isValid2 && expandedSource.predicate(Triples.source(triple));
       }
-      if (expandedTarget?.predicate) {
+      if (hasTargetPredicate && isValid2) {
         isValid2 = isValid2 && expandedTarget.predicate(Triples.target(triple));
       }
-      if (typeof expandedRelation === "object" && expandedRelation.predicate) {
+      if (hasRelationPredicate && isValid2) {
         isValid2 = isValid2 && expandedRelation.predicate(Triples.relation(triple));
       }
       if (isValid2) {
@@ -2474,7 +2423,10 @@ var TribbleDB = class _TribbleDB {
     return matchingTriples;
   }
   /*
-   * Search all triples in the database.
+   * Search across all triples in the database. There are two forms of query possible:
+   *
+   * - Object: { source?, relation?, target }
+   * - Array: [ source?, relation?, target? ]
    *
    * @param params - The search parameters.
    * @returns A new TribbleDB instance containing the matching triples.
@@ -2488,42 +2440,6 @@ var TribbleDB = class _TribbleDB {
       }
     }
     return new _TribbleDB(matchingTriples);
-  }
-  search2(query) {
-    const bindings = Object.entries(query);
-    const subqueryResults = [];
-    for (let idx = 0; idx < bindings.length - 2; idx += 2) {
-      const tripleSlice = bindings.slice(idx, idx + 3);
-      const pattern = {
-        source: tripleSlice[0][1],
-        relation: tripleSlice[1][1],
-        target: tripleSlice[2][1]
-      };
-      const bindingNames = tripleSlice.map((pair) => pair[0]);
-      const tripleRows = this.#findMatchingRows(pattern);
-      const rowData = Array.from(tripleRows).flatMap((row) => {
-        const contents = this.index.getTripleIndices(row);
-        return typeof contents === "undefined" ? [] : [contents];
-      });
-      subqueryResults.push({
-        names: bindingNames,
-        rows: rowData
-      });
-    }
-    const queryResult = subqueryResults.reduce(
-      joinSubqueryResults.bind(this, this.metrics)
-    );
-    const outputNames = queryResult.names;
-    const objects = [];
-    for (const row of queryResult.rows) {
-      const data = {};
-      for (let idx = 0; idx < outputNames.length; idx++) {
-        const label = outputNames[idx];
-        data[label] = this.index.stringIndex.getValue(row[idx]);
-      }
-      objects.push(data);
-    }
-    return objects;
   }
   /*
    * Get performance metrics for the database.
@@ -3032,6 +2948,7 @@ async function loadTriples(url, schema = {}, fn = (x) => [x]) {
 }
 
 // ts/strings.ts
+var CAMEL_CASE_CACHE = /* @__PURE__ */ new Map();
 var Strings = class _Strings {
   static capitalise(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -3043,7 +2960,12 @@ var Strings = class _Strings {
     return str + "s";
   }
   static camelCase(str) {
-    return str.replace(/[-_ ]+([a-zA-Z0-9])/g, (_, char) => char.toUpperCase());
+    if (CAMEL_CASE_CACHE.has(str)) {
+      return CAMEL_CASE_CACHE.get(str);
+    }
+    const result = str.replace(/[-_ ]+([a-z])/g, (_, char) => char.toUpperCase());
+    CAMEL_CASE_CACHE.set(str, result);
+    return result;
   }
   static binomial(binomial) {
     const pretty = binomial.replace(/-/g, " ");
@@ -3198,7 +3120,11 @@ function addInverseRelations(triple) {
   }
   return [triple];
 }
+var CURIE_CACHE = /* @__PURE__ */ new Map();
 function expandCurie(curies, value) {
+  if (CURIE_CACHE.has(value)) {
+    return CURIE_CACHE.get(value);
+  }
   if (typeof value !== "string" || !CURIE_REGEX.test(value)) {
     return value;
   }
@@ -3208,27 +3134,17 @@ function expandCurie(curies, value) {
   }
   const prefix = match[1];
   const id = match[2];
-  return curies[prefix] ? `${curies[prefix]}${id}` : value;
+  const result = curies[prefix] ? `${curies[prefix]}${id}` : value;
+  CURIE_CACHE.set(value, result);
+  return result;
 }
 function expandTripleCuries(triple) {
   const [src, rel, tgt] = triple;
-  const expandedSource = expandCurie(CURIES, src);
-  const expandedTarget = expandCurie(CURIES, tgt);
-  if (CURIE_REGEX.test(expandedSource)) {
-    throw new Error(
-      `Source still matches CURIE regex after expansion: "${src}" ${expandedSource}`
-    );
-  }
-  if (CURIE_REGEX.test(expandedTarget)) {
-    throw new Error(
-      `Target still matches CURIE regex after expansion: "${tgt}" ${expandedTarget}`
-    );
-  }
   return [
     [
-      expandedSource,
+      expandCurie(CURIES, src),
       rel,
-      expandedTarget
+      expandCurie(CURIES, tgt)
     ]
   ];
 }
@@ -3262,7 +3178,11 @@ function deriveTriples(triple) {
   ];
   let outputTriples = [triple];
   for (const fn of tripleProcessors) {
-    outputTriples = outputTriples.flatMap(fn);
+    let nextStep = [];
+    for (const triple2 of outputTriples) {
+      nextStep.push(...fn(triple2));
+    }
+    outputTriples = nextStep;
   }
   return outputTriples;
 }

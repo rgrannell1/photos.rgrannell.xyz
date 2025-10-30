@@ -2,6 +2,8 @@
 
 import { PLURALS } from "./constants.ts";
 
+const CAMEL_CASE_CACHE = new Map<string, string>();
+
 export class Strings {
   static capitalise(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -14,8 +16,16 @@ export class Strings {
     return str + "s";
   }
   static camelCase(str: string): string {
-    return str
-      .replace(/[-_ ]+([a-zA-Z0-9])/g, (_, char) => char.toUpperCase());
+    // Caching this since it took about 10ms at load time, so why not eliminate that?
+    if (CAMEL_CASE_CACHE.has(str)) {
+      return CAMEL_CASE_CACHE.get(str)!;
+    }
+
+    const result = str
+      .replace(/[-_ ]+([a-z])/g, (_, char) => char.toUpperCase());
+
+    CAMEL_CASE_CACHE.set(str, result);
+    return result;
   }
 
   static binomial(binomial: string) {
