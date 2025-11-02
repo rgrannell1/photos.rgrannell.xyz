@@ -3122,8 +3122,9 @@ function addInverseRelations(triple) {
 }
 var CURIE_CACHE = /* @__PURE__ */ new Map();
 function expandCurie(curies, value) {
-  if (CURIE_CACHE.has(value)) {
-    return CURIE_CACHE.get(value);
+  const cached = CURIE_CACHE.get(value);
+  if (cached) {
+    return cached;
   }
   if (typeof value !== "string" || !CURIE_REGEX.test(value)) {
     return value;

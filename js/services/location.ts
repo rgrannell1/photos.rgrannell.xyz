@@ -2,10 +2,10 @@
  * Define page routes
  */
 
-import { ThingsService } from "js/things/services.ts";
+import { ThingsService } from "../things/services.ts";
 import { Pages } from "../constants.js";
 import { PageUrl } from "../types.ts";
-import { Strings } from "js/strings.ts";
+import { Strings } from "../strings.ts";
 
 export class PageLocation {
   static ROUTES: Record<keyof typeof Pages, CallableFunction> = {

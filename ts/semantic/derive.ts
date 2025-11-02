@@ -228,8 +228,9 @@ const CURIE_CACHE = new Map<string, string>();
  * Expand curies
  */
 export function expandCurie(curies: Record<string, string>, value: string) {
-  if (CURIE_CACHE.has(value)) {
-    return CURIE_CACHE.get(value)!;
+  const cached = CURIE_CACHE.get(value);
+  if (cached) {
+    return cached;
   }
 
   if (typeof value !== "string" || !CURIE_REGEX.test(value)) {
@@ -312,7 +313,7 @@ export function deriveTriples(
     let nextStep: Triple[] = [];
 
     for (const triple of outputTriples) {
-      nextStep.push(...fn(triple));
+      nextStep.push(...(fn(triple) as Triple[]));
     }
 
     outputTriples = nextStep;

@@ -18,7 +18,7 @@ import "../components/thing-link.ts";
 import { Things, Triples } from "../../things/things.ts";
 import { ExifRelations, KnownThings } from "../../constants.js";
 import { parseUrn } from "@rgrannell1/tribbledb";
-import { Photo } from "js/types.ts";
+import { Photo } from "../../types.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 
 function Heading(text: string) {

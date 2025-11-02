@@ -13,7 +13,7 @@ import { JSONFeed } from "../../services/json-feed.ts";
 import { LitElem } from "../../models/lit-element.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { property } from "lit/decorators.js";
-import { ThingsService } from "js/things/services.ts";
+import { ThingsService } from "../../things/services.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 
 export class PhotosPage extends LitElem {

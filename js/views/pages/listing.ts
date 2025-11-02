@@ -18,7 +18,7 @@ import { LitElem } from "../../models/lit-element.ts";
 import { Photos } from "../../services/photos.ts";
 import { property } from "lit/decorators.js";
 import { Strings } from "../../strings.ts";
-import { ThingsService } from "js/things/services.ts";
+import { ThingsService } from "../../things/services.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 
 class ListingPageService {

@@ -13,10 +13,10 @@ import { LitElem } from "../../models/lit-element.ts";
 import { BinomialTypes, KnownRelations, KnownThings } from "../../constants.js";
 import { Binomials, Things } from "../../things/things.ts";
 import { Photos } from "../../services/photos.ts";
-import { URN } from "js/types.ts";
+import { URN } from "../../types.ts";
 import { property } from "lit/decorators.js";
-import { GoogleMapsService, ThingsService } from "js/things/services.ts";
-import { Strings } from "js/strings.ts";
+import { GoogleMapsService, ThingsService } from "../../things/services.ts";
+import { Strings } from "../../strings.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 
 export class ThingPage extends LitElem {
