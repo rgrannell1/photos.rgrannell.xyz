@@ -9,7 +9,6 @@ import type { Photo as PhotoType } from "../types.ts";
 
 /*
  * Broadcast an event when a photo loads, and swap out the placeholder
- *
  */
 function loadImage(url: string, event: Event) {
   broadcast("photo_loaded", { url });

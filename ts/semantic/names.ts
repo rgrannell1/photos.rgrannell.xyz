@@ -3,7 +3,6 @@ import { KnownRelations } from "../constants";
 
 const NAME_TO_URN_CACHE: Map<string, string> = new Map();
 
-
 /*
  * Fetch a single URN given a name
  *
@@ -28,7 +27,6 @@ export function nameToUrn(tdb: TribbleDB, name: string): string | undefined {
 
   return urn;
 }
-
 
 /*
  * Convert names to tribble URNs

@@ -34,7 +34,7 @@ export function Video() {
         m("a", { href: videoUrl480p }, "[XS]"),
       ]);
 
-      return m("div", {key: `video-${video.id}`}, [
+      return m("div", { key: `video-${video.id}` }, [
         m("video.thumbnail-video", {
           controls: true,
           preload,

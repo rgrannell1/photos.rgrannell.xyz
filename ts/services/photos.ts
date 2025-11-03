@@ -106,6 +106,28 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
   };
 }
 
+export function readPhotosByThingIds(
+  tdb: TribbleDB,
+  thingIds: Set<string>,
+): Photo[] {
+  const photoIds = new Set<string>();
+
+  for (const thingId of thingIds) {
+    const { type, id } = asUrn(thingId);
+
+    const results = tdb.search({
+      //relation: KnownRelations.SUBJECT,
+      target: { type, id },
+    }).sources();
+
+    for (const result of results) {
+      photoIds.add(result);
+    }
+  }
+
+  return readParsedPhotos(tdb, photoIds);
+}
+
 export const readPhoto = (
   tdb: TribbleDB,
   id: string,

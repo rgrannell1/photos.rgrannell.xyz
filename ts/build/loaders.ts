@@ -1,7 +1,10 @@
 import type { TribbleDB } from "@rgrannell1/tribbledb";
 import * as path from "jsr:@std/path";
 
-async function findFile(prefix: string, dpath: string): Promise<string | undefined> {
+async function findFile(
+  prefix: string,
+  dpath: string,
+): Promise<string | undefined> {
   for await (const dirEntry of Deno.readDir(dpath)) {
     if (dirEntry.name.startsWith(`${prefix}.`)) {
       return path.join(dpath, dirEntry.name);
@@ -12,14 +15,20 @@ async function findFile(prefix: string, dpath: string): Promise<string | undefin
 export const [
   envFile,
   statsFile,
-  triplesFile
+  triplesFile,
 ] = await Promise.all([
   findFile("env", "./manifest"),
   findFile("stats", "./manifest"),
   findFile("triples", "./manifest"),
 ]);
 
-export const [envText, triplesText, statsText, htmlTemplateText, swTemplateText] = await Promise.all([
+export const [
+  envText,
+  triplesText,
+  statsText,
+  htmlTemplateText,
+  swTemplateText,
+] = await Promise.all([
   Deno.readTextFile(envFile!),
   Deno.readTextFile(triplesFile!),
   Deno.readTextFile(statsFile!),
@@ -34,5 +43,4 @@ export function findPrefetchTargets(tdb: TribbleDB) {
 }
 
 export function findHomepageThumbnails(tdb: TribbleDB) {
-
 }

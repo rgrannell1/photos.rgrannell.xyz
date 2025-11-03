@@ -212,7 +212,7 @@ export function ThingApp(): m.Component<AppAttrs> {
               m(ThingPage, {
                 urn: state.currentUrn,
                 things,
-                services: state.services
+                services: state.services,
               }),
             ]),
           ],

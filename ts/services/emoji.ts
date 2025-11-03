@@ -1,6 +1,11 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import { one } from "../arrays.ts";
-import { CAMERA_MODELS, KnownTypes, PHONE_MODELS, PLACE_FEATURES_TO_EMOJI } from "../constants.ts";
+import {
+  CAMERA_MODELS,
+  KnownTypes,
+  PHONE_MODELS,
+  PLACE_FEATURES_TO_EMOJI,
+} from "../constants.ts";
 
 /*
  * Pick an emoji based on the place feature
@@ -22,7 +27,6 @@ export function placeEmoji(thing: any): string {
 
 /*
  * Load an emoji relating to a place (e.g church emoji for religious sites)
- *
  */
 export function placeFeatureEmoji(featureUrn: string): string {
   const { id: featureId } = asUrn(featureUrn);

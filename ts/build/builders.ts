@@ -1,4 +1,3 @@
-
 import * as esbuild from "https://deno.land/x/esbuild/mod.js";
 import { render } from "https://deno.land/x/mustache_ts/mustache.ts";
 import { env, envText, htmlTemplateText, statsText } from "./loaders.ts";

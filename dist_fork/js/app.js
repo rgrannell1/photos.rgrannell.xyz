@@ -7349,6 +7349,20 @@ function readThingsByPhotoIds(tdb2, photoIds) {
     locations: readParsedLocations(tdb2, locations)
   };
 }
+function readPhotosByThingIds(tdb2, thingIds) {
+  const photoIds = /* @__PURE__ */ new Set();
+  for (const thingId of thingIds) {
+    const { type, id } = asUrn(thingId);
+    const results = tdb2.search({
+      //relation: KnownRelations.SUBJECT,
+      target: { type, id }
+    }).sources();
+    for (const result of results) {
+      photoIds.add(result);
+    }
+  }
+  return readParsedPhotos(tdb2, photoIds);
+}
 var readPhoto = (tdb2, id) => {
   return readParsedThing(parsePhoto, tdb2, id);
 };
@@ -7425,7 +7439,7 @@ var readParsedAlbums = (tdb2, urns) => {
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    "/manifest/tribbles.431b0bcbee.txt",
+    "/manifest/tribbles.4d983238bb.txt",
     schema,
     deriveTriples
   );
@@ -7446,7 +7460,8 @@ function loadServices(data) {
     readVideo: readVideo.bind(null, data),
     toThingLinks: toThingLinks.bind(null, data),
     readParsedLocations: readParsedLocations.bind(null, data),
-    readThings: readThings.bind(null, data)
+    readThings: readThings.bind(null, data),
+    readPhotosByThingIds: readPhotosByThingIds.bind(null, data)
   };
 }
 async function loadState() {
@@ -8671,7 +8686,11 @@ function ThingSubtitle() {
   return {
     view(vnode) {
       const parsed = asUrn(vnode.attrs.urn);
-      return BinomialTypes.has(parsed.type) && parsed.id !== "*" ? (0, import_mithril27.default)("span", { class: `thing-binomial ${parsed.type}-binomial` }, Strings.binomial(parsed.id)) : (0, import_mithril27.default)("span");
+      return BinomialTypes.has(parsed.type) && parsed.id !== "*" ? (0, import_mithril27.default)(
+        "span",
+        { class: `thing-binomial ${parsed.type}-binomial` },
+        Strings.binomial(parsed.id)
+      ) : (0, import_mithril27.default)("span");
     }
   };
 }
@@ -8703,11 +8722,15 @@ function ThingUrls() {
       const $links = [];
       const wikipedia = one(thing.wikipedia);
       if (wikipedia) {
-        $links.push((0, import_mithril29.default)("li", (0, import_mithril29.default)(ExternalLink, { href: wikipedia, text: "[wikipedia]" })));
+        $links.push(
+          (0, import_mithril29.default)("li", (0, import_mithril29.default)(ExternalLink, { href: wikipedia, text: "[wikipedia]" }))
+        );
       }
       const birdwatch = one(thing.birdwatchUrl);
       if (birdwatch) {
-        $links.push((0, import_mithril29.default)("li", (0, import_mithril29.default)(ExternalLink, { href: birdwatch, text: "[birdwatch]" })));
+        $links.push(
+          (0, import_mithril29.default)("li", (0, import_mithril29.default)(ExternalLink, { href: birdwatch, text: "[birdwatch]" }))
+        );
       }
       return (0, import_mithril29.default)("ul", $links);
     }
@@ -8725,9 +8748,12 @@ function ThingMetadata() {
       const places = new Set(things.flatMap((thing2) => arrayify(thing2.in)));
       if (places.size > 0) {
         const locations = services.readParsedLocations(places);
-        metadata["Located In"] = (0, import_mithril29.default)("ul", locations.map((location2) => {
-          return (0, import_mithril29.default)(LocationLink, { location: location2, mode: "name" });
-        }));
+        metadata["Located In"] = (0, import_mithril29.default)(
+          "ul",
+          locations.map((location2) => {
+            return (0, import_mithril29.default)(LocationLink, { location: location2, mode: "name" });
+          })
+        );
       }
       if (things.length !== 1) {
         return;
@@ -8735,10 +8761,17 @@ function ThingMetadata() {
       const [thing] = things;
       const features = services.readThings(new Set(arrayify(thing.feature)));
       if (features.length > 0) {
-        metadata["Place Features"] = (0, import_mithril29.default)("ul", features.map((feature) => {
-          const urn2 = one(feature.id);
-          return (0, import_mithril29.default)("li", { key: `feature-${urn2}` }, (0, import_mithril29.default)(ThingLink, { urn: urn2, thing: feature }));
-        }));
+        metadata["Place Features"] = (0, import_mithril29.default)(
+          "ul",
+          features.map((feature) => {
+            const urn2 = one(feature.id);
+            return (0, import_mithril29.default)(
+              "li",
+              { key: `feature-${urn2}` },
+              (0, import_mithril29.default)(ThingLink, { urn: urn2, thing: feature })
+            );
+          })
+        );
       }
     },
     view(vnode) {
@@ -8755,6 +8788,27 @@ function ThingMetadata() {
     }
   };
 }
+function PhotoSection() {
+  return {
+    view(vnode) {
+      const { urn, things, services } = vnode.attrs;
+      const urns = Object.values(things).map((thing) => thing.id);
+      const photos = services.readPhotosByThingIds(new Set(urns));
+      return (0, import_mithril29.default)(
+        "section.photo-container",
+        photos.map((photo, idx) => {
+          const loading = Photos.loadingMode(idx);
+          return (0, import_mithril29.default)(Photo3, {
+            key: `photo-${photo.id}`,
+            photo,
+            loading,
+            interactive: true
+          });
+        })
+      );
+    }
+  };
+}
 function ThingPage() {
   return {
     view(vnode) {
@@ -8765,7 +8819,8 @@ function ThingPage() {
           (0, import_mithril29.default)(ThingSubtitle, { urn }),
           (0, import_mithril29.default)("br"),
           (0, import_mithril29.default)(ThingUrls, { urn, things, services }),
-          (0, import_mithril29.default)(ThingMetadata, { urn, things, services })
+          (0, import_mithril29.default)(ThingMetadata, { urn, things, services }),
+          (0, import_mithril29.default)(PhotoSection, { urn, things, services })
         ])
       ]);
     }

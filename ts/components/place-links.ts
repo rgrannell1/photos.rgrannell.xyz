@@ -14,7 +14,6 @@ export type CountryLinkAttrs = {
 
 /*
  * Construct a link to a country. Reuse existing emoji lookup logic
- *
  */
 export function CountryLink() {
   return {
@@ -46,16 +45,15 @@ export function CountryLink() {
 
 /*
  * Create a link to a place. Reuse existing emoji lookup logic
- *
  */
 export function PlaceLink() {
   return {
-    view(vnode: m.Vnode<{ location: Place, mode: "flag" | "name" }>) {
+    view(vnode: m.Vnode<{ location: Place; mode: "flag" | "name" }>) {
       const { location, mode } = vnode.attrs;
 
-      let text = '';
-      if (mode === 'flag') {
-        text = placeEmoji(location)
+      let text = "";
+      if (mode === "flag") {
+        text = placeEmoji(location);
       }
 
       text = `${placeEmoji(location)} ${one(location.name) || "Unknown Place"}`;
@@ -64,24 +62,23 @@ export function PlaceLink() {
         href: urnToUrl(location.id),
         onclick: navigate(`/thing/place:${location.id}`),
       }, text);
-    }
-  }
+    },
+  };
 }
 
 /*
  * Create a link to a country / place
- *
  */
 export function LocationLink() {
   return {
-    view(vnode: m.Vnode<{ location: Country | Place, mode: "flag" | "name" }>) {
+    view(vnode: m.Vnode<{ location: Country | Place; mode: "flag" | "name" }>) {
       const { location, mode } = vnode.attrs;
 
       if (isACountry(location)) {
         return m(CountryLink, { country: location, mode });
       }
 
-      return m(PlaceLink, { location, mode })
+      return m(PlaceLink, { location, mode });
     },
   };
 }

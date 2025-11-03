@@ -1,9 +1,8 @@
-import { buildCSS, buildTS, buildHTML } from "./builders.ts";
-
+import { buildCSS, buildHTML, buildTS } from "./builders.ts";
 
 console.log("Building");
 await Promise.all([
   buildTS(),
   buildCSS(),
-  buildHTML()
+  buildHTML(),
 ]);

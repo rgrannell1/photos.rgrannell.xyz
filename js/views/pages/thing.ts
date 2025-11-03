@@ -122,7 +122,6 @@ export class ThingPage extends LitElem {
         });
       })
       .map((album) => {
-        console.log(album);
         const metadata = html`
         <photo-album-metadata
             .triples=${this.triples}

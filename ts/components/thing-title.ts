@@ -51,12 +51,16 @@ export function ThingTitle() {
 
 export function ThingSubtitle() {
   return {
-    view(vnode: m.Vnode<{urn: string}>) {
+    view(vnode: m.Vnode<{ urn: string }>) {
       const parsed = asUrn(vnode.attrs.urn);
 
-      return BinomialTypes.has(parsed.type) && parsed.id !== '*'
-        ? m('span', { class: `thing-binomial ${parsed.type}-binomial` }, Strings.binomial(parsed.id))
-        : m('span')
-    }
-  }
+      return BinomialTypes.has(parsed.type) && parsed.id !== "*"
+        ? m(
+          "span",
+          { class: `thing-binomial ${parsed.type}-binomial` },
+          Strings.binomial(parsed.id),
+        )
+        : m("span");
+    },
+  };
 }
