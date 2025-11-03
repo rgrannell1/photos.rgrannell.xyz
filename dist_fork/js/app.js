@@ -1625,7 +1625,7 @@ var import_mithril2 = __toESM(require_mithril());
 // ts/components/thing-link.ts
 var import_mithril = __toESM(require_mithril());
 
-// node_modules/@rgrannell1/tribbledb/dist/mod.js
+// node_modules/.deno/@rgrannell1+tribbledb@0.0.12/node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class {
   #idx;
   #map;
@@ -7425,7 +7425,7 @@ var readParsedAlbums = (tdb2, urns) => {
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    "/manifest/tribbles.df1acbb716.txt",
+    "/manifest/tribbles.431b0bcbee.txt",
     schema,
     deriveTriples
   );

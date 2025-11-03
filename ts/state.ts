@@ -22,7 +22,7 @@ import { readVideo } from "./services/videos.ts";
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    "/manifest/tribbles.df1acbb716.txt",
+    "/manifest/tribbles.431b0bcbee.txt",
     schema,
     deriveTriples,
   );
