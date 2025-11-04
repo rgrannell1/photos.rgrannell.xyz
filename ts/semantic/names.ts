@@ -1,5 +1,5 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
-import { KnownRelations } from "../constants";
+import { KnownRelations } from "../constants.ts";
 
 const NAME_TO_URN_CACHE: Map<string, string> = new Map();
 

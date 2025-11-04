@@ -1,5 +1,5 @@
 import { TripleObject } from "@rgrannell1/tribbledb";
-import { logParseWarning } from "../logger";
+import { logParseWarning } from "../logger.ts";
 
 export function parseObject<T>(
   schema: Zod.ZodSchema,

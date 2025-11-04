@@ -1,8 +1,8 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type { Video } from "../types";
-import { VideoSchema } from "./schemas";
-import { parseObject } from "./parser";
+import type { Video } from "../types.ts";
+import { VideoSchema } from "./schemas.ts";
+import { parseObject } from "./parser.ts";
 
 /* */
 export function parseVideo(

@@ -1,11 +1,11 @@
 import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
-import { KnownTypes } from "../constants";
-import { Country, Place } from "../types";
-import { readThing } from "../services/things";
-import { arrayify } from "../arrays";
-import { CountrySchema, PlaceSchema } from "./schemas";
-import { parseObject } from "./parser";
-import { logParseWarning } from "../logger";
+import { KnownTypes } from "../constants.ts";
+import { Country, Place } from "../types.ts";
+import { readThing } from "../services/things.ts";
+import { arrayify } from "../arrays.ts";
+import { CountrySchema, PlaceSchema } from "./schemas.ts";
+import { parseObject } from "./parser.ts";
+import { logParseWarning } from "../logger.ts";
 
 /* */
 export function parsePlace(

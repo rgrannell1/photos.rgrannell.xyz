@@ -1,8 +1,8 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type { Photo } from "../types";
-import { PhotoSchema } from "./schemas";
-import { parseObject } from "./parser";
+import type { Photo } from "../types.ts";
+import { PhotoSchema } from "./schemas.ts";
+import { parseObject } from "./parser.ts";
 
 /*
  * Parse photo from a triple object
