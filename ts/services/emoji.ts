@@ -47,7 +47,7 @@ export function placeFeatureEmoji(featureUrn: string): string {
  */
 export function countryEmoji(thing: any): string {
   const flag = one(thing.flag);
-  return flag ?? "🏳️";
+  return flag //?? "🏳️";
 }
 
 /*

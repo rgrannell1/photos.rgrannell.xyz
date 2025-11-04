@@ -65,7 +65,9 @@ function ThingUrls() {
 
       // -- add google maps URL
 
-      return m("ul", $links);
+      return m("ul.link-list", {
+
+      }, $links);
     },
   };
 }
@@ -139,6 +141,8 @@ function ThingMetadata() {
           m("td", value),
         ]);
       });
+
+      // TODO seen in, first photographed
 
       return m("div", [
         m("h3", "Details"),

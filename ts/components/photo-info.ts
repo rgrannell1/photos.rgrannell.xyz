@@ -108,11 +108,16 @@ export function PhotoInfo() {
     view(vnode: m.Vnode<PhotoInfoAttrs>) {
       const { photo, services } = vnode.attrs;
 
-      const infoItems = [
-        m("tr", [
+      const infoItems = []
+
+      if (photo.description || photo.summary) {
+        infoItems.push(m("tr", [
           m(Heading, { text: "Description" }),
           m(Description, { photo, services }),
-        ]),
+        ]));
+      }
+
+      infoItems.push(
         m("tr", [
           m(Heading, { text: "Country" }),
           m(Country, { photo, services }),
@@ -132,8 +137,8 @@ export function PhotoInfo() {
         m("tr", [
           m(Heading, { text: "Subject" }),
           m(Subject, { photo, services }),
-        ]),
-      ];
+        ]));
+
 
       return m("table.metadata-table", infoItems);
     },

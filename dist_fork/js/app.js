@@ -2730,7 +2730,7 @@ function placeFeatureEmoji(featureUrn) {
 }
 function countryEmoji(thing) {
   const flag = one(thing.flag);
-  return flag ?? "\u{1F3F3}\uFE0F";
+  return flag;
 }
 function birdEmoji() {
   return "\u{1F424}";
@@ -7942,7 +7942,7 @@ function CountryLink() {
       const parsed = asUrn(id);
       const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
       if (mode === "flag") {
-        return (0, import_mithril12.default)("a.country-link", { href: urnToUrl(id), onclick }, flag);
+        return (0, import_mithril12.default)("a.country-link-short", { href: urnToUrl(id), onclick }, flag);
       }
       return (0, import_mithril12.default)(
         "a.country-link",
@@ -8573,11 +8573,14 @@ function PhotoInfo() {
   return {
     view(vnode) {
       const { photo, services } = vnode.attrs;
-      const infoItems = [
-        (0, import_mithril24.default)("tr", [
+      const infoItems = [];
+      if (photo.description || photo.summary) {
+        infoItems.push((0, import_mithril24.default)("tr", [
           (0, import_mithril24.default)(Heading2, { text: "Description" }),
           (0, import_mithril24.default)(Description, { photo, services })
-        ]),
+        ]));
+      }
+      infoItems.push(
         (0, import_mithril24.default)("tr", [
           (0, import_mithril24.default)(Heading2, { text: "Country" }),
           (0, import_mithril24.default)(Country3, { photo, services })
@@ -8598,7 +8601,7 @@ function PhotoInfo() {
           (0, import_mithril24.default)(Heading2, { text: "Subject" }),
           (0, import_mithril24.default)(Subject2, { photo, services })
         ])
-      ];
+      );
       return (0, import_mithril24.default)("table.metadata-table", infoItems);
     }
   };
@@ -8778,7 +8781,7 @@ function ThingUrls() {
           (0, import_mithril29.default)("li", (0, import_mithril29.default)(ExternalLink, { href: birdwatch, text: "[birdwatch]" }))
         );
       }
-      return (0, import_mithril29.default)("ul", $links);
+      return (0, import_mithril29.default)("ul.link-list", {}, $links);
     }
   };
 }

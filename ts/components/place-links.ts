@@ -31,7 +31,7 @@ export function CountryLink() {
       const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
 
       if (mode === "flag") {
-        return m("a.country-link", { href: urnToUrl(id), onclick }, flag);
+        return m("a.country-link-short", { href: urnToUrl(id), onclick }, flag);
       }
 
       return m(
