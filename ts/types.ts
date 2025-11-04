@@ -20,6 +20,7 @@ export type Services = {
   readAmphibian: (id: string) => Amphibian | undefined;
   readInsect: (id: string) => Insect | undefined;
   readVideo: (id: string) => Video | undefined;
+  readLocation: (id: string) => Place | Country | undefined;
   toThingLinks: (urns: (string | undefined)[]) => m.Vnode<ThingLinkAttrs, {}>[];
   readParsedLocations: (urns: Set<string>) => (Place | Country)[];
   readThings: (urns: Set<string>) => TripleObject[];

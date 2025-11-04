@@ -7182,6 +7182,13 @@ var readPlace = (tdb2, id) => {
     id
   );
 };
+var readLocation = (tdb2, id) => {
+  return readParsedThing(
+    parseLocation,
+    tdb2,
+    id
+  );
+};
 var readParsedCountries = (tdb2, urns) => {
   return readParsedThings(
     parseCountry,
@@ -7492,6 +7499,7 @@ function loadServices(data) {
     readAmphibian: readAmphibian.bind(null, data),
     readInsect: readInsect.bind(null, data),
     readVideo: readVideo.bind(null, data),
+    readLocation: readLocation.bind(null, data),
     toThingLinks: toThingLinks.bind(null, data),
     readParsedLocations: readParsedLocations.bind(null, data),
     readThings: readThings.bind(null, data),
@@ -8778,8 +8786,6 @@ function ThingMetadata() {
   const metadata = {};
   return {
     oninit(vnode) {
-    },
-    view(vnode) {
       const { urn, things, services } = vnode.attrs;
       const parsed = asUrn(urn);
       metadata.Classification = (0, import_mithril29.default)("a", {
@@ -8807,12 +8813,26 @@ function ThingMetadata() {
             const urn2 = one(feature.id);
             return (0, import_mithril29.default)(
               "li",
-              // TODO { key: `feature-${urn}` },
+              { key: `feature-${urn2}` },
               (0, import_mithril29.default)(ThingLink, { urn: urn2, thing: feature })
             );
           })
         );
       }
+      if (thing.contains) {
+        metadata["Contains"] = (0, import_mithril29.default)(
+          "ul",
+          arrayify(thing.contains).map((urn2) => {
+            return (0, import_mithril29.default)(
+              "li",
+              { key: `contains-${urn2}` },
+              (0, import_mithril29.default)(ThingLink, { urn: urn2, thing: services.readLocation(urn2) })
+            );
+          })
+        );
+      }
+    },
+    view(vnode) {
       const $rows = Object.entries(metadata).map(([key, value]) => {
         return (0, import_mithril29.default)("tr", [
           (0, import_mithril29.default)("th.exif-heading", key),
@@ -8899,7 +8919,6 @@ function ThingPage() {
   return {
     view(vnode) {
       const { urn, things, services } = vnode.attrs;
-      console.log("Rendering thing page for", things);
       return (0, import_mithril29.default)("div", [
         (0, import_mithril29.default)("section.thing-page", [
           (0, import_mithril29.default)(ThingTitle, { urn, things }),

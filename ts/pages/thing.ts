@@ -75,8 +75,6 @@ function ThingMetadata() {
 
   return {
     oninit(vnode: m.Vnode<ThingPageAttrs>) {
-    },
-    view(vnode: m.Vnode<ThingPageAttrs>) {
       const { urn, things, services } = vnode.attrs;
       const parsed = asUrn(urn);
 
@@ -114,13 +112,27 @@ function ThingMetadata() {
             const urn = one(feature.id)!;
             return m(
               "li",
-              // TODO { key: `feature-${urn}` },
+              { key: `feature-${urn}` },
               m(ThingLink, { urn, thing: feature }),
             );
           }),
         );
       }
 
+      // add contained places (e.g for countries)
+      if (thing.contains) {
+        metadata['Contains'] = m('ul',
+          arrayify(thing.contains).map(urn => {
+            return m(
+              "li",
+              { key: `contains-${urn}` },
+              m(ThingLink, { urn, thing: services.readLocation(urn) })
+            )
+          })
+        )
+      }
+    },
+    view(vnode: m.Vnode<ThingPageAttrs>) {
       const $rows = Object.entries(metadata).map(([key, value]) => {
         return m("tr", [
           m("th.exif-heading", key),
@@ -224,7 +236,7 @@ export function ThingPage() {
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const { urn, things, services } = vnode.attrs;
-console.log("Rendering thing page for", things);
+
       return m("div", [
         m("section.thing-page", [
           m(ThingTitle, { urn, things }),
