@@ -14,7 +14,7 @@
     <link rel="preconnect" href="{{{ cdnUrl }}}">
 
     <!-- Preloads -->
-    <link rel="preload" href="/dist_fork/js/app.js" as="script">
+    <link rel="preload" href="/dist_fork/js/app.{{ buildId }}.js" as="script">
     {{#prefetched}}
     <link rel="preload" fetchpriority="high" href="{{{.}}}" as="image">
     {{/prefetched}}

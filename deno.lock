@@ -6,6 +6,7 @@
       "jsr:@std/path": "jsr:@std/path@0.218.2",
       "npm:@rgrannell1/tribbledb@^0.0.12": "npm:@rgrannell1/tribbledb@0.0.12",
       "npm:@types/mithril@^2.2.7": "npm:@types/mithril@2.2.7",
+      "npm:csso": "npm:csso@5.0.5",
       "npm:esbuild": "npm:esbuild@0.25.9",
       "npm:esbuild@^0.25.9": "npm:esbuild@0.25.9",
       "npm:express@^5.1.0": "npm:express@5.1.0",
@@ -1730,6 +1731,19 @@
           "which": "which@2.0.2"
         }
       },
+      "css-tree@2.2.1": {
+        "integrity": "sha512-OA0mILzGc1kCOCSJerOeqDxDQ4HOh+G8NbOJFOTgOCzpw7fCBubk0fEyxp8AgOL/jvLgYA/uV0cMbe43ElF1JA==",
+        "dependencies": {
+          "mdn-data": "mdn-data@2.0.28",
+          "source-map-js": "source-map-js@1.2.1"
+        }
+      },
+      "csso@5.0.5": {
+        "integrity": "sha512-0LrrStPOdJj+SPCCrGhzryycLjwcgUSHBtxNA8aIDxf0GLsRh1cKYhB00Gd1lDOS4yGH69+SNn13+TWbVHETFQ==",
+        "dependencies": {
+          "css-tree": "css-tree@2.2.1"
+        }
+      },
       "debug@4.4.3": {
         "integrity": "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==",
         "dependencies": {
@@ -2384,6 +2398,10 @@
         "integrity": "sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==",
         "dependencies": {}
       },
+      "mdn-data@2.0.28": {
+        "integrity": "sha512-aylIc7Z9y4yzHYAJNuESG3hfhC+0Ibp/MAMiaOZgNv4pmEdFyfZhhhny4MNiAfWdBQ1RQ2mfDWmM1x8SvGyp8g==",
+        "dependencies": {}
+      },
       "media-typer@1.1.0": {
         "integrity": "sha512-aisnrDP4GNe06UcKFnV5bfMNPBUw4jsLGaWwWfnH3v02GnBuXX2MCVn5RbrWo0j3pczUilYblq7fQ7Nw2t5XKw==",
         "dependencies": {}
@@ -3027,6 +3045,10 @@
           "ip-address": "ip-address@10.0.1",
           "smart-buffer": "smart-buffer@4.2.0"
         }
+      },
+      "source-map-js@1.2.1": {
+        "integrity": "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==",
+        "dependencies": {}
       },
       "spdx-correct@3.2.0": {
         "integrity": "sha512-kN9dJbvnySHULIluDHy32WHRUu3Og7B9sbY7tsFLctQkIqnMh3hErYgdMjTYuqmcXX+lK5T1lnUt3G7zNswmZA==",

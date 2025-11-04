@@ -14,14 +14,15 @@ import { AboutPage } from "./pages/about.ts";
 import { VideosPage } from "./pages/videos.ts";
 import { readVideos } from "./services/videos.ts";
 import { listen } from "./events.ts";
-import { asUrn, TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn } from "@rgrannell1/tribbledb";
+import type { TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
 import { readPhoto, readPhotos } from "./services/photos.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { readNamedTypeThings, readThing } from "./services/things.ts";
-import { Album } from "./types.ts";
+import type { Album } from "./types.ts";
 import { ThingPage } from "./pages/thing.ts";
 
 const state = await loadState();

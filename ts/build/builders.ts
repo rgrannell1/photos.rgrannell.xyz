@@ -1,6 +1,7 @@
 import * as esbuild from "https://deno.land/x/esbuild/mod.js";
 import { render } from "https://deno.land/x/mustache_ts/mustache.ts";
 import { env, envText, findHomepageThumbnails, findPrefetchTargets, htmlTemplateText, statsText } from "./loaders.ts";
+import { minify as cssoMinify } from "npm:csso";
 
 async function buildSW() {
   console.info('🌐 Rendering service-worker');
@@ -18,6 +19,7 @@ export async function buildTS() {
     bundle: true,
     outfile: `dist_fork/js/app.${env.build_id}.js`,
     format: "esm",
+    treeShaking: true,
     sourcemap: true,
   });
   console.log(res);
@@ -29,17 +31,10 @@ export async function buildTS() {
 export async function buildCSS() {
   console.info('🌐 Rendering css');
 
-  const res = await esbuild.build({
-    entryPoints: ["css2/style.css"],
-    bundle: true,
-    loader: {
-      ".ttf": "file",
-      ".woff2": "file",
-    },
-    outfile: `dist_fork/css/style.${env.build_id}.css`,
-  });
-  console.log(res);
+  const result = await esbuild.transform(await Deno.readTextFile(`dist_fork/css/style.${env.build_id}.css`), { loader: "css" });
+  const minified = cssoMinify(result.code).css;
 
+  await Deno.writeTextFile(`dist_fork/css/style.${env.build_id}.css`, minified);
 }
 
 /*
