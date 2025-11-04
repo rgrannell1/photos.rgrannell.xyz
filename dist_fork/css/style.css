@@ -372,6 +372,9 @@ button:disabled {
     font-weight: bold;
   }
 }
+.exif-heading {
+  vertical-align: top;
+}
 .thing-link {
   display: block;
 }

@@ -467,6 +467,8 @@ button:disabled {
   margin-left: 20px;
 }
 
+
+
 /* EXIF information about an image */
 .metadata-table {
   margin: 10px 0;
@@ -483,6 +485,10 @@ button:disabled {
     caption-side: top;
     font-weight: bold;
   }
+}
+
+.exif-heading {
+  vertical-align: top;
 }
 
 /*
