@@ -1,4 +1,5 @@
-import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
+import { TripleObject } from "@rgrannell1/tribbledb";
+import { logParseWarning } from "../logger";
 
 export function parseObject<T>(
   schema: Zod.ZodSchema,
@@ -7,7 +8,7 @@ export function parseObject<T>(
 ): T | undefined {
   const result = schema.safeParse(object);
   if (!result.success) {
-    console.error(result.error.issues);
+    logParseWarning(result.error.issues);
     return;
   }
 

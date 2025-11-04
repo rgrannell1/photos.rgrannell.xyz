@@ -87,6 +87,45 @@ export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
   return readThingsByPhotoIds(tdb, readAlbumPhotoIds(tdb, id));
 }
 
+export function readAlbumsByThingIds(
+  tdb: TribbleDB,
+  thingsUrns: Set<string>,
+) {
+  const photoIds = new Set<string>();
+
+  // first, collect photo-ids associated with the things
+  for (const thingUrn of thingsUrns) {
+    const { type, id } = asUrn(thingUrn);
+
+    const results = tdb.search({
+      //relation: KnownRelations.SUBJECT,
+      target: { type, id },
+    }).sources();
+
+    for (const result of results) {
+      photoIds.add(result);
+    }
+  }
+
+  const albumIds = new Set<string>();
+
+  // next, collect album-ids associated with the photos
+  for (const photoId of photoIds) {
+    const pid = asUrn(photoId);
+
+    const results = tdb.search({
+      source: { type: pid.type, id: pid.id },
+      relation: KnownRelations.ALBUM_ID,
+    }).targets();
+
+    for (const result of results) {
+      albumIds.add(result);
+    }
+  }
+
+  return readParsedAlbums(tdb, albumIds);
+}
+
 export const readAlbum = (
   tdb: TribbleDB,
   id: string,

@@ -69,7 +69,9 @@ function drawAlbum(state: { year: number }, album: Album, idx: number) {
   });
 
   $albumComponents.push(
-    m("div", { key: `album-${album.id}` }, [
+    m("div", {
+      key: `album-${album.id}`
+    }, [
       $album,
       $md,
     ]),

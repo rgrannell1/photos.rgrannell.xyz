@@ -23,7 +23,8 @@ export type Services = {
   toThingLinks: (urns: (string | undefined)[]) => m.Vnode<ThingLinkAttrs, {}>[];
   readParsedLocations: (urns: Set<string>) => (Place | Country)[];
   readThings: (urns: Set<string>) => TripleObject[];
-  readPhotosByThingIds: (tdb: TribbleDB, thingIds: Set<string>) => Photo[];
+  readPhotosByThingIds: (thingIds: Set<string>) => Photo[];
+  readAlbumsByThingIds: (thingIds: Set<string>) => Album[];
 };
 
 export type State = {

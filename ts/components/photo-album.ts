@@ -33,6 +33,7 @@ export function PhotoAlbum() {
           loading,
           onclick,
         }),
+        // TODO this is broken
         child,
       ]);
     },

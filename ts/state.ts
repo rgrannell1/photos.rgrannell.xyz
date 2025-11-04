@@ -4,7 +4,7 @@ import { loadTriples } from "./semantic/data.ts";
 import { deriveTriples, HARD_CODED_TRIPLES } from "./semantic/derive.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 
-import { readAlbum } from "./services/albums.ts";
+import { readAlbum, readAlbumsByThingIds } from "./services/albums.ts";
 import {
   readAmphibian,
   readInsect,
@@ -55,6 +55,7 @@ function loadServices(data: TribbleDB) {
     readParsedLocations: readParsedLocations.bind(null, data),
     readThings: readThings.bind(null, data),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, data),
+    readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data),
   };
 }
 

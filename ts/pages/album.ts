@@ -12,7 +12,8 @@ import type {
   Thing,
   Video as VideoType,
 } from "../types.ts";
-import { Photo, PhotoAttrs } from "../components/photo.ts";
+import { Photo } from "../components/photo.ts";
+import type { PhotoAttrs } from "../components/photo.ts";
 import { Photos } from "../services/photos.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
 import { AlbumThings } from "../components/album-things.ts";

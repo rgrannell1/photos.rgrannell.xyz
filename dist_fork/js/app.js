@@ -3226,6 +3226,76 @@ function namesToUrns(tdb2, names) {
   return urns;
 }
 
+// ts/services/things.ts
+var import_mithril5 = __toESM(require_mithril());
+function readThing(tdb2, urn) {
+  const parsed = asUrn(urn);
+  return tdb2.search({
+    source: { id: parsed.id, type: parsed.type }
+  }).firstObject();
+}
+function readParsedThing(parser, tdb2, id) {
+  const thing = readThing(tdb2, id);
+  if (!thing) {
+    return void 0;
+  }
+  return parser(tdb2, thing);
+}
+function readThings(tdb2, urns) {
+  const things = [];
+  for (const urn of urns) {
+    const thing = readThing(tdb2, urn);
+    if (thing) {
+      things.push(thing);
+    }
+  }
+  return things;
+}
+var readParsedThings = function(parser, tdb2, urns) {
+  const parsedThings = [];
+  for (const urn of urns) {
+    const thing = readThing(tdb2, urn);
+    if (!thing) {
+      continue;
+    }
+    const parsed = parser(tdb2, thing);
+    if (parsed) {
+      parsedThings.push(parsed);
+    }
+  }
+  return parsedThings;
+};
+function readNamedTypeThings(tdb2, type) {
+  const things = tdb2.search({
+    source: { type }
+  }).objects();
+  return things.filter((thing) => {
+    return Object.prototype.hasOwnProperty.call(thing, "name");
+  }).sort((thinga, thingb) => {
+    const firstName = thinga.name;
+    const secondName = thingb.name;
+    const first = one(firstName);
+    const second = one(secondName);
+    return first.localeCompare(second);
+  });
+}
+function toThingLinks(tdb2, urns) {
+  return urns.flatMap((urn) => {
+    if (!urn) {
+      return [];
+    }
+    const thing = readThing(tdb2, urn);
+    console.log(thing);
+    if (!thing || !thing.name) {
+      return [];
+    }
+    return [(0, import_mithril5.default)(ThingLink, {
+      urn,
+      thing: readThing(tdb2, urn)
+    })];
+  });
+}
+
 // ../node_modules/zod/lib/index.mjs
 var util;
 (function(util2) {
@@ -6943,76 +7013,6 @@ var z = /* @__PURE__ */ Object.freeze({
   ZodError
 });
 
-// ts/services/things.ts
-var import_mithril5 = __toESM(require_mithril());
-function readThing(tdb2, urn) {
-  const parsed = asUrn(urn);
-  return tdb2.search({
-    source: { id: parsed.id, type: parsed.type }
-  }).firstObject();
-}
-function readParsedThing(parser, tdb2, id) {
-  const thing = readThing(tdb2, id);
-  if (!thing) {
-    return void 0;
-  }
-  return parser(tdb2, thing);
-}
-function readThings(tdb2, urns) {
-  const things = [];
-  for (const urn of urns) {
-    const thing = readThing(tdb2, urn);
-    if (thing) {
-      things.push(thing);
-    }
-  }
-  return things;
-}
-var readParsedThings = function(parser, tdb2, urns) {
-  const parsedThings = [];
-  for (const urn of urns) {
-    const thing = readThing(tdb2, urn);
-    if (!thing) {
-      continue;
-    }
-    const parsed = parser(tdb2, thing);
-    if (parsed) {
-      parsedThings.push(parsed);
-    }
-  }
-  return parsedThings;
-};
-function readNamedTypeThings(tdb2, type) {
-  const things = tdb2.search({
-    source: { type }
-  }).objects();
-  return things.filter((thing) => {
-    return Object.prototype.hasOwnProperty.call(thing, "name");
-  }).sort((thinga, thingb) => {
-    const firstName = thinga.name;
-    const secondName = thingb.name;
-    const first = one(firstName);
-    const second = one(secondName);
-    return first.localeCompare(second);
-  });
-}
-function toThingLinks(tdb2, urns) {
-  return urns.flatMap((urn) => {
-    if (!urn) {
-      return [];
-    }
-    const thing = readThing(tdb2, urn);
-    console.log(thing);
-    if (!thing || !thing.name) {
-      return [];
-    }
-    return [(0, import_mithril5.default)(ThingLink, {
-      urn,
-      thing: readThing(tdb2, urn)
-    })];
-  });
-}
-
 // ts/parsers/schemas.ts
 var AlbumSchema = z.object({
   name: z.string(),
@@ -7107,11 +7107,20 @@ var VideoSchema = z.object({
   videoUrlUnscaled: z.string().url()
 });
 
+// ts/logger.ts
+function logParseWarning(issues) {
+  const message = [];
+  for (const issue of issues) {
+    message.push(`Parse warning [${issue.path.join(".")}]: ${issue.message}`);
+  }
+  console.warn(message.join("\n"));
+}
+
 // ts/parsers/parser.ts
 function parseObject(schema, type, object) {
   const result = schema.safeParse(object);
   if (!result.success) {
-    console.error(result.error.issues);
+    logParseWarning(result.error.issues);
     return;
   }
   return { ...result.data, type };
@@ -7121,7 +7130,7 @@ function parseObject(schema, type, object) {
 function parsePlace(tdb2, place) {
   const result = PlaceSchema.safeParse(place);
   if (!result.success) {
-    console.error(result.error.issues);
+    logParseWarning(result.error.issues);
     return;
   }
   const refs = arrayify(result.data.in);
@@ -7213,7 +7222,7 @@ function parseAlbum(tdb2, album) {
 }
 
 // ts/parsers/photo.ts
-function parsePhoto(tdb2, photo) {
+function parsePhoto(_, photo) {
   return parseObject(PhotoSchema, "photo", photo);
 }
 
@@ -7248,7 +7257,7 @@ function parseSubject(_, subject) {
   }
   const result = SubjectSchema.safeParse(subject);
   if (!result.success) {
-    console.error(result.error.issues);
+    logParseWarning(result.error.issues);
     return;
   }
   return result.data;
@@ -7349,10 +7358,10 @@ function readThingsByPhotoIds(tdb2, photoIds) {
     locations: readParsedLocations(tdb2, locations)
   };
 }
-function readPhotosByThingIds(tdb2, thingIds) {
+function readPhotosByThingIds(tdb2, thingsUrns) {
   const photoIds = /* @__PURE__ */ new Set();
-  for (const thingId of thingIds) {
-    const { type, id } = asUrn(thingId);
+  for (const thingUrn of thingsUrns) {
+    const { type, id } = asUrn(thingUrn);
     const results = tdb2.search({
       //relation: KnownRelations.SUBJECT,
       target: { type, id }
@@ -7371,7 +7380,7 @@ var readParsedPhotos = (tdb2, urns) => {
 };
 
 // ts/parsers/video.ts
-function parseVideo(tdb2, video) {
+function parseVideo(_, video) {
   return parseObject(VideoSchema, "video", video);
 }
 
@@ -7424,6 +7433,31 @@ function readAlbumVideosByAlbumId(tdb2, id) {
 function readThingsByAlbumId(tdb2, id) {
   return readThingsByPhotoIds(tdb2, readAlbumPhotoIds(tdb2, id));
 }
+function readAlbumsByThingIds(tdb2, thingsUrns) {
+  const photoIds = /* @__PURE__ */ new Set();
+  for (const thingUrn of thingsUrns) {
+    const { type, id } = asUrn(thingUrn);
+    const results = tdb2.search({
+      //relation: KnownRelations.SUBJECT,
+      target: { type, id }
+    }).sources();
+    for (const result of results) {
+      photoIds.add(result);
+    }
+  }
+  const albumIds = /* @__PURE__ */ new Set();
+  for (const photoId of photoIds) {
+    const pid = asUrn(photoId);
+    const results = tdb2.search({
+      source: { type: pid.type, id: pid.id },
+      relation: KnownRelations.ALBUM_ID
+    }).targets();
+    for (const result of results) {
+      albumIds.add(result);
+    }
+  }
+  return readParsedAlbums(tdb2, albumIds);
+}
 var readAlbum = (tdb2, id) => {
   return readParsedThing(
     parseAlbum,
@@ -7461,7 +7495,8 @@ function loadServices(data) {
     toThingLinks: toThingLinks.bind(null, data),
     readParsedLocations: readParsedLocations.bind(null, data),
     readThings: readThings.bind(null, data),
-    readPhotosByThingIds: readPhotosByThingIds.bind(null, data)
+    readPhotosByThingIds: readPhotosByThingIds.bind(null, data),
+    readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data)
   };
 }
 async function loadState() {
@@ -7814,7 +7849,7 @@ function ImagePair() {
 function formatId(id) {
   return id.startsWith("urn:") ? parseUrn(id).id : id;
 }
-function Photo3() {
+function Photo2() {
   return {
     view(vnode) {
       const { photo, loading, interactive } = vnode.attrs;
@@ -7870,6 +7905,7 @@ function PhotoAlbum() {
           loading,
           onclick
         }),
+        // TODO this is broken
         child
       ]);
     }
@@ -7979,7 +8015,9 @@ function drawAlbum(state2, album, idx) {
     onclick: onAlbumClick.bind(null, album.id, album.name)
   });
   $albumComponents.push(
-    (0, import_mithril13.default)("div", { key: `album-${album.id}` }, [
+    (0, import_mithril13.default)("div", {
+      key: `album-${album.id}`
+    }, [
       $album,
       $md
     ])
@@ -8082,7 +8120,7 @@ var import_mithril16 = __toESM(require_mithril());
 
 // ts/components/video.ts
 var import_mithril15 = __toESM(require_mithril());
-function Video3() {
+function Video2() {
   return {
     view(vnode) {
       const {
@@ -8125,7 +8163,7 @@ function VideosPage() {
       const videos = vnode.attrs.videos;
       const videoLengthText = videos.length === 1 ? "1 video" : `${videos.length} videos`;
       const $videosList = videos.map((video) => {
-        return (0, import_mithril16.default)(Video3, { video, preload: "auto" });
+        return (0, import_mithril16.default)(Video2, { video, preload: "auto" });
       });
       return (0, import_mithril16.default)(
         "div",
@@ -8256,7 +8294,7 @@ function AlbumPage() {
       ]);
       const $photosList = photos.map((photo, idx) => {
         return (0, import_mithril20.default)(
-          Photo3,
+          Photo2,
           {
             photo,
             loading: Photos.loadingMode(idx),
@@ -8265,7 +8303,7 @@ function AlbumPage() {
         );
       });
       const $videosList = videos.map((video) => {
-        return (0, import_mithril20.default)(Video3, { ...video, preload: "auto" });
+        return (0, import_mithril20.default)(Video2, { ...video, preload: "auto" });
       });
       return (0, import_mithril20.default)(
         "div",
@@ -8287,7 +8325,7 @@ function PhotosList() {
         "section.photo-container",
         photos.map((photo, idx) => {
           const loading = Photos.loadingMode(idx);
-          return (0, import_mithril21.default)(Photo3, {
+          return (0, import_mithril21.default)(Photo2, {
             key: `photo-${photo.id}`,
             photo,
             loading,
@@ -8505,7 +8543,7 @@ function Style() {
     }
   };
 }
-function Subject3() {
+function Subject2() {
   return {
     view(vnode) {
       const { photo, services } = vnode.attrs;
@@ -8550,7 +8588,7 @@ function PhotoInfo() {
         ]),
         (0, import_mithril24.default)("tr", [
           (0, import_mithril24.default)(Heading2, { text: "Subject" }),
-          (0, import_mithril24.default)(Subject3, { photo, services })
+          (0, import_mithril24.default)(Subject2, { photo, services })
         ])
       ];
       return (0, import_mithril24.default)("table.metadata-table", infoItems);
@@ -8575,7 +8613,7 @@ function PhotoPage() {
       const $photoInfo = (0, import_mithril25.default)(PhotoInfo, { photo, services });
       return (0, import_mithril25.default)("section", [
         (0, import_mithril25.default)("h1", "Photo"),
-        (0, import_mithril25.default)(Photo3, {
+        (0, import_mithril25.default)(Photo2, {
           photo,
           loading: "eager",
           interactive: false
@@ -8740,6 +8778,8 @@ function ThingMetadata() {
   const metadata = {};
   return {
     oninit(vnode) {
+    },
+    view(vnode) {
       const { urn, things, services } = vnode.attrs;
       const parsed = asUrn(urn);
       metadata.Classification = (0, import_mithril29.default)("a", {
@@ -8767,14 +8807,12 @@ function ThingMetadata() {
             const urn2 = one(feature.id);
             return (0, import_mithril29.default)(
               "li",
-              { key: `feature-${urn2}` },
+              // TODO { key: `feature-${urn}` },
               (0, import_mithril29.default)(ThingLink, { urn: urn2, thing: feature })
             );
           })
         );
       }
-    },
-    view(vnode) {
       const $rows = Object.entries(metadata).map(([key, value]) => {
         return (0, import_mithril29.default)("tr", [
           (0, import_mithril29.default)("th.exif-heading", key),
@@ -8788,17 +8826,65 @@ function ThingMetadata() {
     }
   };
 }
+function onAlbumClick2(id, title, event) {
+  const parsed = asUrn(id);
+  broadcast("navigate", { route: `/album/${parsed.id}`, title });
+  block(event);
+}
+function AlbumSection() {
+  return {
+    view(vnode) {
+      const { things, services } = vnode.attrs;
+      const urns = Object.values(things).flatMap((thing) => arrayify(thing.id));
+      const albums = services.readAlbumsByThingIds(new Set(urns));
+      const $albums = albums.map((album) => {
+        const $countryLinks = album.countries.map((country) => {
+          return (0, import_mithril29.default)(CountryLink, {
+            country,
+            key: `album-country-${album.id}-${country.id}`,
+            mode: "flag"
+          });
+        });
+        const $md = (0, import_mithril29.default)(PhotoAlbumMetadata, {
+          title: album.name,
+          minDate: album.minDate,
+          maxDate: album.maxDate,
+          count: album.photosCount,
+          countryLinks: $countryLinks
+        });
+        const $album = (0, import_mithril29.default)(PhotoAlbum, {
+          imageUrl: album.thumbnailUrl,
+          thumbnailUrl: album.thumbnailUrl,
+          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
+          loading: "lazy",
+          minDate: album.minDate,
+          onclick: onAlbumClick2.bind(null, album.id, album.name)
+        });
+        return (0, import_mithril29.default)(
+          "div",
+          { key: `album-${album.id}` },
+          $album,
+          $md
+        );
+      });
+      return (0, import_mithril29.default)(
+        "section.album-container",
+        $albums
+      );
+    }
+  };
+}
 function PhotoSection() {
   return {
     view(vnode) {
-      const { urn, things, services } = vnode.attrs;
+      const { things, services } = vnode.attrs;
       const urns = Object.values(things).map((thing) => thing.id);
       const photos = services.readPhotosByThingIds(new Set(urns));
       return (0, import_mithril29.default)(
         "section.photo-container",
         photos.map((photo, idx) => {
           const loading = Photos.loadingMode(idx);
-          return (0, import_mithril29.default)(Photo3, {
+          return (0, import_mithril29.default)(Photo2, {
             key: `photo-${photo.id}`,
             photo,
             loading,
@@ -8813,6 +8899,7 @@ function ThingPage() {
   return {
     view(vnode) {
       const { urn, things, services } = vnode.attrs;
+      console.log("Rendering thing page for", things);
       return (0, import_mithril29.default)("div", [
         (0, import_mithril29.default)("section.thing-page", [
           (0, import_mithril29.default)(ThingTitle, { urn, things }),
@@ -8820,7 +8907,10 @@ function ThingPage() {
           (0, import_mithril29.default)("br"),
           (0, import_mithril29.default)(ThingUrls, { urn, things, services }),
           (0, import_mithril29.default)(ThingMetadata, { urn, things, services }),
-          (0, import_mithril29.default)(PhotoSection, { urn, things, services })
+          (0, import_mithril29.default)("h3", "Photos"),
+          (0, import_mithril29.default)(PhotoSection, { urn, things, services }),
+          (0, import_mithril29.default)("h3", "Albums"),
+          (0, import_mithril29.default)(AlbumSection, { urn, things, services })
         ])
       ]);
     }

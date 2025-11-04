@@ -108,12 +108,12 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
 
 export function readPhotosByThingIds(
   tdb: TribbleDB,
-  thingIds: Set<string>,
+  thingsUrns: Set<string>,
 ): Photo[] {
   const photoIds = new Set<string>();
 
-  for (const thingId of thingIds) {
-    const { type, id } = asUrn(thingId);
+  for (const thingUrn of thingsUrns) {
+    const { type, id } = asUrn(thingUrn);
 
     const results = tdb.search({
       //relation: KnownRelations.SUBJECT,

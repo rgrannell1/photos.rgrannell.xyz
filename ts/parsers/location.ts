@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { KnownTypes } from "../constants";
 import { Country, Place } from "../types";
@@ -6,6 +5,7 @@ import { readThing } from "../services/things";
 import { arrayify } from "../arrays";
 import { CountrySchema, PlaceSchema } from "./schemas";
 import { parseObject } from "./parser";
+import { logParseWarning } from "../logger";
 
 /* */
 export function parsePlace(
@@ -14,7 +14,7 @@ export function parsePlace(
 ): Place | undefined {
   const result = PlaceSchema.safeParse(place);
   if (!result.success) {
-    console.error(result.error.issues);
+    logParseWarning(result.error.issues);
     return;
   }
 

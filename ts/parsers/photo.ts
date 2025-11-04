@@ -1,6 +1,6 @@
-import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
-import { z } from "zod";
-import { Photo } from "../types";
+import { TribbleDB } from "@rgrannell1/tribbledb";
+import type { TripleObject } from "@rgrannell1/tribbledb";
+import type { Photo } from "../types";
 import { PhotoSchema } from "./schemas";
 import { parseObject } from "./parser";
 
@@ -12,7 +12,7 @@ import { parseObject } from "./parser";
  * @returns The parsed Photo or undefined if parsing fails
  */
 export function parsePhoto(
-  tdb: TribbleDB,
+  _: TribbleDB,
   photo: TripleObject,
 ): Photo | undefined {
   return parseObject(PhotoSchema, "photo", photo);
