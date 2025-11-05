@@ -30,7 +30,6 @@ export async function buildTS() {
     treeShaking: true,
     sourcemap: true,
   });
-  console.log(res);
 }
 
 /*

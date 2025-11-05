@@ -3285,7 +3285,6 @@ function toThingLinks(tdb2, urns) {
       return [];
     }
     const thing = readThing(tdb2, urn);
-    console.log(thing);
     if (!thing || !thing.name) {
       return [];
     }
@@ -3870,7 +3869,7 @@ function logParseWarning(issues) {
 function parseObject(schema, type, object2) {
   const result = safeParse(schema, object2);
   if (!result.success) {
-    logParseWarning(result.error.issues);
+    logParseWarning(result.issues);
     return;
   }
   return { ...result.output, type };
@@ -3880,7 +3879,7 @@ function parseObject(schema, type, object2) {
 function parsePlace(tdb2, place) {
   const result = safeParse(PlaceSchema, place);
   if (!result.success) {
-    logParseWarning(result.error.issues);
+    logParseWarning(result.issues);
     return;
   }
   const refs = arrayify(result.output.in);
@@ -3959,7 +3958,7 @@ function parseAlbum(tdb2, album) {
   const result = safeParse(AlbumSchema, album);
   if (!result.success) {
     throw new Error(
-      `Invalid album object: ${JSON.stringify(result.error.issues)}`
+      `Invalid album object: ${JSON.stringify(result.issues)}`
     );
   }
   const data = result.output;
@@ -4015,7 +4014,7 @@ function parseSubject(_, subject) {
   }
   const result = safeParse(SubjectSchema, subject);
   if (!result.success) {
-    logParseWarning(result.error.issues);
+    logParseWarning(result.issues);
     return;
   }
   return result.output;
@@ -4788,7 +4787,6 @@ function AlbumsList() {
   let initted = false;
   return {
     oninit(vnode) {
-      console.log("hello");
       if (initted) {
         return;
       }

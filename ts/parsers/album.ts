@@ -20,8 +20,9 @@ const NAME_TO_URN_CACHE: Map<string, string> = new Map();
 export function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
   const result = safeParse(AlbumSchema, album);
   if (!result.success) {
+    // todo: better error handling
     throw new Error(
-      `Invalid album object: ${JSON.stringify(result.error.issues)}`,
+      `Invalid album object: ${JSON.stringify(result.issues)}`,
     );
   }
 

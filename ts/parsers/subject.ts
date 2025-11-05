@@ -80,7 +80,7 @@ export function parseSubject(
   // for other subjects
   const result = safeParse(SubjectSchema, subject);
   if (!result.success) {
-    logParseWarning(result.error.issues);
+    logParseWarning(result.issues);
     return;
   }
 

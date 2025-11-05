@@ -11,7 +11,7 @@ export function parseObject<T>(
 ): T | undefined {
   const result = safeParse(schema, object);
   if (!result.success) {
-    logParseWarning(result.error.issues);
+    logParseWarning(result.issues);
     return;
   }
 

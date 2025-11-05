@@ -117,8 +117,6 @@ export function toThingLinks(
       return [];
     }
     const thing = readThing(tdb, urn);
-    console.log(thing);
-
     if (!thing || !thing.name) {
       return [];
     }

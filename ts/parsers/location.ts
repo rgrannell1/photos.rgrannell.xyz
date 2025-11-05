@@ -16,7 +16,7 @@ export function parsePlace(
 ): Place | undefined {
   const result = safeParse(PlaceSchema, place);
   if (!result.success) {
-    logParseWarning(result.error.issues);
+    logParseWarning(result.issues);
     return;
   }
 
