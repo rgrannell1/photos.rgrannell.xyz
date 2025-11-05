@@ -1,24 +1,26 @@
-import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
+import type { TripleObject } from "@rgrannell1/tribbledb";
 import { KnownTypes } from "../constants.ts";
-import { Country, Place } from "../types.ts";
+import type { Country, Place } from "../types.ts";
 import { readThing } from "../services/things.ts";
 import { arrayify } from "../arrays.ts";
 import { CountrySchema, PlaceSchema } from "./schemas.ts";
 import { parseObject } from "./parser.ts";
 import { logParseWarning } from "../logger.ts";
+import { safeParse } from "valibot";
 
 /* */
 export function parsePlace(
   tdb: TribbleDB,
   place: TripleObject,
 ): Place | undefined {
-  const result = PlaceSchema.safeParse(place);
+  const result = safeParse(PlaceSchema, place);
   if (!result.success) {
     logParseWarning(result.error.issues);
     return;
   }
 
-  const refs = arrayify(result.data.in);
+  const refs = arrayify(result.output.in);
 
   const lookedUpRefs = refs.flatMap((ref) => {
     const obj = readThing(tdb, ref);
@@ -35,7 +37,7 @@ export function parsePlace(
   });
 
   return {
-    ...result.data,
+    ...result.output,
     type: "place",
     in: lookedUpRefs,
   };

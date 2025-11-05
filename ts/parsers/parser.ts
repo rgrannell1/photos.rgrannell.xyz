@@ -1,16 +1,19 @@
-import { TripleObject } from "@rgrannell1/tribbledb";
+
+import type { TripleObject } from "@rgrannell1/tribbledb";
 import { logParseWarning } from "../logger.ts";
 
+import { safeParse } from 'valibot'
+
 export function parseObject<T>(
-  schema: Zod.ZodSchema,
+  schema: any, // TODO
   type: string,
   object: TripleObject,
 ): T | undefined {
-  const result = schema.safeParse(object);
+  const result = safeParse(schema, object);
   if (!result.success) {
     logParseWarning(result.error.issues);
     return;
   }
 
-  return { ...result.data, type } satisfies T;
+  return { ...result.output, type } satisfies T;
 }

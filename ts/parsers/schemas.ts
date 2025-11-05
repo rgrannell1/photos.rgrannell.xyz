@@ -3,107 +3,120 @@
  * with actual type-safety
  */
 
-import { z } from "zod";
+import {
+  string, array, object, optional, union, any, pipe, url
+} from "valibot";
 
-export const AlbumSchema = z.object({
-  name: z.string(),
-  minDate: z.string(),
-  maxDate: z.string(),
-  thumbnailUrl: z.string(),
-  mosaic: z.any(),
-  id: z.string(),
-  photosCount: z.string(),
-  videosCount: z.string(),
-  flags: z.any(),
-  description: z.string().optional(),
+const v = {
+  string,
+  array,
+  object,
+  optional,
+  union,
+  any,
+  pipe,
+  url
+}
+
+export const AlbumSchema = v.object({
+  name: v.string(),
+  minDate: v.string(),
+  maxDate: v.string(),
+  thumbnailUrl: v.string(),
+  mosaic: v.any(),
+  id: v.string(),
+  photosCount: v.string(),
+  videosCount: v.string(),
+  flags: v.any(),
+  description: v.optional(v.string()),
 });
 
-export const CountrySchema = z.object({
-  id: z.string(),
-  flag: z.string().optional(),
-  name: z.string(),
-  contains: z.union([z.string(), z.array(z.string())]).optional(),
+export const CountrySchema = v.object({
+  id: v.string(),
+  flag: v.optional(v.string()),
+  name: v.string(),
+  contains: v.optional(v.union([v.string(), v.array(v.string())])),
 });
 
-export const PlaceSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  feature: z.union([z.string(), z.array(z.string())]).optional(),
-  in: z.union([z.string(), z.array(z.string())]).optional(),
-  shortName: z.string().optional(),
-  wikipedia: z.string().optional(),
-  unescoId: z.string().optional(),
+export const PlaceSchema = v.object({
+  id: v.string(),
+  name: v.string(),
+  feature: v.optional(v.union([v.string(), v.array(v.string())])),
+  in: v.optional(v.union([v.string(), v.array(v.string())])),
+  shortName: v.optional(v.string()),
+  wikipedia: v.optional(v.string()),
+  unescoId: v.optional(v.string()),
 });
 
-export const PhotoSchema = z.object({
-  albumId: z.string(),
-  country: z.union([z.string(), z.array(z.string())]).optional(),
-  createdAt: z.string(),
-  subject: z.union([z.string(), z.array(z.string())]).optional(),
-  exposureTime: z.string().optional(),
-  fStop: z.string().optional(),
-  focalLength: z.string().optional(),
-  fullImage: z.string(),
-  height: z.string().optional(),
-  id: z.string(),
-  iso: z.string().optional(),
-  location: z.union([z.string(), z.array(z.string())]).optional(),
-  midImageLossyUrl: z.string(),
-  model: z.string().optional(),
-  mosaicColours: z.string(),
-  pngUrl: z.string(),
-  rating: z.string().optional(),
-  style: z.string().optional(),
-  thumbnailUrl: z.string(),
-  width: z.string().optional(),
-  description: z.string().optional(),
-  summary: z.string().optional(),
+export const PhotoSchema = v.object({
+  albumId: v.string(),
+  country: v.optional(v.union([v.string(), v.array(v.string())])),
+  createdAt: v.string(),
+  subject: v.optional(v.union([v.string(), v.array(v.string())])),
+  exposureTime: v.optional(v.string()),
+  fStop: v.optional(v.string()),
+  focalLength: v.optional(v.string()),
+  fullImage: v.string(),
+  height: v.optional(v.string()),
+  id: v.string(),
+  iso: v.optional(v.string()),
+  location: v.optional(v.union([v.string(), v.array(v.string())])),
+  midImageLossyUrl: v.string(),
+  model: v.optional(v.string()),
+  mosaicColours: v.string(),
+  pngUrl: v.string(),
+  rating: v.optional(v.string()),
+  style: v.optional(v.string()),
+  thumbnailUrl: v.string(),
+  width: v.optional(v.string()),
+  description: v.optional(v.string()),
+  summary: v.optional(v.string()),
 });
 
-export const MammalSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  wikipedia: z.string().optional(),
+export const MammalSchema = v.object({
+  id: v.string(),
+  name: v.string(),
+  wikipedia: v.optional(v.string()),
 });
 
-export const ReptileSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  wikipedia: z.string().optional(),
+export const ReptileSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+  wikipedia: v.optional(v.string()),
 });
 
-export const AmphibianSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  wikipedia: z.string().optional(),
+export const AmphibianSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+  wikipedia: v.optional(v.string()),
 });
 
-export const InsectSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  wikipedia: z.string().optional(),
+export const InsectSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+  wikipedia: v.optional(v.string()),
 });
 
-export const SubjectSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  wikipedia: z.string().optional(),
+export const SubjectSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+  wikipedia: v.optional(v.string()),
 });
 
-export const BirdSchema = z.object({
-  id: z.string(),
-  name: z.string().optional(),
-  wikipedia: z.string().optional(),
-  birdwatchUrl: z.union([z.string(), z.array(z.string())]).optional(),
+export const BirdSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+  wikipedia: v.optional(v.string()),
+  birdwatchUrl: v.optional(v.union([v.string(), v.array(v.string())])),
 });
 
-export const VideoSchema = z.object({
-  id: z.string(),
-  albumId: z.string(),
-  description: z.string(),
-  posterUrl: z.string().url(),
-  videoUrl1080p: z.string().url(),
-  videoUrl480p: z.string().url(),
-  videoUrl720p: z.string().url(),
-  videoUrlUnscaled: z.string().url(),
+export const VideoSchema = v.object({
+  id: v.string(),
+  albumId: v.string(),
+  description: v.string(),
+  posterUrl: v.pipe(v.string(), v.url()),
+  videoUrl1080p: v.pipe(v.string(), v.url()),
+  videoUrl480p: v.pipe(v.string(), v.url()),
+  videoUrl720p: v.pipe(v.string(), v.url()),
+  videoUrlUnscaled: v.pipe(v.string(), v.url()),
 });

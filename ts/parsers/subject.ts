@@ -12,6 +12,7 @@ import {
 } from "./schemas.ts";
 import { parseObject } from "./parser.ts";
 import { logParseWarning } from "../logger.ts";
+import { safeParse } from "valibot";
 
 /*
  * Parse a bird subject
@@ -77,11 +78,11 @@ export function parseSubject(
   }
 
   // for other subjects
-  const result = SubjectSchema.safeParse(subject);
+  const result = safeParse(SubjectSchema, subject);
   if (!result.success) {
     logParseWarning(result.error.issues);
     return;
   }
 
-  return result.data satisfies Subject;
+  return result.output satisfies Subject;
 }

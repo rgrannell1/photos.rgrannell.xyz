@@ -1,7 +1,7 @@
 
-import { z } from "zod";
+// TODO dd typing
 
-export function logParseWarning(issues: z.ZodIssue[]): void {
+export function logParseWarning(issues: any): void {
   const message: string[] = [];
 
   for (const issue of issues) {

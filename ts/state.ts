@@ -27,7 +27,7 @@ import { readVideo } from "./services/videos.ts";
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    "/manifest/tribbles.4d983238bb.txt",
+    `/manifest/tribbles.${window.envConfig.publication_id}.txt`,
     schema,
     deriveTriples,
   );

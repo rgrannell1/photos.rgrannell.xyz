@@ -1,11 +1,19 @@
 import * as esbuild from "https://deno.land/x/esbuild/mod.js";
 import { render } from "https://deno.land/x/mustache_ts/mustache.ts";
-import { env, envText, findHomepageThumbnails, findPrefetchTargets, htmlTemplateText, statsText } from "./loaders.ts";
+import { env, envText, findHomepageThumbnails, findPrefetchTargets, htmlTemplateText, statsText, swTemplateText } from "./loaders.ts";
 import { minify as cssoMinify } from "npm:csso";
 
-async function buildSW() {
+export async function buildSW() {
   console.info('🌐 Rendering service-worker');
 
+  await Deno.writeTextFile(
+    `dist_fork/js/sw.${env.publication_id}.js`,
+    render(swTemplateText, {
+      prefetched: findPrefetchTargets(),
+      homepageThumbnails: JSON.stringify(findHomepageThumbnails()),
+      publicationId: env.publication_id,
+    }),
+  );
 }
 
 /*
@@ -17,7 +25,7 @@ export async function buildTS() {
   const res = await esbuild.build({
     entryPoints: ["ts/index.ts"],
     bundle: true,
-    outfile: `dist_fork/js/app.${env.build_id}.js`,
+    outfile: `dist_fork/js/app.${env.publication_id}.js`,
     format: "esm",
     treeShaking: true,
     sourcemap: true,
@@ -31,10 +39,10 @@ export async function buildTS() {
 export async function buildCSS() {
   console.info('🌐 Rendering css');
 
-  const result = await esbuild.transform(await Deno.readTextFile(`dist_fork/css/style.${env.build_id}.css`), { loader: "css" });
+  const result = await esbuild.transform(await Deno.readTextFile(`css2/style.css`), { loader: "css" });
   const minified = cssoMinify(result.code).css;
 
-  await Deno.writeTextFile(`dist_fork/css/style.${env.build_id}.css`, minified);
+  await Deno.writeTextFile(`dist_fork/css/style.${env.publication_id}.css`, minified);
 }
 
 /*
@@ -52,6 +60,7 @@ export async function buildHTML() {
       homepageThumbnails: JSON.stringify(findHomepageThumbnails()),
       cdnUrl: env.photos_url,
       buildId: env.build_id,
+      publicationId: env.publication_id,
     }),
   );
 }

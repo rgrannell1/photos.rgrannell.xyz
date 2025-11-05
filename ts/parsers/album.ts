@@ -1,10 +1,12 @@
 import { asInt } from "../numbers.ts";
 import { namesToUrns } from "../semantic/names.ts";
-import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
-import { Album } from "../types.ts";
+import { TribbleDB } from "@rgrannell1/tribbledb";
+import type { TripleObject } from "@rgrannell1/tribbledb";
+import type { Album } from "../types.ts";
 import { arrayify } from "../arrays.ts";
 import { readParsedCountries } from "../services/location.ts";
 import { AlbumSchema } from "./schemas.ts";
+import { safeParse } from "valibot";
 
 const NAME_TO_URN_CACHE: Map<string, string> = new Map();
 
@@ -16,26 +18,27 @@ const NAME_TO_URN_CACHE: Map<string, string> = new Map();
  * @returns The parsed album.
  */
 export function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
-  const result = AlbumSchema.safeParse(album);
+  const result = safeParse(AlbumSchema, album);
   if (!result.success) {
     throw new Error(
       `Invalid album object: ${JSON.stringify(result.error.issues)}`,
     );
   }
 
-  const countryNames = new Set(arrayify(result.data.flags));
+  const data = result.output;
+  const countryNames = new Set(arrayify(data.flags));
   const countries = readParsedCountries(tdb, namesToUrns(tdb, countryNames));
 
   return {
-    name: result.data.name,
-    minDate: asInt(result.data.minDate),
-    maxDate: asInt(result.data.maxDate),
-    thumbnailUrl: result.data.thumbnailUrl,
-    mosaicColours: result.data.mosaic,
-    id: result.data.id,
-    photosCount: asInt(result.data.photosCount),
-    videosCount: asInt(result.data.videosCount),
-    description: result.data.description ?? "",
+    name: data.name,
+    minDate: asInt(data.minDate),
+    maxDate: asInt(data.maxDate),
+    thumbnailUrl: data.thumbnailUrl,
+    mosaicColours: data.mosaic,
+    id: data.id,
+    photosCount: asInt(data.photosCount),
+    videosCount: asInt(data.videosCount),
+    description: data.description ?? "",
     countries,
   };
 }

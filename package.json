@@ -25,7 +25,8 @@
     "lit-element": "^4.2.1",
     "mithril": "^2.3.7",
     "mocha": "^11.7.1",
-    "tap": "^21.1.0"
+    "tap": "^21.1.0",
+    "valibot": "^1.1.0"
   },
   "devDependencies": {
     "@types/mithril": "^2.2.7",
