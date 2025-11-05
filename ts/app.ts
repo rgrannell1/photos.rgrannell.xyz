@@ -1,3 +1,9 @@
+/*
+ * Mithril's Router wants components, so for the moment each page has a
+ * wrapper app.
+ *
+ */
+
 import m from "mithril";
 import { Header } from "./components/header.ts";
 import { loadState } from "./state.ts";
@@ -184,6 +190,8 @@ export function ThingApp(): m.Component<AppAttrs> {
 
   return {
     oninit() {
+    },
+    view() {
       const pair = m.route.param("pair");
       state.currentUrn = `urn:ró:${pair}`;
 
@@ -196,8 +204,7 @@ export function ThingApp(): m.Component<AppAttrs> {
           things = [thing];
         }
       }
-    },
-    view() {
+
       if (!state.currentUrn) {
         return m("p", "No thing selected");
       }

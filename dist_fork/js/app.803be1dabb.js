@@ -5829,6 +5829,8 @@ function ThingApp() {
   let things = [];
   return {
     oninit() {
+    },
+    view() {
       const pair = import_mithril30.default.route.param("pair");
       state.currentUrn = `urn:r\xF3:${pair}`;
       const parsed = asUrn(state.currentUrn);
@@ -5840,8 +5842,6 @@ function ThingApp() {
           things = [thing];
         }
       }
-    },
-    view() {
       if (!state.currentUrn) {
         return (0, import_mithril30.default)("p", "No thing selected");
       }

@@ -56,7 +56,7 @@ export async function buildHTML() {
       stats: statsText,
       env: envText,
       prefetched: findPrefetchTargets(),
-      homepageThumbnails: JSON.stringify(findHomepageThumbnails()),
+      homepageThumbnails: JSON.stringify(findHomepageThumbnails().map(url => url.replace(/\.webp$/, ''))),
       cdnUrl: env.photos_url,
       buildId: env.build_id,
       publicationId: env.publication_id,

@@ -40,7 +40,7 @@
     <script>
       // reduce blocking requests by injecting this critical data
       window.envConfig = {{{ env }}}
-      window.homepageThumbnails = {{{ homepageThumbnails }}}
+      window.homepageThumbnails = {{{ homepageThumbnails }}}.map(url => `${url}.webp`)
     </script>
 
     <div id="stats-data" style="display: none;"></div>
