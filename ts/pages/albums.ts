@@ -93,7 +93,6 @@ function AlbumsList() {
 
   return {
     oninit(vnode: m.Vnode<AlbumsListAttrs>) {
-      console.log("hello");
       if (initted) {
         return;
       }

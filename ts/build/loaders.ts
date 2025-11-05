@@ -43,6 +43,9 @@ export const [
 ]);
 
 export async function loadTribbles() {
+  if (!tribblesFile) {
+    throw new Error("No tribbles file found");
+  }
   return loadTriples(tribblesFile, {}, deriveTriples);
 }
 
