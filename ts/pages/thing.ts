@@ -77,6 +77,8 @@ function ThingMetadata() {
 
   return {
     oninit(vnode: m.Vnode<ThingPageAttrs>) {
+    },
+    view(vnode: m.Vnode<ThingPageAttrs>) {
       const { urn, things, services } = vnode.attrs;
       const parsed = asUrn(urn);
 
@@ -133,8 +135,7 @@ function ThingMetadata() {
           })
         )
       }
-    },
-    view(vnode: m.Vnode<ThingPageAttrs>) {
+
       const $rows = Object.entries(metadata).map(([key, value]) => {
         return m("tr", [
           m("th.exif-heading", key),

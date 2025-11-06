@@ -5944,4 +5944,4 @@ import_mithril31.default.route(document.body, "/albums", {
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp
 });
-//# sourceMappingURL=app.803be1dabb.js.map
+//# sourceMappingURL=app.8143869d6b.js.map
