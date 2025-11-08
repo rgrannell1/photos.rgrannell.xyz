@@ -2,6 +2,7 @@ import m from "mithril";
 import { ThingLinkAttrs } from "./components/thing-link.ts";
 import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 
+
 export type ApplicationEvents =
   | "click_burger_menu"
   | "switch_theme"
@@ -28,6 +29,29 @@ export type Services = {
   readAlbumsByThingIds: (thingIds: Set<string>) => Album[];
 };
 
+export type AppWindow = typeof window & {
+  stats: Stats;
+}
+
+/*
+ * Stats injected into the HTML page to prevent an additional fetch
+ *
+ */
+export type Stats = {
+  photos: number;
+  albums: number;
+  years: number;
+  countries: number;
+  bird_species: number;
+  mammal_species: number;
+  amphibian_species: number;
+  reptile_species: number;
+  unesco_sites: number;
+}
+
+/*
+ * Application-wide state.
+ */
 export type State = {
   data: TribbleDB;
   darkMode: boolean;
@@ -38,6 +62,10 @@ export type State = {
   currentUrn: string | undefined;
   services: Services;
 };
+
+/*
+ * TribbleDB is untyped; it provides triples not objects. So we'll parse triples onto these data-structures.
+ */
 
 export type Album = {
   name: string;

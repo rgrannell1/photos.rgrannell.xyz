@@ -1,12 +1,13 @@
 import m from "mithril";
-import stats from "../stats.json" with { type: "json" };
+import type { AppWindow, Stats } from "../types";
 
 /*
  * We inject this in at runtime, so validate its structure
+ *
  */
-function validateState(stats: unknown) {
+function isStats(stats: unknown): stats is Stats {
   if (typeof stats !== "object" || stats === null) {
-    throw new Error("Stats is not an object");
+    console.warn("Stats is not an object");
   }
 
   const keys = [
@@ -23,23 +24,30 @@ function validateState(stats: unknown) {
 
   for (const key of keys) {
     if (!(key in stats)) {
-      throw new Error(`Stats is missing key: ${key}`);
+      console.warn(`Stats is missing key: ${key}`);
     }
 
     if (typeof (stats as Record<string, unknown>)[key] !== "number") {
-      throw new Error(`Stats key ${key} is not a number`);
+      console.warn(`Stats key ${key} is not a number`);
     }
   }
+
+  return true;
 }
 
 /*
  * Show statistics and links for the album pages
+ *
  */
 export function AlbumStats() {
-  validateState(stats);
+  const stats = (window as AppWindow).stats;
 
   return {
     view() {
+      if (!isStats(stats)) {
+        return m("p");
+      }
+
       return m("p.photo-stats", [
         `${stats.photos} `,
         m("a", { href: "#/photos" }, "photos"),

@@ -45,10 +45,7 @@
 
     <div id="stats-data" style="display: none;"></div>
     <script type="module">
-      // this mustashe injection should circumvent blocking on `stats` fetches
-      const $statsData = document.getElementById('stats-data');
-      $statsData.innerText = JSON.stringify({{{ stats }}})
-
+      window.stats = {{ stats }}
     </script>
     <script type="module" src="/dist_fork/js/app.{{ publicationId }}.js"></script>
 
