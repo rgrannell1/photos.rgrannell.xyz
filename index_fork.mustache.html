@@ -38,14 +38,12 @@
     <link rel="stylesheet" href="/dist_fork/css/style.{{ publicationId }}.css" as="style">
 
     <script>
-      // reduce blocking requests by injecting this critical data
+      // reduce blocking requests by injecting critical data into the page
+
       window.envConfig = {{{ env }}}
       window.homepageThumbnails = {{{ homepageThumbnails }}}.map(url => `${url}.webp`)
-    </script>
+      window.stats = {{{ stats }}}
 
-    <div id="stats-data" style="display: none;"></div>
-    <script type="module">
-      window.stats = {{ stats }}
     </script>
     <script type="module" src="/dist_fork/js/app.{{ publicationId }}.js"></script>
 
