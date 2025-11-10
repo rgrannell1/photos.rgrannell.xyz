@@ -3285,6 +3285,7 @@ function toThingLinks(tdb2, urns) {
       return [];
     }
     const thing = readThing(tdb2, urn);
+    debugger;
     if (!thing || !thing.name) {
       return [];
     }
