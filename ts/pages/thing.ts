@@ -144,7 +144,6 @@ function ThingMetadata() {
       });
 
       // TODO seen in, first photographed
-
       return m("div", [
         m("h3", "Details"),
         m("table.metadata-table", $rows),

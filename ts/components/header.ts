@@ -78,11 +78,11 @@ export function Header() {
     view(vnode: m.Vnode<HeaderAttrs>) {
       return m("nav.header", { role: "navigation" }, [
         m("ul", [
-          m("li", {}, m(BurgerMenu())),
-          m("li", {}, m(HeaderBrandText())),
-          m("li.rss-tag", { style: "float: right" }, m(RSSIcon())),
+          m("li.header-item", {}, m(BurgerMenu())),
+          m("li.header-item", {}, m(HeaderBrandText())),
+          m("li.rss-tag header-item", { style: "float: right" }, m(RSSIcon())),
           m(
-            "li",
+            "li.header-item",
             { style: "float: right" },
             m(ThemeSwitch(), {
               darkMode: vnode.attrs.darkMode,

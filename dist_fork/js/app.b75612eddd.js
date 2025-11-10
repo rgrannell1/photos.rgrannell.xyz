@@ -2867,11 +2867,11 @@ function Header() {
     view(vnode) {
       return (0, import_mithril3.default)("nav.header", { role: "navigation" }, [
         (0, import_mithril3.default)("ul", [
-          (0, import_mithril3.default)("li", {}, (0, import_mithril3.default)(BurgerMenu())),
-          (0, import_mithril3.default)("li", {}, (0, import_mithril3.default)(HeaderBrandText())),
-          (0, import_mithril3.default)("li.rss-tag", { style: "float: right" }, (0, import_mithril3.default)(RSSIcon())),
+          (0, import_mithril3.default)("li.header-item", {}, (0, import_mithril3.default)(BurgerMenu())),
+          (0, import_mithril3.default)("li.header-item", {}, (0, import_mithril3.default)(HeaderBrandText())),
+          (0, import_mithril3.default)("li.rss-tag header-item", { style: "float: right" }, (0, import_mithril3.default)(RSSIcon())),
           (0, import_mithril3.default)(
-            "li",
+            "li.header-item",
             { style: "float: right" },
             (0, import_mithril3.default)(ThemeSwitch(), {
               darkMode: vnode.attrs.darkMode
