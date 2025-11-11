@@ -8,6 +8,7 @@ import { Strings } from "../strings.ts";
 import type { Album, Services } from "../types.ts";
 import { CountryLink, LocationLink } from "../components/place-links.ts";
 import { ThingLink } from "../components/thing-link.ts";
+import { UnescoLink } from "../components/unesco-link.ts";
 import { Photo } from "../components/photo.ts";
 import { Photos } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
@@ -140,7 +141,7 @@ function ThingMetadata() {
         const unescoDetails = services.readUnesco(thing.unescoId) ?? {};
 
         metadata['UNESCO'] = m('li',
-          m(ThingLink, { urn: thing.unescoId, thing: unescoDetails }),
+          m(UnescoLink, { urn: thing.unescoId, thing: unescoDetails }),
         )
       }
 
