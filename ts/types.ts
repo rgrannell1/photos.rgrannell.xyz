@@ -22,6 +22,7 @@ export type Services = {
   readInsect: (id: string) => Insect | undefined;
   readVideo: (id: string) => Video | undefined;
   readLocation: (id: string) => Place | Country | undefined;
+  readUnesco: (id: string) => Unesco | undefined;
   toThingLinks: (urns: (string | undefined)[]) => m.Vnode<ThingLinkAttrs, {}>[];
   readParsedLocations: (urns: Set<string>) => (Place | Country)[];
   readThings: (urns: Set<string>) => TripleObject[];
@@ -135,6 +136,11 @@ export type Country = {
   flag?: string;
   name: string;
   contains?: string | string[];
+};
+
+export type Unesco = {
+  id: string;
+  name?: string;
 };
 
 export type Subject = {

@@ -136,6 +136,14 @@ function ThingMetadata() {
         )
       }
 
+      if (thing.unescoId) {
+        const unescoDetails = services.readUnesco(thing.unescoId) ?? {};
+
+        metadata['UNESCO'] = m('li',
+          m(ThingLink, { urn: thing.unescoId, thing: unescoDetails }),
+        )
+      }
+
       const $rows = Object.entries(metadata).map(([key, value]) => {
         return m("tr", [
           m("th.exif-heading", key),

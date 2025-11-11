@@ -38,6 +38,11 @@ export const CountrySchema = v.object({
   contains: v.optional(v.union([v.string(), v.array(v.string())])),
 });
 
+export const UnescoSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+});
+
 export const PlaceSchema = v.object({
   id: v.string(),
   name: v.string(),

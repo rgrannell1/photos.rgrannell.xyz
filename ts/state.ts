@@ -16,6 +16,7 @@ import { readThing, readThings, toThingLinks } from "./services/things.ts";
 import {
   readCountry,
   readLocation,
+  readUnesco,
   readParsedLocations,
   readPlace,
 } from "./services/location.ts";
@@ -53,6 +54,7 @@ function loadServices(data: TribbleDB) {
     readInsect: readInsect.bind(null, data),
     readVideo: readVideo.bind(null, data),
     readLocation: readLocation.bind(null, data),
+    readUnesco: readUnesco.bind(null, data),
     toThingLinks: toThingLinks.bind(null, data),
     readParsedLocations: readParsedLocations.bind(null, data),
     readThings: readThings.bind(null, data),
