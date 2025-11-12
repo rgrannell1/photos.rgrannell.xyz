@@ -5721,15 +5721,6 @@ var state = await loadState();
 function AlbumsApp() {
   return {
     oninit() {
-      listen("click_album", (event) => {
-        const { id, title } = event.detail;
-        const parsed = asUrn(id);
-        const pageTitle = `Album - ${title}`;
-        state.currentAlbum = id;
-        import_mithril31.default.route.set(`/album/${parsed.id}`, void 0, {
-          title: pageTitle
-        });
-      });
     },
     view() {
       return (0, import_mithril31.default)("body", [
@@ -5955,6 +5946,7 @@ function ListingApp() {
 }
 listen("navigate", (event) => {
   const { route } = event.detail;
+  console.info(`navigating to route: ${route}`);
   import_mithril31.default.route.set(route);
 });
 listen("switch_theme", () => {

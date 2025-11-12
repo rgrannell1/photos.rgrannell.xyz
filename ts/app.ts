@@ -38,17 +38,7 @@ type AppAttrs = {};
 export function AlbumsApp(): m.Component<AppAttrs> {
   return {
     oninit() {
-      listen("click_album", (event) => {
-        const { id, title } = (event as CustomEvent).detail;
 
-        const parsed = asUrn(id);
-        const pageTitle = `Album - ${title}`;
-
-        state.currentAlbum = id;
-        m.route.set(`/album/${parsed.id}`, undefined, {
-          title: pageTitle,
-        });
-      });
     },
     view() {
       return m("body", [
@@ -81,7 +71,7 @@ export function AlbumApp(): m.Component<AppAttrs> {
       if (!state.currentAlbum) {
         return m("p", "No album selected");
       }
-      const album = readAlbum(state.data, state.currentAlbum) as Album[];
+      const album = readAlbum(state.data, state.currentAlbum) as Album;
       const photos = readAlbumPhotosByAlbumId(state.data, state.currentAlbum);
       const videos = readAlbumVideosByAlbumId(state.data, state.currentAlbum);
 
@@ -301,6 +291,7 @@ export function ListingApp(): m.Component<AppAttrs> {
 
 listen("navigate", (event: Event) => {
   const { route } = (event as CustomEvent).detail;
+  console.info(`navigating to route: ${route}`);
 
   m.route.set(route);
 });
