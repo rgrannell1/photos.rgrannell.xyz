@@ -262,7 +262,7 @@ export function ThingPage() {
           m("h3", "Photos"),
           m(PhotoSection, { urn, things, services }),
           m("h3", "Albums"),
-          m(AlbumSection, { urn, things, services }),
+          //m(AlbumSection, { urn, things, services }),
         ]),
       ]);
     },

@@ -5646,54 +5646,6 @@ function ThingMetadata() {
     }
   };
 }
-function onAlbumClick2(id, title, event) {
-  const parsed = asUrn(id);
-  broadcast("navigate", { route: `/album/${parsed.id}`, title });
-  block(event);
-}
-function AlbumSection() {
-  return {
-    view(vnode) {
-      const { things, services } = vnode.attrs;
-      const urns = Object.values(things).flatMap((thing) => arrayify(thing.id));
-      const albums = services.readAlbumsByThingIds(new Set(urns));
-      const $albums = albums.map((album) => {
-        const $countryLinks = album.countries.map((country) => {
-          return (0, import_mithril30.default)(CountryLink, {
-            country,
-            key: `album-country-${album.id}-${country.id}`,
-            mode: "flag"
-          });
-        });
-        const $md = (0, import_mithril30.default)(PhotoAlbumMetadata, {
-          title: album.name,
-          minDate: album.minDate,
-          maxDate: album.maxDate,
-          count: album.photosCount,
-          countryLinks: $countryLinks
-        });
-        const $album = (0, import_mithril30.default)(PhotoAlbum, {
-          imageUrl: album.thumbnailUrl,
-          thumbnailUrl: album.thumbnailUrl,
-          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
-          loading: "lazy",
-          minDate: album.minDate,
-          onclick: onAlbumClick2.bind(null, album.id, album.name)
-        });
-        return (0, import_mithril30.default)(
-          "div",
-          { key: `album-${album.id}` },
-          $album,
-          $md
-        );
-      });
-      return (0, import_mithril30.default)(
-        "section.album-container",
-        $albums
-      );
-    }
-  };
-}
 function PhotoSection() {
   return {
     view(vnode) {
@@ -5729,8 +5681,8 @@ function ThingPage() {
           (0, import_mithril30.default)(ThingMetadata, { urn, things, services }),
           (0, import_mithril30.default)("h3", "Photos"),
           (0, import_mithril30.default)(PhotoSection, { urn, things, services }),
-          (0, import_mithril30.default)("h3", "Albums"),
-          (0, import_mithril30.default)(AlbumSection, { urn, things, services })
+          (0, import_mithril30.default)("h3", "Albums")
+          //m(AlbumSection, { urn, things, services }),
         ])
       ]);
     }
