@@ -478,6 +478,10 @@ button:disabled {
   margin: 10px 0;
 }
 
+.metadata-table li {
+  list-style: none;
+}
+
 .metadata-table th, .metadata-table td {
   text-align: left;
   padding: 4px 8px;
