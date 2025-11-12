@@ -11,7 +11,7 @@ import {
   SubjectSchema,
 } from "./schemas.ts";
 import { parseObject } from "./parser.ts";
-import { logParseWarning } from "../logger.ts";
+import { logParseWarning } from "../commons/logger.ts";
 import { safeParse } from "valibot";
 
 /*

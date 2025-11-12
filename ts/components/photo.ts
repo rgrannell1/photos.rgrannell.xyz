@@ -1,7 +1,7 @@
 import m from "mithril";
 import { parseUrn } from "@rgrannell1/tribbledb";
 
-import { block, broadcast } from "../events.ts";
+import { block, broadcast } from "../commons/events.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../constants.ts";
 import { Photos } from "../services/photos.ts";

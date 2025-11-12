@@ -1,5 +1,5 @@
 import m from "mithril";
-import { navigate } from "../events";
+import { navigate } from "../commons/events";
 
 type AlbumButtonAttrs = {
   id: string;

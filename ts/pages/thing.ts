@@ -3,8 +3,8 @@ import { ThingSubtitle, ThingTitle } from "../components/thing-title.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { ExternalLink } from "../components/external-link.ts";
-import { arrayify, one } from "../arrays.ts";
-import { Strings } from "../strings.ts";
+import { arrayify, one } from "../commons/arrays.ts";
+import { Strings } from "../commons/strings.ts";
 import type { Album, Services } from "../types.ts";
 import { CountryLink, LocationLink } from "../components/place-links.ts";
 import { ThingLink } from "../components/thing-link.ts";
@@ -13,7 +13,7 @@ import { Photo } from "../components/photo.ts";
 import { Photos } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
-import { block, broadcast } from "../events.ts";
+import { block, broadcast } from "../commons/events.ts";
 
 type ThingPageAttrs = {
   urn: string;

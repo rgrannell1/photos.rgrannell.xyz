@@ -607,6 +607,10 @@ button:disabled {
   max-width: max(180px, min(60vw, 400px));
 }
 
+.photo-album {
+  cursor: pointer;
+}
+
 .photo-album-date {
   max-width: max(180px, min(60vw, 400px));
 }

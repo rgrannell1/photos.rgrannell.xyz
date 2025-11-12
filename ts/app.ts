@@ -19,7 +19,7 @@ import {
 import { AboutPage } from "./pages/about.ts";
 import { VideosPage } from "./pages/videos.ts";
 import { readVideos } from "./services/videos.ts";
-import { listen } from "./events.ts";
+import { listen } from "./commons/events.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";

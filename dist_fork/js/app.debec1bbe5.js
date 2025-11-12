@@ -1617,13 +1617,112 @@ var import_mithril32 = __toESM(require_mithril());
 var import_mithril31 = __toESM(require_mithril());
 
 // ts/components/header.ts
-var import_mithril3 = __toESM(require_mithril());
+var import_mithril = __toESM(require_mithril());
+
+// ts/commons/events.ts
+function broadcast(label, detail) {
+  console.info(`broadcasting event: ${label}`, detail);
+  document.dispatchEvent(
+    new CustomEvent(label, {
+      detail
+    })
+  );
+}
+function listen(label, callback) {
+  document.addEventListener(label, callback);
+}
+function block(event) {
+  event?.preventDefault();
+}
+function navigate(route) {
+  return (event) => {
+    broadcast("navigate", { route });
+    block(event);
+  };
+}
+
+// ts/components/header.ts
+function BurgerMenu() {
+  const onclick = (_) => {
+    broadcast("click_burger_menu", {});
+  };
+  return {
+    view() {
+      return (0, import_mithril.default)("a", { href: "/", onclick }, (0, import_mithril.default)("span.burger", "\u039E"));
+    }
+  };
+}
+function HeaderBrandText() {
+  const BRAND_TEXT = "photos";
+  return {
+    view() {
+      return (0, import_mithril.default)("a", { href: "/" }, (0, import_mithril.default)("span.brand", BRAND_TEXT));
+    }
+  };
+}
+function RSSIcon() {
+  const SVG_PATH = (0, import_mithril.default)("path", {
+    fill: "#ff9132",
+    d: "M 4.259,23.467c-2.35,0-4.259,1.917-4.259,4.252c0,2.349, 1.909,4.244, 4.259,4.244 c 2.358,0, 4.265-1.895, 4.265-4.244C 8.525,25.383, 6.618,23.467, 4.259,23.467zM 0.005,10.873l0,6.133 c 3.993,0, 7.749,1.562, 10.577,4.391c 2.825,2.822, 4.384,6.595, 4.384,10.603l 6.16,0 C 21.125,20.349, 11.648,10.873, 0.005,10.873zM 0.012,0l0,6.136 c 14.243,0, 25.836,11.604, 25.836,25.864L 32,32 C 32,14.36, 17.648,0, 0.012,0z"
+  });
+  return {
+    view() {
+      return (0, import_mithril.default)("a.rss", { title: "rss", href: "/manifest/atom-index.xml" }, [
+        (0, import_mithril.default)("svg", {
+          alt: "rss",
+          width: "25px",
+          height: "25px",
+          viewBox: "0 0 32 32",
+          style: "position: relative; top: 5px;"
+        }, [
+          SVG_PATH
+        ])
+      ]);
+    }
+  };
+}
+function ThemeSwitch() {
+  return {
+    view(vnode) {
+      const text = vnode.attrs.darkMode ? "\u2600\uFE0F" : "\u{1F319}";
+      return (0, import_mithril.default)(
+        "a",
+        {},
+        (0, import_mithril.default)("span.brand.switch", {
+          onclick: () => {
+            broadcast("switch_theme", {});
+          }
+        }, text)
+      );
+    }
+  };
+}
+function Header() {
+  return {
+    view(vnode) {
+      return (0, import_mithril.default)("nav.header", { role: "navigation" }, [
+        (0, import_mithril.default)("ul", [
+          (0, import_mithril.default)("li.header-item", {}, (0, import_mithril.default)(BurgerMenu())),
+          (0, import_mithril.default)("li.header-item", {}, (0, import_mithril.default)(HeaderBrandText())),
+          (0, import_mithril.default)("li.rss-tag header-item", { style: "float: right" }, (0, import_mithril.default)(RSSIcon())),
+          (0, import_mithril.default)(
+            "li.header-item",
+            { style: "float: right" },
+            (0, import_mithril.default)(ThemeSwitch(), {
+              darkMode: vnode.attrs.darkMode
+            })
+          )
+        ])
+      ]);
+    }
+  };
+}
 
 // ts/types.ts
-var import_mithril2 = __toESM(require_mithril());
+var import_mithril3 = __toESM(require_mithril());
 
 // ts/components/thing-link.ts
-var import_mithril = __toESM(require_mithril());
+var import_mithril2 = __toESM(require_mithril());
 
 // node_modules/.deno/@rgrannell1+tribbledb@0.0.12/node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class {
@@ -2452,7 +2551,7 @@ var TribbleDB = class _TribbleDB {
   }
 };
 
-// ts/arrays.ts
+// ts/commons/arrays.ts
 function arrayify(value) {
   if (value === void 0) {
     return [];
@@ -2770,7 +2869,7 @@ function ThingLink() {
       const { type, id } = asUrn(urn);
       const name = one(thing.name) ?? id;
       const emoji = thingEmoji(urn, name, thing);
-      return (0, import_mithril.default)("a", {
+      return (0, import_mithril2.default)("a", {
         href: urn,
         onclick: navigate(`/thing/${type}:${id}`),
         class: ["thing-link", `${type}-link`].join(" ")
@@ -2782,105 +2881,6 @@ function ThingLink() {
 // ts/types.ts
 function isACountry(place) {
   return place.type === "country";
-}
-
-// ts/events.ts
-function broadcast(label, detail) {
-  console.info(`broadcasting event: ${label}`, detail);
-  document.dispatchEvent(
-    new CustomEvent(label, {
-      detail
-    })
-  );
-}
-function listen(label, callback) {
-  document.addEventListener(label, callback);
-}
-function block(event) {
-  event?.preventDefault();
-}
-function navigate(route) {
-  return (event) => {
-    broadcast("navigate", { route });
-    block(event);
-  };
-}
-
-// ts/components/header.ts
-function BurgerMenu() {
-  const onclick = (_) => {
-    broadcast("click_burger_menu", {});
-  };
-  return {
-    view() {
-      return (0, import_mithril3.default)("a", { href: "/", onclick }, (0, import_mithril3.default)("span.burger", "\u039E"));
-    }
-  };
-}
-function HeaderBrandText() {
-  const BRAND_TEXT = "photos";
-  return {
-    view() {
-      return (0, import_mithril3.default)("a", { href: "/" }, (0, import_mithril3.default)("span.brand", BRAND_TEXT));
-    }
-  };
-}
-function RSSIcon() {
-  const SVG_PATH = (0, import_mithril3.default)("path", {
-    fill: "#ff9132",
-    d: "M 4.259,23.467c-2.35,0-4.259,1.917-4.259,4.252c0,2.349, 1.909,4.244, 4.259,4.244 c 2.358,0, 4.265-1.895, 4.265-4.244C 8.525,25.383, 6.618,23.467, 4.259,23.467zM 0.005,10.873l0,6.133 c 3.993,0, 7.749,1.562, 10.577,4.391c 2.825,2.822, 4.384,6.595, 4.384,10.603l 6.16,0 C 21.125,20.349, 11.648,10.873, 0.005,10.873zM 0.012,0l0,6.136 c 14.243,0, 25.836,11.604, 25.836,25.864L 32,32 C 32,14.36, 17.648,0, 0.012,0z"
-  });
-  return {
-    view() {
-      return (0, import_mithril3.default)("a.rss", { title: "rss", href: "/manifest/atom-index.xml" }, [
-        (0, import_mithril3.default)("svg", {
-          alt: "rss",
-          width: "25px",
-          height: "25px",
-          viewBox: "0 0 32 32",
-          style: "position: relative; top: 5px;"
-        }, [
-          SVG_PATH
-        ])
-      ]);
-    }
-  };
-}
-function ThemeSwitch() {
-  return {
-    view(vnode) {
-      const text = vnode.attrs.darkMode ? "\u2600\uFE0F" : "\u{1F319}";
-      return (0, import_mithril3.default)(
-        "a",
-        {},
-        (0, import_mithril3.default)("span.brand.switch", {
-          onclick: () => {
-            broadcast("switch_theme", {});
-          }
-        }, text)
-      );
-    }
-  };
-}
-function Header() {
-  return {
-    view(vnode) {
-      return (0, import_mithril3.default)("nav.header", { role: "navigation" }, [
-        (0, import_mithril3.default)("ul", [
-          (0, import_mithril3.default)("li.header-item", {}, (0, import_mithril3.default)(BurgerMenu())),
-          (0, import_mithril3.default)("li.header-item", {}, (0, import_mithril3.default)(HeaderBrandText())),
-          (0, import_mithril3.default)("li.rss-tag header-item", { style: "float: right" }, (0, import_mithril3.default)(RSSIcon())),
-          (0, import_mithril3.default)(
-            "li.header-item",
-            { style: "float: right" },
-            (0, import_mithril3.default)(ThemeSwitch(), {
-              darkMode: vnode.attrs.darkMode
-            })
-          )
-        ])
-      ]);
-    }
-  };
 }
 
 // ts/services/dark-mode.ts
@@ -2947,7 +2947,7 @@ async function loadTriples(url2, schema = {}, fn = (x) => [x]) {
   return tdb;
 }
 
-// ts/strings.ts
+// ts/commons/strings.ts
 var CAMEL_CASE_CACHE = /* @__PURE__ */ new Map();
 var Strings = class _Strings {
   static capitalise(str) {
@@ -3188,7 +3188,7 @@ function deriveTriples(triple) {
   return outputTriples;
 }
 
-// ts/numbers.ts
+// ts/commons/numbers.ts
 function asInt(value) {
   if (typeof value === "number") {
     return value;
@@ -3285,7 +3285,6 @@ function toThingLinks(tdb2, urns) {
       return [];
     }
     const thing = readThing(tdb2, urn);
-    debugger;
     if (!thing || !thing.name) {
       return [];
     }
@@ -3861,7 +3860,7 @@ var VideoSchema = v.object({
   videoUrlUnscaled: v.pipe(v.string(), v.url())
 });
 
-// ts/logger.ts
+// ts/commons/logger.ts
 function logParseWarning(issues) {
   const message = [];
   for (const issue of issues) {

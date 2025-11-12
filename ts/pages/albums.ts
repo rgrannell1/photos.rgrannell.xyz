@@ -6,7 +6,7 @@ import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { Windows } from "../services/window.ts";
 import { CountryLink } from "../components/place-links.ts";
-import { block, broadcast } from "../events.ts";
+import { block, broadcast } from "../commons/events.ts";
 import { albumYear } from "../services/albums.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 

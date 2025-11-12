@@ -13,7 +13,7 @@ import {
   KnownRelations,
   RelationSymmetries,
 } from "../constants.ts";
-import { Strings } from "../strings.ts";
+import { Strings } from "../commons/strings.ts";
 
 /*
  * Convert star ratings into URNs.

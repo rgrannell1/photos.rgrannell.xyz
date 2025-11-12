@@ -1,9 +1,9 @@
 import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
-import { Strings } from "../strings.ts";
+import { Strings } from "../commons/strings.ts";
 import { BinomialTypes, KnownTypes } from "../constants.ts";
-import { one } from "../arrays.ts";
+import { one } from "../commons/arrays.ts";
 import { countryEmoji, placeEmoji } from "../services/emoji.ts";
 
 type ThingTitleAttrs = {

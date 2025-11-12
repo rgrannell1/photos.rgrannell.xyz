@@ -1,9 +1,9 @@
-import { asInt } from "../numbers.ts";
+import { asInt } from "../commons/numbers.ts";
 import { namesToUrns } from "../semantic/names.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Album } from "../types.ts";
-import { arrayify } from "../arrays.ts";
+import { arrayify } from "../commons/arrays.ts";
 import { readParsedCountries } from "../services/location.ts";
 import { AlbumSchema } from "./schemas.ts";
 import { safeParse } from "valibot";

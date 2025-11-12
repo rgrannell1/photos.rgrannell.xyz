@@ -1,5 +1,5 @@
 import m from "mithril";
-import { broadcast } from "../events.ts";
+import { broadcast } from "../commons/events.ts";
 
 /* */
 function InfoSVG() {

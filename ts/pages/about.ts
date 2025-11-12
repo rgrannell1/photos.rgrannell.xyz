@@ -1,6 +1,6 @@
 import m from "mithril";
 import { Windows } from "../services/window.ts";
-import { navigate } from "../events.ts";
+import { navigate } from "../commons/events.ts";
 
 /* */
 export function AboutPage() {

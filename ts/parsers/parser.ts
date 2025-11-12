@@ -1,6 +1,6 @@
 
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { logParseWarning } from "../logger.ts";
+import { logParseWarning } from "../commons/logger.ts";
 
 import { safeParse } from 'valibot'
 

@@ -1,6 +1,6 @@
 import m from "mithril";
 import { NonListableTypes } from "../constants.ts";
-import { Strings } from "../strings.ts";
+import { Strings } from "../commons/strings.ts";
 import { TripleObject } from "@rgrannell1/tribbledb";
 
 /*

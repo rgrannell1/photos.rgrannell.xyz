@@ -3,10 +3,10 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 import { KnownTypes } from "../constants.ts";
 import type { Country, Place, Unesco } from "../types.ts";
 import { readThing } from "../services/things.ts";
-import { arrayify } from "../arrays.ts";
+import { arrayify } from "../commons/arrays.ts";
 import { CountrySchema, PlaceSchema, UnescoSchema } from "./schemas.ts";
 import { parseObject } from "./parser.ts";
-import { logParseWarning } from "../logger.ts";
+import { logParseWarning } from "../commons/logger.ts";
 import { safeParse } from "valibot";
 
 /* */

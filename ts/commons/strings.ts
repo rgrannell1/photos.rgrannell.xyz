@@ -1,6 +1,6 @@
 /* String Utilities */
 
-import { PLURALS } from "./constants.ts";
+import { PLURALS } from "../constants.ts";
 
 const CAMEL_CASE_CACHE = new Map<string, string>();
 

@@ -1,6 +1,6 @@
 import m from "mithril";
 import { Photo as PhotoType, Services } from "../types.ts";
-import { arrayify } from "../arrays.ts";
+import { arrayify } from "../commons/arrays.ts";
 
 type HeadingAttrs = {
   text: string;

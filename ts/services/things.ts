@@ -1,7 +1,9 @@
 import m from "mithril";
-import { asUrn, TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
-import { ThingLink, ThingLinkAttrs } from "../components/thing-link.ts";
-import { one } from "../arrays.ts";
+import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
+import type { TripleObject } from "@rgrannell1/tribbledb";
+import { ThingLink } from "../components/thing-link.ts";
+import type { ThingLinkAttrs } from "../components/thing-link.ts";
+import { one } from "../commons/arrays.ts";
 
 /*
  * Read a thing as an undifferentiated TripleObject
@@ -117,7 +119,7 @@ export function toThingLinks(
       return [];
     }
     const thing = readThing(tdb, urn);
-    debugger
+
     if (!thing || !thing.name) {
       return [];
     }

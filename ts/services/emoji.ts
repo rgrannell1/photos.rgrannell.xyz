@@ -1,5 +1,5 @@
 import { asUrn } from "@rgrannell1/tribbledb";
-import { one } from "../arrays.ts";
+import { one } from "../commons/arrays.ts";
 import {
   CAMERA_MODELS,
   KnownTypes,
