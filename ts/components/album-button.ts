@@ -14,7 +14,7 @@ export function AlbumButton() {
       const { id } = vnode.attrs;
 
       return m("a", {
-        href: `/album/${id}`,
+        href: `#/album/${id}`,
         onclick: () => navigate(`/album/${id}`),
       }, "[album]");
     },

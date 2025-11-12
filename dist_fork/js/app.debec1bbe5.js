@@ -5120,7 +5120,7 @@ function AlbumButton() {
     view(vnode) {
       const { id } = vnode.attrs;
       return (0, import_mithril22.default)("a", {
-        href: `/album/${id}`,
+        href: `#/album/${id}`,
         onclick: () => navigate(`/album/${id}`)
       }, "[album]");
     }
