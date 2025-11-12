@@ -41,6 +41,8 @@ export const CountrySchema = v.object({
 export const UnescoSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
+  longitude: v.optional(v.string()),
+  latitude: v.optional(v.string()),
 });
 
 export const PlaceSchema = v.object({

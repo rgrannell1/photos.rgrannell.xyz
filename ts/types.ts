@@ -142,6 +142,8 @@ export type Country = {
 export type Unesco = {
   id: string;
   name?: string;
+  longitude?: string;
+  latitude?: string;
 };
 
 export type Subject = {
