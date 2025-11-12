@@ -11,14 +11,18 @@ import {
   readMammal,
   readReptile,
 } from "./services/subjects.ts";
-import { readPhoto, readPhotosByThingIds } from "./services/photos.ts";
+import {
+  readParsedPhotos,
+  readPhoto,
+  readPhotosByThingIds,
+} from "./services/photos.ts";
 import { readThing, readThings, toThingLinks } from "./services/things.ts";
 import {
   readCountry,
   readLocation,
-  readUnesco,
   readParsedLocations,
   readPlace,
+  readUnesco,
 } from "./services/location.ts";
 import { readVideo } from "./services/videos.ts";
 import { readParsedFeatures } from "./services/features.ts";
@@ -59,6 +63,7 @@ function loadServices(data: TribbleDB) {
     toThingLinks: toThingLinks.bind(null, data),
     readParsedLocations: readParsedLocations.bind(null, data),
     readParsedFeatures: readParsedFeatures.bind(null, data),
+    readParsedPhotos: readParsedPhotos.bind(null, data),
     readThings: readThings.bind(null, data),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, data),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data),

@@ -16,7 +16,9 @@ export function placeEmoji(thing: any): string {
   const feature = one(thing.feature);
   const { id: featureId } = asUrn(feature);
 
-  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
+  if (
+    Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)
+  ) {
     return PLACE_FEATURES_TO_EMOJI[
       featureId as keyof typeof PLACE_FEATURES_TO_EMOJI
     ];
@@ -31,7 +33,9 @@ export function placeEmoji(thing: any): string {
 export function placeFeatureEmoji(featureUrn: string): string {
   const { id: featureId } = asUrn(featureUrn);
 
-  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
+  if (
+    Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)
+  ) {
     return PLACE_FEATURES_TO_EMOJI[
       featureId as keyof typeof PLACE_FEATURES_TO_EMOJI
     ];
@@ -47,7 +51,7 @@ export function placeFeatureEmoji(featureUrn: string): string {
  */
 export function countryEmoji(thing: any): string {
   const flag = one(thing.flag);
-  return flag //?? "🏳️";
+  return flag; //?? "🏳️";
 }
 
 /*

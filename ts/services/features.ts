@@ -11,7 +11,7 @@ export const readFeature = (
     tdb,
     id,
   );
-}
+};
 
 export const readParsedFeatures = (
   tdb: TribbleDB,
@@ -22,4 +22,4 @@ export const readParsedFeatures = (
     tdb,
     urns,
   );
-}
+};

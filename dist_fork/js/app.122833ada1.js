@@ -4283,6 +4283,7 @@ function loadServices(data) {
     toThingLinks: toThingLinks.bind(null, data),
     readParsedLocations: readParsedLocations.bind(null, data),
     readParsedFeatures: readParsedFeatures.bind(null, data),
+    readParsedPhotos: readParsedPhotos.bind(null, data),
     readThings: readThings.bind(null, data),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, data),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data)
@@ -5519,9 +5520,11 @@ function PlacesList() {
   return {
     view(vnode) {
       const { urns, services } = vnode.attrs;
-      const locations = services.readParsedLocations(urns).sort((loca, locb) => {
-        return (one(loca.name) ?? "").localeCompare(one(locb.name) ?? "");
-      });
+      const locations = services.readParsedLocations(urns).sort(
+        (loca, locb) => {
+          return (one(loca.name) ?? "").localeCompare(one(locb.name) ?? "");
+        }
+      );
       const $contains = locations.map((location2) => {
         const $link = (0, import_mithril29.default)(ThingLink, {
           urn: one(location2.id),
@@ -5540,6 +5543,25 @@ function setify(value) {
     return /* @__PURE__ */ new Set();
   }
   return new Set(Array.isArray(value) ? value : [value]);
+}
+function setOf(property, objects) {
+  const result = /* @__PURE__ */ new Set();
+  for (const obj of objects) {
+    if (property in obj) {
+      const value = obj[property];
+      if (value === void 0) {
+        continue;
+      }
+      if (Array.isArray(value)) {
+        for (const elem of value) {
+          result.add(elem);
+        }
+      } else {
+        result.add(value);
+      }
+    }
+  }
+  return result;
 }
 
 // ts/pages/thing.ts
@@ -5577,11 +5599,11 @@ function ThingMetadata() {
       metadata.Classification = (0, import_mithril30.default)("a", {
         href: `#/listing/${parsed.type}`
       }, Strings.capitalise(parsed.type));
-      const locatedIn = things.flatMap((thing2) => arrayify(thing2.in));
-      if (locatedIn.length > 0) {
+      const locatedIn = setOf(KnownRelations.IN, things);
+      if (locatedIn.size > 0) {
         metadata["Located In"] = (0, import_mithril30.default)(PlacesList, {
           services,
-          urns: setify(locatedIn)
+          urns: locatedIn
         });
       }
       if (things.length !== 1) {
@@ -5632,9 +5654,8 @@ function PhotoSection() {
   return {
     view(vnode) {
       const { things, services } = vnode.attrs;
-      console.log(things);
-      const urns = Object.values(things).flatMap((thing) => Array.isArray(thing.id) ? thing.id : [thing.id]);
-      const photos = services.readPhotosByThingIds(new Set(urns));
+      const urns = setOf("id", things);
+      const photos = services.readPhotosByThingIds(urns);
       return (0, import_mithril30.default)(
         "section.photo-container",
         photos.map((photo, idx) => {

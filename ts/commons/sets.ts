@@ -1,3 +1,5 @@
+import type { TripleObject } from "@rgrannell1/tribbledb";
+
 /*
  * Given a value, array of values, or undefined, return a set.
  */
@@ -7,4 +9,27 @@ export function setify<T>(value: T | T[] | undefined): Set<T> {
   }
 
   return new Set(Array.isArray(value) ? value : [value]);
+}
+
+export function setOf<T>(property: string, objects: TripleObject[]): Set<T> {
+  const result = new Set<T>();
+
+  for (const obj of objects) {
+    if (property in obj) {
+      const value = obj[property] as T | T[] | undefined;
+      if (value === undefined) {
+        continue;
+      }
+
+      if (Array.isArray(value)) {
+        for (const elem of value) {
+          result.add(elem);
+        }
+      } else {
+        result.add(value);
+      }
+    }
+  }
+
+  return result;
 }

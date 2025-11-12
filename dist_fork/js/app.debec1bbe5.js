@@ -4,47 +4,88 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __commonJS = (cb, mod) => function __require() {
-  return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
-};
+var __commonJS = (cb, mod) =>
+  function __require() {
+    return mod ||
+      (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod),
+      mod.exports;
+  };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    for (let key of __getOwnPropNames(from)) {
+      if (!__hasOwnProp.call(to, key) && key !== except) {
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
+      }
+    }
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
+var __toESM = (
+  mod,
+  isNodeMode,
+  target,
+) => (target = mod != null ? __create(__getProtoOf(mod)) : {},
+  __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
+    isNodeMode || !mod || !mod.__esModule
+      ? __defProp(target, "default", { value: mod, enumerable: true })
+      : target,
+    mod,
+  ));
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/vnode.js
 var require_vnode = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/vnode.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/vnode.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     function Vnode(tag, key, attrs, children, text, dom) {
-      return { tag, key, attrs, children, text, dom, is: void 0, domSize: void 0, state: void 0, events: void 0, instance: void 0 };
+      return {
+        tag,
+        key,
+        attrs,
+        children,
+        text,
+        dom,
+        is: void 0,
+        domSize: void 0,
+        state: void 0,
+        events: void 0,
+        instance: void 0,
+      };
     }
-    Vnode.normalize = function(node) {
-      if (Array.isArray(node)) return Vnode("[", void 0, void 0, Vnode.normalizeChildren(node), void 0, void 0);
+    Vnode.normalize = function (node) {
+      if (Array.isArray(node)) {
+        return Vnode(
+          "[",
+          void 0,
+          void 0,
+          Vnode.normalizeChildren(node),
+          void 0,
+          void 0,
+        );
+      }
       if (node == null || typeof node === "boolean") return null;
       if (typeof node === "object") return node;
       return Vnode("#", void 0, void 0, String(node), void 0, void 0);
     };
-    Vnode.normalizeChildren = function(input) {
+    Vnode.normalizeChildren = function (input) {
       var children = [];
       if (input.length) {
         var isKeyed = input[0] != null && input[0].key != null;
         for (var i = 1; i < input.length; i++) {
           if ((input[i] != null && input[i].key != null) !== isKeyed) {
             throw new TypeError(
-              isKeyed && (input[i] == null || typeof input[i] === "boolean") ? "In fragments, vnodes must either all have keys or none have keys. You may wish to consider using an explicit keyed empty fragment, m.fragment({key: ...}), instead of a hole." : "In fragments, vnodes must either all have keys or none have keys."
+              isKeyed && (input[i] == null || typeof input[i] === "boolean")
+                ? "In fragments, vnodes must either all have keys or none have keys. You may wish to consider using an explicit keyed empty fragment, m.fragment({key: ...}), instead of a hole."
+                : "In fragments, vnodes must either all have keys or none have keys.",
             );
           }
         }
@@ -55,68 +96,92 @@ var require_vnode = __commonJS({
       return children;
     };
     module.exports = Vnode;
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscriptVnode.js
 var require_hyperscriptVnode = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscriptVnode.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscriptVnode.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var Vnode = require_vnode();
-    module.exports = function(attrs, children) {
-      if (attrs == null || typeof attrs === "object" && attrs.tag == null && !Array.isArray(attrs)) {
-        if (children.length === 1 && Array.isArray(children[0])) children = children[0];
+    module.exports = function (attrs, children) {
+      if (
+        attrs == null ||
+        typeof attrs === "object" && attrs.tag == null && !Array.isArray(attrs)
+      ) {
+        if (children.length === 1 && Array.isArray(children[0])) {
+          children = children[0];
+        }
       } else {
-        children = children.length === 0 && Array.isArray(attrs) ? attrs : [attrs, ...children];
+        children = children.length === 0 && Array.isArray(attrs)
+          ? attrs
+          : [attrs, ...children];
         attrs = void 0;
       }
       return Vnode("", attrs && attrs.key, attrs, children);
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/util/hasOwn.js
 var require_hasOwn = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/util/hasOwn.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/util/hasOwn.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     module.exports = {}.hasOwnProperty;
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/emptyAttrs.js
 var require_emptyAttrs = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/emptyAttrs.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/emptyAttrs.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     module.exports = {};
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/cachedAttrsIsStaticMap.js
 var require_cachedAttrsIsStaticMap = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/cachedAttrsIsStaticMap.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/cachedAttrsIsStaticMap.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var emptyAttrs = require_emptyAttrs();
     module.exports = /* @__PURE__ */ new Map([[emptyAttrs, true]]);
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscript.js
 var require_hyperscript = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscript.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/hyperscript.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var Vnode = require_vnode();
     var hyperscriptVnode = require_hyperscriptVnode();
     var hasOwn = require_hasOwn();
     var emptyAttrs = require_emptyAttrs();
     var cachedAttrsIsStaticMap = require_cachedAttrsIsStaticMap();
-    var selectorParser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g;
+    var selectorParser =
+      /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g;
     var selectorCache = /* @__PURE__ */ Object.create(null);
     function isEmpty(object2) {
       for (var key in object2) if (hasOwn.call(object2, key)) return false;
       return true;
     }
     function isFormAttributeKey(key) {
-      return key === "value" || key === "checked" || key === "selectedIndex" || key === "selected";
+      return key === "value" || key === "checked" || key === "selectedIndex" ||
+        key === "selected";
     }
     function compileSelector(selector) {
       var match, tag = "div", classes = [], attrs = {}, isStatic = true;
@@ -127,7 +192,12 @@ var require_hyperscript = __commonJS({
         else if (type === ".") classes.push(value);
         else if (match[3][0] === "[") {
           var attrValue = match[6];
-          if (attrValue) attrValue = attrValue.replace(/\\(["'])/g, "$1").replace(/\\\\/g, "\\");
+          if (attrValue) {
+            attrValue = attrValue.replace(/\\(["'])/g, "$1").replace(
+              /\\\\/g,
+              "\\",
+            );
+          }
           if (match[4] === "class") classes.push(attrValue);
           else {
             attrs[match[4]] = attrValue === "" ? attrValue : attrValue || true;
@@ -152,7 +222,13 @@ var require_hyperscript = __commonJS({
       var className = hasClass ? attrs.class : attrs.className;
       if (state2.attrs !== emptyAttrs) {
         attrs = Object.assign({}, state2.attrs, attrs);
-        if (className != null || state2.attrs.className != null) attrs.className = className != null ? state2.attrs.className != null ? String(state2.attrs.className) + " " + String(className) : className : state2.attrs.className;
+        if (className != null || state2.attrs.className != null) {
+          attrs.className = className != null
+            ? state2.attrs.className != null
+              ? String(state2.attrs.className) + " " + String(className)
+              : className
+            : state2.attrs.className;
+        }
       } else {
         if (className != null) attrs.className = className;
       }
@@ -165,99 +241,125 @@ var require_hyperscript = __commonJS({
       return vnode;
     }
     function hyperscript(selector, attrs, ...children) {
-      if (selector == null || typeof selector !== "string" && typeof selector !== "function" && typeof selector.view !== "function") {
+      if (
+        selector == null ||
+        typeof selector !== "string" && typeof selector !== "function" &&
+          typeof selector.view !== "function"
+      ) {
         throw Error("The selector must be either a string or a component.");
       }
       var vnode = hyperscriptVnode(attrs, children);
       if (typeof selector === "string") {
         vnode.children = Vnode.normalizeChildren(vnode.children);
-        if (selector !== "[") return execSelector(selectorCache[selector] || compileSelector(selector), vnode);
+        if (selector !== "[") {
+          return execSelector(
+            selectorCache[selector] || compileSelector(selector),
+            vnode,
+          );
+        }
       }
       if (vnode.attrs == null) vnode.attrs = {};
       vnode.tag = selector;
       return vnode;
     }
     module.exports = hyperscript;
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/trust.js
 var require_trust = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/trust.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/trust.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var Vnode = require_vnode();
-    module.exports = function(html) {
+    module.exports = function (html) {
       if (html == null) html = "";
       return Vnode("<", void 0, void 0, html, void 0, void 0);
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/fragment.js
 var require_fragment = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/fragment.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/fragment.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var Vnode = require_vnode();
     var hyperscriptVnode = require_hyperscriptVnode();
-    module.exports = function(attrs, ...children) {
+    module.exports = function (attrs, ...children) {
       var vnode = hyperscriptVnode(attrs, children);
       if (vnode.attrs == null) vnode.attrs = {};
       vnode.tag = "[";
       vnode.children = Vnode.normalizeChildren(vnode.children);
       return vnode;
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/hyperscript.js
 var require_hyperscript2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/hyperscript.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/hyperscript.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var hyperscript = require_hyperscript();
     hyperscript.trust = require_trust();
     hyperscript.fragment = require_fragment();
     module.exports = hyperscript;
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/domFor.js
 var require_domFor = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/domFor.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/domFor.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var delayedRemoval = /* @__PURE__ */ new WeakMap();
     function* domFor(vnode) {
       var dom = vnode.dom;
       var domSize = vnode.domSize;
       var generation = delayedRemoval.get(dom);
-      if (dom != null) do {
-        var nextSibling = dom.nextSibling;
-        if (delayedRemoval.get(dom) === generation) {
-          yield dom;
-          domSize--;
-        }
-        dom = nextSibling;
-      } while (domSize);
+      if (dom != null) {
+        do {
+          var nextSibling = dom.nextSibling;
+          if (delayedRemoval.get(dom) === generation) {
+            yield dom;
+            domSize--;
+          }
+          dom = nextSibling;
+        } while (domSize);
+      }
     }
     module.exports = {
       delayedRemoval,
-      domFor
+      domFor,
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/render.js
 var require_render = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/render.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render/render.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var Vnode = require_vnode();
     var df = require_domFor();
     var delayedRemoval = df.delayedRemoval;
     var domFor = df.domFor;
     var cachedAttrsIsStaticMap = require_cachedAttrsIsStaticMap();
-    module.exports = function() {
+    module.exports = function () {
       var nameSpace = {
         svg: "http://www.w3.org/2000/svg",
-        math: "http://www.w3.org/1998/Math/MathML"
+        math: "http://www.w3.org/1998/Math/MathML",
       };
       var currentRedraw;
       var currentRender;
@@ -268,7 +370,9 @@ var require_render = __commonJS({
         return vnode.attrs && vnode.attrs.xmlns || nameSpace[vnode.tag];
       }
       function checkState(vnode, original) {
-        if (vnode.state !== original) throw new Error("'vnode.state' must not be modified.");
+        if (vnode.state !== original) {
+          throw new Error("'vnode.state' must not be modified.");
+        }
       }
       function callHook(vnode) {
         var original = vnode.state;
@@ -317,12 +421,25 @@ var require_render = __commonJS({
         vnode.dom = getDocument(parent).createTextNode(vnode.children);
         insertDOM(parent, vnode.dom, nextSibling);
       }
-      var possibleParents = { caption: "table", thead: "table", tbody: "table", tfoot: "table", tr: "tbody", th: "tr", td: "tr", colgroup: "table", col: "colgroup" };
+      var possibleParents = {
+        caption: "table",
+        thead: "table",
+        tbody: "table",
+        tfoot: "table",
+        tr: "tbody",
+        th: "tr",
+        td: "tr",
+        colgroup: "table",
+        col: "colgroup",
+      };
       function createHTML(parent, vnode, ns, nextSibling) {
         var match = vnode.children.match(/^\s*?<(\w+)/im) || [];
-        var temp = getDocument(parent).createElement(possibleParents[match[1]] || "div");
+        var temp = getDocument(parent).createElement(
+          possibleParents[match[1]] || "div",
+        );
         if (ns === "http://www.w3.org/2000/svg") {
-          temp.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg">' + vnode.children + "</svg>";
+          temp.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg">' +
+            vnode.children + "</svg>";
           temp = temp.firstChild;
         } else {
           temp.innerHTML = vnode.children;
@@ -351,7 +468,13 @@ var require_render = __commonJS({
         var attrs = vnode.attrs;
         var is = vnode.is;
         ns = getNameSpace(vnode) || ns;
-        var element = ns ? is ? getDocument(parent).createElementNS(ns, tag, { is }) : getDocument(parent).createElementNS(ns, tag) : is ? getDocument(parent).createElement(tag, { is }) : getDocument(parent).createElement(tag);
+        var element = ns
+          ? is
+            ? getDocument(parent).createElementNS(ns, tag, { is })
+            : getDocument(parent).createElementNS(ns, tag)
+          : is
+          ? getDocument(parent).createElement(tag, { is })
+          : getDocument(parent).createElement(tag);
         vnode.dom = element;
         if (attrs != null) {
           setAttrs(vnode, attrs, ns);
@@ -361,7 +484,9 @@ var require_render = __commonJS({
           if (vnode.children != null) {
             var children = vnode.children;
             createNodes(element, children, 0, children.length, hooks, null, ns);
-            if (vnode.tag === "select" && attrs != null) setLateSelectAttrs(vnode, attrs);
+            if (vnode.tag === "select" && attrs != null) {
+              setLateSelectAttrs(vnode, attrs);
+            }
           }
         }
       }
@@ -377,12 +502,19 @@ var require_render = __commonJS({
           sentinel = vnode.tag;
           if (sentinel.$$reentrantLock$$ != null) return;
           sentinel.$$reentrantLock$$ = true;
-          vnode.state = vnode.tag.prototype != null && typeof vnode.tag.prototype.view === "function" ? new vnode.tag(vnode) : vnode.tag(vnode);
+          vnode.state = vnode.tag.prototype != null &&
+              typeof vnode.tag.prototype.view === "function"
+            ? new vnode.tag(vnode)
+            : vnode.tag(vnode);
         }
         initLifecycle(vnode.state, vnode, hooks);
         if (vnode.attrs != null) initLifecycle(vnode.attrs, vnode, hooks);
-        vnode.instance = Vnode.normalize(callHook.call(vnode.state.view, vnode));
-        if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument");
+        vnode.instance = Vnode.normalize(
+          callHook.call(vnode.state.view, vnode),
+        );
+        if (vnode.instance === vnode) {
+          throw Error("A view cannot return the vnode it received as argument");
+        }
         sentinel.$$reentrantLock$$ = null;
       }
       function createComponent(parent, vnode, hooks, ns, nextSibling) {
@@ -397,32 +529,85 @@ var require_render = __commonJS({
       }
       function updateNodes(parent, old, vnodes, hooks, nextSibling, ns) {
         if (old === vnodes || old == null && vnodes == null) return;
-        else if (old == null || old.length === 0) createNodes(parent, vnodes, 0, vnodes.length, hooks, nextSibling, ns);
-        else if (vnodes == null || vnodes.length === 0) removeNodes(parent, old, 0, old.length);
-        else {
+        else if (old == null || old.length === 0) {
+          createNodes(parent, vnodes, 0, vnodes.length, hooks, nextSibling, ns);
+        } else if (vnodes == null || vnodes.length === 0) {
+          removeNodes(parent, old, 0, old.length);
+        } else {
           var isOldKeyed = old[0] != null && old[0].key != null;
           var isKeyed = vnodes[0] != null && vnodes[0].key != null;
           var start = 0, oldStart = 0;
-          if (!isOldKeyed) while (oldStart < old.length && old[oldStart] == null) oldStart++;
-          if (!isKeyed) while (start < vnodes.length && vnodes[start] == null) start++;
+          if (!isOldKeyed) {
+            while (oldStart < old.length && old[oldStart] == null) {
+              oldStart++;
+            }
+          }
+          if (!isKeyed) {
+            while (start < vnodes.length && vnodes[start] == null) {
+              start++;
+            }
+          }
           if (isOldKeyed !== isKeyed) {
             removeNodes(parent, old, oldStart, old.length);
-            createNodes(parent, vnodes, start, vnodes.length, hooks, nextSibling, ns);
+            createNodes(
+              parent,
+              vnodes,
+              start,
+              vnodes.length,
+              hooks,
+              nextSibling,
+              ns,
+            );
           } else if (!isKeyed) {
-            var commonLength = old.length < vnodes.length ? old.length : vnodes.length;
+            var commonLength = old.length < vnodes.length
+              ? old.length
+              : vnodes.length;
             start = start < oldStart ? start : oldStart;
             for (; start < commonLength; start++) {
               o = old[start];
               v2 = vnodes[start];
               if (o === v2 || o == null && v2 == null) continue;
-              else if (o == null) createNode(parent, v2, hooks, ns, getNextSibling(old, start + 1, nextSibling));
-              else if (v2 == null) removeNode(parent, o);
-              else updateNode(parent, o, v2, hooks, getNextSibling(old, start + 1, nextSibling), ns);
+              else if (o == null) {
+                createNode(
+                  parent,
+                  v2,
+                  hooks,
+                  ns,
+                  getNextSibling(old, start + 1, nextSibling),
+                );
+              } else if (v2 == null) removeNode(parent, o);
+              else {updateNode(
+                  parent,
+                  o,
+                  v2,
+                  hooks,
+                  getNextSibling(old, start + 1, nextSibling),
+                  ns,
+                );}
             }
-            if (old.length > commonLength) removeNodes(parent, old, start, old.length);
-            if (vnodes.length > commonLength) createNodes(parent, vnodes, start, vnodes.length, hooks, nextSibling, ns);
+            if (old.length > commonLength) {
+              removeNodes(parent, old, start, old.length);
+            }
+            if (vnodes.length > commonLength) {
+              createNodes(
+                parent,
+                vnodes,
+                start,
+                vnodes.length,
+                hooks,
+                nextSibling,
+                ns,
+              );
+            }
           } else {
-            var oldEnd = old.length - 1, end = vnodes.length - 1, map, o, v2, oe, ve, topSibling;
+            var oldEnd = old.length - 1,
+              end = vnodes.length - 1,
+              map,
+              o,
+              v2,
+              oe,
+              ve,
+              topSibling;
             while (oldEnd >= oldStart && end >= start) {
               oe = old[oldEnd];
               ve = vnodes[end];
@@ -436,7 +621,16 @@ var require_render = __commonJS({
               v2 = vnodes[start];
               if (o.key !== v2.key) break;
               oldStart++, start++;
-              if (o !== v2) updateNode(parent, o, v2, hooks, getNextSibling(old, oldStart, nextSibling), ns);
+              if (o !== v2) {
+                updateNode(
+                  parent,
+                  o,
+                  v2,
+                  hooks,
+                  getNextSibling(old, oldStart, nextSibling),
+                  ns,
+                );
+              }
             }
             while (oldEnd >= oldStart && end >= start) {
               if (start === end) break;
@@ -463,9 +657,26 @@ var require_render = __commonJS({
               ve = vnodes[end];
             }
             if (start > end) removeNodes(parent, old, oldStart, oldEnd + 1);
-            else if (oldStart > oldEnd) createNodes(parent, vnodes, start, end + 1, hooks, nextSibling, ns);
-            else {
-              var originalNextSibling = nextSibling, vnodesLength = end - start + 1, oldIndices = new Array(vnodesLength), li = 0, i = 0, pos = 2147483647, matched = 0, map, lisIndices;
+            else if (oldStart > oldEnd) {
+              createNodes(
+                parent,
+                vnodes,
+                start,
+                end + 1,
+                hooks,
+                nextSibling,
+                ns,
+              );
+            } else {
+              var originalNextSibling = nextSibling,
+                vnodesLength = end - start + 1,
+                oldIndices = new Array(vnodesLength),
+                li = 0,
+                i = 0,
+                pos = 2147483647,
+                matched = 0,
+                map,
+                lisIndices;
               for (i = 0; i < vnodesLength; i++) oldIndices[i] = -1;
               for (i = end; i >= start; i--) {
                 if (map == null) map = getKeyMap(old, oldStart, oldEnd + 1);
@@ -476,22 +687,36 @@ var require_render = __commonJS({
                   oldIndices[i - start] = oldIndex;
                   oe = old[oldIndex];
                   old[oldIndex] = null;
-                  if (oe !== ve) updateNode(parent, oe, ve, hooks, nextSibling, ns);
+                  if (oe !== ve) {
+                    updateNode(parent, oe, ve, hooks, nextSibling, ns);
+                  }
                   if (ve.dom != null) nextSibling = ve.dom;
                   matched++;
                 }
               }
               nextSibling = originalNextSibling;
-              if (matched !== oldEnd - oldStart + 1) removeNodes(parent, old, oldStart, oldEnd + 1);
-              if (matched === 0) createNodes(parent, vnodes, start, end + 1, hooks, nextSibling, ns);
-              else {
+              if (matched !== oldEnd - oldStart + 1) {
+                removeNodes(parent, old, oldStart, oldEnd + 1);
+              }
+              if (matched === 0) {
+                createNodes(
+                  parent,
+                  vnodes,
+                  start,
+                  end + 1,
+                  hooks,
+                  nextSibling,
+                  ns,
+                );
+              } else {
                 if (pos === -1) {
                   lisIndices = makeLisIndices(oldIndices);
                   li = lisIndices.length - 1;
                   for (i = end; i >= start; i--) {
                     v2 = vnodes[i];
-                    if (oldIndices[i - start] === -1) createNode(parent, v2, hooks, ns, nextSibling);
-                    else {
+                    if (oldIndices[i - start] === -1) {
+                      createNode(parent, v2, hooks, ns, nextSibling);
+                    } else {
                       if (lisIndices[li] === i - start) li--;
                       else moveDOM(parent, v2, nextSibling);
                     }
@@ -500,7 +725,9 @@ var require_render = __commonJS({
                 } else {
                   for (i = end; i >= start; i--) {
                     v2 = vnodes[i];
-                    if (oldIndices[i - start] === -1) createNode(parent, v2, hooks, ns, nextSibling);
+                    if (oldIndices[i - start] === -1) {
+                      createNode(parent, v2, hooks, ns, nextSibling);
+                    }
                     if (v2.dom != null) nextSibling = vnodes[i].dom;
                   }
                 }
@@ -554,7 +781,14 @@ var require_render = __commonJS({
         }
       }
       function updateFragment(parent, old, vnode, hooks, nextSibling, ns) {
-        updateNodes(parent, old.children, vnode.children, hooks, nextSibling, ns);
+        updateNodes(
+          parent,
+          old.children,
+          vnode.children,
+          hooks,
+          nextSibling,
+          ns,
+        );
         var domSize = 0, children = vnode.children;
         vnode.dom = null;
         if (children != null) {
@@ -571,7 +805,10 @@ var require_render = __commonJS({
       function updateElement(old, vnode, hooks, ns) {
         var element = vnode.dom = old.dom;
         ns = getNameSpace(vnode) || ns;
-        if (old.attrs != vnode.attrs || vnode.attrs != null && !cachedAttrsIsStaticMap.get(vnode.attrs)) {
+        if (
+          old.attrs != vnode.attrs ||
+          vnode.attrs != null && !cachedAttrsIsStaticMap.get(vnode.attrs)
+        ) {
           updateAttrs(vnode, old.attrs, vnode.attrs, ns);
         }
         if (!maybeSetContentEditable(vnode)) {
@@ -579,13 +816,25 @@ var require_render = __commonJS({
         }
       }
       function updateComponent(parent, old, vnode, hooks, nextSibling, ns) {
-        vnode.instance = Vnode.normalize(callHook.call(vnode.state.view, vnode));
-        if (vnode.instance === vnode) throw Error("A view cannot return the vnode it received as argument");
+        vnode.instance = Vnode.normalize(
+          callHook.call(vnode.state.view, vnode),
+        );
+        if (vnode.instance === vnode) {
+          throw Error("A view cannot return the vnode it received as argument");
+        }
         updateLifecycle(vnode.state, vnode, hooks);
         if (vnode.attrs != null) updateLifecycle(vnode.attrs, vnode, hooks);
         if (vnode.instance != null) {
-          if (old.instance == null) createNode(parent, vnode.instance, hooks, ns, nextSibling);
-          else updateNode(parent, old.instance, vnode.instance, hooks, nextSibling, ns);
+          if (old.instance == null) {
+            createNode(parent, vnode.instance, hooks, ns, nextSibling);
+          } else {updateNode(
+              parent,
+              old.instance,
+              vnode.instance,
+              hooks,
+              nextSibling,
+              ns,
+            );}
           vnode.dom = vnode.instance.dom;
           vnode.domSize = vnode.instance.domSize;
         } else if (old.instance != null) {
@@ -669,13 +918,19 @@ var require_render = __commonJS({
         else parent.appendChild(dom);
       }
       function maybeSetContentEditable(vnode) {
-        if (vnode.attrs == null || vnode.attrs.contenteditable == null && // attribute
-        vnode.attrs.contentEditable == null) return false;
+        if (
+          vnode.attrs == null || vnode.attrs.contenteditable == null && // attribute
+            vnode.attrs.contentEditable == null
+        ) return false;
         var children = vnode.children;
-        if (children != null && children.length === 1 && children[0].tag === "<") {
+        if (
+          children != null && children.length === 1 && children[0].tag === "<"
+        ) {
           var content = children[0].children;
           if (vnode.dom.innerHTML !== content) vnode.dom.innerHTML = content;
-        } else if (children != null && children.length !== 0) throw new Error("Child node of a contenteditable must be trusted.");
+        } else if (children != null && children.length !== 0) {
+          throw new Error("Child node of a contenteditable must be trusted.");
+        }
         return true;
       }
       function removeNodes(parent, vnodes, start, end) {
@@ -691,7 +946,7 @@ var require_render = __commonJS({
         var generation = currentRender;
         for (var dom of domFor(vnode)) delayedRemoval.set(dom, generation);
         counter.v++;
-        Promise.resolve(result).finally(function() {
+        Promise.resolve(result).finally(function () {
           checkState(vnode, original);
           tryResumeRemove(parent, vnode, counter);
         });
@@ -704,8 +959,13 @@ var require_render = __commonJS({
       }
       function removeNode(parent, vnode) {
         var counter = { v: 1 };
-        if (typeof vnode.tag !== "string" && typeof vnode.state.onbeforeremove === "function") tryBlockRemove(parent, vnode, vnode.state, counter);
-        if (vnode.attrs && typeof vnode.attrs.onbeforeremove === "function") tryBlockRemove(parent, vnode, vnode.attrs, counter);
+        if (
+          typeof vnode.tag !== "string" &&
+          typeof vnode.state.onbeforeremove === "function"
+        ) tryBlockRemove(parent, vnode, vnode.state, counter);
+        if (vnode.attrs && typeof vnode.attrs.onbeforeremove === "function") {
+          tryBlockRemove(parent, vnode, vnode.attrs, counter);
+        }
         tryResumeRemove(parent, vnode, counter);
       }
       function removeDOM(parent, vnode) {
@@ -717,8 +977,13 @@ var require_render = __commonJS({
         }
       }
       function onremove(vnode) {
-        if (typeof vnode.tag !== "string" && typeof vnode.state.onremove === "function") callHook.call(vnode.state.onremove, vnode);
-        if (vnode.attrs && typeof vnode.attrs.onremove === "function") callHook.call(vnode.attrs.onremove, vnode);
+        if (
+          typeof vnode.tag !== "string" &&
+          typeof vnode.state.onremove === "function"
+        ) callHook.call(vnode.state.onremove, vnode);
+        if (vnode.attrs && typeof vnode.attrs.onremove === "function") {
+          callHook.call(vnode.attrs.onremove, vnode);
+        }
         if (typeof vnode.tag !== "string") {
           if (vnode.instance != null) onremove(vnode.instance);
         } else {
@@ -738,39 +1003,76 @@ var require_render = __commonJS({
         }
       }
       function setAttr(vnode, key, old, value, ns) {
-        if (key === "key" || value == null || isLifecycleMethod(key) || old === value && !isFormAttribute(vnode, key) && typeof value !== "object") return;
-        if (key[0] === "o" && key[1] === "n") return updateEvent(vnode, key, value);
-        if (key.slice(0, 6) === "xlink:") vnode.dom.setAttributeNS("http://www.w3.org/1999/xlink", key.slice(6), value);
-        else if (key === "style") updateStyle(vnode.dom, old, value);
+        if (
+          key === "key" || value == null || isLifecycleMethod(key) ||
+          old === value && !isFormAttribute(vnode, key) &&
+            typeof value !== "object"
+        ) return;
+        if (key[0] === "o" && key[1] === "n") {
+          return updateEvent(vnode, key, value);
+        }
+        if (key.slice(0, 6) === "xlink:") {
+          vnode.dom.setAttributeNS(
+            "http://www.w3.org/1999/xlink",
+            key.slice(6),
+            value,
+          );
+        } else if (key === "style") updateStyle(vnode.dom, old, value);
         else if (hasPropertyKey(vnode, key, ns)) {
           if (key === "value") {
-            if ((vnode.tag === "input" || vnode.tag === "textarea") && vnode.dom.value === "" + value) return;
-            if (vnode.tag === "select" && old !== null && vnode.dom.value === "" + value) return;
-            if (vnode.tag === "option" && old !== null && vnode.dom.value === "" + value) return;
-            if (vnode.tag === "input" && vnode.attrs.type === "file" && "" + value !== "") {
+            if (
+              (vnode.tag === "input" || vnode.tag === "textarea") &&
+              vnode.dom.value === "" + value
+            ) return;
+            if (
+              vnode.tag === "select" && old !== null &&
+              vnode.dom.value === "" + value
+            ) return;
+            if (
+              vnode.tag === "option" && old !== null &&
+              vnode.dom.value === "" + value
+            ) return;
+            if (
+              vnode.tag === "input" && vnode.attrs.type === "file" &&
+              "" + value !== ""
+            ) {
               console.error("`value` is read-only on file inputs!");
               return;
             }
           }
-          if (vnode.tag === "input" && key === "type") vnode.dom.setAttribute(key, value);
-          else vnode.dom[key] = value;
+          if (vnode.tag === "input" && key === "type") {
+            vnode.dom.setAttribute(key, value);
+          } else vnode.dom[key] = value;
         } else {
           if (typeof value === "boolean") {
             if (value) vnode.dom.setAttribute(key, "");
             else vnode.dom.removeAttribute(key);
-          } else vnode.dom.setAttribute(key === "className" ? "class" : key, value);
+          } else {vnode.dom.setAttribute(
+              key === "className" ? "class" : key,
+              value,
+            );}
         }
       }
       function removeAttr(vnode, key, old, ns) {
         if (key === "key" || old == null || isLifecycleMethod(key)) return;
         if (key[0] === "o" && key[1] === "n") updateEvent(vnode, key, void 0);
         else if (key === "style") updateStyle(vnode.dom, old, null);
-        else if (hasPropertyKey(vnode, key, ns) && key !== "className" && key !== "title" && !(key === "value" && (vnode.tag === "option" || vnode.tag === "select" && vnode.dom.selectedIndex === -1 && vnode.dom === activeElement(vnode.dom))) && !(vnode.tag === "input" && key === "type")) {
+        else if (
+          hasPropertyKey(vnode, key, ns) && key !== "className" &&
+          key !== "title" &&
+          !(key === "value" &&
+            (vnode.tag === "option" ||
+              vnode.tag === "select" && vnode.dom.selectedIndex === -1 &&
+                vnode.dom === activeElement(vnode.dom))) &&
+          !(vnode.tag === "input" && key === "type")
+        ) {
           vnode.dom[key] = null;
         } else {
           var nsLastIndex = key.indexOf(":");
           if (nsLastIndex !== -1) key = key.slice(nsLastIndex + 1);
-          if (old !== false) vnode.dom.removeAttribute(key === "className" ? "class" : key);
+          if (old !== false) {
+            vnode.dom.removeAttribute(key === "className" ? "class" : key);
+          }
         }
       }
       function setLateSelectAttrs(vnode, attrs) {
@@ -779,21 +1081,29 @@ var require_render = __commonJS({
             if (vnode.dom.selectedIndex !== -1) vnode.dom.value = null;
           } else {
             var normalized = "" + attrs.value;
-            if (vnode.dom.value !== normalized || vnode.dom.selectedIndex === -1) {
+            if (
+              vnode.dom.value !== normalized || vnode.dom.selectedIndex === -1
+            ) {
               vnode.dom.value = normalized;
             }
           }
         }
-        if ("selectedIndex" in attrs) setAttr(vnode, "selectedIndex", null, attrs.selectedIndex, void 0);
+        if ("selectedIndex" in attrs) {
+          setAttr(vnode, "selectedIndex", null, attrs.selectedIndex, void 0);
+        }
       }
       function updateAttrs(vnode, old, attrs, ns) {
         var val;
         if (old != null) {
           if (old === attrs && !cachedAttrsIsStaticMap.has(attrs)) {
-            console.warn("Don't reuse attrs object, use new object for every redraw, this will throw in next major");
+            console.warn(
+              "Don't reuse attrs object, use new object for every redraw, this will throw in next major",
+            );
           }
           for (var key in old) {
-            if ((val = old[key]) != null && (attrs == null || attrs[key] == null)) {
+            if (
+              (val = old[key]) != null && (attrs == null || attrs[key] == null)
+            ) {
               removeAttr(vnode, key, val, ns);
             }
           }
@@ -805,15 +1115,24 @@ var require_render = __commonJS({
         }
       }
       function isFormAttribute(vnode, attr) {
-        return attr === "value" || attr === "checked" || attr === "selectedIndex" || attr === "selected" && (vnode.dom === activeElement(vnode.dom) || vnode.tag === "option" && vnode.dom.parentNode === activeElement(vnode.dom));
+        return attr === "value" || attr === "checked" ||
+          attr === "selectedIndex" ||
+          attr === "selected" &&
+            (vnode.dom === activeElement(vnode.dom) ||
+              vnode.tag === "option" &&
+                vnode.dom.parentNode === activeElement(vnode.dom));
       }
       function isLifecycleMethod(attr) {
-        return attr === "oninit" || attr === "oncreate" || attr === "onupdate" || attr === "onremove" || attr === "onbeforeremove" || attr === "onbeforeupdate";
+        return attr === "oninit" || attr === "oncreate" ||
+          attr === "onupdate" || attr === "onremove" ||
+          attr === "onbeforeremove" || attr === "onbeforeupdate";
       }
       function hasPropertyKey(vnode, key, ns) {
         return ns === void 0 && // If it's a custom element, just keep it.
-        (vnode.tag.indexOf("-") > -1 || vnode.is || // If it's a normal element, let's try to avoid a few browser bugs.
-        key !== "href" && key !== "list" && key !== "form" && key !== "width" && key !== "height") && key in vnode.dom;
+          (vnode.tag.indexOf("-") > -1 || vnode.is || // If it's a normal element, let's try to avoid a few browser bugs.
+            key !== "href" && key !== "list" && key !== "form" &&
+              key !== "width" && key !== "height") &&
+          key in vnode.dom;
       }
       function updateStyle(element, old, style) {
         if (old === style) {
@@ -826,8 +1145,9 @@ var require_render = __commonJS({
           for (var key in style) {
             var value = style[key];
             if (value != null) {
-              if (key.includes("-")) element.style.setProperty(key, String(value));
-              else element.style[key] = String(value);
+              if (key.includes("-")) {
+                element.style.setProperty(key, String(value));
+              } else element.style[key] = String(value);
             }
           }
         } else {
@@ -850,16 +1170,19 @@ var require_render = __commonJS({
         this._ = currentRedraw;
       }
       EventDict.prototype = /* @__PURE__ */ Object.create(null);
-      EventDict.prototype.handleEvent = function(ev) {
+      EventDict.prototype.handleEvent = function (ev) {
         var handler = this["on" + ev.type];
         var result;
-        if (typeof handler === "function") result = handler.call(ev.currentTarget, ev);
-        else if (typeof handler.handleEvent === "function") handler.handleEvent(ev);
+        if (typeof handler === "function") {
+          result = handler.call(ev.currentTarget, ev);
+        } else if (typeof handler.handleEvent === "function") {
+          handler.handleEvent(ev);
+        }
         var self = this;
         if (self._ != null) {
           if (ev.redraw !== false) (0, self._)();
           if (result != null && typeof result.then === "function") {
-            Promise.resolve(result).then(function() {
+            Promise.resolve(result).then(function () {
               if (self._ != null && ev.redraw !== false) (0, self._)();
             });
           }
@@ -873,33 +1196,55 @@ var require_render = __commonJS({
         if (vnode.events != null) {
           vnode.events._ = currentRedraw;
           if (vnode.events[key] === value) return;
-          if (value != null && (typeof value === "function" || typeof value === "object")) {
-            if (vnode.events[key] == null) vnode.dom.addEventListener(key.slice(2), vnode.events, false);
+          if (
+            value != null &&
+            (typeof value === "function" || typeof value === "object")
+          ) {
+            if (vnode.events[key] == null) {
+              vnode.dom.addEventListener(key.slice(2), vnode.events, false);
+            }
             vnode.events[key] = value;
           } else {
-            if (vnode.events[key] != null) vnode.dom.removeEventListener(key.slice(2), vnode.events, false);
+            if (vnode.events[key] != null) {
+              vnode.dom.removeEventListener(key.slice(2), vnode.events, false);
+            }
             vnode.events[key] = void 0;
           }
-        } else if (value != null && (typeof value === "function" || typeof value === "object")) {
+        } else if (
+          value != null &&
+          (typeof value === "function" || typeof value === "object")
+        ) {
           vnode.events = new EventDict();
           vnode.dom.addEventListener(key.slice(2), vnode.events, false);
           vnode.events[key] = value;
         }
       }
       function initLifecycle(source, vnode, hooks) {
-        if (typeof source.oninit === "function") callHook.call(source.oninit, vnode);
-        if (typeof source.oncreate === "function") hooks.push(callHook.bind(source.oncreate, vnode));
+        if (typeof source.oninit === "function") {
+          callHook.call(source.oninit, vnode);
+        }
+        if (typeof source.oncreate === "function") {
+          hooks.push(callHook.bind(source.oncreate, vnode));
+        }
       }
       function updateLifecycle(source, vnode, hooks) {
-        if (typeof source.onupdate === "function") hooks.push(callHook.bind(source.onupdate, vnode));
+        if (typeof source.onupdate === "function") {
+          hooks.push(callHook.bind(source.onupdate, vnode));
+        }
       }
       function shouldNotUpdate(vnode, old) {
         do {
-          if (vnode.attrs != null && typeof vnode.attrs.onbeforeupdate === "function") {
+          if (
+            vnode.attrs != null &&
+            typeof vnode.attrs.onbeforeupdate === "function"
+          ) {
             var force = callHook.call(vnode.attrs.onbeforeupdate, vnode, old);
             if (force !== void 0 && !force) break;
           }
-          if (typeof vnode.tag !== "string" && typeof vnode.state.onbeforeupdate === "function") {
+          if (
+            typeof vnode.tag !== "string" &&
+            typeof vnode.state.onbeforeupdate === "function"
+          ) {
             var force = callHook.call(vnode.state.onbeforeupdate, vnode, old);
             if (force !== void 0 && !force) break;
           }
@@ -914,10 +1259,14 @@ var require_render = __commonJS({
         return true;
       }
       var currentDOM;
-      return function(dom, vnodes, redraw) {
-        if (!dom) throw new TypeError("DOM element being rendered to does not exist.");
+      return function (dom, vnodes, redraw) {
+        if (!dom) {
+          throw new TypeError("DOM element being rendered to does not exist.");
+        }
         if (currentDOM != null && dom.contains(currentDOM)) {
-          throw new TypeError("Node is currently being rendered to and thus is locked.");
+          throw new TypeError(
+            "Node is currently being rendered to and thus is locked.",
+          );
         }
         var prevRedraw = currentRedraw;
         var prevDOM = currentDOM;
@@ -929,10 +1278,22 @@ var require_render = __commonJS({
         currentRender = {};
         try {
           if (dom.vnodes == null) dom.textContent = "";
-          vnodes = Vnode.normalizeChildren(Array.isArray(vnodes) ? vnodes : [vnodes]);
-          updateNodes(dom, dom.vnodes, vnodes, hooks, null, namespace === "http://www.w3.org/1999/xhtml" ? void 0 : namespace);
+          vnodes = Vnode.normalizeChildren(
+            Array.isArray(vnodes) ? vnodes : [vnodes],
+          );
+          updateNodes(
+            dom,
+            dom.vnodes,
+            vnodes,
+            hooks,
+            null,
+            namespace === "http://www.w3.org/1999/xhtml" ? void 0 : namespace,
+          );
           dom.vnodes = vnodes;
-          if (active != null && activeElement(dom) !== active && typeof active.focus === "function") active.focus();
+          if (
+            active != null && activeElement(dom) !== active &&
+            typeof active.focus === "function"
+          ) active.focus();
           for (var i = 0; i < hooks.length; i++) hooks[i]();
         } finally {
           currentRedraw = prevRedraw;
@@ -940,30 +1301,42 @@ var require_render = __commonJS({
         }
       };
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/render.js
 var require_render2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/render.js"(
+    exports,
+    module,
+  ) {
     "use strict";
-    module.exports = require_render()(typeof window !== "undefined" ? window : null);
-  }
+    module.exports = require_render()(
+      typeof window !== "undefined" ? window : null,
+    );
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/mount-redraw.js
 var require_mount_redraw = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/mount-redraw.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/mount-redraw.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var Vnode = require_vnode();
-    module.exports = function(render, schedule, console2) {
+    module.exports = function (render, schedule, console2) {
       var subscriptions = [];
       var pending = false;
       var offset = -1;
       function sync() {
         for (offset = 0; offset < subscriptions.length; offset += 2) {
           try {
-            render(subscriptions[offset], Vnode(subscriptions[offset + 1]), redraw);
+            render(
+              subscriptions[offset],
+              Vnode(subscriptions[offset + 1]),
+              redraw,
+            );
           } catch (e) {
             console2.error(e);
           }
@@ -973,7 +1346,7 @@ var require_mount_redraw = __commonJS({
       function redraw() {
         if (!pending) {
           pending = true;
-          schedule(function() {
+          schedule(function () {
             pending = false;
             sync();
           });
@@ -981,7 +1354,10 @@ var require_mount_redraw = __commonJS({
       }
       redraw.sync = sync;
       function mount(root, component) {
-        if (component != null && component.view == null && typeof component !== "function") {
+        if (
+          component != null && component.view == null &&
+          typeof component !== "function"
+        ) {
           throw new TypeError("m.mount expects a component, not a vnode.");
         }
         var index = subscriptions.indexOf(root);
@@ -997,24 +1373,38 @@ var require_mount_redraw = __commonJS({
       }
       return { mount, redraw };
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/mount-redraw.js
 var require_mount_redraw2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/mount-redraw.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/mount-redraw.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var render = require_render2();
-    module.exports = require_mount_redraw()(render, typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame : null, typeof console !== "undefined" ? console : null);
-  }
+    module.exports = require_mount_redraw()(
+      render,
+      typeof requestAnimationFrame !== "undefined"
+        ? requestAnimationFrame
+        : null,
+      typeof console !== "undefined" ? console : null,
+    );
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/querystring/build.js
 var require_build = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/querystring/build.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/querystring/build.js"(
+    exports,
+    module,
+  ) {
     "use strict";
-    module.exports = function(object2) {
-      if (Object.prototype.toString.call(object2) !== "[object Object]") return "";
+    module.exports = function (object2) {
+      if (Object.prototype.toString.call(object2) !== "[object Object]") {
+        return "";
+      }
       var args = [];
       for (var key in object2) {
         destructure(key, object2[key]);
@@ -1025,24 +1415,36 @@ var require_build = __commonJS({
           for (var i = 0; i < value.length; i++) {
             destructure(key2 + "[" + i + "]", value[i]);
           }
-        } else if (Object.prototype.toString.call(value) === "[object Object]") {
+        } else if (
+          Object.prototype.toString.call(value) === "[object Object]"
+        ) {
           for (var i in value) {
             destructure(key2 + "[" + i + "]", value[i]);
           }
-        } else args.push(encodeURIComponent(key2) + (value != null && value !== "" ? "=" + encodeURIComponent(value) : ""));
+        } else {args.push(
+            encodeURIComponent(key2) +
+              (value != null && value !== ""
+                ? "=" + encodeURIComponent(value)
+                : ""),
+          );}
       }
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/build.js
 var require_build2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/build.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/build.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var buildQueryString = require_build();
-    module.exports = function(template, params) {
+    module.exports = function (template, params) {
       if (/:([^\/\.-]+)(\.{3})?:/.test(template)) {
-        throw new SyntaxError("Template parameter names must be separated by either a '/', '-', or '.'.");
+        throw new SyntaxError(
+          "Template parameter names must be separated by either a '/', '-', or '.'.",
+        );
       }
       if (params == null) return template;
       var queryIndex = template.indexOf("?");
@@ -1052,56 +1454,89 @@ var require_build2 = __commonJS({
       var path = template.slice(0, pathEnd);
       var query = {};
       Object.assign(query, params);
-      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m34, key, variadic) {
-        delete query[key];
-        if (params[key] == null) return m34;
-        return variadic ? params[key] : encodeURIComponent(String(params[key]));
-      });
+      var resolved = path.replace(
+        /:([^\/\.-]+)(\.{3})?/g,
+        function (m34, key, variadic) {
+          delete query[key];
+          if (params[key] == null) return m34;
+          return variadic
+            ? params[key]
+            : encodeURIComponent(String(params[key]));
+        },
+      );
       var newQueryIndex = resolved.indexOf("?");
       var newHashIndex = resolved.indexOf("#");
       var newQueryEnd = newHashIndex < 0 ? resolved.length : newHashIndex;
       var newPathEnd = newQueryIndex < 0 ? newQueryEnd : newQueryIndex;
       var result = resolved.slice(0, newPathEnd);
       if (queryIndex >= 0) result += template.slice(queryIndex, queryEnd);
-      if (newQueryIndex >= 0) result += (queryIndex < 0 ? "?" : "&") + resolved.slice(newQueryIndex, newQueryEnd);
+      if (newQueryIndex >= 0) {
+        result += (queryIndex < 0 ? "?" : "&") +
+          resolved.slice(newQueryIndex, newQueryEnd);
+      }
       var querystring = buildQueryString(query);
-      if (querystring) result += (queryIndex < 0 && newQueryIndex < 0 ? "?" : "&") + querystring;
+      if (querystring) {
+        result += (queryIndex < 0 && newQueryIndex < 0 ? "?" : "&") +
+          querystring;
+      }
       if (hashIndex >= 0) result += template.slice(hashIndex);
-      if (newHashIndex >= 0) result += (hashIndex < 0 ? "" : "&") + resolved.slice(newHashIndex);
+      if (newHashIndex >= 0) {
+        result += (hashIndex < 0 ? "" : "&") + resolved.slice(newHashIndex);
+      }
       return result;
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/request/request.js
 var require_request = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/request/request.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/request/request.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var buildPathname = require_build2();
     var hasOwn = require_hasOwn();
-    module.exports = function($window, oncompletion) {
+    module.exports = function ($window, oncompletion) {
       function PromiseProxy(executor) {
         return new Promise(executor);
       }
       function makeRequest(url2, args) {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
           url2 = buildPathname(url2, args.params);
           var method = args.method != null ? args.method.toUpperCase() : "GET";
           var body = args.body;
-          var assumeJSON = (args.serialize == null || args.serialize === JSON.serialize) && !(body instanceof $window.FormData || body instanceof $window.URLSearchParams);
-          var responseType = args.responseType || (typeof args.extract === "function" ? "" : "json");
-          var xhr = new $window.XMLHttpRequest(), aborted = false, isTimeout = false;
+          var assumeJSON =
+            (args.serialize == null || args.serialize === JSON.serialize) &&
+            !(body instanceof $window.FormData ||
+              body instanceof $window.URLSearchParams);
+          var responseType = args.responseType ||
+            (typeof args.extract === "function" ? "" : "json");
+          var xhr = new $window.XMLHttpRequest(),
+            aborted = false,
+            isTimeout = false;
           var original = xhr, replacedAbort;
           var abort = xhr.abort;
-          xhr.abort = function() {
+          xhr.abort = function () {
             aborted = true;
             abort.call(this);
           };
-          xhr.open(method, url2, args.async !== false, typeof args.user === "string" ? args.user : void 0, typeof args.password === "string" ? args.password : void 0);
+          xhr.open(
+            method,
+            url2,
+            args.async !== false,
+            typeof args.user === "string" ? args.user : void 0,
+            typeof args.password === "string" ? args.password : void 0,
+          );
           if (assumeJSON && body != null && !hasHeader(args, "content-type")) {
-            xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            xhr.setRequestHeader(
+              "Content-Type",
+              "application/json; charset=utf-8",
+            );
           }
-          if (typeof args.deserialize !== "function" && !hasHeader(args, "accept")) {
+          if (
+            typeof args.deserialize !== "function" && !hasHeader(args, "accept")
+          ) {
             xhr.setRequestHeader("Accept", "application/json, text/*");
           }
           if (args.withCredentials) xhr.withCredentials = args.withCredentials;
@@ -1112,14 +1547,19 @@ var require_request = __commonJS({
               xhr.setRequestHeader(key, args.headers[key]);
             }
           }
-          xhr.onreadystatechange = function(ev) {
+          xhr.onreadystatechange = function (ev) {
             if (aborted) return;
             if (ev.target.readyState === 4) {
               try {
-                var success = ev.target.status >= 200 && ev.target.status < 300 || ev.target.status === 304 || /^file:\/\//i.test(url2);
+                var success =
+                  ev.target.status >= 200 && ev.target.status < 300 ||
+                  ev.target.status === 304 || /^file:\/\//i.test(url2);
                 var response = ev.target.response, message;
                 if (responseType === "json") {
-                  if (!ev.target.responseType && typeof args.extract !== "function") {
+                  if (
+                    !ev.target.responseType &&
+                    typeof args.extract !== "function"
+                  ) {
                     try {
                       response = JSON.parse(ev.target.responseText);
                     } catch (e) {
@@ -1145,7 +1585,7 @@ var require_request = __commonJS({
                   }
                   resolve(response);
                 } else {
-                  var completeErrorResponse = function() {
+                  var completeErrorResponse = function () {
                     try {
                       message = ev.target.responseText;
                     } catch (e) {
@@ -1157,7 +1597,7 @@ var require_request = __commonJS({
                     reject(error);
                   };
                   if (xhr.status === 0) {
-                    setTimeout(function() {
+                    setTimeout(function () {
                       if (isTimeout) return;
                       completeErrorResponse();
                     });
@@ -1168,7 +1608,7 @@ var require_request = __commonJS({
               }
             }
           };
-          xhr.ontimeout = function(ev) {
+          xhr.ontimeout = function (ev) {
             isTimeout = true;
             var error = new Error("Request timed out");
             error.code = ev.target.status;
@@ -1178,15 +1618,19 @@ var require_request = __commonJS({
             xhr = args.config(xhr, args, url2) || xhr;
             if (xhr !== original) {
               replacedAbort = xhr.abort;
-              xhr.abort = function() {
+              xhr.abort = function () {
                 aborted = true;
                 replacedAbort.call(this);
               };
             }
           }
           if (body == null) xhr.send();
-          else if (typeof args.serialize === "function") xhr.send(args.serialize(body));
-          else if (body instanceof $window.FormData || body instanceof $window.URLSearchParams) xhr.send(body);
+          else if (typeof args.serialize === "function") {
+            xhr.send(args.serialize(body));
+          } else if (
+            body instanceof $window.FormData ||
+            body instanceof $window.URLSearchParams
+          ) xhr.send(body);
           else xhr.send(JSON.stringify(body));
         });
       }
@@ -1194,12 +1638,14 @@ var require_request = __commonJS({
       PromiseProxy.__proto__ = Promise;
       function hasHeader(args, name) {
         for (var key in args.headers) {
-          if (hasOwn.call(args.headers, key) && key.toLowerCase() === name) return true;
+          if (hasOwn.call(args.headers, key) && key.toLowerCase() === name) {
+            return true;
+          }
         }
         return false;
       }
       return {
-        request: function(url2, args) {
+        request: function (url2, args) {
           if (typeof url2 !== "string") {
             args = url2;
             url2 = url2.url;
@@ -1208,16 +1654,18 @@ var require_request = __commonJS({
           if (args.background === true) return promise;
           var count = 0;
           function complete() {
-            if (--count === 0 && typeof oncompletion === "function") oncompletion();
+            if (--count === 0 && typeof oncompletion === "function") {
+              oncompletion();
+            }
           }
           return wrap(promise);
           function wrap(promise2) {
             var then = promise2.then;
             promise2.constructor = PromiseProxy;
-            promise2.then = function() {
+            promise2.then = function () {
               count++;
               var next = then.apply(promise2, arguments);
-              next.then(complete, function(e) {
+              next.then(complete, function (e) {
                 complete();
                 if (count === 0) throw e;
               });
@@ -1225,24 +1673,33 @@ var require_request = __commonJS({
             };
             return promise2;
           }
-        }
+        },
       };
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/request.js
 var require_request2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/request.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/request.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var mountRedraw = require_mount_redraw2();
-    module.exports = require_request()(typeof window !== "undefined" ? window : null, mountRedraw.redraw);
-  }
+    module.exports = require_request()(
+      typeof window !== "undefined" ? window : null,
+      mountRedraw.redraw,
+    );
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/querystring/parse.js
 var require_parse = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/querystring/parse.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/querystring/parse.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     function decodeURIComponentSave(str) {
       try {
@@ -1251,7 +1708,7 @@ var require_parse = __commonJS({
         return str;
       }
     }
-    module.exports = function(string2) {
+    module.exports = function (string2) {
       if (string2 === "" || string2 == null) return {};
       if (string2.charAt(0) === "?") string2 = string2.slice(1);
       var entries = string2.split("&"), counters = {}, data = {};
@@ -1285,15 +1742,18 @@ var require_parse = __commonJS({
       }
       return data;
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/parse.js
 var require_parse2 = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/parse.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/parse.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var parseQueryString = require_parse();
-    module.exports = function(url2) {
+    module.exports = function (url2) {
       var queryIndex = url2.indexOf("?");
       var hashIndex = url2.indexOf("#");
       var queryEnd = hashIndex < 0 ? url2.length : hashIndex;
@@ -1305,62 +1765,82 @@ var require_parse2 = __commonJS({
       }
       return {
         path,
-        params: queryIndex < 0 ? {} : parseQueryString(url2.slice(queryIndex + 1, queryEnd))
+        params: queryIndex < 0
+          ? {}
+          : parseQueryString(url2.slice(queryIndex + 1, queryEnd)),
       };
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/compileTemplate.js
 var require_compileTemplate = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/compileTemplate.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/pathname/compileTemplate.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var parsePathname = require_parse2();
-    module.exports = function(template) {
+    module.exports = function (template) {
       var templateData = parsePathname(template);
       var templateKeys = Object.keys(templateData.params);
       var keys = [];
-      var regexp = new RegExp("^" + templateData.path.replace(
-        // I escape literal text so people can use things like `:file.:ext` or
-        // `:lang-:locale` in routes. This is all merged into one pass so I
-        // don't also accidentally escape `-` and make it harder to detect it to
-        // ban it from template parameters.
-        /:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
-        function(m34, key, extra) {
-          if (key == null) return "\\" + m34;
-          keys.push({ k: key, r: extra === "..." });
-          if (extra === "...") return "(.*)";
-          if (extra === ".") return "([^/]+)\\.";
-          return "([^/]+)" + (extra || "");
-        }
-      ) + "\\/?$");
-      return function(data) {
+      var regexp = new RegExp(
+        "^" + templateData.path.replace(
+          // I escape literal text so people can use things like `:file.:ext` or
+          // `:lang-:locale` in routes. This is all merged into one pass so I
+          // don't also accidentally escape `-` and make it harder to detect it to
+          // ban it from template parameters.
+          /:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
+          function (m34, key, extra) {
+            if (key == null) return "\\" + m34;
+            keys.push({ k: key, r: extra === "..." });
+            if (extra === "...") return "(.*)";
+            if (extra === ".") return "([^/]+)\\.";
+            return "([^/]+)" + (extra || "");
+          },
+        ) + "\\/?$",
+      );
+      return function (data) {
         for (var i = 0; i < templateKeys.length; i++) {
-          if (templateData.params[templateKeys[i]] !== data.params[templateKeys[i]]) return false;
+          if (
+            templateData.params[templateKeys[i]] !==
+              data.params[templateKeys[i]]
+          ) return false;
         }
         if (!keys.length) return regexp.test(data.path);
         var values = regexp.exec(data.path);
         if (values == null) return false;
         for (var i = 0; i < keys.length; i++) {
-          data.params[keys[i].k] = keys[i].r ? values[i + 1] : decodeURIComponent(values[i + 1]);
+          data.params[keys[i].k] = keys[i].r
+            ? values[i + 1]
+            : decodeURIComponent(values[i + 1]);
         }
         return true;
       };
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/util/censor.js
 var require_censor = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/util/censor.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/util/censor.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var hasOwn = require_hasOwn();
-    var magic = new RegExp("^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$");
-    module.exports = function(attrs, extras) {
+    var magic = new RegExp(
+      "^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$",
+    );
+    module.exports = function (attrs, extras) {
       var result = {};
       if (extras != null) {
         for (var key in attrs) {
-          if (hasOwn.call(attrs, key) && !magic.test(key) && extras.indexOf(key) < 0) {
+          if (
+            hasOwn.call(attrs, key) && !magic.test(key) &&
+            extras.indexOf(key) < 0
+          ) {
             result[key] = attrs[key];
           }
         }
@@ -1373,12 +1853,15 @@ var require_censor = __commonJS({
       }
       return result;
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/router.js
 var require_router = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/router.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/router.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var Vnode = require_vnode();
     var m34 = require_hyperscript();
@@ -1393,8 +1876,12 @@ var require_router = __commonJS({
         return component;
       }
     }
-    module.exports = function($window, mountRedraw) {
-      var callAsync = $window == null ? null : typeof $window.setImmediate === "function" ? $window.setImmediate : $window.setTimeout;
+    module.exports = function ($window, mountRedraw) {
+      var callAsync = $window == null
+        ? null
+        : typeof $window.setImmediate === "function"
+        ? $window.setImmediate
+        : $window.setTimeout;
       var p = Promise.resolve();
       var scheduled = false;
       var ready = false;
@@ -1402,15 +1889,15 @@ var require_router = __commonJS({
       var dom, compiled, fallbackRoute;
       var currentResolver, component, attrs, currentPath, lastUpdate;
       var RouterRoot = {
-        onremove: function() {
+        onremove: function () {
           ready = hasBeenResolved = false;
           $window.removeEventListener("popstate", fireAsync, false);
         },
-        view: function() {
+        view: function () {
           var vnode = Vnode(component, attrs.key, attrs);
           if (currentResolver) return currentResolver.render(vnode);
           return [vnode];
-        }
+        },
       };
       var SKIP = route.SKIP = {};
       function resolveRoute() {
@@ -1423,7 +1910,10 @@ var require_router = __commonJS({
             if (prefix[0] !== "/") prefix = "/" + prefix;
           }
         }
-        var path = prefix.concat().replace(/(?:%[a-f89][a-f0-9])+/gim, decodeURIComponentSave).slice(route.prefix.length);
+        var path = prefix.concat().replace(
+          /(?:%[a-f89][a-f0-9])+/gim,
+          decodeURIComponentSave,
+        ).slice(route.prefix.length);
         var data = parsePathname(path);
         Object.assign(data.params, $window.history.state);
         function reject(e) {
@@ -1437,10 +1927,14 @@ var require_router = __commonJS({
               var payload = compiled[i].component;
               var matchedRoute = compiled[i].route;
               var localComp = payload;
-              var update = lastUpdate = function(comp) {
+              var update = lastUpdate = function (comp) {
                 if (update !== lastUpdate) return;
                 if (comp === SKIP) return loop(i + 1);
-                component = comp != null && (typeof comp.view === "function" || typeof comp === "function") ? comp : "div";
+                component = comp != null &&
+                    (typeof comp.view === "function" ||
+                      typeof comp === "function")
+                  ? comp
+                  : "div";
                 attrs = data.params, currentPath = path, lastUpdate = null;
                 currentResolver = payload.render ? payload : null;
                 if (hasBeenResolved) mountRedraw.redraw();
@@ -1453,17 +1947,19 @@ var require_router = __commonJS({
                 payload = {};
                 update(localComp);
               } else if (payload.onmatch) {
-                p.then(function() {
+                p.then(function () {
                   return payload.onmatch(data.params, path, matchedRoute);
                 }).then(update, path === fallbackRoute ? null : reject);
-              } else update(
-                /* "div" */
-              );
+              } else {update(
+                  /* "div" */
+                );}
               return;
             }
           }
           if (path === fallbackRoute) {
-            throw new Error("Could not resolve default route " + fallbackRoute + ".");
+            throw new Error(
+              "Could not resolve default route " + fallbackRoute + ".",
+            );
           }
           route.set(fallbackRoute, null, { replace: true });
         }
@@ -1475,25 +1971,35 @@ var require_router = __commonJS({
         }
       }
       function route(root, defaultRoute, routes) {
-        if (!root) throw new TypeError("DOM element being rendered to does not exist.");
-        compiled = Object.keys(routes).map(function(route2) {
-          if (route2[0] !== "/") throw new SyntaxError("Routes must start with a '/'.");
+        if (!root) {
+          throw new TypeError("DOM element being rendered to does not exist.");
+        }
+        compiled = Object.keys(routes).map(function (route2) {
+          if (route2[0] !== "/") {
+            throw new SyntaxError("Routes must start with a '/'.");
+          }
           if (/:([^\/\.-]+)(\.{3})?:/.test(route2)) {
-            throw new SyntaxError("Route parameter names must be separated with either '/', '.', or '-'.");
+            throw new SyntaxError(
+              "Route parameter names must be separated with either '/', '.', or '-'.",
+            );
           }
           return {
             route: route2,
             component: routes[route2],
-            check: compileTemplate(route2)
+            check: compileTemplate(route2),
           };
         });
         fallbackRoute = defaultRoute;
         if (defaultRoute != null) {
           var defaultData = parsePathname(defaultRoute);
-          if (!compiled.some(function(i) {
-            return i.check(defaultData);
-          })) {
-            throw new ReferenceError("Default route doesn't match any known routes.");
+          if (
+            !compiled.some(function (i) {
+              return i.check(defaultData);
+            })
+          ) {
+            throw new ReferenceError(
+              "Default route doesn't match any known routes.",
+            );
           }
         }
         dom = root;
@@ -1501,7 +2007,7 @@ var require_router = __commonJS({
         ready = true;
         resolveRoute();
       }
-      route.set = function(path, data, options) {
+      route.set = function (path, data, options) {
         if (lastUpdate != null) {
           options = options || {};
           options.replace = true;
@@ -1512,22 +2018,23 @@ var require_router = __commonJS({
           fireAsync();
           var state2 = options ? options.state : null;
           var title = options ? options.title : null;
-          if (options && options.replace) $window.history.replaceState(state2, title, route.prefix + path);
-          else $window.history.pushState(state2, title, route.prefix + path);
+          if (options && options.replace) {
+            $window.history.replaceState(state2, title, route.prefix + path);
+          } else $window.history.pushState(state2, title, route.prefix + path);
         } else {
           $window.location.href = route.prefix + path;
         }
       };
-      route.get = function() {
+      route.get = function () {
         return currentPath;
       };
       route.prefix = "#!";
       route.Link = {
-        view: function(vnode) {
+        view: function (vnode) {
           var child = m34(
             vnode.attrs.selector || "a",
             censor(vnode.attrs, ["options", "params", "selector", "onclick"]),
-            vnode.children
+            vnode.children,
           );
           var options, onclick, href;
           if (child.attrs.disabled = Boolean(child.attrs.disabled)) {
@@ -1538,7 +2045,7 @@ var require_router = __commonJS({
             onclick = vnode.attrs.onclick;
             href = buildPathname(child.attrs.href, vnode.attrs.params);
             child.attrs.href = route.prefix + href;
-            child.attrs.onclick = function(e) {
+            child.attrs.onclick = function (e) {
               var result;
               if (typeof onclick === "function") {
                 result = onclick.call(e.currentTarget, e);
@@ -1550,7 +2057,8 @@ var require_router = __commonJS({
                 // Skip if `onclick` prevented default
                 result !== false && !e.defaultPrevented && // Ignore everything but left clicks
                 (e.button === 0 || e.which === 0 || e.which === 1) && // Let the browser handle `target=_blank`, etc.
-                (!e.currentTarget.target || e.currentTarget.target === "_self") && // No modifier keys
+                (!e.currentTarget.target ||
+                  e.currentTarget.target === "_self") && // No modifier keys
                 !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey
               ) {
                 e.preventDefault();
@@ -1560,28 +2068,37 @@ var require_router = __commonJS({
             };
           }
           return child;
-        }
+        },
       };
-      route.param = function(key) {
+      route.param = function (key) {
         return attrs && key != null ? attrs[key] : attrs;
       };
       return route;
     };
-  }
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/route.js
 var require_route = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/route.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/route.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var mountRedraw = require_mount_redraw2();
-    module.exports = require_router()(typeof window !== "undefined" ? window : null, mountRedraw);
-  }
+    module.exports = require_router()(
+      typeof window !== "undefined" ? window : null,
+      mountRedraw,
+    );
+  },
 });
 
 // node_modules/.deno/mithril@2.3.7/node_modules/mithril/index.js
 var require_mithril = __commonJS({
-  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/index.js"(exports, module) {
+  "node_modules/.deno/mithril@2.3.7/node_modules/mithril/index.js"(
+    exports,
+    module,
+  ) {
     "use strict";
     var hyperscript = require_hyperscript2();
     var request = require_request2();
@@ -1607,7 +2124,7 @@ var require_mithril = __commonJS({
     m34.censor = require_censor();
     m34.domFor = domFor.domFor;
     module.exports = m34;
-  }
+  },
 });
 
 // ts/index.ts
@@ -1624,8 +2141,8 @@ function broadcast(label, detail) {
   console.info(`broadcasting event: ${label}`, detail);
   document.dispatchEvent(
     new CustomEvent(label, {
-      detail
-    })
+      detail,
+    }),
   );
 }
 function listen(label, callback) {
@@ -1648,37 +2165,48 @@ function BurgerMenu() {
   };
   return {
     view() {
-      return (0, import_mithril.default)("a", { href: "/", onclick }, (0, import_mithril.default)("span.burger", "\u039E"));
-    }
+      return (0, import_mithril.default)(
+        "a",
+        { href: "/", onclick },
+        (0, import_mithril.default)("span.burger", "\u039E"),
+      );
+    },
   };
 }
 function HeaderBrandText() {
   const BRAND_TEXT = "photos";
   return {
     view() {
-      return (0, import_mithril.default)("a", { href: "/" }, (0, import_mithril.default)("span.brand", BRAND_TEXT));
-    }
+      return (0, import_mithril.default)(
+        "a",
+        { href: "/" },
+        (0, import_mithril.default)("span.brand", BRAND_TEXT),
+      );
+    },
   };
 }
 function RSSIcon() {
   const SVG_PATH = (0, import_mithril.default)("path", {
     fill: "#ff9132",
-    d: "M 4.259,23.467c-2.35,0-4.259,1.917-4.259,4.252c0,2.349, 1.909,4.244, 4.259,4.244 c 2.358,0, 4.265-1.895, 4.265-4.244C 8.525,25.383, 6.618,23.467, 4.259,23.467zM 0.005,10.873l0,6.133 c 3.993,0, 7.749,1.562, 10.577,4.391c 2.825,2.822, 4.384,6.595, 4.384,10.603l 6.16,0 C 21.125,20.349, 11.648,10.873, 0.005,10.873zM 0.012,0l0,6.136 c 14.243,0, 25.836,11.604, 25.836,25.864L 32,32 C 32,14.36, 17.648,0, 0.012,0z"
+    d: "M 4.259,23.467c-2.35,0-4.259,1.917-4.259,4.252c0,2.349, 1.909,4.244, 4.259,4.244 c 2.358,0, 4.265-1.895, 4.265-4.244C 8.525,25.383, 6.618,23.467, 4.259,23.467zM 0.005,10.873l0,6.133 c 3.993,0, 7.749,1.562, 10.577,4.391c 2.825,2.822, 4.384,6.595, 4.384,10.603l 6.16,0 C 21.125,20.349, 11.648,10.873, 0.005,10.873zM 0.012,0l0,6.136 c 14.243,0, 25.836,11.604, 25.836,25.864L 32,32 C 32,14.36, 17.648,0, 0.012,0z",
   });
   return {
     view() {
-      return (0, import_mithril.default)("a.rss", { title: "rss", href: "/manifest/atom-index.xml" }, [
+      return (0, import_mithril.default)("a.rss", {
+        title: "rss",
+        href: "/manifest/atom-index.xml",
+      }, [
         (0, import_mithril.default)("svg", {
           alt: "rss",
           width: "25px",
           height: "25px",
           viewBox: "0 0 32 32",
-          style: "position: relative; top: 5px;"
+          style: "position: relative; top: 5px;",
         }, [
-          SVG_PATH
-        ])
+          SVG_PATH,
+        ]),
       ]);
-    }
+    },
   };
 }
 function ThemeSwitch() {
@@ -1691,10 +2219,10 @@ function ThemeSwitch() {
         (0, import_mithril.default)("span.brand.switch", {
           onclick: () => {
             broadcast("switch_theme", {});
-          }
-        }, text)
+          },
+        }, text),
       );
-    }
+    },
   };
 }
 function Header() {
@@ -1702,19 +2230,29 @@ function Header() {
     view(vnode) {
       return (0, import_mithril.default)("nav.header", { role: "navigation" }, [
         (0, import_mithril.default)("ul", [
-          (0, import_mithril.default)("li.header-item", {}, (0, import_mithril.default)(BurgerMenu())),
-          (0, import_mithril.default)("li.header-item", {}, (0, import_mithril.default)(HeaderBrandText())),
-          (0, import_mithril.default)("li.rss-tag header-item", { style: "float: right" }, (0, import_mithril.default)(RSSIcon())),
+          (0, import_mithril.default)(
+            "li.header-item",
+            {},
+            (0, import_mithril.default)(BurgerMenu()),
+          ),
+          (0, import_mithril.default)(
+            "li.header-item",
+            {},
+            (0, import_mithril.default)(HeaderBrandText()),
+          ),
+          (0, import_mithril.default)("li.rss-tag header-item", {
+            style: "float: right",
+          }, (0, import_mithril.default)(RSSIcon())),
           (0, import_mithril.default)(
             "li.header-item",
             { style: "float: right" },
             (0, import_mithril.default)(ThemeSwitch(), {
-              darkMode: vnode.attrs.darkMode
-            })
-          )
-        ])
+              darkMode: vnode.attrs.darkMode,
+            }),
+          ),
+        ]),
       ]);
-    }
+    },
   };
 }
 
@@ -1865,12 +2403,16 @@ function parseUrn(urn, namespace = "r\xF3") {
   const type = delimited[2];
   const idx = urn.indexOf("?");
   const queryString = idx !== -1 ? urn.slice(idx + 1) : "";
-  const id = idx !== -1 ? delimited[3].slice(0, delimited[3].indexOf("?")) : delimited[3];
-  const qs = queryString ? Object.fromEntries(new URLSearchParams(queryString)) : {};
+  const id = idx !== -1
+    ? delimited[3].slice(0, delimited[3].indexOf("?"))
+    : delimited[3];
+  const qs = queryString
+    ? Object.fromEntries(new URLSearchParams(queryString))
+    : {};
   return {
     type,
     id,
-    qs
+    qs,
   };
 }
 function asUrn(value, namespace = "r\xF3") {
@@ -1878,7 +2420,7 @@ function asUrn(value, namespace = "r\xF3") {
     return {
       type: "unknown",
       id: value,
-      qs: {}
+      qs: {},
     };
   }
   return parseUrn(value, namespace);
@@ -1959,7 +2501,7 @@ var Index = class {
       this.indexedTriples.push([
         this.stringIndex.add(source),
         relationIdx,
-        this.stringIndex.add(target)
+        this.stringIndex.add(target),
       ]);
       let sourceTypeSet = this.sourceType.get(sourceTypeIdx);
       if (!sourceTypeSet) {
@@ -2020,7 +2562,7 @@ var Index = class {
     return this.indexedTriples.map(([sourceIdx, relationIdx, targetIdx]) => [
       this.stringIndex.getValue(sourceIdx),
       this.stringIndex.getValue(relationIdx),
-      this.stringIndex.getValue(targetIdx)
+      this.stringIndex.getValue(targetIdx),
     ]);
   }
   /*
@@ -2034,7 +2576,7 @@ var Index = class {
     return [
       this.stringIndex.getValue(sourceIdx),
       this.stringIndex.getValue(relationIdx),
-      this.stringIndex.getValue(targetIdx)
+      this.stringIndex.getValue(targetIdx),
     ];
   }
   getTripleIndices(index) {
@@ -2294,7 +2836,7 @@ var TribbleDB = class _TribbleDB {
    */
   sources() {
     return new Set(
-      this.index.triples().map(Triples.source)
+      this.index.triples().map(Triples.source),
     );
   }
   /**
@@ -2304,7 +2846,7 @@ var TribbleDB = class _TribbleDB {
    */
   relations() {
     return new Set(
-      this.index.triples().map(Triples.relation)
+      this.index.triples().map(Triples.relation),
     );
   }
   /**
@@ -2314,7 +2856,7 @@ var TribbleDB = class _TribbleDB {
    */
   targets() {
     return new Set(
-      this.index.triples().map(Triples.target)
+      this.index.triples().map(Triples.target),
     );
   }
   /*
@@ -2389,15 +2931,18 @@ var TribbleDB = class _TribbleDB {
     return {
       source: this.nodeAsDSL(source),
       relation: this.relationAsDSL(relation),
-      target: this.nodeAsDSL(target)
+      target: this.nodeAsDSL(target),
     };
   }
   #findMatchingRows(params) {
     const matchingRowSets = [
-      this.cursorIndices
+      this.cursorIndices,
     ];
     const { source, relation, target } = this.searchParamsToObject(params);
-    if (typeof source === "undefined" && typeof target === "undefined" && typeof relation === "undefined") {
+    if (
+      typeof source === "undefined" && typeof target === "undefined" &&
+      typeof relation === "undefined"
+    ) {
       throw new Error("At least one search parameter must be defined");
     }
     const allowedKeys = ["source", "relation", "target"];
@@ -2422,7 +2967,9 @@ var TribbleDB = class _TribbleDB {
         }
       }
       if (expandedSource.id) {
-        const ids = Array.isArray(expandedSource.id) ? expandedSource.id : [expandedSource.id];
+        const ids = Array.isArray(expandedSource.id)
+          ? expandedSource.id
+          : [expandedSource.id];
         const idSet = /* @__PURE__ */ new Set();
         for (const id of ids) {
           const sourceIdSet = this.index.getSourceIdSet(id);
@@ -2455,7 +3002,9 @@ var TribbleDB = class _TribbleDB {
         }
       }
       if (expandedTarget.id) {
-        const ids = Array.isArray(expandedTarget.id) ? expandedTarget.id : [expandedTarget.id];
+        const ids = Array.isArray(expandedTarget.id)
+          ? expandedTarget.id
+          : [expandedTarget.id];
         const idSet = /* @__PURE__ */ new Set();
         for (const id of ids) {
           const targetIdSet = this.index.getTargetIdSet(id);
@@ -2498,7 +3047,8 @@ var TribbleDB = class _TribbleDB {
     const matchingTriples = /* @__PURE__ */ new Set();
     const hasSourcePredicate = expandedSource?.predicate !== void 0;
     const hasTargetPredicate = expandedTarget?.predicate !== void 0;
-    const hasRelationPredicate = typeof expandedRelation === "object" && expandedRelation.predicate !== void 0;
+    const hasRelationPredicate = typeof expandedRelation === "object" &&
+      expandedRelation.predicate !== void 0;
     for (const index of intersection) {
       const triple = this.index.getTriple(index);
       if (!hasSourcePredicate && !hasTargetPredicate && !hasRelationPredicate) {
@@ -2513,7 +3063,8 @@ var TribbleDB = class _TribbleDB {
         isValid = isValid && expandedTarget.predicate(Triples.target(triple));
       }
       if (hasRelationPredicate && isValid) {
-        isValid = isValid && expandedRelation.predicate(Triples.relation(triple));
+        isValid = isValid &&
+          expandedRelation.predicate(Triples.relation(triple));
       }
       if (isValid) {
         matchingTriples.add(index);
@@ -2546,7 +3097,7 @@ var TribbleDB = class _TribbleDB {
   getMetrics() {
     return {
       index: this.index.metrics,
-      db: this.metrics
+      db: this.metrics,
     };
   }
 };
@@ -2720,10 +3271,10 @@ var KnownTypes = class {
 var NonListableTypes = /* @__PURE__ */ new Set([
   KnownTypes.COUNTRY,
   KnownTypes.CAMERA,
-  KnownTypes.PLACE
+  KnownTypes.PLACE,
 ]);
 var PLURALS = /* @__PURE__ */ new Map([
-  ["country", "countries"]
+  ["country", "countries"],
 ]);
 var CDN_RELATIONS = /* @__PURE__ */ new Set([
   KnownRelations.THUMBNAIL_URL,
@@ -2734,16 +3285,16 @@ var CDN_RELATIONS = /* @__PURE__ */ new Set([
   KnownRelations.VIDEO_URL_1080P,
   KnownRelations.VIDEO_URL_480P,
   KnownRelations.VIDEO_URL_720P,
-  KnownRelations.VIDEO_URL_UNSCALED
+  KnownRelations.VIDEO_URL_UNSCALED,
 ]);
 var RelationSymmetries = [
-  [KnownRelations.IN, KnownRelations.CONTAINS]
+  [KnownRelations.IN, KnownRelations.CONTAINS],
 ];
 var CURIES = {
   "i": "urn:r\xF3:",
   "birdwatch": "https://birdwatchireland.ie/birds/",
   "photos": "https://photos-cdn.rgrannell.xyz/",
-  "wiki": "https://en.wikipedia.org/wiki/"
+  "wiki": "https://en.wikipedia.org/wiki/",
 };
 var CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
 var ENDPOINT = "https://photos-cdn.rgrannell.xyz";
@@ -2787,7 +3338,7 @@ var PLACE_FEATURES_TO_EMOJI = {
   volcano: "\u{1F30B}",
   waterfall: "\u{1F4A6}",
   wildlife: "\u{1F981}",
-  zoo: "\u{1F993}"
+  zoo: "\u{1F993}",
 };
 var CAMERA_MODELS = /* @__PURE__ */ new Set([
   "dc-gh5",
@@ -2795,13 +3346,13 @@ var CAMERA_MODELS = /* @__PURE__ */ new Set([
   "dmc-fz72",
   "dmc-g7",
   "finepix-f70exr",
-  "xz-1"
+  "xz-1",
 ]);
 var PHONE_MODELS = /* @__PURE__ */ new Set([
   "pixel-4a",
   "pixel-7-pro",
   "pixel-9a",
-  "sm-a520f"
+  "sm-a520f",
 ]);
 var BinomialTypes = /* @__PURE__ */ new Set([
   KnownTypes.BIRD,
@@ -2809,7 +3360,7 @@ var BinomialTypes = /* @__PURE__ */ new Set([
   KnownTypes.REPTILE,
   KnownTypes.AMPHIBIAN,
   KnownTypes.FISH,
-  KnownTypes.INSECT
+  KnownTypes.INSECT,
 ]);
 
 // ts/services/emoji.ts
@@ -2873,9 +3424,9 @@ function ThingLink() {
       return (0, import_mithril2.default)("a", {
         href: urn,
         onclick: navigate(`/thing/${type}:${id}`),
-        class: ["thing-link", `${type}-link`].join(" ")
+        class: ["thing-link", `${type}-link`].join(" "),
       }, `${emoji}	${name}`);
-    }
+    },
   };
 }
 
@@ -2959,7 +3510,10 @@ var Strings = class _Strings {
     if (CAMEL_CASE_CACHE.has(str)) {
       return CAMEL_CASE_CACHE.get(str);
     }
-    const result = str.replace(/[-_ ]+([a-z])/g, (_, char) => char.toUpperCase());
+    const result = str.replace(
+      /[-_ ]+([a-z])/g,
+      (_, char) => char.toUpperCase(),
+    );
     CAMEL_CASE_CACHE.set(str, result);
     return result;
   }
@@ -2978,7 +3532,7 @@ function convertRatingsToUrns(triple) {
   return [[
     src,
     rel,
-    `urn:r\xF3:rating:${encodeURIComponent(tgt)}`
+    `urn:r\xF3:rating:${encodeURIComponent(tgt)}`,
   ]];
 }
 function convertCountriesToUrns(triple) {
@@ -2991,7 +3545,7 @@ function convertCountriesToUrns(triple) {
   return [[
     src,
     rel,
-    countryUrn
+    countryUrn,
   ]];
 }
 var styleNames = /* @__PURE__ */ new Set();
@@ -3008,19 +3562,19 @@ function convertStylesToUrns(triple) {
       [
         src,
         rel,
-        styleUrn
+        styleUrn,
       ],
       [
         styleUrn,
         KnownRelations.NAME,
-        tgt
-      ]
+        tgt,
+      ],
     ];
   } else {
     return [[
       src,
       rel,
-      styleUrn
+      styleUrn,
     ]];
   }
 }
@@ -3035,7 +3589,7 @@ function expandCdnUrls(triple) {
   return [[
     src,
     rel,
-    `${ENDPOINT}${tgt}`
+    `${ENDPOINT}${tgt}`,
   ]];
 }
 function convertRelationCasing(triple) {
@@ -3043,15 +3597,19 @@ function convertRelationCasing(triple) {
   return [[
     src,
     Strings.camelCase(rel),
-    tgt
+    tgt,
   ]];
 }
 function expandUrns(triple) {
   const [src, rel, tgt] = triple;
   return [[
-    typeof src === "string" && src.startsWith("::") ? `urn:r\xF3:${src.slice(2)}` : src,
+    typeof src === "string" && src.startsWith("::")
+      ? `urn:r\xF3:${src.slice(2)}`
+      : src,
     rel,
-    typeof tgt === "string" && tgt.startsWith("::") ? `urn:r\xF3:${tgt.slice(2)}` : tgt
+    typeof tgt === "string" && tgt.startsWith("::")
+      ? `urn:r\xF3:${tgt.slice(2)}`
+      : tgt,
   ]];
 }
 function addSeason(triple) {
@@ -3077,8 +3635,8 @@ function addSeason(triple) {
     [
       src,
       KnownRelations.SEASON,
-      season
-    ]
+      season,
+    ],
   ];
 }
 function addYear(triple) {
@@ -3096,8 +3654,8 @@ function addYear(triple) {
     [
       src,
       KnownRelations.YEAR,
-      year
-    ]
+      year,
+    ],
   ];
 }
 function addInverseRelations(triple) {
@@ -3109,8 +3667,8 @@ function addInverseRelations(triple) {
         [
           tgt,
           from,
-          src
-        ]
+          src,
+        ],
       ];
     }
   }
@@ -3141,24 +3699,28 @@ function expandTripleCuries(triple) {
     [
       expandCurie(CURIES, src),
       rel,
-      expandCurie(CURIES, tgt)
-    ]
+      expandCurie(CURIES, tgt),
+    ],
   ];
 }
 var HARD_CODED_TRIPLES = [
   ["urn:r\xF3:rating:%E2%AD%90", KnownRelations.NAME, "\u2B50"],
   ["urn:r\xF3:rating:%E2%AD%90%E2%AD%90", KnownRelations.NAME, "\u2B50\u2B50"],
-  ["urn:r\xF3:rating:%E2%AD%90%E2%AD%90%E2%AD%90", KnownRelations.NAME, "\u2B50\u2B50\u2B50"],
+  [
+    "urn:r\xF3:rating:%E2%AD%90%E2%AD%90%E2%AD%90",
+    KnownRelations.NAME,
+    "\u2B50\u2B50\u2B50",
+  ],
   [
     "urn:r\xF3:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90",
     KnownRelations.NAME,
-    "\u2B50\u2B50\u2B50\u2B50"
+    "\u2B50\u2B50\u2B50\u2B50",
   ],
   [
     "urn:r\xF3:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90",
     KnownRelations.NAME,
-    "\u2B50\u2B50\u2B50\u2B50\u2B50"
-  ]
+    "\u2B50\u2B50\u2B50\u2B50\u2B50",
+  ],
 ];
 function deriveTriples(triple) {
   const tripleProcessors = [
@@ -3171,7 +3733,7 @@ function deriveTriples(triple) {
     addSeason,
     addYear,
     addInverseRelations,
-    expandTripleCuries
+    expandTripleCuries,
   ];
   let outputTriples = [triple];
   for (const fn of tripleProcessors) {
@@ -3212,7 +3774,7 @@ function namesToUrns(tdb2, names) {
   }
   const namesCursor = tdb2.search({
     relation: KnownRelations.NAME,
-    target: Array.from(names)
+    target: Array.from(names),
   });
   for (const [urn, _, name] of namesCursor.triples()) {
     if (names.has(name)) {
@@ -3227,7 +3789,7 @@ var import_mithril5 = __toESM(require_mithril());
 function readThing(tdb2, urn) {
   const parsed = asUrn(urn);
   return tdb2.search({
-    source: { id: parsed.id, type: parsed.type }
+    source: { id: parsed.id, type: parsed.type },
   }).firstObject();
 }
 function readParsedThing(parser, tdb2, id) {
@@ -3247,7 +3809,7 @@ function readThings(tdb2, urns) {
   }
   return things;
 }
-var readParsedThings = function(parser, tdb2, urns) {
+var readParsedThings = function (parser, tdb2, urns) {
   const parsedThings = [];
   for (const urn of urns) {
     const thing = readThing(tdb2, urn);
@@ -3263,7 +3825,7 @@ var readParsedThings = function(parser, tdb2, urns) {
 };
 function readNamedTypeThings(tdb2, type) {
   const things = tdb2.search({
-    source: { type }
+    source: { type },
   }).objects();
   return things.filter((thing) => {
     return Object.prototype.hasOwnProperty.call(thing, "name");
@@ -3286,7 +3848,7 @@ function toThingLinks(tdb2, urns) {
     }
     return [(0, import_mithril5.default)(ThingLink, {
       urn,
-      thing: readThing(tdb2, urn)
+      thing: readThing(tdb2, urn),
     })];
   });
 }
@@ -3299,7 +3861,7 @@ function getGlobalConfig(config2) {
     lang: config2?.lang ?? store?.lang,
     message: config2?.message,
     abortEarly: config2?.abortEarly ?? store?.abortEarly,
-    abortPipeEarly: config2?.abortPipeEarly ?? store?.abortPipeEarly
+    abortPipeEarly: config2?.abortPipeEarly ?? store?.abortPipeEarly,
   };
 }
 var store2;
@@ -3341,21 +3903,28 @@ function _addIssue(context, label, dataset, config2, other) {
     input,
     expected,
     received,
-    message: `Invalid ${label}: ${expected ? `Expected ${expected} but r` : "R"}eceived ${received}`,
+    message: `Invalid ${label}: ${
+      expected ? `Expected ${expected} but r` : "R"
+    }eceived ${received}`,
     requirement: context.requirement,
     path: other?.path,
     issues: other?.issues,
     lang: config2.lang,
     abortEarly: config2.abortEarly,
-    abortPipeEarly: config2.abortPipeEarly
+    abortPipeEarly: config2.abortPipeEarly,
   };
   const isSchema = context.kind === "schema";
-  const message2 = other?.message ?? context.message ?? /* @__PURE__ */ getSpecificMessage(context.reference, issue.lang) ?? (isSchema ? /* @__PURE__ */ getSchemaMessage(issue.lang) : null) ?? config2.message ?? /* @__PURE__ */ getGlobalMessage(issue.lang);
+  const message2 = other?.message ?? context.message ?? /* @__PURE__ */
+    getSpecificMessage(context.reference, issue.lang) ??
+    (isSchema ? /* @__PURE__ */ getSchemaMessage(issue.lang) : null) ??
+    config2.message ?? /* @__PURE__ */ getGlobalMessage(issue.lang);
   if (message2 !== void 0) {
-    issue.message = typeof message2 === "function" ? (
-      // @ts-expect-error
-      message2(issue)
-    ) : message2;
+    issue.message = typeof message2 === "function"
+      ? (
+        // @ts-expect-error
+        message2(issue)
+      )
+      : message2;
   }
   if (isSchema) {
     dataset.typed = false;
@@ -3372,8 +3941,11 @@ function _getStandardProps(context) {
     version: 1,
     vendor: "valibot",
     validate(value2) {
-      return context["~run"]({ value: value2 }, /* @__PURE__ */ getGlobalConfig());
-    }
+      return context["~run"](
+        { value: value2 },
+        /* @__PURE__ */ getGlobalConfig(),
+      );
+    },
   };
 }
 // @__NO_SIDE_EFFECTS__
@@ -3406,28 +3978,32 @@ function url(message2) {
         _addIssue(this, "URL", dataset, config2);
       }
       return dataset;
-    }
+    },
   };
 }
 // @__NO_SIDE_EFFECTS__
 function getFallback(schema, dataset, config2) {
-  return typeof schema.fallback === "function" ? (
-    // @ts-expect-error
-    schema.fallback(dataset, config2)
-  ) : (
-    // @ts-expect-error
-    schema.fallback
-  );
+  return typeof schema.fallback === "function"
+    ? (
+      // @ts-expect-error
+      schema.fallback(dataset, config2)
+    )
+    : (
+      // @ts-expect-error
+      schema.fallback
+    );
 }
 // @__NO_SIDE_EFFECTS__
 function getDefault(schema, dataset, config2) {
-  return typeof schema.default === "function" ? (
-    // @ts-expect-error
-    schema.default(dataset, config2)
-  ) : (
-    // @ts-expect-error
-    schema.default
-  );
+  return typeof schema.default === "function"
+    ? (
+      // @ts-expect-error
+      schema.default(dataset, config2)
+    )
+    : (
+      // @ts-expect-error
+      schema.default
+    );
 }
 // @__NO_SIDE_EFFECTS__
 function any() {
@@ -3443,7 +4019,7 @@ function any() {
     "~run"(dataset) {
       dataset.typed = true;
       return dataset;
-    }
+    },
   };
 }
 // @__NO_SIDE_EFFECTS__
@@ -3473,7 +4049,7 @@ function array(item, message2) {
               origin: "value",
               input,
               key,
-              value: value2
+              value: value2,
             };
             for (const issue of itemDataset.issues) {
               if (issue.path) {
@@ -3500,7 +4076,7 @@ function array(item, message2) {
         _addIssue(this, "type", dataset, config2);
       }
       return dataset;
-    }
+    },
   };
 }
 // @__NO_SIDE_EFFECTS__
@@ -3523,20 +4099,30 @@ function object(entries2, message2) {
         dataset.value = {};
         for (const key in this.entries) {
           const valueSchema = this.entries[key];
-          if (key in input || (valueSchema.type === "exact_optional" || valueSchema.type === "optional" || valueSchema.type === "nullish") && // @ts-expect-error
-          valueSchema.default !== void 0) {
-            const value2 = key in input ? (
-              // @ts-expect-error
-              input[key]
-            ) : /* @__PURE__ */ getDefault(valueSchema);
-            const valueDataset = valueSchema["~run"]({ value: value2 }, config2);
+          if (
+            key in input ||
+            (valueSchema.type === "exact_optional" ||
+                valueSchema.type === "optional" ||
+                valueSchema.type === "nullish") && // @ts-expect-error
+              valueSchema.default !== void 0
+          ) {
+            const value2 = key in input
+              ? (
+                // @ts-expect-error
+                input[key]
+              )
+              : /* @__PURE__ */ getDefault(valueSchema);
+            const valueDataset = valueSchema["~run"](
+              { value: value2 },
+              config2,
+            );
             if (valueDataset.issues) {
               const pathItem = {
                 type: "object",
                 origin: "value",
                 input,
                 key,
-                value: value2
+                value: value2,
               };
               for (const issue of valueDataset.issues) {
                 if (issue.path) {
@@ -3560,7 +4146,10 @@ function object(entries2, message2) {
             dataset.value[key] = valueDataset.value;
           } else if (valueSchema.fallback !== void 0) {
             dataset.value[key] = /* @__PURE__ */ getFallback(valueSchema);
-          } else if (valueSchema.type !== "exact_optional" && valueSchema.type !== "optional" && valueSchema.type !== "nullish") {
+          } else if (
+            valueSchema.type !== "exact_optional" &&
+            valueSchema.type !== "optional" && valueSchema.type !== "nullish"
+          ) {
             _addIssue(this, "key", dataset, config2, {
               input: void 0,
               expected: `"${key}"`,
@@ -3571,9 +4160,9 @@ function object(entries2, message2) {
                   input,
                   key,
                   // @ts-expect-error
-                  value: input[key]
-                }
-              ]
+                  value: input[key],
+                },
+              ],
             });
             if (config2.abortEarly) {
               break;
@@ -3584,7 +4173,7 @@ function object(entries2, message2) {
         _addIssue(this, "type", dataset, config2);
       }
       return dataset;
-    }
+    },
   };
 }
 // @__NO_SIDE_EFFECTS__
@@ -3611,7 +4200,7 @@ function optional(wrapped, default_) {
         }
       }
       return this.wrapped["~run"](dataset, config2);
-    }
+    },
   };
 }
 // @__NO_SIDE_EFFECTS__
@@ -3633,7 +4222,7 @@ function string(message2) {
         _addIssue(this, "type", dataset, config2);
       }
       return dataset;
-    }
+    },
   };
 }
 // @__NO_SIDE_EFFECTS__
@@ -3658,7 +4247,7 @@ function union(options, message2) {
     reference: union,
     expects: /* @__PURE__ */ _joinExpects(
       options.map((option) => option.expects),
-      "|"
+      "|",
     ),
     async: false,
     options,
@@ -3699,18 +4288,18 @@ function union(options, message2) {
           return typedDatasets[0];
         }
         _addIssue(this, "type", dataset, config2, {
-          issues: /* @__PURE__ */ _subIssues(typedDatasets)
+          issues: /* @__PURE__ */ _subIssues(typedDatasets),
         });
         dataset.typed = true;
       } else if (untypedDatasets?.length === 1) {
         return untypedDatasets[0];
       } else {
         _addIssue(this, "type", dataset, config2, {
-          issues: /* @__PURE__ */ _subIssues(untypedDatasets)
+          issues: /* @__PURE__ */ _subIssues(untypedDatasets),
         });
       }
       return dataset;
-    }
+    },
   };
 }
 // @__NO_SIDE_EFFECTS__
@@ -3724,27 +4313,35 @@ function pipe(...pipe2) {
     "~run"(dataset, config2) {
       for (const item of pipe2) {
         if (item.kind !== "metadata") {
-          if (dataset.issues && (item.kind === "schema" || item.kind === "transformation")) {
+          if (
+            dataset.issues &&
+            (item.kind === "schema" || item.kind === "transformation")
+          ) {
             dataset.typed = false;
             break;
           }
-          if (!dataset.issues || !config2.abortEarly && !config2.abortPipeEarly) {
+          if (
+            !dataset.issues || !config2.abortEarly && !config2.abortPipeEarly
+          ) {
             dataset = item["~run"](dataset, config2);
           }
         }
       }
       return dataset;
-    }
+    },
   };
 }
 // @__NO_SIDE_EFFECTS__
 function safeParse(schema, input, config2) {
-  const dataset = schema["~run"]({ value: input }, /* @__PURE__ */ getGlobalConfig(config2));
+  const dataset = schema["~run"](
+    { value: input },
+    /* @__PURE__ */ getGlobalConfig(config2),
+  );
   return {
     typed: dataset.typed,
     success: !dataset.issues,
     output: dataset.value,
-    issues: dataset.issues
+    issues: dataset.issues,
   };
 }
 
@@ -3757,7 +4354,7 @@ var v = {
   union,
   any,
   pipe,
-  url
+  url,
 };
 var AlbumSchema = v.object({
   name: v.string(),
@@ -3769,17 +4366,17 @@ var AlbumSchema = v.object({
   photosCount: v.string(),
   videosCount: v.string(),
   flags: v.any(),
-  description: v.optional(v.string())
+  description: v.optional(v.string()),
 });
 var CountrySchema = v.object({
   id: v.string(),
   flag: v.optional(v.string()),
   name: v.string(),
-  contains: v.optional(v.union([v.string(), v.array(v.string())]))
+  contains: v.optional(v.union([v.string(), v.array(v.string())])),
 });
 var UnescoSchema = v.object({
   id: v.string(),
-  name: v.optional(v.string())
+  name: v.optional(v.string()),
 });
 var PlaceSchema = v.object({
   id: v.string(),
@@ -3788,7 +4385,7 @@ var PlaceSchema = v.object({
   in: v.optional(v.union([v.string(), v.array(v.string())])),
   shortName: v.optional(v.string()),
   wikipedia: v.optional(v.string()),
-  unescoId: v.optional(v.string())
+  unescoId: v.optional(v.string()),
 });
 var PhotoSchema = v.object({
   albumId: v.string(),
@@ -3812,38 +4409,38 @@ var PhotoSchema = v.object({
   thumbnailUrl: v.string(),
   width: v.optional(v.string()),
   description: v.optional(v.string()),
-  summary: v.optional(v.string())
+  summary: v.optional(v.string()),
 });
 var MammalSchema = v.object({
   id: v.string(),
   name: v.string(),
-  wikipedia: v.optional(v.string())
+  wikipedia: v.optional(v.string()),
 });
 var ReptileSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
-  wikipedia: v.optional(v.string())
+  wikipedia: v.optional(v.string()),
 });
 var AmphibianSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
-  wikipedia: v.optional(v.string())
+  wikipedia: v.optional(v.string()),
 });
 var InsectSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
-  wikipedia: v.optional(v.string())
+  wikipedia: v.optional(v.string()),
 });
 var SubjectSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
-  wikipedia: v.optional(v.string())
+  wikipedia: v.optional(v.string()),
 });
 var BirdSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
   wikipedia: v.optional(v.string()),
-  birdwatchUrl: v.optional(v.union([v.string(), v.array(v.string())]))
+  birdwatchUrl: v.optional(v.union([v.string(), v.array(v.string())])),
 });
 var VideoSchema = v.object({
   id: v.string(),
@@ -3853,11 +4450,11 @@ var VideoSchema = v.object({
   videoUrl1080p: v.pipe(v.string(), v.url()),
   videoUrl480p: v.pipe(v.string(), v.url()),
   videoUrl720p: v.pipe(v.string(), v.url()),
-  videoUrlUnscaled: v.pipe(v.string(), v.url())
+  videoUrlUnscaled: v.pipe(v.string(), v.url()),
 });
 var FeatureSchema = v.object({
   id: v.string(),
-  name: v.optional(v.string())
+  name: v.optional(v.string()),
 });
 
 // ts/commons/logger.ts
@@ -3901,7 +4498,7 @@ function parsePlace(tdb2, place) {
   return {
     ...result.output,
     type: "place",
-    in: lookedUpRefs
+    in: lookedUpRefs,
   };
 }
 function parseCountry(_, country) {
@@ -3928,42 +4525,42 @@ var readCountry = (tdb2, id) => {
   return readParsedThing(
     parseCountry,
     tdb2,
-    id
+    id,
   );
 };
 var readPlace = (tdb2, id) => {
   return readParsedThing(
     parsePlace,
     tdb2,
-    id
+    id,
   );
 };
 var readLocation = (tdb2, id) => {
   return readParsedThing(
     parseLocation,
     tdb2,
-    id
+    id,
   );
 };
 var readUnesco = (tdb2, id) => {
   return readParsedThing(
     parseUnesco,
     tdb2,
-    id
+    id,
   );
 };
 var readParsedCountries = (tdb2, urns) => {
   return readParsedThings(
     parseCountry,
     tdb2,
-    urns
+    urns,
   );
 };
 var readParsedLocations = (tdb2, urns) => {
   return readParsedThings(
     parseLocation,
     tdb2,
-    urns
+    urns,
   );
 };
 
@@ -3972,7 +4569,7 @@ function parseAlbum(tdb2, album) {
   const result = safeParse(AlbumSchema, album);
   if (!result.success) {
     throw new Error(
-      `Invalid album object: ${JSON.stringify(result.issues)}`
+      `Invalid album object: ${JSON.stringify(result.issues)}`,
     );
   }
   const data = result.output;
@@ -3988,7 +4585,7 @@ function parseAlbum(tdb2, album) {
     photosCount: asInt(data.photosCount),
     videosCount: asInt(data.videosCount),
     description: data.description ?? "",
-    countries
+    countries,
   };
 }
 
@@ -4074,7 +4671,7 @@ var Photos = class {
       return coloursCache.get(colours);
     }
     const coloursList = colours.split("#").map(
-      (colour) => `#${colour}`
+      (colour) => `#${colour}`,
     );
     const canvas = document.createElement("canvas");
     canvas.width = 2;
@@ -4097,7 +4694,7 @@ var Photos = class {
 };
 function readPhotos(tdb2) {
   return tdb2.search({
-    source: { type: "photo" }
+    source: { type: "photo" },
   }).objects().flatMap((obj) => {
     const photo = parsePhoto(tdb2, obj);
     return photo ? [photo] : [];
@@ -4110,7 +4707,7 @@ function readThingsByPhotoIds(tdb2, photoIds) {
     const pid = asUrn(photoId);
     const obj = tdb2.search({
       source: { type: pid.type, id: pid.id },
-      relation: [KnownRelations.LOCATION, KnownRelations.SUBJECT]
+      relation: [KnownRelations.LOCATION, KnownRelations.SUBJECT],
     }).firstObject(true);
     if (!obj) {
       continue;
@@ -4126,7 +4723,7 @@ function readThingsByPhotoIds(tdb2, photoIds) {
   }
   return {
     subjects: readParsedSubjects(tdb2, subjects),
-    locations: readParsedLocations(tdb2, locations)
+    locations: readParsedLocations(tdb2, locations),
   };
 }
 function readPhotosByThingIds(tdb2, thingsUrns) {
@@ -4135,7 +4732,7 @@ function readPhotosByThingIds(tdb2, thingsUrns) {
     const { type, id } = asUrn(thingUrn);
     const results = tdb2.search({
       //relation: KnownRelations.SUBJECT,
-      target: { type, id }
+      target: { type, id },
     }).sources();
     for (const result of results) {
       photoIds.add(result);
@@ -4164,7 +4761,7 @@ var readParsedVideos = (tdb2, urns) => {
 };
 function readVideos(tdb2) {
   const videos = tdb2.search({
-    source: { type: "video" }
+    source: { type: "video" },
   }).sources();
   return readParsedVideos(tdb2, videos);
 }
@@ -4175,7 +4772,7 @@ function albumYear(album) {
 }
 function readAlbums(tdb2) {
   const ids = tdb2.search({
-    source: { type: KnownTypes.ALBUM }
+    source: { type: KnownTypes.ALBUM },
   }).sources();
   return readParsedAlbums(tdb2, ids).sort((album0, album1) => {
     return album1.minDate - album0.minDate;
@@ -4185,7 +4782,7 @@ function readAlbumPhotoIds(tdb2, id) {
   return tdb2.search({
     source: { type: KnownTypes.PHOTO },
     relation: KnownRelations.ALBUM_ID,
-    target: { id: asUrn(id).id }
+    target: { id: asUrn(id).id },
   }).sources();
 }
 function readAlbumPhotosByAlbumId(tdb2, id) {
@@ -4195,7 +4792,7 @@ function readAlbumVideoIds(tdb2, id) {
   return tdb2.search({
     source: { type: KnownTypes.VIDEO },
     relation: KnownRelations.ALBUM_ID,
-    target: { id: asUrn(id).id }
+    target: { id: asUrn(id).id },
   }).sources();
 }
 function readAlbumVideosByAlbumId(tdb2, id) {
@@ -4210,7 +4807,7 @@ function readAlbumsByThingIds(tdb2, thingsUrns) {
     const { type, id } = asUrn(thingUrn);
     const results = tdb2.search({
       //relation: KnownRelations.SUBJECT,
-      target: { type, id }
+      target: { type, id },
     }).sources();
     for (const result of results) {
       photoIds.add(result);
@@ -4221,7 +4818,7 @@ function readAlbumsByThingIds(tdb2, thingsUrns) {
     const pid = asUrn(photoId);
     const results = tdb2.search({
       source: { type: pid.type, id: pid.id },
-      relation: KnownRelations.ALBUM_ID
+      relation: KnownRelations.ALBUM_ID,
     }).targets();
     for (const result of results) {
       albumIds.add(result);
@@ -4233,7 +4830,7 @@ var readAlbum = (tdb2, id) => {
   return readParsedThing(
     parseAlbum,
     tdb2,
-    id
+    id,
   );
 };
 var readParsedAlbums = (tdb2, urns) => {
@@ -4250,7 +4847,7 @@ var readParsedFeatures = (tdb2, urns) => {
   return readParsedThings(
     parseFeature,
     tdb2,
-    urns
+    urns,
   );
 };
 
@@ -4260,7 +4857,7 @@ async function loadData() {
   const db = await loadTriples(
     `/manifest/tribbles.${window.envConfig.publication_id}.txt`,
     schema,
-    deriveTriples
+    deriveTriples,
   );
   db.add(HARD_CODED_TRIPLES);
   return db;
@@ -4284,7 +4881,7 @@ function loadServices(data) {
     readParsedFeatures: readParsedFeatures.bind(null, data),
     readThings: readThings.bind(null, data),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, data),
-    readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data)
+    readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data),
   };
 }
 async function loadState() {
@@ -4296,7 +4893,7 @@ async function loadState() {
     currentAlbum: void 0,
     currentPhoto: void 0,
     currentType: void 0,
-    services: loadServices(data)
+    services: loadServices(data),
   };
 }
 
@@ -4309,9 +4906,9 @@ function SidebarItem() {
         class: "sidebar-item",
         onclick() {
           import_mithril6.default.route.set(vnode.attrs.route);
-        }
+        },
       }, vnode.attrs.name);
-    }
+    },
   };
 }
 function Sidebar() {
@@ -4324,17 +4921,31 @@ function Sidebar() {
   }
   return {
     view(vnode) {
-      return (0, import_mithril6.default)("aside", { class: classes(vnode.attrs.visible) }, [
+      return (0, import_mithril6.default)("aside", {
+        class: classes(vnode.attrs.visible),
+      }, [
         (0, import_mithril6.default)("nav", [
           (0, import_mithril6.default)("ul", [
-            (0, import_mithril6.default)(SidebarItem, { name: "PHOTOS", route: "/photos" }),
-            (0, import_mithril6.default)(SidebarItem, { name: "VIDEOS", route: "/videos" }),
-            (0, import_mithril6.default)(SidebarItem, { name: "ALBUMS", route: "/albums" }),
-            (0, import_mithril6.default)(SidebarItem, { name: "ABOUT", route: "/about" })
-          ])
-        ])
+            (0, import_mithril6.default)(SidebarItem, {
+              name: "PHOTOS",
+              route: "/photos",
+            }),
+            (0, import_mithril6.default)(SidebarItem, {
+              name: "VIDEOS",
+              route: "/videos",
+            }),
+            (0, import_mithril6.default)(SidebarItem, {
+              name: "ALBUMS",
+              route: "/albums",
+            }),
+            (0, import_mithril6.default)(SidebarItem, {
+              name: "ABOUT",
+              route: "/about",
+            }),
+          ]),
+        ]),
       ]);
-    }
+    },
   };
 }
 
@@ -4356,7 +4967,7 @@ function isStats(stats) {
     "mammal_species",
     "amphibian_species",
     "reptile_species",
-    "unesco_sites"
+    "unesco_sites",
   ];
   for (const key of keys) {
     if (!(key in stats)) {
@@ -4383,22 +4994,46 @@ function AlbumStats() {
         " \xB7 ",
         `${stats.albums} albums \xB7 ${stats.years} years \xB7 `,
         `${stats.countries} `,
-        (0, import_mithril7.default)("a", { href: "#/listing/country" }, "countries"),
+        (0, import_mithril7.default)(
+          "a",
+          { href: "#/listing/country" },
+          "countries",
+        ),
         " \xB7 ",
         `${stats.bird_species} `,
-        (0, import_mithril7.default)("a", { href: "#/listing/bird" }, "bird species"),
+        (0, import_mithril7.default)(
+          "a",
+          { href: "#/listing/bird" },
+          "bird species",
+        ),
         " \xB7 ",
         `${stats.mammal_species} `,
-        (0, import_mithril7.default)("a", { href: "#/listing/mammal" }, "mammal species"),
+        (0, import_mithril7.default)(
+          "a",
+          { href: "#/listing/mammal" },
+          "mammal species",
+        ),
         " \xB7 a few ",
-        (0, import_mithril7.default)("a", { href: "#/listing/amphibian" }, "amphibians"),
+        (0, import_mithril7.default)(
+          "a",
+          { href: "#/listing/amphibian" },
+          "amphibians",
+        ),
         " and ",
-        (0, import_mithril7.default)("a", { href: "#/listing/reptile" }, "reptiles"),
+        (0, import_mithril7.default)(
+          "a",
+          { href: "#/listing/reptile" },
+          "reptiles",
+        ),
         " \xB7 ",
         `${stats.unesco_sites} `,
-        (0, import_mithril7.default)("a", { href: "#/thing/unesco:*" }, "UNESCO sites")
+        (0, import_mithril7.default)(
+          "a",
+          { href: "#/thing/unesco:*" },
+          "UNESCO sites",
+        ),
       ]);
-    }
+    },
   };
 }
 
@@ -4447,7 +5082,7 @@ var Dates = class {
       month: "long",
       day: "numeric",
       hour: "numeric",
-      minute: "numeric"
+      minute: "numeric",
     };
     return date.toLocaleDateString("en-US", options);
   }
@@ -4456,26 +5091,30 @@ var Dates = class {
     if (!minDate && !maxDate) {
       return "unknown date";
     }
-    const parsedMinDate = minDate instanceof Date ? minDate : new Date(parseFloat(minDate));
-    const parsedMaxDate = maxDate instanceof Date ? maxDate : new Date(parseFloat(maxDate));
+    const parsedMinDate = minDate instanceof Date
+      ? minDate
+      : new Date(parseFloat(minDate));
+    const parsedMaxDate = maxDate instanceof Date
+      ? maxDate
+      : new Date(parseFloat(maxDate));
     if (smallDevice) {
       const optsShort = {
         day: "numeric",
-        month: "short"
+        month: "short",
       };
       const from = parsedMinDate.toLocaleDateString("en-IE", optsShort);
       const to = parsedMaxDate.toLocaleDateString("en-IE", optsShort);
       const minDay = parsedMinDate.toLocaleDateString("en-IE", {
-        day: "numeric"
+        day: "numeric",
       });
       const maxDay = parsedMaxDate.toLocaleDateString("en-IE", {
-        day: "numeric"
+        day: "numeric",
       });
       const minMonth = parsedMinDate.toLocaleDateString("en-IE", {
-        month: "short"
+        month: "short",
       });
       const maxMonth = parsedMaxDate.toLocaleDateString("en-IE", {
-        month: "short"
+        month: "short",
       });
       const minYear = parsedMinDate.getFullYear();
       const maxYear = parsedMaxDate.getFullYear();
@@ -4492,7 +5131,7 @@ var Dates = class {
       const opts = {
         year: "numeric",
         month: "short",
-        day: "numeric"
+        day: "numeric",
       };
       const from = parsedMinDate.toLocaleDateString("en-IE", opts);
       const to = parsedMaxDate.toLocaleDateString("en-IE", opts);
@@ -4520,14 +5159,17 @@ function PhotoAlbumMetadata() {
       return (0, import_mithril8.default)("div.photo-album-metadata", [
         (0, import_mithril8.default)("p.photo-album-title", title),
         (0, import_mithril8.default)("p.photo-album-date", [
-          (0, import_mithril8.default)("time", dateRange(minDate, maxDate))
+          (0, import_mithril8.default)("time", dateRange(minDate, maxDate)),
         ]),
         (0, import_mithril8.default)("div.photo-metadata-inline", [
-          (0, import_mithril8.default)("p.photo-album-count", `${count} ${text}`),
-          (0, import_mithril8.default)("p.photo-album-countries", countryLinks)
-        ])
+          (0, import_mithril8.default)(
+            "p.photo-album-count",
+            `${count} ${text}`,
+          ),
+          (0, import_mithril8.default)("p.photo-album-countries", countryLinks),
+        ]),
       ]);
-    }
+    },
   };
 }
 
@@ -4545,11 +5187,11 @@ function InfoSVG() {
     width: 40,
     preserveAspectRatio: "xMinYMin",
     viewBox: "-2 -2 24 24",
-    xmlns: "http://www.w3.org/2000/svg"
+    xmlns: "http://www.w3.org/2000/svg",
   }, [
     (0, import_mithril9.default)("path", {
-      d: "m10 20c-5.523 0-10-4.477-10-10s4.477-10 10-10 10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-10a1 1 0 0 1 1 1v5a1 1 0 0 1 -2 0v-5a1 1 0 0 1 1-1zm0-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
-    })
+      d: "m10 20c-5.523 0-10-4.477-10-10s4.477-10 10-10 10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-10a1 1 0 0 1 1 1v5a1 1 0 0 1 -2 0v-5a1 1 0 0 1 1-1zm0-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2z",
+    }),
   ]);
 }
 function MetadataIcon() {
@@ -4557,9 +5199,9 @@ function MetadataIcon() {
     view(vnode) {
       const { id } = vnode.attrs;
       return (0, import_mithril9.default)("div.photo-metadata-popover", {
-        onclick: () => broadcast("navigate", { route: `/photo/${id}` })
+        onclick: () => broadcast("navigate", { route: `/photo/${id}` }),
       }, InfoSVG());
-    }
+    },
   };
 }
 
@@ -4567,7 +5209,7 @@ function MetadataIcon() {
 function loadImage(url2, event) {
   broadcast("photo_loaded", { url: url2 });
   const $placeholder = event.target?.parentNode?.querySelector(
-    ".thumbnail-placeholder"
+    ".thumbnail-placeholder",
   );
   if (!$placeholder) {
     return;
@@ -4584,21 +5226,24 @@ function Image() {
         height: PHOTO_HEIGHT,
         src: thumbnailUrl,
         loading,
-        onclick
+        onclick,
       });
-    }
+    },
   };
 }
 function PlaceholderImage() {
   return {
     view(vnode) {
       const { thumbnailDataUrl } = vnode.attrs;
-      return (0, import_mithril10.default)("img.u-photo.thumbnail-image.thumbnail-placeholder", {
-        width: PHOTO_WIDTH,
-        height: PHOTO_HEIGHT,
-        src: thumbnailDataUrl
-      });
-    }
+      return (0, import_mithril10.default)(
+        "img.u-photo.thumbnail-image.thumbnail-placeholder",
+        {
+          width: PHOTO_WIDTH,
+          height: PHOTO_HEIGHT,
+          src: thumbnailDataUrl,
+        },
+      );
+    },
   };
 }
 function ImagePair() {
@@ -4609,17 +5254,21 @@ function ImagePair() {
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
-        onclick
+        onclick,
       } = vnode.attrs;
       return (0, import_mithril10.default)("a", {
         href: fullImage,
         target: "_blank",
-        rel: "external"
+        rel: "external",
       }, [
         (0, import_mithril10.default)(PlaceholderImage, { thumbnailDataUrl }),
-        (0, import_mithril10.default)(Image, { thumbnailUrl, loading, onclick })
+        (0, import_mithril10.default)(Image, {
+          thumbnailUrl,
+          loading,
+          onclick,
+        }),
       ]);
-    }
+    },
   };
 }
 function formatId(id) {
@@ -4633,7 +5282,7 @@ function Photo2() {
       const {
         fullImage,
         thumbnailUrl,
-        mosaicColours
+        mosaicColours,
       } = photo;
       const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
       const $mdIcon = (0, import_mithril10.default)(MetadataIcon, { id });
@@ -4641,7 +5290,7 @@ function Photo2() {
         fullImage,
         thumbnailUrl,
         thumbnailDataUrl,
-        loading
+        loading,
       });
       return (0, import_mithril10.default)(
         "div",
@@ -4649,14 +5298,16 @@ function Photo2() {
           (0, import_mithril10.default)(
             "a",
             { onclick: block },
-            interactive ? [
-              $mdIcon,
-              $imagePair
-            ] : [$imagePair]
-          )
-        ])
+            interactive
+              ? [
+                $mdIcon,
+                $imagePair,
+              ]
+              : [$imagePair],
+          ),
+        ]),
       );
-    }
+    },
   };
 }
 
@@ -4671,20 +5322,22 @@ function PhotoAlbum() {
         loading,
         child,
         minDate,
-        onclick
+        onclick,
       } = vnode.attrs;
-      return (0, import_mithril11.default)("div.photo-album", { "data-min-date": minDate }, [
+      return (0, import_mithril11.default)("div.photo-album", {
+        "data-min-date": minDate,
+      }, [
         (0, import_mithril11.default)(ImagePair, {
           imageUrl,
           thumbnailUrl,
           thumbnailDataUrl,
           loading,
-          onclick
+          onclick,
         }),
         // TODO this is broken
-        child
+        child,
       ]);
-    }
+    },
   };
 }
 
@@ -4710,14 +5363,17 @@ function CountryLink() {
       const parsed = asUrn(id);
       const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
       if (mode === "flag") {
-        return (0, import_mithril12.default)("a.country-link-short", { href: urnToUrl(id), onclick }, flag);
+        return (0, import_mithril12.default)("a.country-link-short", {
+          href: urnToUrl(id),
+          onclick,
+        }, flag);
       }
       return (0, import_mithril12.default)(
         "a.country-link",
         { href: urnToUrl(id), onclick },
-        `${flag} ${name}`
+        `${flag} ${name}`,
       );
-    }
+    },
   };
 }
 
@@ -4736,7 +5392,7 @@ function drawAlbum(state2, album, idx) {
       const $h2 = (0, import_mithril13.default)(
         "h2.album-year-heading",
         { key: `year-${state2.year}` },
-        state2.year.toString()
+        state2.year.toString(),
       );
       $albumComponents.push($h2);
     }
@@ -4745,7 +5401,7 @@ function drawAlbum(state2, album, idx) {
     return (0, import_mithril13.default)(CountryLink, {
       country,
       key: `album-country-${album.id}-${country.id}`,
-      mode: "flag"
+      mode: "flag",
     });
   });
   const $md = (0, import_mithril13.default)(PhotoAlbumMetadata, {
@@ -4753,7 +5409,7 @@ function drawAlbum(state2, album, idx) {
     minDate: album.minDate,
     maxDate: album.maxDate,
     count: album.photosCount,
-    countryLinks: $countryLinks
+    countryLinks: $countryLinks,
   });
   const $album = (0, import_mithril13.default)(PhotoAlbum, {
     imageUrl: album.thumbnailUrl,
@@ -4761,15 +5417,15 @@ function drawAlbum(state2, album, idx) {
     thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
     loading,
     minDate: album.minDate,
-    onclick: onAlbumClick.bind(null, album.id, album.name)
+    onclick: onAlbumClick.bind(null, album.id, album.name),
   });
   $albumComponents.push(
     (0, import_mithril13.default)("div", {
-      key: `album-${album.id}`
+      key: `album-${album.id}`,
     }, [
       $album,
-      $md
-    ])
+      $md,
+    ]),
   );
   return $albumComponents;
 }
@@ -4790,8 +5446,11 @@ function AlbumsList() {
       import_mithril13.default.redraw();
     },
     view() {
-      return (0, import_mithril13.default)("section.album-container", $albumComponents);
-    }
+      return (0, import_mithril13.default)(
+        "section.album-container",
+        $albumComponents,
+      );
+    },
   };
 }
 function AlbumsPage() {
@@ -4803,14 +5462,14 @@ function AlbumsPage() {
       const { albums } = vnode.attrs;
       const $md = (0, import_mithril13.default)("section.album-metadata", [
         (0, import_mithril13.default)("h1.albums-header", "Albums"),
-        (0, import_mithril13.default)(AlbumStats)
+        (0, import_mithril13.default)(AlbumStats),
       ]);
       return (0, import_mithril13.default)("div", [
         $md,
         //m(YearCursor),
-        (0, import_mithril13.default)(AlbumsList, { albums })
+        (0, import_mithril13.default)(AlbumsList, { albums }),
       ]);
-    }
+    },
   };
 }
 
@@ -4830,36 +5489,48 @@ function AboutPage() {
             "p",
             `I started taking photos ${years} years ago, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things`,
             (0, import_mithril14.default)("a", {
-              href: "https://photos.rgrannell.xyz/#/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50",
-              onclick: navigate(`/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50`)
-            }, " I found beautiful in this world.")
+              href:
+                "https://photos.rgrannell.xyz/#/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50",
+              onclick: navigate(`/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50`),
+            }, " I found beautiful in this world."),
           ),
-          (0, import_mithril14.default)("h2", "Can I use the photos on this site?"),
+          (0, import_mithril14.default)(
+            "h2",
+            "Can I use the photos on this site?",
+          ),
           (0, import_mithril14.default)(
             "p",
-            "You may use this website and its content for personal, non-commerical purposes only. For example, using photos as a desktop wallpaper is fine, selling these photos is not."
+            "You may use this website and its content for personal, non-commerical purposes only. For example, using photos as a desktop wallpaper is fine, selling these photos is not.",
           ),
-          (0, import_mithril14.default)("h2", "Can I use data from this site to train AI?"),
+          (0, import_mithril14.default)(
+            "h2",
+            "Can I use data from this site to train AI?",
+          ),
           (0, import_mithril14.default)(
             "p",
             "No, absolutely not. The ",
             (0, import_mithril14.default)(
               "a",
               { href: "http://photos.rgrannell.xyz/robots.txt" },
-              "robots.txt"
+              "robots.txt",
             ),
-            " file for this site explicitly prohibits this."
+            " file for this site explicitly prohibits this.",
           ),
-          (0, import_mithril14.default)("h2", "What is your contact information?"),
+          (0, import_mithril14.default)(
+            "h2",
+            "What is your contact information?",
+          ),
           (0, import_mithril14.default)(
             "p",
             "See ",
-            (0, import_mithril14.default)("a", { href: "https://rgrannell.xyz/" }, "my personal site"),
-            " for contact details."
-          )
-        ])
+            (0, import_mithril14.default)("a", {
+              href: "https://rgrannell.xyz/",
+            }, "my personal site"),
+            " for contact details.",
+          ),
+        ]),
       ]);
-    }
+    },
   };
 }
 
@@ -4873,34 +5544,38 @@ function Video2() {
     view(vnode) {
       const {
         preload,
-        video
+        video,
       } = vnode.attrs;
       const {
         posterUrl,
         videoUrl1080p,
         videoUrl480p,
         videoUrl720p,
-        videoUrlUnscaled
+        videoUrlUnscaled,
       } = video;
       const $source = (0, import_mithril15.default)("source", {
         src: videoUrl480p,
-        type: "video/mp4"
+        type: "video/mp4",
       });
       const $resolutionLinks = (0, import_mithril15.default)("ul", [
         (0, import_mithril15.default)("a", { href: videoUrlUnscaled }, "[L]"),
         (0, import_mithril15.default)("a", { href: videoUrl1080p }, "[M]"),
         (0, import_mithril15.default)("a", { href: videoUrl720p }, "[S]"),
-        (0, import_mithril15.default)("a", { href: videoUrl480p }, "[XS]")
+        (0, import_mithril15.default)("a", { href: videoUrl480p }, "[XS]"),
       ]);
-      return (0, import_mithril15.default)("div", { key: `video-${video.id}` }, [
-        (0, import_mithril15.default)("video.thumbnail-video", {
-          controls: true,
-          preload,
-          poster: posterUrl
-        }, $source),
-        $resolutionLinks
-      ]);
-    }
+      return (0, import_mithril15.default)(
+        "div",
+        { key: `video-${video.id}` },
+        [
+          (0, import_mithril15.default)("video.thumbnail-video", {
+            controls: true,
+            preload,
+            poster: posterUrl,
+          }, $source),
+          $resolutionLinks,
+        ],
+      );
+    },
   };
 }
 
@@ -4909,19 +5584,24 @@ function VideosPage() {
   return {
     view(vnode) {
       const videos = vnode.attrs.videos;
-      const videoLengthText = videos.length === 1 ? "1 video" : `${videos.length} videos`;
+      const videoLengthText = videos.length === 1
+        ? "1 video"
+        : `${videos.length} videos`;
       const $videosList = videos.map((video) => {
-        return (0, import_mithril16.default)(Video2, { video, preload: "auto" });
+        return (0, import_mithril16.default)(Video2, {
+          video,
+          preload: "auto",
+        });
       });
       return (0, import_mithril16.default)(
         "div",
         (0, import_mithril16.default)("section.photos-metadata", [
           (0, import_mithril16.default)("h1", "Videos"),
-          (0, import_mithril16.default)("p.photo-album-count", videoLengthText)
+          (0, import_mithril16.default)("p.photo-album-count", videoLengthText),
         ]),
-        (0, import_mithril16.default)("section.photo-container", $videosList)
+        (0, import_mithril16.default)("section.photo-container", $videosList),
       );
-    }
+    },
   };
 }
 
@@ -4944,7 +5624,7 @@ async function shareAlbum(state2, url2, name) {
   try {
     await navigator.share({
       title: `${name} - photos.rgrannell.xyz`,
-      url: url2
+      url: url2,
     });
   } catch (error) {
     console.error("Error sharing:", error);
@@ -4957,16 +5637,16 @@ function buttonText(state2) {
 }
 function AlbumShareButton() {
   const localState = {
-    sharing: false
+    sharing: false,
   };
   return {
     view(vnode) {
       const { url: url2, name } = vnode.attrs;
       return (0, import_mithril17.default)("button.photo-share-button", {
         disabled: !navigator.share,
-        onclick: shareAlbum.bind(null, localState, url2, name)
+        onclick: shareAlbum.bind(null, localState, url2, name),
       }, buttonText(localState));
-    }
+    },
   };
 }
 
@@ -4978,9 +5658,9 @@ function AlbumsButton() {
       return (0, import_mithril18.default)(
         "a",
         { href: "/albums", onclick: navigate(`/albums`) },
-        "[albums]"
+        "[albums]",
       );
-    }
+    },
   };
 }
 
@@ -4990,7 +5670,7 @@ function AlbumThings() {
   return {
     view(vnode) {
       const { locations, subjects } = vnode.attrs;
-    }
+    },
   };
 }
 
@@ -5006,7 +5686,7 @@ function AlbumPage() {
         photos,
         videos,
         subjects,
-        locations
+        locations,
       } = vnode.attrs;
       const {
         name,
@@ -5014,52 +5694,75 @@ function AlbumPage() {
         maxDate,
         photosCount,
         description,
-        countries
+        countries,
       } = album;
       const dateRange = Dates.dateRange(
         minDate,
         maxDate,
-        Windows.isSmallerThan(500)
+        Windows.isSmallerThan(500),
       );
-      const photoCountMessage = photosCount === 1 ? "1 photo" : `${photosCount} photos`;
+      const photoCountMessage = photosCount === 1
+        ? "1 photo"
+        : `${photosCount} photos`;
       const $countryLinks = countries.map((country) => {
         return (0, import_mithril20.default)(CountryLink, {
           country,
-          mode: "flag"
+          mode: "flag",
         });
       });
-      const $albumMetadata = (0, import_mithril20.default)("section.photos-metadata", [
-        (0, import_mithril20.default)("h1", name),
-        (0, import_mithril20.default)("p.photo-album-date", (0, import_mithril20.default)("time", dateRange)),
-        (0, import_mithril20.default)("p.photo-album-count", photoCountMessage),
-        (0, import_mithril20.default)("p.photo-album-countries", $countryLinks),
-        (0, import_mithril20.default)("p.photo-album-description", import_mithril20.default.trust(description ?? "")),
-        (0, import_mithril20.default)(AlbumShareButton, { url: location.href, name }),
-        " ",
-        (0, import_mithril20.default)(AlbumsButton),
-        " ",
-        (0, import_mithril20.default)(AlbumThings, { subjects, locations })
-      ]);
+      const $albumMetadata = (0, import_mithril20.default)(
+        "section.photos-metadata",
+        [
+          (0, import_mithril20.default)("h1", name),
+          (0, import_mithril20.default)(
+            "p.photo-album-date",
+            (0, import_mithril20.default)("time", dateRange),
+          ),
+          (0, import_mithril20.default)(
+            "p.photo-album-count",
+            photoCountMessage,
+          ),
+          (0, import_mithril20.default)(
+            "p.photo-album-countries",
+            $countryLinks,
+          ),
+          (0, import_mithril20.default)(
+            "p.photo-album-description",
+            import_mithril20.default.trust(description ?? ""),
+          ),
+          (0, import_mithril20.default)(AlbumShareButton, {
+            url: location.href,
+            name,
+          }),
+          " ",
+          (0, import_mithril20.default)(AlbumsButton),
+          " ",
+          (0, import_mithril20.default)(AlbumThings, { subjects, locations }),
+        ],
+      );
       const $photosList = photos.map((photo, idx) => {
         return (0, import_mithril20.default)(
           Photo2,
           {
             photo,
             loading: Photos.loadingMode(idx),
-            interactive: true
-          }
+            interactive: true,
+          },
         );
       });
       const $videosList = videos.map((video) => {
-        return (0, import_mithril20.default)(Video2, { ...video, preload: "auto" });
+        return (0, import_mithril20.default)(Video2, {
+          ...video,
+          preload: "auto",
+        });
       });
       return (0, import_mithril20.default)(
         "div",
         $albumMetadata,
         (0, import_mithril20.default)("section.photo-container", $photosList),
-        (0, import_mithril20.default)("section.video-container", $videosList)
+        (0, import_mithril20.default)("section.video-container", $videosList),
       );
-    }
+    },
   };
 }
 
@@ -5077,24 +5780,29 @@ function PhotosList() {
             key: `photo-${photo.id}`,
             photo,
             loading,
-            interactive: true
+            interactive: true,
           });
-        })
+        }),
       );
-    }
+    },
   };
 }
 function PhotosPage() {
   return {
     view(vnode) {
       const { photos } = vnode.attrs;
-      const countText = `${photos.length} photo${photos.length === 1 ? "" : "s"}`;
+      const countText = `${photos.length} photo${
+        photos.length === 1 ? "" : "s"
+      }`;
       const $md = (0, import_mithril21.default)("section.photos-metadata", [
         (0, import_mithril21.default)("h1", "Photos"),
-        (0, import_mithril21.default)("p.photo-album-count", countText)
+        (0, import_mithril21.default)("p.photo-album-count", countText),
       ]);
-      return (0, import_mithril21.default)("div", [$md, (0, import_mithril21.default)(PhotosList, { photos })]);
-    }
+      return (0, import_mithril21.default)("div", [
+        $md,
+        (0, import_mithril21.default)(PhotosList, { photos }),
+      ]);
+    },
   };
 }
 
@@ -5109,9 +5817,9 @@ function AlbumButton() {
       const { id } = vnode.attrs;
       return (0, import_mithril22.default)("a", {
         href: `#/album/${id}`,
-        onclick: () => navigate(`/album/${id}`)
+        onclick: () => navigate(`/album/${id}`),
       }, "[album]");
-    }
+    },
   };
 }
 
@@ -5122,7 +5830,7 @@ function Heading() {
     view(vnode) {
       const { text } = vnode.attrs;
       return (0, import_mithril23.default)("th.exif-heading", text);
-    }
+    },
   };
 }
 function CameraModel() {
@@ -5134,7 +5842,7 @@ function CameraModel() {
         return (0, import_mithril23.default)("td", $model);
       }
       return (0, import_mithril23.default)("td", "Unknown");
-    }
+    },
   };
 }
 function ExifDimensions() {
@@ -5142,10 +5850,13 @@ function ExifDimensions() {
     view(vnode) {
       const { photo } = vnode.attrs;
       if (typeof photo.width === "string" && typeof photo.height === "string") {
-        return (0, import_mithril23.default)("td", `${photo.width} x ${photo.height}`);
+        return (0, import_mithril23.default)(
+          "td",
+          `${photo.width} x ${photo.height}`,
+        );
       }
       return (0, import_mithril23.default)("td", "Unknown");
-    }
+    },
   };
 }
 function FocalLength() {
@@ -5161,7 +5872,7 @@ function FocalLength() {
       } else {
         return (0, import_mithril23.default)("td", `${photo.focalLength}mm`);
       }
-    }
+    },
   };
 }
 function ShutterSpeed() {
@@ -5175,11 +5886,14 @@ function ShutterSpeed() {
         } else if (parsed >= 1) {
           return (0, import_mithril23.default)("td", `${parsed} s`);
         } else {
-          return (0, import_mithril23.default)("td", `1/${Math.round(1 / parsed)} s`);
+          return (0, import_mithril23.default)(
+            "td",
+            `1/${Math.round(1 / parsed)} s`,
+          );
         }
       }
       return (0, import_mithril23.default)("td", "Unknown");
-    }
+    },
   };
 }
 function Aperture() {
@@ -5194,7 +5908,7 @@ function Aperture() {
         return (0, import_mithril23.default)("td", "Unknown");
       }
       return (0, import_mithril23.default)("td", `\u0192/${photo.fStop}`);
-    }
+    },
   };
 }
 function ExifData() {
@@ -5203,31 +5917,37 @@ function ExifData() {
       const { photo, services } = vnode.attrs;
       const $dateTime = (0, import_mithril23.default)("tr", [
         (0, import_mithril23.default)(Heading, { text: "Date-Time" }),
-        (0, import_mithril23.default)("td", (0, import_mithril23.default)("time", Dates.formatCreatedAt(photo.createdAt)))
+        (0, import_mithril23.default)(
+          "td",
+          (0, import_mithril23.default)(
+            "time",
+            Dates.formatCreatedAt(photo.createdAt),
+          ),
+        ),
       ]);
       const $model = (0, import_mithril23.default)("tr", [
         (0, import_mithril23.default)(Heading, { text: "Camera Model" }),
-        (0, import_mithril23.default)(CameraModel, { photo, services })
+        (0, import_mithril23.default)(CameraModel, { photo, services }),
       ]);
       const $dimensions = (0, import_mithril23.default)("tr", [
         (0, import_mithril23.default)(Heading, { text: "Dimensions" }),
-        (0, import_mithril23.default)(ExifDimensions, { photo, services })
+        (0, import_mithril23.default)(ExifDimensions, { photo, services }),
       ]);
       const $focalLength = (0, import_mithril23.default)("tr", [
         (0, import_mithril23.default)(Heading, { text: "Focal Length" }),
-        (0, import_mithril23.default)(FocalLength, { photo, services })
+        (0, import_mithril23.default)(FocalLength, { photo, services }),
       ]);
       const $shutterSpeed = (0, import_mithril23.default)("tr", [
         (0, import_mithril23.default)(Heading, { text: "Shutter Speed" }),
-        (0, import_mithril23.default)(ShutterSpeed, { photo, services })
+        (0, import_mithril23.default)(ShutterSpeed, { photo, services }),
       ]);
       const $aperture = (0, import_mithril23.default)("tr", [
         (0, import_mithril23.default)(Heading, { text: "Aperture" }),
-        (0, import_mithril23.default)(Aperture, { photo, services })
+        (0, import_mithril23.default)(Aperture, { photo, services }),
       ]);
       const $iso = (0, import_mithril23.default)("tr", [
         (0, import_mithril23.default)(Heading, { text: "ISO" }),
-        (0, import_mithril23.default)("td", photo.iso ?? "Unknown")
+        (0, import_mithril23.default)("td", photo.iso ?? "Unknown"),
       ]);
       return (0, import_mithril23.default)("table.metadata-table", [
         $dateTime,
@@ -5236,9 +5956,9 @@ function ExifData() {
         $focalLength,
         $shutterSpeed,
         $aperture,
-        $iso
+        $iso,
       ]);
-    }
+    },
   };
 }
 
@@ -5249,7 +5969,7 @@ function Heading2() {
     view(vnode) {
       const { text } = vnode.attrs;
       return (0, import_mithril24.default)("th.exif-heading", text);
-    }
+    },
   };
 }
 function Description() {
@@ -5258,10 +5978,13 @@ function Description() {
       const { photo } = vnode.attrs;
       const html = photo.description ?? photo.summary;
       if (html) {
-        return (0, import_mithril24.default)("td", import_mithril24.default.trust(html));
+        return (0, import_mithril24.default)(
+          "td",
+          import_mithril24.default.trust(html),
+        );
       }
       return (0, import_mithril24.default)("td", "\u2014");
-    }
+    },
   };
 }
 function Location() {
@@ -5269,8 +5992,11 @@ function Location() {
     view(vnode) {
       const { photo, services } = vnode.attrs;
       const $locations = services.toThingLinks(arrayify(photo.location));
-      return (0, import_mithril24.default)("td", $locations.length > 0 ? $locations : "\u2014");
-    }
+      return (0, import_mithril24.default)(
+        "td",
+        $locations.length > 0 ? $locations : "\u2014",
+      );
+    },
   };
 }
 function Rating() {
@@ -5278,8 +6004,11 @@ function Rating() {
     view(vnode) {
       const { photo, services } = vnode.attrs;
       const $rating = services.toThingLinks([photo.rating]);
-      return (0, import_mithril24.default)("td", $rating.length > 0 ? $rating : "\u2014");
-    }
+      return (0, import_mithril24.default)(
+        "td",
+        $rating.length > 0 ? $rating : "\u2014",
+      );
+    },
   };
 }
 function Style() {
@@ -5287,8 +6016,11 @@ function Style() {
     view(vnode) {
       const { photo, services } = vnode.attrs;
       const $style = services.toThingLinks([photo.style]);
-      return (0, import_mithril24.default)("td", $style.length > 0 ? $style : "\u2014");
-    }
+      return (0, import_mithril24.default)(
+        "td",
+        $style.length > 0 ? $style : "\u2014",
+      );
+    },
   };
 }
 function Subject2() {
@@ -5296,8 +6028,11 @@ function Subject2() {
     view(vnode) {
       const { photo, services } = vnode.attrs;
       const $subject = services.toThingLinks(arrayify(photo.subject));
-      return (0, import_mithril24.default)("td", $subject.length > 0 ? $subject : "\u2014");
-    }
+      return (0, import_mithril24.default)(
+        "td",
+        $subject.length > 0 ? $subject : "\u2014",
+      );
+    },
   };
 }
 function Country2() {
@@ -5305,8 +6040,11 @@ function Country2() {
     view(vnode) {
       const { photo, services } = vnode.attrs;
       const $countries = services.toThingLinks(arrayify(photo.country));
-      return (0, import_mithril24.default)("td", $countries.length > 0 ? $countries : "\u2014");
-    }
+      return (0, import_mithril24.default)(
+        "td",
+        $countries.length > 0 ? $countries : "\u2014",
+      );
+    },
   };
 }
 function PhotoInfo() {
@@ -5317,33 +6055,33 @@ function PhotoInfo() {
       if (photo.description || photo.summary) {
         infoItems.push((0, import_mithril24.default)("tr", [
           (0, import_mithril24.default)(Heading2, { text: "Description" }),
-          (0, import_mithril24.default)(Description, { photo, services })
+          (0, import_mithril24.default)(Description, { photo, services }),
         ]));
       }
       infoItems.push(
         (0, import_mithril24.default)("tr", [
           (0, import_mithril24.default)(Heading2, { text: "Country" }),
-          (0, import_mithril24.default)(Country2, { photo, services })
+          (0, import_mithril24.default)(Country2, { photo, services }),
         ]),
         (0, import_mithril24.default)("tr", [
           (0, import_mithril24.default)(Heading2, { text: "Location" }),
-          (0, import_mithril24.default)(Location, { photo, services })
+          (0, import_mithril24.default)(Location, { photo, services }),
         ]),
         (0, import_mithril24.default)("tr", [
           (0, import_mithril24.default)(Heading2, { text: "Rating" }),
-          (0, import_mithril24.default)(Rating, { photo, services })
+          (0, import_mithril24.default)(Rating, { photo, services }),
         ]),
         (0, import_mithril24.default)("tr", [
           (0, import_mithril24.default)(Heading2, { text: "Style" }),
-          (0, import_mithril24.default)(Style, { photo, services })
+          (0, import_mithril24.default)(Style, { photo, services }),
         ]),
         (0, import_mithril24.default)("tr", [
           (0, import_mithril24.default)(Heading2, { text: "Subject" }),
-          (0, import_mithril24.default)(Subject2, { photo, services })
-        ])
+          (0, import_mithril24.default)(Subject2, { photo, services }),
+        ]),
       );
       return (0, import_mithril24.default)("table.metadata-table", infoItems);
-    }
+    },
   };
 }
 
@@ -5353,21 +6091,33 @@ function PhotoPage() {
     view(vnode) {
       const { photo, services } = vnode.attrs;
       const $links = (0, import_mithril25.default)("p", [
-        (0, import_mithril25.default)("a", { href: photo.fullImage, rel: "noreferrer" }, "[webp]"),
+        (0, import_mithril25.default)("a", {
+          href: photo.fullImage,
+          rel: "noreferrer",
+        }, "[webp]"),
         " ",
-        (0, import_mithril25.default)("a", { href: photo.pngUrl, rel: "noreferrer" }, "[png]"),
+        (0, import_mithril25.default)("a", {
+          href: photo.pngUrl,
+          rel: "noreferrer",
+        }, "[png]"),
         " ",
         // [share]
-        (0, import_mithril25.default)(AlbumButton, { id: photo.albumId })
+        (0, import_mithril25.default)(AlbumButton, { id: photo.albumId }),
       ]);
-      const $exif = (0, import_mithril25.default)(ExifData, { photo, services });
-      const $photoInfo = (0, import_mithril25.default)(PhotoInfo, { photo, services });
+      const $exif = (0, import_mithril25.default)(ExifData, {
+        photo,
+        services,
+      });
+      const $photoInfo = (0, import_mithril25.default)(PhotoInfo, {
+        photo,
+        services,
+      });
       return (0, import_mithril25.default)("section", [
         (0, import_mithril25.default)("h1", "Photo"),
         (0, import_mithril25.default)(Photo2, {
           photo,
           loading: "eager",
-          interactive: false
+          interactive: false,
         }),
         $links,
         (0, import_mithril25.default)(
@@ -5375,10 +6125,10 @@ function PhotoPage() {
           (0, import_mithril25.default)("h3", "Photo Information"),
           $photoInfo,
           (0, import_mithril25.default)("h3", "Exif Data"),
-          $exif
-        )
+          $exif,
+        ),
       ]);
-    }
+    },
   };
 }
 
@@ -5388,8 +6138,11 @@ function AlbumsList2() {
   return {
     view() {
       const $albumComponents = [];
-      return (0, import_mithril26.default)("section.album-container", $albumComponents);
-    }
+      return (0, import_mithril26.default)(
+        "section.album-container",
+        $albumComponents,
+      );
+    },
   };
 }
 function ListingTitle() {
@@ -5398,9 +6151,9 @@ function ListingTitle() {
       const { type } = vnode.attrs;
       return (0, import_mithril26.default)(
         "h1.albums-header",
-        `${Strings.capitalise(Strings.pluralise(type))}`
+        `${Strings.capitalise(Strings.pluralise(type))}`,
       );
-    }
+    },
   };
 }
 function ListingThingsButton() {
@@ -5408,9 +6161,9 @@ function ListingThingsButton() {
     view(vnode) {
       const { type } = vnode.attrs;
       return (0, import_mithril26.default)("a", {
-        href: `/thing/${type}`
+        href: `/thing/${type}`,
       }, `See all ${type} photos`);
-    }
+    },
   };
 }
 function ListingPage() {
@@ -5419,20 +6172,20 @@ function ListingPage() {
       const { type, things } = vnode.attrs;
       const $albums = [];
       const $md = [
-        (0, import_mithril26.default)(ListingTitle, { type })
+        (0, import_mithril26.default)(ListingTitle, { type }),
       ];
       if (!NonListableTypes.has(type)) {
         $md.push(
           (0, import_mithril26.default)("section.album-metadata", [
-            (0, import_mithril26.default)(ListingThingsButton, { type })
-          ])
+            (0, import_mithril26.default)(ListingThingsButton, { type }),
+          ]),
         );
       }
       return (0, import_mithril26.default)("div", [
         (0, import_mithril26.default)("section.album-metadata", $md),
-        (0, import_mithril26.default)(AlbumsList2)
+        (0, import_mithril26.default)(AlbumsList2),
       ]);
-    }
+    },
   };
 }
 
@@ -5463,19 +6216,21 @@ function ThingTitle() {
     view(vnode) {
       const { urn, things } = vnode.attrs;
       return (0, import_mithril27.default)("h1", computeTitle(urn, things));
-    }
+    },
   };
 }
 function ThingSubtitle() {
   return {
     view(vnode) {
       const parsed = asUrn(vnode.attrs.urn);
-      return BinomialTypes.has(parsed.type) && parsed.id !== "*" ? (0, import_mithril27.default)(
-        "span",
-        { class: `thing-binomial ${parsed.type}-binomial` },
-        Strings.binomial(parsed.id)
-      ) : (0, import_mithril27.default)("span");
-    }
+      return BinomialTypes.has(parsed.type) && parsed.id !== "*"
+        ? (0, import_mithril27.default)(
+          "span",
+          { class: `thing-binomial ${parsed.type}-binomial` },
+          Strings.binomial(parsed.id),
+        )
+        : (0, import_mithril27.default)("span");
+    },
   };
 }
 
@@ -5488,9 +6243,9 @@ function ExternalLink() {
       return (0, import_mithril28.default)("a", {
         href,
         target: "_blank",
-        rel: "noopener"
+        rel: "noopener",
       }, text);
-    }
+    },
   };
 }
 
@@ -5506,9 +6261,9 @@ function UnescoLink() {
         href: `https://whc.unesco.org/en/list/${id}`,
         target: "_blank",
         rel: "noopener noreferrer",
-        class: ["thing-link", `${type}-link`].join(" ")
+        class: ["thing-link", `${type}-link`].join(" "),
       }, name);
-    }
+    },
   };
 }
 
@@ -5518,18 +6273,22 @@ function PlacesList() {
   return {
     view(vnode) {
       const { urns, services } = vnode.attrs;
-      const locations = services.readParsedLocations(urns).sort((loca, locb) => {
-        return (one(loca.name) ?? "").localeCompare(one(locb.name) ?? "");
-      });
+      const locations = services.readParsedLocations(urns).sort(
+        (loca, locb) => {
+          return (one(loca.name) ?? "").localeCompare(one(locb.name) ?? "");
+        },
+      );
       const $contains = locations.map((location2) => {
         const $link = (0, import_mithril30.default)(ThingLink, {
           urn: one(location2.id),
-          thing: location2
+          thing: location2,
         });
-        return (0, import_mithril30.default)("li", { key: `place-${location2.id}` }, $link);
+        return (0, import_mithril30.default)("li", {
+          key: `place-${location2.id}`,
+        }, $link);
       });
       return (0, import_mithril30.default)("ul", $contains);
-    }
+    },
   };
 }
 
@@ -5554,17 +6313,29 @@ function ThingUrls() {
       const wikipedia = one(thing.wikipedia);
       if (wikipedia) {
         $links.push(
-          (0, import_mithril31.default)("li", (0, import_mithril31.default)(ExternalLink, { href: wikipedia, text: "[wikipedia]" }))
+          (0, import_mithril31.default)(
+            "li",
+            (0, import_mithril31.default)(ExternalLink, {
+              href: wikipedia,
+              text: "[wikipedia]",
+            }),
+          ),
         );
       }
       const birdwatch = one(thing.birdwatchUrl);
       if (birdwatch) {
         $links.push(
-          (0, import_mithril31.default)("li", (0, import_mithril31.default)(ExternalLink, { href: birdwatch, text: "[birdwatch]" }))
+          (0, import_mithril31.default)(
+            "li",
+            (0, import_mithril31.default)(ExternalLink, {
+              href: birdwatch,
+              text: "[birdwatch]",
+            }),
+          ),
         );
       }
       return (0, import_mithril31.default)("ul.link-list", $links);
-    }
+    },
   };
 }
 function ThingMetadata() {
@@ -5576,13 +6347,13 @@ function ThingMetadata() {
       const { urn, things, services } = vnode.attrs;
       const parsed = asUrn(urn);
       metadata.Classification = (0, import_mithril31.default)("a", {
-        href: `#/listing/${parsed.type}`
+        href: `#/listing/${parsed.type}`,
       }, Strings.capitalise(parsed.type));
       const locatedIn = things.flatMap((thing2) => arrayify(thing2.in));
       if (locatedIn.length > 0) {
         metadata["Located In"] = (0, import_mithril31.default)(PlacesList, {
           services,
-          urns: setify(locatedIn)
+          urns: setify(locatedIn),
         });
       }
       if (things.length !== 1) {
@@ -5598,35 +6369,41 @@ function ThingMetadata() {
             return (0, import_mithril31.default)(
               "li",
               { key: `feature-${urn2}` },
-              (0, import_mithril31.default)(ThingLink, { urn: urn2, thing: feature })
+              (0, import_mithril31.default)(ThingLink, {
+                urn: urn2,
+                thing: feature,
+              }),
             );
-          })
+          }),
         );
       }
       if (thing.contains) {
         metadata["Contains"] = (0, import_mithril31.default)(PlacesList, {
           services,
-          urns: setify(thing.contains)
+          urns: setify(thing.contains),
         });
       }
       if (thing.unescoId) {
         const unescoDetails = services.readUnesco(one(thing.unescoId));
         metadata["UNESCO"] = (0, import_mithril31.default)(
           "li",
-          (0, import_mithril31.default)(UnescoLink, { urn: thing.unescoId, thing: unescoDetails ?? {} })
+          (0, import_mithril31.default)(UnescoLink, {
+            urn: thing.unescoId,
+            thing: unescoDetails ?? {},
+          }),
         );
       }
       const $rows = Object.entries(metadata).map(([key, value]) => {
         return (0, import_mithril31.default)("tr", [
           (0, import_mithril31.default)("th.exif-heading", key),
-          (0, import_mithril31.default)("td", value)
+          (0, import_mithril31.default)("td", value),
         ]);
       });
       return (0, import_mithril31.default)("div", [
         (0, import_mithril31.default)("h3", "Details"),
-        (0, import_mithril31.default)("table.metadata-table", $rows)
+        (0, import_mithril31.default)("table.metadata-table", $rows),
       ]);
-    }
+    },
   };
 }
 function PhotoSection() {
@@ -5634,7 +6411,9 @@ function PhotoSection() {
     view(vnode) {
       const { things, services } = vnode.attrs;
       console.log(things);
-      const urns = Object.values(things).flatMap((thing) => Array.isArray(thing.id) ? thing.id : [thing.id]);
+      const urns = Object.values(things).flatMap((thing) =>
+        Array.isArray(thing.id) ? thing.id : [thing.id]
+      );
       const photos = services.readPhotosByThingIds(new Set(urns));
       return (0, import_mithril31.default)(
         "section.photo-container",
@@ -5644,11 +6423,11 @@ function PhotoSection() {
             key: `photo-${photo.id}`,
             photo,
             loading,
-            interactive: true
+            interactive: true,
           });
-        })
+        }),
       );
-    }
+    },
   };
 }
 function ThingPage() {
@@ -5661,14 +6440,22 @@ function ThingPage() {
           (0, import_mithril31.default)(ThingSubtitle, { urn }),
           (0, import_mithril31.default)("br"),
           (0, import_mithril31.default)(ThingUrls, { urn, things, services }),
-          (0, import_mithril31.default)(ThingMetadata, { urn, things, services }),
+          (0, import_mithril31.default)(ThingMetadata, {
+            urn,
+            things,
+            services,
+          }),
           (0, import_mithril31.default)("h3", "Photos"),
-          (0, import_mithril31.default)(PhotoSection, { urn, things, services }),
-          (0, import_mithril31.default)("h3", "Albums")
+          (0, import_mithril31.default)(PhotoSection, {
+            urn,
+            things,
+            services,
+          }),
+          (0, import_mithril31.default)("h3", "Albums"),
           //m(AlbumSection, { urn, things, services }),
-        ])
+        ]),
       ]);
-    }
+    },
   };
 }
 
@@ -5686,15 +6473,17 @@ function AlbumsApp() {
           [
             (0, import_mithril32.default)(Header, state),
             (0, import_mithril32.default)("div.app-container", [
-              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(Sidebar, {
+                visible: state.sidebarVisible,
+              }),
               (0, import_mithril32.default)(AlbumsPage, {
-                albums: readAlbums(state.data)
-              })
-            ])
-          ]
-        )
+                albums: readAlbums(state.data),
+              }),
+            ]),
+          ],
+        ),
       ]);
-    }
+    },
   };
 }
 function AlbumApp() {
@@ -5715,7 +6504,7 @@ function AlbumApp() {
       }
       const { subjects, locations } = readThingsByAlbumId(
         state.data,
-        state.currentAlbum
+        state.currentAlbum,
       );
       return (0, import_mithril32.default)("body", [
         (0, import_mithril32.default)(
@@ -5724,19 +6513,21 @@ function AlbumApp() {
           [
             (0, import_mithril32.default)(Header, state),
             (0, import_mithril32.default)("div.app-container", [
-              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(Sidebar, {
+                visible: state.sidebarVisible,
+              }),
               (0, import_mithril32.default)(AlbumPage, {
                 album,
                 subjects,
                 locations,
                 photos,
-                videos
-              })
-            ])
-          ]
-        )
+                videos,
+              }),
+            ]),
+          ],
+        ),
       ]);
-    }
+    },
   };
 }
 function AboutApp() {
@@ -5749,13 +6540,15 @@ function AboutApp() {
           [
             (0, import_mithril32.default)(Header, state),
             (0, import_mithril32.default)("div.app-container", [
-              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril32.default)(AboutPage)
-            ])
-          ]
-        )
+              (0, import_mithril32.default)(Sidebar, {
+                visible: state.sidebarVisible,
+              }),
+              (0, import_mithril32.default)(AboutPage),
+            ]),
+          ],
+        ),
       ]);
-    }
+    },
   };
 }
 function VideosApp() {
@@ -5768,15 +6561,17 @@ function VideosApp() {
           [
             (0, import_mithril32.default)(Header, state),
             (0, import_mithril32.default)("div.app-container", [
-              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(Sidebar, {
+                visible: state.sidebarVisible,
+              }),
               (0, import_mithril32.default)(VideosPage, {
-                videos: readVideos(state.data)
-              })
-            ])
-          ]
-        )
+                videos: readVideos(state.data),
+              }),
+            ]),
+          ],
+        ),
       ]);
-    }
+    },
   };
 }
 function PhotosApp() {
@@ -5789,15 +6584,17 @@ function PhotosApp() {
           [
             (0, import_mithril32.default)(Header, state),
             (0, import_mithril32.default)("div.app-container", [
-              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(Sidebar, {
+                visible: state.sidebarVisible,
+              }),
               (0, import_mithril32.default)(PhotosPage, {
-                photos: readPhotos(state.data)
-              })
-            ])
-          ]
-        )
+                photos: readPhotos(state.data),
+              }),
+            ]),
+          ],
+        ),
       ]);
-    }
+    },
   };
 }
 function ThingApp() {
@@ -5827,17 +6624,19 @@ function ThingApp() {
           [
             (0, import_mithril32.default)(Header, state),
             (0, import_mithril32.default)("div.app-container", [
-              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(Sidebar, {
+                visible: state.sidebarVisible,
+              }),
               (0, import_mithril32.default)(ThingPage, {
                 urn: state.currentUrn,
                 things,
-                services: state.services
-              })
-            ])
-          ]
-        )
+                services: state.services,
+              }),
+            ]),
+          ],
+        ),
       ]);
-    }
+    },
   };
 }
 function PhotoApp() {
@@ -5861,13 +6660,18 @@ function PhotoApp() {
           [
             (0, import_mithril32.default)(Header, state),
             (0, import_mithril32.default)("div.app-container", [
-              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril32.default)(PhotoPage, { photo, services: state.services })
-            ])
-          ]
-        )
+              (0, import_mithril32.default)(Sidebar, {
+                visible: state.sidebarVisible,
+              }),
+              (0, import_mithril32.default)(PhotoPage, {
+                photo,
+                services: state.services,
+              }),
+            ]),
+          ],
+        ),
       ]);
-    }
+    },
   };
 }
 function ListingApp() {
@@ -5888,16 +6692,18 @@ function ListingApp() {
           [
             (0, import_mithril32.default)(Header, state),
             (0, import_mithril32.default)("div.app-container", [
-              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(Sidebar, {
+                visible: state.sidebarVisible,
+              }),
               (0, import_mithril32.default)(ListingPage, {
                 type: state.currentType,
-                things
-              })
-            ])
-          ]
-        )
+                things,
+              }),
+            ]),
+          ],
+        ),
       ]);
-    }
+    },
   };
 }
 listen("navigate", (event) => {
@@ -5918,6 +6724,6 @@ import_mithril33.default.route(document.body, "/albums", {
   "/album/:id": AlbumApp,
   "/thing/:pair": ThingApp,
   "/photo/:id": PhotoApp,
-  "/listing/:type": ListingApp
+  "/listing/:type": ListingApp,
 });
 //# sourceMappingURL=app.debec1bbe5.js.map

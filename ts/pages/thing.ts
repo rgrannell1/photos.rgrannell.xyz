@@ -15,7 +15,8 @@ import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { block, broadcast } from "../commons/events.ts";
 import { PlacesList } from "../components/places-list.ts";
-import { setify } from "../commons/sets.ts";
+import { setify, setOf } from "../commons/sets.ts";
+import { KnownRelations } from "../constants.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -36,7 +37,6 @@ function ThingTypeLink() {
     },
   };
 }
-
 
 /*
  * Links to external sites about the thing
@@ -74,7 +74,6 @@ function ThingUrls() {
 }
 
 function ThingMetadata() {
-
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const metadata: Record<string, m.Children> = {};
@@ -87,12 +86,12 @@ function ThingMetadata() {
       }, Strings.capitalise(parsed.type));
 
       // -- add the location of the thing
-      const locatedIn = things.flatMap((thing) => arrayify(thing.in));
-      if (locatedIn.length > 0) {
-        metadata['Located In'] = m(PlacesList, {
+      const locatedIn = setOf<string>(KnownRelations.IN, things);
+      if (locatedIn.size > 0) {
+        metadata["Located In"] = m(PlacesList, {
           services,
-          urns: setify(locatedIn)
-        })
+          urns: locatedIn,
+        });
       }
 
       if (things.length !== 1) {
@@ -121,18 +120,19 @@ function ThingMetadata() {
 
       // add contained places (e.g for countries)
       if (thing.contains) {
-        metadata['Contains'] = m(PlacesList, {
+        metadata["Contains"] = m(PlacesList, {
           services,
-          urns: setify(thing.contains)
-        })
+          urns: setify(thing.contains),
+        });
       }
 
       if (thing.unescoId) {
         const unescoDetails = services.readUnesco(one(thing.unescoId)!);
 
-        metadata['UNESCO'] = m('li',
+        metadata["UNESCO"] = m(
+          "li",
           m(UnescoLink, { urn: thing.unescoId, thing: unescoDetails ?? {} }),
-        )
+        );
       }
 
       const $rows = Object.entries(metadata).map(([key, value]) => {
@@ -198,7 +198,7 @@ function AlbumSection() {
           "div",
           { key: `album-${album.id}` },
           $album,
-          $md
+          $md,
         );
       });
 
@@ -214,10 +214,9 @@ function PhotoSection() {
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const { things, services } = vnode.attrs;
-      console.log(things)
 
-      const urns = Object.values(things).flatMap((thing) => Array.isArray(thing.id) ? thing.id : [thing.id]);
-      const photos = services.readPhotosByThingIds(new Set(urns));
+      const urns = setOf<string>("id", things);
+      const photos = services.readPhotosByThingIds(urns);
 
       return m(
         "section.photo-container",

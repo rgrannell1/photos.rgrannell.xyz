@@ -1,4 +1,4 @@
-import { buildCSS, buildHTML, buildTS, buildSW } from "./builders.ts";
+import { buildCSS, buildHTML, buildSW, buildTS } from "./builders.ts";
 
 console.log("Building");
 

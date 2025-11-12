@@ -1,4 +1,3 @@
-
 import * as path from "jsr:@std/path";
 import { deriveTriples } from "../semantic/derive.ts";
 import { loadTriples } from "../semantic/data.ts";
@@ -69,11 +68,11 @@ export const stats = JSON.parse(statsText);
 
 export function findPrefetchTargets() {
   const albums = readAlbums(tdb);
-  return albums.slice(0, 12).map(album => album.thumbnailUrl);
+  return albums.slice(0, 12).map((album) => album.thumbnailUrl);
 }
 
 export function findHomepageThumbnails() {
-  return readAlbums(tdb).map(album => {
-    return new URL(album.thumbnailUrl).pathname
+  return readAlbums(tdb).map((album) => {
+    return new URL(album.thumbnailUrl).pathname;
   });
 }

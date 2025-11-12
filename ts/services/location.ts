@@ -49,7 +49,7 @@ export const readUnesco = (
     tdb,
     id,
   );
-}
+};
 
 export const readParsedCountries = (
   tdb: TribbleDB,

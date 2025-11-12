@@ -2,7 +2,6 @@ import m from "mithril";
 import { ThingLinkAttrs } from "./components/thing-link.ts";
 import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 
-
 export type ApplicationEvents =
   | "click_burger_menu"
   | "switch_theme"
@@ -25,7 +24,10 @@ export type Services = {
   readUnesco: (id: string) => Unesco | undefined;
   toThingLinks: (urns: (string | undefined)[]) => m.Vnode<ThingLinkAttrs, {}>[];
   readParsedLocations: (urns: Set<string>) => (Place | Country)[];
+  readParsedPhotos: (urns: Set<string>) => Photo[];
   readThings: (urns: Set<string>) => TripleObject[];
+
+  // TODO change to readparsedphotos and readparsedalbums
   readPhotosByThingIds: (thingIds: Set<string>) => Photo[];
   readAlbumsByThingIds: (thingIds: Set<string>) => Album[];
   readParsedFeatures: (urns: Set<string>) => Feature[];
@@ -33,11 +35,10 @@ export type Services = {
 
 export type AppWindow = typeof window & {
   stats: Stats;
-}
+};
 
 /*
  * Stats injected into the HTML page to prevent an additional fetch
- *
  */
 export type Stats = {
   photos: number;
@@ -49,7 +50,7 @@ export type Stats = {
   amphibian_species: number;
   reptile_species: number;
   unesco_sites: number;
-}
+};
 
 /*
  * Application-wide state.
@@ -190,7 +191,7 @@ export type Insect = {
 export type Feature = {
   id: string;
   name?: string;
-}
+};
 
 export function isAnInsect(subject: Subject | Insect): subject is Insect {
   return (subject as Insect).type === "insect";

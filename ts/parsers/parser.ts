@@ -1,8 +1,7 @@
-
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { logParseWarning } from "../commons/logger.ts";
 
-import { safeParse } from 'valibot'
+import { safeParse } from "valibot";
 
 export function parseObject<T>(
   schema: any, // TODO

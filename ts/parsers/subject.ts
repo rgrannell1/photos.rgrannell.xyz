@@ -1,6 +1,13 @@
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type { Amphibian, Bird, Insect, Mammal, Reptile, Subject } from "../types.ts";
+import type {
+  Amphibian,
+  Bird,
+  Insect,
+  Mammal,
+  Reptile,
+  Subject,
+} from "../types.ts";
 import { KnownTypes } from "../constants.ts";
 import {
   AmphibianSchema,

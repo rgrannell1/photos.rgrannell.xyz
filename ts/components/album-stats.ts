@@ -3,7 +3,6 @@ import type { AppWindow, Stats } from "../types";
 
 /*
  * We inject this in at runtime, so validate its structure
- *
  */
 function isStats(stats: unknown): stats is Stats {
   if (typeof stats !== "object" || stats === null) {
@@ -37,7 +36,6 @@ function isStats(stats: unknown): stats is Stats {
 
 /*
  * Show statistics and links for the album pages
- *
  */
 export function AlbumStats() {
   const stats = (window as AppWindow).stats;

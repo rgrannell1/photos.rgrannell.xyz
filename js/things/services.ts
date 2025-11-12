@@ -1,4 +1,4 @@
-import { Album, Geoocordinates, Photo, Video } from "../types.ts";
+import type { Album, Geoocordinates, Photo, Video } from "../types.ts";
 import { KnownRelations } from "../constants.js";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { html } from "lit-element";

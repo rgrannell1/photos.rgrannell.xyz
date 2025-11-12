@@ -50,7 +50,10 @@ export function parseCountry(
   return parseObject(CountrySchema, "country", country);
 }
 
-export function parseUnesco(_: TribbleDB, unesco: TripleObject): Unesco | undefined {
+export function parseUnesco(
+  _: TribbleDB,
+  unesco: TripleObject,
+): Unesco | undefined {
   return parseObject(UnescoSchema, "unesco", unesco);
 }
 

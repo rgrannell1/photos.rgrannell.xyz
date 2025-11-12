@@ -4,7 +4,14 @@
  */
 
 import {
-  string, array, object, optional, union, any, pipe, url
+  any,
+  array,
+  object,
+  optional,
+  pipe,
+  string,
+  union,
+  url,
 } from "valibot";
 
 const v = {
@@ -15,8 +22,8 @@ const v = {
   union,
   any,
   pipe,
-  url
-}
+  url,
+};
 
 export const AlbumSchema = v.object({
   name: v.string(),

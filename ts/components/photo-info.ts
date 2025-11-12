@@ -108,7 +108,7 @@ export function PhotoInfo() {
     view(vnode: m.Vnode<PhotoInfoAttrs>) {
       const { photo, services } = vnode.attrs;
 
-      const infoItems = []
+      const infoItems = [];
 
       if (photo.description || photo.summary) {
         infoItems.push(m("tr", [
@@ -137,8 +137,8 @@ export function PhotoInfo() {
         m("tr", [
           m(Heading, { text: "Subject" }),
           m(Subject, { photo, services }),
-        ]));
-
+        ]),
+      );
 
       return m("table.metadata-table", infoItems);
     },

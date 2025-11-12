@@ -1,7 +1,6 @@
 /*
  * Mithril's Router wants components, so for the moment each page has a
  * wrapper app.
- *
  */
 
 import m from "mithril";
@@ -38,7 +37,6 @@ type AppAttrs = {};
 export function AlbumsApp(): m.Component<AppAttrs> {
   return {
     oninit() {
-
     },
     view() {
       return m("body", [
