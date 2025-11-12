@@ -471,7 +471,9 @@ button:disabled {
   margin-left: 20px;
 }
 
-
+.link-list li {
+  list-style: none;
+}
 
 /* EXIF information about an image */
 .metadata-table {
