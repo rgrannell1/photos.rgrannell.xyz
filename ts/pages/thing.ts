@@ -76,8 +76,6 @@ function ThingUrls() {
 function ThingMetadata() {
 
   return {
-    oninit(vnode: m.Vnode<ThingPageAttrs>) {
-    },
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const metadata: Record<string, m.Children> = {};
       const { urn, things, services } = vnode.attrs;

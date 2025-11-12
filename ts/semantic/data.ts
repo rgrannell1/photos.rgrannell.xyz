@@ -2,8 +2,8 @@
  * Load tribblefile from a URL as a stream of triples.
  */
 
-import m from "mithril";
-import { TribbleDB, Triple } from "@rgrannell1/tribbledb";
+import { TribbleDB } from "@rgrannell1/tribbledb";
+import type { Triple } from "@rgrannell1/tribbledb";
 import { TribbleParser } from "@rgrannell1/tribbledb";
 
 /*

@@ -8,8 +8,6 @@ import { readParsedCountries } from "../services/location.ts";
 import { AlbumSchema } from "./schemas.ts";
 import { safeParse } from "valibot";
 
-const NAME_TO_URN_CACHE: Map<string, string> = new Map();
-
 /*
  * Read album-data
  *

@@ -16,7 +16,7 @@ export function placeEmoji(thing: any): string {
   const feature = one(thing.feature);
   const { id: featureId } = asUrn(feature);
 
-  if (PLACE_FEATURES_TO_EMOJI.hasOwnProperty(featureId)) {
+  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
     return PLACE_FEATURES_TO_EMOJI[
       featureId as keyof typeof PLACE_FEATURES_TO_EMOJI
     ];
@@ -31,7 +31,7 @@ export function placeEmoji(thing: any): string {
 export function placeFeatureEmoji(featureUrn: string): string {
   const { id: featureId } = asUrn(featureUrn);
 
-  if (PLACE_FEATURES_TO_EMOJI.hasOwnProperty(featureId)) {
+  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
     return PLACE_FEATURES_TO_EMOJI[
       featureId as keyof typeof PLACE_FEATURES_TO_EMOJI
     ];
