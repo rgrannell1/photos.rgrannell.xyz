@@ -1,5 +1,5 @@
 import m from "mithril";
-import { Photo as PhotoType } from "../types.ts";
+import type { Photo as PhotoType } from "../types.ts";
 import { Photos } from "../services/photos.ts";
 import { Photo } from "../components/photo.ts";
 

@@ -3,7 +3,8 @@ import { Windows } from "../services/window.ts";
 import { Dates } from "../services/dates.ts";
 import { AlbumShareButton } from "../components/album-share-button.ts";
 import { CountryLink } from "../components/place-links.ts";
-import { Video, VideoAttrs } from "../components/video.ts";
+import { Video } from "../components/video.ts";
+import type { VideoAttrs } from "../components/video.ts";
 
 import type {
   Album,

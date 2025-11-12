@@ -1,7 +1,7 @@
 import m from "mithril";
 import { NonListableTypes } from "../constants.ts";
 import { Strings } from "../commons/strings.ts";
-import { TripleObject } from "@rgrannell1/tribbledb";
+import type { TripleObject } from "@rgrannell1/tribbledb";
 
 /*
  * Display the component albums and metadata

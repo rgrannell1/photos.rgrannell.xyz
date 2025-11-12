@@ -1,6 +1,6 @@
 import m from "mithril";
 import { AlbumStats } from "../components/album-stats.ts";
-import { Album } from "../types.ts";
+import type { Album } from "../types.ts";
 import { Photos } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";

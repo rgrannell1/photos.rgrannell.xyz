@@ -6,45 +6,40 @@ import { BinomialTypes, KnownTypes } from "../constants.ts";
 import { one } from "../commons/arrays.ts";
 import { countryEmoji, placeEmoji } from "../services/emoji.ts";
 
+function computeTitle(urn: string, things: TripleObject[]): string {
+  const parsed = parseUrn(urn);
+
+  // if type:*, fall back to pretty render of type information
+  if (parsed.id === "*") {
+    return Strings.capitalise(Strings.pluralise(parsed.type));
+  }
+
+  if (things.length === 0) {
+    return urn;
+  }
+
+  const [thing] = things;
+  const name = one(thing.name) ?? parsed.id;
+
+  if (parsed.type === KnownTypes.COUNTRY) {
+    return `${countryEmoji(thing)} ${name}`;
+  } else if (parsed.type === KnownTypes.PLACE) {
+    return `${placeEmoji(thing)} ${name}`;
+  }
+
+  return name;
+}
+
 type ThingTitleAttrs = {
   urn: string;
   things: TripleObject[];
 };
 
 export function ThingTitle() {
-  let title = "";
-
   return {
-    oninit(vnode: m.Vnode<ThingTitleAttrs>) {
-      const { urn, things } = vnode.attrs;
-      const parsed = parseUrn(urn);
-
-      // if type:*, fall back to pretty render of type information
-      if (parsed.id === "*") {
-        title = Strings.capitalise(Strings.pluralise(parsed.type));
-        return;
-      }
-
-      if (things.length === 0) {
-        title = urn;
-        return;
-      }
-
-      const [thing] = things;
-      const name = one(thing.name) ?? parsed.id;
-
-      if (parsed.type === KnownTypes.COUNTRY) {
-        title = `${countryEmoji(thing)} ${name}`;
-        return;
-      } else if (parsed.type === KnownTypes.PLACE) {
-        title = `${placeEmoji(thing)} ${name}`;
-        return;
-      }
-
-      title = name;
-    },
     view(vnode: m.Vnode<ThingTitleAttrs>) {
-      return m("h1", title);
+      const { urn, things } = vnode.attrs;
+      return m("h1", computeTitle(urn, things));
     },
   };
 }

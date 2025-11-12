@@ -1,6 +1,7 @@
 import m from "mithril";
 import type { Video as VideoType } from "../types.ts";
-import { Video, VideoAttrs } from "../components/video.ts";
+import { Video } from "../components/video.ts";
+import type { VideoAttrs } from "../components/video.ts";
 
 type VideosPageAttrs = {
   videos: VideoType[];

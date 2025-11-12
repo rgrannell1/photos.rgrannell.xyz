@@ -79,6 +79,7 @@ section {
 
 a {
   color: var(--link-color);
+  cursor: pointer;
 }
 
 main a {

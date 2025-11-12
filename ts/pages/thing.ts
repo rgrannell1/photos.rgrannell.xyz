@@ -6,7 +6,7 @@ import { ExternalLink } from "../components/external-link.ts";
 import { arrayify, one } from "../commons/arrays.ts";
 import { Strings } from "../commons/strings.ts";
 import type { Album, Services } from "../types.ts";
-import { CountryLink, LocationLink } from "../components/place-links.ts";
+import { CountryLink } from "../components/place-links.ts";
 import { ThingLink } from "../components/thing-link.ts";
 import { UnescoLink } from "../components/unesco-link.ts";
 import { Photo } from "../components/photo.ts";
@@ -14,6 +14,8 @@ import { Photos } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { block, broadcast } from "../commons/events.ts";
+import { PlacesList } from "../components/places-list.ts";
+import { setify } from "../commons/sets.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -34,6 +36,7 @@ function ThingTypeLink() {
     },
   };
 }
+
 
 /*
  * Links to external sites about the thing
@@ -65,21 +68,18 @@ function ThingUrls() {
       }
 
       // -- add google maps URL
-
-      return m("ul.link-list", {
-
-      }, $links);
+      return m("ul.link-list", $links);
     },
   };
 }
 
 function ThingMetadata() {
-  const metadata: Record<string, m.Children> = {};
 
   return {
     oninit(vnode: m.Vnode<ThingPageAttrs>) {
     },
     view(vnode: m.Vnode<ThingPageAttrs>) {
+      const metadata: Record<string, m.Children> = {};
       const { urn, things, services } = vnode.attrs;
       const parsed = asUrn(urn);
 
@@ -89,16 +89,12 @@ function ThingMetadata() {
       }, Strings.capitalise(parsed.type));
 
       // -- add the location of the thing
-      const places = new Set(things.flatMap((thing) => arrayify(thing.in)));
-      if (places.size > 0) {
-        const locations = services.readParsedLocations(places);
-
-        metadata["Located In"] = m(
-          "ul",
-          locations.map((location) => {
-            return m(LocationLink, { location, mode: "name" });
-          }),
-        );
+      const locatedIn = things.flatMap((thing) => arrayify(thing.in));
+      if (locatedIn.length > 0) {
+        metadata['Located In'] = m(PlacesList, {
+          services,
+          urns: setify(locatedIn)
+        })
       }
 
       if (things.length !== 1) {
@@ -108,7 +104,7 @@ function ThingMetadata() {
       const [thing] = things;
 
       // -- add feature information
-      const features = services.readParsedFeatures(new Set(arrayify(thing.feature)));
+      const features = services.readParsedFeatures(setify(thing.feature));
 
       if (features.length > 0) {
         metadata["Place Features"] = m(
@@ -127,22 +123,17 @@ function ThingMetadata() {
 
       // add contained places (e.g for countries)
       if (thing.contains) {
-        metadata['Contains'] = m('ul',
-          arrayify(thing.contains).map(urn => {
-            return m(
-              "li",
-              { key: `contains-${urn}` },
-              m(ThingLink, { urn, thing: services.readLocation(urn) })
-            )
-          })
-        )
+        metadata['Contains'] = m(PlacesList, {
+          services,
+          urns: setify(thing.contains)
+        })
       }
 
       if (thing.unescoId) {
-        const unescoDetails = services.readUnesco(thing.unescoId) ?? {};
+        const unescoDetails = services.readUnesco(one(thing.unescoId)!);
 
         metadata['UNESCO'] = m('li',
-          m(UnescoLink, { urn: thing.unescoId, thing: unescoDetails }),
+          m(UnescoLink, { urn: thing.unescoId, thing: unescoDetails ?? {} }),
         )
       }
 
@@ -227,7 +218,7 @@ function PhotoSection() {
       const { things, services } = vnode.attrs;
       console.log(things)
 
-      const urns = Object.values(things).map((thing) => thing.id);
+      const urns = Object.values(things).flatMap((thing) => Array.isArray(thing.id) ? thing.id : [thing.id]);
       const photos = services.readPhotosByThingIds(new Set(urns));
 
       return m(
