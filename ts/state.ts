@@ -21,6 +21,7 @@ import {
   readPlace,
 } from "./services/location.ts";
 import { readVideo } from "./services/videos.ts";
+import { readParsedFeatures } from "./services/features.ts";
 
 /*
  * Load data from the tribbles file.
@@ -57,6 +58,7 @@ function loadServices(data: TribbleDB) {
     readUnesco: readUnesco.bind(null, data),
     toThingLinks: toThingLinks.bind(null, data),
     readParsedLocations: readParsedLocations.bind(null, data),
+    readParsedFeatures: readParsedFeatures.bind(null, data),
     readThings: readThings.bind(null, data),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, data),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data),

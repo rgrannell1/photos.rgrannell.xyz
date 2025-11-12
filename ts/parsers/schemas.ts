@@ -125,3 +125,8 @@ export const VideoSchema = v.object({
   videoUrl720p: v.pipe(v.string(), v.url()),
   videoUrlUnscaled: v.pipe(v.string(), v.url()),
 });
+
+export const FeatureSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+});

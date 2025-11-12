@@ -108,13 +108,14 @@ function ThingMetadata() {
       const [thing] = things;
 
       // -- add feature information
-      const features = services.readThings(new Set(arrayify(thing.feature)));
+      const features = services.readParsedFeatures(new Set(arrayify(thing.feature)));
 
       if (features.length > 0) {
         metadata["Place Features"] = m(
           "ul",
           features.map((feature) => {
             const urn = one(feature.id)!;
+
             return m(
               "li",
               { key: `feature-${urn}` },
@@ -224,6 +225,7 @@ function PhotoSection() {
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const { things, services } = vnode.attrs;
+      console.log(things)
 
       const urns = Object.values(things).map((thing) => thing.id);
       const photos = services.readPhotosByThingIds(new Set(urns));

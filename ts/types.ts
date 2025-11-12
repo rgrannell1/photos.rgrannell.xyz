@@ -28,6 +28,7 @@ export type Services = {
   readThings: (urns: Set<string>) => TripleObject[];
   readPhotosByThingIds: (thingIds: Set<string>) => Photo[];
   readAlbumsByThingIds: (thingIds: Set<string>) => Album[];
+  readParsedFeatures: (urns: Set<string>) => Feature[];
 };
 
 export type AppWindow = typeof window & {
@@ -183,6 +184,11 @@ export type Insect = {
   name?: string;
   wikipedia?: string;
 };
+
+export type Feature = {
+  id: string;
+  name?: string;
+}
 
 export function isAnInsect(subject: Subject | Insect): subject is Insect {
   return (subject as Insect).type === "insect";

@@ -2754,6 +2754,7 @@ var PLACE_FEATURES_TO_EMOJI = {
   bridge: "\u{1F309}",
   canal: "\u{1F6A4}",
   castle: "\u{1F3F0}",
+  church: "\u26EA",
   cathedral: "\u26EA",
   cave: "\u26CF\uFE0F",
   city: "\u{1F3D9}\uFE0F",
@@ -3859,6 +3860,10 @@ var VideoSchema = v.object({
   videoUrl720p: v.pipe(v.string(), v.url()),
   videoUrlUnscaled: v.pipe(v.string(), v.url())
 });
+var FeatureSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string())
+});
 
 // ts/commons/logger.ts
 function logParseWarning(issues) {
@@ -4240,6 +4245,20 @@ var readParsedAlbums = (tdb2, urns) => {
   return readParsedThings(parseAlbum, tdb2, urns);
 };
 
+// ts/parsers/feature.ts
+function parseFeature(_, feature) {
+  return parseObject(FeatureSchema, "feature", feature);
+}
+
+// ts/services/features.ts
+var readParsedFeatures = (tdb2, urns) => {
+  return readParsedThings(
+    parseFeature,
+    tdb2,
+    urns
+  );
+};
+
 // ts/state.ts
 async function loadData() {
   const schema = {};
@@ -4267,6 +4286,7 @@ function loadServices(data) {
     readUnesco: readUnesco.bind(null, data),
     toThingLinks: toThingLinks.bind(null, data),
     readParsedLocations: readParsedLocations.bind(null, data),
+    readParsedFeatures: readParsedFeatures.bind(null, data),
     readThings: readThings.bind(null, data),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, data),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data)
@@ -5580,7 +5600,7 @@ function ThingMetadata() {
         return;
       }
       const [thing] = things;
-      const features = services.readThings(new Set(arrayify(thing.feature)));
+      const features = services.readParsedFeatures(new Set(arrayify(thing.feature)));
       if (features.length > 0) {
         metadata["Place Features"] = (0, import_mithril30.default)(
           "ul",
@@ -5678,6 +5698,7 @@ function PhotoSection() {
   return {
     view(vnode) {
       const { things, services } = vnode.attrs;
+      console.log(things);
       const urns = Object.values(things).map((thing) => thing.id);
       const photos = services.readPhotosByThingIds(new Set(urns));
       return (0, import_mithril30.default)(

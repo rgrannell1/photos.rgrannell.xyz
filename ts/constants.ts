@@ -125,6 +125,7 @@ export const PLACE_FEATURES_TO_EMOJI = {
   bridge: "🌉",
   canal: "🚤",
   castle: "🏰",
+  church: "⛪",
   cathedral: "⛪",
   cave: "⛏️",
   city: "🏙️",
