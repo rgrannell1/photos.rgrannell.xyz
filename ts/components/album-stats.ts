@@ -54,7 +54,6 @@ export function AlbumStats() {
         " · ",
         `${stats.albums} albums · ${stats.years} years · `,
         `${stats.countries} `,
-        m(ListingLink, { type: "country" }),
         m("a", { href: "#/listing/country" }, "countries"),
         " · ",
         `${stats.bird_species} `,

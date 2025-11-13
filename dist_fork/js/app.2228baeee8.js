@@ -2958,7 +2958,7 @@ var Strings = class _Strings {
     if (CAMEL_CASE_CACHE.has(str)) {
       return CAMEL_CASE_CACHE.get(str);
     }
-    const result = str.replace(/[-_ ]+([a-z])/g, (_, char) => char.toUpperCase());
+    const result = str.replace(/[-_ ]+([a-z0-9])/g, (_, char) => char.toUpperCase());
     CAMEL_CASE_CACHE.set(str, result);
     return result;
   }
@@ -3252,6 +3252,9 @@ var readParsedThings = function(parser, tdb2, urns) {
     const thing = readThing(tdb2, urn);
     if (!thing) {
       continue;
+    }
+    if (urn.includes("video")) {
+      console.log(thing, "xxxxxx");
     }
     const parsed = parser(tdb2, thing);
     if (parsed) {
@@ -4394,7 +4397,6 @@ function AlbumStats() {
         " \xB7 ",
         `${stats.albums} albums \xB7 ${stats.years} years \xB7 `,
         `${stats.countries} `,
-        (0, import_mithril6.default)(ListingLink, { type: "country" }),
         (0, import_mithril6.default)("a", { href: "#/listing/country" }, "countries"),
         " \xB7 ",
         `${stats.bird_species} `,
@@ -4920,7 +4922,7 @@ function Video2() {
 function VideosPage() {
   return {
     view(vnode) {
-      const videos = vnode.attrs.videos;
+      const { videos } = vnode.attrs;
       const videoLengthText = videos.length === 1 ? "1 video" : `${videos.length} videos`;
       const $videosList = videos.map((video) => {
         return (0, import_mithril15.default)(Video2, { video, preload: "auto" });
@@ -5582,7 +5584,7 @@ function onListingClick(type, event) {
   });
   block(event);
 }
-function ListingLink2() {
+function ListingLink() {
   return {
     view(vnode) {
       let type = "";
@@ -5665,7 +5667,7 @@ function ThingMetadata() {
     view(vnode) {
       const metadata = {};
       const { urn, things, services } = vnode.attrs;
-      metadata.Classification = (0, import_mithril33.default)(ListingLink2, { urn });
+      metadata.Classification = (0, import_mithril33.default)(ListingLink, { urn });
       const locatedIn = setOf(KnownRelations.IN, things);
       if (locatedIn.size > 0) {
         metadata["Located In"] = (0, import_mithril33.default)(PlacesList, { services, urns: locatedIn });

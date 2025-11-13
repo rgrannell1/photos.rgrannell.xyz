@@ -22,7 +22,7 @@ export class Strings {
     }
 
     const result = str
-      .replace(/[-_ ]+([a-z])/g, (_, char) => char.toUpperCase());
+      .replace(/[-_ ]+([a-z0-9])/g, (_, char) => char.toUpperCase());
 
     CAMEL_CASE_CACHE.set(str, result);
     return result;

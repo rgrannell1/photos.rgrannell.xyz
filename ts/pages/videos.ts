@@ -11,7 +11,7 @@ type VideosPageAttrs = {
 export function VideosPage() {
   return {
     view(vnode: m.Vnode<VideosPageAttrs>) {
-      const videos = vnode.attrs.videos;
+      const { videos } = vnode.attrs;
       const videoLengthText = videos.length === 1
         ? "1 video"
         : `${videos.length} videos`;
