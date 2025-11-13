@@ -18,6 +18,8 @@ import { PlacesList } from "../components/places-list.ts";
 import { setify, setOf } from "../commons/sets.ts";
 import { KnownRelations } from "../constants.ts";
 import { ListingLink } from "../components/listing-link.ts";
+import { FeaturesList } from "../components/features-list.ts";
+import { UnescoList } from "../components/unesco-list.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -84,7 +86,6 @@ function ThingMetadata() {
 
       const locatedIn = setOf<string>(KnownRelations.IN, things);
       if (locatedIn.size > 0) {
-        // -- add the location of the thing
         metadata["Located In"] = m(PlacesList, { services, urns: locatedIn });
       }
 
@@ -93,41 +94,21 @@ function ThingMetadata() {
       }
 
       const [thing] = things;
+      // The non-wildcard case
 
-      // -- add feature information
-      const features = services.readParsedFeatures(setify(thing.feature));
-
-      if (features.length > 0) {
-        metadata["Place Features"] = m(
-          "ul",
-          features.map((feature) => {
-            const urn = one(feature.id)!;
-
-            return m(
-              "li",
-              { key: `feature-${urn}` },
-              m(ThingLink, { urn, thing: feature }),
-            );
-          }),
-        );
+      if (thing.feature) {
+        metadata["Place Features"] = m(FeaturesList, { urns: setify(thing.feature), services });
       }
 
-      // add contained places (e.g for countries)
       if (thing.contains) {
-        metadata["Contains"] = m(PlacesList, {
-          services,
-          urns: setify(thing.contains),
-        });
+        metadata["Contains"] = m(PlacesList, { services, urns: setify(thing.contains) });
       }
 
       if (thing.unescoId) {
-        const unescoDetails = services.readUnesco(one(thing.unescoId)!);
-        if (unescoDetails) {
-          metadata["UNESCO"] = m(
-            "li",
-            m(UnescoLink, { urn: one(thing.unescoId)!, thing: unescoDetails }),
-          );
-        }
+        metadata["UNESCO"] = m(UnescoList, {
+          urns: new Set(arrayify(thing.unescoId)),
+          services,
+        })
       }
 
       const $rows = Object.entries(metadata).map(([key, value]) => {

@@ -1,6 +1,7 @@
 import m from "mithril";
 import { ThingLinkAttrs } from "./components/thing-link.ts";
 import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
+import type { loadServices } from "./state.ts";
 
 export type ApplicationEvents =
   | "click_burger_menu"
@@ -8,30 +9,6 @@ export type ApplicationEvents =
   | "click_photo_metadata"
   | "photo_loaded"
   | "navigate";
-
-export type Services = {
-  readThing: (id: string) => TripleObject | undefined;
-  readAlbum: (id: string) => Album | undefined;
-  readCountry: (id: string) => Country | undefined;
-  readPlace: (id: string) => Place | undefined;
-  readPhoto: (id: string) => Photo | undefined;
-  readMammal: (id: string) => Mammal | undefined;
-  readReptile: (id: string) => Reptile | undefined;
-  readAmphibian: (id: string) => Amphibian | undefined;
-  readInsect: (id: string) => Insect | undefined;
-  readVideo: (id: string) => Video | undefined;
-  readLocation: (id: string) => Place | Country | undefined;
-  readUnesco: (id: string) => Unesco | undefined;
-  toThingLinks: (urns: (string | undefined)[]) => m.Vnode<ThingLinkAttrs, {}>[];
-  readParsedLocations: (urns: Set<string>) => (Place | Country)[];
-  readParsedPhotos: (urns: Set<string>) => Photo[];
-  readThings: (urns: Set<string>) => TripleObject[];
-
-  // TODO change to readparsedphotos and readparsedalbums
-  readPhotosByThingIds: (thingIds: Set<string>) => Photo[];
-  readAlbumsByThingIds: (thingIds: Set<string>) => Album[];
-  readParsedFeatures: (urns: Set<string>) => Feature[];
-};
 
 export type AppWindow = typeof window & {
   stats: Stats;
@@ -53,17 +30,24 @@ export type Stats = {
 };
 
 /*
+ *
+ */
+export type Services = ReturnType<typeof loadServices>
+
+/*
  * Application-wide state.
+ *
+ * TODO make this a sum-type
  */
 export type State = {
   data: TribbleDB;
+  services: Services;
   darkMode: boolean;
   sidebarVisible: boolean;
   currentAlbum: string | undefined;
   currentPhoto: string | undefined;
   currentType: string | undefined;
   currentUrn: string | undefined;
-  services: Services;
 };
 
 /*

@@ -21,6 +21,7 @@ import {
   readCountry,
   readLocation,
   readParsedLocations,
+  readParsedUnescos,
   readPlace,
   readUnesco,
 } from "./services/location.ts";
@@ -45,8 +46,10 @@ async function loadData() {
 
 /*
  * Commonly used services that depend on state
+ *
+ * TODO come on, this is silly.
  */
-function loadServices(data: TribbleDB) {
+export function loadServices(data: TribbleDB) {
   return {
     readThing: readThing.bind(null, data),
     readAlbum: readAlbum.bind(null, data),
@@ -67,6 +70,7 @@ function loadServices(data: TribbleDB) {
     readThings: readThings.bind(null, data),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, data),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data),
+    readParsedUnescos: readParsedUnescos.bind(null, data),
   };
 }
 
@@ -81,6 +85,7 @@ export async function loadState(): Promise<State> {
     data,
     currentAlbum: undefined,
     currentPhoto: undefined,
+    currentUrn: undefined,
     currentType: undefined,
     services: loadServices(data),
   };

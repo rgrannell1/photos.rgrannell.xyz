@@ -83,3 +83,14 @@ export const readParsedLocations = (
     urns,
   );
 };
+
+export const readParsedUnescos = (
+  tdb: TribbleDB,
+  urns: Set<string>,
+) => {
+  return readParsedThings(
+    parseUnesco,
+    tdb,
+    urns,
+  );
+};
