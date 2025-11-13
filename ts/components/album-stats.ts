@@ -11,6 +11,7 @@ function isStats(stats: unknown): stats is Stats {
 
   const keys = [
     "photos",
+    "videos",
     "albums",
     "years",
     "countries",
@@ -50,6 +51,7 @@ export function AlbumStats() {
         `${stats.photos} `,
         m("a", { href: "#/photos" }, "photos"),
         " · ",
+        `${stats.videos} `,
         m("a", { href: "#/videos" }, "videos"),
         " · ",
         `${stats.albums} albums · ${stats.years} years · `,

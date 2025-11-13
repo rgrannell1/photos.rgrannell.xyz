@@ -17,6 +17,7 @@ export type AppWindow = typeof window & {
  */
 export type Stats = {
   photos: number;
+  videos: number;
   albums: number;
   years: number;
   countries: number;

@@ -4423,6 +4423,7 @@ function isStats(stats) {
   }
   const keys = [
     "photos",
+    "videos",
     "albums",
     "years",
     "countries",
@@ -4453,6 +4454,7 @@ function AlbumStats() {
         `${stats.photos} `,
         (0, import_mithril5.default)("a", { href: "#/photos" }, "photos"),
         " \xB7 ",
+        `${stats.videos}`,
         (0, import_mithril5.default)("a", { href: "#/videos" }, "videos"),
         " \xB7 ",
         `${stats.albums} albums \xB7 ${stats.years} years \xB7 `,
