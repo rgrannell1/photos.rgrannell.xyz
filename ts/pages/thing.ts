@@ -17,6 +17,7 @@ import { block, broadcast } from "../commons/events.ts";
 import { PlacesList } from "../components/places-list.ts";
 import { setify, setOf } from "../commons/sets.ts";
 import { KnownRelations } from "../constants.ts";
+import { ListingLink } from "../components/listing-link.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -78,20 +79,13 @@ function ThingMetadata() {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const metadata: Record<string, m.Children> = {};
       const { urn, things, services } = vnode.attrs;
-      const parsed = asUrn(urn);
 
-      // -- add the thing type
-      metadata.Classification = m("a", {
-        href: `#/listing/${parsed.type}`,
-      }, Strings.capitalise(parsed.type));
+      metadata.Classification = m(ListingLink, { urn });
 
-      // -- add the location of the thing
       const locatedIn = setOf<string>(KnownRelations.IN, things);
       if (locatedIn.size > 0) {
-        metadata["Located In"] = m(PlacesList, {
-          services,
-          urns: locatedIn,
-        });
+        // -- add the location of the thing
+        metadata["Located In"] = m(PlacesList, { services, urns: locatedIn });
       }
 
       if (things.length !== 1) {
@@ -128,11 +122,12 @@ function ThingMetadata() {
 
       if (thing.unescoId) {
         const unescoDetails = services.readUnesco(one(thing.unescoId)!);
-
-        metadata["UNESCO"] = m(
-          "li",
-          m(UnescoLink, { urn: thing.unescoId, thing: unescoDetails ?? {} }),
-        );
+        if (unescoDetails) {
+          metadata["UNESCO"] = m(
+            "li",
+            m(UnescoLink, { urn: one(thing.unescoId)!, thing: unescoDetails }),
+          );
+        }
       }
 
       const $rows = Object.entries(metadata).map(([key, value]) => {

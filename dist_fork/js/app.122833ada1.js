@@ -1052,9 +1052,9 @@ var require_build2 = __commonJS({
       var path = template.slice(0, pathEnd);
       var query = {};
       Object.assign(query, params);
-      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m33, key, variadic) {
+      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m34, key, variadic) {
         delete query[key];
-        if (params[key] == null) return m33;
+        if (params[key] == null) return m34;
         return variadic ? params[key] : encodeURIComponent(String(params[key]));
       });
       var newQueryIndex = resolved.indexOf("?");
@@ -1326,8 +1326,8 @@ var require_compileTemplate = __commonJS({
         // don't also accidentally escape `-` and make it harder to detect it to
         // ban it from template parameters.
         /:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
-        function(m33, key, extra) {
-          if (key == null) return "\\" + m33;
+        function(m34, key, extra) {
+          if (key == null) return "\\" + m34;
           keys.push({ k: key, r: extra === "..." });
           if (extra === "...") return "(.*)";
           if (extra === ".") return "([^/]+)\\.";
@@ -1381,7 +1381,7 @@ var require_router = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/router.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
-    var m33 = require_hyperscript();
+    var m34 = require_hyperscript();
     var buildPathname = require_build2();
     var parsePathname = require_parse2();
     var compileTemplate = require_compileTemplate();
@@ -1524,7 +1524,7 @@ var require_router = __commonJS({
       route.prefix = "#!";
       route.Link = {
         view: function(vnode) {
-          var child = m33(
+          var child = m34(
             vnode.attrs.selector || "a",
             censor(vnode.attrs, ["options", "params", "selector", "onclick"]),
             vnode.children
@@ -1587,34 +1587,34 @@ var require_mithril = __commonJS({
     var request = require_request2();
     var mountRedraw = require_mount_redraw2();
     var domFor = require_domFor();
-    var m33 = function m34() {
+    var m34 = function m35() {
       return hyperscript.apply(this, arguments);
     };
-    m33.m = hyperscript;
-    m33.trust = hyperscript.trust;
-    m33.fragment = hyperscript.fragment;
-    m33.Fragment = "[";
-    m33.mount = mountRedraw.mount;
-    m33.route = require_route();
-    m33.render = require_render2();
-    m33.redraw = mountRedraw.redraw;
-    m33.request = request.request;
-    m33.parseQueryString = require_parse();
-    m33.buildQueryString = require_build();
-    m33.parsePathname = require_parse2();
-    m33.buildPathname = require_build2();
-    m33.vnode = require_vnode();
-    m33.censor = require_censor();
-    m33.domFor = domFor.domFor;
-    module.exports = m33;
+    m34.m = hyperscript;
+    m34.trust = hyperscript.trust;
+    m34.fragment = hyperscript.fragment;
+    m34.Fragment = "[";
+    m34.mount = mountRedraw.mount;
+    m34.route = require_route();
+    m34.render = require_render2();
+    m34.redraw = mountRedraw.redraw;
+    m34.request = request.request;
+    m34.parseQueryString = require_parse();
+    m34.buildQueryString = require_build();
+    m34.parsePathname = require_parse2();
+    m34.buildPathname = require_build2();
+    m34.vnode = require_vnode();
+    m34.censor = require_censor();
+    m34.domFor = domFor.domFor;
+    module.exports = m34;
   }
 });
 
 // ts/index.ts
-var import_mithril32 = __toESM(require_mithril());
+var import_mithril33 = __toESM(require_mithril());
 
 // ts/app.ts
-var import_mithril31 = __toESM(require_mithril());
+var import_mithril32 = __toESM(require_mithril());
 
 // ts/components/header.ts
 var import_mithril = __toESM(require_mithril());
@@ -5439,7 +5439,7 @@ function ListingPage() {
 }
 
 // ts/pages/thing.ts
-var import_mithril30 = __toESM(require_mithril());
+var import_mithril31 = __toESM(require_mithril());
 
 // ts/components/thing-title.ts
 var import_mithril26 = __toESM(require_mithril());
@@ -5564,29 +5564,50 @@ function setOf(property, objects) {
   return result;
 }
 
+// ts/components/listing-link.ts
+var import_mithril30 = __toESM(require_mithril());
+function onListingClick(type, event) {
+  broadcast("navigate", {
+    route: `/listing/${type}`
+  });
+  block(event);
+}
+function ListingLink() {
+  return {
+    view(vnode) {
+      const { urn } = vnode.attrs;
+      const parsed = asUrn(urn);
+      return (0, import_mithril30.default)("a", {
+        href: `#/listing/${parsed.type}`,
+        onclick: onListingClick.bind(null, parsed.type)
+      }, Strings.capitalise(parsed.type));
+    }
+  };
+}
+
 // ts/pages/thing.ts
 function ThingUrls() {
   return {
     view(vnode) {
       const { things } = vnode.attrs;
       if (things.length !== 1) {
-        return (0, import_mithril30.default)("ul");
+        return (0, import_mithril31.default)("ul");
       }
       const [thing] = things;
       const $links = [];
       const wikipedia = one(thing.wikipedia);
       if (wikipedia) {
         $links.push(
-          (0, import_mithril30.default)("li", (0, import_mithril30.default)(ExternalLink, { href: wikipedia, text: "[wikipedia]" }))
+          (0, import_mithril31.default)("li", (0, import_mithril31.default)(ExternalLink, { href: wikipedia, text: "[wikipedia]" }))
         );
       }
       const birdwatch = one(thing.birdwatchUrl);
       if (birdwatch) {
         $links.push(
-          (0, import_mithril30.default)("li", (0, import_mithril30.default)(ExternalLink, { href: birdwatch, text: "[birdwatch]" }))
+          (0, import_mithril31.default)("li", (0, import_mithril31.default)(ExternalLink, { href: birdwatch, text: "[birdwatch]" }))
         );
       }
-      return (0, import_mithril30.default)("ul.link-list", $links);
+      return (0, import_mithril31.default)("ul.link-list", $links);
     }
   };
 }
@@ -5595,13 +5616,10 @@ function ThingMetadata() {
     view(vnode) {
       const metadata = {};
       const { urn, things, services } = vnode.attrs;
-      const parsed = asUrn(urn);
-      metadata.Classification = (0, import_mithril30.default)("a", {
-        href: `#/listing/${parsed.type}`
-      }, Strings.capitalise(parsed.type));
+      metadata.Classification = (0, import_mithril31.default)(ListingLink, { urn });
       const locatedIn = setOf(KnownRelations.IN, things);
       if (locatedIn.size > 0) {
-        metadata["Located In"] = (0, import_mithril30.default)(PlacesList, {
+        metadata["Located In"] = (0, import_mithril31.default)(PlacesList, {
           services,
           urns: locatedIn
         });
@@ -5612,40 +5630,42 @@ function ThingMetadata() {
       const [thing] = things;
       const features = services.readParsedFeatures(setify(thing.feature));
       if (features.length > 0) {
-        metadata["Place Features"] = (0, import_mithril30.default)(
+        metadata["Place Features"] = (0, import_mithril31.default)(
           "ul",
           features.map((feature) => {
             const urn2 = one(feature.id);
-            return (0, import_mithril30.default)(
+            return (0, import_mithril31.default)(
               "li",
               { key: `feature-${urn2}` },
-              (0, import_mithril30.default)(ThingLink, { urn: urn2, thing: feature })
+              (0, import_mithril31.default)(ThingLink, { urn: urn2, thing: feature })
             );
           })
         );
       }
       if (thing.contains) {
-        metadata["Contains"] = (0, import_mithril30.default)(PlacesList, {
+        metadata["Contains"] = (0, import_mithril31.default)(PlacesList, {
           services,
           urns: setify(thing.contains)
         });
       }
       if (thing.unescoId) {
         const unescoDetails = services.readUnesco(one(thing.unescoId));
-        metadata["UNESCO"] = (0, import_mithril30.default)(
-          "li",
-          (0, import_mithril30.default)(UnescoLink, { urn: thing.unescoId, thing: unescoDetails ?? {} })
-        );
+        if (unescoDetails) {
+          metadata["UNESCO"] = (0, import_mithril31.default)(
+            "li",
+            (0, import_mithril31.default)(UnescoLink, { urn: one(thing.unescoId), thing: unescoDetails })
+          );
+        }
       }
       const $rows = Object.entries(metadata).map(([key, value]) => {
-        return (0, import_mithril30.default)("tr", [
-          (0, import_mithril30.default)("th.exif-heading", key),
-          (0, import_mithril30.default)("td", value)
+        return (0, import_mithril31.default)("tr", [
+          (0, import_mithril31.default)("th.exif-heading", key),
+          (0, import_mithril31.default)("td", value)
         ]);
       });
-      return (0, import_mithril30.default)("div", [
-        (0, import_mithril30.default)("h3", "Details"),
-        (0, import_mithril30.default)("table.metadata-table", $rows)
+      return (0, import_mithril31.default)("div", [
+        (0, import_mithril31.default)("h3", "Details"),
+        (0, import_mithril31.default)("table.metadata-table", $rows)
       ]);
     }
   };
@@ -5656,11 +5676,11 @@ function PhotoSection() {
       const { things, services } = vnode.attrs;
       const urns = setOf("id", things);
       const photos = services.readPhotosByThingIds(urns);
-      return (0, import_mithril30.default)(
+      return (0, import_mithril31.default)(
         "section.photo-container",
         photos.map((photo, idx) => {
           const loading = Photos.loadingMode(idx);
-          return (0, import_mithril30.default)(Photo2, {
+          return (0, import_mithril31.default)(Photo2, {
             key: `photo-${photo.id}`,
             photo,
             loading,
@@ -5675,16 +5695,16 @@ function ThingPage() {
   return {
     view(vnode) {
       const { urn, things, services } = vnode.attrs;
-      return (0, import_mithril30.default)("div", [
-        (0, import_mithril30.default)("section.thing-page", [
-          (0, import_mithril30.default)(ThingTitle, { urn, things }),
-          (0, import_mithril30.default)(ThingSubtitle, { urn }),
-          (0, import_mithril30.default)("br"),
-          (0, import_mithril30.default)(ThingUrls, { urn, things, services }),
-          (0, import_mithril30.default)(ThingMetadata, { urn, things, services }),
-          (0, import_mithril30.default)("h3", "Photos"),
-          (0, import_mithril30.default)(PhotoSection, { urn, things, services }),
-          (0, import_mithril30.default)("h3", "Albums")
+      return (0, import_mithril31.default)("div", [
+        (0, import_mithril31.default)("section.thing-page", [
+          (0, import_mithril31.default)(ThingTitle, { urn, things }),
+          (0, import_mithril31.default)(ThingSubtitle, { urn }),
+          (0, import_mithril31.default)("br"),
+          (0, import_mithril31.default)(ThingUrls, { urn, things, services }),
+          (0, import_mithril31.default)(ThingMetadata, { urn, things, services }),
+          (0, import_mithril31.default)("h3", "Photos"),
+          (0, import_mithril31.default)(PhotoSection, { urn, things, services }),
+          (0, import_mithril31.default)("h3", "Albums")
           //m(AlbumSection, { urn, things, services }),
         ])
       ]);
@@ -5699,15 +5719,15 @@ function AlbumsApp() {
     oninit() {
     },
     view() {
-      return (0, import_mithril31.default)("body", [
-        (0, import_mithril31.default)(
+      return (0, import_mithril32.default)("body", [
+        (0, import_mithril32.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril31.default)(Header, state),
-            (0, import_mithril31.default)("div.app-container", [
-              (0, import_mithril31.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril31.default)(AlbumsPage, {
+            (0, import_mithril32.default)(Header, state),
+            (0, import_mithril32.default)("div.app-container", [
+              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(AlbumsPage, {
                 albums: readAlbums(state.data)
               })
             ])
@@ -5720,32 +5740,32 @@ function AlbumsApp() {
 function AlbumApp() {
   return {
     oninit() {
-      const id = import_mithril31.default.route.param("id");
+      const id = import_mithril32.default.route.param("id");
       state.currentAlbum = `urn:r\xF3:album:${id}`;
     },
     view() {
       if (!state.currentAlbum) {
-        return (0, import_mithril31.default)("p", "No album selected");
+        return (0, import_mithril32.default)("p", "No album selected");
       }
       const album = readAlbum(state.data, state.currentAlbum);
       const photos = readAlbumPhotosByAlbumId(state.data, state.currentAlbum);
       const videos = readAlbumVideosByAlbumId(state.data, state.currentAlbum);
       if (!album) {
-        return (0, import_mithril31.default)("p", "Album not found");
+        return (0, import_mithril32.default)("p", "Album not found");
       }
       const { subjects, locations } = readThingsByAlbumId(
         state.data,
         state.currentAlbum
       );
-      return (0, import_mithril31.default)("body", [
-        (0, import_mithril31.default)(
+      return (0, import_mithril32.default)("body", [
+        (0, import_mithril32.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril31.default)(Header, state),
-            (0, import_mithril31.default)("div.app-container", [
-              (0, import_mithril31.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril31.default)(AlbumPage, {
+            (0, import_mithril32.default)(Header, state),
+            (0, import_mithril32.default)("div.app-container", [
+              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(AlbumPage, {
                 album,
                 subjects,
                 locations,
@@ -5762,15 +5782,15 @@ function AlbumApp() {
 function AboutApp() {
   return {
     view() {
-      return (0, import_mithril31.default)("body", [
-        (0, import_mithril31.default)(
+      return (0, import_mithril32.default)("body", [
+        (0, import_mithril32.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril31.default)(Header, state),
-            (0, import_mithril31.default)("div.app-container", [
-              (0, import_mithril31.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril31.default)(AboutPage)
+            (0, import_mithril32.default)(Header, state),
+            (0, import_mithril32.default)("div.app-container", [
+              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(AboutPage)
             ])
           ]
         )
@@ -5781,15 +5801,15 @@ function AboutApp() {
 function VideosApp() {
   return {
     view() {
-      return (0, import_mithril31.default)("body", [
-        (0, import_mithril31.default)(
+      return (0, import_mithril32.default)("body", [
+        (0, import_mithril32.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril31.default)(Header, state),
-            (0, import_mithril31.default)("div.app-container", [
-              (0, import_mithril31.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril31.default)(VideosPage, {
+            (0, import_mithril32.default)(Header, state),
+            (0, import_mithril32.default)("div.app-container", [
+              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(VideosPage, {
                 videos: readVideos(state.data)
               })
             ])
@@ -5802,15 +5822,15 @@ function VideosApp() {
 function PhotosApp() {
   return {
     view() {
-      return (0, import_mithril31.default)("body", [
-        (0, import_mithril31.default)(
+      return (0, import_mithril32.default)("body", [
+        (0, import_mithril32.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril31.default)(Header, state),
-            (0, import_mithril31.default)("div.app-container", [
-              (0, import_mithril31.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril31.default)(PhotosPage, {
+            (0, import_mithril32.default)(Header, state),
+            (0, import_mithril32.default)("div.app-container", [
+              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(PhotosPage, {
                 photos: readPhotos(state.data)
               })
             ])
@@ -5826,7 +5846,7 @@ function ThingApp() {
     oninit() {
     },
     view() {
-      const pair = import_mithril31.default.route.param("pair");
+      const pair = import_mithril32.default.route.param("pair");
       state.currentUrn = `urn:r\xF3:${pair}`;
       const parsed = asUrn(state.currentUrn);
       if (parsed.id === "*") {
@@ -5838,17 +5858,17 @@ function ThingApp() {
         }
       }
       if (!state.currentUrn) {
-        return (0, import_mithril31.default)("p", "No thing selected");
+        return (0, import_mithril32.default)("p", "No thing selected");
       }
-      return (0, import_mithril31.default)("body", [
-        (0, import_mithril31.default)(
+      return (0, import_mithril32.default)("body", [
+        (0, import_mithril32.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril31.default)(Header, state),
-            (0, import_mithril31.default)("div.app-container", [
-              (0, import_mithril31.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril31.default)(ThingPage, {
+            (0, import_mithril32.default)(Header, state),
+            (0, import_mithril32.default)("div.app-container", [
+              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(ThingPage, {
                 urn: state.currentUrn,
                 things,
                 services: state.services
@@ -5863,26 +5883,26 @@ function ThingApp() {
 function PhotoApp() {
   return {
     oninit() {
-      const id = import_mithril31.default.route.param("id");
+      const id = import_mithril32.default.route.param("id");
       state.currentPhoto = `urn:r\xF3:photo:${id}`;
     },
     view() {
       if (!state.currentPhoto) {
-        return (0, import_mithril31.default)("p", "No photo selected");
+        return (0, import_mithril32.default)("p", "No photo selected");
       }
       const photo = readPhoto(state.data, state.currentPhoto);
       if (!photo) {
-        return (0, import_mithril31.default)("p", "Photo not found");
+        return (0, import_mithril32.default)("p", "Photo not found");
       }
-      return (0, import_mithril31.default)("body", [
-        (0, import_mithril31.default)(
+      return (0, import_mithril32.default)("body", [
+        (0, import_mithril32.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril31.default)(Header, state),
-            (0, import_mithril31.default)("div.app-container", [
-              (0, import_mithril31.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril31.default)(PhotoPage, { photo, services: state.services })
+            (0, import_mithril32.default)(Header, state),
+            (0, import_mithril32.default)("div.app-container", [
+              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(PhotoPage, { photo, services: state.services })
             ])
           ]
         )
@@ -5893,23 +5913,23 @@ function PhotoApp() {
 function ListingApp() {
   return {
     oninit() {
-      const type = import_mithril31.default.route.param("type");
+      const type = import_mithril32.default.route.param("type");
       state.currentType = type;
     },
     view() {
       if (!state.currentType) {
-        return (0, import_mithril31.default)("p", "No type selected");
+        return (0, import_mithril32.default)("p", "No type selected");
       }
       const things = readNamedTypeThings(state.data, state.currentType);
-      return (0, import_mithril31.default)("body", [
-        (0, import_mithril31.default)(
+      return (0, import_mithril32.default)("body", [
+        (0, import_mithril32.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril31.default)(Header, state),
-            (0, import_mithril31.default)("div.app-container", [
-              (0, import_mithril31.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril31.default)(ListingPage, {
+            (0, import_mithril32.default)(Header, state),
+            (0, import_mithril32.default)("div.app-container", [
+              (0, import_mithril32.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril32.default)(ListingPage, {
                 type: state.currentType,
                 things
               })
@@ -5923,14 +5943,14 @@ function ListingApp() {
 listen("navigate", (event) => {
   const { route } = event.detail;
   console.info(`navigating to route: ${route}`);
-  import_mithril31.default.route.set(route);
+  import_mithril32.default.route.set(route);
 });
 listen("switch_theme", () => {
   state.darkMode = !state.darkMode;
 });
 
 // ts/index.ts
-import_mithril32.default.route(document.body, "/albums", {
+import_mithril33.default.route(document.body, "/albums", {
   "/albums": AlbumsApp,
   "/about": AboutApp,
   "/videos": VideosApp,
