@@ -1,0 +1,367 @@
+[ "urn:ró:place:0" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:1" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:3" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:3", "urn:ró:place:2" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:5" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:5", "urn:ró:place:4" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:6" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:6", "urn:ró:place:4" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:7" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:7", "urn:ró:place:4" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:8" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:9" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:11" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:11", "urn:ró:place:10" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:12" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:13" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:14" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:14", "urn:ró:place:15" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:17" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:18" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:18", "urn:ró:place:15" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:19" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:19", "urn:ró:place:15" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:20" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:20", "urn:ró:place:15" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:22" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:22", "urn:ró:place:21" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:23" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:23", "urn:ró:place:21" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:25" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:25", "urn:ró:place:24" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:26" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:28" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:28", "urn:ró:place:27" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:31" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:31", "urn:ró:place:30" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:32" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:32", "urn:ró:place:30" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:33" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:33", "urn:ró:place:30" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:34" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:34", "urn:ró:place:30" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:36" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:38" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:38", "urn:ró:place:37" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:39" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:39", "urn:ró:place:37" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:40" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:40", "urn:ró:place:37" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:41" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:41", "urn:ró:place:37" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:42" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:43" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:43", "urn:ró:place:15" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:44" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:45" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:45", "urn:ró:place:46" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:48" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:48", "urn:ró:place:47" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:49" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:49", "urn:ró:place:47" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:50" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:51" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:52" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:53" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:55" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:55", "urn:ró:place:54" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:56" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:56", "urn:ró:place:54" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:57" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:59" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:59", "urn:ró:place:58" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:60" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:61" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:62" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:64" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:64", "urn:ró:place:63" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:65" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:65", "urn:ró:place:63" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:66" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:66", "urn:ró:place:63" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:67" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:67", "urn:ró:place:63" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:68" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:68", "urn:ró:place:63" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:69" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:70" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:72" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:72", "urn:ró:place:71" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:73" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:74" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:76" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:77" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:78" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:79" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:79", "urn:ró:place:37" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:80" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:80", "urn:ró:place:104" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:81" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:82" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:83" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:85" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:86" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:86", "urn:ró:place:84" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:87" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:87", "urn:ró:place:88" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:89" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:89", "urn:ró:place:88" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:90" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:91" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:91", "urn:ró:place:15" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:93" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:93", "urn:ró:place:92" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:94" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:94", "urn:ró:place:37" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:95" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:95", "urn:ró:place:15" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:96" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:97" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:98" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:99" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:100" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:101" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:102" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:103" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:103", "urn:ró:place:92" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:105" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:106" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:107" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:108" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:109" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:110" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:111" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:112" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:113" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:114" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:114", "urn:ró:place:27" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:114", "urn:ró:place:29" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:114", "urn:ró:place:29", "urn:ró:place:27" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:115" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:115", "urn:ró:place:37" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:116" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:116", "urn:ró:place:75" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:117" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:117", "urn:ró:place:35" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:118" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:119" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:120" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:120", "urn:ró:place:16" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:121" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:121", "urn:ró:place:16" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:122" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:122", "urn:ró:place:16" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:124" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:124", "urn:ró:place:123" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:125" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:125", "urn:ró:place:123" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:126" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:126", "urn:ró:place:123" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:127" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:127", "urn:ró:place:123" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:129" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:129", "urn:ró:place:128" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:130" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:130", "urn:ró:place:128" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:132" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:132", "urn:ró:place:131" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:133" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:133", "urn:ró:place:131" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:134" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:134", "urn:ró:place:131" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:136" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:136", "urn:ró:place:135" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:138" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:138", "urn:ró:place:137" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:139" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:139", "urn:ró:place:137" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:140" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:140", "urn:ró:place:137" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:141" ]
+xxxxxxxxxxxxxxxxxxx
+[ "urn:ró:place:141", "urn:ró:place:137" ]
+xxxxxxxxxxxxxxxxxxx
+Building
+🌐 Rendering app
+🌐 Rendering service-worker
+🌐 Rendering css
+🌐 Rendering index.html

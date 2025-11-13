@@ -6,7 +6,7 @@ import {
   parseReptile,
   parseSubject,
 } from "../parsers/subject.ts";
-import { readParsedThing, readParsedThings, readThing, readThings } from "./things.ts";
+import { readParsedThing, readParsedThings } from "./things.ts";
 
 export const readMammal = (
   tdb: TribbleDB,

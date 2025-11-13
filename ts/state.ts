@@ -49,28 +49,28 @@ async function loadData() {
  *
  * TODO come on, this is silly.
  */
-export function loadServices(data: TribbleDB) {
+export function loadServices(tdb: TribbleDB) {
   return {
-    readThing: readThing.bind(null, data),
-    readAlbum: readAlbum.bind(null, data),
-    readCountry: readCountry.bind(null, data),
-    readPlace: readPlace.bind(null, data),
-    readPhoto: readPhoto.bind(null, data),
-    readMammal: readMammal.bind(null, data),
-    readReptile: readReptile.bind(null, data),
-    readAmphibian: readAmphibian.bind(null, data),
-    readInsect: readInsect.bind(null, data),
-    readVideo: readVideo.bind(null, data),
-    readLocation: readLocation.bind(null, data),
-    readUnesco: readUnesco.bind(null, data),
-    toThingLinks: toThingLinks.bind(null, data),
-    readLocations: readLocations.bind(null, data),
-    readFeatures: readFeatures.bind(null, data),
-    readPhotos: readPhotos.bind(null, data),
-    readThings: readThings.bind(null, data),
-    readPhotosByThingIds: readPhotosByThingIds.bind(null, data),
-    readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data),
-    readUnescos: readUnescos.bind(null, data),
+    readThing: readThing.bind(null, tdb),
+    readAlbum: readAlbum.bind(null, tdb),
+    readCountry: readCountry.bind(null, tdb),
+    readPlace: readPlace.bind(null, tdb),
+    readPhoto: readPhoto.bind(null, tdb),
+    readMammal: readMammal.bind(null, tdb),
+    readReptile: readReptile.bind(null, tdb),
+    readAmphibian: readAmphibian.bind(null, tdb),
+    readInsect: readInsect.bind(null, tdb),
+    readVideo: readVideo.bind(null, tdb),
+    readLocation: readLocation.bind(null, tdb),
+    readUnesco: readUnesco.bind(null, tdb),
+    readLocations: readLocations.bind(null, tdb),
+    readFeatures: readFeatures.bind(null, tdb),
+    readPhotos: readPhotos.bind(null, tdb),
+    readUnescos: readUnescos.bind(null, tdb),
+    readThings: readThings.bind(null, tdb),
+    readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb),
+    readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb),
+    toThingLinks: toThingLinks.bind(null, tdb),
   };
 }
 

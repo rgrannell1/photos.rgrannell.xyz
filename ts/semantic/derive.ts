@@ -268,6 +268,43 @@ export function expandTripleCuries(
   ];
 }
 
+const treeState = {
+  nodes: new Map<string, {
+    id: string;
+    parents: Set<string>;
+  }>,
+  branchIds: new Set<string>()
+}
+
+/*
+ * Construct a location tree based on `in` relations.
+ */
+export function buildLocationTrees(
+  triple: Triple
+) {
+  const [src, rel, tgt] = triple;
+
+  if (rel !== KnownRelations.IN) {
+    return [triple];
+  }
+
+  const nodes = treeState.nodes;
+
+  if (!nodes.has(src)) {
+    nodes.set(src, { id: src, parents: new Set() });
+  }
+  const srcNode = nodes.get(src);
+
+  if (!nodes.has(tgt)) {
+    nodes.set(tgt, { id: tgt, parents: new Set() });
+  }
+
+  treeState.branchIds.add(tgt);
+  srcNode?.parents.add(tgt);
+
+  return [triple];
+}
+
 // This should be in mirror, but for testing...
 export const HARD_CODED_TRIPLES: Triple[] = [
   ["urn:ró:rating:%E2%AD%90", KnownRelations.NAME, "⭐"],
@@ -306,6 +343,7 @@ export function deriveTriples(
     addYear,
     addInverseRelations,
     expandTripleCuries,
+    buildLocationTrees
   ];
 
   let outputTriples: Triple[] = [triple];
@@ -320,4 +358,68 @@ export function deriveTriples(
   }
 
   return outputTriples;
+}
+
+/*
+ * During the initial flatmap processing of the ingested triples,
+ * we built up a tree describing which places are contained in which others.
+ * Construct the transitive relations in this function.
+ */
+export function addNestedLocations(): Triple[] {
+  /*
+   * Recurse up the tree from the leaves, tracing the path we followed.
+   */
+  function recurse(path: string[], urn: string): Triple[] {
+    const triples: Triple[] = [];
+
+    const node = treeState.nodes.get(urn);
+
+    if (!node) {
+      throw new Error(`no node in location tree for ${urn}`);
+    }
+    if (path.length > 5) {
+      throw new Error(`likely cycle; ${JSON.stringify(path)}`);
+    }
+
+    if (node.parents.size === 0) {
+      // in this case, we have a path A :IN B :IN C :IN D
+      // return [A, B], [A, C], [A, D], [B, C], ..., [C, D]
+      // which should be the set of transitive in relations.
+      // For good measure, throw in the `contains` inverse relation
+      const totalPath = [...path, urn];
+
+      for (let idx = 0; idx < totalPath.length - 1; idx++) {
+        for (let jdx = idx; jdx < totalPath.length; jdx++) {
+          const src = totalPath[idx];
+          const tgt = totalPath[jdx];
+
+          if (src === tgt) {
+            continue;
+          }
+
+          triples.push([ src, KnownRelations.IN, tgt ])
+          triples.push([ tgt, KnownRelations.CONTAINS, src ])
+        }
+      }
+    } else {
+      for (const parent of node.parents) {
+        triples.push(...recurse([...path, urn], parent));
+      }
+    }
+
+    return triples
+  }
+
+  const triples: Triple[] = [];
+
+  // Recurse up from all leaves
+  for (const nodeId of treeState.nodes.keys()) {
+    if (treeState.branchIds.has(nodeId)) {
+      continue;
+    }
+
+    triples.push(...recurse([], nodeId));
+  }
+
+  return triples;
 }

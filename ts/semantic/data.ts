@@ -5,6 +5,8 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { Triple } from "@rgrannell1/tribbledb";
 import { TribbleParser } from "@rgrannell1/tribbledb";
+import { addNestedLocations } from "./derive.ts";
+import { KnownRelations } from "../constants.ts";
 
 /*
  * Stream triples from a URL
@@ -86,6 +88,11 @@ export async function loadTriples(
       tdb.add(fn(triple));
     }
   }
+
+  // construct transitive relations, which require
+  // indexing tobe done first.
+  tdb.add(addNestedLocations())
+
 
   return tdb;
 }
