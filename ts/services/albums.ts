@@ -1,28 +1,28 @@
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
-import { Album } from "../types.ts";
+import type { Album } from "../types.ts";
 import type { Photo, Video } from "../types.ts";
 import { parseAlbum } from "../parsers/album.ts";
-import { readParsedPhotos, readThingsByPhotoIds } from "./photos.ts";
-import { readParsedThing, readParsedThings } from "./things.ts";
-import { readParsedVideos } from "./videos.ts";
+import { readPhotos, readThingsByPhotoIds } from "./photos.ts";
+import { readParsedThing, readParsedThings, readThing, readThings } from "./things.ts";
+import { readVideos } from "./videos.ts";
 import { KnownRelations, KnownTypes } from "../constants.ts";
 
 /*
  * Get the album date
  */
-export function albumYear(album: Album) {
+export function albumYear(album: Album): number {
   return new Date(album.minDate).getFullYear();
 }
 
 /*
  * Read albums from the TribbleDB
  */
-export function readAlbums(tdb: TribbleDB): Album[] {
+export function readAllAlbums(tdb: TribbleDB): Album[] {
   const ids = tdb.search({
     source: { type: KnownTypes.ALBUM },
   }).sources();
 
-  return (readParsedAlbums(tdb, ids) as Album[])
+  return (readAlbums(tdb, ids) as Album[])
     .sort((album0: Album, album1: Album) => {
       return album1.minDate - album0.minDate;
     });
@@ -49,7 +49,7 @@ export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
  * @param id Album URN
  */
 export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
-  return readParsedPhotos(tdb, readAlbumPhotoIds(tdb, id));
+  return readPhotos(tdb, readAlbumPhotoIds(tdb, id));
 }
 
 /*
@@ -73,7 +73,7 @@ export function readAlbumVideoIds(tdb: TribbleDB, id: string): Set<string> {
  * @param id Album URN
  */
 export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
-  return readParsedVideos(tdb, readAlbumVideoIds(tdb, id));
+  return readVideos(tdb, readAlbumVideoIds(tdb, id));
 }
 
 /*
@@ -123,7 +123,7 @@ export function readAlbumsByThingIds(
     }
   }
 
-  return readParsedAlbums(tdb, albumIds);
+  return readAlbums(tdb, albumIds);
 }
 
 export const readAlbum = (
@@ -137,7 +137,7 @@ export const readAlbum = (
   );
 };
 
-export const readParsedAlbums = (
+export const readAlbums = (
   tdb: TribbleDB,
   urns: Set<string>,
 ) => {

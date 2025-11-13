@@ -1,6 +1,4 @@
-import m from "mithril";
-import { ThingLinkAttrs } from "./components/thing-link.ts";
-import { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
+import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { loadServices } from "./state.ts";
 
 export type ApplicationEvents =
@@ -176,32 +174,6 @@ export type Feature = {
   id: string;
   name?: string;
 };
-
-export function isAnInsect(subject: Subject | Insect): subject is Insect {
-  return (subject as Insect).type === "insect";
-}
-
-export function isAnAmphibian(
-  subject: Subject | Amphibian,
-): subject is Amphibian {
-  return (subject as Amphibian).type === "amphibian";
-}
-
-export function isAReptile(subject: Subject | Reptile): subject is Reptile {
-  return (subject as Reptile).type === "reptile";
-}
-
-export function isAMammal(subject: Subject | Mammal): subject is Mammal {
-  return (subject as Mammal).type === "mammal";
-}
-
-export function isABird(subject: Subject | Bird): subject is Bird {
-  return (subject as Bird).type === "bird";
-}
-
-export function isAPlace(place: Place | Country): place is Place {
-  return (place as Place).type === "place";
-}
 
 export function isACountry(place: Place | Country): place is Country {
   return (place as Country).type === "country";

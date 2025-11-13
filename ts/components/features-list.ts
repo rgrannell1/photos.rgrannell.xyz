@@ -13,7 +13,7 @@ export function FeaturesList() {
   return {
     view(vnode: m.Vnode<FeaturesListAttrs>) {
       const { urns, services } = vnode.attrs;
-      const features = services.readParsedFeatures(urns);
+      const features = services.readFeatures(urns);
 
       const $features = features.map((feature) => {
         const id = one(feature.id)!;

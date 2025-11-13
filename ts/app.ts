@@ -13,18 +13,19 @@ import {
   readAlbumPhotosByAlbumId,
   readAlbums,
   readAlbumVideosByAlbumId,
+  readAllAlbums,
   readThingsByAlbumId,
 } from "./services/albums.ts";
 import { AboutPage } from "./pages/about.ts";
 import { VideosPage } from "./pages/videos.ts";
-import { readVideos } from "./services/videos.ts";
+import { readAllVideos, readVideos } from "./services/videos.ts";
 import { listen } from "./commons/events.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
-import { readPhoto, readPhotos } from "./services/photos.ts";
+import { readAllPhotos, readPhoto, readPhotos } from "./services/photos.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { readNamedTypeThings, readThing } from "./services/things.ts";
 import type { Album } from "./types.ts";
@@ -48,7 +49,7 @@ export function AlbumsApp(): m.Component<AppAttrs> {
             m("div.app-container", [
               m(Sidebar, { visible: state.sidebarVisible }),
               m(AlbumsPage, {
-                albums: readAlbums(state.data),
+                albums: readAllAlbums(state.data),
               }),
             ]),
           ],
@@ -139,7 +140,7 @@ export function VideosApp(): m.Component<AppAttrs> {
             m("div.app-container", [
               m(Sidebar, { visible: state.sidebarVisible }),
               m(VideosPage, {
-                videos: readVideos(state.data),
+                videos: readAllVideos(state.data),
               }),
             ]),
           ],
@@ -162,7 +163,7 @@ export function PhotosApp(): m.Component<AppAttrs> {
             m("div.app-container", [
               m(Sidebar, { visible: state.sidebarVisible }),
               m(PhotosPage, {
-                photos: readPhotos(state.data),
+                photos: readAllPhotos(state.data),
               }),
             ]),
           ],

@@ -2,9 +2,9 @@ import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { Country, Photo, Place, Subject } from "../types.ts";
 import { parsePhoto } from "../parsers/photo.ts";
-import { readParsedThing, readParsedThings } from "./things.ts";
-import { readParsedSubjects } from "./subjects.ts";
-import { readParsedLocations } from "./location.ts";
+import { readParsedThing, readParsedThings, readThing, readThings } from "./things.ts";
+import { readSubjects } from "./subjects.ts";
+import { readLocations } from "./location.ts";
 
 const coloursCache: Map<string, string> = new Map();
 
@@ -58,7 +58,7 @@ export class Photos {
 }
 
 /* */
-export function readPhotos(tdb: TribbleDB): Photo[] {
+export function readAllPhotos(tdb: TribbleDB): Photo[] {
   return tdb.search({
     source: { type: "photo" },
   }).objects().flatMap((obj) => {
@@ -68,7 +68,7 @@ export function readPhotos(tdb: TribbleDB): Photo[] {
 }
 
 /*
- * Read the locations and subjects assaociated with a set of photo ids
+ * Read the locations and subjects associated with a set of photo ids
  */
 export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
   locations: (Country | Place)[];
@@ -101,8 +101,8 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
   }
 
   return {
-    subjects: readParsedSubjects(tdb, subjects),
-    locations: readParsedLocations(tdb, locations),
+    subjects: readSubjects(tdb, subjects),
+    locations: readLocations(tdb, locations),
   };
 }
 
@@ -125,7 +125,7 @@ export function readPhotosByThingIds(
     }
   }
 
-  return readParsedPhotos(tdb, photoIds);
+  return readPhotos(tdb, photoIds);
 }
 
 export const readPhoto = (
@@ -135,7 +135,7 @@ export const readPhoto = (
   return readParsedThing(parsePhoto, tdb, id);
 };
 
-export const readParsedPhotos = (
+export const readPhotos = (
   tdb: TribbleDB,
   urns: Set<string>,
 ) => {

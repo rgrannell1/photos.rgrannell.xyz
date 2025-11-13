@@ -12,7 +12,7 @@ export function PlacesList() {
   return {
     view(vnode: m.Vnode<PlacesListAttrs>) {
       const { urns, services } = vnode.attrs;
-      const locations = services.readParsedLocations(urns).sort(
+      const locations = services.readLocations(urns).sort(
         (loca, locb) => {
           return (one(loca.name) ?? "").localeCompare(one(locb.name) ?? "");
         },

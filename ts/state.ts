@@ -12,7 +12,7 @@ import {
   readReptile,
 } from "./services/subjects.ts";
 import {
-  readParsedPhotos,
+  readPhotos,
   readPhoto,
   readPhotosByThingIds,
 } from "./services/photos.ts";
@@ -20,13 +20,13 @@ import { readThing, readThings, toThingLinks } from "./services/things.ts";
 import {
   readCountry,
   readLocation,
-  readParsedLocations,
-  readParsedUnescos,
+  readLocations,
+  readUnescos,
   readPlace,
   readUnesco,
 } from "./services/location.ts";
 import { readVideo } from "./services/videos.ts";
-import { readParsedFeatures } from "./services/features.ts";
+import { readFeatures } from "./services/features.ts";
 
 /*
  * Load data from the tribbles file.
@@ -64,13 +64,13 @@ export function loadServices(data: TribbleDB) {
     readLocation: readLocation.bind(null, data),
     readUnesco: readUnesco.bind(null, data),
     toThingLinks: toThingLinks.bind(null, data),
-    readParsedLocations: readParsedLocations.bind(null, data),
-    readParsedFeatures: readParsedFeatures.bind(null, data),
-    readParsedPhotos: readParsedPhotos.bind(null, data),
+    readLocations: readLocations.bind(null, data),
+    readFeatures: readFeatures.bind(null, data),
+    readPhotos: readPhotos.bind(null, data),
     readThings: readThings.bind(null, data),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, data),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data),
-    readParsedUnescos: readParsedUnescos.bind(null, data),
+    readUnescos: readUnescos.bind(null, data),
   };
 }
 

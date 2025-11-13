@@ -14,7 +14,7 @@ export function UnescoList() {
     view(vnode: m.Vnode<UnescoListAttrs>) {
       const { urns, services } = vnode.attrs;
 
-      const unescos = services.readParsedUnescos(urns);
+      const unescos = services.readUnescos(urns);
       const $unescos = unescos.map(unesco => {
         const urn = one(unesco.id)!;
 

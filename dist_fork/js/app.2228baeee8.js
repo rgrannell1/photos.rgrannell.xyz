@@ -1052,9 +1052,9 @@ var require_build2 = __commonJS({
       var path = template.slice(0, pathEnd);
       var query = {};
       Object.assign(query, params);
-      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m36, key, variadic) {
+      var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m35, key, variadic) {
         delete query[key];
-        if (params[key] == null) return m36;
+        if (params[key] == null) return m35;
         return variadic ? params[key] : encodeURIComponent(String(params[key]));
       });
       var newQueryIndex = resolved.indexOf("?");
@@ -1326,8 +1326,8 @@ var require_compileTemplate = __commonJS({
         // don't also accidentally escape `-` and make it harder to detect it to
         // ban it from template parameters.
         /:([^\/.-]+)(\.{3}|\.(?!\.)|-)?|[\\^$*+.()|\[\]{}]/g,
-        function(m36, key, extra) {
-          if (key == null) return "\\" + m36;
+        function(m35, key, extra) {
+          if (key == null) return "\\" + m35;
           keys.push({ k: key, r: extra === "..." });
           if (extra === "...") return "(.*)";
           if (extra === ".") return "([^/]+)\\.";
@@ -1381,7 +1381,7 @@ var require_router = __commonJS({
   "node_modules/.deno/mithril@2.3.7/node_modules/mithril/api/router.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
-    var m36 = require_hyperscript();
+    var m35 = require_hyperscript();
     var buildPathname = require_build2();
     var parsePathname = require_parse2();
     var compileTemplate = require_compileTemplate();
@@ -1524,7 +1524,7 @@ var require_router = __commonJS({
       route.prefix = "#!";
       route.Link = {
         view: function(vnode) {
-          var child = m36(
+          var child = m35(
             vnode.attrs.selector || "a",
             censor(vnode.attrs, ["options", "params", "selector", "onclick"]),
             vnode.children
@@ -1587,34 +1587,34 @@ var require_mithril = __commonJS({
     var request = require_request2();
     var mountRedraw = require_mount_redraw2();
     var domFor = require_domFor();
-    var m36 = function m37() {
+    var m35 = function m36() {
       return hyperscript.apply(this, arguments);
     };
-    m36.m = hyperscript;
-    m36.trust = hyperscript.trust;
-    m36.fragment = hyperscript.fragment;
-    m36.Fragment = "[";
-    m36.mount = mountRedraw.mount;
-    m36.route = require_route();
-    m36.render = require_render2();
-    m36.redraw = mountRedraw.redraw;
-    m36.request = request.request;
-    m36.parseQueryString = require_parse();
-    m36.buildQueryString = require_build();
-    m36.parsePathname = require_parse2();
-    m36.buildPathname = require_build2();
-    m36.vnode = require_vnode();
-    m36.censor = require_censor();
-    m36.domFor = domFor.domFor;
-    module.exports = m36;
+    m35.m = hyperscript;
+    m35.trust = hyperscript.trust;
+    m35.fragment = hyperscript.fragment;
+    m35.Fragment = "[";
+    m35.mount = mountRedraw.mount;
+    m35.route = require_route();
+    m35.render = require_render2();
+    m35.redraw = mountRedraw.redraw;
+    m35.request = request.request;
+    m35.parseQueryString = require_parse();
+    m35.buildQueryString = require_build();
+    m35.parsePathname = require_parse2();
+    m35.buildPathname = require_build2();
+    m35.vnode = require_vnode();
+    m35.censor = require_censor();
+    m35.domFor = domFor.domFor;
+    module.exports = m35;
   }
 });
 
 // ts/index.ts
-var import_mithril35 = __toESM(require_mithril());
+var import_mithril34 = __toESM(require_mithril());
 
 // ts/app.ts
-var import_mithril34 = __toESM(require_mithril());
+var import_mithril33 = __toESM(require_mithril());
 
 // ts/components/header.ts
 var import_mithril = __toESM(require_mithril());
@@ -1717,12 +1717,6 @@ function Header() {
     }
   };
 }
-
-// ts/types.ts
-var import_mithril3 = __toESM(require_mithril());
-
-// ts/components/thing-link.ts
-var import_mithril2 = __toESM(require_mithril());
 
 // node_modules/.deno/@rgrannell1+tribbledb@0.0.12/node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class {
@@ -2551,18 +2545,67 @@ var TribbleDB = class _TribbleDB {
   }
 };
 
-// ts/commons/arrays.ts
-function arrayify(value) {
-  if (value === void 0) {
-    return [];
+// ts/services/dark-mode.ts
+var DarkModes = class {
+  static load() {
+    return localStorage.getItem("darkMode") === "true";
   }
-  return Array.isArray(value) ? value : [value];
+  static save(value) {
+    return localStorage.setItem("darkMode", `${value}`);
+  }
+};
+
+// ts/semantic/data.ts
+async function* streamTribbles(url2) {
+  const parser = new TribbleParser();
+  const res = await fetch(url2);
+  if (!res.body) {
+    throw new Error("No response body");
+  }
+  const decoder = new TextDecoderStream();
+  const reader = res.body.pipeThrough(decoder).getReader();
+  let buffer = "";
+  const tripleBuffer = [];
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) {
+      break;
+    }
+    buffer += value;
+    const lines = buffer.split("\n");
+    buffer = lines.pop() ?? "";
+    for (const line of lines) {
+      const triple = parser.parse(line);
+      if (triple !== void 0) {
+        tripleBuffer.push(triple);
+      }
+      if (tripleBuffer.length >= 500) {
+        yield [...tripleBuffer];
+        tripleBuffer.length = 0;
+      }
+    }
+  }
+  if (buffer.length > 0) {
+    const triple = parser.parse(buffer);
+    if (triple !== void 0) {
+      tripleBuffer.push(triple);
+    }
+  }
+  if (tripleBuffer.length > 0) {
+    yield [...tripleBuffer];
+  }
 }
-function one(value) {
-  if (value === void 0) {
-    return void 0;
+var tdb = null;
+async function loadTriples(url2, schema = {}, fn = (x) => [x]) {
+  if (!tdb) {
+    tdb = new TribbleDB([], schema);
   }
-  return Array.isArray(value) ? value[0] : value;
+  for await (const triples of streamTribbles(url2)) {
+    for (const triple of triples) {
+      tdb.add(fn(triple));
+    }
+  }
+  return tdb;
 }
 
 // ts/constants.ts
@@ -2811,136 +2854,6 @@ var BinomialTypes = /* @__PURE__ */ new Set([
   KnownTypes.FISH,
   KnownTypes.INSECT
 ]);
-
-// ts/services/emoji.ts
-function placeEmoji(thing) {
-  const feature = one(thing.feature);
-  const { id: featureId } = asUrn(feature);
-  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
-    return PLACE_FEATURES_TO_EMOJI[featureId];
-  }
-  return "\u{1F4CD}";
-}
-function placeFeatureEmoji(featureUrn) {
-  const { id: featureId } = asUrn(featureUrn);
-  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
-    return PLACE_FEATURES_TO_EMOJI[featureId];
-  }
-  return "\u{1F4CD}";
-}
-function countryEmoji(thing) {
-  const flag = one(thing.flag);
-  return flag;
-}
-function birdEmoji() {
-  return "\u{1F424}";
-}
-function cameraEmoji(thing) {
-  const { id } = asUrn(thing.id);
-  if (CAMERA_MODELS.has(id)) {
-    return "\u{1F4F7}";
-  } else if (PHONE_MODELS.has(id)) {
-    return "\u{1F4F1}";
-  }
-  return "\u{1F4F7}";
-}
-function thingEmoji(urn, name, thing) {
-  const { type } = asUrn(urn);
-  switch (type) {
-    case KnownTypes.PLACE:
-      return placeEmoji(thing);
-    case KnownTypes.COUNTRY:
-      return countryEmoji(thing);
-    case KnownTypes.BIRD:
-      return birdEmoji();
-    case KnownTypes.CAMERA:
-      return cameraEmoji(thing);
-    case KnownTypes.PLACE_FEATURE:
-      return placeFeatureEmoji(urn);
-    default:
-      return "";
-  }
-}
-
-// ts/components/thing-link.ts
-function ThingLink() {
-  return {
-    view(vnode) {
-      const { urn, thing } = vnode.attrs;
-      const { type, id } = asUrn(urn);
-      const name = one(thing.name) ?? id;
-      const emoji = thingEmoji(urn, name, thing);
-      return (0, import_mithril2.default)("a", {
-        href: urn,
-        onclick: navigate(`/thing/${type}:${id}`),
-        class: ["thing-link", `${type}-link`].join(" ")
-      }, `${emoji}	${name}`);
-    }
-  };
-}
-
-// ts/services/dark-mode.ts
-var DarkModes = class {
-  static load() {
-    return localStorage.getItem("darkMode") === "true";
-  }
-  static save(value) {
-    return localStorage.setItem("darkMode", `${value}`);
-  }
-};
-
-// ts/semantic/data.ts
-async function* streamTribbles(url2) {
-  const parser = new TribbleParser();
-  const res = await fetch(url2);
-  if (!res.body) {
-    throw new Error("No response body");
-  }
-  const decoder = new TextDecoderStream();
-  const reader = res.body.pipeThrough(decoder).getReader();
-  let buffer = "";
-  const tripleBuffer = [];
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) {
-      break;
-    }
-    buffer += value;
-    const lines = buffer.split("\n");
-    buffer = lines.pop() ?? "";
-    for (const line of lines) {
-      const triple = parser.parse(line);
-      if (triple !== void 0) {
-        tripleBuffer.push(triple);
-      }
-      if (tripleBuffer.length >= 500) {
-        yield [...tripleBuffer];
-        tripleBuffer.length = 0;
-      }
-    }
-  }
-  if (buffer.length > 0) {
-    const triple = parser.parse(buffer);
-    if (triple !== void 0) {
-      tripleBuffer.push(triple);
-    }
-  }
-  if (tripleBuffer.length > 0) {
-    yield [...tripleBuffer];
-  }
-}
-var tdb = null;
-async function loadTriples(url2, schema = {}, fn = (x) => [x]) {
-  if (!tdb) {
-    tdb = new TribbleDB([], schema);
-  }
-  for await (const triples of streamTribbles(url2)) {
-    for (const triple of triples) {
-      tdb.add(fn(triple));
-    }
-  }
-  return tdb;
-}
 
 // ts/commons/strings.ts
 var CAMEL_CASE_CACHE = /* @__PURE__ */ new Map();
@@ -3221,8 +3134,94 @@ function namesToUrns(tdb2, names) {
   return urns;
 }
 
+// ts/commons/arrays.ts
+function arrayify(value) {
+  if (value === void 0) {
+    return [];
+  }
+  return Array.isArray(value) ? value : [value];
+}
+function one(value) {
+  if (value === void 0) {
+    return void 0;
+  }
+  return Array.isArray(value) ? value[0] : value;
+}
+
 // ts/services/things.ts
-var import_mithril4 = __toESM(require_mithril());
+var import_mithril3 = __toESM(require_mithril());
+
+// ts/components/thing-link.ts
+var import_mithril2 = __toESM(require_mithril());
+
+// ts/services/emoji.ts
+function placeEmoji(thing) {
+  const feature = one(thing.feature);
+  const { id: featureId } = asUrn(feature);
+  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
+    return PLACE_FEATURES_TO_EMOJI[featureId];
+  }
+  return "\u{1F4CD}";
+}
+function placeFeatureEmoji(featureUrn) {
+  const { id: featureId } = asUrn(featureUrn);
+  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
+    return PLACE_FEATURES_TO_EMOJI[featureId];
+  }
+  return "\u{1F4CD}";
+}
+function countryEmoji(thing) {
+  const flag = one(thing.flag);
+  return flag;
+}
+function birdEmoji() {
+  return "\u{1F424}";
+}
+function cameraEmoji(thing) {
+  const { id } = asUrn(thing.id);
+  if (CAMERA_MODELS.has(id)) {
+    return "\u{1F4F7}";
+  } else if (PHONE_MODELS.has(id)) {
+    return "\u{1F4F1}";
+  }
+  return "\u{1F4F7}";
+}
+function thingEmoji(urn, name, thing) {
+  const { type } = asUrn(urn);
+  switch (type) {
+    case KnownTypes.PLACE:
+      return placeEmoji(thing);
+    case KnownTypes.COUNTRY:
+      return countryEmoji(thing);
+    case KnownTypes.BIRD:
+      return birdEmoji();
+    case KnownTypes.CAMERA:
+      return cameraEmoji(thing);
+    case KnownTypes.PLACE_FEATURE:
+      return placeFeatureEmoji(urn);
+    default:
+      return "";
+  }
+}
+
+// ts/components/thing-link.ts
+function ThingLink() {
+  return {
+    view(vnode) {
+      const { urn, thing } = vnode.attrs;
+      const { type, id } = asUrn(urn);
+      const name = one(thing.name) ?? id;
+      const emoji = thingEmoji(urn, name, thing);
+      return (0, import_mithril2.default)("a", {
+        href: urn,
+        onclick: navigate(`/thing/${type}:${id}`),
+        class: ["thing-link", `${type}-link`].join(" ")
+      }, `${emoji}	${name}`);
+    }
+  };
+}
+
+// ts/services/things.ts
 function readThing(tdb2, urn) {
   const parsed = asUrn(urn);
   return tdb2.search({
@@ -3252,9 +3251,6 @@ var readParsedThings = function(parser, tdb2, urns) {
     const thing = readThing(tdb2, urn);
     if (!thing) {
       continue;
-    }
-    if (urn.includes("video")) {
-      console.log(thing, "xxxxxx");
     }
     const parsed = parser(tdb2, thing);
     if (parsed) {
@@ -3286,7 +3282,7 @@ function toThingLinks(tdb2, urns) {
     if (!thing || !thing.name) {
       return [];
     }
-    return [(0, import_mithril4.default)(ThingLink, {
+    return [(0, import_mithril3.default)(ThingLink, {
       urn,
       thing: readThing(tdb2, urn)
     })];
@@ -3956,21 +3952,21 @@ var readUnesco = (tdb2, id) => {
     id
   );
 };
-var readParsedCountries = (tdb2, urns) => {
+var readCountries = (tdb2, urns) => {
   return readParsedThings(
     parseCountry,
     tdb2,
     urns
   );
 };
-var readParsedLocations = (tdb2, urns) => {
+var readLocations = (tdb2, urns) => {
   return readParsedThings(
     parseLocation,
     tdb2,
     urns
   );
 };
-var readParsedUnescos = (tdb2, urns) => {
+var readUnescos = (tdb2, urns) => {
   return readParsedThings(
     parseUnesco,
     tdb2,
@@ -3988,7 +3984,7 @@ function parseAlbum(tdb2, album) {
   }
   const data = result.output;
   const countryNames = new Set(arrayify(data.flags));
-  const countries = readParsedCountries(tdb2, namesToUrns(tdb2, countryNames));
+  const countries = readCountries(tdb2, namesToUrns(tdb2, countryNames));
   return {
     name: data.name,
     minDate: asInt(data.minDate),
@@ -4058,7 +4054,7 @@ var readAmphibian = (tdb2, id) => {
 var readInsect = (tdb2, id) => {
   return readParsedThing(parseInsect, tdb2, id);
 };
-var readParsedSubjects = (tdb2, urns) => {
+var readSubjects = (tdb2, urns) => {
   return readParsedThings(parseSubject, tdb2, urns);
 };
 
@@ -4106,7 +4102,7 @@ var Photos = class {
     return coloursCache.get(colours);
   }
 };
-function readPhotos(tdb2) {
+function readAllPhotos(tdb2) {
   return tdb2.search({
     source: { type: "photo" }
   }).objects().flatMap((obj) => {
@@ -4136,8 +4132,8 @@ function readThingsByPhotoIds(tdb2, photoIds) {
     }
   }
   return {
-    subjects: readParsedSubjects(tdb2, subjects),
-    locations: readParsedLocations(tdb2, locations)
+    subjects: readSubjects(tdb2, subjects),
+    locations: readLocations(tdb2, locations)
   };
 }
 function readPhotosByThingIds(tdb2, thingsUrns) {
@@ -4152,12 +4148,12 @@ function readPhotosByThingIds(tdb2, thingsUrns) {
       photoIds.add(result);
     }
   }
-  return readParsedPhotos(tdb2, photoIds);
+  return readPhotos(tdb2, photoIds);
 }
 var readPhoto = (tdb2, id) => {
   return readParsedThing(parsePhoto, tdb2, id);
 };
-var readParsedPhotos = (tdb2, urns) => {
+var readPhotos = (tdb2, urns) => {
   return readParsedThings(parsePhoto, tdb2, urns);
 };
 
@@ -4170,25 +4166,25 @@ function parseVideo(_, video) {
 var readVideo = (tdb2, id) => {
   return readParsedThing(parseVideo, tdb2, id);
 };
-var readParsedVideos = (tdb2, urns) => {
+var readVideos = (tdb2, urns) => {
   return readParsedThings(parseVideo, tdb2, urns);
 };
-function readVideos(tdb2) {
+function readAllVideos(tdb2) {
   const videos = tdb2.search({
     source: { type: "video" }
   }).sources();
-  return readParsedVideos(tdb2, videos);
+  return readVideos(tdb2, videos);
 }
 
 // ts/services/albums.ts
 function albumYear(album) {
   return new Date(album.minDate).getFullYear();
 }
-function readAlbums(tdb2) {
+function readAllAlbums(tdb2) {
   const ids = tdb2.search({
     source: { type: KnownTypes.ALBUM }
   }).sources();
-  return readParsedAlbums(tdb2, ids).sort((album0, album1) => {
+  return readAlbums(tdb2, ids).sort((album0, album1) => {
     return album1.minDate - album0.minDate;
   });
 }
@@ -4200,7 +4196,7 @@ function readAlbumPhotoIds(tdb2, id) {
   }).sources();
 }
 function readAlbumPhotosByAlbumId(tdb2, id) {
-  return readParsedPhotos(tdb2, readAlbumPhotoIds(tdb2, id));
+  return readPhotos(tdb2, readAlbumPhotoIds(tdb2, id));
 }
 function readAlbumVideoIds(tdb2, id) {
   return tdb2.search({
@@ -4210,7 +4206,7 @@ function readAlbumVideoIds(tdb2, id) {
   }).sources();
 }
 function readAlbumVideosByAlbumId(tdb2, id) {
-  return readParsedVideos(tdb2, readAlbumVideoIds(tdb2, id));
+  return readVideos(tdb2, readAlbumVideoIds(tdb2, id));
 }
 function readThingsByAlbumId(tdb2, id) {
   return readThingsByPhotoIds(tdb2, readAlbumPhotoIds(tdb2, id));
@@ -4238,7 +4234,7 @@ function readAlbumsByThingIds(tdb2, thingsUrns) {
       albumIds.add(result);
     }
   }
-  return readParsedAlbums(tdb2, albumIds);
+  return readAlbums(tdb2, albumIds);
 }
 var readAlbum = (tdb2, id) => {
   return readParsedThing(
@@ -4247,7 +4243,7 @@ var readAlbum = (tdb2, id) => {
     id
   );
 };
-var readParsedAlbums = (tdb2, urns) => {
+var readAlbums = (tdb2, urns) => {
   return readParsedThings(parseAlbum, tdb2, urns);
 };
 
@@ -4257,7 +4253,7 @@ function parseFeature(_, feature) {
 }
 
 // ts/services/features.ts
-var readParsedFeatures = (tdb2, urns) => {
+var readFeatures = (tdb2, urns) => {
   return readParsedThings(
     parseFeature,
     tdb2,
@@ -4291,13 +4287,13 @@ function loadServices(data) {
     readLocation: readLocation.bind(null, data),
     readUnesco: readUnesco.bind(null, data),
     toThingLinks: toThingLinks.bind(null, data),
-    readParsedLocations: readParsedLocations.bind(null, data),
-    readParsedFeatures: readParsedFeatures.bind(null, data),
-    readParsedPhotos: readParsedPhotos.bind(null, data),
+    readLocations: readLocations.bind(null, data),
+    readFeatures: readFeatures.bind(null, data),
+    readPhotos: readPhotos.bind(null, data),
     readThings: readThings.bind(null, data),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, data),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, data),
-    readParsedUnescos: readParsedUnescos.bind(null, data)
+    readUnescos: readUnescos.bind(null, data)
   };
 }
 async function loadState() {
@@ -4315,14 +4311,14 @@ async function loadState() {
 }
 
 // ts/components/sidebar.ts
-var import_mithril5 = __toESM(require_mithril());
+var import_mithril4 = __toESM(require_mithril());
 function SidebarItem() {
   return {
     view(vnode) {
-      return (0, import_mithril5.default)("li", {
+      return (0, import_mithril4.default)("li", {
         class: "sidebar-item",
         onclick() {
-          import_mithril5.default.route.set(vnode.attrs.route);
+          import_mithril4.default.route.set(vnode.attrs.route);
         }
       }, vnode.attrs.name);
     }
@@ -4338,13 +4334,13 @@ function Sidebar() {
   }
   return {
     view(vnode) {
-      return (0, import_mithril5.default)("aside", { class: classes(vnode.attrs.visible) }, [
-        (0, import_mithril5.default)("nav", [
-          (0, import_mithril5.default)("ul", [
-            (0, import_mithril5.default)(SidebarItem, { name: "PHOTOS", route: "/photos" }),
-            (0, import_mithril5.default)(SidebarItem, { name: "VIDEOS", route: "/videos" }),
-            (0, import_mithril5.default)(SidebarItem, { name: "ALBUMS", route: "/albums" }),
-            (0, import_mithril5.default)(SidebarItem, { name: "ABOUT", route: "/about" })
+      return (0, import_mithril4.default)("aside", { class: classes(vnode.attrs.visible) }, [
+        (0, import_mithril4.default)("nav", [
+          (0, import_mithril4.default)("ul", [
+            (0, import_mithril4.default)(SidebarItem, { name: "PHOTOS", route: "/photos" }),
+            (0, import_mithril4.default)(SidebarItem, { name: "VIDEOS", route: "/videos" }),
+            (0, import_mithril4.default)(SidebarItem, { name: "ALBUMS", route: "/albums" }),
+            (0, import_mithril4.default)(SidebarItem, { name: "ABOUT", route: "/about" })
           ])
         ])
       ]);
@@ -4353,10 +4349,10 @@ function Sidebar() {
 }
 
 // ts/pages/albums.ts
-var import_mithril12 = __toESM(require_mithril());
+var import_mithril11 = __toESM(require_mithril());
 
 // ts/components/album-stats.ts
-var import_mithril6 = __toESM(require_mithril());
+var import_mithril5 = __toESM(require_mithril());
 function isStats(stats) {
   if (typeof stats !== "object" || stats === null) {
     console.warn("Stats is not an object");
@@ -4387,37 +4383,37 @@ function AlbumStats() {
   return {
     view() {
       if (!isStats(stats)) {
-        return (0, import_mithril6.default)("p");
+        return (0, import_mithril5.default)("p");
       }
-      return (0, import_mithril6.default)("p.photo-stats", [
+      return (0, import_mithril5.default)("p.photo-stats", [
         `${stats.photos} `,
-        (0, import_mithril6.default)("a", { href: "#/photos" }, "photos"),
+        (0, import_mithril5.default)("a", { href: "#/photos" }, "photos"),
         " \xB7 ",
-        (0, import_mithril6.default)("a", { href: "#/videos" }, "videos"),
+        (0, import_mithril5.default)("a", { href: "#/videos" }, "videos"),
         " \xB7 ",
         `${stats.albums} albums \xB7 ${stats.years} years \xB7 `,
         `${stats.countries} `,
-        (0, import_mithril6.default)("a", { href: "#/listing/country" }, "countries"),
+        (0, import_mithril5.default)("a", { href: "#/listing/country" }, "countries"),
         " \xB7 ",
         `${stats.bird_species} `,
-        (0, import_mithril6.default)("a", { href: "#/listing/bird" }, "bird species"),
+        (0, import_mithril5.default)("a", { href: "#/listing/bird" }, "bird species"),
         " \xB7 ",
         `${stats.mammal_species} `,
-        (0, import_mithril6.default)("a", { href: "#/listing/mammal" }, "mammal species"),
+        (0, import_mithril5.default)("a", { href: "#/listing/mammal" }, "mammal species"),
         " \xB7 a few ",
-        (0, import_mithril6.default)("a", { href: "#/listing/amphibian" }, "amphibians"),
+        (0, import_mithril5.default)("a", { href: "#/listing/amphibian" }, "amphibians"),
         " and ",
-        (0, import_mithril6.default)("a", { href: "#/listing/reptile" }, "reptiles"),
+        (0, import_mithril5.default)("a", { href: "#/listing/reptile" }, "reptiles"),
         " \xB7 ",
         `${stats.unesco_sites} `,
-        (0, import_mithril6.default)("a", { href: "#/thing/unesco:*" }, "UNESCO sites")
+        (0, import_mithril5.default)("a", { href: "#/thing/unesco:*" }, "UNESCO sites")
       ]);
     }
   };
 }
 
 // ts/components/photo-album-metadata.ts
-var import_mithril7 = __toESM(require_mithril());
+var import_mithril6 = __toESM(require_mithril());
 
 // ts/services/window.ts
 var Windows = class {
@@ -4531,14 +4527,14 @@ function PhotoAlbumMetadata() {
     view(vnode) {
       const { title, minDate, maxDate, count, countryLinks } = vnode.attrs;
       const text = count === 1 ? "photo" : "photos";
-      return (0, import_mithril7.default)("div.photo-album-metadata", [
-        (0, import_mithril7.default)("p.photo-album-title", title),
-        (0, import_mithril7.default)("p.photo-album-date", [
-          (0, import_mithril7.default)("time", dateRange(minDate, maxDate))
+      return (0, import_mithril6.default)("div.photo-album-metadata", [
+        (0, import_mithril6.default)("p.photo-album-title", title),
+        (0, import_mithril6.default)("p.photo-album-date", [
+          (0, import_mithril6.default)("time", dateRange(minDate, maxDate))
         ]),
-        (0, import_mithril7.default)("div.photo-metadata-inline", [
-          (0, import_mithril7.default)("p.photo-album-count", `${count} ${text}`),
-          (0, import_mithril7.default)("p.photo-album-countries", countryLinks)
+        (0, import_mithril6.default)("div.photo-metadata-inline", [
+          (0, import_mithril6.default)("p.photo-album-count", `${count} ${text}`),
+          (0, import_mithril6.default)("p.photo-album-countries", countryLinks)
         ])
       ]);
     }
@@ -4546,22 +4542,22 @@ function PhotoAlbumMetadata() {
 }
 
 // ts/components/photo-album.ts
-var import_mithril10 = __toESM(require_mithril());
-
-// ts/components/photo.ts
 var import_mithril9 = __toESM(require_mithril());
 
-// ts/components/metadata-icon.ts
+// ts/components/photo.ts
 var import_mithril8 = __toESM(require_mithril());
+
+// ts/components/metadata-icon.ts
+var import_mithril7 = __toESM(require_mithril());
 function InfoSVG() {
-  return (0, import_mithril8.default)("svg.photo-icon", {
+  return (0, import_mithril7.default)("svg.photo-icon", {
     height: 40,
     width: 40,
     preserveAspectRatio: "xMinYMin",
     viewBox: "-2 -2 24 24",
     xmlns: "http://www.w3.org/2000/svg"
   }, [
-    (0, import_mithril8.default)("path", {
+    (0, import_mithril7.default)("path", {
       d: "m10 20c-5.523 0-10-4.477-10-10s4.477-10 10-10 10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-10a1 1 0 0 1 1 1v5a1 1 0 0 1 -2 0v-5a1 1 0 0 1 1-1zm0-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
     })
   ]);
@@ -4570,7 +4566,7 @@ function MetadataIcon() {
   return {
     view(vnode) {
       const { id } = vnode.attrs;
-      return (0, import_mithril8.default)("div.photo-metadata-popover", {
+      return (0, import_mithril7.default)("div.photo-metadata-popover", {
         onclick: () => broadcast("navigate", { route: `/photo/${id}` })
       }, InfoSVG());
     }
@@ -4592,7 +4588,7 @@ function Image() {
   return {
     view(vnode) {
       const { thumbnailUrl, loading, onclick } = vnode.attrs;
-      return (0, import_mithril9.default)("img.thumbnail-image", {
+      return (0, import_mithril8.default)("img.thumbnail-image", {
         onload: loadImage.bind(null, thumbnailUrl),
         width: PHOTO_WIDTH,
         height: PHOTO_HEIGHT,
@@ -4607,7 +4603,7 @@ function PlaceholderImage() {
   return {
     view(vnode) {
       const { thumbnailDataUrl } = vnode.attrs;
-      return (0, import_mithril9.default)("img.u-photo.thumbnail-image.thumbnail-placeholder", {
+      return (0, import_mithril8.default)("img.u-photo.thumbnail-image.thumbnail-placeholder", {
         width: PHOTO_WIDTH,
         height: PHOTO_HEIGHT,
         src: thumbnailDataUrl
@@ -4625,13 +4621,13 @@ function ImagePair() {
         loading,
         onclick
       } = vnode.attrs;
-      return (0, import_mithril9.default)("a", {
+      return (0, import_mithril8.default)("a", {
         href: fullImage,
         target: "_blank",
         rel: "external"
       }, [
-        (0, import_mithril9.default)(PlaceholderImage, { thumbnailDataUrl }),
-        (0, import_mithril9.default)(Image, { thumbnailUrl, loading, onclick })
+        (0, import_mithril8.default)(PlaceholderImage, { thumbnailDataUrl }),
+        (0, import_mithril8.default)(Image, { thumbnailUrl, loading, onclick })
       ]);
     }
   };
@@ -4650,17 +4646,17 @@ function Photo() {
         mosaicColours
       } = photo;
       const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
-      const $mdIcon = (0, import_mithril9.default)(MetadataIcon, { id });
-      const $imagePair = (0, import_mithril9.default)(ImagePair, {
+      const $mdIcon = (0, import_mithril8.default)(MetadataIcon, { id });
+      const $imagePair = (0, import_mithril8.default)(ImagePair, {
         fullImage,
         thumbnailUrl,
         thumbnailDataUrl,
         loading
       });
-      return (0, import_mithril9.default)(
+      return (0, import_mithril8.default)(
         "div",
-        (0, import_mithril9.default)("div.photo", {}, [
-          (0, import_mithril9.default)(
+        (0, import_mithril8.default)("div.photo", {}, [
+          (0, import_mithril8.default)(
             "a",
             { onclick: block },
             interactive ? [
@@ -4687,8 +4683,8 @@ function PhotoAlbum() {
         minDate,
         onclick
       } = vnode.attrs;
-      return (0, import_mithril10.default)("div.photo-album", { "data-min-date": minDate }, [
-        (0, import_mithril10.default)(ImagePair, {
+      return (0, import_mithril9.default)("div.photo-album", { "data-min-date": minDate }, [
+        (0, import_mithril9.default)(ImagePair, {
           imageUrl,
           thumbnailUrl,
           thumbnailDataUrl,
@@ -4703,7 +4699,7 @@ function PhotoAlbum() {
 }
 
 // ts/components/place-links.ts
-var import_mithril11 = __toESM(require_mithril());
+var import_mithril10 = __toESM(require_mithril());
 
 // ts/models/urn.ts
 function urnToUrl(urn) {
@@ -4718,15 +4714,15 @@ function CountryLink() {
       const { country, mode } = vnode.attrs;
       const { id, name } = country;
       if (!id) {
-        return (0, import_mithril11.default)("p");
+        return (0, import_mithril10.default)("p");
       }
       const flag = countryEmoji(country);
       const parsed = asUrn(id);
       const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
       if (mode === "flag") {
-        return (0, import_mithril11.default)("a.country-link-short", { href: urnToUrl(id), onclick }, flag);
+        return (0, import_mithril10.default)("a.country-link-short", { href: urnToUrl(id), onclick }, flag);
       }
-      return (0, import_mithril11.default)(
+      return (0, import_mithril10.default)(
         "a.country-link",
         { href: urnToUrl(id), onclick },
         `${flag} ${name}`
@@ -4747,7 +4743,7 @@ function drawAlbum(state2, album, idx) {
   if (state2.year !== albumYear(album)) {
     state2.year = albumYear(album);
     if (state2.year !== (/* @__PURE__ */ new Date()).getFullYear()) {
-      const $h2 = (0, import_mithril12.default)(
+      const $h2 = (0, import_mithril11.default)(
         "h2.album-year-heading",
         { key: `year-${state2.year}` },
         state2.year.toString()
@@ -4756,20 +4752,20 @@ function drawAlbum(state2, album, idx) {
     }
   }
   const $countryLinks = album.countries.map((country) => {
-    return (0, import_mithril12.default)(CountryLink, {
+    return (0, import_mithril11.default)(CountryLink, {
       country,
       key: `album-country-${album.id}-${country.id}`,
       mode: "flag"
     });
   });
-  const $md = (0, import_mithril12.default)(PhotoAlbumMetadata, {
+  const $md = (0, import_mithril11.default)(PhotoAlbumMetadata, {
     title: album.name,
     minDate: album.minDate,
     maxDate: album.maxDate,
     count: album.photosCount,
     countryLinks: $countryLinks
   });
-  const $album = (0, import_mithril12.default)(PhotoAlbum, {
+  const $album = (0, import_mithril11.default)(PhotoAlbum, {
     imageUrl: album.thumbnailUrl,
     thumbnailUrl: album.thumbnailUrl,
     thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
@@ -4778,7 +4774,7 @@ function drawAlbum(state2, album, idx) {
     onclick: onAlbumClick.bind(null, album.id, album.name)
   });
   $albumComponents.push(
-    (0, import_mithril12.default)("div", {
+    (0, import_mithril11.default)("div", {
       key: `album-${album.id}`
     }, [
       $album,
@@ -4801,10 +4797,10 @@ function AlbumsList() {
       for (let idx = 0; idx < albums.length; idx++) {
         $albumComponents.push(...drawAlbum(state2, albums[idx], idx));
       }
-      import_mithril12.default.redraw();
+      import_mithril11.default.redraw();
     },
     view() {
-      return (0, import_mithril12.default)("section.album-container", $albumComponents);
+      return (0, import_mithril11.default)("section.album-container", $albumComponents);
     }
   };
 }
@@ -4815,21 +4811,21 @@ function AlbumsPage() {
     },
     view(vnode) {
       const { albums } = vnode.attrs;
-      const $md = (0, import_mithril12.default)("section.album-metadata", [
-        (0, import_mithril12.default)("h1.albums-header", "Albums"),
-        (0, import_mithril12.default)(AlbumStats)
+      const $md = (0, import_mithril11.default)("section.album-metadata", [
+        (0, import_mithril11.default)("h1.albums-header", "Albums"),
+        (0, import_mithril11.default)(AlbumStats)
       ]);
-      return (0, import_mithril12.default)("div", [
+      return (0, import_mithril11.default)("div", [
         $md,
         //m(YearCursor),
-        (0, import_mithril12.default)(AlbumsList, { albums })
+        (0, import_mithril11.default)(AlbumsList, { albums })
       ]);
     }
   };
 }
 
 // ts/pages/about.ts
-var import_mithril13 = __toESM(require_mithril());
+var import_mithril12 = __toESM(require_mithril());
 function AboutPage() {
   return {
     oninit() {
@@ -4837,38 +4833,38 @@ function AboutPage() {
     },
     view() {
       const years = (/* @__PURE__ */ new Date()).getFullYear() - 2012;
-      return (0, import_mithril13.default)("div", [
-        (0, import_mithril13.default)("section.about-page", [
-          (0, import_mithril13.default)("h1", "About"),
-          (0, import_mithril13.default)(
+      return (0, import_mithril12.default)("div", [
+        (0, import_mithril12.default)("section.about-page", [
+          (0, import_mithril12.default)("h1", "About"),
+          (0, import_mithril12.default)(
             "p",
             `I started taking photos ${years} years ago, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things`,
-            (0, import_mithril13.default)("a", {
+            (0, import_mithril12.default)("a", {
               href: "https://photos.rgrannell.xyz/#/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50",
               onclick: navigate(`/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50`)
             }, " I found beautiful in this world.")
           ),
-          (0, import_mithril13.default)("h2", "Can I use the photos on this site?"),
-          (0, import_mithril13.default)(
+          (0, import_mithril12.default)("h2", "Can I use the photos on this site?"),
+          (0, import_mithril12.default)(
             "p",
             "You may use this website and its content for personal, non-commerical purposes only. For example, using photos as a desktop wallpaper is fine, selling these photos is not."
           ),
-          (0, import_mithril13.default)("h2", "Can I use data from this site to train AI?"),
-          (0, import_mithril13.default)(
+          (0, import_mithril12.default)("h2", "Can I use data from this site to train AI?"),
+          (0, import_mithril12.default)(
             "p",
             "No, absolutely not. The ",
-            (0, import_mithril13.default)(
+            (0, import_mithril12.default)(
               "a",
               { href: "http://photos.rgrannell.xyz/robots.txt" },
               "robots.txt"
             ),
             " file for this site explicitly prohibits this."
           ),
-          (0, import_mithril13.default)("h2", "What is your contact information?"),
-          (0, import_mithril13.default)(
+          (0, import_mithril12.default)("h2", "What is your contact information?"),
+          (0, import_mithril12.default)(
             "p",
             "See ",
-            (0, import_mithril13.default)("a", { href: "https://rgrannell.xyz/" }, "my personal site"),
+            (0, import_mithril12.default)("a", { href: "https://rgrannell.xyz/" }, "my personal site"),
             " for contact details."
           )
         ])
@@ -4878,11 +4874,11 @@ function AboutPage() {
 }
 
 // ts/pages/videos.ts
-var import_mithril15 = __toESM(require_mithril());
+var import_mithril14 = __toESM(require_mithril());
 
 // ts/components/video.ts
-var import_mithril14 = __toESM(require_mithril());
-function Video2() {
+var import_mithril13 = __toESM(require_mithril());
+function Video() {
   return {
     view(vnode) {
       const {
@@ -4896,18 +4892,18 @@ function Video2() {
         videoUrl720p,
         videoUrlUnscaled
       } = video;
-      const $source = (0, import_mithril14.default)("source", {
+      const $source = (0, import_mithril13.default)("source", {
         src: videoUrl480p,
         type: "video/mp4"
       });
-      const $resolutionLinks = (0, import_mithril14.default)("ul", [
-        (0, import_mithril14.default)("a", { href: videoUrlUnscaled }, "[L]"),
-        (0, import_mithril14.default)("a", { href: videoUrl1080p }, "[M]"),
-        (0, import_mithril14.default)("a", { href: videoUrl720p }, "[S]"),
-        (0, import_mithril14.default)("a", { href: videoUrl480p }, "[XS]")
+      const $resolutionLinks = (0, import_mithril13.default)("ul", [
+        (0, import_mithril13.default)("a", { href: videoUrlUnscaled }, "[L]"),
+        (0, import_mithril13.default)("a", { href: videoUrl1080p }, "[M]"),
+        (0, import_mithril13.default)("a", { href: videoUrl720p }, "[S]"),
+        (0, import_mithril13.default)("a", { href: videoUrl480p }, "[XS]")
       ]);
-      return (0, import_mithril14.default)("div", { key: `video-${video.id}` }, [
-        (0, import_mithril14.default)("video.thumbnail-video", {
+      return (0, import_mithril13.default)("div", { key: `video-${video.id}` }, [
+        (0, import_mithril13.default)("video.thumbnail-video", {
           controls: true,
           preload,
           poster: posterUrl
@@ -4925,25 +4921,25 @@ function VideosPage() {
       const { videos } = vnode.attrs;
       const videoLengthText = videos.length === 1 ? "1 video" : `${videos.length} videos`;
       const $videosList = videos.map((video) => {
-        return (0, import_mithril15.default)(Video2, { video, preload: "auto" });
+        return (0, import_mithril14.default)(Video, { video, preload: "auto" });
       });
-      return (0, import_mithril15.default)(
+      return (0, import_mithril14.default)(
         "div",
-        (0, import_mithril15.default)("section.photos-metadata", [
-          (0, import_mithril15.default)("h1", "Videos"),
-          (0, import_mithril15.default)("p.photo-album-count", videoLengthText)
+        (0, import_mithril14.default)("section.photos-metadata", [
+          (0, import_mithril14.default)("h1", "Videos"),
+          (0, import_mithril14.default)("p.photo-album-count", videoLengthText)
         ]),
-        (0, import_mithril15.default)("section.photo-container", $videosList)
+        (0, import_mithril14.default)("section.photo-container", $videosList)
       );
     }
   };
 }
 
 // ts/pages/album.ts
-var import_mithril19 = __toESM(require_mithril());
+var import_mithril18 = __toESM(require_mithril());
 
 // ts/components/album-share-button.ts
-var import_mithril16 = __toESM(require_mithril());
+var import_mithril15 = __toESM(require_mithril());
 function handleError(message) {
   if (message.includes("Shared canceled")) {
     return;
@@ -4976,7 +4972,7 @@ function AlbumShareButton() {
   return {
     view(vnode) {
       const { url: url2, name } = vnode.attrs;
-      return (0, import_mithril16.default)("button.photo-share-button", {
+      return (0, import_mithril15.default)("button.photo-share-button", {
         disabled: !navigator.share,
         onclick: shareAlbum.bind(null, localState, url2, name)
       }, buttonText(localState));
@@ -4985,11 +4981,11 @@ function AlbumShareButton() {
 }
 
 // ts/components/albums-button.ts
-var import_mithril17 = __toESM(require_mithril());
+var import_mithril16 = __toESM(require_mithril());
 function AlbumsButton() {
   return {
     view() {
-      return (0, import_mithril17.default)(
+      return (0, import_mithril16.default)(
         "a",
         { href: "/albums", onclick: navigate(`/albums`) },
         "[albums]"
@@ -4999,7 +4995,7 @@ function AlbumsButton() {
 }
 
 // ts/components/album-things.ts
-var import_mithril18 = __toESM(require_mithril());
+var import_mithril17 = __toESM(require_mithril());
 function AlbumThings() {
   return {
     view(vnode) {
@@ -5037,25 +5033,25 @@ function AlbumPage() {
       );
       const photoCountMessage = photosCount === 1 ? "1 photo" : `${photosCount} photos`;
       const $countryLinks = countries.map((country) => {
-        return (0, import_mithril19.default)(CountryLink, {
+        return (0, import_mithril18.default)(CountryLink, {
           country,
           mode: "flag"
         });
       });
-      const $albumMetadata = (0, import_mithril19.default)("section.photos-metadata", [
-        (0, import_mithril19.default)("h1", name),
-        (0, import_mithril19.default)("p.photo-album-date", (0, import_mithril19.default)("time", dateRange)),
-        (0, import_mithril19.default)("p.photo-album-count", photoCountMessage),
-        (0, import_mithril19.default)("p.photo-album-countries", $countryLinks),
-        (0, import_mithril19.default)("p.photo-album-description", import_mithril19.default.trust(description ?? "")),
-        (0, import_mithril19.default)(AlbumShareButton, { url: location.href, name }),
+      const $albumMetadata = (0, import_mithril18.default)("section.photos-metadata", [
+        (0, import_mithril18.default)("h1", name),
+        (0, import_mithril18.default)("p.photo-album-date", (0, import_mithril18.default)("time", dateRange)),
+        (0, import_mithril18.default)("p.photo-album-count", photoCountMessage),
+        (0, import_mithril18.default)("p.photo-album-countries", $countryLinks),
+        (0, import_mithril18.default)("p.photo-album-description", import_mithril18.default.trust(description ?? "")),
+        (0, import_mithril18.default)(AlbumShareButton, { url: location.href, name }),
         " ",
-        (0, import_mithril19.default)(AlbumsButton),
+        (0, import_mithril18.default)(AlbumsButton),
         " ",
-        (0, import_mithril19.default)(AlbumThings, { subjects, locations })
+        (0, import_mithril18.default)(AlbumThings, { subjects, locations })
       ]);
       const $photosList = photos.map((photo, idx) => {
-        return (0, import_mithril19.default)(
+        return (0, import_mithril18.default)(
           Photo,
           {
             photo,
@@ -5065,29 +5061,29 @@ function AlbumPage() {
         );
       });
       const $videosList = videos.map((video) => {
-        return (0, import_mithril19.default)(Video2, { ...video, preload: "auto" });
+        return (0, import_mithril18.default)(Video, { ...video, preload: "auto" });
       });
-      return (0, import_mithril19.default)(
+      return (0, import_mithril18.default)(
         "div",
         $albumMetadata,
-        (0, import_mithril19.default)("section.photo-container", $photosList),
-        (0, import_mithril19.default)("section.video-container", $videosList)
+        (0, import_mithril18.default)("section.photo-container", $photosList),
+        (0, import_mithril18.default)("section.video-container", $videosList)
       );
     }
   };
 }
 
 // ts/pages/photos.ts
-var import_mithril20 = __toESM(require_mithril());
+var import_mithril19 = __toESM(require_mithril());
 function PhotosList() {
   return {
     view(vnode) {
       const { photos } = vnode.attrs;
-      return (0, import_mithril20.default)(
+      return (0, import_mithril19.default)(
         "section.photo-container",
         photos.map((photo, idx) => {
           const loading = Photos.loadingMode(idx);
-          return (0, import_mithril20.default)(Photo, {
+          return (0, import_mithril19.default)(Photo, {
             key: `photo-${photo.id}`,
             photo,
             loading,
@@ -5103,25 +5099,25 @@ function PhotosPage() {
     view(vnode) {
       const { photos } = vnode.attrs;
       const countText = `${photos.length} photo${photos.length === 1 ? "" : "s"}`;
-      const $md = (0, import_mithril20.default)("section.photos-metadata", [
-        (0, import_mithril20.default)("h1", "Photos"),
-        (0, import_mithril20.default)("p.photo-album-count", countText)
+      const $md = (0, import_mithril19.default)("section.photos-metadata", [
+        (0, import_mithril19.default)("h1", "Photos"),
+        (0, import_mithril19.default)("p.photo-album-count", countText)
       ]);
-      return (0, import_mithril20.default)("div", [$md, (0, import_mithril20.default)(PhotosList, { photos })]);
+      return (0, import_mithril19.default)("div", [$md, (0, import_mithril19.default)(PhotosList, { photos })]);
     }
   };
 }
 
 // ts/pages/photo.ts
-var import_mithril24 = __toESM(require_mithril());
+var import_mithril23 = __toESM(require_mithril());
 
 // ts/components/album-button.ts
-var import_mithril21 = __toESM(require_mithril());
+var import_mithril20 = __toESM(require_mithril());
 function AlbumButton() {
   return {
     view(vnode) {
       const { id } = vnode.attrs;
-      return (0, import_mithril21.default)("a", {
+      return (0, import_mithril20.default)("a", {
         href: `#/album/${id}`,
         onclick: () => navigate(`/album/${id}`)
       }, "[album]");
@@ -5130,12 +5126,12 @@ function AlbumButton() {
 }
 
 // ts/components/exif-data.ts
-var import_mithril22 = __toESM(require_mithril());
+var import_mithril21 = __toESM(require_mithril());
 function Heading() {
   return {
     view(vnode) {
       const { text } = vnode.attrs;
-      return (0, import_mithril22.default)("th.exif-heading", text);
+      return (0, import_mithril21.default)("th.exif-heading", text);
     }
   };
 }
@@ -5145,9 +5141,9 @@ function CameraModel() {
       const { photo, services } = vnode.attrs;
       const $model = services.toThingLinks([photo.model]);
       if ($model.length > 0) {
-        return (0, import_mithril22.default)("td", $model);
+        return (0, import_mithril21.default)("td", $model);
       }
-      return (0, import_mithril22.default)("td", "Unknown");
+      return (0, import_mithril21.default)("td", "Unknown");
     }
   };
 }
@@ -5156,9 +5152,9 @@ function ExifDimensions() {
     view(vnode) {
       const { photo } = vnode.attrs;
       if (typeof photo.width === "string" && typeof photo.height === "string") {
-        return (0, import_mithril22.default)("td", `${photo.width} x ${photo.height}`);
+        return (0, import_mithril21.default)("td", `${photo.width} x ${photo.height}`);
       }
-      return (0, import_mithril22.default)("td", "Unknown");
+      return (0, import_mithril21.default)("td", "Unknown");
     }
   };
 }
@@ -5167,13 +5163,13 @@ function FocalLength() {
     view(vnode) {
       const { photo } = vnode.attrs;
       if (photo.focalLength === "Unknown") {
-        return (0, import_mithril22.default)("td", "Unknown");
+        return (0, import_mithril21.default)("td", "Unknown");
       } else if (photo.focalLength === "0") {
-        return (0, import_mithril22.default)("td", "Manual lens");
+        return (0, import_mithril21.default)("td", "Manual lens");
       } else if (!photo.focalLength) {
-        return (0, import_mithril22.default)("td", "Unknown");
+        return (0, import_mithril21.default)("td", "Unknown");
       } else {
-        return (0, import_mithril22.default)("td", `${photo.focalLength}mm`);
+        return (0, import_mithril21.default)("td", `${photo.focalLength}mm`);
       }
     }
   };
@@ -5185,14 +5181,14 @@ function ShutterSpeed() {
       if (typeof photo.exposureTime === "string") {
         const parsed = parseFloat(photo.exposureTime);
         if (isNaN(parsed)) {
-          return (0, import_mithril22.default)("td", "Unknown");
+          return (0, import_mithril21.default)("td", "Unknown");
         } else if (parsed >= 1) {
-          return (0, import_mithril22.default)("td", `${parsed} s`);
+          return (0, import_mithril21.default)("td", `${parsed} s`);
         } else {
-          return (0, import_mithril22.default)("td", `1/${Math.round(1 / parsed)} s`);
+          return (0, import_mithril21.default)("td", `1/${Math.round(1 / parsed)} s`);
         }
       }
-      return (0, import_mithril22.default)("td", "Unknown");
+      return (0, import_mithril21.default)("td", "Unknown");
     }
   };
 }
@@ -5201,13 +5197,13 @@ function Aperture() {
     view(vnode) {
       const { photo } = vnode.attrs;
       if (photo.fStop === "Unknown") {
-        return (0, import_mithril22.default)("td", "Unknown");
+        return (0, import_mithril21.default)("td", "Unknown");
       } else if (photo.fStop === "0.0") {
-        return (0, import_mithril22.default)("td", "Manual aperture control");
+        return (0, import_mithril21.default)("td", "Manual aperture control");
       } else if (!photo.fStop) {
-        return (0, import_mithril22.default)("td", "Unknown");
+        return (0, import_mithril21.default)("td", "Unknown");
       }
-      return (0, import_mithril22.default)("td", `\u0192/${photo.fStop}`);
+      return (0, import_mithril21.default)("td", `\u0192/${photo.fStop}`);
     }
   };
 }
@@ -5215,35 +5211,35 @@ function ExifData() {
   return {
     view(vnode) {
       const { photo, services } = vnode.attrs;
-      const $dateTime = (0, import_mithril22.default)("tr", [
-        (0, import_mithril22.default)(Heading, { text: "Date-Time" }),
-        (0, import_mithril22.default)("td", (0, import_mithril22.default)("time", Dates.formatCreatedAt(photo.createdAt)))
+      const $dateTime = (0, import_mithril21.default)("tr", [
+        (0, import_mithril21.default)(Heading, { text: "Date-Time" }),
+        (0, import_mithril21.default)("td", (0, import_mithril21.default)("time", Dates.formatCreatedAt(photo.createdAt)))
       ]);
-      const $model = (0, import_mithril22.default)("tr", [
-        (0, import_mithril22.default)(Heading, { text: "Camera Model" }),
-        (0, import_mithril22.default)(CameraModel, { photo, services })
+      const $model = (0, import_mithril21.default)("tr", [
+        (0, import_mithril21.default)(Heading, { text: "Camera Model" }),
+        (0, import_mithril21.default)(CameraModel, { photo, services })
       ]);
-      const $dimensions = (0, import_mithril22.default)("tr", [
-        (0, import_mithril22.default)(Heading, { text: "Dimensions" }),
-        (0, import_mithril22.default)(ExifDimensions, { photo, services })
+      const $dimensions = (0, import_mithril21.default)("tr", [
+        (0, import_mithril21.default)(Heading, { text: "Dimensions" }),
+        (0, import_mithril21.default)(ExifDimensions, { photo, services })
       ]);
-      const $focalLength = (0, import_mithril22.default)("tr", [
-        (0, import_mithril22.default)(Heading, { text: "Focal Length" }),
-        (0, import_mithril22.default)(FocalLength, { photo, services })
+      const $focalLength = (0, import_mithril21.default)("tr", [
+        (0, import_mithril21.default)(Heading, { text: "Focal Length" }),
+        (0, import_mithril21.default)(FocalLength, { photo, services })
       ]);
-      const $shutterSpeed = (0, import_mithril22.default)("tr", [
-        (0, import_mithril22.default)(Heading, { text: "Shutter Speed" }),
-        (0, import_mithril22.default)(ShutterSpeed, { photo, services })
+      const $shutterSpeed = (0, import_mithril21.default)("tr", [
+        (0, import_mithril21.default)(Heading, { text: "Shutter Speed" }),
+        (0, import_mithril21.default)(ShutterSpeed, { photo, services })
       ]);
-      const $aperture = (0, import_mithril22.default)("tr", [
-        (0, import_mithril22.default)(Heading, { text: "Aperture" }),
-        (0, import_mithril22.default)(Aperture, { photo, services })
+      const $aperture = (0, import_mithril21.default)("tr", [
+        (0, import_mithril21.default)(Heading, { text: "Aperture" }),
+        (0, import_mithril21.default)(Aperture, { photo, services })
       ]);
-      const $iso = (0, import_mithril22.default)("tr", [
-        (0, import_mithril22.default)(Heading, { text: "ISO" }),
-        (0, import_mithril22.default)("td", photo.iso ?? "Unknown")
+      const $iso = (0, import_mithril21.default)("tr", [
+        (0, import_mithril21.default)(Heading, { text: "ISO" }),
+        (0, import_mithril21.default)("td", photo.iso ?? "Unknown")
       ]);
-      return (0, import_mithril22.default)("table.metadata-table", [
+      return (0, import_mithril21.default)("table.metadata-table", [
         $dateTime,
         $model,
         $dimensions,
@@ -5257,12 +5253,12 @@ function ExifData() {
 }
 
 // ts/components/photo-info.ts
-var import_mithril23 = __toESM(require_mithril());
+var import_mithril22 = __toESM(require_mithril());
 function Heading2() {
   return {
     view(vnode) {
       const { text } = vnode.attrs;
-      return (0, import_mithril23.default)("th.exif-heading", text);
+      return (0, import_mithril22.default)("th.exif-heading", text);
     }
   };
 }
@@ -5272,9 +5268,9 @@ function Description() {
       const { photo } = vnode.attrs;
       const html = photo.description ?? photo.summary;
       if (html) {
-        return (0, import_mithril23.default)("td", import_mithril23.default.trust(html));
+        return (0, import_mithril22.default)("td", import_mithril22.default.trust(html));
       }
-      return (0, import_mithril23.default)("td", "\u2014");
+      return (0, import_mithril22.default)("td", "\u2014");
     }
   };
 }
@@ -5283,7 +5279,7 @@ function Location() {
     view(vnode) {
       const { photo, services } = vnode.attrs;
       const $locations = services.toThingLinks(arrayify(photo.location));
-      return (0, import_mithril23.default)("td", $locations.length > 0 ? $locations : "\u2014");
+      return (0, import_mithril22.default)("td", $locations.length > 0 ? $locations : "\u2014");
     }
   };
 }
@@ -5292,7 +5288,7 @@ function Rating() {
     view(vnode) {
       const { photo, services } = vnode.attrs;
       const $rating = services.toThingLinks([photo.rating]);
-      return (0, import_mithril23.default)("td", $rating.length > 0 ? $rating : "\u2014");
+      return (0, import_mithril22.default)("td", $rating.length > 0 ? $rating : "\u2014");
     }
   };
 }
@@ -5301,7 +5297,7 @@ function Style() {
     view(vnode) {
       const { photo, services } = vnode.attrs;
       const $style = services.toThingLinks([photo.style]);
-      return (0, import_mithril23.default)("td", $style.length > 0 ? $style : "\u2014");
+      return (0, import_mithril22.default)("td", $style.length > 0 ? $style : "\u2014");
     }
   };
 }
@@ -5310,7 +5306,7 @@ function Subject() {
     view(vnode) {
       const { photo, services } = vnode.attrs;
       const $subject = services.toThingLinks(arrayify(photo.subject));
-      return (0, import_mithril23.default)("td", $subject.length > 0 ? $subject : "\u2014");
+      return (0, import_mithril22.default)("td", $subject.length > 0 ? $subject : "\u2014");
     }
   };
 }
@@ -5319,7 +5315,7 @@ function Country() {
     view(vnode) {
       const { photo, services } = vnode.attrs;
       const $countries = services.toThingLinks(arrayify(photo.country));
-      return (0, import_mithril23.default)("td", $countries.length > 0 ? $countries : "\u2014");
+      return (0, import_mithril22.default)("td", $countries.length > 0 ? $countries : "\u2014");
     }
   };
 }
@@ -5329,34 +5325,34 @@ function PhotoInfo() {
       const { photo, services } = vnode.attrs;
       const infoItems = [];
       if (photo.description || photo.summary) {
-        infoItems.push((0, import_mithril23.default)("tr", [
-          (0, import_mithril23.default)(Heading2, { text: "Description" }),
-          (0, import_mithril23.default)(Description, { photo, services })
+        infoItems.push((0, import_mithril22.default)("tr", [
+          (0, import_mithril22.default)(Heading2, { text: "Description" }),
+          (0, import_mithril22.default)(Description, { photo, services })
         ]));
       }
       infoItems.push(
-        (0, import_mithril23.default)("tr", [
-          (0, import_mithril23.default)(Heading2, { text: "Country" }),
-          (0, import_mithril23.default)(Country, { photo, services })
+        (0, import_mithril22.default)("tr", [
+          (0, import_mithril22.default)(Heading2, { text: "Country" }),
+          (0, import_mithril22.default)(Country, { photo, services })
         ]),
-        (0, import_mithril23.default)("tr", [
-          (0, import_mithril23.default)(Heading2, { text: "Location" }),
-          (0, import_mithril23.default)(Location, { photo, services })
+        (0, import_mithril22.default)("tr", [
+          (0, import_mithril22.default)(Heading2, { text: "Location" }),
+          (0, import_mithril22.default)(Location, { photo, services })
         ]),
-        (0, import_mithril23.default)("tr", [
-          (0, import_mithril23.default)(Heading2, { text: "Rating" }),
-          (0, import_mithril23.default)(Rating, { photo, services })
+        (0, import_mithril22.default)("tr", [
+          (0, import_mithril22.default)(Heading2, { text: "Rating" }),
+          (0, import_mithril22.default)(Rating, { photo, services })
         ]),
-        (0, import_mithril23.default)("tr", [
-          (0, import_mithril23.default)(Heading2, { text: "Style" }),
-          (0, import_mithril23.default)(Style, { photo, services })
+        (0, import_mithril22.default)("tr", [
+          (0, import_mithril22.default)(Heading2, { text: "Style" }),
+          (0, import_mithril22.default)(Style, { photo, services })
         ]),
-        (0, import_mithril23.default)("tr", [
-          (0, import_mithril23.default)(Heading2, { text: "Subject" }),
-          (0, import_mithril23.default)(Subject, { photo, services })
+        (0, import_mithril22.default)("tr", [
+          (0, import_mithril22.default)(Heading2, { text: "Subject" }),
+          (0, import_mithril22.default)(Subject, { photo, services })
         ])
       );
-      return (0, import_mithril23.default)("table.metadata-table", infoItems);
+      return (0, import_mithril22.default)("table.metadata-table", infoItems);
     }
   };
 }
@@ -5366,29 +5362,29 @@ function PhotoPage() {
   return {
     view(vnode) {
       const { photo, services } = vnode.attrs;
-      const $links = (0, import_mithril24.default)("p", [
-        (0, import_mithril24.default)("a", { href: photo.fullImage, rel: "noreferrer" }, "[webp]"),
+      const $links = (0, import_mithril23.default)("p", [
+        (0, import_mithril23.default)("a", { href: photo.fullImage, rel: "noreferrer" }, "[webp]"),
         " ",
-        (0, import_mithril24.default)("a", { href: photo.pngUrl, rel: "noreferrer" }, "[png]"),
+        (0, import_mithril23.default)("a", { href: photo.pngUrl, rel: "noreferrer" }, "[png]"),
         " ",
         // [share]
-        (0, import_mithril24.default)(AlbumButton, { id: photo.albumId })
+        (0, import_mithril23.default)(AlbumButton, { id: photo.albumId })
       ]);
-      const $exif = (0, import_mithril24.default)(ExifData, { photo, services });
-      const $photoInfo = (0, import_mithril24.default)(PhotoInfo, { photo, services });
-      return (0, import_mithril24.default)("section", [
-        (0, import_mithril24.default)("h1", "Photo"),
-        (0, import_mithril24.default)(Photo, {
+      const $exif = (0, import_mithril23.default)(ExifData, { photo, services });
+      const $photoInfo = (0, import_mithril23.default)(PhotoInfo, { photo, services });
+      return (0, import_mithril23.default)("section", [
+        (0, import_mithril23.default)("h1", "Photo"),
+        (0, import_mithril23.default)(Photo, {
           photo,
           loading: "eager",
           interactive: false
         }),
         $links,
-        (0, import_mithril24.default)(
+        (0, import_mithril23.default)(
           "div",
-          (0, import_mithril24.default)("h3", "Photo Information"),
+          (0, import_mithril23.default)("h3", "Photo Information"),
           $photoInfo,
-          (0, import_mithril24.default)("h3", "Exif Data"),
+          (0, import_mithril23.default)("h3", "Exif Data"),
           $exif
         )
       ]);
@@ -5397,12 +5393,12 @@ function PhotoPage() {
 }
 
 // ts/pages/listing.ts
-var import_mithril25 = __toESM(require_mithril());
+var import_mithril24 = __toESM(require_mithril());
 function AlbumsList2() {
   return {
     view() {
       const $albumComponents = [];
-      return (0, import_mithril25.default)("section.album-container", $albumComponents);
+      return (0, import_mithril24.default)("section.album-container", $albumComponents);
     }
   };
 }
@@ -5410,7 +5406,7 @@ function ListingTitle() {
   return {
     view(vnode) {
       const { type } = vnode.attrs;
-      return (0, import_mithril25.default)(
+      return (0, import_mithril24.default)(
         "h1.albums-header",
         `${Strings.capitalise(Strings.pluralise(type))}`
       );
@@ -5421,7 +5417,7 @@ function ListingThingsButton() {
   return {
     view(vnode) {
       const { type } = vnode.attrs;
-      return (0, import_mithril25.default)("a", {
+      return (0, import_mithril24.default)("a", {
         href: `/thing/${type}`
       }, `See all ${type} photos`);
     }
@@ -5433,28 +5429,28 @@ function ListingPage() {
       const { type, things } = vnode.attrs;
       const $albums = [];
       const $md = [
-        (0, import_mithril25.default)(ListingTitle, { type })
+        (0, import_mithril24.default)(ListingTitle, { type })
       ];
       if (!NonListableTypes.has(type)) {
         $md.push(
-          (0, import_mithril25.default)("section.album-metadata", [
-            (0, import_mithril25.default)(ListingThingsButton, { type })
+          (0, import_mithril24.default)("section.album-metadata", [
+            (0, import_mithril24.default)(ListingThingsButton, { type })
           ])
         );
       }
-      return (0, import_mithril25.default)("div", [
-        (0, import_mithril25.default)("section.album-metadata", $md),
-        (0, import_mithril25.default)(AlbumsList2)
+      return (0, import_mithril24.default)("div", [
+        (0, import_mithril24.default)("section.album-metadata", $md),
+        (0, import_mithril24.default)(AlbumsList2)
       ]);
     }
   };
 }
 
 // ts/pages/thing.ts
-var import_mithril33 = __toESM(require_mithril());
+var import_mithril32 = __toESM(require_mithril());
 
 // ts/components/thing-title.ts
-var import_mithril26 = __toESM(require_mithril());
+var import_mithril25 = __toESM(require_mithril());
 function computeTitle(urn, things) {
   const parsed = parseUrn(urn);
   if (parsed.id === "*") {
@@ -5476,7 +5472,7 @@ function ThingTitle() {
   return {
     view(vnode) {
       const { urn, things } = vnode.attrs;
-      return (0, import_mithril26.default)("h1", computeTitle(urn, things));
+      return (0, import_mithril25.default)("h1", computeTitle(urn, things));
     }
   };
 }
@@ -5484,22 +5480,22 @@ function ThingSubtitle() {
   return {
     view(vnode) {
       const parsed = asUrn(vnode.attrs.urn);
-      return BinomialTypes.has(parsed.type) && parsed.id !== "*" ? (0, import_mithril26.default)(
+      return BinomialTypes.has(parsed.type) && parsed.id !== "*" ? (0, import_mithril25.default)(
         "span",
         { class: `thing-binomial ${parsed.type}-binomial` },
         Strings.binomial(parsed.id)
-      ) : (0, import_mithril26.default)("span");
+      ) : (0, import_mithril25.default)("span");
     }
   };
 }
 
 // ts/components/external-link.ts
-var import_mithril27 = __toESM(require_mithril());
+var import_mithril26 = __toESM(require_mithril());
 function ExternalLink() {
   return {
     view(vnode) {
       const { href, text } = vnode.attrs;
-      return (0, import_mithril27.default)("a", {
+      return (0, import_mithril26.default)("a", {
         href,
         target: "_blank",
         rel: "noopener"
@@ -5509,14 +5505,14 @@ function ExternalLink() {
 }
 
 // ts/components/unesco-link.ts
-var import_mithril28 = __toESM(require_mithril());
+var import_mithril27 = __toESM(require_mithril());
 function UnescoLink() {
   return {
     view(vnode) {
       const { urn, thing } = vnode.attrs;
       const { type, id } = asUrn(urn);
       const name = one(thing.name) ?? id;
-      return (0, import_mithril28.default)("a", {
+      return (0, import_mithril27.default)("a", {
         href: `https://whc.unesco.org/en/list/${id}`,
         target: "_blank",
         rel: "noopener noreferrer",
@@ -5527,24 +5523,24 @@ function UnescoLink() {
 }
 
 // ts/components/places-list.ts
-var import_mithril29 = __toESM(require_mithril());
+var import_mithril28 = __toESM(require_mithril());
 function PlacesList() {
   return {
     view(vnode) {
       const { urns, services } = vnode.attrs;
-      const locations = services.readParsedLocations(urns).sort(
+      const locations = services.readLocations(urns).sort(
         (loca, locb) => {
           return (one(loca.name) ?? "").localeCompare(one(locb.name) ?? "");
         }
       );
       const $contains = locations.map((location2) => {
-        const $link = (0, import_mithril29.default)(ThingLink, {
+        const $link = (0, import_mithril28.default)(ThingLink, {
           urn: one(location2.id),
           thing: location2
         });
-        return (0, import_mithril29.default)("li", { key: `place-${location2.id}` }, $link);
+        return (0, import_mithril28.default)("li", { key: `place-${location2.id}` }, $link);
       });
-      return (0, import_mithril29.default)("ul", $contains);
+      return (0, import_mithril28.default)("ul", $contains);
     }
   };
 }
@@ -5577,7 +5573,7 @@ function setOf(property, objects) {
 }
 
 // ts/components/listing-link.ts
-var import_mithril30 = __toESM(require_mithril());
+var import_mithril29 = __toESM(require_mithril());
 function onListingClick(type, event) {
   broadcast("navigate", {
     route: `/listing/${type}`
@@ -5594,7 +5590,7 @@ function ListingLink() {
         const parsed = asUrn(vnode.attrs.urn);
         type = parsed.type;
       }
-      return (0, import_mithril30.default)("a", {
+      return (0, import_mithril29.default)("a", {
         href: `#/listing/${type}`,
         onclick: onListingClick.bind(null, type)
       }, Strings.capitalise(type));
@@ -5603,35 +5599,35 @@ function ListingLink() {
 }
 
 // ts/components/features-list.ts
-var import_mithril31 = __toESM(require_mithril());
+var import_mithril30 = __toESM(require_mithril());
 function FeaturesList() {
   return {
     view(vnode) {
       const { urns, services } = vnode.attrs;
-      const features = services.readParsedFeatures(urns);
+      const features = services.readFeatures(urns);
       const $features = features.map((feature) => {
         const id = one(feature.id);
-        return (0, import_mithril31.default)("li", {
+        return (0, import_mithril30.default)("li", {
           key: `feature-${id}`
-        }, (0, import_mithril31.default)(ThingLink, { urn: id, thing: feature }));
+        }, (0, import_mithril30.default)(ThingLink, { urn: id, thing: feature }));
       });
-      return (0, import_mithril31.default)("ul", $features);
+      return (0, import_mithril30.default)("ul", $features);
     }
   };
 }
 
 // ts/components/unesco-list.ts
-var import_mithril32 = __toESM(require_mithril());
+var import_mithril31 = __toESM(require_mithril());
 function UnescoList() {
   return {
     view(vnode) {
       const { urns, services } = vnode.attrs;
-      const unescos = services.readParsedUnescos(urns);
+      const unescos = services.readUnescos(urns);
       const $unescos = unescos.map((unesco) => {
         const urn = one(unesco.id);
-        return (0, import_mithril32.default)("li", (0, import_mithril32.default)(UnescoLink, { urn, thing: unesco }));
+        return (0, import_mithril31.default)("li", (0, import_mithril31.default)(UnescoLink, { urn, thing: unesco }));
       });
-      return (0, import_mithril32.default)("ul", $unescos);
+      return (0, import_mithril31.default)("ul", $unescos);
     }
   };
 }
@@ -5642,23 +5638,23 @@ function ThingUrls() {
     view(vnode) {
       const { things } = vnode.attrs;
       if (things.length !== 1) {
-        return (0, import_mithril33.default)("ul");
+        return (0, import_mithril32.default)("ul");
       }
       const [thing] = things;
       const $links = [];
       const wikipedia = one(thing.wikipedia);
       if (wikipedia) {
         $links.push(
-          (0, import_mithril33.default)("li", (0, import_mithril33.default)(ExternalLink, { href: wikipedia, text: "[wikipedia]" }))
+          (0, import_mithril32.default)("li", (0, import_mithril32.default)(ExternalLink, { href: wikipedia, text: "[wikipedia]" }))
         );
       }
       const birdwatch = one(thing.birdwatchUrl);
       if (birdwatch) {
         $links.push(
-          (0, import_mithril33.default)("li", (0, import_mithril33.default)(ExternalLink, { href: birdwatch, text: "[birdwatch]" }))
+          (0, import_mithril32.default)("li", (0, import_mithril32.default)(ExternalLink, { href: birdwatch, text: "[birdwatch]" }))
         );
       }
-      return (0, import_mithril33.default)("ul.link-list", $links);
+      return (0, import_mithril32.default)("ul.link-list", $links);
     }
   };
 }
@@ -5667,36 +5663,36 @@ function ThingMetadata() {
     view(vnode) {
       const metadata = {};
       const { urn, things, services } = vnode.attrs;
-      metadata.Classification = (0, import_mithril33.default)(ListingLink, { urn });
+      metadata.Classification = (0, import_mithril32.default)(ListingLink, { urn });
       const locatedIn = setOf(KnownRelations.IN, things);
       if (locatedIn.size > 0) {
-        metadata["Located In"] = (0, import_mithril33.default)(PlacesList, { services, urns: locatedIn });
+        metadata["Located In"] = (0, import_mithril32.default)(PlacesList, { services, urns: locatedIn });
       }
       if (things.length !== 1) {
         return;
       }
       const [thing] = things;
       if (thing.feature) {
-        metadata["Place Features"] = (0, import_mithril33.default)(FeaturesList, { urns: setify(thing.feature), services });
+        metadata["Place Features"] = (0, import_mithril32.default)(FeaturesList, { urns: setify(thing.feature), services });
       }
       if (thing.contains) {
-        metadata["Contains"] = (0, import_mithril33.default)(PlacesList, { services, urns: setify(thing.contains) });
+        metadata["Contains"] = (0, import_mithril32.default)(PlacesList, { services, urns: setify(thing.contains) });
       }
       if (thing.unescoId) {
-        metadata["UNESCO"] = (0, import_mithril33.default)(UnescoList, {
+        metadata["UNESCO"] = (0, import_mithril32.default)(UnescoList, {
           urns: new Set(arrayify(thing.unescoId)),
           services
         });
       }
       const $rows = Object.entries(metadata).map(([key, value]) => {
-        return (0, import_mithril33.default)("tr", [
-          (0, import_mithril33.default)("th.exif-heading", key),
-          (0, import_mithril33.default)("td", value)
+        return (0, import_mithril32.default)("tr", [
+          (0, import_mithril32.default)("th.exif-heading", key),
+          (0, import_mithril32.default)("td", value)
         ]);
       });
-      return (0, import_mithril33.default)("div", [
-        (0, import_mithril33.default)("h3", "Details"),
-        (0, import_mithril33.default)("table.metadata-table", $rows)
+      return (0, import_mithril32.default)("div", [
+        (0, import_mithril32.default)("h3", "Details"),
+        (0, import_mithril32.default)("table.metadata-table", $rows)
       ]);
     }
   };
@@ -5707,11 +5703,11 @@ function PhotoSection() {
       const { things, services } = vnode.attrs;
       const urns = setOf("id", things);
       const photos = services.readPhotosByThingIds(urns);
-      return (0, import_mithril33.default)(
+      return (0, import_mithril32.default)(
         "section.photo-container",
         photos.map((photo, idx) => {
           const loading = Photos.loadingMode(idx);
-          return (0, import_mithril33.default)(Photo, {
+          return (0, import_mithril32.default)(Photo, {
             key: `photo-${photo.id}`,
             photo,
             loading,
@@ -5726,16 +5722,16 @@ function ThingPage() {
   return {
     view(vnode) {
       const { urn, things, services } = vnode.attrs;
-      return (0, import_mithril33.default)("div", [
-        (0, import_mithril33.default)("section.thing-page", [
-          (0, import_mithril33.default)(ThingTitle, { urn, things }),
-          (0, import_mithril33.default)(ThingSubtitle, { urn }),
-          (0, import_mithril33.default)("br"),
-          (0, import_mithril33.default)(ThingUrls, { urn, things, services }),
-          (0, import_mithril33.default)(ThingMetadata, { urn, things, services }),
-          (0, import_mithril33.default)("h3", "Photos"),
-          (0, import_mithril33.default)(PhotoSection, { urn, things, services }),
-          (0, import_mithril33.default)("h3", "Albums")
+      return (0, import_mithril32.default)("div", [
+        (0, import_mithril32.default)("section.thing-page", [
+          (0, import_mithril32.default)(ThingTitle, { urn, things }),
+          (0, import_mithril32.default)(ThingSubtitle, { urn }),
+          (0, import_mithril32.default)("br"),
+          (0, import_mithril32.default)(ThingUrls, { urn, things, services }),
+          (0, import_mithril32.default)(ThingMetadata, { urn, things, services }),
+          (0, import_mithril32.default)("h3", "Photos"),
+          (0, import_mithril32.default)(PhotoSection, { urn, things, services }),
+          (0, import_mithril32.default)("h3", "Albums")
           //m(AlbumSection, { urn, things, services }),
         ])
       ]);
@@ -5750,16 +5746,16 @@ function AlbumsApp() {
     oninit() {
     },
     view() {
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
+      return (0, import_mithril33.default)("body", [
+        (0, import_mithril33.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(AlbumsPage, {
-                albums: readAlbums(state.data)
+            (0, import_mithril33.default)(Header, state),
+            (0, import_mithril33.default)("div.app-container", [
+              (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril33.default)(AlbumsPage, {
+                albums: readAllAlbums(state.data)
               })
             ])
           ]
@@ -5771,32 +5767,32 @@ function AlbumsApp() {
 function AlbumApp() {
   return {
     oninit() {
-      const id = import_mithril34.default.route.param("id");
+      const id = import_mithril33.default.route.param("id");
       state.currentAlbum = `urn:r\xF3:album:${id}`;
     },
     view() {
       if (!state.currentAlbum) {
-        return (0, import_mithril34.default)("p", "No album selected");
+        return (0, import_mithril33.default)("p", "No album selected");
       }
       const album = readAlbum(state.data, state.currentAlbum);
       const photos = readAlbumPhotosByAlbumId(state.data, state.currentAlbum);
       const videos = readAlbumVideosByAlbumId(state.data, state.currentAlbum);
       if (!album) {
-        return (0, import_mithril34.default)("p", "Album not found");
+        return (0, import_mithril33.default)("p", "Album not found");
       }
       const { subjects, locations } = readThingsByAlbumId(
         state.data,
         state.currentAlbum
       );
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
+      return (0, import_mithril33.default)("body", [
+        (0, import_mithril33.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(AlbumPage, {
+            (0, import_mithril33.default)(Header, state),
+            (0, import_mithril33.default)("div.app-container", [
+              (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril33.default)(AlbumPage, {
                 album,
                 subjects,
                 locations,
@@ -5813,15 +5809,15 @@ function AlbumApp() {
 function AboutApp() {
   return {
     view() {
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
+      return (0, import_mithril33.default)("body", [
+        (0, import_mithril33.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(AboutPage)
+            (0, import_mithril33.default)(Header, state),
+            (0, import_mithril33.default)("div.app-container", [
+              (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril33.default)(AboutPage)
             ])
           ]
         )
@@ -5832,16 +5828,16 @@ function AboutApp() {
 function VideosApp() {
   return {
     view() {
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
+      return (0, import_mithril33.default)("body", [
+        (0, import_mithril33.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(VideosPage, {
-                videos: readVideos(state.data)
+            (0, import_mithril33.default)(Header, state),
+            (0, import_mithril33.default)("div.app-container", [
+              (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril33.default)(VideosPage, {
+                videos: readAllVideos(state.data)
               })
             ])
           ]
@@ -5853,16 +5849,16 @@ function VideosApp() {
 function PhotosApp() {
   return {
     view() {
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
+      return (0, import_mithril33.default)("body", [
+        (0, import_mithril33.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(PhotosPage, {
-                photos: readPhotos(state.data)
+            (0, import_mithril33.default)(Header, state),
+            (0, import_mithril33.default)("div.app-container", [
+              (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril33.default)(PhotosPage, {
+                photos: readAllPhotos(state.data)
               })
             ])
           ]
@@ -5877,7 +5873,7 @@ function ThingApp() {
     oninit() {
     },
     view() {
-      const pair = import_mithril34.default.route.param("pair");
+      const pair = import_mithril33.default.route.param("pair");
       state.currentUrn = `urn:r\xF3:${pair}`;
       const parsed = asUrn(state.currentUrn);
       if (parsed.id === "*") {
@@ -5889,17 +5885,17 @@ function ThingApp() {
         }
       }
       if (!state.currentUrn) {
-        return (0, import_mithril34.default)("p", "No thing selected");
+        return (0, import_mithril33.default)("p", "No thing selected");
       }
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
+      return (0, import_mithril33.default)("body", [
+        (0, import_mithril33.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(ThingPage, {
+            (0, import_mithril33.default)(Header, state),
+            (0, import_mithril33.default)("div.app-container", [
+              (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril33.default)(ThingPage, {
                 urn: state.currentUrn,
                 things,
                 services: state.services
@@ -5914,26 +5910,26 @@ function ThingApp() {
 function PhotoApp() {
   return {
     oninit() {
-      const id = import_mithril34.default.route.param("id");
+      const id = import_mithril33.default.route.param("id");
       state.currentPhoto = `urn:r\xF3:photo:${id}`;
     },
     view() {
       if (!state.currentPhoto) {
-        return (0, import_mithril34.default)("p", "No photo selected");
+        return (0, import_mithril33.default)("p", "No photo selected");
       }
       const photo = readPhoto(state.data, state.currentPhoto);
       if (!photo) {
-        return (0, import_mithril34.default)("p", "Photo not found");
+        return (0, import_mithril33.default)("p", "Photo not found");
       }
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
+      return (0, import_mithril33.default)("body", [
+        (0, import_mithril33.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(PhotoPage, { photo, services: state.services })
+            (0, import_mithril33.default)(Header, state),
+            (0, import_mithril33.default)("div.app-container", [
+              (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril33.default)(PhotoPage, { photo, services: state.services })
             ])
           ]
         )
@@ -5944,23 +5940,23 @@ function PhotoApp() {
 function ListingApp() {
   return {
     oninit() {
-      const type = import_mithril34.default.route.param("type");
+      const type = import_mithril33.default.route.param("type");
       state.currentType = type;
     },
     view() {
       if (!state.currentType) {
-        return (0, import_mithril34.default)("p", "No type selected");
+        return (0, import_mithril33.default)("p", "No type selected");
       }
       const things = readNamedTypeThings(state.data, state.currentType);
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
+      return (0, import_mithril33.default)("body", [
+        (0, import_mithril33.default)(
           "div.photos-app",
           { class: state.darkMode ? "dark-mode" : void 0 },
           [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(ListingPage, {
+            (0, import_mithril33.default)(Header, state),
+            (0, import_mithril33.default)("div.app-container", [
+              (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
+              (0, import_mithril33.default)(ListingPage, {
                 type: state.currentType,
                 things
               })
@@ -5974,14 +5970,14 @@ function ListingApp() {
 listen("navigate", (event) => {
   const { route } = event.detail;
   console.info(`navigating to route: ${route}`);
-  import_mithril34.default.route.set(route);
+  import_mithril33.default.route.set(route);
 });
 listen("switch_theme", () => {
   state.darkMode = !state.darkMode;
 });
 
 // ts/index.ts
-import_mithril35.default.route(document.body, "/albums", {
+import_mithril34.default.route(document.body, "/albums", {
   "/albums": AlbumsApp,
   "/about": AboutApp,
   "/videos": VideosApp,

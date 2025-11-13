@@ -1,5 +1,5 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
-import { readParsedThing, readParsedThings } from "./things.ts";
+import { readParsedThing, readParsedThings, readThing, readThings } from "./things.ts";
 import { parseFeature } from "../parsers/feature.ts";
 
 export const readFeature = (
@@ -13,7 +13,7 @@ export const readFeature = (
   );
 };
 
-export const readParsedFeatures = (
+export const readFeatures = (
   tdb: TribbleDB,
   urns: Set<string>,
 ) => {

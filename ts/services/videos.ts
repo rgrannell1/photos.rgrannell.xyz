@@ -1,5 +1,5 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
-import { Video } from "../types.ts";
+import type { Video } from "../types.ts";
 import { readParsedThing, readParsedThings } from "./things.ts";
 import { parseVideo } from "../parsers/video.ts";
 
@@ -10,7 +10,7 @@ export const readVideo = (
   return readParsedThing(parseVideo, tdb, id);
 };
 
-export const readParsedVideos = (
+export const readVideos = (
   tdb: TribbleDB,
   urns: Set<string>,
 ) => {
@@ -24,10 +24,10 @@ export const readParsedVideos = (
  *
  * @return The parsed videos
  */
-export function readVideos(tdb: TribbleDB): Video[] {
+export function readAllVideos(tdb: TribbleDB): Video[] {
   const videos = tdb.search({
     source: { type: "video" },
   }).sources();
 
-  return readParsedVideos(tdb, videos) as Video[]; // TODO
+  return readVideos(tdb, videos) as Video[]; // TODO
 }

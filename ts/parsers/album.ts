@@ -4,7 +4,7 @@ import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Album } from "../types.ts";
 import { arrayify } from "../commons/arrays.ts";
-import { readParsedCountries } from "../services/location.ts";
+import { readCountries } from "../services/location.ts";
 import { AlbumSchema } from "./schemas.ts";
 import { safeParse } from "valibot";
 
@@ -26,7 +26,7 @@ export function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
 
   const data = result.output;
   const countryNames = new Set(arrayify(data.flags));
-  const countries = readParsedCountries(tdb, namesToUrns(tdb, countryNames));
+  const countries = readCountries(tdb, namesToUrns(tdb, countryNames));
 
   return {
     name: data.name,

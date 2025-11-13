@@ -5,7 +5,7 @@ import {
   parsePlace,
   parseUnesco,
 } from "../parsers/location.ts";
-import { readParsedThing, readParsedThings } from "./things.ts";
+import { readParsedThing, readParsedThings, readThing } from "./things.ts";
 
 export const readCountry = (
   tdb: TribbleDB,
@@ -51,7 +51,7 @@ export const readUnesco = (
   );
 };
 
-export const readParsedCountries = (
+export const readCountries = (
   tdb: TribbleDB,
   urns: Set<string>,
 ) => {
@@ -62,7 +62,7 @@ export const readParsedCountries = (
   );
 };
 
-export const readParsedPlaces = (
+export const readPlaces = (
   tdb: TribbleDB,
   urns: Set<string>,
 ) => {
@@ -73,7 +73,7 @@ export const readParsedPlaces = (
   );
 };
 
-export const readParsedLocations = (
+export const readLocations = (
   tdb: TribbleDB,
   urns: Set<string>,
 ) => {
@@ -84,7 +84,7 @@ export const readParsedLocations = (
   );
 };
 
-export const readParsedUnescos = (
+export const readUnescos = (
   tdb: TribbleDB,
   urns: Set<string>,
 ) => {
