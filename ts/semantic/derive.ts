@@ -225,7 +225,7 @@ export function addInverseRelations(triple: Triple) {
 const CURIE_CACHE = new Map<string, string>();
 
 /*
- * Expand curies
+ * Expand curie-formatted URLS into their full form.
  */
 export function expandCurie(curies: Record<string, string>, value: string) {
   const cached = CURIE_CACHE.get(value);
@@ -268,11 +268,13 @@ export function expandTripleCuries(
   ];
 }
 
-const treeState = {
+// This is a bit unpleasant
+const TREE_STATE = {
   nodes: new Map<string, {
     id: string;
     parents: Set<string>;
   }>,
+  // used later to detect whether a node is a leaf
   branchIds: new Set<string>()
 }
 
@@ -288,8 +290,9 @@ export function buildLocationTrees(
     return [triple];
   }
 
-  const nodes = treeState.nodes;
+  const nodes = TREE_STATE.nodes;
 
+  // TODO this is probably not very efficient
   if (!nodes.has(src)) {
     nodes.set(src, { id: src, parents: new Set() });
   }
@@ -299,7 +302,7 @@ export function buildLocationTrees(
     nodes.set(tgt, { id: tgt, parents: new Set() });
   }
 
-  treeState.branchIds.add(tgt);
+  TREE_STATE.branchIds.add(tgt);
   srcNode?.parents.add(tgt);
 
   return [triple];
@@ -372,11 +375,14 @@ export function addNestedLocations(): Triple[] {
   function recurse(path: string[], urn: string): Triple[] {
     const triples: Triple[] = [];
 
-    const node = treeState.nodes.get(urn);
+    const node = TREE_STATE.nodes.get(urn);
 
+    // Probably not possible
     if (!node) {
       throw new Error(`no node in location tree for ${urn}`);
     }
+
+    // Beats implementing cycle-detection
     if (path.length > 5) {
       throw new Error(`likely cycle; ${JSON.stringify(path)}`);
     }
@@ -412,9 +418,10 @@ export function addNestedLocations(): Triple[] {
 
   const triples: Triple[] = [];
 
-  // Recurse up from all leaves
-  for (const nodeId of treeState.nodes.keys()) {
-    if (treeState.branchIds.has(nodeId)) {
+  // Recurse up from all leaves A :IN B, and
+  // return all transitive location relations
+  for (const nodeId of TREE_STATE.nodes.keys()) {
+    if (TREE_STATE.branchIds.has(nodeId)) {
       continue;
     }
 
