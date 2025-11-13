@@ -253,6 +253,7 @@ export function expandCurie(curies: Record<string, string>, value: string) {
 
 /*
  * Some URNs are sent in CURIE format to compact them; expand
+ * e.g [wiki:olm] => https://en.wikipedia.org/wiki/olm
  */
 export function expandTripleCuries(
   triple: Triple,
@@ -357,7 +358,8 @@ export function deriveTriples(
       nextStep.push(...(fn(triple) as Triple[]));
     }
 
-    outputTriples = nextStep;
+    outputTriples = [...nextStep];
+    nextStep = [];
   }
 
   return outputTriples;

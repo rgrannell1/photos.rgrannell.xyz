@@ -3,7 +3,7 @@ import type { Album } from "../types.ts";
 import type { Photo, Video } from "../types.ts";
 import { parseAlbum } from "../parsers/album.ts";
 import { readPhotos, readThingsByPhotoIds } from "./photos.ts";
-import { readParsedThing, readParsedThings, readThing, readThings } from "./things.ts";
+import { readParsedThing, readParsedThings } from "./things.ts";
 import { readVideos } from "./videos.ts";
 import { KnownRelations, KnownTypes } from "../constants.ts";
 

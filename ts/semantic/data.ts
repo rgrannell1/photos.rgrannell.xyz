@@ -6,7 +6,6 @@ import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { Triple } from "@rgrannell1/tribbledb";
 import { TribbleParser } from "@rgrannell1/tribbledb";
 import { addNestedLocations } from "./derive.ts";
-import { KnownRelations } from "../constants.ts";
 
 /*
  * Stream triples from a URL

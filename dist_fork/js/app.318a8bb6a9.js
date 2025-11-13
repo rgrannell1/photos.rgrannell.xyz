@@ -3004,8 +3004,9 @@ function expandTripleCuries(triple) {
     ]
   ];
 }
-var treeState = {
+var TREE_STATE = {
   nodes: /* @__PURE__ */ new Map(),
+  // used later to detect whether a node is a leaf
   branchIds: /* @__PURE__ */ new Set()
 };
 function buildLocationTrees(triple) {
@@ -3013,7 +3014,7 @@ function buildLocationTrees(triple) {
   if (rel !== KnownRelations.IN) {
     return [triple];
   }
-  const nodes = treeState.nodes;
+  const nodes = TREE_STATE.nodes;
   if (!nodes.has(src)) {
     nodes.set(src, { id: src, parents: /* @__PURE__ */ new Set() });
   }
@@ -3021,7 +3022,7 @@ function buildLocationTrees(triple) {
   if (!nodes.has(tgt)) {
     nodes.set(tgt, { id: tgt, parents: /* @__PURE__ */ new Set() });
   }
-  treeState.branchIds.add(tgt);
+  TREE_STATE.branchIds.add(tgt);
   srcNode?.parents.add(tgt);
   return [triple];
 }
@@ -3060,14 +3061,15 @@ function deriveTriples(triple) {
     for (const triple2 of outputTriples) {
       nextStep.push(...fn(triple2));
     }
-    outputTriples = nextStep;
+    outputTriples = [...nextStep];
+    nextStep = [];
   }
   return outputTriples;
 }
 function addNestedLocations() {
   function recurse(path, urn) {
     const triples2 = [];
-    const node = treeState.nodes.get(urn);
+    const node = TREE_STATE.nodes.get(urn);
     if (!node) {
       throw new Error(`no node in location tree for ${urn}`);
     }
@@ -3095,8 +3097,8 @@ function addNestedLocations() {
     return triples2;
   }
   const triples = [];
-  for (const nodeId of treeState.nodes.keys()) {
-    if (treeState.branchIds.has(nodeId)) {
+  for (const nodeId of TREE_STATE.nodes.keys()) {
+    if (TREE_STATE.branchIds.has(nodeId)) {
       continue;
     }
     triples.push(...recurse([], nodeId));
@@ -5566,26 +5568,8 @@ function ExternalLink() {
   };
 }
 
-// ts/components/unesco-link.ts
-var import_mithril27 = __toESM(require_mithril());
-function UnescoLink() {
-  return {
-    view(vnode) {
-      const { urn, thing } = vnode.attrs;
-      const { type, id } = asUrn(urn);
-      const name = one(thing.name) ?? id;
-      return (0, import_mithril27.default)("a", {
-        href: `https://whc.unesco.org/en/list/${id}`,
-        target: "_blank",
-        rel: "noopener noreferrer",
-        class: ["thing-link", `${type}-link`].join(" ")
-      }, name);
-    }
-  };
-}
-
 // ts/components/places-list.ts
-var import_mithril28 = __toESM(require_mithril());
+var import_mithril27 = __toESM(require_mithril());
 function PlacesList() {
   return {
     view(vnode) {
@@ -5596,13 +5580,13 @@ function PlacesList() {
         }
       );
       const $contains = locations.map((location2) => {
-        const $link = (0, import_mithril28.default)(ThingLink, {
+        const $link = (0, import_mithril27.default)(ThingLink, {
           urn: one(location2.id),
           thing: location2
         });
-        return (0, import_mithril28.default)("li", { key: `place-${location2.id}` }, $link);
+        return (0, import_mithril27.default)("li", { key: `place-${location2.id}` }, $link);
       });
-      return (0, import_mithril28.default)("ul", $contains);
+      return (0, import_mithril27.default)("ul", $contains);
     }
   };
 }
@@ -5635,7 +5619,7 @@ function setOf(property, objects) {
 }
 
 // ts/components/listing-link.ts
-var import_mithril29 = __toESM(require_mithril());
+var import_mithril28 = __toESM(require_mithril());
 function onListingClick(type, event) {
   broadcast("navigate", {
     route: `/listing/${type}`
@@ -5652,7 +5636,7 @@ function ListingLink() {
         const parsed = asUrn(vnode.attrs.urn);
         type = parsed.type;
       }
-      return (0, import_mithril29.default)("a", {
+      return (0, import_mithril28.default)("a", {
         href: `#/listing/${type}`,
         onclick: onListingClick.bind(null, type)
       }, Strings.capitalise(type));
@@ -5661,7 +5645,7 @@ function ListingLink() {
 }
 
 // ts/components/features-list.ts
-var import_mithril30 = __toESM(require_mithril());
+var import_mithril29 = __toESM(require_mithril());
 function FeaturesList() {
   return {
     view(vnode) {
@@ -5669,17 +5653,37 @@ function FeaturesList() {
       const features = services.readFeatures(urns);
       const $features = features.map((feature) => {
         const id = one(feature.id);
-        return (0, import_mithril30.default)("li", {
+        return (0, import_mithril29.default)("li", {
           key: `feature-${id}`
-        }, (0, import_mithril30.default)(ThingLink, { urn: id, thing: feature }));
+        }, (0, import_mithril29.default)(ThingLink, { urn: id, thing: feature }));
       });
-      return (0, import_mithril30.default)("ul", $features);
+      return (0, import_mithril29.default)("ul", $features);
     }
   };
 }
 
 // ts/components/unesco-list.ts
 var import_mithril31 = __toESM(require_mithril());
+
+// ts/components/unesco-link.ts
+var import_mithril30 = __toESM(require_mithril());
+function UnescoLink() {
+  return {
+    view(vnode) {
+      const { urn, thing } = vnode.attrs;
+      const { type, id } = asUrn(urn);
+      const name = one(thing.name) ?? id;
+      return (0, import_mithril30.default)("a", {
+        href: `https://whc.unesco.org/en/list/${id}`,
+        target: "_blank",
+        rel: "noopener noreferrer",
+        class: ["thing-link", `${type}-link`].join(" ")
+      }, name);
+    }
+  };
+}
+
+// ts/components/unesco-list.ts
 function UnescoList() {
   return {
     view(vnode) {

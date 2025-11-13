@@ -2,7 +2,7 @@ import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { Country, Photo, Place, Subject } from "../types.ts";
 import { parsePhoto } from "../parsers/photo.ts";
-import { readParsedThing, readParsedThings, readThing, readThings } from "./things.ts";
+import { readParsedThing, readParsedThings } from "./things.ts";
 import { readSubjects } from "./subjects.ts";
 import { readLocations } from "./location.ts";
 
