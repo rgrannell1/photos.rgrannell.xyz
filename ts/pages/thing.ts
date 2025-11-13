@@ -111,6 +111,10 @@ function ThingMetadata() {
         })
       }
 
+      // TODO add `seen in`, first photographed
+
+      // convert the metadaTa to a table
+
       const $rows = Object.entries(metadata).map(([key, value]) => {
         return m("tr", [
           m("th.exif-heading", key),
@@ -118,7 +122,6 @@ function ThingMetadata() {
         ]);
       });
 
-      // TODO seen in, first photographed
       return m("div", [
         m("h3", "Details"),
         m("table.metadata-table", $rows),
