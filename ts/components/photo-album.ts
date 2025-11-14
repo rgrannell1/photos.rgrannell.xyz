@@ -1,6 +1,10 @@
 import m from "mithril";
 import { ImagePair } from "./photo.ts";
 
+// use this to keep track of trips, to assign each a
+// colour distinct from the adjacent ones
+const TRIPS: string[] = [];
+
 function TripTag() {
   return {
     view(vnode: m.Vnode<{ trip: string | undefined }>) {
@@ -10,7 +14,13 @@ function TripTag() {
         return null;
       }
 
-      return m("div.trip-tag");
+      if (!TRIPS.includes(trip)) {
+        TRIPS.push(trip);
+      }
+
+      // two colours supported
+      const tripIndex = TRIPS.indexOf(trip);
+      return m("div.trip-tag .trip-color-" + (tripIndex % 2) );
     }
   }
 }

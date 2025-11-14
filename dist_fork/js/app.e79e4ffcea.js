@@ -4749,6 +4749,7 @@ function Photo() {
 }
 
 // ts/components/photo-album.ts
+var TRIPS = [];
 function TripTag() {
   return {
     view(vnode) {
@@ -4756,7 +4757,12 @@ function TripTag() {
       if (!trip) {
         return null;
       }
-      return (0, import_mithril9.default)("div.trip-tag");
+      if (!TRIPS.includes(trip)) {
+        TRIPS.push(trip);
+      }
+      const tripIndex = TRIPS.indexOf(trip);
+      console.log("div.trip-tag .trip-color-" + tripIndex % 2);
+      return (0, import_mithril9.default)("div.trip-tag .trip-color-" + tripIndex % 2);
     }
   };
 }
@@ -6093,4 +6099,4 @@ import_mithril35.default.route(document.body, "/albums", {
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp
 });
-//# sourceMappingURL=app.3ccde0858d.js.map
+//# sourceMappingURL=app.e79e4ffcea.js.map

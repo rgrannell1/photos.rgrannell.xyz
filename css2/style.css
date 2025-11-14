@@ -284,6 +284,7 @@ button:disabled {
   }
 }
 
+/* show a little dogear with a colour in the top-right of an album that's part of a trip */
 .trip-tag {
   position: absolute;
   top: 0;
@@ -293,6 +294,24 @@ button:disabled {
   border-top: 30px solid var(--background-color);
   border-left: 30px solid transparent;
   z-index: 2;
+}
+
+.trip-tag::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  right: 0px;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+}
+
+.trip-color-0::before {
+  border-top: 20px solid var(--tag-color-0);
+}
+
+.trip-color-1::before {
+  border-top: 20px solid var(--tag-color-2);
 }
 
 .thing-description {
