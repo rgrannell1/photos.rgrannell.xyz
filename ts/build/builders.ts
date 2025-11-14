@@ -15,7 +15,7 @@ export async function buildSW() {
   console.info("🌐 Rendering service-worker");
 
   await Deno.writeTextFile(
-    `dist_fork/js/sw.${env.publication_id}.js`,
+    `dist/js/sw.${env.publication_id}.js`,
     render(swTemplateText, {
       prefetched: findPrefetchTargets(),
       homepageThumbnails: JSON.stringify(findHomepageThumbnails()),
@@ -33,7 +33,7 @@ export async function buildTS() {
   const res = await esbuild.build({
     entryPoints: ["ts/index.ts"],
     bundle: true,
-    outfile: `dist_fork/js/app.${env.publication_id}.js`,
+    outfile: `dist/js/app.${env.publication_id}.js`,
     format: "esm",
     treeShaking: true,
     sourcemap: true,
@@ -47,13 +47,13 @@ export async function buildCSS() {
   console.info("🌐 Rendering css");
 
   const result = await esbuild.transform(
-    await Deno.readTextFile(`css2/style.css`),
+    await Deno.readTextFile(`css/style.css`),
     { loader: "css" },
   );
   const minified = cssoMinify(result.code).css;
 
   await Deno.writeTextFile(
-    `dist_fork/css/style.${env.publication_id}.css`,
+    `dist/css/style.${env.publication_id}.css`,
     minified,
   );
 }
@@ -65,7 +65,7 @@ export async function buildHTML() {
   console.info("🌐 Rendering index.html");
 
   await Deno.writeTextFile(
-    "index_fork.html",
+    "index.html",
     render(htmlTemplateText, {
       stats: statsText,
       env: envText,

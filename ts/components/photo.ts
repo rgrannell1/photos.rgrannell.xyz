@@ -73,7 +73,6 @@ function PlaceholderImage() {
 }
 
 type ImagePairAttrs = {
-  trip: string | undefined;
   fullImage: string;
   thumbnailUrl: string;
   thumbnailDataUrl: string;
@@ -93,8 +92,7 @@ export function ImagePair() {
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
-        onclick,
-        trip
+        onclick
       } = vnode.attrs;
 
       return m("a", {

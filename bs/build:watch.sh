@@ -1,3 +1,3 @@
 #!/bin/bash
 
-find js css fonts icons index.mustache.html | entr -r ./bs/build.sh
+find ts css index.html | entr -r ./bs/build.sh

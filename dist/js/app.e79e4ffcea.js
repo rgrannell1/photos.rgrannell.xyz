@@ -4696,8 +4696,7 @@ function ImagePair() {
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
-        onclick,
-        trip
+        onclick
       } = vnode.attrs;
       return (0, import_mithril8.default)("a", {
         href: fullImage,
@@ -4761,7 +4760,6 @@ function TripTag() {
         TRIPS.push(trip);
       }
       const tripIndex = TRIPS.indexOf(trip);
-      console.log("div.trip-tag .trip-color-" + tripIndex % 2);
       return (0, import_mithril9.default)("div.trip-tag .trip-color-" + tripIndex % 2);
     }
   };

@@ -9,6 +9,9 @@ type FeaturesListAttrs = {
   services: Services;
 };
 
+/*
+ * A list of place features. For the moment, things-links cannot be used
+ */
 export function FeaturesList() {
   return {
     view(vnode: m.Vnode<FeaturesListAttrs>) {

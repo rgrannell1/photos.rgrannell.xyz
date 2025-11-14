@@ -33,6 +33,7 @@
   --tag-color-4: #4c55f7;
   --tag-color-5: #4cbef7;
   --tag-color-6: #b371ff;
+  --tag-color-7: #100b2a;
 }
 
 .dark-mode {
@@ -78,6 +79,7 @@ section {
 
 a {
   color: var(--link-color);
+  cursor: pointer;
 }
 
 main a {
@@ -86,6 +88,10 @@ main a {
 
 li {
   list-style: square;
+}
+
+li.header-item {
+  list-style: none;
 }
 
 li::marker {
@@ -140,11 +146,6 @@ button:disabled {
   word-spacing: 0.27ex;
   background-color: var(--background-color);
   padding-bottom: 100px;
-}
-
-photo-app {
-  width: max(180px, min(60vw, var(--photo-width)));
-  max-width: max(180px, 60vw);
 }
 
 /*
@@ -283,6 +284,36 @@ photo-app {
   }
 }
 
+/* show a little dogear with a colour in the top-right of an album that's part of a trip */
+.trip-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0px;
+  height: 0px;
+  border-top: 30px solid var(--background-color);
+  border-left: 30px solid transparent;
+  z-index: 2;
+}
+
+.trip-tag::before {
+  content: "";
+  position: absolute;
+  top: -30px;
+  right: 0px;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+}
+
+.trip-color-0::before {
+  border-top: 20px solid var(--tag-color-0);
+}
+
+.trip-color-1::before {
+  border-top: 20px solid var(--tag-color-2);
+}
+
 .thing-description {
   margin-top: 1em;
   word-spacing: normal;
@@ -366,7 +397,7 @@ photo-app {
     max-width: max(180px, 80vw);
   }
 
-  photo-sidebar {
+  .photo-sidebar {
     display: none;
   }
 
@@ -375,7 +406,7 @@ photo-app {
     padding: 2px;
   }
 
-  photo-sidebar[visible="true"] {
+  .photo-sidebar[visible="true"] {
     display: block;
   }
 
@@ -414,18 +445,10 @@ photo-app {
   .burger {
     display: none;
   }
-
-  locations-page {
-    margin-right: 0px;
-  }
 }
 
 /* Big Devices */
 @media (min-width: 1301px) {
-  locations-page {
-    margin-right: 200px;
-  }
-
   .video-container {
     margin-top: 60px;
   }
@@ -479,22 +502,39 @@ photo-app {
   margin-left: 20px;
 }
 
+.link-list li {
+  list-style: none;
+}
+
 /* EXIF information about an image */
 .metadata-table {
   margin: 10px 0;
+}
 
-  th, td {
-    padding: 4px 8px;
-    text-align: left;
-  }
+.metadata-table li {
+  list-style: none;
+}
 
-  th {
-    font-weight: bold;
-  }
-  caption {
-    caption-side: top;
-    font-weight: bold;
-  }
+.metadata-table th, .metadata-table td {
+  text-align: left;
+  padding: 4px 8px;
+}
+
+.metadata-table th {
+  font-weight: bold;
+}
+.metadata-table caption {
+  caption-side: top;
+  font-weight: bold;
+}
+
+
+.exif-heading {
+  text-align: left;
+}
+
+.link-list {
+  list-style: none;
 }
 
 /*
@@ -509,19 +549,22 @@ photo-app {
 }
 
 .unesco-link,
+.country-link,
 .bird-link,
 .mammal-link,
 .reptile-link,
 .fish-link,
 .amphibian-link,
+.place-link,
+.camera-link,
+.rating-link,
+.style-link,
 .insect-link {
   color: black;
-  border: solid 2px lightgray;
   font-weight: bolder;
   padding: 4px 9px;
   text-decoration: none;
   box-sizing: border-box;
-  border-radius: 6px;
   margin: 2px;
   width: fit-content;
 }
@@ -532,27 +575,31 @@ photo-app {
 }
 
 .bird-link, .bird-binomial {
-  border-left: 10px solid var(--tag-color-1);
+  border-left: 8px solid var(--tag-color-1);
 }
 
 .mammal-link, .mammal-binomial {
-  border-left: 10px solid var(--tag-color-2);
+  border-left: 8px solid var(--tag-color-2);
 }
 
 .reptile-link, .reptile-binomial {
-  border-left: 10px solid var(--tag-color-3);
+  border-left: 8px solid var(--tag-color-3);
 }
 
 .fish-link, .fish-binomial {
-  border-left: 10px solid var(--tag-color-4);
+  border-left: 8px solid var(--tag-color-4);
 }
 
 .amphibian-link, .amphibian-binomial {
-  border-left: 10px solid var(--tag-color-5);
+  border-left: 8px solid var(--tag-color-5);
 }
 
 .insect-link, .insect-binomial {
-  border-left: 10px solid var(--tag-color-6);
+  border-left: 8px solid var(--tag-color-6);
+}
+
+.place-link,  .camera-link, .rating-link, .style-link, .country-link {
+  border-left: 8px solid var(--tag-color-7);
 }
 
 .unesco-links {
@@ -596,6 +643,11 @@ photo-app {
   max-width: max(180px, min(60vw, 400px));
 }
 
+.photo-album {
+  cursor: pointer;
+  position: relative;
+}
+
 .photo-album-date {
   max-width: max(180px, min(60vw, 400px));
 }
@@ -605,6 +657,10 @@ photo-app {
 }
 .photo-album-countries, .photo-album-count {
   display: inline;
+}
+
+.photo-album-countries {
+  padding-left: 8px;
 }
 
 .photo-album-count {
@@ -698,4 +754,67 @@ photo-app {
   .unesco-links {
     max-width: 1800px;
   }
+}
+
+
+.photo-album-title {
+  margin: 4px 0px;
+  font-weight: bolder;
+  max-width: max(180px, min(60vw, 400px));
+}
+
+.photo-album-date {
+  max-width: max(180px, min(60vw, 400px));
+}
+
+.photo-album-count {
+  display: inline;
+}
+.photo-album-countries, .photo-album-count {
+  display: inline;
+}
+
+.photo-album-count {
+  color: hsl(0, 0%, 60%);
+}
+
+.photo-album-metadata, .thing-metadata {
+  margin-bottom: 30px;
+}
+
+@media (max-width: 500px) {
+  /* hover metadata over the album */
+  .photo-album-metadata p {
+    font-size: 0.8em;
+    padding: 2px;
+    color: white;
+    background-color: black;
+  }
+
+  /* hover metadata over the album */
+  .photo-album-metadata {
+    position: absolute;
+    transform: translate(10px, -100px);
+    z-index: 1;
+  }
+
+  .thumbnail-image, .thumbnail-video {
+    width: max(180px, min(80vw, 400px));
+    max-width: max(180px, 80vw);
+  }
+}
+
+.photo-metadata-inline {
+  display: flex;
+  gap: 10px;
+}
+
+
+.thumbnail-placeholder {
+  position: absolute;
+}
+
+.thumbnail-image {
+  height: auto;
+  background-color: hsl(0, 0%, 69%);
 }

@@ -59,8 +59,8 @@ export const [
   Deno.readTextFile(envFile!),
   Deno.readTextFile(triplesFile!),
   Deno.readTextFile(statsFile!),
-  Deno.readTextFile("index_fork.mustache.html"),
-  Deno.readTextFile("sw_fork.mustache.js"),
+  Deno.readTextFile("index.mustache.html"),
+  Deno.readTextFile("sw.mustache.js"),
 ]);
 
 export const env = JSON.parse(envText);

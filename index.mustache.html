@@ -14,7 +14,7 @@
     <link rel="preconnect" href="{{{ cdnUrl }}}">
 
     <!-- Preloads -->
-    <link rel="preload" href="/dist/js/app.{{ buildId }}.js" as="script">
+    <link rel="preload" href="/dist/js/app.{{ publicationId }}.js" as="script">
     {{#prefetched}}
     <link rel="preload" fetchpriority="high" href="{{{.}}}" as="image">
     {{/prefetched}}
@@ -35,36 +35,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0056b3">
 
-    <link rel="stylesheet" href="/dist/css/style.{{ buildId }}.css" as="style">
-    <link rel="stylesheet" href="/dist/css/photo-album.{{ buildId }}.css" as="style">
+    <link rel="stylesheet" href="/dist/css/style.{{ publicationId }}.css" as="style">
 
     <script>
-      // reduce blocking requests by injecting this critical data
+      // reduce blocking requests by injecting critical data into the page
+
       window.envConfig = {{{ env }}}
-      window.homepageThumbnails = {{{ homepageThumbnails }}}
-    </script>
-
-    <div id="stats-data" style="display: none;"></div>
-    <script type="module">
-      // this mustashe injection should circumvent blocking on `stats` fetches
-      const $statsData = document.getElementById('stats-data');
-      $statsData.innerText = JSON.stringify({{{ stats }}})
+      window.homepageThumbnails = {{{ homepageThumbnails }}}.map(url => `${url}.webp`)
+      window.stats = {{{ stats }}}
 
     </script>
-    <script type="module" src="/dist/js/app.{{ buildId }}.js"></script>
+    <script type="module" src="/dist/js/app.{{ publicationId }}.js"></script>
 
     <title>photos.rgrannell.xyz</title>
   </head>
 
-  <photo-app></photo-app>
+  <body></body>
 
   <script async fetchpriority="low">
     // -- register a service-worker
     if('serviceWorker' in navigator) {
-      console.log('⚙️ loading service worker: /sw.{{ buildId }}.js')
+      console.log('⚙️ loading service worker: /sw.{{ publicationId }}.js')
 
-      navigator.serviceWorker.register('/dist/js/sw.{{ buildId }}.js').catch(err => {
-        console.error(`⚙️ failed service worker: /sw.{{ buildId }}.js ${err}`)
+      navigator.serviceWorker.register('/dist/js/sw.{{ publicationId }}.js').catch(err => {
+        console.error(`⚙️ failed service worker: /sw.{{ publicationId }}.js ${err}`)
       });
 
       navigator.serviceWorker.ready.then(registration => {
@@ -81,7 +75,7 @@
         console.error(`⚙️ failed to send homepage thumbnails to service worker: ${err}`)
       });
     } else {
-      console.error('⚙️ service worker not supported: /sw.{{ buildId }}.js')
+      console.error('⚙️ service worker not supported: /sw.{{ publicationId }}.js')
     }
   </script>
 </html>
