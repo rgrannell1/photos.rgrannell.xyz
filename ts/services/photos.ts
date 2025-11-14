@@ -1,6 +1,6 @@
 import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
-import type { Country, Photo, Place, Subject } from "../types.ts";
+import type { AppWindow, Country, Photo, Place, Subject } from "../types.ts";
 import { parsePhoto } from "../parsers/photo.ts";
 import { readParsedThing, readParsedThings } from "./things.ts";
 import { readSubjects } from "./subjects.ts";
@@ -14,8 +14,8 @@ export class Photos {
    * depending on page position
    */
   static loadingMode(idx: number): "eager" | "lazy" {
-    const viewportWidth = globalThis.innerWidth;
-    const viewportHeight = globalThis.innerHeight;
+    const viewportWidth = (globalThis as any).innerWidth;
+    const viewportHeight = (globalThis as any).innerHeight;
 
     const imageDimension = PHOTO_WIDTH;
     const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
@@ -35,7 +35,7 @@ export class Photos {
     const coloursList = colours.split("#").map((colour: string) =>
       `#${colour}`
     );
-    const canvas = document.createElement("canvas");
+    const canvas = (window as any).document.createElement("canvas");
     canvas.width = 2;
     canvas.height = 2;
 

@@ -1,7 +1,7 @@
 import * as path from "jsr:@std/path";
 import { deriveTriples } from "../semantic/derive.ts";
 import { loadTriples } from "../semantic/data.ts";
-import { readAlbums, readAllAlbums } from "../services/albums.ts";
+import { readAllAlbums } from "../services/albums.ts";
 
 async function findFile(
   prefix: string,
@@ -19,7 +19,7 @@ async function findFile(
 async function findFileUrl(
   prefix: string,
   dpath: string,
-): Promise<URL | undefined> {
+): Promise<string | undefined> {
   const filePath = await findFile(prefix, dpath);
   if (filePath) {
     return (new URL(`file://${filePath}`)).href;

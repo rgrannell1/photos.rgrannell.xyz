@@ -3,7 +3,7 @@
  * state-updates and rerenders.
  */
 
-import type { ApplicationEvents } from "../types.ts";
+import type { ApplicationEvents, AppWindow } from "../types.ts";
 
 /*
  * Broadcast a custom application event to the document.
@@ -14,7 +14,7 @@ export function broadcast(
 ) {
   console.info(`broadcasting event: ${label}`, detail);
 
-  document.dispatchEvent(
+  (window as any).document.dispatchEvent(
     new CustomEvent(label, {
       detail,
     }),
@@ -28,7 +28,7 @@ export function listen(
   label: ApplicationEvents,
   callback: (event: Event) => void,
 ) {
-  document.addEventListener(label, callback);
+  (window as any).document.addEventListener(label, callback);
 }
 
 /*

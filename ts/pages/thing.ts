@@ -82,6 +82,7 @@ function ThingMetadata() {
       metadata.Classification = m(ListingLink, { urn });
 
       const locatedIn = setOf<string>(KnownRelations.IN, things);
+
       if (locatedIn.size > 0) {
         metadata["Located In"] = m(PlacesList, { services, urns: locatedIn });
       }

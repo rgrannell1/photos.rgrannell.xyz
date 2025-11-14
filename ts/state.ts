@@ -1,4 +1,4 @@
-import { State } from "./types.ts";
+import { State, type AppWindow } from "./types.ts";
 import { DarkModes } from "./services/dark-mode.ts";
 import { loadTriples } from "./semantic/data.ts";
 import { deriveTriples, HARD_CODED_TRIPLES } from "./semantic/derive.ts";
@@ -34,7 +34,7 @@ import { readFeatures } from "./services/features.ts";
 async function loadData() {
   const schema = {};
   const db = await loadTriples(
-    `/manifest/tribbles.${window.envConfig.publication_id}.txt`,
+    `/manifest/tribbles.${(window as AppWindow).envConfig.publication_id}.txt`,
     schema,
     deriveTriples,
   );

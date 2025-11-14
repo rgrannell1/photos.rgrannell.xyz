@@ -18,7 +18,7 @@ export function PlacesList() {
         },
       );
 
-      const $contains = locations.map((location) => {
+      const $places = locations.map((location) => {
         const $link = m(ThingLink, {
           urn: one(location.id)!,
           thing: location,
@@ -26,7 +26,7 @@ export function PlacesList() {
         return m("li", { key: `place-${location.id}` }, $link);
       });
 
-      return m("ul", $contains);
+      return m("ul", $places);
     },
   };
 }

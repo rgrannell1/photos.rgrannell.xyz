@@ -10,6 +10,7 @@ export type ApplicationEvents =
 
 export type AppWindow = typeof window & {
   stats: Stats;
+  envConfig: any;
 };
 
 /*
@@ -122,6 +123,7 @@ export type Country = {
   flag?: string;
   name: string;
   contains?: string | string[];
+  in?: string | string[];
 };
 
 export type Unesco = {
