@@ -5122,7 +5122,7 @@ function AlbumPage() {
         );
       });
       const $videosList = videos.map((video) => {
-        return (0, import_mithril18.default)(Video, { ...video, preload: "auto" });
+        return (0, import_mithril18.default)(Video, { video, preload: "auto" });
       });
       return (0, import_mithril18.default)(
         "div",
