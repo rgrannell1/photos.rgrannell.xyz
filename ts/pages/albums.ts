@@ -84,30 +84,20 @@ function drawAlbum(state: { year: number }, album: Album, idx: number) {
  * Construct a list of albums
  */
 function AlbumsList() {
-  const $albumComponents: m.Vnode<
-    unknown,
-    unknown
-  >[] = [];
-
-  let initted = false;
-
   return {
-    oninit(vnode: m.Vnode<AlbumsListAttrs>) {
-      if (initted) {
-        return;
-      }
-      initted = true;
-
+    view(vnode: m.Vnode<AlbumsListAttrs>) {
       const state = { year: 2005 };
       const { albums } = vnode.attrs;
 
+      const $albumComponents: m.Vnode<
+        unknown,
+        unknown >[] = [];
+
+      // TODO this blocks render too long
       for (let idx = 0; idx < albums.length; idx++) {
         $albumComponents.push(...drawAlbum(state, albums[idx], idx));
       }
 
-      m.redraw();
-    },
-    view() {
       return m("section.album-container", $albumComponents);
     },
   };

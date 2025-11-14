@@ -177,8 +177,6 @@ export function ThingApp(): m.Component<AppAttrs> {
   let things: TripleObject[] = [];
 
   return {
-    oninit() {
-    },
     view() {
       const pair = m.route.param("pair");
       state.currentUrn = `urn:ró:${pair}`;

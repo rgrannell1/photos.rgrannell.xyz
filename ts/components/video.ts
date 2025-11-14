@@ -14,6 +14,11 @@ export function Video() {
         preload,
         video,
       } = vnode.attrs;
+
+      if (!video) {
+        return m("div", "No video");
+      }
+
       const {
         posterUrl,
         videoUrl1080p,

@@ -4454,7 +4454,7 @@ function AlbumStats() {
         `${stats.photos} `,
         (0, import_mithril5.default)("a", { href: "#/photos" }, "photos"),
         " \xB7 ",
-        `${stats.videos}`,
+        `${stats.videos} `,
         (0, import_mithril5.default)("a", { href: "#/videos" }, "videos"),
         " \xB7 ",
         `${stats.albums} albums \xB7 ${stats.years} years \xB7 `,
@@ -4850,22 +4850,14 @@ function drawAlbum(state2, album, idx) {
   return $albumComponents;
 }
 function AlbumsList() {
-  const $albumComponents = [];
-  let initted = false;
   return {
-    oninit(vnode) {
-      if (initted) {
-        return;
-      }
-      initted = true;
+    view(vnode) {
       const state2 = { year: 2005 };
       const { albums } = vnode.attrs;
+      const $albumComponents = [];
       for (let idx = 0; idx < albums.length; idx++) {
         $albumComponents.push(...drawAlbum(state2, albums[idx], idx));
       }
-      import_mithril11.default.redraw();
-    },
-    view() {
       return (0, import_mithril11.default)("section.album-container", $albumComponents);
     }
   };
@@ -4951,6 +4943,9 @@ function Video() {
         preload,
         video
       } = vnode.attrs;
+      if (!video) {
+        return (0, import_mithril13.default)("div", "No video");
+      }
       const {
         posterUrl,
         videoUrl1080p,
@@ -5938,8 +5933,6 @@ function PhotosApp() {
 function ThingApp() {
   let things = [];
   return {
-    oninit() {
-    },
     view() {
       const pair = import_mithril33.default.route.param("pair");
       state.currentUrn = `urn:r\xF3:${pair}`;
