@@ -474,6 +474,7 @@ button:disabled {
   grid-row: 1;
   grid-column: 1;
   margin-top: min(5vh, 80px);
+  padding-right: 10px;
 }
 
 .dark-light-button-toggle {
@@ -538,6 +539,7 @@ button:disabled {
   list-style: none;
   display: flex;
   gap: 10px;
+  margin-top: 10px;
 }
 
 /*
