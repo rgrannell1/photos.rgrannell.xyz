@@ -141,6 +141,7 @@ button:disabled {
 }
 
 .photos-app {
+  height: 100%;
   font-size: 1.2em;
   color: var(--font-colour);
   word-spacing: 0.27ex;
