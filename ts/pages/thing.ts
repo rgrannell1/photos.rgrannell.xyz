@@ -94,7 +94,7 @@ function ThingMetadata() {
       // The non-wildcard case
 
       if (thing.feature) {
-        metadata["Place Features"] = m(FeaturesList, { urns: setify(thing.feature), services });
+        metadata["Place Type"] = m(FeaturesList, { urns: setify(thing.feature), services });
       }
 
       if (thing.contains) {

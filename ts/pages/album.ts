@@ -52,6 +52,7 @@ export function AlbumPage() {
         countries,
       } = album;
 
+      // TODO patch typing issue
       const dateRange = Dates.dateRange(
         minDate,
         maxDate,

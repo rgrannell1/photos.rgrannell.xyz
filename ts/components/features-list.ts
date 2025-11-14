@@ -2,7 +2,7 @@
 import m from "mithril";
 import type { Services } from "../types.ts";
 import { one } from "../commons/arrays.ts";
-import { ThingLink } from "./thing-link.ts";
+import { FeatureLink } from "./feature-link.ts";
 
 type FeaturesListAttrs = {
   urns: Set<string>;
@@ -20,7 +20,7 @@ export function FeaturesList() {
 
         return m('li', {
           key: `feature-${id}`,
-        }, m(ThingLink, { urn: id, thing: feature }));
+        }, m(FeatureLink, { urn: id, thing: feature }));
       });
 
       return m('ul', $features)
