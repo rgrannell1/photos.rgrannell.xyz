@@ -30,6 +30,7 @@ export function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
 
   return {
     name: data.name,
+    trip: data.trip,
     minDate: asInt(data.minDate),
     maxDate: asInt(data.maxDate),
     thumbnailUrl: data.thumbnailUrl,

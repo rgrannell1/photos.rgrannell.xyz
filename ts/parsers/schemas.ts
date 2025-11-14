@@ -27,6 +27,7 @@ const v = {
 
 export const AlbumSchema = v.object({
   name: v.string(),
+  trip: v.optional(v.string()),
   minDate: v.string(),
   maxDate: v.string(),
   thumbnailUrl: v.string(),

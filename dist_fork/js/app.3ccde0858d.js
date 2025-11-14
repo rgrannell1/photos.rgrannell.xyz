@@ -4061,6 +4061,7 @@ function parseAlbum(tdb2, album) {
   const countries = readCountries(tdb2, namesToUrns(tdb2, countryNames));
   return {
     name: data.name,
+    trip: data.trip,
     minDate: asInt(data.minDate),
     maxDate: asInt(data.maxDate),
     thumbnailUrl: data.thumbnailUrl,
@@ -4695,7 +4696,8 @@ function ImagePair() {
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
-        onclick
+        onclick,
+        trip
       } = vnode.attrs;
       return (0, import_mithril8.default)("a", {
         href: fullImage,
@@ -4747,6 +4749,17 @@ function Photo() {
 }
 
 // ts/components/photo-album.ts
+function TripTag() {
+  return {
+    view(vnode) {
+      const { trip } = vnode.attrs;
+      if (!trip) {
+        return null;
+      }
+      return (0, import_mithril9.default)("div.trip-tag");
+    }
+  };
+}
 function PhotoAlbum() {
   return {
     view(vnode) {
@@ -4757,15 +4770,18 @@ function PhotoAlbum() {
         loading,
         child,
         minDate,
-        onclick
+        onclick,
+        trip
       } = vnode.attrs;
       return (0, import_mithril9.default)("div.photo-album", { "data-min-date": minDate }, [
+        (0, import_mithril9.default)(TripTag, { trip }),
         (0, import_mithril9.default)(ImagePair, {
           imageUrl,
           thumbnailUrl,
           thumbnailDataUrl,
           loading,
-          onclick
+          onclick,
+          trip
         }),
         // TODO this is broken
         child
@@ -4841,8 +4857,8 @@ function drawAlbum(state2, album, idx) {
     count: album.photosCount,
     countryLinks: $countryLinks
   });
-  console.log(album, "xxx");
   const $album = (0, import_mithril11.default)(PhotoAlbum, {
+    trip: album.trip,
     imageUrl: album.thumbnailUrl,
     thumbnailUrl: album.thumbnailUrl,
     thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
@@ -6077,4 +6093,4 @@ import_mithril35.default.route(document.body, "/albums", {
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp
 });
-//# sourceMappingURL=app.6570efc0eb.js.map
+//# sourceMappingURL=app.3ccde0858d.js.map

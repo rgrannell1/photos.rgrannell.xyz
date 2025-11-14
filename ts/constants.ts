@@ -37,6 +37,9 @@ export class KnownRelations {
   static STYLE = "style";
   // horrible
   static FLAGS = "flags";
+
+  static CONTAINS_ALBUM = "containsAlbum";
+  static TRIP = "trip";
 }
 
 export class KnownTypes {
@@ -95,6 +98,7 @@ export const CDN_RELATIONS = new Set([
  */
 export const RelationSymmetries = [
   [KnownRelations.IN, KnownRelations.CONTAINS],
+  [KnownRelations.CONTAINS_ALBUM, KnownRelations.TRIP]
 ];
 
 /*

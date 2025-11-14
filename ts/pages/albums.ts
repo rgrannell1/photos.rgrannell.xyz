@@ -60,6 +60,7 @@ function drawAlbum(state: { year: number }, album: Album, idx: number) {
   });
 
   const $album = m(PhotoAlbum, {
+    trip: album.trip,
     imageUrl: album.thumbnailUrl,
     thumbnailUrl: album.thumbnailUrl,
     thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),

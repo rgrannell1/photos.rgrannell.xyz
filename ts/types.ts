@@ -55,6 +55,7 @@ export type State = {
 
 export type Album = {
   name: string;
+  trip: string | undefined;
   minDate: number;
   maxDate: number;
   thumbnailUrl: string;

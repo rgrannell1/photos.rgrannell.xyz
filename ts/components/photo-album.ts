@@ -1,7 +1,22 @@
 import m from "mithril";
 import { ImagePair } from "./photo.ts";
 
+function TripTag() {
+  return {
+    view(vnode: m.Vnode<{ trip: string | undefined }>) {
+      const { trip } = vnode.attrs;
+
+      if (!trip) {
+        return null;
+      }
+
+      return m("div.trip-tag");
+    }
+  }
+}
+
 export type PhotoAlbumAttrs = {
+  trip: string | undefined;
   imageUrl: string;
   thumbnailUrl: string;
   thumbnailDataUrl: string;
@@ -23,15 +38,18 @@ export function PhotoAlbum() {
         child,
         minDate,
         onclick,
+        trip
       } = vnode.attrs;
 
       return m("div.photo-album", { "data-min-date": minDate }, [
+        m(TripTag, { trip }),
         m(ImagePair, {
           imageUrl,
           thumbnailUrl,
           thumbnailDataUrl,
           loading,
           onclick,
+          trip
         }),
         // TODO this is broken
         child,

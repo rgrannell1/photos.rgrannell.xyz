@@ -284,6 +284,17 @@ button:disabled {
   }
 }
 
+.trip-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0px;
+  height: 0px;
+  border-top: 30px solid var(--background-color);
+  border-left: 30px solid transparent;
+  z-index: 2;
+}
+
 .thing-description {
   margin-top: 1em;
   word-spacing: normal;
@@ -615,6 +626,7 @@ button:disabled {
 
 .photo-album {
   cursor: pointer;
+  position: relative;
 }
 
 .photo-album-date {
