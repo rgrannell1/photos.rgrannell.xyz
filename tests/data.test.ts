@@ -8,6 +8,7 @@ import { loadTribbles } from "../ts/build/loaders.ts";
 const tdb = await loadTribbles();
 
 Deno.test("Countries have expected structure", () => {
+  // historically, this had duplicated names...
   const country = tdb.search({
     source: {
       type: 'country',
