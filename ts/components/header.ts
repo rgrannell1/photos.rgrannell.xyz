@@ -78,6 +78,7 @@ export function Header() {
     view(vnode: m.Vnode<HeaderAttrs>) {
       return m("nav.header", { role: "navigation" }, [
         // TODO this is a bad fix to an unknown reversion which messed up header item placement
+        // ideally we should find out what's actually wrong with the css, but for now...
         m("ul", {style: 'display: ruby'}, [
           m("li.header-item", {}, m(BurgerMenu())),
           m("li.header-item", {}, m(HeaderBrandText())),

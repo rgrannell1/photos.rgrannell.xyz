@@ -1701,7 +1701,9 @@ function Header() {
   return {
     view(vnode) {
       return (0, import_mithril.default)("nav.header", { role: "navigation" }, [
-        (0, import_mithril.default)("ul", [
+        // TODO this is a bad fix to an unknown reversion which messed up header item placement
+        // ideally we should find out what's actually wrong with the css, but for now...
+        (0, import_mithril.default)("ul", { style: "display: ruby" }, [
           (0, import_mithril.default)("li.header-item", {}, (0, import_mithril.default)(BurgerMenu())),
           (0, import_mithril.default)("li.header-item", {}, (0, import_mithril.default)(HeaderBrandText())),
           (0, import_mithril.default)("li.rss-tag header-item", { style: "float: right" }, (0, import_mithril.default)(RSSIcon())),

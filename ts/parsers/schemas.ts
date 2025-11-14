@@ -1,6 +1,6 @@
 /*
  * Defines Zod schemas that we use to convert Tribble objects into something
- * with actual type-safety
+ * with actual type-safety.
  */
 
 import {
