@@ -19,6 +19,13 @@ import { Photos } from "../services/photos.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
 import { AlbumThings } from "../components/album-things.ts";
 
+/*
+ * Markdown renderer is mangling descriptions. TODO move this to a common locations
+ */
+function preprocessDescription(description: string) {
+  return description.replace(/\\"/g, '"');
+}
+
 // TODO replace with album type
 type AlbumAttrs = {
   album: Album;
@@ -75,7 +82,7 @@ export function AlbumPage() {
         m("p.photo-album-date", m("time", dateRange)),
         m("p.photo-album-count", photoCountMessage),
         m("p.photo-album-countries", $countryLinks),
-        m("p.photo-album-description", m.trust(description ?? "")),
+        m("p.photo-album-description", m.trust(preprocessDescription(description) ?? "")),
         m(AlbumShareButton, { url: location.href, name }),
         " ",
         m(AlbumsButton),

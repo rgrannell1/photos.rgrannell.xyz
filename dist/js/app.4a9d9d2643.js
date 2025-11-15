@@ -3944,7 +3944,10 @@ var FeatureSchema = v.object({
 function logParseWarning(issues) {
   const message = [];
   for (const issue of issues) {
-    message.push(`Parse warning [${issue.path.join(".")}]: ${issue.message}`);
+    console.log(issue);
+    message.push(`Parse warning @
+${JSON.stringify(issue.path, null, 2)}
+: ${issue.message}`);
   }
   console.warn(message.join("\n"));
 }
@@ -5103,6 +5106,9 @@ function AlbumThings() {
 }
 
 // ts/pages/album.ts
+function preprocessDescription(description) {
+  return description.replace(/\\"/g, '"');
+}
 function AlbumPage() {
   return {
     oninit() {
@@ -5141,7 +5147,7 @@ function AlbumPage() {
         (0, import_mithril18.default)("p.photo-album-date", (0, import_mithril18.default)("time", dateRange)),
         (0, import_mithril18.default)("p.photo-album-count", photoCountMessage),
         (0, import_mithril18.default)("p.photo-album-countries", $countryLinks),
-        (0, import_mithril18.default)("p.photo-album-description", import_mithril18.default.trust(description ?? "")),
+        (0, import_mithril18.default)("p.photo-album-description", import_mithril18.default.trust(preprocessDescription(description) ?? "")),
         (0, import_mithril18.default)(AlbumShareButton, { url: location.href, name }),
         " ",
         (0, import_mithril18.default)(AlbumsButton),
@@ -6103,4 +6109,4 @@ import_mithril35.default.route(document.body, "/albums", {
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp
 });
-//# sourceMappingURL=app.e79e4ffcea.js.map
+//# sourceMappingURL=app.4a9d9d2643.js.map

@@ -4,8 +4,12 @@ export function logParseWarning(issues: any): void {
   const message: string[] = [];
 
   for (const issue of issues) {
-    message.push(`Parse warning [${issue.path.join(".")}]: ${issue.message}`);
+
+    console.log(issue)
+
+    message.push(`Parse warning @\n${JSON.stringify(issue.path, null, 2)}\n: ${issue.message}`);
   }
 
+  // TODO; error out instead
   console.warn(message.join("\n"));
 }
