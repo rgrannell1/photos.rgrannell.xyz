@@ -6112,4 +6112,4 @@ import_mithril35.default.route(document.body, "/albums", {
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp
 });
-//# sourceMappingURL=app.1accdc23b8.js.map
+//# sourceMappingURL=app.14fafde794.js.map
