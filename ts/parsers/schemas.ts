@@ -87,6 +87,7 @@ export const PhotoSchema = v.object({
   width: v.optional(v.string()),
   description: v.optional(v.string()),
   summary: v.optional(v.string()),
+  contrastingGrey: v.string(),
 });
 
 export const MammalSchema = v.object({

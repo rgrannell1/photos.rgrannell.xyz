@@ -137,7 +137,7 @@ export function Photo() {
       // encode a grid of colours into a data URL
       const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
 
-      const $mdIcon = m(MetadataIcon, { id });
+      const $mdIcon = m(MetadataIcon, { id, colour: photo.contrastingGrey });
       const $imagePair = m(ImagePair, {
         fullImage,
         thumbnailUrl,

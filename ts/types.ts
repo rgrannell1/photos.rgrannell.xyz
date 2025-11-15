@@ -89,6 +89,7 @@ export type Photo = {
   thumbnailUrl: string;
   width?: string;
   subject?: string | string[];
+  contrastingGrey: string;
 
   // TODO.
   description?: string;

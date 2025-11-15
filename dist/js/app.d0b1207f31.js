@@ -3898,7 +3898,8 @@ var PhotoSchema = v.object({
   thumbnailUrl: v.string(),
   width: v.optional(v.string()),
   description: v.optional(v.string()),
-  summary: v.optional(v.string())
+  summary: v.optional(v.string()),
+  contrastingGrey: v.string()
 });
 var MammalSchema = v.object({
   id: v.string(),
@@ -4642,25 +4643,31 @@ var import_mithril8 = __toESM(require_mithril());
 // ts/components/metadata-icon.ts
 var import_mithril7 = __toESM(require_mithril());
 function InfoSVG() {
-  return (0, import_mithril7.default)("svg.photo-icon", {
-    height: 40,
-    width: 40,
-    preserveAspectRatio: "xMinYMin",
-    viewBox: "-2 -2 24 24",
-    xmlns: "http://www.w3.org/2000/svg"
-  }, [
-    (0, import_mithril7.default)("path", {
-      d: "m10 20c-5.523 0-10-4.477-10-10s4.477-10 10-10 10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-10a1 1 0 0 1 1 1v5a1 1 0 0 1 -2 0v-5a1 1 0 0 1 1-1zm0-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
-    })
-  ]);
+  return {
+    view(vnode) {
+      const { colour } = vnode.attrs;
+      return (0, import_mithril7.default)("svg.photo-icon", {
+        height: 40,
+        width: 40,
+        preserveAspectRatio: "xMinYMin",
+        viewBox: "-2 -2 24 24",
+        xmlns: "http://www.w3.org/2000/svg"
+      }, [
+        (0, import_mithril7.default)("path", {
+          d: "m10 20c-5.523 0-10-4.477-10-10s4.477-10 10-10 10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-10a1 1 0 0 1 1 1v5a1 1 0 0 1 -2 0v-5a1 1 0 0 1 1-1zm0-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2z",
+          fill: colour
+        })
+      ]);
+    }
+  };
 }
 function MetadataIcon() {
   return {
     view(vnode) {
-      const { id } = vnode.attrs;
+      const { id, colour } = vnode.attrs;
       return (0, import_mithril7.default)("div.photo-metadata-popover", {
         onclick: () => broadcast("navigate", { route: `/photo/${id}` })
-      }, InfoSVG());
+      }, (0, import_mithril7.default)(InfoSVG, { colour }));
     }
   };
 }
@@ -4738,7 +4745,7 @@ function Photo() {
         mosaicColours
       } = photo;
       const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
-      const $mdIcon = (0, import_mithril8.default)(MetadataIcon, { id });
+      const $mdIcon = (0, import_mithril8.default)(MetadataIcon, { id, colour: photo.contrastingGrey });
       const $imagePair = (0, import_mithril8.default)(ImagePair, {
         fullImage,
         thumbnailUrl,
@@ -6112,4 +6119,4 @@ import_mithril35.default.route(document.body, "/albums", {
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp
 });
-//# sourceMappingURL=app.14fafde794.js.map
+//# sourceMappingURL=app.d0b1207f31.js.map
