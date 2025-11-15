@@ -32,4 +32,10 @@ export class Strings {
     const pretty = binomial.replace(/-/g, " ");
     return Strings.capitalise(pretty);
   }
+  /*
+   * Markdown renderer is mangling descriptions.
+   */
+  static preprocessDescription(description: string): string {
+    return description.replace(/\\"/g, '"');
+  }
 }

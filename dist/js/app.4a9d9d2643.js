@@ -2840,6 +2840,12 @@ var Strings = class _Strings {
     const pretty = binomial.replace(/-/g, " ");
     return _Strings.capitalise(pretty);
   }
+  /*
+   * Markdown renderer is mangling descriptions.
+   */
+  static preprocessDescription(description) {
+    return description.replace(/\\"/g, '"');
+  }
 };
 
 // ts/semantic/derive.ts
@@ -5106,9 +5112,6 @@ function AlbumThings() {
 }
 
 // ts/pages/album.ts
-function preprocessDescription(description) {
-  return description.replace(/\\"/g, '"');
-}
 function AlbumPage() {
   return {
     oninit() {
@@ -5147,7 +5150,7 @@ function AlbumPage() {
         (0, import_mithril18.default)("p.photo-album-date", (0, import_mithril18.default)("time", dateRange)),
         (0, import_mithril18.default)("p.photo-album-count", photoCountMessage),
         (0, import_mithril18.default)("p.photo-album-countries", $countryLinks),
-        (0, import_mithril18.default)("p.photo-album-description", import_mithril18.default.trust(preprocessDescription(description) ?? "")),
+        (0, import_mithril18.default)("p.photo-album-description", import_mithril18.default.trust(Strings.preprocessDescription(description) ?? "")),
         (0, import_mithril18.default)(AlbumShareButton, { url: location.href, name }),
         " ",
         (0, import_mithril18.default)(AlbumsButton),
@@ -5370,7 +5373,7 @@ function Description() {
   return {
     view(vnode) {
       const { photo } = vnode.attrs;
-      const html = photo.description ?? photo.summary;
+      const html = Strings.preprocessDescription(photo.description ?? photo.summary ?? "");
       if (html) {
         return (0, import_mithril22.default)("td", import_mithril22.default.trust(html));
       }
