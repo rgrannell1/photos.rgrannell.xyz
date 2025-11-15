@@ -3994,7 +3994,6 @@ function parsePlace(tdb2, place) {
   };
 }
 function parseCountry(_, country) {
-  console.log(country);
   return parseObject(CountrySchema, "country", country);
 }
 function parseUnesco(_, unesco) {
@@ -6113,4 +6112,4 @@ import_mithril35.default.route(document.body, "/albums", {
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp
 });
-//# sourceMappingURL=app.6ac09d8555.js.map
+//# sourceMappingURL=app.1accdc23b8.js.map
