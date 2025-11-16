@@ -3198,7 +3198,13 @@ function ThingLink() {
     view(vnode) {
       const { urn, thing } = vnode.attrs;
       const { type, id } = asUrn(urn);
-      const name = one(thing.name) ?? id;
+      let name = id;
+      if (Object.prototype.hasOwnProperty.call(thing, "name")) {
+        const candidate = one(thing.name);
+        if (candidate) {
+          name = candidate;
+        }
+      }
       const emoji = thingEmoji(urn, name, thing);
       return (0, import_mithril2.default)("a", {
         href: urn,
@@ -3270,10 +3276,7 @@ function toThingLinks(tdb2, urns) {
     if (!thing || !thing.name) {
       return [];
     }
-    return [(0, import_mithril3.default)(ThingLink, {
-      urn,
-      thing: readThing(tdb2, urn)
-    })];
+    return [(0, import_mithril3.default)(ThingLink, { urn, thing })];
   });
 }
 
@@ -3885,21 +3888,12 @@ function parsePlace(tdb2, place) {
     return;
   }
   const refs = arrayify(result.output.in);
-  const lookedUpRefs = refs.flatMap((ref) => {
-    const obj = readThing(tdb2, ref);
-    if (!obj) {
-      return [];
-    }
-    const parsed = parseLocation(tdb2, obj);
-    if (!parsed) {
-      return [];
-    }
-    return [parsed];
-  });
+  const lookedUpRefs = readLocations(tdb2, new Set(refs));
   return {
     ...result.output,
     type: "place",
     in: lookedUpRefs
+    // TODO
   };
 }
 function parseCountry(_, country) {
@@ -6042,4 +6036,4 @@ import_mithril35.default.route(document.body, "/albums", {
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp
 });
-//# sourceMappingURL=app.d0b1207f31.js.map
+//# sourceMappingURL=app.4213085f0e.js.map

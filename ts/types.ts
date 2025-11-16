@@ -76,6 +76,7 @@ export type Video = NonNullable<ReturnType<typeof parseVideo>>;
 export type Place = NonNullable<ReturnType<typeof parsePlace>>;
 export type Country = NonNullable<ReturnType<typeof parseCountry>>;
 export type Unesco = NonNullable<ReturnType<typeof parseUnesco>>;
+export type Location = Place | Country | Unesco;
 export type Subject = NonNullable<ReturnType<typeof parseSubject>>;
 export type Bird = NonNullable<ReturnType<typeof parseBird>>;
 export type Mammal = NonNullable<ReturnType<typeof parseMammal>>;

@@ -23,11 +23,11 @@ import { Strings } from "../commons/strings.ts";
 // TODO replace with album type
 type AlbumAttrs = {
   album: Album;
-  countries: Country[];
-  videos: VideoType[];
-  photos: PhotoType[];
   subjects: Thing[];
-  locations: Thing[];
+  locations: Location[];
+  countries: Country[];
+  photos: PhotoType[];
+  videos: VideoType[];
 };
 
 /* */

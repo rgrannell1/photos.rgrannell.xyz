@@ -1,20 +1,26 @@
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { KnownTypes } from "../constants.ts";
-import { readThing } from "../services/things.ts";
 import { arrayify } from "../commons/arrays.ts";
 import { CountrySchema, PlaceSchema, UnescoSchema } from "./schemas.ts";
 import { parseObject } from "./parser.ts";
 import { logParseWarning } from "../commons/logger.ts";
-import { safeParse } from "valibot";
+import { safeParse, type InferOutput } from "valibot";
+import { readLocations } from "../services/location.ts";
+import type { Location } from "../types.ts";
 
-// TODO type this more strongly
+// TODO type this function more strongly
+
+type PlaceType = InferOutput<typeof PlaceSchema> & {
+  type: "place";
+  in: Location[];
+};
 
 /* */
 export function parsePlace(
   tdb: TribbleDB,
   place: TripleObject,
-) {
+): PlaceType | undefined {
   const result = safeParse(PlaceSchema, place);
   if (!result.success) {
     logParseWarning(result.issues);
@@ -22,25 +28,12 @@ export function parsePlace(
   }
 
   const refs = arrayify(result.output.in);
-
-  const lookedUpRefs = refs.flatMap((ref) => {
-    const obj = readThing(tdb, ref);
-    if (!obj) {
-      return [];
-    }
-
-    const parsed = parseLocation(tdb, obj);
-    if (!parsed) {
-      return [];
-    }
-
-    return [parsed];
-  });
+  const lookedUpRefs = readLocations(tdb, new Set(refs))
 
   return {
     ...result.output,
     type: "place",
-    in: lookedUpRefs,
+    in: lookedUpRefs, // TODO
   };
 }
 

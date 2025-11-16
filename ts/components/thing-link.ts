@@ -18,7 +18,14 @@ export function ThingLink() {
       const { urn, thing } = vnode.attrs;
       const { type, id } = asUrn(urn);
 
-      const name = one(thing.name) ?? id;
+      let name = id;
+      if (Object.prototype.hasOwnProperty.call(thing, "name")) {
+        const candidate = one((thing as {name: string | string[]}).name)
+        if (candidate) {
+          name = candidate;
+        }
+      }
+
       const emoji = thingEmoji(urn, name, thing);
 
       return m("a", {

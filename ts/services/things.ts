@@ -124,9 +124,6 @@ export function toThingLinks(
       return [];
     }
 
-    return [m(ThingLink, {
-      urn,
-      thing: readThing(tdb, urn),
-    })];
+    return [m(ThingLink, { urn, thing })];
   });
 }
