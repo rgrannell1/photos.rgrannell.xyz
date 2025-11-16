@@ -2661,6 +2661,7 @@ var PLACE_FEATURES_TO_EMOJI = {
   castle: "\u{1F3F0}",
   church: "\u26EA",
   cathedral: "\u26EA",
+  continent: "\u{1F30D}",
   cave: "\u26CF\uFE0F",
   city: "\u{1F3D9}\uFE0F",
   cliffs: "\u26F0\uFE0F",
@@ -3134,150 +3135,6 @@ function one(value) {
     return void 0;
   }
   return Array.isArray(value) ? value[0] : value;
-}
-
-// ts/services/things.ts
-var import_mithril3 = __toESM(require_mithril());
-
-// ts/components/thing-link.ts
-var import_mithril2 = __toESM(require_mithril());
-
-// ts/services/emoji.ts
-function placeEmoji(thing) {
-  const feature = one(thing.features);
-  const { id: featureId } = asUrn(feature);
-  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
-    return PLACE_FEATURES_TO_EMOJI[featureId];
-  }
-  return "\u{1F4CD}";
-}
-function placeFeatureEmoji(featureUrn) {
-  const { id: featureId } = asUrn(featureUrn);
-  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
-    return PLACE_FEATURES_TO_EMOJI[featureId];
-  }
-  return "\u{1F4CD}";
-}
-function countryEmoji(thing) {
-  const flag = one(thing.flag);
-  return flag;
-}
-function birdEmoji() {
-  return "\u{1F424}";
-}
-function cameraEmoji(thing) {
-  const { id } = asUrn(thing.id);
-  if (CAMERA_MODELS.has(id)) {
-    return "\u{1F4F7}";
-  } else if (PHONE_MODELS.has(id)) {
-    return "\u{1F4F1}";
-  }
-  return "\u{1F4F7}";
-}
-function thingEmoji(urn, _, thing) {
-  const { type } = asUrn(urn);
-  switch (type) {
-    case KnownTypes.PLACE:
-      return placeEmoji(thing);
-    case KnownTypes.COUNTRY:
-      return countryEmoji(thing);
-    case KnownTypes.BIRD:
-      return birdEmoji();
-    case KnownTypes.CAMERA:
-      return cameraEmoji(thing);
-    case KnownTypes.PLACE_FEATURE:
-      return placeFeatureEmoji(urn);
-    default:
-      return "";
-  }
-}
-
-// ts/components/thing-link.ts
-function ThingLink() {
-  return {
-    view(vnode) {
-      const { urn, thing } = vnode.attrs;
-      const { type, id } = asUrn(urn);
-      let name = id;
-      if (Object.prototype.hasOwnProperty.call(thing, "name")) {
-        const candidate = one(thing.name);
-        if (candidate) {
-          name = candidate;
-        }
-      }
-      const emoji = thingEmoji(urn, name, thing);
-      return (0, import_mithril2.default)("a", {
-        href: urn,
-        onclick: navigate(`/thing/${type}:${id}`),
-        class: ["thing-link", `${type}-link`].join(" ")
-      }, `${emoji}	${name}`);
-    }
-  };
-}
-
-// ts/services/things.ts
-function readThing(tdb2, urn) {
-  const parsed = asUrn(urn);
-  return tdb2.search({
-    source: { id: parsed.id, type: parsed.type }
-  }).firstObject();
-}
-function readParsedThing(parser, tdb2, id) {
-  const thing = readThing(tdb2, id);
-  if (!thing) {
-    return void 0;
-  }
-  return parser(tdb2, thing);
-}
-function readThings(tdb2, urns) {
-  const things = [];
-  for (const urn of urns) {
-    const thing = readThing(tdb2, urn);
-    if (thing) {
-      things.push(thing);
-    }
-  }
-  return things;
-}
-var readParsedThings = function(parser, tdb2, urns) {
-  const parsedThings = [];
-  for (const urn of urns) {
-    const thing = readThing(tdb2, urn);
-    if (!thing) {
-      continue;
-    }
-    const parsed = parser(tdb2, thing);
-    if (parsed) {
-      parsedThings.push(parsed);
-    }
-  }
-  return parsedThings;
-};
-function readNamedTypeThings(tdb2, type) {
-  const things = tdb2.search({
-    source: { type }
-  }).objects();
-  return things.filter((thing) => {
-    return Object.prototype.hasOwnProperty.call(thing, "name");
-  }).sort((thinga, thingb) => {
-    const firstName = thinga.name;
-    const secondName = thingb.name;
-    const first = one(firstName);
-    const second = one(secondName);
-    return first.localeCompare(second);
-  });
-}
-function toThingLinks(tdb2, urns) {
-  return urns.flatMap((urn) => {
-    if (!urn) {
-      return [];
-    }
-    const thing = readThing(tdb2, urn);
-    if (!thing || !thing.name) {
-      return [];
-    }
-    return [(0, import_mithril3.default)(ThingLink, { urn, thing })];
-  });
 }
 
 // node_modules/valibot/dist/index.js
@@ -3915,6 +3772,150 @@ function parseLocation(tdb2, location2) {
     return parseUnesco(tdb2, location2);
   }
   return void 0;
+}
+
+// ts/services/things.ts
+var import_mithril3 = __toESM(require_mithril());
+
+// ts/components/thing-link.ts
+var import_mithril2 = __toESM(require_mithril());
+
+// ts/services/emoji.ts
+function placeEmoji(thing) {
+  const feature = one(thing.features);
+  const { id: featureId } = asUrn(feature);
+  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
+    return PLACE_FEATURES_TO_EMOJI[featureId];
+  }
+  return "\u{1F4CD}";
+}
+function placeFeatureEmoji(featureUrn) {
+  const { id: featureId } = asUrn(featureUrn);
+  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
+    return PLACE_FEATURES_TO_EMOJI[featureId];
+  }
+  return "\u{1F4CD}";
+}
+function countryEmoji(thing) {
+  const flag = one(thing.flag);
+  return flag;
+}
+function birdEmoji() {
+  return "\u{1F424}";
+}
+function cameraEmoji(thing) {
+  const { id } = asUrn(thing.id);
+  if (CAMERA_MODELS.has(id)) {
+    return "\u{1F4F7}";
+  } else if (PHONE_MODELS.has(id)) {
+    return "\u{1F4F1}";
+  }
+  return "\u{1F4F7}";
+}
+function thingEmoji(urn, _, thing) {
+  const { type } = asUrn(urn);
+  switch (type) {
+    case KnownTypes.PLACE:
+      return placeEmoji(thing);
+    case KnownTypes.COUNTRY:
+      return countryEmoji(thing);
+    case KnownTypes.BIRD:
+      return birdEmoji();
+    case KnownTypes.CAMERA:
+      return cameraEmoji(thing);
+    case KnownTypes.PLACE_FEATURE:
+      return placeFeatureEmoji(urn);
+    default:
+      return "";
+  }
+}
+
+// ts/components/thing-link.ts
+function ThingLink() {
+  return {
+    view(vnode) {
+      const { urn, thing } = vnode.attrs;
+      const { type, id } = asUrn(urn);
+      let name = id;
+      if (Object.prototype.hasOwnProperty.call(thing, "name")) {
+        const candidate = one(thing.name);
+        if (candidate) {
+          name = candidate;
+        }
+      }
+      const emoji = thingEmoji(urn, name, thing);
+      return (0, import_mithril2.default)("a", {
+        href: urn,
+        onclick: navigate(`/thing/${type}:${id}`),
+        class: ["thing-link", `${type}-link`].join(" ")
+      }, `${emoji}	${name}`);
+    }
+  };
+}
+
+// ts/services/things.ts
+function readThing(tdb2, urn) {
+  const parsed = asUrn(urn);
+  return tdb2.search({
+    source: { id: parsed.id, type: parsed.type }
+  }).firstObject();
+}
+function readParsedThing(parser, tdb2, id) {
+  const thing = readThing(tdb2, id);
+  if (!thing) {
+    return void 0;
+  }
+  return parser(tdb2, thing);
+}
+function readThings(tdb2, urns) {
+  const things = [];
+  for (const urn of urns) {
+    const thing = readThing(tdb2, urn);
+    if (thing) {
+      things.push(thing);
+    }
+  }
+  return things;
+}
+var readParsedThings = function(parser, tdb2, urns) {
+  const parsedThings = [];
+  for (const urn of urns) {
+    const thing = readThing(tdb2, urn);
+    if (!thing) {
+      continue;
+    }
+    const parsed = parser(tdb2, thing);
+    if (parsed) {
+      parsedThings.push(parsed);
+    }
+  }
+  return parsedThings;
+};
+function readNamedTypeThings(tdb2, type) {
+  const things = tdb2.search({
+    source: { type }
+  }).objects();
+  return things.filter((thing) => {
+    return Object.prototype.hasOwnProperty.call(thing, "name");
+  }).sort((thinga, thingb) => {
+    const firstName = thinga.name;
+    const secondName = thingb.name;
+    const first = one(firstName);
+    const second = one(secondName);
+    return first.localeCompare(second);
+  });
+}
+function toThingLinks(tdb2, urns) {
+  return urns.flatMap((urn) => {
+    if (!urn) {
+      return [];
+    }
+    const thing = readThing(tdb2, urn);
+    if (!thing || !thing.name) {
+      return [];
+    }
+    return [(0, import_mithril3.default)(ThingLink, { urn, thing })];
+  });
 }
 
 // ts/services/location.ts
