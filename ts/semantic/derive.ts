@@ -435,3 +435,8 @@ export function addNestedLocations(): Triple[] {
 
   return triples;
 }
+
+/*
+ * TODO: if a photo is in Zaragoza, it's in Spain. Make sure that
+         link is captured.
+ */

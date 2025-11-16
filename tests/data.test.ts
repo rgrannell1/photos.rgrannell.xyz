@@ -3,9 +3,7 @@
  * I run into data inconsistencies, so lets test them out of existence...
  */
 
-import { TripleObject } from "@rgrannell1/tribbledb";
 import { loadTribbles } from "../ts/build/loaders.ts";
-import * as v from "./validators.ts";
 import { readCountries } from "../ts/services/location.ts";
 
 const tdb = await loadTribbles();

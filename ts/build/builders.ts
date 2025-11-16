@@ -8,8 +8,25 @@ import {
   htmlTemplateText,
   statsText,
   swTemplateText,
+  tdb,
 } from "./loaders.ts";
 import { minify as cssoMinify } from "npm:csso";
+import { TribbleStringifier } from "@rgrannell1/tribbledb";
+
+export async function buildExpandedTribbles() {
+  console.info("🌐 Rendering expanded tribbles")
+
+  const tribble = new TribbleStringifier();
+
+  const content = tdb.triples().map((triple) => {
+    return tribble.stringify(triple);
+  }).join("\n");
+
+  await Deno.writeTextFile(
+    `manifest/tribbles-expanded.${env.publication_id}.txt`,
+    content,
+  );
+}
 
 export async function buildSW() {
   console.info("🌐 Rendering service-worker");
