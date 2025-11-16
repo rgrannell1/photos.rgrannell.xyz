@@ -85,7 +85,6 @@ export function AlbumPage() {
         " ",
         m(AlbumsButton),
         " ",
-        m(AlbumThings, { subjects, locations }),
       ]);
 
       const $photosList = photos.map((photo, idx) => {

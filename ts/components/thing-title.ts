@@ -5,6 +5,7 @@ import { Strings } from "../commons/strings.ts";
 import { BinomialTypes, KnownTypes } from "../constants.ts";
 import { one } from "../commons/arrays.ts";
 import { countryEmoji, placeEmoji } from "../services/emoji.ts";
+import { Windows } from "../services/window.ts";
 
 function computeTitle(urn: string, things: TripleObject[]): string {
   const parsed = parseUrn(urn);
@@ -39,7 +40,11 @@ export function ThingTitle() {
   return {
     view(vnode: m.Vnode<ThingTitleAttrs>) {
       const { urn, things } = vnode.attrs;
-      return m("h1", computeTitle(urn, things));
+      const title = computeTitle(urn, things);
+
+      Windows.setTitle(title);
+
+      return m("h1", title);
     },
   };
 }
