@@ -94,9 +94,9 @@ function ThingMetadata() {
       const [thing] = things;
       // The non-wildcard case
 
-      if (thing.feature) {
+      if (thing.features) {
         metadata["Place Type"] = m(FeaturesList, {
-          urns: setify(thing.feature),
+          urns: setify(thing.features),
           services,
         });
       }

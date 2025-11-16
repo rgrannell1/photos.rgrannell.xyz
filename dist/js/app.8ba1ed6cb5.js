@@ -2654,6 +2654,7 @@ var CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
 var ENDPOINT = "https://photos-cdn.rgrannell.xyz";
 var PLACE_FEATURES_TO_EMOJI = {
   aquarium: "\u{1F420}",
+  aquaduct: "\u{1F3DB}\uFE0F",
   archaeological: "\u{1F3FA}",
   beach: "\u{1F3D6}\uFE0F",
   bridge: "\u{1F309}",
@@ -2756,10 +2757,11 @@ function convertRatingsToUrns(triple) {
   if (rel !== KnownRelations.RATING) {
     return [triple];
   }
+  const starCount = (tgt.match(/⭐/g) || []).length;
   return [[
     src,
     rel,
-    `urn:r\xF3:rating:${encodeURIComponent(tgt)}`
+    `urn:r\xF3:rating:${starCount - 1}`
   ]];
 }
 function convertCountriesToUrns(triple) {
@@ -5718,9 +5720,9 @@ function ThingMetadata() {
         return;
       }
       const [thing] = things;
-      if (thing.feature) {
+      if (thing.features) {
         metadata["Place Type"] = (0, import_mithril33.default)(FeaturesList, {
-          urns: setify(thing.feature),
+          urns: setify(thing.features),
           services
         });
       }
@@ -6037,4 +6039,4 @@ import_mithril35.default.route(document.body, "/albums", {
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp
 });
-//# sourceMappingURL=app.4213085f0e.js.map
+//# sourceMappingURL=app.8ba1ed6cb5.js.map

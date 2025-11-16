@@ -124,6 +124,7 @@ export const SCROLL_HIDE_THRESHOLD = 200;
  */
 export const PLACE_FEATURES_TO_EMOJI = {
   aquarium: "🐠",
+  aquaduct: "🏛️",
   archaeological: "🏺",
   beach: "🏖️",
   bridge: "🌉",

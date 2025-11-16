@@ -1,6 +1,5 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type { Feature } from "../types.ts";
 import { FeatureSchema } from "./schemas.ts";
 import { parseObject } from "./parser.ts";
 

@@ -25,10 +25,11 @@ export function convertRatingsToUrns(triple: Triple): Triple[] {
     return [triple];
   }
 
+  const starCount = (tgt.match(/⭐/g) || []).length;
   return [[
     src,
     rel,
-    `urn:ró:rating:${encodeURIComponent(tgt)}`,
+    `urn:ró:rating:${starCount - 1}`,
   ]];
 }
 
