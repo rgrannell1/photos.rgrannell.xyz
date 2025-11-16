@@ -1,4 +1,5 @@
-import { State, type AppWindow } from "./types.ts";
+
+import type { State, AppWindow } from "./types.ts";
 import { DarkModes } from "./services/dark-mode.ts";
 import { loadTriples } from "./semantic/data.ts";
 import { deriveTriples, HARD_CODED_TRIPLES } from "./semantic/derive.ts";
@@ -30,6 +31,8 @@ import { readFeatures } from "./services/features.ts";
 
 /*
  * Load data from the tribbles file.
+ * This is ccurrently done in a single blocking load which is not efficient.
+ *
  */
 async function loadData() {
   const schema = {};
@@ -47,7 +50,7 @@ async function loadData() {
 /*
  * Commonly used services that depend on state
  *
- * TODO come on, this is silly.
+ * This is not pleasant, though I don't see a simpler method.
  */
 export function loadServices(tdb: TribbleDB) {
   return {
@@ -79,14 +82,15 @@ export function loadServices(tdb: TribbleDB) {
  */
 export async function loadState(): Promise<State> {
   const data = await loadData();
+
   return {
-    darkMode: DarkModes.load(),
-    sidebarVisible: false,
-    data,
     currentAlbum: undefined,
     currentPhoto: undefined,
     currentUrn: undefined,
     currentType: undefined,
+    data,
+    darkMode: DarkModes.load(),
+    sidebarVisible: false,
     services: loadServices(data),
   };
 }

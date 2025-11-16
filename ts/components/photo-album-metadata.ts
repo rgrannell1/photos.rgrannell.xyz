@@ -18,7 +18,6 @@ export function PhotoAlbumMetadata() {
       return "unknown date";
     }
 
-    // TODO correct types
     const isSmall = Windows.isSmallerThan(500);
     return Dates.dateRange(minDate, maxDate, isSmall);
   }

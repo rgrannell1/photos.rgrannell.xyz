@@ -7,6 +7,7 @@ type AlbumButtonAttrs = {
 
 /*
  * Links back to the last album page
+ *
  */
 export function AlbumButton() {
   return {

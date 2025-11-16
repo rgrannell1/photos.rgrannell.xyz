@@ -61,7 +61,7 @@ export function PhotoAlbum() {
           onclick,
           trip
         }),
-        // TODO this is broken
+        // NODE this might be broken
         child,
       ]);
     },

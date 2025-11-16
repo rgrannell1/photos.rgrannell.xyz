@@ -32,8 +32,8 @@ export class Dates {
   }
   /* */
   static dateRange(
-    minDate: Date | string,
-    maxDate: Date | string,
+    minDate: Date | number,
+    maxDate: Date | number,
     smallDevice: boolean,
   ): string {
     if (!minDate && !maxDate) {
@@ -42,10 +42,10 @@ export class Dates {
 
     const parsedMinDate = minDate instanceof Date
       ? minDate
-      : new Date(parseFloat(minDate));
+      : new Date(minDate);
     const parsedMaxDate = maxDate instanceof Date
       ? maxDate
-      : new Date(parseFloat(maxDate));
+      : new Date(maxDate);
 
     if (smallDevice) {
       const optsShort: Intl.DateTimeFormatOptions = {

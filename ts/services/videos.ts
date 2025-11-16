@@ -29,5 +29,5 @@ export function readAllVideos(tdb: TribbleDB): Video[] {
     source: { type: "video" },
   }).sources();
 
-  return readVideos(tdb, videos) as Video[]; // TODO
+  return readVideos(tdb, videos);
 }

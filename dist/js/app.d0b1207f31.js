@@ -1703,6 +1703,7 @@ function Header() {
       return (0, import_mithril.default)("nav.header", { role: "navigation" }, [
         // TODO this is a bad fix to an unknown reversion which messed up header item placement
         // ideally we should find out what's actually wrong with the css, but for now...
+        // also, it doesn't work properly in Chrome
         (0, import_mithril.default)("ul", { style: "display: ruby" }, [
           (0, import_mithril.default)("li.header-item", {}, (0, import_mithril.default)(BurgerMenu())),
           (0, import_mithril.default)("li.header-item", {}, (0, import_mithril.default)(HeaderBrandText())),
@@ -1719,6 +1720,16 @@ function Header() {
     }
   };
 }
+
+// ts/services/dark-mode.ts
+var DarkModes = class {
+  static load() {
+    return localStorage.getItem("darkMode") === "true";
+  }
+  static save(value) {
+    return localStorage.setItem("darkMode", `${value}`);
+  }
+};
 
 // node_modules/.deno/@rgrannell1+tribbledb@0.0.14/node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class {
@@ -2552,16 +2563,6 @@ var TribbleDB = class _TribbleDB {
   }
 };
 
-// ts/services/dark-mode.ts
-var DarkModes = class {
-  static load() {
-    return localStorage.getItem("darkMode") === "true";
-  }
-  static save(value) {
-    return localStorage.setItem("darkMode", `${value}`);
-  }
-};
-
 // ts/constants.ts
 var PHOTO_WIDTH = 400;
 var PHOTO_HEIGHT = 400;
@@ -3035,12 +3036,15 @@ function buildLocationTrees(triple) {
     return [triple];
   }
   const nodes = TREE_STATE.nodes;
-  if (!nodes.has(src)) {
-    nodes.set(src, { id: src, parents: /* @__PURE__ */ new Set() });
+  let srcNode = nodes.get(src);
+  if (!srcNode) {
+    srcNode = { id: src, parents: /* @__PURE__ */ new Set() };
+    nodes.set(src, srcNode);
   }
-  const srcNode = nodes.get(src);
-  if (!nodes.has(tgt)) {
-    nodes.set(tgt, { id: tgt, parents: /* @__PURE__ */ new Set() });
+  let tgtNode = nodes.get(tgt);
+  if (!tgtNode) {
+    tgtNode = { id: tgt, parents: /* @__PURE__ */ new Set() };
+    nodes.set(tgt, tgtNode);
   }
   TREE_STATE.branchIds.add(tgt);
   srcNode?.parents.add(tgt);
@@ -4068,9 +4072,8 @@ var readUnescos = (tdb2, urns) => {
 function parseAlbum(tdb2, album) {
   const result = safeParse(AlbumSchema, album);
   if (!result.success) {
-    throw new Error(
-      `Invalid album object: ${JSON.stringify(result.issues)}`
-    );
+    logParseWarning(result.issues);
+    throw new Error(`Failed to parse album with id ${album.id}`);
   }
   const data = result.output;
   const countryNames = new Set(arrayify(data.flags));
@@ -4390,13 +4393,13 @@ function loadServices(tdb2) {
 async function loadState() {
   const data = await loadData();
   return {
-    darkMode: DarkModes.load(),
-    sidebarVisible: false,
-    data,
     currentAlbum: void 0,
     currentPhoto: void 0,
     currentUrn: void 0,
     currentType: void 0,
+    data,
+    darkMode: DarkModes.load(),
+    sidebarVisible: false,
     services: loadServices(data)
   };
 }
@@ -4559,8 +4562,8 @@ var Dates = class {
     if (!minDate && !maxDate) {
       return "unknown date";
     }
-    const parsedMinDate = minDate instanceof Date ? minDate : new Date(parseFloat(minDate));
-    const parsedMaxDate = maxDate instanceof Date ? maxDate : new Date(parseFloat(maxDate));
+    const parsedMinDate = minDate instanceof Date ? minDate : new Date(minDate);
+    const parsedMaxDate = maxDate instanceof Date ? maxDate : new Date(maxDate);
     if (smallDevice) {
       const optsShort = {
         day: "numeric",
@@ -4809,7 +4812,7 @@ function PhotoAlbum() {
           onclick,
           trip
         }),
-        // TODO this is broken
+        // NODE this might be broken
         child
       ]);
     }

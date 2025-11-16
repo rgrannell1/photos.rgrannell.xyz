@@ -293,14 +293,16 @@ export function buildLocationTrees(
 
   const nodes = TREE_STATE.nodes;
 
-  // TODO this is probably not very efficient
-  if (!nodes.has(src)) {
-    nodes.set(src, { id: src, parents: new Set() });
+  let srcNode = nodes.get(src);
+  if (!srcNode) {
+    srcNode = { id: src, parents: new Set() };
+    nodes.set(src, srcNode);
   }
-  const srcNode = nodes.get(src);
 
-  if (!nodes.has(tgt)) {
-    nodes.set(tgt, { id: tgt, parents: new Set() });
+  let tgtNode = nodes.get(tgt);
+  if (!tgtNode) {
+    tgtNode = { id: tgt, parents: new Set() };
+    nodes.set(tgt, tgtNode);
   }
 
   TREE_STATE.branchIds.add(tgt);

@@ -7,6 +7,7 @@ import { arrayify } from "../commons/arrays.ts";
 import { readCountries } from "../services/location.ts";
 import { AlbumSchema } from "./schemas.ts";
 import { safeParse } from "valibot";
+import { logParseWarning } from "../commons/logger.ts";
 
 /*
  * Read album-data
@@ -18,10 +19,8 @@ import { safeParse } from "valibot";
 export function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
   const result = safeParse(AlbumSchema, album);
   if (!result.success) {
-    // todo: better error handling
-    throw new Error(
-      `Invalid album object: ${JSON.stringify(result.issues)}`,
-    );
+    logParseWarning(result.issues);
+    throw new Error(`Failed to parse album with id ${album.id}`);
   }
 
   const data = result.output;
