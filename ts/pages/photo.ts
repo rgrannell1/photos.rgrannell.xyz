@@ -37,7 +37,7 @@ export function PhotoPage() {
         }),
         $links,
         m(
-          "div",
+          "div.page",
           m("h3", "Photo Information"),
           $photoInfo,
           m("h3", "Exif Data"),

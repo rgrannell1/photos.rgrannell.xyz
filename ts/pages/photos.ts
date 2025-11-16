@@ -46,7 +46,7 @@ export function PhotosPage() {
         m("p.photo-album-count", countText),
       ]);
 
-      return m("div", [$md, m(PhotosList, { photos })]);
+      return m("div.page", [$md, m(PhotosList, { photos })]);
     },
   };
 }

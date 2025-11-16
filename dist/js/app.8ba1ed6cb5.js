@@ -4837,7 +4837,7 @@ function AlbumsPage() {
         (0, import_mithril11.default)("h1.albums-header", "Albums"),
         (0, import_mithril11.default)(AlbumStats)
       ]);
-      return (0, import_mithril11.default)("div", [
+      return (0, import_mithril11.default)("div.page", [
         $md,
         //m(YearCursor),
         (0, import_mithril11.default)(AlbumsList, { albums })
@@ -4855,7 +4855,7 @@ function AboutPage() {
     },
     view() {
       const years = (/* @__PURE__ */ new Date()).getFullYear() - 2012;
-      return (0, import_mithril12.default)("div", [
+      return (0, import_mithril12.default)("div.page", [
         (0, import_mithril12.default)("section.about-page", [
           (0, import_mithril12.default)("h1", "About"),
           (0, import_mithril12.default)(
@@ -4949,7 +4949,7 @@ function VideosPage() {
         return (0, import_mithril14.default)(Video, { video, preload: "auto" });
       });
       return (0, import_mithril14.default)(
-        "div",
+        "div.page",
         (0, import_mithril14.default)("section.photos-metadata", [
           (0, import_mithril14.default)("h1", "Videos"),
           (0, import_mithril14.default)("p.photo-album-count", videoLengthText)
@@ -5084,7 +5084,7 @@ function AlbumPage() {
         return (0, import_mithril18.default)(Video, { video, preload: "auto" });
       });
       return (0, import_mithril18.default)(
-        "div",
+        "div.page",
         $albumMetadata,
         (0, import_mithril18.default)("section.photo-container", $photosList),
         (0, import_mithril18.default)("section.video-container", $videosList)
@@ -5123,7 +5123,7 @@ function PhotosPage() {
         (0, import_mithril19.default)("h1", "Photos"),
         (0, import_mithril19.default)("p.photo-album-count", countText)
       ]);
-      return (0, import_mithril19.default)("div", [$md, (0, import_mithril19.default)(PhotosList, { photos })]);
+      return (0, import_mithril19.default)("div.page", [$md, (0, import_mithril19.default)(PhotosList, { photos })]);
     }
   };
 }
@@ -5404,7 +5404,7 @@ function PhotoPage() {
         }),
         $links,
         (0, import_mithril23.default)(
-          "div",
+          "div.page",
           (0, import_mithril23.default)("h3", "Photo Information"),
           $photoInfo,
           (0, import_mithril23.default)("h3", "Exif Data"),
@@ -5461,7 +5461,7 @@ function ListingPage() {
           ])
         );
       }
-      return (0, import_mithril24.default)("div", [
+      return (0, import_mithril24.default)("div.page", [
         (0, import_mithril24.default)("section.album-metadata", $md),
         (0, import_mithril24.default)(AlbumsList2)
       ]);
@@ -5823,7 +5823,7 @@ function ThingPage() {
   return {
     view(vnode) {
       const { urn, things, services } = vnode.attrs;
-      return (0, import_mithril33.default)("div", [
+      return (0, import_mithril33.default)("div.page", [
         (0, import_mithril33.default)("section.thing-page", [
           (0, import_mithril33.default)(ThingTitle, { urn, things }),
           (0, import_mithril33.default)(ThingSubtitle, { urn }),

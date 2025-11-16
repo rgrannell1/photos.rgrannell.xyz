@@ -12,7 +12,7 @@ export function AboutPage() {
     view() {
       const years = new Date().getFullYear() - 2012;
 
-      return m("div", [
+      return m("div.page", [
         m("section.about-page", [
           m("h1", "About"),
           m(

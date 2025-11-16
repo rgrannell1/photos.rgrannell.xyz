@@ -21,7 +21,7 @@ export function VideosPage() {
       });
 
       return m(
-        "div",
+        "div.page",
         m("section.photos-metadata", [
           m("h1", "Videos"),
           m("p.photo-album-count", videoLengthText),

@@ -224,7 +224,7 @@ export function ThingPage() {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const { urn, things, services } = vnode.attrs;
 
-      return m("div", [
+      return m("div.page", [
         m("section.thing-page", [
           m(ThingTitle, { urn, things }),
           m(ThingSubtitle, { urn }),

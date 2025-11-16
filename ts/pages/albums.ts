@@ -123,7 +123,7 @@ export function AlbumsPage() {
         m(AlbumStats),
       ]);
 
-      return m("div", [
+      return m("div.page", [
         $md,
         //m(YearCursor),
         m(AlbumsList, { albums }),

@@ -74,7 +74,7 @@ export function ListingPage() {
         );
       }
 
-      return m("div", [
+      return m("div.page", [
         m("section.album-metadata", $md),
         m(AlbumsList),
       ]);
