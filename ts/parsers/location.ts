@@ -69,7 +69,6 @@ export function parseLocation(
   if (!location.id) {
     return undefined;
   }
-
   const id = asUrn(location.id as string);
 
   if (id.type === KnownTypes.PLACE) {

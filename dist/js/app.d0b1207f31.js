@@ -3174,9 +3174,8 @@ function cameraEmoji(thing) {
   }
   return "\u{1F4F7}";
 }
-function thingEmoji(urn, name, thing) {
+function thingEmoji(urn, _, thing) {
   const { type } = asUrn(urn);
-  console.log({ urn, name, thing });
   switch (type) {
     case KnownTypes.PLACE:
       return placeEmoji(thing);
@@ -3777,7 +3776,7 @@ var UnescoSchema = v.object({
 var PlaceSchema = v.object({
   id: v.string(),
   name: v.string(),
-  feature: v.optional(v.union([v.string(), v.array(v.string())])),
+  features: v.optional(v.union([v.string(), v.array(v.string())])),
   in: v.optional(v.union([v.string(), v.array(v.string())])),
   shortName: v.optional(v.string()),
   wikipedia: v.optional(v.string()),
@@ -4144,14 +4143,9 @@ function readPhotosByThingIds(tdb2, thingsUrns) {
     const { type, id } = asUrn(thingUrn);
     const results = tdb2.search({
       source: { type: "photo" },
-      //relation: KnownRelations.SUBJECT,
+      //relation: KnownRelations.SUBJECT, TODO
       target: { type, id }
     }).sources();
-    console.log({
-      type,
-      id,
-      photoIds
-    }, "xxxxx");
     for (const result of results) {
       photoIds.add(result);
     }

@@ -6,6 +6,7 @@ import {
   PHONE_MODELS,
   PLACE_FEATURES_TO_EMOJI,
 } from "../constants.ts";
+import type { Thing } from "../types.ts";
 
 /*
  * Pick an emoji based on the place feature
@@ -79,10 +80,8 @@ function cameraEmoji(thing: any): string {
 }
 
 /* */
-export function thingEmoji(urn: string, name: string, thing: any): string {
+export function thingEmoji(urn: string, _: string, thing: Thing): string {
   const { type } = asUrn(urn);
-
-  console.log({urn, name, thing})
 
   switch (type) {
     case KnownTypes.PLACE:

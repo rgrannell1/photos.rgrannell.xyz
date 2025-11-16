@@ -59,7 +59,7 @@ export const UnescoSchema = v.object({
 export const PlaceSchema = v.object({
   id: v.string(),
   name: v.string(),
-  feature: v.optional(v.union([v.string(), v.array(v.string())])),
+  features: v.optional(v.union([v.string(), v.array(v.string())])),
   in: v.optional(v.union([v.string(), v.array(v.string())])),
   shortName: v.optional(v.string()),
   wikipedia: v.optional(v.string()),
