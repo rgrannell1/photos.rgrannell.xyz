@@ -21,9 +21,14 @@ export type ApplicationEvents =
   | "photo_loaded"
   | "navigate";
 
+export type EnvConfig = {
+  photos_url: string;
+  publication_id: string;
+}
+
 export type AppWindow = typeof window & {
   stats: Stats;
-  envConfig: any;
+  envConfig: EnvConfig;
 };
 
 /*

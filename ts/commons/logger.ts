@@ -13,4 +13,5 @@ export function logParseWarning(issues: any): void {
 
   // TODO; error out instead
   console.warn(message.join("\n"));
+  console.trace();
 }

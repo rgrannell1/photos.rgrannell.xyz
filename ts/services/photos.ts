@@ -116,7 +116,8 @@ export function readPhotosByThingIds(
     const { type, id } = asUrn(thingUrn);
 
     const results = tdb.search({
-      //relation: KnownRelations.SUBJECT,
+      source: { type: "photo" },
+      //relation: KnownRelations.SUBJECT, TODO
       target: { type, id },
     }).sources();
 

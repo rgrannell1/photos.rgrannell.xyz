@@ -3752,12 +3752,12 @@ var AlbumSchema = v.object({
   minDate: v.string(),
   maxDate: v.string(),
   thumbnailUrl: v.string(),
-  // TODO
+  // TODO this is silly
   mosaic: v.any(),
   id: v.string(),
   photosCount: v.string(),
   videosCount: v.string(),
-  // TODO
+  // TODO this is silly
   flags: v.any(),
   description: v.optional(v.string())
 });
@@ -3865,6 +3865,7 @@ ${JSON.stringify(issue.path, null, 2)}
     );
   }
   console.warn(message.join("\n"));
+  console.trace();
 }
 
 // ts/parsers/parser.ts
@@ -3985,6 +3986,7 @@ function parseAlbum(tdb2, album) {
   const countryNames = new Set(arrayify(data.flags));
   const countries = readCountries(tdb2, namesToUrns(tdb2, countryNames));
   return {
+    type: "album",
     name: data.name,
     trip: data.trip,
     minDate: asInt(data.minDate),
@@ -4141,9 +4143,15 @@ function readPhotosByThingIds(tdb2, thingsUrns) {
   for (const thingUrn of thingsUrns) {
     const { type, id } = asUrn(thingUrn);
     const results = tdb2.search({
+      source: { type: "photo" },
       //relation: KnownRelations.SUBJECT,
       target: { type, id }
     }).sources();
+    console.log({
+      type,
+      id,
+      photoIds
+    }, "xxxxx");
     for (const result of results) {
       photoIds.add(result);
     }

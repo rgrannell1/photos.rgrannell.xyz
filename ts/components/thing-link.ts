@@ -4,10 +4,11 @@ import { navigate } from "../commons/events.ts";
 
 import { one } from "../commons/arrays.ts";
 import { thingEmoji } from "../services/emoji.ts";
+import type { Thing } from "../types.ts";
 
 export type ThingLinkAttrs = {
   urn: string;
-  thing: any;
+  thing: Thing;
 };
 
 /* */
