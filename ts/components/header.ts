@@ -38,17 +38,21 @@ function RSSIcon() {
 
   return {
     view() {
-      return m("a.rss", { title: "rss", href: "/manifest/atom/atom-index.xml" }, [
-        m("svg", {
-          alt: "rss",
-          width: "25px",
-          height: "25px",
-          viewBox: "0 0 32 32",
-          style: "position: relative; top: 5px;",
-        }, [
-          SVG_PATH,
-        ]),
-      ]);
+      return m(
+        "a.rss",
+        { title: "rss", href: "/manifest/atom/atom-index.xml" },
+        [
+          m("svg", {
+            alt: "rss",
+            width: "25px",
+            height: "25px",
+            viewBox: "0 0 32 32",
+            style: "position: relative; top: 5px;",
+          }, [
+            SVG_PATH,
+          ]),
+        ],
+      );
     },
   };
 }

@@ -5,7 +5,7 @@ import { arrayify } from "../commons/arrays.ts";
 import { CountrySchema, PlaceSchema, UnescoSchema } from "./schemas.ts";
 import { parseObject } from "./parser.ts";
 import { logParseWarning } from "../commons/logger.ts";
-import { safeParse, type InferOutput } from "valibot";
+import { type InferOutput, safeParse } from "valibot";
 import { readLocations } from "../services/location.ts";
 import type { Location } from "../types.ts";
 
@@ -28,7 +28,7 @@ export function parsePlace(
   }
 
   const refs = arrayify(result.output.in);
-  const lookedUpRefs = readLocations(tdb, new Set(refs))
+  const lookedUpRefs = readLocations(tdb, new Set(refs));
 
   return {
     ...result.output,

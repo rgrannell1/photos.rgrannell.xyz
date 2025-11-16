@@ -97,10 +97,7 @@ export function readAlbumsByThingIds(
   for (const thingUrn of thingsUrns) {
     const { type, id } = asUrn(thingUrn);
 
-    const results = tdb.search({
-      //relation: KnownRelations.SUBJECT,
-      target: { type, id },
-    }).sources();
+    const results = tdb.search({ target: { type, id } }).sources();
 
     for (const result of results) {
       photoIds.add(result);
@@ -113,13 +110,13 @@ export function readAlbumsByThingIds(
   for (const photoId of photoIds) {
     const pid = asUrn(photoId);
 
-    const results = tdb.search({
+    const albums = tdb.search({
       source: { type: pid.type, id: pid.id },
       relation: KnownRelations.ALBUM_ID,
     }).targets();
 
-    for (const result of results) {
-      albumIds.add(result);
+    for (const id of albums) {
+      albumIds.add(`urn:ró:album:${id}`);
     }
   }
 

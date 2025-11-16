@@ -145,7 +145,7 @@ export function Photo() {
         loading,
         onclick: () => {
           window.location.href = fullImage;
-        }
+        },
       });
 
       return m(

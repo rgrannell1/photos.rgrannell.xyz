@@ -1,6 +1,6 @@
 import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
-import type { Photo, Location, Subject } from "../types.ts";
+import type { Location, Photo, Subject } from "../types.ts";
 import { parsePhoto } from "../parsers/photo.ts";
 import { readParsedThing, readParsedThings } from "./things.ts";
 import { readSubjects } from "./subjects.ts";
@@ -114,7 +114,6 @@ export function readPhotosByThingIds(
 
   for (const thingUrn of thingsUrns) {
     const { type, id } = asUrn(thingUrn);
-
 
     const results = tdb.search({
       source: { type: "photo" },

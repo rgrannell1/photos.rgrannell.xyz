@@ -27,7 +27,7 @@ export function parseAlbum(tdb: TribbleDB, album: TripleObject) {
   const countries = readCountries(tdb, namesToUrns(tdb, countryNames));
 
   return {
-    type: 'album',
+    type: "album",
     name: data.name,
     trip: data.trip,
     minDate: asInt(data.minDate),

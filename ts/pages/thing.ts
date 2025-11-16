@@ -146,11 +146,11 @@ function AlbumSection() {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const { things, services } = vnode.attrs;
 
-      const urns = Object.values(things).flatMap((thing) => arrayify(thing.id));
+      const urns = setOf<string>("id", things);
       const albums = services.readAlbumsByThingIds(new Set(urns));
 
       // Broken, with odd mithril child-element issue
-      const $albums = albums.map((album: Album) => {
+      const $albums = albums.map((album) => {
         // duplicated model. move to render(model) code
         const $countryLinks = album.countries.map((country) => {
           return m(CountryLink, {
@@ -175,11 +175,12 @@ function AlbumSection() {
           loading: "lazy",
           minDate: album.minDate,
           onclick: onAlbumClick.bind(null, album.id, album.name),
+          trip: undefined,
+          child: m("p"),
         });
 
         return m(
           "div",
-          { key: `album-${album.id}` },
           $album,
           $md,
         );
@@ -233,7 +234,7 @@ export function ThingPage() {
           m("h3", "Photos"),
           m(PhotoSection, { urn, things, services }),
           m("h3", "Albums"),
-          //m(AlbumSection, { urn, things, services }),
+          m(AlbumSection, { urn, things, services }),
         ]),
       ]);
     },

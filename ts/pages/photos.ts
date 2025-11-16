@@ -31,9 +31,7 @@ type PhotosPageAttrs = {
   photos: PhotoType[];
 };
 
-/*
- *
- */
+/* */
 export function PhotosPage() {
   return {
     view(vnode: m.Vnode<PhotosPageAttrs>) {

@@ -20,7 +20,7 @@ export function ThingLink() {
 
       let name = id;
       if (Object.prototype.hasOwnProperty.call(thing, "name")) {
-        const candidate = one((thing as {name: string | string[]}).name)
+        const candidate = one((thing as { name: string | string[] }).name);
         if (candidate) {
           name = candidate;
         }

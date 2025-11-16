@@ -24,7 +24,7 @@ export type ApplicationEvents =
 export type EnvConfig = {
   photos_url: string;
   publication_id: string;
-}
+};
 
 export type AppWindow = typeof window & {
   stats: Stats;
