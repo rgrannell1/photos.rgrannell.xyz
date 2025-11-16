@@ -143,6 +143,9 @@ export function Photo() {
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
+        onclick: () => {
+          window.location.href = fullImage;
+        }
       });
 
       return m(

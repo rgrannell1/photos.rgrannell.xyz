@@ -4658,7 +4658,10 @@ function Photo() {
         imageUrl: photo.fullImage,
         thumbnailUrl,
         thumbnailDataUrl,
-        loading
+        loading,
+        onclick: () => {
+          window.location.href = fullImage;
+        }
       });
       return (0, import_mithril8.default)(
         "div",
