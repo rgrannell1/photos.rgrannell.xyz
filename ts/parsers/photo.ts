@@ -1,6 +1,5 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type { Photo } from "../types.ts";
 import { PhotoSchema } from "./schemas.ts";
 import { parseObject } from "./parser.ts";
 
@@ -14,6 +13,6 @@ import { parseObject } from "./parser.ts";
 export function parsePhoto(
   _: TribbleDB,
   photo: TripleObject,
-): Photo | undefined {
+) {
   return parseObject(PhotoSchema, "photo", photo);
 }

@@ -44,6 +44,7 @@ export function AlbumPage() {
         subjects,
         locations,
       } = vnode.attrs;
+
       const {
         name,
         minDate,
@@ -76,7 +77,10 @@ export function AlbumPage() {
         m("p.photo-album-date", m("time", dateRange)),
         m("p.photo-album-count", photoCountMessage),
         m("p.photo-album-countries", $countryLinks),
-        m("p.photo-album-description", m.trust(Strings.preprocessDescription(description) ?? "")),
+        m(
+          "p.photo-album-description",
+          m.trust(Strings.preprocessDescription(description) ?? ""),
+        ),
         m(AlbumShareButton, { url: location.href, name }),
         " ",
         m(AlbumsButton),

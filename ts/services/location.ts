@@ -5,7 +5,7 @@ import {
   parsePlace,
   parseUnesco,
 } from "../parsers/location.ts";
-import { readParsedThing, readParsedThings, readThing } from "./things.ts";
+import { readParsedThing, readParsedThings } from "./things.ts";
 
 export const readCountry = (
   tdb: TribbleDB,

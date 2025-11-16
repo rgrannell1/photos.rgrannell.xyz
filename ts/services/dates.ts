@@ -20,7 +20,7 @@ export class Dates {
   /* */
   static formatCreatedAt(dateTime: string): string {
     const date = new Date(parseInt(dateTime));
-    const options = {
+    const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -40,12 +40,8 @@ export class Dates {
       return "unknown date";
     }
 
-    const parsedMinDate = minDate instanceof Date
-      ? minDate
-      : new Date(minDate);
-    const parsedMaxDate = maxDate instanceof Date
-      ? maxDate
-      : new Date(maxDate);
+    const parsedMinDate = minDate instanceof Date ? minDate : new Date(minDate);
+    const parsedMaxDate = maxDate instanceof Date ? maxDate : new Date(maxDate);
 
     if (smallDevice) {
       const optsShort: Intl.DateTimeFormatOptions = {

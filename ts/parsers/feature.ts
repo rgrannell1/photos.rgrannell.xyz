@@ -8,6 +8,6 @@ import { parseObject } from "./parser.ts";
 export function parseFeature(
   _: TribbleDB,
   feature: TripleObject,
-): Feature | undefined {
+) {
   return parseObject(FeatureSchema, "feature", feature);
 }

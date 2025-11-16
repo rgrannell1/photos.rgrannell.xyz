@@ -1,12 +1,11 @@
-
 import { Expectations, ValidationError, Validator } from "./types.ts";
 
 export function relations(expectations: Expectations): Validator {
   return function (object: unknown): ValidationError[] {
-    if (typeof object !== 'object' || object === null) {
+    if (typeof object !== "object" || object === null) {
       return [{
-        message: 'non-object tripleobject passed'
-      }]
+        message: "non-object tripleobject passed",
+      }];
     }
 
     const results: ValidationError[] = [];
@@ -16,7 +15,7 @@ export function relations(expectations: Expectations): Validator {
       const checker = expectations[rel];
 
       if (!checker) {
-        continue
+        continue;
       }
 
       encounteredRelations.add(rel);
@@ -25,8 +24,8 @@ export function relations(expectations: Expectations): Validator {
       if (subcheck.length > 0) {
         // TODO, merge subchecks in here.
         results.push({
-          message: `failed check for relation ${rel}`
-        })
+          message: `failed check for relation ${rel}`,
+        });
         results.push(...subcheck);
       }
     }
@@ -34,22 +33,24 @@ export function relations(expectations: Expectations): Validator {
     for (const rel of Object.keys(expectations)) {
       if (!encounteredRelations.has(rel)) {
         results.push({
-          message: `triple object missing expected relation ${rel}`
+          message: `triple object missing expected relation ${rel}`,
         });
       }
     }
 
     return [];
-  }
+  };
 }
 
 export function string(value: unknown): ValidationError[] {
-  if (typeof value !== 'string') {
-    return [{ message: `expected string, received ${value} (${typeof value})` }];
+  if (typeof value !== "string") {
+    return [{
+      message: `expected string, received ${value} (${typeof value})`,
+    }];
   }
 
   if (value.length === 0) {
-    return [{ message: 'received empty string' }]
+    return [{ message: "received empty string" }];
   }
 
   return [];

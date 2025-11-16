@@ -1,4 +1,3 @@
-
 import m from "mithril";
 import type { Services } from "../types.ts";
 import { one } from "../commons/arrays.ts";
@@ -21,12 +20,12 @@ export function FeaturesList() {
       const $features = features.map((feature) => {
         const id = one(feature.id)!;
 
-        return m('li', {
+        return m("li", {
           key: `feature-${id}`,
         }, m(FeatureLink, { urn: id, thing: feature }));
       });
 
-      return m('ul', $features)
-    }
-  }
+      return m("ul", $features);
+    },
+  };
 }

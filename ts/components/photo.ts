@@ -28,7 +28,7 @@ function loadImage(url: string, event: Event) {
 type ImageAttrs = {
   thumbnailUrl: string;
   loading: "eager" | "lazy";
-  onclick?: (e: Event) => void;
+  onclick: ((e: Event) => void) | undefined;
 };
 
 /*
@@ -73,11 +73,11 @@ function PlaceholderImage() {
 }
 
 type ImagePairAttrs = {
-  fullImage: string;
+  imageUrl: string;
   thumbnailUrl: string;
   thumbnailDataUrl: string;
   loading: "eager" | "lazy";
-  onclick?: (e: Event) => void;
+  onclick: ((e: Event) => void) | undefined;
 };
 
 /*
@@ -88,15 +88,15 @@ export function ImagePair() {
   return {
     view(vnode: m.Vnode<ImagePairAttrs>) {
       const {
-        fullImage,
+        imageUrl,
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
-        onclick
+        onclick,
       } = vnode.attrs;
 
       return m("a", {
-        href: fullImage,
+        href: imageUrl,
         target: "_blank",
         rel: "external",
       }, [
@@ -139,7 +139,7 @@ export function Photo() {
 
       const $mdIcon = m(MetadataIcon, { id, colour: photo.contrastingGrey });
       const $imagePair = m(ImagePair, {
-        fullImage,
+        imageUrl: photo.fullImage,
         thumbnailUrl,
         thumbnailDataUrl,
         loading,

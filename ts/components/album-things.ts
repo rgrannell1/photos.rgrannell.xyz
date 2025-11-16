@@ -1,5 +1,5 @@
 import m from "mithril";
-import { Thing } from "../types";
+import type { Thing } from "../types.ts";
 
 type AlbumThingsAttrs = {
   locations: Thing[];

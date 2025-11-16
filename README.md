@@ -3,8 +3,8 @@
 My personal photo hosting website. The photo library is curated with a second
 project, [mirror](https://github.com/rgrannell1/mirror).
 
-This site is a SPA that reads semantic information from the `manifest/` folder. It shows
-photo albums, pictures, metadata based on this information.
+This site is a SPA that reads semantic information from the `manifest/` folder.
+It shows photo albums, pictures, metadata based on this information.
 
 ---
 

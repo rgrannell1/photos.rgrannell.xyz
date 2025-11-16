@@ -1,5 +1,5 @@
 import m from "mithril";
-import { navigate } from "../commons/events";
+import { navigate } from "../commons/events.ts";
 
 /*
  * Links back to the albums page

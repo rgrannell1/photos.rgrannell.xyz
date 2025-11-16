@@ -1,5 +1,5 @@
 import m from "mithril";
-import type { AppWindow, Stats } from "../types";
+import type { AppWindow, Stats } from "../types.ts";
 
 /*
  * We inject this in at runtime, so validate its structure
@@ -23,7 +23,7 @@ function isStats(stats: unknown): stats is Stats {
   ] as const;
 
   for (const key of keys) {
-    if (!(key in stats)) {
+    if (!(key in (stats as Record<string, unknown>))) {
       console.warn(`Stats is missing key: ${key}`);
     }
 

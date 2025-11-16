@@ -1,5 +1,5 @@
 import m from "mithril";
-import { navigate } from "../commons/events";
+import { navigate } from "../commons/events.ts";
 
 type AlbumButtonAttrs = {
   id: string;
@@ -7,7 +7,6 @@ type AlbumButtonAttrs = {
 
 /*
  * Links back to the last album page
- *
  */
 export function AlbumButton() {
   return {

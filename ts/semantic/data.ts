@@ -90,8 +90,7 @@ export async function loadTriples(
 
   // construct transitive relations, which require
   // indexing tobe done first.
-  tdb.add(addNestedLocations())
-
+  tdb.add(addNestedLocations());
 
   return tdb;
 }

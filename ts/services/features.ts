@@ -1,5 +1,10 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
-import { readParsedThing, readParsedThings, readThing, readThings } from "./things.ts";
+import {
+  readParsedThing,
+  readParsedThings,
+  readThing,
+  readThings,
+} from "./things.ts";
 import { parseFeature } from "../parsers/feature.ts";
 
 export const readFeature = (

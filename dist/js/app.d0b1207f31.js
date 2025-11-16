@@ -2567,159 +2567,59 @@ var TribbleDB = class _TribbleDB {
 var PHOTO_WIDTH = 400;
 var PHOTO_HEIGHT = 400;
 var KnownRelations = class {
-  static {
-    this.ALBUM_ID = "albumId";
-  }
-  static {
-    this.SUBJECT = "subject";
-  }
-  static {
-    this.LOCATION = "location";
-  }
-  static {
-    this.LONGITUDE = "longitude";
-  }
-  static {
-    this.LATITUDE = "latitude";
-  }
-  static {
-    this.COUNTRY = "country";
-  }
-  static {
-    this.FLAG = "flag";
-  }
-  static {
-    this.RATING = "rating";
-  }
-  static {
-    this.NAME = "name";
-  }
-  static {
-    this.BIRDWATCH_URL = "birdwatchUrl";
-  }
-  static {
-    this.WIKIPEDIA = "wikipedia";
-  }
-  static {
-    this.CREATED_AT = "createdAt";
-  }
-  static {
-    this.SEASON = "season";
-  }
-  static {
-    this.F_STOP = "f_stop";
-  }
-  static {
-    this.FOCAL_LENGTH = "focalLength";
-  }
-  static {
-    this.MODEL = "model";
-  }
-  static {
-    this.EXPOSURE_TIME = "exposureTime";
-  }
-  static {
-    this.ISO = "iso";
-  }
-  static {
-    this.WIDTH = "width";
-  }
-  static {
-    this.HEIGHT = "height";
-  }
-  static {
-    this.THUMBNAIL_URL = "thumbnailUrl";
-  }
-  static {
-    this.PNG_URL = "pngUrl";
-  }
-  static {
-    this.MID_IMAGE_LOSSY_URL = "midImageLossyUrl";
-  }
-  static {
-    this.FULL_IMAGE = "fullImage";
-  }
-  static {
-    this.POSTER_URL = "posterUrl";
-  }
-  static {
-    this.VIDEO_URL_1080P = "videoUrl1080p";
-  }
-  static {
-    this.VIDEO_URL_480P = "videoUrl480p";
-  }
-  static {
-    this.VIDEO_URL_720P = "videoUrl720p";
-  }
-  static {
-    this.VIDEO_URL_UNSCALED = "videoUrlUnscaled";
-  }
-  static {
-    this.YEAR = "year";
-  }
-  static {
-    this.CONTAINS = "contains";
-  }
-  static {
-    this.IN = "in";
-  }
-  static {
-    this.STYLE = "style";
-  }
-  static {
-    // horrible
-    this.FLAGS = "flags";
-  }
-  static {
-    this.CONTAINS_ALBUM = "containsAlbum";
-  }
-  static {
-    this.TRIP = "trip";
-  }
+  static ALBUM_ID = "albumId";
+  static SUBJECT = "subject";
+  static LOCATION = "location";
+  static LONGITUDE = "longitude";
+  static LATITUDE = "latitude";
+  static COUNTRY = "country";
+  static FLAG = "flag";
+  static RATING = "rating";
+  static NAME = "name";
+  static BIRDWATCH_URL = "birdwatchUrl";
+  static WIKIPEDIA = "wikipedia";
+  static CREATED_AT = "createdAt";
+  static SEASON = "season";
+  static F_STOP = "f_stop";
+  static FOCAL_LENGTH = "focalLength";
+  static MODEL = "model";
+  static EXPOSURE_TIME = "exposureTime";
+  static ISO = "iso";
+  static WIDTH = "width";
+  static HEIGHT = "height";
+  static THUMBNAIL_URL = "thumbnailUrl";
+  static PNG_URL = "pngUrl";
+  static MID_IMAGE_LOSSY_URL = "midImageLossyUrl";
+  static FULL_IMAGE = "fullImage";
+  static POSTER_URL = "posterUrl";
+  static VIDEO_URL_1080P = "videoUrl1080p";
+  static VIDEO_URL_480P = "videoUrl480p";
+  static VIDEO_URL_720P = "videoUrl720p";
+  static VIDEO_URL_UNSCALED = "videoUrlUnscaled";
+  static YEAR = "year";
+  static CONTAINS = "contains";
+  static IN = "in";
+  static STYLE = "style";
+  // horrible
+  static FLAGS = "flags";
+  static CONTAINS_ALBUM = "containsAlbum";
+  static TRIP = "trip";
 };
 var KnownTypes = class {
-  static {
-    this.PLACE = "place";
-  }
-  static {
-    this.COUNTRY = "country";
-  }
-  static {
-    this.BIRD = "bird";
-  }
-  static {
-    this.MAMMAL = "mammal";
-  }
-  static {
-    this.REPTILE = "reptile";
-  }
-  static {
-    this.AMPHIBIAN = "amphibian";
-  }
-  static {
-    this.INSECT = "insect";
-  }
-  static {
-    this.CAMERA = "camera";
-  }
-  static {
-    this.PHOTO = "photo";
-  }
-  static {
-    this.VIDEO = "video";
-  }
-  static {
-    this.ALBUM = "album";
-  }
-  static {
-    this.UNESCO = "unesco";
-  }
-  static {
-    this.FISH = "fish";
-  }
-  static {
-    this.PLACE_FEATURE = "place_feature";
-  }
+  static PLACE = "place";
+  static COUNTRY = "country";
+  static BIRD = "bird";
+  static MAMMAL = "mammal";
+  static REPTILE = "reptile";
+  static AMPHIBIAN = "amphibian";
+  static INSECT = "insect";
+  static CAMERA = "camera";
+  static PHOTO = "photo";
+  static VIDEO = "video";
+  static ALBUM = "album";
+  static UNESCO = "unesco";
+  static FISH = "fish";
+  static PLACE_FEATURE = "place_feature";
 };
 var NonListableTypes = /* @__PURE__ */ new Set([
   KnownTypes.COUNTRY,
@@ -3244,7 +3144,7 @@ var import_mithril2 = __toESM(require_mithril());
 
 // ts/services/emoji.ts
 function placeEmoji(thing) {
-  const feature = one(thing.feature);
+  const feature = one(thing.features);
   const { id: featureId } = asUrn(feature);
   if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
     return PLACE_FEATURES_TO_EMOJI[featureId];
@@ -3276,6 +3176,7 @@ function cameraEmoji(thing) {
 }
 function thingEmoji(urn, name, thing) {
   const { type } = asUrn(urn);
+  console.log({ urn, name, thing });
   switch (type) {
     case KnownTypes.PLACE:
       return placeEmoji(thing);
@@ -3851,10 +3752,12 @@ var AlbumSchema = v.object({
   minDate: v.string(),
   maxDate: v.string(),
   thumbnailUrl: v.string(),
+  // TODO
   mosaic: v.any(),
   id: v.string(),
   photosCount: v.string(),
   videosCount: v.string(),
+  // TODO
   flags: v.any(),
   description: v.optional(v.string())
 });
@@ -3955,10 +3858,11 @@ var FeatureSchema = v.object({
 function logParseWarning(issues) {
   const message = [];
   for (const issue of issues) {
-    console.log(issue);
-    message.push(`Parse warning @
+    message.push(
+      `Parse warning @
 ${JSON.stringify(issue.path, null, 2)}
-: ${issue.message}`);
+: ${issue.message}`
+    );
   }
   console.warn(message.join("\n"));
 }
@@ -4013,6 +3917,8 @@ function parseLocation(tdb2, location2) {
     return parsePlace(tdb2, location2);
   } else if (id.type === KnownTypes.COUNTRY) {
     return parseCountry(tdb2, location2);
+  } else if (id.type === KnownTypes.UNESCO) {
+    return parseUnesco(tdb2, location2);
   }
   return void 0;
 }
@@ -4717,14 +4623,14 @@ function ImagePair() {
   return {
     view(vnode) {
       const {
-        fullImage,
+        imageUrl,
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
         onclick
       } = vnode.attrs;
       return (0, import_mithril8.default)("a", {
-        href: fullImage,
+        href: imageUrl,
         target: "_blank",
         rel: "external"
       }, [
@@ -4750,7 +4656,7 @@ function Photo() {
       const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
       const $mdIcon = (0, import_mithril8.default)(MetadataIcon, { id, colour: photo.contrastingGrey });
       const $imagePair = (0, import_mithril8.default)(ImagePair, {
-        fullImage,
+        imageUrl: photo.fullImage,
         thumbnailUrl,
         thumbnailDataUrl,
         loading
@@ -4809,8 +4715,7 @@ function PhotoAlbum() {
           thumbnailUrl,
           thumbnailDataUrl,
           loading,
-          onclick,
-          trip
+          onclick
         }),
         // NODE this might be broken
         child
@@ -5160,7 +5065,10 @@ function AlbumPage() {
         (0, import_mithril18.default)("p.photo-album-date", (0, import_mithril18.default)("time", dateRange)),
         (0, import_mithril18.default)("p.photo-album-count", photoCountMessage),
         (0, import_mithril18.default)("p.photo-album-countries", $countryLinks),
-        (0, import_mithril18.default)("p.photo-album-description", import_mithril18.default.trust(Strings.preprocessDescription(description) ?? "")),
+        (0, import_mithril18.default)(
+          "p.photo-album-description",
+          import_mithril18.default.trust(Strings.preprocessDescription(description) ?? "")
+        ),
         (0, import_mithril18.default)(AlbumShareButton, { url: location.href, name }),
         " ",
         (0, import_mithril18.default)(AlbumsButton),
@@ -5295,8 +5203,9 @@ function ShutterSpeed() {
   return {
     view(vnode) {
       const { photo } = vnode.attrs;
-      if (typeof photo.exposureTime === "string") {
-        const parsed = parseFloat(photo.exposureTime);
+      const { exposureTime } = photo;
+      if (typeof exposureTime === "string") {
+        const parsed = parseFloat(exposureTime);
         if (isNaN(parsed)) {
           return (0, import_mithril21.default)("td", "Unknown");
         } else if (parsed >= 1) {
@@ -5383,7 +5292,9 @@ function Description() {
   return {
     view(vnode) {
       const { photo } = vnode.attrs;
-      const html = Strings.preprocessDescription(photo.description ?? photo.summary ?? "");
+      const html = Strings.preprocessDescription(
+        photo.description ?? photo.summary ?? ""
+      );
       if (html) {
         return (0, import_mithril22.default)("td", import_mithril22.default.trust(html));
       }
@@ -5709,9 +5620,10 @@ function FeatureLink() {
       const { type, id } = asUrn(urn);
       const name = one(thing.name) ?? id;
       const emoji = thingEmoji(urn, name, thing);
+      const text = `${emoji}	${name}`;
       return (0, import_mithril29.default)("p", {
         class: ["thing-link", `${type}-link`].join(" ")
-      }, `${emoji}	${name}`);
+      }, text);
     }
   };
 }
@@ -5810,10 +5722,16 @@ function ThingMetadata() {
       }
       const [thing] = things;
       if (thing.feature) {
-        metadata["Place Type"] = (0, import_mithril33.default)(FeaturesList, { urns: setify(thing.feature), services });
+        metadata["Place Type"] = (0, import_mithril33.default)(FeaturesList, {
+          urns: setify(thing.feature),
+          services
+        });
       }
       if (thing.contains) {
-        metadata["Contains"] = (0, import_mithril33.default)(PlacesList, { services, urns: setify(thing.contains) });
+        metadata["Contains"] = (0, import_mithril33.default)(PlacesList, {
+          services,
+          urns: setify(thing.contains)
+        });
       }
       if (thing.unescoId) {
         metadata["UNESCO"] = (0, import_mithril33.default)(UnescoList, {

@@ -28,7 +28,9 @@ function Description() {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
       const { photo } = vnode.attrs;
 
-      const html = Strings.preprocessDescription(photo.description ?? photo.summary ?? '');
+      const html = Strings.preprocessDescription(
+        photo.description ?? photo.summary ?? "",
+      );
       if (html) {
         return m("td", m.trust(html));
       }

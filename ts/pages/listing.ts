@@ -10,8 +10,8 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 function AlbumsList() {
   return {
     view() {
-      const $albumComponents = [];
-
+      // TODO I don't know how to type this
+      const $albumComponents: any[] = [];
       return m("section.album-container", $albumComponents);
     },
   };

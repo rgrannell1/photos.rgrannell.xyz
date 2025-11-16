@@ -92,7 +92,8 @@ function AlbumsList() {
 
       const $albumComponents: m.Vnode<
         unknown,
-        unknown >[] = [];
+        unknown
+      >[] = [];
 
       // TODO this blocks render too long
       for (let idx = 0; idx < albums.length; idx++) {

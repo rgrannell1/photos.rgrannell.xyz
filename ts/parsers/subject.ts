@@ -1,13 +1,5 @@
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type {
-  Amphibian,
-  Bird,
-  Insect,
-  Mammal,
-  Reptile,
-  Subject,
-} from "../types.ts";
 import { KnownTypes } from "../constants.ts";
 import {
   AmphibianSchema,
@@ -27,7 +19,7 @@ import { safeParse } from "valibot";
 export function parseBird(
   _: TribbleDB,
   subject: TripleObject,
-): Bird | undefined {
+) {
   return parseObject(BirdSchema, "bird", subject);
 }
 
@@ -37,7 +29,7 @@ export function parseBird(
 export function parseMammal(
   _: TribbleDB,
   subject: TripleObject,
-): Mammal | undefined {
+) {
   return parseObject(MammalSchema, "mammal", subject);
 }
 
@@ -45,7 +37,7 @@ export function parseMammal(
 export function parseReptile(
   _: TribbleDB,
   subject: TripleObject,
-): Reptile | undefined {
+) {
   return parseObject(ReptileSchema, "reptile", subject);
 }
 
@@ -53,7 +45,7 @@ export function parseReptile(
 export function parseAmphibian(
   _: TribbleDB,
   subject: TripleObject,
-): Amphibian | undefined {
+) {
   return parseObject(AmphibianSchema, "amphibian", subject);
 }
 
@@ -61,7 +53,7 @@ export function parseAmphibian(
 export function parseInsect(
   _: TribbleDB,
   subject: TripleObject,
-): Insect | undefined {
+) {
   return parseObject(InsectSchema, "insect", subject);
 }
 
@@ -69,7 +61,7 @@ export function parseInsect(
 export function parseSubject(
   _: TribbleDB,
   subject: TripleObject,
-): Subject | undefined {
+) {
   const parsed = asUrn(subject.id as string);
 
   if (parsed.type === KnownTypes.BIRD) {
@@ -91,5 +83,5 @@ export function parseSubject(
     return;
   }
 
-  return result.output satisfies Subject;
+  return result.output;
 }

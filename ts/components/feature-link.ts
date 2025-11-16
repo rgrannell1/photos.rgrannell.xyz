@@ -13,7 +13,6 @@ export type FeatureLinkAttrs = {
  * Ideally, we'll extend the `thing` system to support more complex queries, which would
  * be needed here. The query would be "show all photos / videos" where the place has feature X, which
  * is more complex than the current system of "show all photos / videos" where the place is Y.
- *
  */
 export function FeatureLink() {
   return {
@@ -23,10 +22,11 @@ export function FeatureLink() {
 
       const name = one(thing.name) ?? id;
       const emoji = thingEmoji(urn, name, thing);
+      const text = `${emoji}\t${name}`;
 
       return m("p", {
         class: ["thing-link", `${type}-link`].join(" "),
-      }, `${emoji}\t${name}`);
+      }, text);
     },
   };
 }

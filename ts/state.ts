@@ -1,5 +1,4 @@
-
-import type { State, AppWindow } from "./types.ts";
+import type { AppWindow, State } from "./types.ts";
 import { DarkModes } from "./services/dark-mode.ts";
 import { loadTriples } from "./semantic/data.ts";
 import { deriveTriples, HARD_CODED_TRIPLES } from "./semantic/derive.ts";
@@ -13,8 +12,8 @@ import {
   readReptile,
 } from "./services/subjects.ts";
 import {
-  readPhotos,
   readPhoto,
+  readPhotos,
   readPhotosByThingIds,
 } from "./services/photos.ts";
 import { readThing, readThings, toThingLinks } from "./services/things.ts";
@@ -22,9 +21,9 @@ import {
   readCountry,
   readLocation,
   readLocations,
-  readUnescos,
   readPlace,
   readUnesco,
+  readUnescos,
 } from "./services/location.ts";
 import { readVideo } from "./services/videos.ts";
 import { readFeatures } from "./services/features.ts";
@@ -32,7 +31,6 @@ import { readFeatures } from "./services/features.ts";
 /*
  * Load data from the tribbles file.
  * This is ccurrently done in a single blocking load which is not efficient.
- *
  */
 async function loadData() {
   const schema = {};

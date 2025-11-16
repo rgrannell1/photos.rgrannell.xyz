@@ -98,7 +98,7 @@ export const CDN_RELATIONS = new Set([
  */
 export const RelationSymmetries = [
   [KnownRelations.IN, KnownRelations.CONTAINS],
-  [KnownRelations.CONTAINS_ALBUM, KnownRelations.TRIP]
+  [KnownRelations.CONTAINS_ALBUM, KnownRelations.TRIP],
 ];
 
 /*

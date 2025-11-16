@@ -21,7 +21,9 @@ function Heading() {
   };
 }
 
-/* */
+/*
+ * Display the camera model
+ */
 function CameraModel() {
   return {
     view(vnode: m.Vnode<ExifDataAttrs>) {
@@ -37,6 +39,9 @@ function CameraModel() {
   };
 }
 
+/*
+ * Display the image dimensions
+ */
 function ExifDimensions() {
   return {
     view(vnode: m.Vnode<ExifDataAttrs>) {
@@ -51,6 +56,9 @@ function ExifDimensions() {
   };
 }
 
+/*
+ * Display the lens focal length
+ */
 function FocalLength() {
   return {
     view(vnode: m.Vnode<ExifDataAttrs>) {
@@ -68,12 +76,17 @@ function FocalLength() {
   };
 }
 
+/*
+ * Display the shutter speed
+ */
 function ShutterSpeed() {
   return {
     view(vnode: m.Vnode<ExifDataAttrs>) {
       const { photo } = vnode.attrs;
-      if (typeof photo.exposureTime === "string") {
-        const parsed = parseFloat(photo.exposureTime);
+      const { exposureTime } = photo;
+
+      if (typeof exposureTime === "string") {
+        const parsed = parseFloat(exposureTime);
         if (isNaN(parsed)) {
           return m("td", "Unknown");
         } else if (parsed >= 1) {
@@ -88,6 +101,9 @@ function ShutterSpeed() {
   };
 }
 
+/*
+ * Display the aperture (f-stop)
+ */
 function Aperture() {
   return {
     view(vnode: m.Vnode<ExifDataAttrs>) {

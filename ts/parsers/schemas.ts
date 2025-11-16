@@ -31,10 +31,12 @@ export const AlbumSchema = v.object({
   minDate: v.string(),
   maxDate: v.string(),
   thumbnailUrl: v.string(),
+  // TODO
   mosaic: v.any(),
   id: v.string(),
   photosCount: v.string(),
   videosCount: v.string(),
+  // TODO
   flags: v.any(),
   description: v.optional(v.string()),
 });

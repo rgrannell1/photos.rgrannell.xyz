@@ -10,10 +10,8 @@ import { readCountries } from "../ts/services/location.ts";
 
 const tdb = await loadTribbles();
 
-
-
 Deno.test("All countries are named and have a flag", () => {
-  const countries = tdb.search({ source: { type: 'country' } }).sources();
+  const countries = tdb.search({ source: { type: "country" } }).sources();
 
-  readCountries(tdb, countries)
+  readCountries(tdb, countries);
 });

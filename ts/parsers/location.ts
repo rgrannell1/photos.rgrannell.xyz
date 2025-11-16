@@ -1,7 +1,6 @@
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { KnownTypes } from "../constants.ts";
-import type { Country, Place, Unesco } from "../types.ts";
 import { readThing } from "../services/things.ts";
 import { arrayify } from "../commons/arrays.ts";
 import { CountrySchema, PlaceSchema, UnescoSchema } from "./schemas.ts";
@@ -9,11 +8,13 @@ import { parseObject } from "./parser.ts";
 import { logParseWarning } from "../commons/logger.ts";
 import { safeParse } from "valibot";
 
+// TODO type this more strongly
+
 /* */
 export function parsePlace(
   tdb: TribbleDB,
   place: TripleObject,
-): Place | undefined {
+) {
   const result = safeParse(PlaceSchema, place);
   if (!result.success) {
     logParseWarning(result.issues);
@@ -46,14 +47,14 @@ export function parsePlace(
 export function parseCountry(
   _: TribbleDB,
   country: TripleObject,
-): Country | undefined {
+) {
   return parseObject(CountrySchema, "country", country);
 }
 
 export function parseUnesco(
   _: TribbleDB,
   unesco: TripleObject,
-): Unesco | undefined {
+) {
   return parseObject(UnescoSchema, "unesco", unesco);
 }
 
@@ -64,7 +65,7 @@ export function parseUnesco(
 export function parseLocation(
   tdb: TribbleDB,
   location: TripleObject,
-): Country | Place | undefined {
+) {
   if (!location.id) {
     return undefined;
   }
@@ -75,6 +76,8 @@ export function parseLocation(
     return parsePlace(tdb, location);
   } else if (id.type === KnownTypes.COUNTRY) {
     return parseCountry(tdb, location);
+  } else if (id.type === KnownTypes.UNESCO) {
+    return parseUnesco(tdb, location);
   }
 
   return undefined;

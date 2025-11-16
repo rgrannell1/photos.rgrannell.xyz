@@ -1,5 +1,18 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { loadServices } from "./state.ts";
+import type { parseAlbum } from "./parsers/album.ts";
+import type { parsePhoto } from "./parsers/photo.ts";
+import type { parseVideo } from "./parsers/video.ts";
+import type { parsePlace } from "./parsers/location.ts";
+import type { parseCountry } from "./parsers/location.ts";
+import type { parseUnesco } from "./parsers/location.ts";
+import type { parseSubject } from "./parsers/subject.ts";
+import type { parseBird } from "./parsers/subject.ts";
+import type { parseMammal } from "./parsers/subject.ts";
+import type { parseReptile } from "./parsers/subject.ts";
+import type { parseAmphibian } from "./parsers/subject.ts";
+import type { parseInsect } from "./parsers/subject.ts";
+import type { parseFeature } from "./parsers/feature.ts";
 
 export type ApplicationEvents =
   | "click_burger_menu"
@@ -29,10 +42,8 @@ export type Stats = {
   unesco_sites: number;
 };
 
-/*
- *
- */
-export type Services = ReturnType<typeof loadServices>
+/* */
+export type Services = ReturnType<typeof loadServices>;
 
 /*
  * Application-wide state.
@@ -54,132 +65,21 @@ export type State = {
  * TribbleDB is untyped; it provides triples not objects. So we'll parse triples onto these data-structures.
  */
 
-export type Album = {
-  name: string;
-  trip: string | undefined;
-  minDate: number;
-  maxDate: number;
-  thumbnailUrl: string;
-  mosaicColours: string;
-  id: string;
-  photosCount: number;
-  videosCount: number;
-  description: string;
-  countries: Country[];
-};
+export type Album = NonNullable<ReturnType<typeof parseAlbum>>;
+export type Photo = NonNullable<ReturnType<typeof parsePhoto>>;
+export type Video = NonNullable<ReturnType<typeof parseVideo>>;
+export type Place = NonNullable<ReturnType<typeof parsePlace>>;
+export type Country = NonNullable<ReturnType<typeof parseCountry>>;
+export type Unesco = NonNullable<ReturnType<typeof parseUnesco>>;
+export type Subject = NonNullable<ReturnType<typeof parseSubject>>;
+export type Bird = NonNullable<ReturnType<typeof parseBird>>;
+export type Mammal = NonNullable<ReturnType<typeof parseMammal>>;
+export type Reptile = NonNullable<ReturnType<typeof parseReptile>>;
+export type Amphibian = NonNullable<ReturnType<typeof parseAmphibian>>;
+export type Insect = NonNullable<ReturnType<typeof parseInsect>>;
+export type Feature = NonNullable<ReturnType<typeof parseFeature>>;
 
-export type Photo = {
-  albumId: string;
-  country?: string | string[];
-  createdAt: string;
-  exposureTime?: string;
-  fStop?: string;
-  focalLength?: string;
-  fullImage: string;
-  height?: string;
-  id: string;
-  iso?: string;
-  location?: string | string[];
-  midImageLossyUrl: string;
-  model?: string;
-  mosaicColours: string;
-  pngUrl: string;
-  rating?: string;
-  style?: string;
-  thumbnailUrl: string;
-  width?: string;
-  subject?: string | string[];
-  contrastingGrey: string;
-
-  // TODO.
-  description?: string;
-  summary?: string;
-};
-
-export type Video = {
-  id: string;
-  albumId: string;
-  description: string;
-  posterUrl: string;
-  videoUrl480p: string;
-  videoUrl720p: string;
-  videoUrl1080p: string;
-  videoUrlUnscaled: string;
-};
-
-export type Place = {
-  id: string;
-  type: "place";
-  name: string;
-  feature?: string | string[];
-  in?: (Place | Country)[]; // NOTE: deep-parsed by default
-  shortName?: string;
-  wikipedia?: string;
-  unescoId?: string;
-};
-
-export type Country = {
-  id: string;
-  type: "country";
-  flag?: string;
-  name: string;
-  contains?: string | string[];
-  in?: string | string[];
-};
-
-export type Unesco = {
-  id: string;
-  name?: string;
-  longitude?: string;
-  latitude?: string;
-};
-
-export type Subject = {
-  id: string;
-  name?: string;
-  wikipedia?: string;
-};
-
-export type Bird = {
-  type: "bird";
-  id: string;
-  name?: string;
-  wikipedia?: string;
-};
-
-export type Mammal = {
-  type: "mammal";
-  id: string;
-  name?: string;
-  wikipedia?: string;
-};
-
-export type Reptile = {
-  type: "reptile";
-  id: string;
-  name?: string;
-  wikipedia?: string;
-};
-
-export type Amphibian = {
-  type: "amphibian";
-  id: string;
-  name?: string;
-  wikipedia?: string;
-};
-
-export type Insect = {
-  type: "insect";
-  id: string;
-  name?: string;
-  wikipedia?: string;
-};
-
-export type Feature = {
-  id: string;
-  name?: string;
-};
-
+// TODO patch this
 export function isACountry(place: Place | Country): place is Country {
   return (place as Country).type === "country";
 }

@@ -1,4 +1,4 @@
-import { Triple } from "@rgrannell1/tribbledb";
+import type { Triple } from "@rgrannell1/tribbledb";
 
 /* */
 export class Triples {

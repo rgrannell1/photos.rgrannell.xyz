@@ -1,5 +1,5 @@
 import m from "mithril";
-import { SCROLL_HIDE_THRESHOLD } from "../constants";
+import { SCROLL_HIDE_THRESHOLD } from "../constants.ts";
 
 type DateEntry = {
   position: DOMRect;

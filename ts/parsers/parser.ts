@@ -1,18 +1,23 @@
-
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { logParseWarning } from "../commons/logger.ts";
-import { safeParse } from "valibot";
+import { type BaseSchema, type InferOutput, safeParse } from "valibot";
 
-export function parseObject<T>(
-  schema: any, // TODO
-  type: string,
+export function parseObject<
+  TSchema extends BaseSchema<unknown, unknown, any>,
+  TType extends string,
+>(
+  schema: TSchema,
+  type: TType,
   object: TripleObject,
-): T | undefined {
+): (InferOutput<TSchema> & { type: TType }) | undefined {
   const result = safeParse(schema, object);
+
   if (!result.success) {
     logParseWarning(result.issues);
     return;
   }
 
-  return { ...result.output, type } satisfies T;
+  return { ...result.output as any, type } as InferOutput<TSchema> & {
+    type: TType;
+  };
 }

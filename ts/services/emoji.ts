@@ -13,7 +13,7 @@ import {
  * @param thing The place
  */
 export function placeEmoji(thing: any): string {
-  const feature = one(thing.feature);
+  const feature = one(thing.features);
   const { id: featureId } = asUrn(feature);
 
   if (
@@ -81,6 +81,8 @@ function cameraEmoji(thing: any): string {
 /* */
 export function thingEmoji(urn: string, name: string, thing: any): string {
   const { type } = asUrn(urn);
+
+  console.log({urn, name, thing})
 
   switch (type) {
     case KnownTypes.PLACE:

@@ -1,5 +1,5 @@
 import m from "mithril";
-import type { Video } from "../types";
+import type { Video } from "../types.ts";
 
 export type VideoAttrs = {
   preload: string;

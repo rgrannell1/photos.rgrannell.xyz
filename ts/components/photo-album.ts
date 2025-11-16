@@ -20,9 +20,9 @@ function TripTag() {
 
       // two colours supported
       const tripIndex = TRIPS.indexOf(trip);
-      return m("div.trip-tag .trip-color-" + (tripIndex % 2) );
-    }
-  }
+      return m("div.trip-tag .trip-color-" + (tripIndex % 2));
+    },
+  };
 }
 
 export type PhotoAlbumAttrs = {
@@ -48,7 +48,7 @@ export function PhotoAlbum() {
         child,
         minDate,
         onclick,
-        trip
+        trip,
       } = vnode.attrs;
 
       return m("div.photo-album", { "data-min-date": minDate }, [
@@ -59,7 +59,6 @@ export function PhotoAlbum() {
           thumbnailDataUrl,
           loading,
           onclick,
-          trip
         }),
         // NODE this might be broken
         child,

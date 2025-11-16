@@ -2,7 +2,6 @@ import { asInt } from "../commons/numbers.ts";
 import { namesToUrns } from "../semantic/names.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type { Album } from "../types.ts";
 import { arrayify } from "../commons/arrays.ts";
 import { readCountries } from "../services/location.ts";
 import { AlbumSchema } from "./schemas.ts";
@@ -16,7 +15,7 @@ import { logParseWarning } from "../commons/logger.ts";
  * @param album The raw album object from the TribbleDB.
  * @returns The parsed album.
  */
-export function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
+export function parseAlbum(tdb: TribbleDB, album: TripleObject) {
   const result = safeParse(AlbumSchema, album);
   if (!result.success) {
     logParseWarning(result.issues);
@@ -28,6 +27,7 @@ export function parseAlbum(tdb: TribbleDB, album: TripleObject): Album {
   const countries = readCountries(tdb, namesToUrns(tdb, countryNames));
 
   return {
+    type: 'album',
     name: data.name,
     trip: data.trip,
     minDate: asInt(data.minDate),

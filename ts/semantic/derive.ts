@@ -274,16 +274,16 @@ const TREE_STATE = {
   nodes: new Map<string, {
     id: string;
     parents: Set<string>;
-  }>,
+  }>(),
   // used later to detect whether a node is a leaf
-  branchIds: new Set<string>()
-}
+  branchIds: new Set<string>(),
+};
 
 /*
  * Construct a location tree based on `in` relations.
  */
 export function buildLocationTrees(
-  triple: Triple
+  triple: Triple,
 ) {
   const [src, rel, tgt] = triple;
 
@@ -349,7 +349,7 @@ export function deriveTriples(
     addYear,
     addInverseRelations,
     expandTripleCuries,
-    buildLocationTrees
+    buildLocationTrees,
   ];
 
   let outputTriples: Triple[] = [triple];
@@ -407,8 +407,8 @@ export function addNestedLocations(): Triple[] {
             continue;
           }
 
-          triples.push([ src, KnownRelations.IN, tgt ])
-          triples.push([ tgt, KnownRelations.CONTAINS, src ])
+          triples.push([src, KnownRelations.IN, tgt]);
+          triples.push([tgt, KnownRelations.CONTAINS, src]);
         }
       }
     } else {
@@ -417,7 +417,7 @@ export function addNestedLocations(): Triple[] {
       }
     }
 
-    return triples
+    return triples;
   }
 
   const triples: Triple[] = [];

@@ -1,7 +1,7 @@
 import m from "mithril";
-import { one } from "../commons/arrays";
-import type { Services } from "../types";
-import { ThingLink } from "./thing-link";
+import { one } from "../commons/arrays.ts";
+import type { Services } from "../types.ts";
+import { ThingLink } from "./thing-link.ts";
 
 type PlacesListAttrs = {
   urns: Set<string>;

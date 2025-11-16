@@ -95,18 +95,24 @@ function ThingMetadata() {
       // The non-wildcard case
 
       if (thing.feature) {
-        metadata["Place Type"] = m(FeaturesList, { urns: setify(thing.feature), services });
+        metadata["Place Type"] = m(FeaturesList, {
+          urns: setify(thing.feature),
+          services,
+        });
       }
 
       if (thing.contains) {
-        metadata["Contains"] = m(PlacesList, { services, urns: setify(thing.contains) });
+        metadata["Contains"] = m(PlacesList, {
+          services,
+          urns: setify(thing.contains),
+        });
       }
 
       if (thing.unescoId) {
         metadata["UNESCO"] = m(UnescoList, {
           urns: new Set(arrayify(thing.unescoId)),
           services,
-        })
+        });
       }
 
       // TODO add `seen in`, first photographed

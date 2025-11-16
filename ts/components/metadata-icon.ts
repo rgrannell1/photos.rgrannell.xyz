@@ -19,8 +19,8 @@ function InfoSVG() {
           fill: colour,
         }),
       ]);
-    }
-  }
+    },
+  };
 }
 
 type MetadataIconAttrs = {
