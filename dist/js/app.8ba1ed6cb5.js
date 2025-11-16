@@ -1667,7 +1667,7 @@ function RSSIcon() {
   });
   return {
     view() {
-      return (0, import_mithril.default)("a.rss", { title: "rss", href: "/manifest/atom-index.xml" }, [
+      return (0, import_mithril.default)("a.rss", { title: "rss", href: "/manifest/atom/atom-index.xml" }, [
         (0, import_mithril.default)("svg", {
           alt: "rss",
           width: "25px",

@@ -38,7 +38,7 @@ function RSSIcon() {
 
   return {
     view() {
-      return m("a.rss", { title: "rss", href: "/manifest/atom-index.xml" }, [
+      return m("a.rss", { title: "rss", href: "/manifest/atom/atom-index.xml" }, [
         m("svg", {
           alt: "rss",
           width: "25px",
