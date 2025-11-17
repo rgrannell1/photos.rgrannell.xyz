@@ -5847,21 +5847,19 @@ function AlbumsApp() {
     oninit() {
     },
     view() {
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : void 0 },
-          [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(AlbumsPage, {
-                albums: readAllAlbums(state.data)
-              })
-            ])
-          ]
-        )
-      ]);
+      return (0, import_mithril34.default)(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : void 0 },
+        [
+          (0, import_mithril34.default)(Header, state),
+          (0, import_mithril34.default)("div.app-container", [
+            (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril34.default)(AlbumsPage, {
+              albums: readAllAlbums(state.data)
+            })
+          ])
+        ]
+      );
     }
   };
 }
@@ -5885,86 +5883,78 @@ function AlbumApp() {
         state.data,
         state.currentAlbum
       );
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : void 0 },
-          [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(AlbumPage, {
-                album,
-                subjects,
-                locations,
-                photos,
-                videos
-              })
-            ])
-          ]
-        )
-      ]);
+      return (0, import_mithril34.default)(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : void 0 },
+        [
+          (0, import_mithril34.default)(Header, state),
+          (0, import_mithril34.default)("div.app-container", [
+            (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril34.default)(AlbumPage, {
+              album,
+              subjects,
+              locations,
+              photos,
+              videos
+            })
+          ])
+        ]
+      );
     }
   };
 }
 function AboutApp() {
   return {
     view() {
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : void 0 },
-          [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(AboutPage)
-            ])
-          ]
-        )
-      ]);
+      return (0, import_mithril34.default)(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : void 0 },
+        [
+          (0, import_mithril34.default)(Header, state),
+          (0, import_mithril34.default)("div.app-container", [
+            (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril34.default)(AboutPage)
+          ])
+        ]
+      );
     }
   };
 }
 function VideosApp() {
   return {
     view() {
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : void 0 },
-          [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(VideosPage, {
-                videos: readAllVideos(state.data)
-              })
-            ])
-          ]
-        )
-      ]);
+      return (0, import_mithril34.default)(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : void 0 },
+        [
+          (0, import_mithril34.default)(Header, state),
+          (0, import_mithril34.default)("div.app-container", [
+            (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril34.default)(VideosPage, {
+              videos: readAllVideos(state.data)
+            })
+          ])
+        ]
+      );
     }
   };
 }
 function PhotosApp() {
   return {
     view() {
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : void 0 },
-          [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(PhotosPage, {
-                photos: readAllPhotos(state.data)
-              })
-            ])
-          ]
-        )
-      ]);
+      return (0, import_mithril34.default)(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : void 0 },
+        [
+          (0, import_mithril34.default)(Header, state),
+          (0, import_mithril34.default)("div.app-container", [
+            (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril34.default)(PhotosPage, {
+              photos: readAllPhotos(state.data)
+            })
+          ])
+        ]
+      );
     }
   };
 }
@@ -5986,23 +5976,21 @@ function ThingApp() {
       if (!state.currentUrn) {
         return (0, import_mithril34.default)("p", "No thing selected");
       }
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : void 0 },
-          [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(ThingPage, {
-                urn: state.currentUrn,
-                things,
-                services: state.services
-              })
-            ])
-          ]
-        )
-      ]);
+      return (0, import_mithril34.default)(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : void 0 },
+        [
+          (0, import_mithril34.default)(Header, state),
+          (0, import_mithril34.default)("div.app-container", [
+            (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril34.default)(ThingPage, {
+              urn: state.currentUrn,
+              things,
+              services: state.services
+            })
+          ])
+        ]
+      );
     }
   };
 }
@@ -6020,19 +6008,17 @@ function PhotoApp() {
       if (!photo) {
         return (0, import_mithril34.default)("p", "Photo not found");
       }
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : void 0 },
-          [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(PhotoPage, { photo, services: state.services })
-            ])
-          ]
-        )
-      ]);
+      return (0, import_mithril34.default)(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : void 0 },
+        [
+          (0, import_mithril34.default)(Header, state),
+          (0, import_mithril34.default)("div.app-container", [
+            (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril34.default)(PhotoPage, { photo, services: state.services })
+          ])
+        ]
+      );
     }
   };
 }
@@ -6047,22 +6033,20 @@ function ListingApp() {
         return (0, import_mithril34.default)("p", "No type selected");
       }
       const things = readNamedTypeThings(state.data, state.currentType);
-      return (0, import_mithril34.default)("body", [
-        (0, import_mithril34.default)(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : void 0 },
-          [
-            (0, import_mithril34.default)(Header, state),
-            (0, import_mithril34.default)("div.app-container", [
-              (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
-              (0, import_mithril34.default)(ListingPage, {
-                type: state.currentType,
-                things
-              })
-            ])
-          ]
-        )
-      ]);
+      return (0, import_mithril34.default)(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : void 0 },
+        [
+          (0, import_mithril34.default)(Header, state),
+          (0, import_mithril34.default)("div.app-container", [
+            (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
+            (0, import_mithril34.default)(ListingPage, {
+              type: state.currentType,
+              things
+            })
+          ])
+        ]
+      );
     }
   };
 }
