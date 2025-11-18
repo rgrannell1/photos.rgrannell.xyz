@@ -1648,7 +1648,7 @@ function BurgerMenu() {
   };
   return {
     view() {
-      return (0, import_mithril.default)("a", { href: "/", onclick }, (0, import_mithril.default)("span.burger", "\u039E"));
+      return (0, import_mithril.default)("a", { onclick }, (0, import_mithril.default)("span.burger", "\u039E"));
     }
   };
 }
@@ -1656,7 +1656,10 @@ function HeaderBrandText() {
   const BRAND_TEXT = "photos";
   return {
     view() {
-      return (0, import_mithril.default)("a", { href: "/" }, (0, import_mithril.default)("span.brand", BRAND_TEXT));
+      return (0, import_mithril.default)("a", {
+        href: "#/",
+        onclick: () => navigate("/")
+      }, (0, import_mithril.default)("span.brand", BRAND_TEXT));
     }
   };
 }

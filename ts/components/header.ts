@@ -1,11 +1,13 @@
 import m from "mithril";
-import { broadcast } from "../commons/events.ts";
+import { broadcast, navigate } from "../commons/events.ts";
 
 type HeaderAttrs = {
   darkMode: boolean;
 };
 
-/* */
+/*
+ * The sidebar menu
+ */
 function BurgerMenu() {
   const onclick = (_: Event) => {
     broadcast("click_burger_menu", {});
@@ -13,23 +15,30 @@ function BurgerMenu() {
 
   return {
     view() {
-      return m("a", { href: "/", onclick }, m("span.burger", "Ξ"));
+      return m("a", { onclick }, m("span.burger", "Ξ"));
     },
   };
 }
 
-/* */
+/*
+ * The link to the homepage
+ */
 function HeaderBrandText() {
   const BRAND_TEXT = "photos";
 
   return {
     view() {
-      return m("a", { href: "/" }, m("span.brand", BRAND_TEXT));
+      return m("a", {
+        href: "#/",
+        onclick: () => navigate('/')
+      }, m("span.brand", BRAND_TEXT));
     },
   };
 }
 
-/* */
+/*
+ * The RSS icon. Roughly, 🛜
+ */
 function RSSIcon() {
   const SVG_PATH = m("path", {
     fill: "#ff9132",
