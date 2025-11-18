@@ -14,7 +14,7 @@ import { minify as cssoMinify } from "npm:csso";
 import { TribbleStringifier } from "@rgrannell1/tribbledb";
 
 export async function buildExpandedTribbles() {
-  console.info("🌐 Rendering expanded tribbles")
+  console.info("🌐 Rendering expanded tribbles");
 
   const tribble = new TribbleStringifier();
 

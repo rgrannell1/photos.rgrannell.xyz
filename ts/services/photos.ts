@@ -2,9 +2,7 @@ import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { Location, Photo, Subject } from "../types.ts";
 import { parsePhoto } from "../parsers/photo.ts";
-import { readParsedThing, readParsedThings } from "./things.ts";
-import { readSubjects } from "./subjects.ts";
-import { readLocations } from "./location.ts";
+import { readLocations, readPhotos, readSubjects } from "./readers.ts";
 
 const coloursCache: Map<string, string> = new Map();
 
@@ -128,17 +126,3 @@ export function readPhotosByThingIds(
 
   return readPhotos(tdb, photoIds);
 }
-
-export const readPhoto = (
-  tdb: TribbleDB,
-  id: string,
-) => {
-  return readParsedThing(parsePhoto, tdb, id);
-};
-
-export const readPhotos = (
-  tdb: TribbleDB,
-  urns: Set<string>,
-) => {
-  return readParsedThings(parsePhoto, tdb, urns);
-};

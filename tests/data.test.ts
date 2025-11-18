@@ -4,7 +4,7 @@
  */
 
 import { loadTribbles } from "../ts/build/loaders.ts";
-import { readCountries } from "../ts/services/location.ts";
+import { readCountries } from "../ts/services/readers.ts";
 
 const tdb = await loadTribbles();
 

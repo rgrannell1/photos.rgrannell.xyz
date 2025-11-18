@@ -3,7 +3,7 @@ import { namesToUrns } from "../semantic/names.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { arrayify } from "../commons/arrays.ts";
-import { readCountries } from "../services/location.ts";
+import { readCountries } from "../services/readers.ts";
 import { AlbumSchema } from "./schemas.ts";
 import { safeParse } from "valibot";
 import { logParseWarning } from "../commons/logger.ts";

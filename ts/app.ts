@@ -9,7 +9,6 @@ import { loadState } from "./state.ts";
 import { Sidebar } from "./components/sidebar.ts";
 import { AlbumsPage } from "./pages/albums.ts";
 import {
-  readAlbum,
   readAlbumPhotosByAlbumId,
   readAlbumVideosByAlbumId,
   readAllAlbums,
@@ -24,7 +23,8 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
-import { readAllPhotos, readPhoto } from "./services/photos.ts";
+import { readAllPhotos } from "./services/photos.ts";
+import { readPhoto, readAlbum } from "./services/readers.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { readNamedTypeThings, readThing } from "./services/things.ts";
 import type { Album } from "./types.ts";
@@ -46,7 +46,7 @@ listen("switch_theme", () => {
 
 listen("click_burger_menu", () => {
   state.sidebarVisible = !state.sidebarVisible;
-})
+});
 
 /* */
 export function AlbumsApp(): m.Component<AppAttrs> {
@@ -55,19 +55,19 @@ export function AlbumsApp(): m.Component<AppAttrs> {
     },
     view() {
       return m(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : undefined },
-          [
-            m(Header, state),
-            m("div.app-container", [
-              m(Sidebar, { visible: state.sidebarVisible }),
-              m(AlbumsPage, {
-                albums: readAllAlbums(state.data),
-              }),
-            ]),
-          ],
-        )
-    }
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(AlbumsPage, {
+              albums: readAllAlbums(state.data),
+            }),
+          ]),
+        ],
+      );
+    },
   };
 }
 
@@ -96,22 +96,22 @@ export function AlbumApp(): m.Component<AppAttrs> {
       );
 
       return m(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : undefined },
-          [
-            m(Header, state),
-            m("div.app-container", [
-              m(Sidebar, { visible: state.sidebarVisible }),
-              m(AlbumPage, {
-                album,
-                subjects,
-                locations,
-                photos,
-                videos,
-              }),
-            ]),
-          ],
-        )
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(AlbumPage, {
+              album,
+              subjects,
+              locations,
+              photos,
+              videos,
+            }),
+          ]),
+        ],
+      );
     },
   };
 }
@@ -121,17 +121,17 @@ export function AboutApp(): m.Component<AppAttrs> {
   return {
     view() {
       return m(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : undefined },
-          [
-            m(Header, state),
-            m("div.app-container", [
-              m(Sidebar, { visible: state.sidebarVisible }),
-              m(AboutPage),
-            ]),
-          ],
-        )
-    }
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(AboutPage),
+          ]),
+        ],
+      );
+    },
   };
 }
 
@@ -140,18 +140,18 @@ export function VideosApp(): m.Component<AppAttrs> {
   return {
     view() {
       return m(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : undefined },
-          [
-            m(Header, state),
-            m("div.app-container", [
-              m(Sidebar, { visible: state.sidebarVisible }),
-              m(VideosPage, {
-                videos: readAllVideos(state.data),
-              }),
-            ]),
-          ],
-        )
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(VideosPage, {
+              videos: readAllVideos(state.data),
+            }),
+          ]),
+        ],
+      );
     },
   };
 }
@@ -161,18 +161,18 @@ export function PhotosApp(): m.Component<AppAttrs> {
   return {
     view() {
       return m(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : undefined },
-          [
-            m(Header, state),
-            m("div.app-container", [
-              m(Sidebar, { visible: state.sidebarVisible }),
-              m(PhotosPage, {
-                photos: readAllPhotos(state.data),
-              }),
-            ]),
-          ],
-        );
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(PhotosPage, {
+              photos: readAllPhotos(state.data),
+            }),
+          ]),
+        ],
+      );
     },
   };
 }
@@ -201,21 +201,21 @@ export function ThingApp(): m.Component<AppAttrs> {
       }
 
       return m(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : undefined },
-          [
-            m(Header, state),
-            m("div.app-container", [
-              m(Sidebar, { visible: state.sidebarVisible }),
-              m(ThingPage, {
-                urn: state.currentUrn,
-                things,
-                services: state.services,
-              }),
-            ]),
-          ],
-        )
-      }
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(ThingPage, {
+              urn: state.currentUrn,
+              things,
+              services: state.services,
+            }),
+          ]),
+        ],
+      );
+    },
   };
 }
 
@@ -237,19 +237,18 @@ export function PhotoApp(): m.Component<AppAttrs> {
       }
 
       return m(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : undefined },
-          [
-            m(Header, state),
-            m("div.app-container", [
-              m(Sidebar, { visible: state.sidebarVisible }),
-              m(PhotoPage, { photo, services: state.services }),
-            ])
-          ]
-        )
-    }
-
-  }
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(PhotoPage, { photo, services: state.services }),
+          ]),
+        ],
+      );
+    },
+  };
 }
 
 /* */
@@ -268,19 +267,19 @@ export function ListingApp(): m.Component<AppAttrs> {
       const things = readNamedTypeThings(state.data, state.currentType);
 
       return m(
-          "div.photos-app",
-          { class: state.darkMode ? "dark-mode" : undefined },
-          [
-            m(Header, state),
-            m("div.app-container", [
-              m(Sidebar, { visible: state.sidebarVisible }),
-              m(ListingPage, {
-                type: state.currentType,
-                things,
-              }),
-            ]),
-          ]
-        );
-    }
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(Header, state),
+          m("div.app-container", [
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(ListingPage, {
+              type: state.currentType,
+              things,
+            }),
+          ]),
+        ],
+      );
+    },
   };
 }

@@ -3094,58 +3094,6 @@ async function loadTriples(url2, schema = {}, fn = (x) => [x]) {
   return tdb;
 }
 
-// ts/commons/numbers.ts
-function asInt(value) {
-  if (typeof value === "number") {
-    return value;
-  }
-  return parseInt(value, 10);
-}
-
-// ts/semantic/names.ts
-var NAME_TO_URN_CACHE = /* @__PURE__ */ new Map();
-function namesToUrns(tdb2, names) {
-  const urns = /* @__PURE__ */ new Set();
-  if (names.size === 0) {
-    return urns;
-  }
-  for (const name of names) {
-    if (NAME_TO_URN_CACHE.has(name)) {
-      const cachedUrn = NAME_TO_URN_CACHE.get(name);
-      if (cachedUrn) {
-        urns.add(cachedUrn);
-      }
-    }
-  }
-  if (urns.size === names.size) {
-    return urns;
-  }
-  const namesCursor = tdb2.search({
-    relation: KnownRelations.NAME,
-    target: Array.from(names)
-  });
-  for (const [urn, _, name] of namesCursor.triples()) {
-    if (names.has(name)) {
-      urns.add(urn);
-    }
-  }
-  return urns;
-}
-
-// ts/commons/arrays.ts
-function arrayify(value) {
-  if (value === void 0) {
-    return [];
-  }
-  return Array.isArray(value) ? value : [value];
-}
-function one(value) {
-  if (value === void 0) {
-    return void 0;
-  }
-  return Array.isArray(value) ? value[0] : value;
-}
-
 // node_modules/valibot/dist/index.js
 var store;
 // @__NO_SIDE_EFFECTS__
@@ -3736,58 +3684,25 @@ ${JSON.stringify(issue.path, null, 2)}
   console.trace();
 }
 
-// ts/parsers/parser.ts
-function parseObject(schema, type, object2) {
-  const result = safeParse(schema, object2);
-  if (!result.success) {
-    logParseWarning(result.issues);
-    return;
-  }
-  return { ...result.output, type };
-}
-
-// ts/parsers/location.ts
-function parsePlace(tdb2, place) {
-  const result = safeParse(PlaceSchema, place);
-  if (!result.success) {
-    logParseWarning(result.issues);
-    return;
-  }
-  const refs = arrayify(result.output.in);
-  const lookedUpRefs = readLocations(tdb2, new Set(refs));
-  return {
-    ...result.output,
-    type: "place",
-    in: lookedUpRefs
-    // TODO
-  };
-}
-function parseCountry(_, country) {
-  return parseObject(CountrySchema, "country", country);
-}
-function parseUnesco(_, unesco) {
-  return parseObject(UnescoSchema, "unesco", unesco);
-}
-function parseLocation(tdb2, location2) {
-  if (!location2.id) {
-    return void 0;
-  }
-  const id = asUrn(location2.id);
-  if (id.type === KnownTypes.PLACE) {
-    return parsePlace(tdb2, location2);
-  } else if (id.type === KnownTypes.COUNTRY) {
-    return parseCountry(tdb2, location2);
-  } else if (id.type === KnownTypes.UNESCO) {
-    return parseUnesco(tdb2, location2);
-  }
-  return void 0;
-}
-
 // ts/services/things.ts
 var import_mithril3 = __toESM(require_mithril());
 
 // ts/components/thing-link.ts
 var import_mithril2 = __toESM(require_mithril());
+
+// ts/commons/arrays.ts
+function arrayify(value) {
+  if (value === void 0) {
+    return [];
+  }
+  return Array.isArray(value) ? value : [value];
+}
+function one(value) {
+  if (value === void 0) {
+    return void 0;
+  }
+  return Array.isArray(value) ? value[0] : value;
+}
 
 // ts/services/emoji.ts
 function placeEmoji(thing) {
@@ -3927,56 +3842,116 @@ function toThingLinks(tdb2, urns) {
   });
 }
 
-// ts/services/location.ts
-var readCountry = (tdb2, id) => {
-  return readParsedThing(
-    parseCountry,
-    tdb2,
-    id
-  );
-};
-var readPlace = (tdb2, id) => {
-  return readParsedThing(
-    parsePlace,
-    tdb2,
-    id
-  );
-};
-var readLocation = (tdb2, id) => {
-  return readParsedThing(
-    parseLocation,
-    tdb2,
-    id
-  );
-};
-var readUnesco = (tdb2, id) => {
-  return readParsedThing(
-    parseUnesco,
-    tdb2,
-    id
-  );
-};
-var readCountries = (tdb2, urns) => {
-  return readParsedThings(
-    parseCountry,
-    tdb2,
-    urns
-  );
-};
-var readLocations = (tdb2, urns) => {
-  return readParsedThings(
-    parseLocation,
-    tdb2,
-    urns
-  );
-};
-var readUnescos = (tdb2, urns) => {
-  return readParsedThings(
-    parseUnesco,
-    tdb2,
-    urns
-  );
-};
+// ts/parsers/parser.ts
+function parseObject(schema, type, object2) {
+  const result = safeParse(schema, object2);
+  if (!result.success) {
+    logParseWarning(result.issues);
+    return;
+  }
+  return { ...result.output, type };
+}
+function readOne(parser) {
+  return (tdb2, id) => {
+    return readParsedThing(parser, tdb2, id);
+  };
+}
+function readMany(parser) {
+  return (tdb2, urns) => {
+    return readParsedThings(parser, tdb2, urns);
+  };
+}
+function readers(parser) {
+  return {
+    one: readOne(parser),
+    many: readMany(parser)
+  };
+}
+
+// ts/parsers/photo.ts
+function parsePhoto(_, photo) {
+  return parseObject(PhotoSchema, "photo", photo);
+}
+
+// ts/parsers/location.ts
+function parsePlace(tdb2, place) {
+  const result = safeParse(PlaceSchema, place);
+  if (!result.success) {
+    logParseWarning(result.issues);
+    return;
+  }
+  const refs = arrayify(result.output.in);
+  const lookedUpRefs = readLocations(tdb2, new Set(refs));
+  return {
+    ...result.output,
+    type: "place",
+    in: lookedUpRefs
+    // TODO
+  };
+}
+function parseCountry(_, country) {
+  return parseObject(CountrySchema, "country", country);
+}
+function parseUnesco(_, unesco) {
+  return parseObject(UnescoSchema, "unesco", unesco);
+}
+function parseLocation(tdb2, location2) {
+  if (!location2.id) {
+    return void 0;
+  }
+  const id = asUrn(location2.id);
+  if (id.type === KnownTypes.PLACE) {
+    return parsePlace(tdb2, location2);
+  } else if (id.type === KnownTypes.COUNTRY) {
+    return parseCountry(tdb2, location2);
+  } else if (id.type === KnownTypes.UNESCO) {
+    return parseUnesco(tdb2, location2);
+  }
+  return void 0;
+}
+
+// ts/parsers/feature.ts
+function parseFeature(_, feature) {
+  return parseObject(FeatureSchema, "feature", feature);
+}
+
+// ts/commons/numbers.ts
+function asInt(value) {
+  if (typeof value === "number") {
+    return value;
+  }
+  return parseInt(value, 10);
+}
+
+// ts/semantic/names.ts
+var NAME_TO_URN_CACHE = /* @__PURE__ */ new Map();
+function namesToUrns(tdb2, names) {
+  const urns = /* @__PURE__ */ new Set();
+  if (names.size === 0) {
+    return urns;
+  }
+  for (const name of names) {
+    if (NAME_TO_URN_CACHE.has(name)) {
+      const cachedUrn = NAME_TO_URN_CACHE.get(name);
+      if (cachedUrn) {
+        urns.add(cachedUrn);
+      }
+    }
+  }
+  if (urns.size === names.size) {
+    return urns;
+  }
+  const namesCursor = tdb2.search({
+    relation: KnownRelations.NAME,
+    target: Array.from(names)
+  });
+  for (const [urn, _, name] of namesCursor.triples()) {
+    if (names.has(name)) {
+      urns.add(urn);
+    }
+  }
+  return urns;
+}
 
 // ts/parsers/album.ts
 function parseAlbum(tdb2, album) {
@@ -4002,11 +3977,6 @@ function parseAlbum(tdb2, album) {
     description: data.description ?? "",
     countries
   };
-}
-
-// ts/parsers/photo.ts
-function parsePhoto(_, photo) {
-  return parseObject(PhotoSchema, "photo", photo);
 }
 
 // ts/parsers/subject.ts
@@ -4046,22 +4016,64 @@ function parseSubject(_, subject) {
   return result.output;
 }
 
-// ts/services/subjects.ts
-var readMammal = (tdb2, id) => {
-  return readParsedThing(parseMammal, tdb2, id);
-};
-var readReptile = (tdb2, id) => {
-  return readParsedThing(parseReptile, tdb2, id);
-};
-var readAmphibian = (tdb2, id) => {
-  return readParsedThing(parseMammal, tdb2, id);
-};
-var readInsect = (tdb2, id) => {
-  return readParsedThing(parseInsect, tdb2, id);
-};
-var readSubjects = (tdb2, urns) => {
-  return readParsedThings(parseSubject, tdb2, urns);
-};
+// ts/parsers/video.ts
+function parseVideo(_, video) {
+  return parseObject(VideoSchema, "video", video);
+}
+
+// ts/services/readers.ts
+var {
+  one: readFeature,
+  many: readFeatures
+} = readers(parseFeature);
+var {
+  one: readCountry,
+  many: readCountries
+} = readers(parseCountry);
+var {
+  one: readPlace,
+  many: readPlaces
+} = readers(parsePlace);
+var {
+  one: readLocation,
+  many: readLocations
+} = readers(parseLocation);
+var {
+  one: readUnesco,
+  many: readUnescos
+} = readers(parseUnesco);
+var {
+  one: readAlbum,
+  many: readAlbums
+} = readers(parseAlbum);
+var {
+  one: readMammal,
+  many: readMammals
+} = readers(parseMammal);
+var {
+  one: readReptile,
+  many: readReptiles
+} = readers(parseReptile);
+var {
+  one: readInsect,
+  many: readInsects
+} = readers(parseInsect);
+var {
+  one: readSubject,
+  many: readSubjects
+} = readers(parseSubject);
+var {
+  one: readAmphibian,
+  many: readAmphibians
+} = readers(parseAmphibian);
+var {
+  one: readVideo,
+  many: readVideos
+} = readers(parseVideo);
+var {
+  one: readPhoto,
+  many: readPhotos
+} = readers(parsePhoto);
 
 // ts/services/photos.ts
 var coloursCache = /* @__PURE__ */ new Map();
@@ -4156,31 +4168,6 @@ function readPhotosByThingIds(tdb2, thingsUrns) {
   }
   return readPhotos(tdb2, photoIds);
 }
-var readPhoto = (tdb2, id) => {
-  return readParsedThing(parsePhoto, tdb2, id);
-};
-var readPhotos = (tdb2, urns) => {
-  return readParsedThings(parsePhoto, tdb2, urns);
-};
-
-// ts/parsers/video.ts
-function parseVideo(_, video) {
-  return parseObject(VideoSchema, "video", video);
-}
-
-// ts/services/videos.ts
-var readVideo = (tdb2, id) => {
-  return readParsedThing(parseVideo, tdb2, id);
-};
-var readVideos = (tdb2, urns) => {
-  return readParsedThings(parseVideo, tdb2, urns);
-};
-function readAllVideos(tdb2) {
-  const videos = tdb2.search({
-    source: { type: "video" }
-  }).sources();
-  return readVideos(tdb2, videos);
-}
 
 // ts/services/albums.ts
 function albumYear(album) {
@@ -4239,30 +4226,6 @@ function readAlbumsByThingIds(tdb2, thingsUrns) {
   }
   return readAlbums(tdb2, albumIds);
 }
-var readAlbum = (tdb2, id) => {
-  return readParsedThing(
-    parseAlbum,
-    tdb2,
-    id
-  );
-};
-var readAlbums = (tdb2, urns) => {
-  return readParsedThings(parseAlbum, tdb2, urns);
-};
-
-// ts/parsers/feature.ts
-function parseFeature(_, feature) {
-  return parseObject(FeatureSchema, "feature", feature);
-}
-
-// ts/services/features.ts
-var readFeatures = (tdb2, urns) => {
-  return readParsedThings(
-    parseFeature,
-    tdb2,
-    urns
-  );
-};
 
 // ts/state.ts
 async function loadData() {
@@ -4961,6 +4924,14 @@ function VideosPage() {
       );
     }
   };
+}
+
+// ts/services/videos.ts
+function readAllVideos(tdb2) {
+  const videos = tdb2.search({
+    source: { type: "video" }
+  }).sources();
+  return readVideos(tdb2, videos);
 }
 
 // ts/pages/album.ts

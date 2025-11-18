@@ -4,29 +4,28 @@ import { loadTriples } from "./semantic/data.ts";
 import { deriveTriples, HARD_CODED_TRIPLES } from "./semantic/derive.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 
-import { readAlbum, readAlbumsByThingIds } from "./services/albums.ts";
+import { readAlbumsByThingIds } from "./services/albums.ts";
 import {
+  readAlbum,
   readAmphibian,
   readInsect,
   readMammal,
   readReptile,
-} from "./services/subjects.ts";
-import {
   readPhoto,
   readPhotos,
-  readPhotosByThingIds,
-} from "./services/photos.ts";
-import { readThing, readThings, toThingLinks } from "./services/things.ts";
-import {
   readCountry,
   readLocation,
   readLocations,
   readPlace,
   readUnesco,
   readUnescos,
-} from "./services/location.ts";
-import { readVideo } from "./services/videos.ts";
-import { readFeatures } from "./services/features.ts";
+  readVideo,
+  readFeatures
+} from "./services/readers.ts";
+import {
+  readPhotosByThingIds,
+} from "./services/photos.ts";
+import { readThing, readThings, toThingLinks } from "./services/things.ts";
 
 /*
  * Load data from the tribbles file.

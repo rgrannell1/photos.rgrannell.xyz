@@ -1,11 +1,10 @@
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { Album } from "../types.ts";
 import type { Photo, Video } from "../types.ts";
-import { parseAlbum } from "../parsers/album.ts";
-import { readPhotos, readThingsByPhotoIds } from "./photos.ts";
-import { readParsedThing, readParsedThings } from "./things.ts";
-import { readVideos } from "./videos.ts";
+import { readThingsByPhotoIds } from "./photos.ts";
+import { readPhotos } from "./readers.ts";
 import { KnownRelations, KnownTypes } from "../constants.ts";
+import { readAlbums, readVideos } from "./readers.ts";
 
 /*
  * Get the album date
@@ -122,21 +121,3 @@ export function readAlbumsByThingIds(
 
   return readAlbums(tdb, albumIds);
 }
-
-export const readAlbum = (
-  tdb: TribbleDB,
-  id: string,
-) => {
-  return readParsedThing(
-    parseAlbum,
-    tdb,
-    id,
-  );
-};
-
-export const readAlbums = (
-  tdb: TribbleDB,
-  urns: Set<string>,
-) => {
-  return readParsedThings(parseAlbum, tdb, urns);
-};

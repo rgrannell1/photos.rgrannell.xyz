@@ -6,7 +6,7 @@ import { CountrySchema, PlaceSchema, UnescoSchema } from "./schemas.ts";
 import { parseObject } from "./parser.ts";
 import { logParseWarning } from "../commons/logger.ts";
 import { type InferOutput, safeParse } from "valibot";
-import { readLocations } from "../services/location.ts";
+import { readLocations } from "../services/readers.ts";
 import type { Location } from "../types.ts";
 
 // TODO type this function more strongly

@@ -53,7 +53,8 @@ export type Services = ReturnType<typeof loadServices>;
 /*
  * Application-wide state.
  *
- * TODO make this a sum-type
+ * TODO make this a sum-type,
+ * since there's no need to have multiple current focuses at once in the type
  */
 export type State = {
   data: TribbleDB;
@@ -71,21 +72,33 @@ export type State = {
  */
 
 export type Album = NonNullable<ReturnType<typeof parseAlbum>>;
+
 export type Photo = NonNullable<ReturnType<typeof parsePhoto>>;
+
 export type Video = NonNullable<ReturnType<typeof parseVideo>>;
+
 export type Place = NonNullable<ReturnType<typeof parsePlace>>;
+
 export type Country = NonNullable<ReturnType<typeof parseCountry>>;
+
 export type Unesco = NonNullable<ReturnType<typeof parseUnesco>>;
-export type Location = Place | Country | Unesco;
+
 export type Subject = NonNullable<ReturnType<typeof parseSubject>>;
+
 export type Bird = NonNullable<ReturnType<typeof parseBird>>;
+
 export type Mammal = NonNullable<ReturnType<typeof parseMammal>>;
+
 export type Reptile = NonNullable<ReturnType<typeof parseReptile>>;
+
 export type Amphibian = NonNullable<ReturnType<typeof parseAmphibian>>;
+
 export type Insect = NonNullable<ReturnType<typeof parseInsect>>;
+
 export type Feature = NonNullable<ReturnType<typeof parseFeature>>;
 
-// TODO patch this
+export type Location = Place | Country | Unesco;
+
 export function isACountry(place: Place | Country): place is Country {
   return (place as Country).type === "country";
 }

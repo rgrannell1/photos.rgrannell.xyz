@@ -1,21 +1,6 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { Video } from "../types.ts";
-import { readParsedThing, readParsedThings } from "./things.ts";
-import { parseVideo } from "../parsers/video.ts";
-
-export const readVideo = (
-  tdb: TribbleDB,
-  id: string,
-) => {
-  return readParsedThing(parseVideo, tdb, id);
-};
-
-export const readVideos = (
-  tdb: TribbleDB,
-  urns: Set<string>,
-) => {
-  return readParsedThings(parseVideo, tdb, urns);
-};
+import { readVideos } from "./readers.ts";
 
 /*
  * Read and parse a video by URNs

@@ -1,4 +1,10 @@
-import { buildCSS, buildExpandedTribbles, buildHTML, buildSW, buildTS } from "./builders.ts";
+import {
+  buildCSS,
+  buildExpandedTribbles,
+  buildHTML,
+  buildSW,
+  buildTS,
+} from "./builders.ts";
 
 console.log("Building");
 
@@ -7,5 +13,5 @@ await Promise.all([
   buildSW(),
   buildCSS(),
   buildHTML(),
-  buildExpandedTribbles()
+  buildExpandedTribbles(),
 ]);
