@@ -1,61 +1,18 @@
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { KnownTypes } from "../constants.ts";
-import {
-  AmphibianSchema,
-  BirdSchema,
-  InsectSchema,
-  MammalSchema,
-  ReptileSchema,
-  SubjectSchema,
-} from "./schemas.ts";
-import { parseObject } from "./parser.ts";
+import { SubjectSchema } from "./schemas.ts";
 import { logParseWarning } from "../commons/logger.ts";
 import { safeParse } from "valibot";
+import {
+  parseAmphibian,
+  parseBird,
+  parseInsect,
+  parseMammal,
+  parseReptile,
+} from "./parsers.ts";
 
-/*
- * Parse a bird subject
- */
-export function parseBird(
-  _: TribbleDB,
-  subject: TripleObject,
-) {
-  return parseObject(BirdSchema, "bird", subject);
-}
-
-/*
- * Parse a mammal
- */
-export function parseMammal(
-  _: TribbleDB,
-  subject: TripleObject,
-) {
-  return parseObject(MammalSchema, "mammal", subject);
-}
-
-/* */
-export function parseReptile(
-  _: TribbleDB,
-  subject: TripleObject,
-) {
-  return parseObject(ReptileSchema, "reptile", subject);
-}
-
-/* */
-export function parseAmphibian(
-  _: TribbleDB,
-  subject: TripleObject,
-) {
-  return parseObject(AmphibianSchema, "amphibian", subject);
-}
-
-/* */
-export function parseInsect(
-  _: TribbleDB,
-  subject: TripleObject,
-) {
-  return parseObject(InsectSchema, "insect", subject);
-}
+// TODO swap
 
 /* */
 export function parseSubject(

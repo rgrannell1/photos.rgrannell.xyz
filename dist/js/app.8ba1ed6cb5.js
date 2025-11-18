@@ -3094,6 +3094,20 @@ async function loadTriples(url2, schema = {}, fn = (x) => [x]) {
   return tdb;
 }
 
+// ts/commons/logger.ts
+function logParseWarning(issues) {
+  const message = [];
+  for (const issue of issues) {
+    message.push(
+      `Parse warning @
+${JSON.stringify(issue.path, null, 2)}
+: ${issue.message}`
+    );
+  }
+  console.warn(message.join("\n"));
+  console.trace();
+}
+
 // node_modules/valibot/dist/index.js
 var store;
 // @__NO_SIDE_EFFECTS__
@@ -3551,6 +3565,202 @@ function safeParse(schema, input, config2) {
   };
 }
 
+// ts/services/things.ts
+var import_mithril3 = __toESM(require_mithril());
+
+// ts/components/thing-link.ts
+var import_mithril2 = __toESM(require_mithril());
+
+// ts/commons/arrays.ts
+function arrayify(value) {
+  if (value === void 0) {
+    return [];
+  }
+  return Array.isArray(value) ? value : [value];
+}
+function one(value) {
+  if (value === void 0) {
+    return void 0;
+  }
+  return Array.isArray(value) ? value[0] : value;
+}
+
+// ts/services/emoji.ts
+function placeEmoji(thing) {
+  const feature = one(thing.features);
+  const { id: featureId } = asUrn(feature);
+  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
+    return PLACE_FEATURES_TO_EMOJI[featureId];
+  }
+  return "\u{1F4CD}";
+}
+function placeFeatureEmoji(featureUrn) {
+  const { id: featureId } = asUrn(featureUrn);
+  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
+    return PLACE_FEATURES_TO_EMOJI[featureId];
+  }
+  return "\u{1F4CD}";
+}
+function countryEmoji(thing) {
+  const flag = one(thing.flag);
+  return flag;
+}
+function birdEmoji() {
+  return "\u{1F424}";
+}
+function cameraEmoji(thing) {
+  const { id } = asUrn(thing.id);
+  if (CAMERA_MODELS.has(id)) {
+    return "\u{1F4F7}";
+  } else if (PHONE_MODELS.has(id)) {
+    return "\u{1F4F1}";
+  }
+  return "\u{1F4F7}";
+}
+function thingEmoji(urn, _, thing) {
+  const { type } = asUrn(urn);
+  switch (type) {
+    case KnownTypes.PLACE:
+      return placeEmoji(thing);
+    case KnownTypes.COUNTRY:
+      return countryEmoji(thing);
+    case KnownTypes.BIRD:
+      return birdEmoji();
+    case KnownTypes.CAMERA:
+      return cameraEmoji(thing);
+    case KnownTypes.PLACE_FEATURE:
+      return placeFeatureEmoji(urn);
+    default:
+      return "";
+  }
+}
+
+// ts/components/thing-link.ts
+function ThingLink() {
+  return {
+    view(vnode) {
+      const { urn, thing } = vnode.attrs;
+      const { type, id } = asUrn(urn);
+      let name = id;
+      if (Object.prototype.hasOwnProperty.call(thing, "name")) {
+        const candidate = one(thing.name);
+        if (candidate) {
+          name = candidate;
+        }
+      }
+      const emoji = thingEmoji(urn, name, thing);
+      return (0, import_mithril2.default)("a", {
+        href: urn,
+        onclick: navigate(`/thing/${type}:${id}`),
+        class: ["thing-link", `${type}-link`].join(" ")
+      }, `${emoji}	${name}`);
+    }
+  };
+}
+
+// ts/services/things.ts
+function readThing(tdb2, urn) {
+  const { id, type } = asUrn(urn);
+  return tdb2.search({
+    source: { id, type }
+  }).firstObject();
+}
+function readParsedThing(parser, tdb2, id) {
+  const thing = readThing(tdb2, id);
+  if (!thing) {
+    return void 0;
+  }
+  return parser(tdb2, thing);
+}
+function readThings(tdb2, urns) {
+  const things = [];
+  for (const urn of urns) {
+    const thing = readThing(tdb2, urn);
+    if (thing) {
+      things.push(thing);
+    }
+  }
+  return things;
+}
+var readParsedThings = function(parser, tdb2, urns) {
+  const parsedThings = [];
+  for (const urn of urns) {
+    const thing = readThing(tdb2, urn);
+    if (!thing) {
+      continue;
+    }
+    const parsed = parser(tdb2, thing);
+    if (parsed) {
+      parsedThings.push(parsed);
+    }
+  }
+  return parsedThings;
+};
+function readNamedTypeThings(tdb2, type) {
+  const things = tdb2.search({
+    source: { type }
+  }).objects();
+  return things.filter((thing) => {
+    return Object.prototype.hasOwnProperty.call(thing, "name");
+  }).sort((thinga, thingb) => {
+    const firstName = thinga.name;
+    const secondName = thingb.name;
+    const first = one(firstName);
+    const second = one(secondName);
+    return first.localeCompare(second);
+  });
+}
+function toThingLinks(tdb2, urns) {
+  return urns.flatMap((urn) => {
+    if (!urn) {
+      return [];
+    }
+    const thing = readThing(tdb2, urn);
+    if (!thing || !thing.name) {
+      return [];
+    }
+    return [(0, import_mithril3.default)(ThingLink, { urn, thing })];
+  });
+}
+
+// ts/parsers/parser.ts
+function parseObject(schema, type) {
+  return (_, object2) => {
+    const result = safeParse(schema, object2);
+    if (!result.success) {
+      logParseWarning(result.issues);
+      return;
+    }
+    return { ...result.output, type };
+  };
+}
+function parseByType(typeParsers) {
+  return (tdb2, thing) => {
+    const type = thing.type;
+    const parser = typeParsers[type];
+    if (!parser) {
+      return void 0;
+    }
+    return parser(tdb2, thing);
+  };
+}
+function readOne(parser) {
+  return (tdb2, id) => {
+    return readParsedThing(parser, tdb2, id);
+  };
+}
+function readMany(parser) {
+  return (tdb2, urns) => {
+    return readParsedThings(parser, tdb2, urns);
+  };
+}
+function readers(parser) {
+  return {
+    one: readOne(parser),
+    many: readMany(parser)
+  };
+}
+
 // ts/parsers/schemas.ts
 var v = {
   string,
@@ -3670,208 +3880,17 @@ var FeatureSchema = v.object({
   name: v.optional(v.string())
 });
 
-// ts/commons/logger.ts
-function logParseWarning(issues) {
-  const message = [];
-  for (const issue of issues) {
-    message.push(
-      `Parse warning @
-${JSON.stringify(issue.path, null, 2)}
-: ${issue.message}`
-    );
-  }
-  console.warn(message.join("\n"));
-  console.trace();
-}
-
-// ts/services/things.ts
-var import_mithril3 = __toESM(require_mithril());
-
-// ts/components/thing-link.ts
-var import_mithril2 = __toESM(require_mithril());
-
-// ts/commons/arrays.ts
-function arrayify(value) {
-  if (value === void 0) {
-    return [];
-  }
-  return Array.isArray(value) ? value : [value];
-}
-function one(value) {
-  if (value === void 0) {
-    return void 0;
-  }
-  return Array.isArray(value) ? value[0] : value;
-}
-
-// ts/services/emoji.ts
-function placeEmoji(thing) {
-  const feature = one(thing.features);
-  const { id: featureId } = asUrn(feature);
-  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
-    return PLACE_FEATURES_TO_EMOJI[featureId];
-  }
-  return "\u{1F4CD}";
-}
-function placeFeatureEmoji(featureUrn) {
-  const { id: featureId } = asUrn(featureUrn);
-  if (Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)) {
-    return PLACE_FEATURES_TO_EMOJI[featureId];
-  }
-  return "\u{1F4CD}";
-}
-function countryEmoji(thing) {
-  const flag = one(thing.flag);
-  return flag;
-}
-function birdEmoji() {
-  return "\u{1F424}";
-}
-function cameraEmoji(thing) {
-  const { id } = asUrn(thing.id);
-  if (CAMERA_MODELS.has(id)) {
-    return "\u{1F4F7}";
-  } else if (PHONE_MODELS.has(id)) {
-    return "\u{1F4F1}";
-  }
-  return "\u{1F4F7}";
-}
-function thingEmoji(urn, _, thing) {
-  const { type } = asUrn(urn);
-  switch (type) {
-    case KnownTypes.PLACE:
-      return placeEmoji(thing);
-    case KnownTypes.COUNTRY:
-      return countryEmoji(thing);
-    case KnownTypes.BIRD:
-      return birdEmoji();
-    case KnownTypes.CAMERA:
-      return cameraEmoji(thing);
-    case KnownTypes.PLACE_FEATURE:
-      return placeFeatureEmoji(urn);
-    default:
-      return "";
-  }
-}
-
-// ts/components/thing-link.ts
-function ThingLink() {
-  return {
-    view(vnode) {
-      const { urn, thing } = vnode.attrs;
-      const { type, id } = asUrn(urn);
-      let name = id;
-      if (Object.prototype.hasOwnProperty.call(thing, "name")) {
-        const candidate = one(thing.name);
-        if (candidate) {
-          name = candidate;
-        }
-      }
-      const emoji = thingEmoji(urn, name, thing);
-      return (0, import_mithril2.default)("a", {
-        href: urn,
-        onclick: navigate(`/thing/${type}:${id}`),
-        class: ["thing-link", `${type}-link`].join(" ")
-      }, `${emoji}	${name}`);
-    }
-  };
-}
-
-// ts/services/things.ts
-function readThing(tdb2, urn) {
-  const parsed = asUrn(urn);
-  return tdb2.search({
-    source: { id: parsed.id, type: parsed.type }
-  }).firstObject();
-}
-function readParsedThing(parser, tdb2, id) {
-  const thing = readThing(tdb2, id);
-  if (!thing) {
-    return void 0;
-  }
-  return parser(tdb2, thing);
-}
-function readThings(tdb2, urns) {
-  const things = [];
-  for (const urn of urns) {
-    const thing = readThing(tdb2, urn);
-    if (thing) {
-      things.push(thing);
-    }
-  }
-  return things;
-}
-var readParsedThings = function(parser, tdb2, urns) {
-  const parsedThings = [];
-  for (const urn of urns) {
-    const thing = readThing(tdb2, urn);
-    if (!thing) {
-      continue;
-    }
-    const parsed = parser(tdb2, thing);
-    if (parsed) {
-      parsedThings.push(parsed);
-    }
-  }
-  return parsedThings;
-};
-function readNamedTypeThings(tdb2, type) {
-  const things = tdb2.search({
-    source: { type }
-  }).objects();
-  return things.filter((thing) => {
-    return Object.prototype.hasOwnProperty.call(thing, "name");
-  }).sort((thinga, thingb) => {
-    const firstName = thinga.name;
-    const secondName = thingb.name;
-    const first = one(firstName);
-    const second = one(secondName);
-    return first.localeCompare(second);
-  });
-}
-function toThingLinks(tdb2, urns) {
-  return urns.flatMap((urn) => {
-    if (!urn) {
-      return [];
-    }
-    const thing = readThing(tdb2, urn);
-    if (!thing || !thing.name) {
-      return [];
-    }
-    return [(0, import_mithril3.default)(ThingLink, { urn, thing })];
-  });
-}
-
-// ts/parsers/parser.ts
-function parseObject(schema, type, object2) {
-  const result = safeParse(schema, object2);
-  if (!result.success) {
-    logParseWarning(result.issues);
-    return;
-  }
-  return { ...result.output, type };
-}
-function readOne(parser) {
-  return (tdb2, id) => {
-    return readParsedThing(parser, tdb2, id);
-  };
-}
-function readMany(parser) {
-  return (tdb2, urns) => {
-    return readParsedThings(parser, tdb2, urns);
-  };
-}
-function readers(parser) {
-  return {
-    one: readOne(parser),
-    many: readMany(parser)
-  };
-}
-
-// ts/parsers/photo.ts
-function parsePhoto(_, photo) {
-  return parseObject(PhotoSchema, "photo", photo);
-}
+// ts/parsers/parsers.ts
+var parseFeature = parseObject(FeatureSchema, "feature");
+var parseCountry = parseObject(CountrySchema, "country");
+var parseUnesco = parseObject(UnescoSchema, "unesco");
+var parsePhoto = parseObject(PhotoSchema, "photo");
+var parseBird = parseObject(BirdSchema, "bird");
+var parseMammal = parseObject(MammalSchema, "mammal");
+var parseReptile = parseObject(ReptileSchema, "reptile");
+var parseAmphibian = parseObject(AmphibianSchema, "amphibian");
+var parseInsect = parseObject(InsectSchema, "insect");
+var parseVideo = parseObject(VideoSchema, "video");
 
 // ts/parsers/location.ts
 function parsePlace(tdb2, place) {
@@ -3889,31 +3908,11 @@ function parsePlace(tdb2, place) {
     // TODO
   };
 }
-function parseCountry(_, country) {
-  return parseObject(CountrySchema, "country", country);
-}
-function parseUnesco(_, unesco) {
-  return parseObject(UnescoSchema, "unesco", unesco);
-}
-function parseLocation(tdb2, location2) {
-  if (!location2.id) {
-    return void 0;
-  }
-  const id = asUrn(location2.id);
-  if (id.type === KnownTypes.PLACE) {
-    return parsePlace(tdb2, location2);
-  } else if (id.type === KnownTypes.COUNTRY) {
-    return parseCountry(tdb2, location2);
-  } else if (id.type === KnownTypes.UNESCO) {
-    return parseUnesco(tdb2, location2);
-  }
-  return void 0;
-}
-
-// ts/parsers/feature.ts
-function parseFeature(_, feature) {
-  return parseObject(FeatureSchema, "feature", feature);
-}
+var parseLocation = parseByType({
+  [KnownTypes.PLACE]: parsePlace,
+  [KnownTypes.COUNTRY]: parseCountry,
+  [KnownTypes.UNESCO]: parseUnesco
+});
 
 // ts/commons/numbers.ts
 function asInt(value) {
@@ -3923,7 +3922,7 @@ function asInt(value) {
   return parseInt(value, 10);
 }
 
-// ts/semantic/names.ts
+// ts/services/names.ts
 var NAME_TO_URN_CACHE = /* @__PURE__ */ new Map();
 function namesToUrns(tdb2, names) {
   const urns = /* @__PURE__ */ new Set();
@@ -3980,21 +3979,6 @@ function parseAlbum(tdb2, album) {
 }
 
 // ts/parsers/subject.ts
-function parseBird(_, subject) {
-  return parseObject(BirdSchema, "bird", subject);
-}
-function parseMammal(_, subject) {
-  return parseObject(MammalSchema, "mammal", subject);
-}
-function parseReptile(_, subject) {
-  return parseObject(ReptileSchema, "reptile", subject);
-}
-function parseAmphibian(_, subject) {
-  return parseObject(AmphibianSchema, "amphibian", subject);
-}
-function parseInsect(_, subject) {
-  return parseObject(InsectSchema, "insect", subject);
-}
 function parseSubject(_, subject) {
   const parsed = asUrn(subject.id);
   if (parsed.type === KnownTypes.BIRD) {
@@ -4016,64 +4000,24 @@ function parseSubject(_, subject) {
   return result.output;
 }
 
-// ts/parsers/video.ts
-function parseVideo(_, video) {
-  return parseObject(VideoSchema, "video", video);
-}
-
 // ts/services/readers.ts
-var {
-  one: readFeature,
-  many: readFeatures
-} = readers(parseFeature);
-var {
-  one: readCountry,
-  many: readCountries
-} = readers(parseCountry);
-var {
-  one: readPlace,
-  many: readPlaces
-} = readers(parsePlace);
-var {
-  one: readLocation,
-  many: readLocations
-} = readers(parseLocation);
-var {
-  one: readUnesco,
-  many: readUnescos
-} = readers(parseUnesco);
-var {
-  one: readAlbum,
-  many: readAlbums
-} = readers(parseAlbum);
-var {
-  one: readMammal,
-  many: readMammals
-} = readers(parseMammal);
-var {
-  one: readReptile,
-  many: readReptiles
-} = readers(parseReptile);
-var {
-  one: readInsect,
-  many: readInsects
-} = readers(parseInsect);
-var {
-  one: readSubject,
-  many: readSubjects
-} = readers(parseSubject);
-var {
-  one: readAmphibian,
-  many: readAmphibians
-} = readers(parseAmphibian);
-var {
-  one: readVideo,
-  many: readVideos
-} = readers(parseVideo);
-var {
-  one: readPhoto,
-  many: readPhotos
-} = readers(parsePhoto);
+var { one: readFeature, many: readFeatures } = readers(parseFeature);
+var { one: readCountry, many: readCountries } = readers(parseCountry);
+var { one: readPlace, many: readPlaces } = readers(parsePlace);
+var { one: readLocation, many: readLocations } = readers(
+  parseLocation
+);
+var { one: readUnesco, many: readUnescos } = readers(parseUnesco);
+var { one: readAlbum, many: readAlbums } = readers(parseAlbum);
+var { one: readMammal, many: readMammals } = readers(parseMammal);
+var { one: readReptile, many: readReptiles } = readers(parseReptile);
+var { one: readInsect, many: readInsects } = readers(parseInsect);
+var { one: readSubject, many: readSubjects } = readers(parseSubject);
+var { one: readAmphibian, many: readAmphibians } = readers(
+  parseAmphibian
+);
+var { one: readVideo, many: readVideos } = readers(parseVideo);
+var { one: readPhoto, many: readPhotos } = readers(parsePhoto);
 
 // ts/services/photos.ts
 var coloursCache = /* @__PURE__ */ new Map();

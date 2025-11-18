@@ -32,7 +32,6 @@
     // Module resolution
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
 
     // Emit settings

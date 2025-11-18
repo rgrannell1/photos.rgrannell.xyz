@@ -24,7 +24,7 @@ import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
 import { readAllPhotos } from "./services/photos.ts";
-import { readPhoto, readAlbum } from "./services/readers.ts";
+import { readAlbum, readPhoto } from "./services/readers.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { readNamedTypeThings, readThing } from "./services/things.ts";
 import type { Album } from "./types.ts";

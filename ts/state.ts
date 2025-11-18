@@ -8,23 +8,21 @@ import { readAlbumsByThingIds } from "./services/albums.ts";
 import {
   readAlbum,
   readAmphibian,
-  readInsect,
-  readMammal,
-  readReptile,
-  readPhoto,
-  readPhotos,
   readCountry,
+  readFeatures,
+  readInsect,
   readLocation,
   readLocations,
+  readMammal,
+  readPhoto,
+  readPhotos,
   readPlace,
+  readReptile,
   readUnesco,
   readUnescos,
   readVideo,
-  readFeatures
 } from "./services/readers.ts";
-import {
-  readPhotosByThingIds,
-} from "./services/photos.ts";
+import { readPhotosByThingIds } from "./services/photos.ts";
 import { readThing, readThings, toThingLinks } from "./services/things.ts";
 
 /*

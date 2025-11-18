@@ -1,5 +1,5 @@
 import { asInt } from "../commons/numbers.ts";
-import { namesToUrns } from "../semantic/names.ts";
+import { namesToUrns } from "../services/names.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { arrayify } from "../commons/arrays.ts";

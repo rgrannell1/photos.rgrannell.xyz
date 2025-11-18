@@ -4,31 +4,6 @@ import { KnownRelations } from "../constants.ts";
 const NAME_TO_URN_CACHE: Map<string, string> = new Map();
 
 /*
- * Fetch a single URN given a name
- *
- * @param tdb - The TribbleDB instance
- * @param name - The name to convert
- *
- * @returns The corresponding URN, or undefined if not found
- */
-export function nameToUrn(tdb: TribbleDB, name: string): string | undefined {
-  if (NAME_TO_URN_CACHE.has(name)) {
-    return NAME_TO_URN_CACHE.get(name);
-  }
-
-  const urn = tdb.search({
-    relation: KnownRelations.NAME,
-    target: name,
-  }).firstSource();
-
-  if (urn) {
-    NAME_TO_URN_CACHE.set(name, urn as string);
-  }
-
-  return urn;
-}
-
-/*
  * Convert names to tribble URNs
  *
  * @param tdb - The TribbleDB instance

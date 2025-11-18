@@ -1,18 +1,20 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { loadServices } from "./state.ts";
 import type { parseAlbum } from "./parsers/album.ts";
-import type { parsePhoto } from "./parsers/photo.ts";
-import type { parseVideo } from "./parsers/video.ts";
+import type {
+  parsePhoto,
+  parseVideo,
+  parseCountry,
+  parseUnesco,
+  parseBird,
+  parseMammal,
+  parseReptile,
+  parseAmphibian,
+  parseInsect,
+  parseFeature
+} from "./parsers/parsers.ts";
 import type { parsePlace } from "./parsers/location.ts";
-import type { parseCountry } from "./parsers/location.ts";
-import type { parseUnesco } from "./parsers/location.ts";
 import type { parseSubject } from "./parsers/subject.ts";
-import type { parseBird } from "./parsers/subject.ts";
-import type { parseMammal } from "./parsers/subject.ts";
-import type { parseReptile } from "./parsers/subject.ts";
-import type { parseAmphibian } from "./parsers/subject.ts";
-import type { parseInsect } from "./parsers/subject.ts";
-import type { parseFeature } from "./parsers/feature.ts";
 
 export type ApplicationEvents =
   | "click_burger_menu"
