@@ -406,14 +406,15 @@ button:disabled {
     display: none;
   }
 
+  .photo-sidebar-visible {
+    display: block;
+  }
+
   .photo-album-description {
     font-size: 0.8em;
     padding: 2px;
   }
 
-  .photo-sidebar[visible="true"] {
-    display: block;
-  }
 
   /* hide the page when sidebar is visible */
   .page {

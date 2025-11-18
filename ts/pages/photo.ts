@@ -16,7 +16,7 @@ export function PhotoPage() {
     view(vnode: m.Vnode<PhotoPageAttrs>) {
       const { photo, services } = vnode.attrs;
 
-      const $links = m("p", [
+      const $links = m("li.link-list", [
         m("a", { href: photo.fullImage, rel: "noreferrer" }, "[webp]"),
         " ",
         m("a", { href: photo.pngUrl, rel: "noreferrer" }, "[png]"),

@@ -30,8 +30,23 @@ import { readNamedTypeThings, readThing } from "./services/things.ts";
 import type { Album } from "./types.ts";
 import { ThingPage } from "./pages/thing.ts";
 
-const state = await loadState();
 type AppAttrs = {};
+const state = await loadState();
+
+listen("navigate", (event: Event) => {
+  const { route } = (event as CustomEvent).detail;
+  console.info(`navigating to route: ${route}`);
+
+  m.route.set(route);
+});
+
+listen("switch_theme", () => {
+  state.darkMode = !state.darkMode;
+});
+
+listen("click_burger_menu", () => {
+  state.sidebarVisible = !state.sidebarVisible;
+})
 
 /* */
 export function AlbumsApp(): m.Component<AppAttrs> {
@@ -269,14 +284,3 @@ export function ListingApp(): m.Component<AppAttrs> {
     }
   };
 }
-
-listen("navigate", (event: Event) => {
-  const { route } = (event as CustomEvent).detail;
-  console.info(`navigating to route: ${route}`);
-
-  m.route.set(route);
-});
-
-listen("switch_theme", () => {
-  state.darkMode = !state.darkMode;
-});

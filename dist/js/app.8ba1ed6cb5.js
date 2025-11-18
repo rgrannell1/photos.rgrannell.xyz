@@ -5388,7 +5388,7 @@ function PhotoPage() {
   return {
     view(vnode) {
       const { photo, services } = vnode.attrs;
-      const $links = (0, import_mithril23.default)("p", [
+      const $links = (0, import_mithril23.default)("li.link-list", [
         (0, import_mithril23.default)("a", { href: photo.fullImage, rel: "noreferrer" }, "[webp]"),
         " ",
         (0, import_mithril23.default)("a", { href: photo.pngUrl, rel: "noreferrer" }, "[png]"),
@@ -5845,6 +5845,17 @@ function ThingPage() {
 
 // ts/app.ts
 var state = await loadState();
+listen("navigate", (event) => {
+  const { route } = event.detail;
+  console.info(`navigating to route: ${route}`);
+  import_mithril34.default.route.set(route);
+});
+listen("switch_theme", () => {
+  state.darkMode = !state.darkMode;
+});
+listen("click_burger_menu", () => {
+  state.sidebarVisible = !state.sidebarVisible;
+});
 function AlbumsApp() {
   return {
     oninit() {
@@ -6053,14 +6064,6 @@ function ListingApp() {
     }
   };
 }
-listen("navigate", (event) => {
-  const { route } = event.detail;
-  console.info(`navigating to route: ${route}`);
-  import_mithril34.default.route.set(route);
-});
-listen("switch_theme", () => {
-  state.darkMode = !state.darkMode;
-});
 
 // ts/index.ts
 import_mithril35.default.route(document.body, "/albums", {
