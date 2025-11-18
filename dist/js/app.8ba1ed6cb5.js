@@ -4862,8 +4862,8 @@ function AboutPage() {
             "p",
             `I started taking photos ${years} years ago, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things`,
             (0, import_mithril12.default)("a", {
-              href: "https://photos.rgrannell.xyz/#/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50",
-              onclick: navigate(`/thing/rating:\u2B50\u2B50\u2B50\u2B50\u2B50`)
+              href: "https://photos.rgrannell.xyz/#/thing/rating:4",
+              onclick: navigate(`/thing/rating:4`)
             }, " I found beautiful in this world.")
           ),
           (0, import_mithril12.default)("h2", "Can I use the photos on this site?"),
