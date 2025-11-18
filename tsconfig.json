@@ -12,6 +12,8 @@
     "outDir": "./dist",
     "rootDir": "./",
 
+    "allowImportingTsExtensions": true,
+
     // Enable strict type checking
     "strict": true,
     "noImplicitAny": true,

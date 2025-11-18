@@ -13,10 +13,10 @@ export function readThing(
   tdb: TribbleDB,
   urn: string,
 ): TripleObject | undefined {
-  const parsed = asUrn(urn);
+  const { id, type } = asUrn(urn);
 
   return tdb.search({
-    source: { id: parsed.id, type: parsed.type },
+    source: { id, type },
   }).firstObject();
 }
 
