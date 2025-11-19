@@ -4122,6 +4122,36 @@ function readAlbumsByThingIds(tdb2, thingsUrns) {
   return readAlbums(tdb2, albumIds);
 }
 
+// ts/services/names.ts
+var NAME_TO_URN_CACHE = /* @__PURE__ */ new Map();
+function namesToUrns(tdb2, names) {
+  const urns = /* @__PURE__ */ new Set();
+  if (names.size === 0) {
+    return urns;
+  }
+  for (const name of names) {
+    if (NAME_TO_URN_CACHE.has(name)) {
+      const cachedUrn = NAME_TO_URN_CACHE.get(name);
+      if (cachedUrn) {
+        urns.add(cachedUrn);
+      }
+    }
+  }
+  if (urns.size === names.size) {
+    return urns;
+  }
+  const namesCursor = tdb2.search({
+    relation: KnownRelations.NAME,
+    target: Array.from(names)
+  });
+  for (const [urn, _, name] of namesCursor.triples()) {
+    if (names.has(name)) {
+      urns.add(urn);
+    }
+  }
+  return urns;
+}
+
 // ts/state.ts
 async function loadData() {
   const schema = {};
@@ -4153,6 +4183,7 @@ function loadServices(tdb2) {
     readUnescos: readUnescos.bind(null, tdb2),
     readThings: readThings.bind(null, tdb2),
     readCountries: readCountries.bind(null, tdb2),
+    namesToUrns: namesToUrns.bind(null, tdb2),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb2),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb2),
     toThingLinks: toThingLinks.bind(null, tdb2)
@@ -4642,7 +4673,7 @@ function drawAlbum(state2, album, idx, services) {
       $albumComponents.push($h2);
     }
   }
-  const $countryLinks = services.readCountries(album.countries).map((country) => {
+  const $countryLinks = services.readCountries(services.namesToUrns(album.countries)).map((country) => {
     return (0, import_mithril11.default)(CountryLink, {
       country,
       key: `album-country-${album.id}-${country.id}`,
@@ -4916,7 +4947,7 @@ function AlbumPage() {
         Windows.isSmallerThan(500)
       );
       const photoCountMessage = photosCount === 1 ? "1 photo" : `${photosCount} photos`;
-      const $countryLinks = services.readCountries(countries).map((country) => {
+      const $countryLinks = services.readCountries(services.namesToUrns(countries)).map((country) => {
         return (0, import_mithril17.default)(CountryLink, {
           country,
           mode: "flag"

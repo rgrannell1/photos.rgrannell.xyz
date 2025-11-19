@@ -44,7 +44,7 @@ function drawAlbum(state: { year: number }, album: Album, idx: number, services:
     }
   }
 
-  const $countryLinks = services.readCountries(album.countries).map((country) => {
+  const $countryLinks = services.readCountries(services.namesToUrns(album.countries)).map((country) => {
     // TODO
     return m(CountryLink, {
       country,

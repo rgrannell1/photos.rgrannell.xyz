@@ -19,6 +19,7 @@ import type { PhotoAttrs } from "../components/photo.ts";
 import { Photos } from "../services/photos.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
 import { preprocessDescription } from "../commons/strings.ts";
+import { namesToUrns } from "../services/names.ts";
 
 // TODO replace with album type
 type AlbumAttrs = {
@@ -65,7 +66,7 @@ export function AlbumPage() {
         ? "1 photo"
         : `${photosCount} photos`;
 
-      const $countryLinks = services.readCountries(countries).map(country => {
+      const $countryLinks = services.readCountries(services.namesToUrns(countries)).map(country => {
         return m(CountryLink, {
           country,
           mode: "flag",
