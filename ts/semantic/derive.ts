@@ -16,7 +16,7 @@ import {
 import { Strings } from "../commons/strings.ts";
 
 /*
- * Convert star ratings into URNs.
+ * Convert star ratings into rating URNs.
  */
 export function convertRatingsToUrns(triple: Triple): Triple[] {
   const [src, rel, tgt] = triple;

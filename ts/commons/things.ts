@@ -66,6 +66,10 @@ export const readParsedThings = function <T>(
   tdb: TribbleDB,
   urns: Set<string>,
 ): T[] {
+  if (typeof parser !== "function") {
+    throw new Error("Parser must be a function");
+  }
+
   const parsedThings: T[] = [];
 
   for (const urn of urns) {

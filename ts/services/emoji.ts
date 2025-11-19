@@ -1,4 +1,4 @@
-import { asUrn } from "@rgrannell1/tribbledb";
+import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
 import {
   CAMERA_MODELS,
@@ -67,7 +67,7 @@ function birdEmoji(): string {
  *
  * @param thing The thing to get the emoji for, based on id
  */
-function cameraEmoji(thing: any): string {
+function cameraEmoji(thing: Thing): string {
   const { id } = asUrn(thing.id);
 
   if (CAMERA_MODELS.has(id)) {

@@ -8,6 +8,7 @@ import { readAlbumsByThingIds } from "./services/albums.ts";
 import {
   readAlbum,
   readAmphibian,
+  readCountries,
   readCountry,
   readFeatures,
   readInsect,
@@ -23,7 +24,7 @@ import {
   readVideo,
 } from "./services/readers.ts";
 import { readPhotosByThingIds } from "./services/photos.ts";
-import { readThing, readThings, toThingLinks } from "./services/things.ts";
+import { readThing, readThings, toThingLinks } from "./commons/things.ts";
 
 /*
  * Load data from the tribbles file.
@@ -66,6 +67,7 @@ export function loadServices(tdb: TribbleDB) {
     readPhotos: readPhotos.bind(null, tdb),
     readUnescos: readUnescos.bind(null, tdb),
     readThings: readThings.bind(null, tdb),
+    readCountries: readCountries.bind(null, tdb),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb),
     toThingLinks: toThingLinks.bind(null, tdb),

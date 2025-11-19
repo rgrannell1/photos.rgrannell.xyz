@@ -1,7 +1,10 @@
+
 import { TribbleDB } from "@rgrannell1/tribbledb";
-import { readers } from "../parsers/parser.ts";
-import { parseLocation, parsePlace } from "../parsers/location.ts";
+import { readers } from "../commons/parser.ts";
+
 import {
+  parseAlbum,
+  parsePlace,
   parseAmphibian,
   parseCountry,
   parseFeature,
@@ -11,11 +14,10 @@ import {
   parseReptile,
   parseUnesco,
   parseVideo,
-} from "../parsers/parsers.ts";
-import { parseAlbum } from "../parsers/album.ts";
-import { parseSubject } from "../parsers/subject.ts";
+  parseSubject,
+  parseLocation
+} from "../parsers/index.ts";
 
-export const { one: readFeature, many: readFeatures } = readers(parseFeature);
 export const { one: readCountry, many: readCountries } = readers(parseCountry);
 export const { one: readPlace, many: readPlaces } = readers(parsePlace);
 export const { one: readLocation, many: readLocations } = readers(
@@ -32,3 +34,4 @@ export const { one: readAmphibian, many: readAmphibians } = readers(
 );
 export const { one: readVideo, many: readVideos } = readers(parseVideo);
 export const { one: readPhoto, many: readPhotos } = readers(parsePhoto);
+export const { one: readFeature, many: readFeatures } = readers(parseFeature);

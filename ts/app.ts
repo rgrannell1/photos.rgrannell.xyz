@@ -26,7 +26,7 @@ import { PhotoPage } from "./pages/photo.ts";
 import { readAllPhotos } from "./services/photos.ts";
 import { readAlbum, readPhoto } from "./services/readers.ts";
 import { ListingPage } from "./pages/listing.ts";
-import { readNamedTypeThings, readThing } from "./services/things.ts";
+import { readNamedTypeThings, readThing } from "./commons/things.ts";
 import type { Album } from "./types.ts";
 import { ThingPage } from "./pages/thing.ts";
 
@@ -63,6 +63,7 @@ export function AlbumsApp(): m.Component<AppAttrs> {
             m(Sidebar, { visible: state.sidebarVisible }),
             m(AlbumsPage, {
               albums: readAllAlbums(state.data),
+              services: state.services,
             }),
           ]),
         ],
@@ -108,6 +109,7 @@ export function AlbumApp(): m.Component<AppAttrs> {
               locations,
               photos,
               videos,
+              services: state.services,
             }),
           ]),
         ],

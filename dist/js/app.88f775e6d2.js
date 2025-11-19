@@ -3565,7 +3565,7 @@ function safeParse(schema, input, config2) {
   };
 }
 
-// ts/services/things.ts
+// ts/commons/things.ts
 var import_mithril3 = __toESM(require_mithril());
 
 // ts/components/thing-link.ts
@@ -3658,7 +3658,7 @@ function ThingLink() {
   };
 }
 
-// ts/services/things.ts
+// ts/commons/things.ts
 function readThing(tdb2, urn) {
   const { id, type } = asUrn(urn);
   return tdb2.search({
@@ -3683,6 +3683,9 @@ function readThings(tdb2, urns) {
   return things;
 }
 var readParsedThings = function(parser, tdb2, urns) {
+  if (typeof parser !== "function") {
+    throw new Error("Parser must be a function");
+  }
   const parsedThings = [];
   for (const urn of urns) {
     const thing = readThing(tdb2, urn);
@@ -3723,7 +3726,7 @@ function toThingLinks(tdb2, urns) {
   });
 }
 
-// ts/parsers/parser.ts
+// ts/commons/parser.ts
 function parseObject(schema, type) {
   return (_, object2) => {
     const result = safeParse(schema, object2);
@@ -3750,6 +3753,9 @@ function readOne(parser) {
   };
 }
 function readMany(parser) {
+  if (typeof parser !== "function") {
+    throw new Error("Parser must be a function");
+  }
   return (tdb2, urns) => {
     return readParsedThings(parser, tdb2, urns);
   };
@@ -3880,7 +3886,15 @@ var FeatureSchema = v.object({
   name: v.optional(v.string())
 });
 
-// ts/parsers/parsers.ts
+// ts/commons/numbers.ts
+function asInt(value) {
+  if (typeof value === "number") {
+    return value;
+  }
+  return parseInt(value, 10);
+}
+
+// ts/parsers/index.ts
 var parseFeature = parseObject(FeatureSchema, "feature");
 var parseCountry = parseObject(CountrySchema, "country");
 var parseUnesco = parseObject(UnescoSchema, "unesco");
@@ -3891,8 +3905,18 @@ var parseReptile = parseObject(ReptileSchema, "reptile");
 var parseAmphibian = parseObject(AmphibianSchema, "amphibian");
 var parseInsect = parseObject(InsectSchema, "insect");
 var parseVideo = parseObject(VideoSchema, "video");
-
-// ts/parsers/location.ts
+var parseSubject = parseByType({
+  [KnownTypes.BIRD]: parseBird,
+  [KnownTypes.MAMMAL]: parseMammal,
+  [KnownTypes.REPTILE]: parseReptile,
+  [KnownTypes.AMPHIBIAN]: parseAmphibian,
+  [KnownTypes.INSECT]: parseInsect
+});
+var parseLocation = parseByType({
+  [KnownTypes.PLACE]: parsePlace,
+  [KnownTypes.COUNTRY]: parseCountry,
+  [KnownTypes.UNESCO]: parseUnesco
+});
 function parsePlace(tdb2, place) {
   const result = safeParse(PlaceSchema, place);
   if (!result.success) {
@@ -3900,59 +3924,14 @@ function parsePlace(tdb2, place) {
     return;
   }
   const refs = arrayify(result.output.in);
-  const lookedUpRefs = readLocations(tdb2, new Set(refs));
+  const lookedUpRefs = [];
   return {
     ...result.output,
     type: "place",
     in: lookedUpRefs
-    // TODO
+    // TODO is this actually used?
   };
 }
-var parseLocation = parseByType({
-  [KnownTypes.PLACE]: parsePlace,
-  [KnownTypes.COUNTRY]: parseCountry,
-  [KnownTypes.UNESCO]: parseUnesco
-});
-
-// ts/commons/numbers.ts
-function asInt(value) {
-  if (typeof value === "number") {
-    return value;
-  }
-  return parseInt(value, 10);
-}
-
-// ts/services/names.ts
-var NAME_TO_URN_CACHE = /* @__PURE__ */ new Map();
-function namesToUrns(tdb2, names) {
-  const urns = /* @__PURE__ */ new Set();
-  if (names.size === 0) {
-    return urns;
-  }
-  for (const name of names) {
-    if (NAME_TO_URN_CACHE.has(name)) {
-      const cachedUrn = NAME_TO_URN_CACHE.get(name);
-      if (cachedUrn) {
-        urns.add(cachedUrn);
-      }
-    }
-  }
-  if (urns.size === names.size) {
-    return urns;
-  }
-  const namesCursor = tdb2.search({
-    relation: KnownRelations.NAME,
-    target: Array.from(names)
-  });
-  for (const [urn, _, name] of namesCursor.triples()) {
-    if (names.has(name)) {
-      urns.add(urn);
-    }
-  }
-  return urns;
-}
-
-// ts/parsers/album.ts
 function parseAlbum(tdb2, album) {
   const result = safeParse(AlbumSchema, album);
   if (!result.success) {
@@ -3961,7 +3940,6 @@ function parseAlbum(tdb2, album) {
   }
   const data = result.output;
   const countryNames = new Set(arrayify(data.flags));
-  const countries = readCountries(tdb2, namesToUrns(tdb2, countryNames));
   return {
     type: "album",
     name: data.name,
@@ -3974,21 +3952,11 @@ function parseAlbum(tdb2, album) {
     photosCount: asInt(data.photosCount),
     videosCount: asInt(data.videosCount),
     description: data.description ?? "",
-    countries
+    countries: countryNames
   };
 }
 
-// ts/parsers/subject.ts
-var parseSubject = parseByType({
-  [KnownTypes.BIRD]: parseBird,
-  [KnownTypes.MAMMAL]: parseMammal,
-  [KnownTypes.REPTILE]: parseReptile,
-  [KnownTypes.AMPHIBIAN]: parseAmphibian,
-  [KnownTypes.INSECT]: parseInsect
-});
-
 // ts/services/readers.ts
-var { one: readFeature, many: readFeatures } = readers(parseFeature);
 var { one: readCountry, many: readCountries } = readers(parseCountry);
 var { one: readPlace, many: readPlaces } = readers(parsePlace);
 var { one: readLocation, many: readLocations } = readers(
@@ -4005,6 +3973,7 @@ var { one: readAmphibian, many: readAmphibians } = readers(
 );
 var { one: readVideo, many: readVideos } = readers(parseVideo);
 var { one: readPhoto, many: readPhotos } = readers(parsePhoto);
+var { one: readFeature, many: readFeatures } = readers(parseFeature);
 
 // ts/services/photos.ts
 var coloursCache = /* @__PURE__ */ new Map();
@@ -4188,6 +4157,7 @@ function loadServices(tdb2) {
     readPhotos: readPhotos.bind(null, tdb2),
     readUnescos: readUnescos.bind(null, tdb2),
     readThings: readThings.bind(null, tdb2),
+    readCountries: readCountries.bind(null, tdb2),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb2),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb2),
     toThingLinks: toThingLinks.bind(null, tdb2)
@@ -4663,7 +4633,7 @@ function onAlbumClick(id, title, event) {
   broadcast("navigate", { route: `/album/${parsed.id}`, title });
   block(event);
 }
-function drawAlbum(state2, album, idx) {
+function drawAlbum(state2, album, idx, services) {
   const loading = Photos.loadingMode(idx);
   const $albumComponents = [];
   if (state2.year !== albumYear(album)) {
@@ -4677,7 +4647,7 @@ function drawAlbum(state2, album, idx) {
       $albumComponents.push($h2);
     }
   }
-  const $countryLinks = album.countries.map((country) => {
+  const $countryLinks = services.readCountries(album.countries).map((country) => {
     return (0, import_mithril11.default)(CountryLink, {
       country,
       key: `album-country-${album.id}-${country.id}`,
@@ -4714,10 +4684,10 @@ function AlbumsList() {
   return {
     view(vnode) {
       const state2 = { year: 2005 };
-      const { albums } = vnode.attrs;
+      const { albums, services } = vnode.attrs;
       const $albumComponents = [];
       for (let idx = 0; idx < albums.length; idx++) {
-        $albumComponents.push(...drawAlbum(state2, albums[idx], idx));
+        $albumComponents.push(...drawAlbum(state2, albums[idx], idx, services));
       }
       return (0, import_mithril11.default)("section.album-container", $albumComponents);
     }
@@ -4729,7 +4699,7 @@ function AlbumsPage() {
       Windows.setTitle("Albums - photos");
     },
     view(vnode) {
-      const { albums } = vnode.attrs;
+      const { albums, services } = vnode.attrs;
       const $md = (0, import_mithril11.default)("section.album-metadata", [
         (0, import_mithril11.default)("h1.albums-header", "Albums"),
         (0, import_mithril11.default)(AlbumStats)
@@ -4737,7 +4707,7 @@ function AlbumsPage() {
       return (0, import_mithril11.default)("div.page", [
         $md,
         //m(YearCursor),
-        (0, import_mithril11.default)(AlbumsList, { albums })
+        (0, import_mithril11.default)(AlbumsList, { albums, services })
       ]);
     }
   };
@@ -4938,8 +4908,7 @@ function AlbumPage() {
         album,
         photos,
         videos,
-        subjects,
-        locations
+        services
       } = vnode.attrs;
       const {
         name,
@@ -4955,7 +4924,7 @@ function AlbumPage() {
         Windows.isSmallerThan(500)
       );
       const photoCountMessage = photosCount === 1 ? "1 photo" : `${photosCount} photos`;
-      const $countryLinks = countries.map((country) => {
+      const $countryLinks = services.readCountries(countries).map((country) => {
         return (0, import_mithril18.default)(CountryLink, {
           country,
           mode: "flag"
@@ -5666,7 +5635,7 @@ function AlbumSection() {
       const urns = setOf("id", things);
       const albums = services.readAlbumsByThingIds(new Set(urns));
       const $albums = albums.map((album) => {
-        const $countryLinks = album.countries.map((country) => {
+        const $countryLinks = [...album.countries].map((country) => {
           return (0, import_mithril33.default)(CountryLink, {
             country,
             key: `album-country-${album.id}-${country.id}`,
@@ -5771,7 +5740,8 @@ function AlbumsApp() {
           (0, import_mithril34.default)("div.app-container", [
             (0, import_mithril34.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril34.default)(AlbumsPage, {
-              albums: readAllAlbums(state.data)
+              albums: readAllAlbums(state.data),
+              services: state.services
             })
           ])
         ]
@@ -5811,7 +5781,8 @@ function AlbumApp() {
               subjects,
               locations,
               photos,
-              videos
+              videos,
+              services: state.services
             })
           ])
         ]

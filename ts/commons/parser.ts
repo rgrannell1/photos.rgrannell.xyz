@@ -1,7 +1,7 @@
 import { asUrn, type TribbleDB, type TripleObject } from "@rgrannell1/tribbledb";
 import { logParseWarning } from "../commons/logger.ts";
 import { type BaseSchema, type InferOutput, safeParse } from "valibot";
-import { readParsedThing, readParsedThings } from "../services/things.ts";
+import { readParsedThing, readParsedThings } from "./things.ts";
 import { one } from "../commons/arrays.ts";
 
 type Parser<T> = (tdb: TribbleDB, thing: TripleObject) => T | undefined;
@@ -65,6 +65,10 @@ export function readOne<T>(parser: Parser<T>) {
  * Create a many-item reader for a specific parser.
  */
 export function readMany<T>(parser: Parser<T>) {
+  if (typeof parser !== "function") {
+    throw new Error("Parser must be a function");
+  }
+
   return (tdb: TribbleDB, urns: Set<string>) => {
     return readParsedThings(parser, tdb, urns);
   };

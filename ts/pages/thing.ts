@@ -4,7 +4,7 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { ExternalLink } from "../components/external-link.ts";
 import { arrayify, one } from "../commons/arrays.ts";
-import type { Album, Services } from "../types.ts";
+import type { Services } from "../types.ts";
 import { CountryLink } from "../components/place-links.ts";
 import { Photo } from "../components/photo.ts";
 import { Photos } from "../services/photos.ts";
@@ -24,14 +24,14 @@ type ThingPageAttrs = {
   services: Services;
 };
 
-function ThingPlaces() {
+function _ThingPlaces() {
   return {
     view() {
     },
   };
 }
 
-function ThingTypeLink() {
+function _ThingTypeLink() {
   return {
     view() {
     },
@@ -149,10 +149,10 @@ function AlbumSection() {
       const urns = setOf<string>("id", things);
       const albums = services.readAlbumsByThingIds(new Set(urns));
 
-      // Broken, with odd mithril child-element issue
+      // TODO
       const $albums = albums.map((album) => {
         // duplicated model. move to render(model) code
-        const $countryLinks = album.countries.map((country) => {
+        const $countryLinks = [...album.countries].map((country) => {
           return m(CountryLink, {
             country,
             key: `album-country-${album.id}-${country.id}`,

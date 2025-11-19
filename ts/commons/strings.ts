@@ -4,6 +4,7 @@ import { PLURALS } from "../constants.ts";
 
 const CAMEL_CASE_CACHE = new Map<string, string>();
 
+// TODO convert to functions
 export class Strings {
   static capitalise(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);

@@ -86,6 +86,10 @@ export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
   return readThingsByPhotoIds(tdb, readAlbumPhotoIds(tdb, id));
 }
 
+/*
+ * Read albums associated with a set of thing IDs
+ *
+ */
 export function readAlbumsByThingIds(
   tdb: TribbleDB,
   thingsUrns: Set<string>,

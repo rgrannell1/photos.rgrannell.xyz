@@ -10,6 +10,7 @@ import type {
   Album,
   Country,
   Photo as PhotoType,
+  Services,
   Thing,
   Video as VideoType,
 } from "../types.ts";
@@ -28,6 +29,7 @@ type AlbumAttrs = {
   countries: Country[];
   photos: PhotoType[];
   videos: VideoType[];
+  services: Services
 };
 
 /* */
@@ -41,8 +43,7 @@ export function AlbumPage() {
         album,
         photos,
         videos,
-        subjects,
-        locations,
+        services
       } = vnode.attrs;
 
       const {
@@ -65,7 +66,7 @@ export function AlbumPage() {
         ? "1 photo"
         : `${photosCount} photos`;
 
-      const $countryLinks = countries.map((country) => {
+      const $countryLinks = services.readCountries(countries).map(country => {
         return m(CountryLink, {
           country,
           mode: "flag",

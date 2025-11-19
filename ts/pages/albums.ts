@@ -1,6 +1,6 @@
 import m from "mithril";
 import { AlbumStats } from "../components/album-stats.ts";
-import type { Album } from "../types.ts";
+import type { Album, Services } from "../types.ts";
 import { Photos } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
@@ -12,6 +12,7 @@ import { asUrn } from "@rgrannell1/tribbledb";
 
 type AlbumsListAttrs = {
   albums: Album[];
+  services: Services;
 };
 
 function onAlbumClick(id: string, title: string, event: Event) {
@@ -21,7 +22,7 @@ function onAlbumClick(id: string, title: string, event: Event) {
   block(event);
 }
 
-function drawAlbum(state: { year: number }, album: Album, idx: number) {
+function drawAlbum(state: { year: number }, album: Album, idx: number, services: Services) {
   const loading = Photos.loadingMode(idx);
 
   const $albumComponents: m.Vnode<
@@ -43,7 +44,8 @@ function drawAlbum(state: { year: number }, album: Album, idx: number) {
     }
   }
 
-  const $countryLinks = album.countries.map((country) => {
+  const $countryLinks = services.readCountries(album.countries).map((country) => {
+    // TODO
     return m(CountryLink, {
       country,
       key: `album-country-${album.id}-${country.id}`,
@@ -88,7 +90,7 @@ function AlbumsList() {
   return {
     view(vnode: m.Vnode<AlbumsListAttrs>) {
       const state = { year: 2005 };
-      const { albums } = vnode.attrs;
+      const { albums, services } = vnode.attrs;
 
       const $albumComponents: m.Vnode<
         unknown,
@@ -97,16 +99,17 @@ function AlbumsList() {
 
       // TODO this blocks render too long
       for (let idx = 0; idx < albums.length; idx++) {
-        $albumComponents.push(...drawAlbum(state, albums[idx], idx));
+        $albumComponents.push(...drawAlbum(state, albums[idx], idx, services));
       }
 
       return m("section.album-container", $albumComponents);
     },
   };
-}
+}k
 
 type AlbumsPageState = {
   albums: Album[];
+  services: Services;
 };
 
 /* */
@@ -116,7 +119,7 @@ export function AlbumsPage() {
       Windows.setTitle("Albums - photos");
     },
     view(vnode: m.Vnode<AlbumsPageState>) {
-      const { albums } = vnode.attrs;
+      const { albums, services } = vnode.attrs;
 
       const $md = m("section.album-metadata", [
         m("h1.albums-header", "Albums"),
@@ -126,7 +129,7 @@ export function AlbumsPage() {
       return m("div.page", [
         $md,
         //m(YearCursor),
-        m(AlbumsList, { albums }),
+        m(AlbumsList, { albums, services }),
       ]);
     },
   };
