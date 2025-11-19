@@ -1,7 +1,7 @@
 import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { Location, Photo, Subject } from "../types.ts";
-import { parsePhoto } from "../parsers/index.ts";
+import { parsePhoto } from "./parsers.ts";
 import { readLocations, readPhotos, readSubjects } from "./readers.ts";
 
 const coloursCache: Map<string, string> = new Map();

@@ -1,7 +1,7 @@
 import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
-import { Strings } from "../commons/strings.ts";
+import { capitalise, pluralise, binomial } from "../commons/strings.ts";
 import { BinomialTypes, KnownTypes } from "../constants.ts";
 import { one } from "../commons/arrays.ts";
 import { countryEmoji, placeEmoji } from "../services/emoji.ts";
@@ -12,7 +12,7 @@ function computeTitle(urn: string, things: TripleObject[]): string {
 
   // if type:*, fall back to pretty render of type information
   if (parsed.id === "*") {
-    return Strings.capitalise(Strings.pluralise(parsed.type));
+    return capitalise(pluralise(parsed.type));
   }
 
   if (things.length === 0) {
@@ -58,7 +58,7 @@ export function ThingSubtitle() {
         ? m(
           "span",
           { class: `thing-binomial ${parsed.type}-binomial` },
-          Strings.binomial(parsed.id),
+          binomial(parsed.id),
         )
         : m("span");
     },

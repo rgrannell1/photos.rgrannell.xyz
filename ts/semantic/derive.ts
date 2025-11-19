@@ -13,7 +13,7 @@ import {
   KnownRelations,
   RelationSymmetries,
 } from "../constants.ts";
-import { Strings } from "../commons/strings.ts";
+import { camelCase } from "../commons/strings.ts";
 
 /*
  * Convert star ratings into rating URNs.
@@ -115,7 +115,7 @@ export function convertRelationCasing(triple: Triple): Triple[] {
 
   return [[
     src,
-    Strings.camelCase(rel),
+    camelCase(rel),
     tgt,
   ]];
 }

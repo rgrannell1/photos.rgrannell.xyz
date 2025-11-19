@@ -105,7 +105,7 @@ function AlbumsList() {
       return m("section.album-container", $albumComponents);
     },
   };
-}k
+}
 
 type AlbumsPageState = {
   albums: Album[];

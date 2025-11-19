@@ -1,6 +1,6 @@
 import m from "mithril";
 import { NonListableTypes } from "../constants.ts";
-import { Strings } from "../commons/strings.ts";
+import { capitalise, pluralise } from "../commons/strings.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 
 /*
@@ -27,7 +27,7 @@ function ListingTitle() {
       const { type } = vnode.attrs;
       return m(
         "h1.albums-header",
-        `${Strings.capitalise(Strings.pluralise(type))}`,
+        `${capitalise(pluralise(type))}`,
       );
     },
   };

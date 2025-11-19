@@ -16,7 +16,7 @@ import {
   parseVideo,
   parseSubject,
   parseLocation
-} from "../parsers/index.ts";
+} from "./parsers.ts";
 
 export const { one: readCountry, many: readCountries } = readers(parseCountry);
 export const { one: readPlace, many: readPlaces } = readers(parsePlace);

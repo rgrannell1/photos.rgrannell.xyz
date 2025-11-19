@@ -13,8 +13,8 @@ import type {
   parseInsect,
   parseFeature,
   parseSubject,
-} from "./parsers/index.ts";
-import type {  } from "./parsers/index.ts";
+} from "./services/parsers.ts";
+import type {  } from "./services/parsers.ts";
 
 export type ApplicationEvents =
   | "click_burger_menu"

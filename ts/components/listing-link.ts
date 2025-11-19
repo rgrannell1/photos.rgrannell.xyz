@@ -1,6 +1,6 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import m from "mithril";
-import { Strings } from "../commons/strings.ts";
+import { capitalise } from "../commons/strings.ts";
 import { block, broadcast } from "../commons/events.ts";
 
 function onListingClick(type: string, event: Event) {
@@ -26,7 +26,7 @@ export function ListingLink() {
       return m("a", {
         href: `#/listing/${type}`,
         onclick: onListingClick.bind(null, type),
-      }, Strings.capitalise(type));
+      }, capitalise(type));
     },
   };
 }

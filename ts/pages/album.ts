@@ -18,8 +18,7 @@ import { Photo } from "../components/photo.ts";
 import type { PhotoAttrs } from "../components/photo.ts";
 import { Photos } from "../services/photos.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
-import { AlbumThings } from "../components/album-things.ts";
-import { Strings } from "../commons/strings.ts";
+import { preprocessDescription } from "../commons/strings.ts";
 
 // TODO replace with album type
 type AlbumAttrs = {
@@ -80,7 +79,7 @@ export function AlbumPage() {
         m("p.photo-album-countries", $countryLinks),
         m(
           "p.photo-album-description",
-          m.trust(Strings.preprocessDescription(description) ?? ""),
+          m.trust(preprocessDescription(description) ?? ""),
         ),
         m(AlbumShareButton, { url: location.href, name }),
         " ",

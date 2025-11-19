@@ -14,7 +14,7 @@ import {
   ReptileSchema,
   UnescoSchema,
   VideoSchema,
-} from "./schemas.ts";
+} from "../schemas.ts";
 import { safeParse, type InferOutput } from "valibot";
 import type { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { logParseWarning } from "../commons/logger.ts";

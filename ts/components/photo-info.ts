@@ -1,7 +1,7 @@
 import m from "mithril";
 import type { Photo as PhotoType, Services } from "../types.ts";
 import { arrayify } from "../commons/arrays.ts";
-import { Strings } from "../commons/strings.ts";
+import { preprocessDescription } from "../commons/strings.ts";
 
 type HeadingAttrs = {
   text: string;
@@ -28,7 +28,7 @@ function Description() {
     view(vnode: m.Vnode<PhotoComponentAttrs>) {
       const { photo } = vnode.attrs;
 
-      const html = Strings.preprocessDescription(
+      const html = preprocessDescription(
         photo.description ?? photo.summary ?? "",
       );
       if (html) {
