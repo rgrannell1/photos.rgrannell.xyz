@@ -3736,8 +3736,8 @@ function parseObject(schema, type) {
 }
 function parseByType(typeParsers) {
   return (tdb2, thing) => {
-    const type = thing.type;
-    const parser = typeParsers[type];
+    const { type } = asUrn(one(thing.id));
+    const parser = typeParsers[type] ?? typeParsers["default"];
     if (!parser) {
       return void 0;
     }
@@ -3979,26 +3979,13 @@ function parseAlbum(tdb2, album) {
 }
 
 // ts/parsers/subject.ts
-function parseSubject(_, subject) {
-  const parsed = asUrn(subject.id);
-  if (parsed.type === KnownTypes.BIRD) {
-    return parseBird(_, subject);
-  } else if (parsed.type === KnownTypes.MAMMAL) {
-    return parseMammal(_, subject);
-  } else if (parsed.type === KnownTypes.REPTILE) {
-    return parseReptile(_, subject);
-  } else if (parsed.type === KnownTypes.AMPHIBIAN) {
-    return parseAmphibian(_, subject);
-  } else if (parsed.type === KnownTypes.INSECT) {
-    return parseInsect(_, subject);
-  }
-  const result = safeParse(SubjectSchema, subject);
-  if (!result.success) {
-    logParseWarning(result.issues);
-    return;
-  }
-  return result.output;
-}
+var parseSubject = parseByType({
+  [KnownTypes.BIRD]: parseBird,
+  [KnownTypes.MAMMAL]: parseMammal,
+  [KnownTypes.REPTILE]: parseReptile,
+  [KnownTypes.AMPHIBIAN]: parseAmphibian,
+  [KnownTypes.INSECT]: parseInsect
+});
 
 // ts/services/readers.ts
 var { one: readFeature, many: readFeatures } = readers(parseFeature);
@@ -5991,4 +5978,4 @@ import_mithril35.default.route(document.body, "/albums", {
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp
 });
-//# sourceMappingURL=app.8ba1ed6cb5.js.map
+//# sourceMappingURL=app.88f775e6d2.js.map
