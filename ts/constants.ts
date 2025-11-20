@@ -77,6 +77,10 @@ export const PLURALS = new Map<string, string>([
   ["country", "countries"],
 ]);
 
+export const RENAMED_RELATIONS = new Map<string, string>([
+  [KnownRelations.FLAGS, KnownRelations.COUNTRY]
+]);
+
 /*
  * These relations should all expand to CDN urls
  */

@@ -12,6 +12,7 @@ import {
   ENDPOINT,
   KnownRelations,
   RelationSymmetries,
+  RENAMED_RELATIONS,
 } from "../constants.ts";
 import { camelCase } from "../commons/strings.ts";
 
@@ -312,16 +313,22 @@ export function buildLocationTrees(
   return [triple];
 }
 
+/*
+ * Rename relations (until they're remapped on the mirror side)
+ *
+ */
 function renameRelations(triple: Triple) {
-  if (triple[1] !== KnownRelations.FLAGS) {
-    return [triple];
+  for (const [from, to] of RENAMED_RELATIONS) {
+    if (triple[1] === from) {
+      return [[
+        triple[0],
+        to,
+        triple[2],
+      ]];
+    }
   }
 
-  return [[
-    triple[0],
-    KnownRelations.COUNTRY,
-    triple[2],
-  ]]
+  return [triple];
 }
 
 // This should be in mirror, but for testing...

@@ -2636,6 +2636,9 @@ var NonListableTypes = /* @__PURE__ */ new Set([
 var PLURALS = /* @__PURE__ */ new Map([
   ["country", "countries"]
 ]);
+var RENAMED_RELATIONS = /* @__PURE__ */ new Map([
+  [KnownRelations.FLAGS, KnownRelations.COUNTRY]
+]);
 var CDN_RELATIONS = /* @__PURE__ */ new Set([
   KnownRelations.THUMBNAIL_URL,
   KnownRelations.PNG_URL,
@@ -2959,14 +2962,16 @@ function buildLocationTrees(triple) {
   return [triple];
 }
 function renameRelations(triple) {
-  if (triple[1] !== KnownRelations.FLAGS) {
-    return [triple];
+  for (const [from, to] of RENAMED_RELATIONS) {
+    if (triple[1] === from) {
+      return [[
+        triple[0],
+        to,
+        triple[2]
+      ]];
+    }
   }
-  return [[
-    triple[0],
-    KnownRelations.COUNTRY,
-    triple[2]
-  ]];
+  return [triple];
 }
 var HARD_CODED_TRIPLES = [
   ["urn:r\xF3:rating:%E2%AD%90", KnownRelations.NAME, "\u2B50"],
