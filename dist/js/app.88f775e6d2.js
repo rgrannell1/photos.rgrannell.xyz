@@ -3642,9 +3642,6 @@ function arrayify(value) {
   return Array.isArray(value) ? value : [value];
 }
 function one(value) {
-  if (value === void 0) {
-    return void 0;
-  }
   return Array.isArray(value) ? value[0] : value;
 }
 
@@ -4061,6 +4058,8 @@ function readAllPhotos(tdb2) {
   }).objects().flatMap((obj) => {
     const photo = parsePhoto(tdb2, obj);
     return photo ? [photo] : [];
+  }).sort((photoa, photob) => {
+    return parseInt(photob.createdAt) - parseInt(photoa.createdAt);
   });
 }
 function readThingsByPhotoIds(tdb2, photoIds) {

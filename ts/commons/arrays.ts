@@ -16,9 +16,5 @@ export function arrayify<T>(value: T | T[] | undefined): T[] {
  * but won't in practice.
  */
 export function one<T>(value: T | T[] | undefined): T | undefined {
-  if (value === undefined) {
-    return undefined;
-  }
-
   return Array.isArray(value) ? value[0] : value;
 }

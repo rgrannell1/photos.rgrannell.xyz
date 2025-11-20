@@ -55,13 +55,17 @@ export class Photos {
   }
 }
 
-/* */
+/*
+ *
+ */
 export function readAllPhotos(tdb: TribbleDB): Photo[] {
   return tdb.search({
     source: { type: "photo" },
   }).objects().flatMap((obj) => {
     const photo = parsePhoto(tdb, obj);
     return photo ? [photo] : [];
+  }).sort((photoa, photob) => {
+    return parseInt(photob.createdAt) - parseInt(photoa.createdAt);
   });
 }
 
@@ -104,6 +108,9 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
   };
 }
 
+/*
+ *
+ */
 export function readPhotosByThingIds(
   tdb: TribbleDB,
   thingsUrns: Set<string>,
