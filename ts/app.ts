@@ -294,6 +294,7 @@ export function ListingApp(): m.Component<AppAttrs> {
             m(ListingPage, {
               type: state.currentType,
               things,
+              services: state.services,
             }),
           ]),
         ],

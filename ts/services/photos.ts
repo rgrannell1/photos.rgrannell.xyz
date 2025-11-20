@@ -3,6 +3,7 @@ import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { Location, Photo, Subject } from "../types.ts";
 import { parsePhoto } from "./parsers.ts";
 import { readLocations, readPhotos, readSubjects } from "./readers.ts";
+import { one } from "../commons/arrays.ts";
 
 const coloursCache: Map<string, string> = new Map();
 
@@ -132,4 +133,25 @@ export function readPhotosByThingIds(
   return readPhotos(tdb, photoIds).sort((photoa, photob) => {
     return parseInt(photob.createdAt) - parseInt(photoa.createdAt);
   });
+}
+
+/*
+ *
+ */
+export function readThingCover(
+  tdb: TribbleDB,
+  thingUrn: string,
+) {
+  const { type, id } = asUrn(thingUrn);
+
+  const results = tdb.search({
+    source: { type: "photo" },
+    target: { type, id },
+  }).sources()
+
+  const photos = readPhotos(tdb, new Set(results)).sort((photoa, photob) => {
+    return one(photob.rating).toLocaleString().localeCompare(one(photoa.rating).toLocaleString());
+  });
+
+  return photos.length > 0 ? photos[0] : null;
 }

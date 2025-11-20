@@ -3,6 +3,31 @@ import { NonListableTypes } from "../constants.ts";
 import { capitalise, pluralise } from "../commons/strings.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { navigate } from "../commons/events.ts";
+import type { Services } from "../types.ts";
+import { PhotoAlbum } from "../components/photo-album.ts";
+import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
+import { one } from "../commons/arrays.ts";
+
+function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
+  const id = one(thing.id);
+  if (!id) {
+    return []
+  }
+
+  const coverPhoto = services.readThingCover(id);
+  if (!coverPhoto) {
+    return []
+  }
+
+  // Placeholder implementation
+  return [m(PhotoAlbum, {
+    imageUrl: coverPhoto.fullImage,
+    thumbnailUrl: coverPhoto.thumbnailUrl,
+    thumbnailDataUrl: encodeBitmapDataURL(coverPhoto?.mosaicColours),
+    loading: loadingMode(idx),
+    trip: undefined
+  })];
+}
 
 /*
  * Display the component albums and metadata
@@ -10,9 +35,14 @@ import { navigate } from "../commons/events.ts";
  */
 function AlbumsList() {
   return {
-    view() {
-      // TODO I don't know how to type this
-      const $albumComponents: any[] = [];
+    view(vnode: m.Vnode<{ services: Services, things: TripleObject[] }>) {
+      const { services, things } = vnode.attrs;
+
+      const $albumComponents = things.flatMap((thing, idx) => {
+        console.log("Drawing album for thing:", thing);
+        return drawThingAlbum(services, thing, idx)
+      })
+
       return m("section.album-container", $albumComponents);
     },
   };
@@ -52,6 +82,7 @@ function ListingThingsButton() {
 type ListingPageAttrs = {
   type: string;
   things: TripleObject[];
+  services: Services
 };
 
 /*
@@ -61,7 +92,7 @@ type ListingPageAttrs = {
 export function ListingPage() {
   return {
     view(vnode: m.Vnode<ListingPageAttrs>) {
-      const { type, things } = vnode.attrs;
+      const { type, things, services } = vnode.attrs;
       const $albums = [];
 
       const $md = [
@@ -78,7 +109,7 @@ export function ListingPage() {
 
       return m("div.page", [
         m("section.album-metadata", $md),
-        m(AlbumsList),
+        m(AlbumsList, { services, things }),
       ]);
     },
   };

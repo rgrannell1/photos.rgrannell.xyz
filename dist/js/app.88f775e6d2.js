@@ -3894,7 +3894,7 @@ var PhotoSchema = v.object({
   model: v.optional(v.string()),
   mosaicColours: v.string(),
   pngUrl: v.string(),
-  rating: v.optional(v.string()),
+  rating: v.string(),
   style: v.optional(v.string()),
   thumbnailUrl: v.string(),
   width: v.optional(v.string()),
@@ -4096,6 +4096,17 @@ function readPhotosByThingIds(tdb2, thingsUrns) {
     return parseInt(photob.createdAt) - parseInt(photoa.createdAt);
   });
 }
+function readThingCover(tdb2, thingUrn) {
+  const { type, id } = asUrn(thingUrn);
+  const results = tdb2.search({
+    source: { type: "photo" },
+    target: { type, id }
+  }).sources();
+  const photos = readPhotos(tdb2, new Set(results)).sort((photoa, photob) => {
+    return one(photob.rating).toLocaleString().localeCompare(one(photoa.rating).toLocaleString());
+  });
+  return photos.length > 0 ? photos[0] : null;
+}
 
 // ts/services/albums.ts
 function albumYear(album) {
@@ -4217,6 +4228,7 @@ function loadServices(tdb2) {
     readThings: readThings.bind(null, tdb2),
     readCountries: readCountries.bind(null, tdb2),
     namesToUrns: namesToUrns.bind(null, tdb2),
+    readThingCover: readThingCover.bind(null, tdb2),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb2),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb2),
     toThingLinks: toThingLinks.bind(null, tdb2)
@@ -5348,10 +5360,31 @@ function PhotoPage() {
 
 // ts/pages/listing.ts
 var import_mithril23 = __toESM(require_mithril());
+function drawThingAlbum(services, thing, idx) {
+  const id = one(thing.id);
+  if (!id) {
+    return [];
+  }
+  const coverPhoto = services.readThingCover(id);
+  if (!coverPhoto) {
+    return [];
+  }
+  return [(0, import_mithril23.default)(PhotoAlbum, {
+    imageUrl: coverPhoto.fullImage,
+    thumbnailUrl: coverPhoto.thumbnailUrl,
+    thumbnailDataUrl: encodeBitmapDataURL(coverPhoto?.mosaicColours),
+    loading: loadingMode(idx),
+    trip: void 0
+  })];
+}
 function AlbumsList2() {
   return {
-    view() {
-      const $albumComponents = [];
+    view(vnode) {
+      const { services, things } = vnode.attrs;
+      const $albumComponents = things.flatMap((thing, idx) => {
+        console.log("Drawing album for thing:", thing);
+        return drawThingAlbum(services, thing, idx);
+      });
       return (0, import_mithril23.default)("section.album-container", $albumComponents);
     }
   };
@@ -5381,7 +5414,7 @@ function ListingThingsButton() {
 function ListingPage() {
   return {
     view(vnode) {
-      const { type, things } = vnode.attrs;
+      const { type, things, services } = vnode.attrs;
       const $albums = [];
       const $md = [
         (0, import_mithril23.default)(ListingTitle, { type })
@@ -5395,7 +5428,7 @@ function ListingPage() {
       }
       return (0, import_mithril23.default)("div.page", [
         (0, import_mithril23.default)("section.album-metadata", $md),
-        (0, import_mithril23.default)(AlbumsList2)
+        (0, import_mithril23.default)(AlbumsList2, { services, things })
       ]);
     }
   };
@@ -5977,7 +6010,8 @@ function ListingApp() {
             (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril33.default)(ListingPage, {
               type: state.currentType,
-              things
+              things,
+              services: state.services
             })
           ])
         ]

@@ -88,7 +88,7 @@ export const PhotoSchema = v.object({
   model: v.optional(v.string()),
   mosaicColours: v.string(),
   pngUrl: v.string(),
-  rating: v.optional(v.string()),
+  rating: v.string(),
   style: v.optional(v.string()),
   thumbnailUrl: v.string(),
   width: v.optional(v.string()),
