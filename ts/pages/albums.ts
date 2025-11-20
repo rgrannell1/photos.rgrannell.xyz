@@ -9,6 +9,8 @@ import { CountryLink } from "../components/place-links.ts";
 import { block, broadcast } from "../commons/events.ts";
 import { albumYear } from "../services/albums.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
+import { setify, setOf } from "../commons/sets.ts";
+import { arrayify } from "../commons/arrays.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];
@@ -44,8 +46,7 @@ function drawAlbum(state: { year: number }, album: Album, idx: number, services:
     }
   }
 
-  const $countryLinks = services.readCountries(services.namesToUrns(album.countries)).map((country) => {
-    // TODO
+  const $countryLinks = services.readCountries(setify(album.country)).map((country) => {
     return m(CountryLink, {
       country,
       key: `album-country-${album.id}-${country.id}`,
@@ -65,7 +66,7 @@ function drawAlbum(state: { year: number }, album: Album, idx: number, services:
     trip: album.trip,
     imageUrl: album.thumbnailUrl,
     thumbnailUrl: album.thumbnailUrl,
-    thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
+    thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaic),
     loading: loading,
     minDate: album.minDate,
     onclick: onAlbumClick.bind(null, album.id, album.name),

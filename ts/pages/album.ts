@@ -19,13 +19,13 @@ import type { PhotoAttrs } from "../components/photo.ts";
 import { Photos } from "../services/photos.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
 import { preprocessDescription } from "../commons/strings.ts";
+import { setify } from "../commons/sets.ts";
 
-// TODO replace with album type
 type AlbumAttrs = {
   album: Album;
   subjects: Thing[];
   locations: Location[];
-  countries: Country[];
+  country: Country[];
   photos: PhotoType[];
   videos: VideoType[];
   services: Services
@@ -51,7 +51,7 @@ export function AlbumPage() {
         maxDate,
         photosCount,
         description,
-        countries,
+        country,
       } = album;
 
       const dateRange = Dates.dateRange(
@@ -64,7 +64,7 @@ export function AlbumPage() {
         ? "1 photo"
         : `${photosCount} photos`;
 
-      const $countryLinks = services.readCountries(services.namesToUrns(countries)).map(country => {
+      const $countryLinks = services.readCountries(services.namesToUrns(setify(country))).map(country => {
         return m(CountryLink, {
           country,
           mode: "flag",
@@ -78,7 +78,7 @@ export function AlbumPage() {
         m("p.photo-album-countries", $countryLinks),
         m(
           "p.photo-album-description",
-          m.trust(preprocessDescription(description) ?? ""),
+          m.trust(preprocessDescription(description ?? '') ?? ""),
         ),
         m(AlbumShareButton, { url: location.href, name }),
         " ",

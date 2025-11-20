@@ -149,10 +149,11 @@ function AlbumSection() {
       const urns = setOf<string>("id", things);
       const albums = services.readAlbumsByThingIds(new Set(urns));
 
-      // TODO
+      const countries = services.readCountries(setOf<string>("country", albums));
+
       const $albums = albums.map((album) => {
         // duplicated model. move to render(model) code
-        const $countryLinks = [...album.countries].map((country) => {
+        const $countryLinks = [...countries].map((country) => {
           return m(CountryLink, {
             country,
             key: `album-country-${album.id}-${country.id}`,
@@ -171,7 +172,7 @@ function AlbumSection() {
         const $album = m(PhotoAlbum, {
           imageUrl: album.thumbnailUrl,
           thumbnailUrl: album.thumbnailUrl,
-          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
+          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaic),
           loading: "lazy",
           minDate: album.minDate,
           onclick: onAlbumClick.bind(null, album.id, album.name),

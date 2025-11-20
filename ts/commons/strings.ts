@@ -18,13 +18,16 @@ export function pluralise(str: string): string {
 const CAMEL_CASE_CACHE = new Map<string, string>();
 
 export function camelCase(str: string): string {
+  if (typeof str !== "string") {
+    throw new TypeError("Expected a string");
+  }
+
   // Caching this since it took about 10ms at load time, so why not eliminate that?
   if (CAMEL_CASE_CACHE.has(str)) {
     return CAMEL_CASE_CACHE.get(str)!;
   }
 
-  const result = str
-    .replace(/[-_ ]+([a-z0-9])/g, (_, char) => char.toUpperCase());
+  const result = str.replace(/[-_ ]+([a-z0-9])/g, (_, char) => char.toUpperCase());
 
   CAMEL_CASE_CACHE.set(str, result);
   return result;

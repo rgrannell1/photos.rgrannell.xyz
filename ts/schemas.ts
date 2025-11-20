@@ -42,8 +42,7 @@ export const AlbumSchema = v.object({
   mosaic: v.string(),
   photosCount: v.pipe(v.string(), v.transform(Number)),
   videosCount: v.pipe(v.string(), v.transform(Number)),
-  // TODO this is silly; rename and type, please!
-  flags: v.any(),
+  country: v.union( [v.string(), v.array(v.string())] ),
   description: v.optional(v.string()),
 });
 

@@ -2738,6 +2738,9 @@ function pluralise(str) {
 }
 var CAMEL_CASE_CACHE = /* @__PURE__ */ new Map();
 function camelCase(str) {
+  if (typeof str !== "string") {
+    throw new TypeError("Expected a string");
+  }
   if (CAMEL_CASE_CACHE.has(str)) {
     return CAMEL_CASE_CACHE.get(str);
   }
@@ -2955,6 +2958,16 @@ function buildLocationTrees(triple) {
   srcNode?.parents.add(tgt);
   return [triple];
 }
+function renameRelations(triple) {
+  if (triple[1] !== KnownRelations.FLAGS) {
+    return [triple];
+  }
+  return [[
+    triple[0],
+    KnownRelations.COUNTRY,
+    triple[2]
+  ]];
+}
 var HARD_CODED_TRIPLES = [
   ["urn:r\xF3:rating:%E2%AD%90", KnownRelations.NAME, "\u2B50"],
   ["urn:r\xF3:rating:%E2%AD%90%E2%AD%90", KnownRelations.NAME, "\u2B50\u2B50"],
@@ -2972,6 +2985,7 @@ var HARD_CODED_TRIPLES = [
 ];
 function deriveTriples(triple) {
   const tripleProcessors = [
+    renameRelations,
     convertRatingsToUrns,
     convertCountriesToUrns,
     convertStylesToUrns,
@@ -3841,8 +3855,7 @@ var AlbumSchema = v.object({
   mosaic: v.string(),
   photosCount: v.pipe(v.string(), v.transform(Number)),
   videosCount: v.pipe(v.string(), v.transform(Number)),
-  // TODO this is silly; rename and type, please!
-  flags: v.any(),
+  country: v.union([v.string(), v.array(v.string())]),
   description: v.optional(v.string())
 });
 var CountrySchema = v.object({
@@ -3962,6 +3975,7 @@ var parseAmphibian = parseObject(AmphibianSchema, "amphibian");
 var parseInsect = parseObject(InsectSchema, "insect");
 var parseVideo = parseObject(VideoSchema, "video");
 var parsePlace = parseObject(PlaceSchema, "place");
+var parseAlbum = parseObject(AlbumSchema, "album");
 var parseSubject = parseByType({
   [KnownTypes.BIRD]: parseBird,
   [KnownTypes.MAMMAL]: parseMammal,
@@ -3974,29 +3988,6 @@ var parseLocation = parseByType({
   [KnownTypes.COUNTRY]: parseCountry,
   [KnownTypes.UNESCO]: parseUnesco
 });
-function parseAlbum(tdb2, album) {
-  const result = safeParse(AlbumSchema, album);
-  if (!result.success) {
-    logParseWarning(result.issues);
-    throw new Error(`Failed to parse album with id ${album.id}`);
-  }
-  const data = result.output;
-  const countryNames = new Set(arrayify(data.flags));
-  return {
-    type: "album",
-    id: data.id,
-    name: data.name,
-    trip: data.trip,
-    minDate: data.minDate,
-    maxDate: data.maxDate,
-    thumbnailUrl: data.thumbnailUrl,
-    mosaicColours: data.mosaic,
-    photosCount: data.photosCount,
-    videosCount: data.videosCount,
-    description: data.description ?? "",
-    countries: countryNames
-  };
-}
 function parseStats(stats) {
   return safeParse(StatsSchema, stats).success ? stats : void 0;
 }
@@ -4677,6 +4668,33 @@ function CountryLink() {
   };
 }
 
+// ts/commons/sets.ts
+function setify(value) {
+  if (value === void 0) {
+    return /* @__PURE__ */ new Set();
+  }
+  return new Set(Array.isArray(value) ? value : [value]);
+}
+function setOf(property, objects) {
+  const result = /* @__PURE__ */ new Set();
+  for (const obj of objects) {
+    if (property in obj) {
+      const value = obj[property];
+      if (value === void 0) {
+        continue;
+      }
+      if (Array.isArray(value)) {
+        for (const elem of value) {
+          result.add(elem);
+        }
+      } else {
+        result.add(value);
+      }
+    }
+  }
+  return result;
+}
+
 // ts/pages/albums.ts
 function onAlbumClick(id, title, event) {
   const parsed = asUrn(id);
@@ -4697,7 +4715,7 @@ function drawAlbum(state2, album, idx, services) {
       $albumComponents.push($h2);
     }
   }
-  const $countryLinks = services.readCountries(services.namesToUrns(album.countries)).map((country) => {
+  const $countryLinks = services.readCountries(setify(album.country)).map((country) => {
     return (0, import_mithril11.default)(CountryLink, {
       country,
       key: `album-country-${album.id}-${country.id}`,
@@ -4715,7 +4733,7 @@ function drawAlbum(state2, album, idx, services) {
     trip: album.trip,
     imageUrl: album.thumbnailUrl,
     thumbnailUrl: album.thumbnailUrl,
-    thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
+    thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaic),
     loading,
     minDate: album.minDate,
     onclick: onAlbumClick.bind(null, album.id, album.name)
@@ -4963,7 +4981,7 @@ function AlbumPage() {
         maxDate,
         photosCount,
         description,
-        countries
+        country
       } = album;
       const dateRange = Dates.dateRange(
         minDate,
@@ -4971,9 +4989,9 @@ function AlbumPage() {
         Windows.isSmallerThan(500)
       );
       const photoCountMessage = photosCount === 1 ? "1 photo" : `${photosCount} photos`;
-      const $countryLinks = services.readCountries(services.namesToUrns(countries)).map((country) => {
+      const $countryLinks = services.readCountries(services.namesToUrns(setify(country))).map((country2) => {
         return (0, import_mithril17.default)(CountryLink, {
-          country,
+          country: country2,
           mode: "flag"
         });
       });
@@ -4984,7 +5002,7 @@ function AlbumPage() {
         (0, import_mithril17.default)("p.photo-album-countries", $countryLinks),
         (0, import_mithril17.default)(
           "p.photo-album-description",
-          import_mithril17.default.trust(preprocessDescription(description) ?? "")
+          import_mithril17.default.trust(preprocessDescription(description ?? "") ?? "")
         ),
         (0, import_mithril17.default)(AlbumShareButton, { url: location.href, name }),
         " ",
@@ -5473,33 +5491,6 @@ function PlacesList() {
   };
 }
 
-// ts/commons/sets.ts
-function setify(value) {
-  if (value === void 0) {
-    return /* @__PURE__ */ new Set();
-  }
-  return new Set(Array.isArray(value) ? value : [value]);
-}
-function setOf(property, objects) {
-  const result = /* @__PURE__ */ new Set();
-  for (const obj of objects) {
-    if (property in obj) {
-      const value = obj[property];
-      if (value === void 0) {
-        continue;
-      }
-      if (Array.isArray(value)) {
-        for (const elem of value) {
-          result.add(elem);
-        }
-      } else {
-        result.add(value);
-      }
-    }
-  }
-  return result;
-}
-
 // ts/components/listing-link.ts
 var import_mithril27 = __toESM(require_mithril());
 function onListingClick(type, event) {
@@ -5681,8 +5672,9 @@ function AlbumSection() {
       const { things, services } = vnode.attrs;
       const urns = setOf("id", things);
       const albums = services.readAlbumsByThingIds(new Set(urns));
+      const countries = services.readCountries(setOf("country", albums));
       const $albums = albums.map((album) => {
-        const $countryLinks = [...album.countries].map((country) => {
+        const $countryLinks = [...countries].map((country) => {
           return (0, import_mithril32.default)(CountryLink, {
             country,
             key: `album-country-${album.id}-${country.id}`,
@@ -5699,7 +5691,7 @@ function AlbumSection() {
         const $album = (0, import_mithril32.default)(PhotoAlbum, {
           imageUrl: album.thumbnailUrl,
           thumbnailUrl: album.thumbnailUrl,
-          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaicColours),
+          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaic),
           loading: "lazy",
           minDate: album.minDate,
           onclick: onAlbumClick2.bind(null, album.id, album.name),
