@@ -7,7 +7,7 @@ import { arrayify, one } from "../commons/arrays.ts";
 import type { Services } from "../types.ts";
 import { CountryLink } from "../components/place-links.ts";
 import { Photo } from "../components/photo.ts";
-import { Photos } from "../services/photos.ts";
+import { encodeBitmapDataURL, Photos } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { block, broadcast } from "../commons/events.ts";
@@ -17,6 +17,7 @@ import { KnownRelations } from "../constants.ts";
 import { ListingLink } from "../components/listing-link.ts";
 import { FeaturesList } from "../components/features-list.ts";
 import { UnescoList } from "../components/unesco-list.ts";
+import { loadingMode } from "../services/photos.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -172,7 +173,7 @@ function AlbumSection() {
         const $album = m(PhotoAlbum, {
           imageUrl: album.thumbnailUrl,
           thumbnailUrl: album.thumbnailUrl,
-          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaic),
+          thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),
           loading: "lazy",
           minDate: album.minDate,
           onclick: onAlbumClick.bind(null, album.id, album.name),
@@ -206,7 +207,7 @@ function PhotoSection() {
       return m(
         "section.photo-container",
         photos.map((photo, idx) => {
-          const loading = Photos.loadingMode(idx);
+          const loading = loadingMode(idx);
 
           return m(Photo, {
             key: `photo-${photo.id}`,

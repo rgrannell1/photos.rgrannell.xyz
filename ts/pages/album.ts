@@ -5,6 +5,7 @@ import { AlbumShareButton } from "../components/album-share-button.ts";
 import { CountryLink } from "../components/place-links.ts";
 import { Video } from "../components/video.ts";
 import type { VideoAttrs } from "../components/video.ts";
+import { loadingMode } from "../services/photos.ts";
 
 import type {
   Album,
@@ -91,7 +92,7 @@ export function AlbumPage() {
           Photo,
           {
             photo,
-            loading: Photos.loadingMode(idx),
+            loading: loadingMode(idx),
             interactive: true,
           } satisfies PhotoAttrs,
         );

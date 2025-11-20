@@ -1,7 +1,7 @@
 import m from "mithril";
 import { AlbumStats } from "../components/album-stats.ts";
 import type { Album, Services } from "../types.ts";
-import { Photos } from "../services/photos.ts";
+import { encodeBitmapDataURL, Photos } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { Windows } from "../services/window.ts";
@@ -11,6 +11,7 @@ import { albumYear } from "../services/albums.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { setify, setOf } from "../commons/sets.ts";
 import { arrayify } from "../commons/arrays.ts";
+import { loadingMode } from "../services/photos.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];
@@ -25,7 +26,7 @@ function onAlbumClick(id: string, title: string, event: Event) {
 }
 
 function drawAlbum(state: { year: number }, album: Album, idx: number, services: Services) {
-  const loading = Photos.loadingMode(idx);
+  const loading = loadingMode(idx);
 
   const $albumComponents: m.Vnode<
     unknown,
@@ -66,7 +67,7 @@ function drawAlbum(state: { year: number }, album: Album, idx: number, services:
     trip: album.trip,
     imageUrl: album.thumbnailUrl,
     thumbnailUrl: album.thumbnailUrl,
-    thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaic),
+    thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),
     loading: loading,
     minDate: album.minDate,
     onclick: onAlbumClick.bind(null, album.id, album.name),

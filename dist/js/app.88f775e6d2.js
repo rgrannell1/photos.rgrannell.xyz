@@ -4010,48 +4010,39 @@ var { one: readFeature, many: readFeatures } = readers(parseFeature);
 
 // ts/services/photos.ts
 var coloursCache = /* @__PURE__ */ new Map();
-var Photos = class {
-  /*
-   * Determine whether a photo should be eagerly or lazily loaded
-   * depending on page position
-   */
-  static loadingMode(idx) {
-    const viewportWidth = globalThis.innerWidth;
-    const viewportHeight = globalThis.innerHeight;
-    const imageDimension = PHOTO_WIDTH;
-    const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
-    const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
-    return idx > maxImagesPerRow * maxRowsInFold + 1 ? "lazy" : "eager";
-  }
-  /*
-   * Convert a mosaic colour string into a bitmap data URL
-   */
-  static encodeBitmapDataURL(colours) {
-    if (coloursCache.has(colours)) {
-      return coloursCache.get(colours);
-    }
-    const coloursList = colours.split("#").map(
-      (colour) => `#${colour}`
-    );
-    const canvas = window.document.createElement("canvas");
-    canvas.width = 2;
-    canvas.height = 2;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      throw new Error("context missing");
-    }
-    ctx.fillStyle = coloursList[1];
-    ctx.fillRect(0, 0, 1, 1);
-    ctx.fillStyle = coloursList[2];
-    ctx.fillRect(1, 0, 1, 1);
-    ctx.fillStyle = coloursList[3];
-    ctx.fillRect(0, 1, 1, 1);
-    ctx.fillStyle = coloursList[4];
-    ctx.fillRect(1, 1, 1, 1);
-    coloursCache.set(colours, canvas.toDataURL("image/png"));
+function loadingMode(idx) {
+  const viewportWidth = globalThis.innerWidth;
+  const viewportHeight = globalThis.innerHeight;
+  const imageDimension = PHOTO_WIDTH;
+  const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
+  const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
+  return idx > maxImagesPerRow * maxRowsInFold + 1 ? "lazy" : "eager";
+}
+function encodeBitmapDataURL(colours) {
+  if (coloursCache.has(colours)) {
     return coloursCache.get(colours);
   }
-};
+  const coloursList = colours.split("#").map(
+    (colour) => `#${colour}`
+  );
+  const canvas = window.document.createElement("canvas");
+  canvas.width = 2;
+  canvas.height = 2;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    throw new Error("context missing");
+  }
+  ctx.fillStyle = coloursList[1];
+  ctx.fillRect(0, 0, 1, 1);
+  ctx.fillStyle = coloursList[2];
+  ctx.fillRect(1, 0, 1, 1);
+  ctx.fillStyle = coloursList[3];
+  ctx.fillRect(0, 1, 1, 1);
+  ctx.fillStyle = coloursList[4];
+  ctx.fillRect(1, 1, 1, 1);
+  coloursCache.set(colours, canvas.toDataURL("image/png"));
+  return coloursCache.get(colours);
+}
 function readAllPhotos(tdb2) {
   return tdb2.search({
     source: { type: "photo" }
@@ -4560,7 +4551,7 @@ function Photo() {
         thumbnailUrl,
         mosaicColours
       } = photo;
-      const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
+      const thumbnailDataUrl = encodeBitmapDataURL(mosaicColours);
       const $mdIcon = (0, import_mithril8.default)(MetadataIcon, { id, colour: photo.contrastingGrey });
       const $imagePair = (0, import_mithril8.default)(ImagePair, {
         imageUrl: photo.fullImage,
@@ -4701,7 +4692,7 @@ function onAlbumClick(id, title, event) {
   block(event);
 }
 function drawAlbum(state2, album, idx, services) {
-  const loading = Photos.loadingMode(idx);
+  const loading = loadingMode(idx);
   const $albumComponents = [];
   if (state2.year !== albumYear(album)) {
     state2.year = albumYear(album);
@@ -4732,7 +4723,7 @@ function drawAlbum(state2, album, idx, services) {
     trip: album.trip,
     imageUrl: album.thumbnailUrl,
     thumbnailUrl: album.thumbnailUrl,
-    thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaic),
+    thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),
     loading,
     minDate: album.minDate,
     onclick: onAlbumClick.bind(null, album.id, album.name)
@@ -5013,7 +5004,7 @@ function AlbumPage() {
           Photo,
           {
             photo,
-            loading: Photos.loadingMode(idx),
+            loading: loadingMode(idx),
             interactive: true
           }
         );
@@ -5040,7 +5031,7 @@ function PhotosList() {
       return (0, import_mithril18.default)(
         "section.photo-container",
         photos.map((photo, idx) => {
-          const loading = Photos.loadingMode(idx);
+          const loading = loadingMode(idx);
           return (0, import_mithril18.default)(Photo, {
             key: `photo-${photo.id}`,
             photo,
@@ -5690,7 +5681,7 @@ function AlbumSection() {
         const $album = (0, import_mithril32.default)(PhotoAlbum, {
           imageUrl: album.thumbnailUrl,
           thumbnailUrl: album.thumbnailUrl,
-          thumbnailDataUrl: Photos.encodeBitmapDataURL(album.mosaic),
+          thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),
           loading: "lazy",
           minDate: album.minDate,
           onclick: onAlbumClick2.bind(null, album.id, album.name),
@@ -5719,7 +5710,7 @@ function PhotoSection() {
       return (0, import_mithril32.default)(
         "section.photo-container",
         photos.map((photo, idx) => {
-          const loading = Photos.loadingMode(idx);
+          const loading = loadingMode(idx);
           return (0, import_mithril32.default)(Photo, {
             key: `photo-${photo.id}`,
             photo,

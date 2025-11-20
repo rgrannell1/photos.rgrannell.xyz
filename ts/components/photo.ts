@@ -4,7 +4,7 @@ import { parseUrn } from "@rgrannell1/tribbledb";
 import { block, broadcast } from "../commons/events.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../constants.ts";
-import { Photos } from "../services/photos.ts";
+import { encodeBitmapDataURL, Photos } from "../services/photos.ts";
 import type { Photo as PhotoType } from "../types.ts";
 
 /*
@@ -135,7 +135,7 @@ export function Photo() {
       } = photo;
 
       // encode a grid of colours into a data URL
-      const thumbnailDataUrl = Photos.encodeBitmapDataURL(mosaicColours);
+      const thumbnailDataUrl = encodeBitmapDataURL(mosaicColours);
 
       const $mdIcon = m(MetadataIcon, { id, colour: photo.contrastingGrey });
       const $imagePair = m(ImagePair, {

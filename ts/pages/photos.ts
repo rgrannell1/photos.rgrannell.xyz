@@ -1,7 +1,7 @@
 import m from "mithril";
 import type { Photo as PhotoType } from "../types.ts";
-import { Photos } from "../services/photos.ts";
 import { Photo } from "../components/photo.ts";
+import { loadingMode } from "../services/photos.ts";
 
 /* */
 function PhotosList() {
@@ -13,7 +13,7 @@ function PhotosList() {
       return m(
         "section.photo-container",
         photos.map((photo, idx) => {
-          const loading = Photos.loadingMode(idx);
+          const loading = loadingMode(idx);
 
           return m(Photo, {
             key: `photo-${photo.id}`,
