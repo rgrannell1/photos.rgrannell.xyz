@@ -1,50 +1,18 @@
+
 import m from "mithril";
-import type { AppWindow, Stats } from "../types.ts";
-
-/*
- * We inject this in at runtime, so validate its structure
- */
-function isStats(stats: unknown): stats is Stats {
-  if (typeof stats !== "object" || stats === null) {
-    console.warn("Stats is not an object");
-  }
-
-  const keys = [
-    "photos",
-    "videos",
-    "albums",
-    "years",
-    "countries",
-    "bird_species",
-    "mammal_species",
-    "amphibian_species",
-    "reptile_species",
-    "unesco_sites",
-  ] as const;
-
-  for (const key of keys) {
-    if (!(key in (stats as Record<string, unknown>))) {
-      console.warn(`Stats is missing key: ${key}`);
-    }
-
-    if (typeof (stats as Record<string, unknown>)[key] !== "number") {
-      console.warn(`Stats key ${key} is not a number`);
-    }
-  }
-
-  return true;
-}
+import type { AppWindow } from "../types.ts";
+import { parseStats } from "../services/parsers.ts";
 
 /*
  * Show statistics and links for the album pages
  */
 export function AlbumStats() {
-  const stats = (window as AppWindow).stats;
+  const stats = parseStats((window as AppWindow).stats)
 
   return {
     view() {
-      if (!isStats(stats)) {
-        return m("p");
+      if (!stats) {
+        return m("p")
       }
 
       return m("p.photo-stats", [

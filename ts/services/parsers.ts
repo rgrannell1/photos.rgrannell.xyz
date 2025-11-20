@@ -1,5 +1,5 @@
 import { KnownTypes } from "../constants.ts";
-import type { Amphibian, Bird, Insect, Mammal, Reptile } from "../types.ts";
+import type { Amphibian, Bird, Insect, Mammal, Reptile, Stats } from "../types.ts";
 import { parseByType, parseObject } from "../commons/parser.ts";
 import {
   AlbumSchema,
@@ -12,6 +12,7 @@ import {
   PhotoSchema,
   PlaceSchema,
   ReptileSchema,
+  StatsSchema,
   UnescoSchema,
   VideoSchema,
 } from "../schemas.ts";
@@ -19,7 +20,6 @@ import { safeParse, type InferOutput } from "valibot";
 import type { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
 import { logParseWarning } from "../commons/logger.ts";
 import { arrayify } from "../commons/arrays.ts";
-import { asInt } from "../commons/numbers.ts";
 
 export const parseFeature = parseObject(FeatureSchema, "feature");
 export const parseCountry = parseObject(CountrySchema, "country");
@@ -31,6 +31,7 @@ export const parseReptile = parseObject(ReptileSchema, "reptile");
 export const parseAmphibian = parseObject(AmphibianSchema, "amphibian");
 export const parseInsect = parseObject(InsectSchema, "insect");
 export const parseVideo = parseObject(VideoSchema, "video");
+export const parsePlace = parseObject(PlaceSchema, "place");
 
 /*
  * Parse known subject types
@@ -54,35 +55,6 @@ export const parseLocation = parseByType<any>({
   [KnownTypes.UNESCO]: parseUnesco,
 });
 
-
-
-type PlaceType = InferOutput<typeof PlaceSchema> & {
-  type: "place";
-  in: any[]; // TODO LLMSLOP Using any to avoid circular dependency
-};
-
-/* */
-export function parsePlace(
-  tdb: TribbleDB,
-  place: TripleObject,
-): PlaceType | undefined {
-  const result = safeParse(PlaceSchema, place);
-  if (!result.success) {
-    logParseWarning(result.issues);
-    return;
-  }
-
-  const refs = arrayify(result.output.in);
-  // TODO: Implement location lookup without circular dependency
-  const lookedUpRefs: any[] = []; // Placeholder to avoid circular dependency
-
-  return {
-    ...result.output,
-    type: "place",
-    in: lookedUpRefs, // TODO is this actually used?
-  };
-}
-
 /*
  * Read album-data
  *
@@ -102,16 +74,25 @@ export function parseAlbum(tdb: TribbleDB, album: TripleObject) {
 
   return {
     type: "album",
+    id: data.id,
     name: data.name,
     trip: data.trip,
-    minDate: asInt(data.minDate),
-    maxDate: asInt(data.maxDate),
+    minDate: data.minDate,
+    maxDate: data.maxDate,
     thumbnailUrl: data.thumbnailUrl,
     mosaicColours: data.mosaic,
-    id: data.id,
-    photosCount: asInt(data.photosCount),
-    videosCount: asInt(data.videosCount),
+    photosCount: data.photosCount,
+    videosCount: data.videosCount,
     description: data.description ?? "",
     countries: countryNames,
   };
+}
+
+/*
+ *
+ */
+export function parseStats(stats: unknown): Stats | undefined {
+  return safeParse(StatsSchema, stats).success
+    ? (stats as Stats)
+    : undefined;
 }

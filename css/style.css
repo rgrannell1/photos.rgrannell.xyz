@@ -430,6 +430,7 @@ button:disabled {
     grid-template-columns: 0px 1fr 0px;
   }
 
+  /* TODO */
   .app-container.sidebar-visible {
     display: grid;
     grid-template-columns: 1fr 0px 0px;

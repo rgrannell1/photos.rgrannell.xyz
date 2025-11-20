@@ -3076,13 +3076,13 @@ async function* streamTribbles(url2) {
   }
 }
 var tdb = null;
-async function loadTriples(url2, schema = {}, fn = (x) => [x]) {
+async function loadTriples(url2, schema = {}, perTriple = (x) => [x]) {
   if (!tdb) {
     tdb = new TribbleDB([], schema);
   }
   for await (const triples of streamTribbles(url2)) {
     for (const triple of triples) {
-      tdb.add(fn(triple));
+      tdb.add(perTriple(triple));
     }
   }
   tdb.add(addNestedLocations());
@@ -3197,6 +3197,38 @@ function _joinExpects(values2, separator) {
   return list[0] ?? "never";
 }
 // @__NO_SIDE_EFFECTS__
+function integer(message2) {
+  return {
+    kind: "validation",
+    type: "integer",
+    reference: integer,
+    async: false,
+    expects: null,
+    requirement: Number.isInteger,
+    message: message2,
+    "~run"(dataset, config2) {
+      if (dataset.typed && !this.requirement(dataset.value)) {
+        _addIssue(this, "integer", dataset, config2);
+      }
+      return dataset;
+    }
+  };
+}
+// @__NO_SIDE_EFFECTS__
+function transform(operation) {
+  return {
+    kind: "transformation",
+    type: "transform",
+    reference: transform,
+    async: false,
+    operation,
+    "~run"(dataset) {
+      dataset.value = this.operation(dataset.value);
+      return dataset;
+    }
+  };
+}
+// @__NO_SIDE_EFFECTS__
 function url(message2) {
   return {
     kind: "validation",
@@ -3308,6 +3340,28 @@ function array(item, message2) {
           }
           dataset.value.push(itemDataset.value);
         }
+      } else {
+        _addIssue(this, "type", dataset, config2);
+      }
+      return dataset;
+    }
+  };
+}
+// @__NO_SIDE_EFFECTS__
+function number(message2) {
+  return {
+    kind: "schema",
+    type: "number",
+    reference: number,
+    expects: "number",
+    async: false,
+    message: message2,
+    get "~standard"() {
+      return /* @__PURE__ */ _getStandardProps(this);
+    },
+    "~run"(dataset, config2) {
+      if (typeof dataset.value === "number" && !isNaN(dataset.value)) {
+        dataset.typed = true;
       } else {
         _addIssue(this, "type", dataset, config2);
       }
@@ -3771,20 +3825,23 @@ var v = {
   union,
   any,
   pipe,
-  url
+  url,
+  integer,
+  number,
+  transform
 };
 var AlbumSchema = v.object({
   name: v.string(),
+  id: v.string(),
   trip: v.optional(v.string()),
-  minDate: v.string(),
-  maxDate: v.string(),
+  minDate: v.pipe(v.string(), v.transform(Number)),
+  maxDate: v.pipe(v.string(), v.transform(Number)),
   thumbnailUrl: v.string(),
   // TODO this is silly
-  mosaic: v.any(),
-  id: v.string(),
-  photosCount: v.string(),
-  videosCount: v.string(),
-  // TODO this is silly
+  mosaic: v.string(),
+  photosCount: v.pipe(v.string(), v.transform(Number)),
+  videosCount: v.pipe(v.string(), v.transform(Number)),
+  // TODO this is silly; rename and type, please!
   flags: v.any(),
   description: v.optional(v.string())
 });
@@ -3876,18 +3933,22 @@ var VideoSchema = v.object({
   videoUrl720p: v.pipe(v.string(), v.url()),
   videoUrlUnscaled: v.pipe(v.string(), v.url())
 });
+var StatsSchema = v.object({
+  photos: v.pipe(v.number(), v.integer()),
+  videos: v.pipe(v.number(), v.integer()),
+  albums: v.pipe(v.number(), v.integer()),
+  years: v.pipe(v.number(), v.integer()),
+  countries: v.pipe(v.number(), v.integer()),
+  bird_species: v.pipe(v.number(), v.integer()),
+  mammal_species: v.pipe(v.number(), v.integer()),
+  amphibian_species: v.pipe(v.number(), v.integer()),
+  reptile_species: v.pipe(v.number(), v.integer()),
+  unesco_sites: v.pipe(v.number(), v.integer())
+});
 var FeatureSchema = v.object({
   id: v.string(),
   name: v.optional(v.string())
 });
-
-// ts/commons/numbers.ts
-function asInt(value) {
-  if (typeof value === "number") {
-    return value;
-  }
-  return parseInt(value, 10);
-}
 
 // ts/services/parsers.ts
 var parseFeature = parseObject(FeatureSchema, "feature");
@@ -3900,6 +3961,7 @@ var parseReptile = parseObject(ReptileSchema, "reptile");
 var parseAmphibian = parseObject(AmphibianSchema, "amphibian");
 var parseInsect = parseObject(InsectSchema, "insect");
 var parseVideo = parseObject(VideoSchema, "video");
+var parsePlace = parseObject(PlaceSchema, "place");
 var parseSubject = parseByType({
   [KnownTypes.BIRD]: parseBird,
   [KnownTypes.MAMMAL]: parseMammal,
@@ -3912,21 +3974,6 @@ var parseLocation = parseByType({
   [KnownTypes.COUNTRY]: parseCountry,
   [KnownTypes.UNESCO]: parseUnesco
 });
-function parsePlace(tdb2, place) {
-  const result = safeParse(PlaceSchema, place);
-  if (!result.success) {
-    logParseWarning(result.issues);
-    return;
-  }
-  const refs = arrayify(result.output.in);
-  const lookedUpRefs = [];
-  return {
-    ...result.output,
-    type: "place",
-    in: lookedUpRefs
-    // TODO is this actually used?
-  };
-}
 function parseAlbum(tdb2, album) {
   const result = safeParse(AlbumSchema, album);
   if (!result.success) {
@@ -3937,18 +3984,21 @@ function parseAlbum(tdb2, album) {
   const countryNames = new Set(arrayify(data.flags));
   return {
     type: "album",
+    id: data.id,
     name: data.name,
     trip: data.trip,
-    minDate: asInt(data.minDate),
-    maxDate: asInt(data.maxDate),
+    minDate: data.minDate,
+    maxDate: data.maxDate,
     thumbnailUrl: data.thumbnailUrl,
     mosaicColours: data.mosaic,
-    id: data.id,
-    photosCount: asInt(data.photosCount),
-    videosCount: asInt(data.videosCount),
+    photosCount: data.photosCount,
+    videosCount: data.videosCount,
     description: data.description ?? "",
     countries: countryNames
   };
+}
+function parseStats(stats) {
+  return safeParse(StatsSchema, stats).success ? stats : void 0;
 }
 
 // ts/services/readers.ts
@@ -4246,37 +4296,11 @@ var import_mithril11 = __toESM(require_mithril());
 
 // ts/components/album-stats.ts
 var import_mithril5 = __toESM(require_mithril());
-function isStats(stats) {
-  if (typeof stats !== "object" || stats === null) {
-    console.warn("Stats is not an object");
-  }
-  const keys = [
-    "photos",
-    "videos",
-    "albums",
-    "years",
-    "countries",
-    "bird_species",
-    "mammal_species",
-    "amphibian_species",
-    "reptile_species",
-    "unesco_sites"
-  ];
-  for (const key of keys) {
-    if (!(key in stats)) {
-      console.warn(`Stats is missing key: ${key}`);
-    }
-    if (typeof stats[key] !== "number") {
-      console.warn(`Stats key ${key} is not a number`);
-    }
-  }
-  return true;
-}
 function AlbumStats() {
-  const stats = window.stats;
+  const stats = parseStats(window.stats);
   return {
     view() {
-      if (!isStats(stats)) {
+      if (!stats) {
         return (0, import_mithril5.default)("p");
       }
       return (0, import_mithril5.default)("p.photo-stats", [
@@ -5760,7 +5784,9 @@ function AlbumsApp() {
         { class: state.darkMode ? "dark-mode" : void 0 },
         [
           (0, import_mithril33.default)(Header, state),
-          (0, import_mithril33.default)("div.app-container", [
+          (0, import_mithril33.default)("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : void 0
+          }, [
             (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril33.default)(AlbumsPage, {
               albums: readAllAlbums(state.data),
@@ -5797,7 +5823,9 @@ function AlbumApp() {
         { class: state.darkMode ? "dark-mode" : void 0 },
         [
           (0, import_mithril33.default)(Header, state),
-          (0, import_mithril33.default)("div.app-container", [
+          (0, import_mithril33.default)("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : void 0
+          }, [
             (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril33.default)(AlbumPage, {
               album,
@@ -5821,7 +5849,9 @@ function AboutApp() {
         { class: state.darkMode ? "dark-mode" : void 0 },
         [
           (0, import_mithril33.default)(Header, state),
-          (0, import_mithril33.default)("div.app-container", [
+          (0, import_mithril33.default)("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : void 0
+          }, [
             (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril33.default)(AboutPage)
           ])
@@ -5838,7 +5868,9 @@ function VideosApp() {
         { class: state.darkMode ? "dark-mode" : void 0 },
         [
           (0, import_mithril33.default)(Header, state),
-          (0, import_mithril33.default)("div.app-container", [
+          (0, import_mithril33.default)("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : void 0
+          }, [
             (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril33.default)(VideosPage, {
               videos: readAllVideos(state.data)
@@ -5857,7 +5889,9 @@ function PhotosApp() {
         { class: state.darkMode ? "dark-mode" : void 0 },
         [
           (0, import_mithril33.default)(Header, state),
-          (0, import_mithril33.default)("div.app-container", [
+          (0, import_mithril33.default)("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : void 0
+          }, [
             (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril33.default)(PhotosPage, {
               photos: readAllPhotos(state.data)
@@ -5891,7 +5925,9 @@ function ThingApp() {
         { class: state.darkMode ? "dark-mode" : void 0 },
         [
           (0, import_mithril33.default)(Header, state),
-          (0, import_mithril33.default)("div.app-container", [
+          (0, import_mithril33.default)("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : void 0
+          }, [
             (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril33.default)(ThingPage, {
               urn: state.currentUrn,
@@ -5923,7 +5959,9 @@ function PhotoApp() {
         { class: state.darkMode ? "dark-mode" : void 0 },
         [
           (0, import_mithril33.default)(Header, state),
-          (0, import_mithril33.default)("div.app-container", [
+          (0, import_mithril33.default)("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : void 0
+          }, [
             (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril33.default)(PhotoPage, { photo, services: state.services })
           ])
@@ -5948,7 +5986,9 @@ function ListingApp() {
         { class: state.darkMode ? "dark-mode" : void 0 },
         [
           (0, import_mithril33.default)(Header, state),
-          (0, import_mithril33.default)("div.app-container", [
+          (0, import_mithril33.default)("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : void 0
+          }, [
             (0, import_mithril33.default)(Sidebar, { visible: state.sidebarVisible }),
             (0, import_mithril33.default)(ListingPage, {
               type: state.currentType,

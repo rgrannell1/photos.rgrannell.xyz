@@ -9,9 +9,12 @@ import {
   object,
   optional,
   pipe,
+  integer,
   string,
   union,
   url,
+  number,
+  transform,
 } from "valibot";
 
 const v = {
@@ -23,20 +26,23 @@ const v = {
   any,
   pipe,
   url,
+  integer,
+  number,
+  transform
 };
 
 export const AlbumSchema = v.object({
   name: v.string(),
+  id: v.string(),
   trip: v.optional(v.string()),
-  minDate: v.string(),
-  maxDate: v.string(),
+  minDate: v.pipe(v.string(), v.transform(Number)),
+  maxDate: v.pipe(v.string(), v.transform(Number)),
   thumbnailUrl: v.string(),
   // TODO this is silly
-  mosaic: v.any(),
-  id: v.string(),
-  photosCount: v.string(),
-  videosCount: v.string(),
-  // TODO this is silly
+  mosaic: v.string(),
+  photosCount: v.pipe(v.string(), v.transform(Number)),
+  videosCount: v.pipe(v.string(), v.transform(Number)),
+  // TODO this is silly; rename and type, please!
   flags: v.any(),
   description: v.optional(v.string()),
 });
@@ -138,6 +144,19 @@ export const VideoSchema = v.object({
   videoUrl480p: v.pipe(v.string(), v.url()),
   videoUrl720p: v.pipe(v.string(), v.url()),
   videoUrlUnscaled: v.pipe(v.string(), v.url()),
+});
+
+export const StatsSchema = v.object({
+  photos: v.pipe(v.number(), v.integer()),
+  videos: v.pipe(v.number(), v.integer()),
+  albums: v.pipe(v.number(), v.integer()),
+  years: v.pipe(v.number(), v.integer()),
+  countries: v.pipe(v.number(), v.integer()),
+  bird_species: v.pipe(v.number(), v.integer()),
+  mammal_species: v.pipe(v.number(), v.integer()),
+  amphibian_species: v.pipe(v.number(), v.integer()),
+  reptile_species: v.pipe(v.number(), v.integer()),
+  unesco_sites: v.pipe(v.number(), v.integer()),
 });
 
 export const FeatureSchema = v.object({

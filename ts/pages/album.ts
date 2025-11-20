@@ -19,7 +19,6 @@ import type { PhotoAttrs } from "../components/photo.ts";
 import { Photos } from "../services/photos.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
 import { preprocessDescription } from "../commons/strings.ts";
-import { namesToUrns } from "../services/names.ts";
 
 // TODO replace with album type
 type AlbumAttrs = {
@@ -55,7 +54,6 @@ export function AlbumPage() {
         countries,
       } = album;
 
-      // TODO patch typing issue
       const dateRange = Dates.dateRange(
         minDate,
         maxDate,

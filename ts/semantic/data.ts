@@ -66,7 +66,7 @@ let tdb: TribbleDB | null = null;
 
 /*
  * Load triples from a URL. This takes about 500ms to run (Oct 27 2025) and
- * takes about 60% of load-time of the page. This needs to be reworked, as in the litelemet
+ * takes about 60% of load-time of the page. This needs to be reworked, as in the litelement
  * version, to incrementally stream load the database while allowing the page to render.
  *
  * For now, lets make blocking load faster than 500ms...
@@ -76,7 +76,7 @@ let tdb: TribbleDB | null = null;
 export async function loadTriples(
   url: string,
   schema: Record<string, any> = {},
-  fn: (triple: Triple) => Triple[] = (x) => [x],
+  perTriple: (triple: Triple) => Triple[] = (x) => [x],
 ): Promise<TribbleDB> {
   if (!tdb) {
     tdb = new TribbleDB([], schema);
@@ -84,7 +84,7 @@ export async function loadTriples(
 
   for await (const triples of streamTribbles(url)) {
     for (const triple of triples) {
-      tdb.add(fn(triple));
+      tdb.add(perTriple(triple));
     }
   }
 

@@ -4,6 +4,7 @@ import type {
   parseAlbum,
   parsePhoto,
   parseVideo,
+  parsePlace,
   parseCountry,
   parseUnesco,
   parseBird,
@@ -14,7 +15,6 @@ import type {
   parseFeature,
   parseSubject,
 } from "./services/parsers.ts";
-import type {  } from "./services/parsers.ts";
 
 export type ApplicationEvents =
   | "click_burger_menu"
@@ -85,8 +85,6 @@ export type Country = NonNullable<ReturnType<typeof parseCountry>>;
 
 export type Unesco = NonNullable<ReturnType<typeof parseUnesco>>;
 
-export type Subject = NonNullable<ReturnType<typeof parseSubject>>;
-
 export type Bird = NonNullable<ReturnType<typeof parseBird>>;
 
 export type Mammal = NonNullable<ReturnType<typeof parseMammal>>;
@@ -99,11 +97,9 @@ export type Insect = NonNullable<ReturnType<typeof parseInsect>>;
 
 export type Feature = NonNullable<ReturnType<typeof parseFeature>>;
 
-export type Location = Place | Country | Unesco;
+export type Subject = Bird | Mammal | Reptile | Amphibian | Insect;
 
-export function isACountry(place: Place | Country): place is Country {
-  return (place as Country).type === "country";
-}
+export type Location = Place | Country | Unesco;
 
 export type Thing =
   | Album
@@ -117,3 +113,7 @@ export type Thing =
   | Reptile
   | Amphibian
   | Insect;
+
+export function isACountry(place: Place | Country): place is Country {
+  return (place as Country).type === "country";
+}
