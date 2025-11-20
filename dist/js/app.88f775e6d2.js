@@ -4092,7 +4092,9 @@ function readPhotosByThingIds(tdb2, thingsUrns) {
       photoIds.add(result);
     }
   }
-  return readPhotos(tdb2, photoIds);
+  return readPhotos(tdb2, photoIds).sort((photoa, photob) => {
+    return parseInt(photob.createdAt) - parseInt(photoa.createdAt);
+  });
 }
 
 // ts/services/albums.ts
@@ -5370,7 +5372,8 @@ function ListingThingsButton() {
     view(vnode) {
       const { type } = vnode.attrs;
       return (0, import_mithril23.default)("a", {
-        href: `/thing/${type}`
+        href: `#/thing/${type}:*`,
+        onclick: () => navigate(`/thing/${type}:*`)
       }, `See all ${type} photos`);
     }
   };

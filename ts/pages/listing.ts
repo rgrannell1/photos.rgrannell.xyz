@@ -2,6 +2,7 @@ import m from "mithril";
 import { NonListableTypes } from "../constants.ts";
 import { capitalise, pluralise } from "../commons/strings.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
+import { navigate } from "../commons/events.ts";
 
 /*
  * Display the component albums and metadata
@@ -41,7 +42,8 @@ function ListingThingsButton() {
     view(vnode: m.Vnode<{ type: string }>) {
       const { type } = vnode.attrs;
       return m("a", {
-        href: `/thing/${type}`,
+        href: `#/thing/${type}:*`,
+        onclick: () => navigate(`/thing/${type}:*`),
       }, `See all ${type} photos`);
     },
   };

@@ -129,5 +129,7 @@ export function readPhotosByThingIds(
     }
   }
 
-  return readPhotos(tdb, photoIds);
+  return readPhotos(tdb, photoIds).sort((photoa, photob) => {
+    return parseInt(photob.createdAt) - parseInt(photoa.createdAt);
+  });
 }
