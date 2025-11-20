@@ -1,15 +1,20 @@
 import m from "mithril";
 import { NonListableTypes } from "../constants.ts";
 import { capitalise, pluralise } from "../commons/strings.ts";
-import type { TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { navigate } from "../commons/events.ts";
 import type { Services } from "../types.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
 import { one } from "../commons/arrays.ts";
+import { ThingAlbumMetadata } from "../components/thing-album-metadata.ts";
 
+/*
+ * Draw an album for a single thing
+ */
 function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
   const id = one(thing.id);
+
   if (!id) {
     return []
   }
@@ -19,13 +24,17 @@ function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
     return []
   }
 
+  const $md = m(ThingAlbumMetadata, { title: one(thing.name) ?? id });
+
   // Placeholder implementation
   return [m(PhotoAlbum, {
     imageUrl: coverPhoto.fullImage,
     thumbnailUrl: coverPhoto.thumbnailUrl,
     thumbnailDataUrl: encodeBitmapDataURL(coverPhoto?.mosaicColours),
     loading: loadingMode(idx),
-    trip: undefined
+    trip: undefined,
+    child: $md,
+    onclick: () => navigate(`#/thing/${asUrn(id).type}:*`),
   })];
 }
 

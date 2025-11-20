@@ -1,7 +1,7 @@
 import m from "mithril";
 import { AlbumStats } from "../components/album-stats.ts";
 import type { Album, Services } from "../types.ts";
-import { encodeBitmapDataURL, Photos } from "../services/photos.ts";
+import { encodeBitmapDataURL } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { Windows } from "../services/window.ts";
@@ -9,8 +9,7 @@ import { CountryLink } from "../components/place-links.ts";
 import { block, broadcast } from "../commons/events.ts";
 import { albumYear } from "../services/albums.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { setify, setOf } from "../commons/sets.ts";
-import { arrayify } from "../commons/arrays.ts";
+import { setify } from "../commons/sets.ts";
 import { loadingMode } from "../services/photos.ts";
 
 type AlbumsListAttrs = {

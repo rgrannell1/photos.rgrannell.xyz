@@ -17,7 +17,6 @@ import type {
 } from "../types.ts";
 import { Photo } from "../components/photo.ts";
 import type { PhotoAttrs } from "../components/photo.ts";
-import { Photos } from "../services/photos.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
 import { preprocessDescription } from "../commons/strings.ts";
 import { setify } from "../commons/sets.ts";

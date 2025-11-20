@@ -4,7 +4,7 @@ import { parseUrn } from "@rgrannell1/tribbledb";
 import { block, broadcast } from "../commons/events.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../constants.ts";
-import { encodeBitmapDataURL, Photos } from "../services/photos.ts";
+import { encodeBitmapDataURL } from "../services/photos.ts";
 import type { Photo as PhotoType } from "../types.ts";
 
 /*
