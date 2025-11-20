@@ -1,12 +1,10 @@
 /*
  * Manages dark mode preference in local storage
  */
-export class DarkModes {
-  static load() {
-    return localStorage.getItem("darkMode") === "true";
-  }
+export function load() {
+  return localStorage.getItem("darkMode") === "true";
+}
 
-  static save(value: boolean) {
-    return localStorage.setItem("darkMode", `${value}`);
-  }
+export function save(value: boolean) {
+  return localStorage.setItem("darkMode", `${value}`);
 }

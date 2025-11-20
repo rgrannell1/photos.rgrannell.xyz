@@ -1,4 +1,4 @@
-import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
 import {
   CAMERA_MODELS,

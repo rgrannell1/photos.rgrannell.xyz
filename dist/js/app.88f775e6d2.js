@@ -1729,14 +1729,9 @@ function Header() {
 }
 
 // ts/services/dark-mode.ts
-var DarkModes = class {
-  static load() {
-    return localStorage.getItem("darkMode") === "true";
-  }
-  static save(value) {
-    return localStorage.setItem("darkMode", `${value}`);
-  }
-};
+function load() {
+  return localStorage.getItem("darkMode") === "true";
+}
 
 // node_modules/.deno/@rgrannell1+tribbledb@0.0.14/node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class {
@@ -4243,7 +4238,7 @@ async function loadState() {
     currentUrn: void 0,
     currentType: void 0,
     data,
-    darkMode: DarkModes.load(),
+    darkMode: load(),
     sidebarVisible: false,
     services: loadServices(data)
   };

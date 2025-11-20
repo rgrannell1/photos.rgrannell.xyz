@@ -1,5 +1,5 @@
 import type { AppWindow, State } from "./types.ts";
-import { DarkModes } from "./services/dark-mode.ts";
+import * as DarkMode from "./services/dark-mode.ts";
 import { loadTriples } from "./semantic/data.ts";
 import { deriveTriples, HARD_CODED_TRIPLES } from "./semantic/derive.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
@@ -88,7 +88,7 @@ export async function loadState(): Promise<State> {
     currentUrn: undefined,
     currentType: undefined,
     data,
-    darkMode: DarkModes.load(),
+    darkMode: DarkMode.load(),
     sidebarVisible: false,
     services: loadServices(data),
   };
