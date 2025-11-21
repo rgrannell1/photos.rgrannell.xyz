@@ -9,6 +9,7 @@ import {
   parseCountry,
   parseFeature,
   parseInsect,
+  parseFish,
   parseMammal,
   parsePhoto,
   parseReptile,
@@ -28,6 +29,8 @@ export const { one: readAlbum, many: readAlbums } = readers(parseAlbum);
 export const { one: readMammal, many: readMammals } = readers(parseMammal);
 export const { one: readReptile, many: readReptiles } = readers(parseReptile);
 export const { one: readInsect, many: readInsects } = readers(parseInsect);
+// Thank you, english.
+export const { one: readFish, many: readFishes } = readers(parseFish);
 export const { one: readSubject, many: readSubjects } = readers(parseSubject);
 export const { one: readAmphibian, many: readAmphibians } = readers(
   parseAmphibian,

@@ -14,6 +14,7 @@ import type {
   parseInsect,
   parseFeature,
   parseSubject,
+  parseFish,
 } from "./services/parsers.ts";
 
 export type ApplicationEvents =
@@ -94,6 +95,8 @@ export type Reptile = NonNullable<ReturnType<typeof parseReptile>>;
 export type Amphibian = NonNullable<ReturnType<typeof parseAmphibian>>;
 
 export type Insect = NonNullable<ReturnType<typeof parseInsect>>;
+
+export type Fish = NonNullable<ReturnType<typeof parseFish>>;
 
 export type Feature = NonNullable<ReturnType<typeof parseFeature>>;
 

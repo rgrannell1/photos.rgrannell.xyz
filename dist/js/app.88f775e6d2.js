@@ -3912,6 +3912,11 @@ var ReptileSchema = v.object({
   name: v.optional(v.string()),
   wikipedia: v.optional(v.string())
 });
+var FishSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+  wikipedia: v.optional(v.string())
+});
 var AmphibianSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
@@ -3970,6 +3975,7 @@ var parseMammal = parseObject(MammalSchema, "mammal");
 var parseReptile = parseObject(ReptileSchema, "reptile");
 var parseAmphibian = parseObject(AmphibianSchema, "amphibian");
 var parseInsect = parseObject(InsectSchema, "insect");
+var parseFish = parseObject(FishSchema, "fish");
 var parseVideo = parseObject(VideoSchema, "video");
 var parsePlace = parseObject(PlaceSchema, "place");
 var parseAlbum = parseObject(AlbumSchema, "album");
@@ -3978,7 +3984,8 @@ var parseSubject = parseByType({
   [KnownTypes.MAMMAL]: parseMammal,
   [KnownTypes.REPTILE]: parseReptile,
   [KnownTypes.AMPHIBIAN]: parseAmphibian,
-  [KnownTypes.INSECT]: parseInsect
+  [KnownTypes.INSECT]: parseInsect,
+  [KnownTypes.FISH]: parseFish
 });
 var parseLocation = parseByType({
   [KnownTypes.PLACE]: parsePlace,
@@ -4000,6 +4007,7 @@ var { one: readAlbum, many: readAlbums } = readers(parseAlbum);
 var { one: readMammal, many: readMammals } = readers(parseMammal);
 var { one: readReptile, many: readReptiles } = readers(parseReptile);
 var { one: readInsect, many: readInsects } = readers(parseInsect);
+var { one: readFish, many: readFishes } = readers(parseFish);
 var { one: readSubject, many: readSubjects } = readers(parseSubject);
 var { one: readAmphibian, many: readAmphibians } = readers(
   parseAmphibian

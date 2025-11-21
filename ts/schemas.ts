@@ -109,6 +109,12 @@ export const ReptileSchema = v.object({
   wikipedia: v.optional(v.string()),
 });
 
+export const FishSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+  wikipedia: v.optional(v.string()),
+});
+
 export const AmphibianSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),

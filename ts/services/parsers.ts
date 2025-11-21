@@ -1,5 +1,5 @@
 import { KnownTypes } from "../constants.ts";
-import type { Amphibian, Bird, Insect, Mammal, Reptile, Stats } from "../types.ts";
+import type { Amphibian, Bird, Fish, Insect, Mammal, Reptile, Stats } from "../types.ts";
 import { parseByType, parseObject } from "../commons/parser.ts";
 import {
   AlbumSchema,
@@ -7,6 +7,7 @@ import {
   BirdSchema,
   CountrySchema,
   FeatureSchema,
+  FishSchema,
   InsectSchema,
   MammalSchema,
   PhotoSchema,
@@ -28,6 +29,7 @@ export const parseMammal = parseObject(MammalSchema, "mammal");
 export const parseReptile = parseObject(ReptileSchema, "reptile");
 export const parseAmphibian = parseObject(AmphibianSchema, "amphibian");
 export const parseInsect = parseObject(InsectSchema, "insect");
+export const parseFish = parseObject(FishSchema, "fish");
 export const parseVideo = parseObject(VideoSchema, "video");
 export const parsePlace = parseObject(PlaceSchema, "place");
 export const parseAlbum = parseObject(AlbumSchema, "album");
@@ -38,13 +40,14 @@ export const parseAlbum = parseObject(AlbumSchema, "album");
  * Parse known subject types
  */
 export const parseSubject = parseByType<
-  Bird | Mammal | Reptile | Amphibian | Insect
+  Bird | Mammal | Reptile | Amphibian | Insect | Fish
 >({
   [KnownTypes.BIRD]: parseBird,
   [KnownTypes.MAMMAL]: parseMammal,
   [KnownTypes.REPTILE]: parseReptile,
   [KnownTypes.AMPHIBIAN]: parseAmphibian,
-  [KnownTypes.INSECT]: parseInsect
+  [KnownTypes.INSECT]: parseInsect,
+  [KnownTypes.FISH]: parseFish
 });
 
 /*

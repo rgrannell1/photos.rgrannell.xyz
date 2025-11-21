@@ -136,13 +136,15 @@ export function readPhotosByThingIds(
 }
 
 /*
- *
+ * Read a cover image for a thing
  */
 export function readThingCover(
   tdb: TribbleDB,
   thingUrn: string,
 ) {
   const { type, id } = asUrn(thingUrn);
+
+  // TODO directly read the cover relation
 
   const results = tdb.search({
     source: { type: "photo" },
