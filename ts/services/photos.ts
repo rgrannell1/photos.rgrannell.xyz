@@ -151,6 +151,13 @@ export function readThingCover(
   return source ? readPhoto(tdb, source) : undefined;
 }
 
+function sortByRating(photoa: Photo, photob: Photo) {
+  const ratingA = photoa.rating;
+  const ratingB = photob.rating;
+
+  return ratingB.toLocaleString().localeCompare(ratingA.toLocaleString());
+}
+
 /*
  * Read a cover image for a thing
  */
@@ -170,11 +177,7 @@ export function chooseThingCover(
     target: { type, id },
   }).sources();
 
-  const photos = readPhotos(tdb, new Set(results)).sort((photoa, photob) => {
-    return one(photob.rating).toLocaleString().localeCompare(
-      one(photoa.rating).toLocaleString(),
-    );
-  });
+  const photos = readPhotos(tdb, new Set(results)).sort(sortByRating);
 
   return photos.length > 0 ? photos[0] : null;
 }

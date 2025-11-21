@@ -117,7 +117,7 @@ function AlbumSection() {
       const albums = services.readAlbumsByThingIds(new Set(urns));
 
       const countries = services.readCountries(
-        setOf<string>("country", albums),
+        setOf<string>("country", albums as any),
       );
 
       const $albums = albums.map((album) => {
@@ -199,7 +199,7 @@ export function ThingPage() {
           m(ThingTitle, { urn, things }),
           m(ThingSubtitle, { urn }),
           m("br"),
-          m(ThingUrls, { urn, things, services }),
+          m(ThingUrls, { things }),
           m(ThingMetadata, { urn, things, services }),
           m("h3", "Photos"),
           m(PhotoSection, { urn, things, services }),

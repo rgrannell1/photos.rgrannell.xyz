@@ -115,7 +115,7 @@ function AlbumsList() {
   };
 }
 
-type AlbumsPageState = {
+type AlbumsPageAttrs = {
   albums: Album[];
   services: Services;
 };
@@ -126,7 +126,7 @@ export function AlbumsPage() {
     oninit() {
       Windows.setTitle("Albums - photos");
     },
-    view(vnode: m.Vnode<AlbumsPageState>) {
+    view(vnode: m.Vnode<AlbumsPageAttrs>) {
       const { albums, services } = vnode.attrs;
 
       const $md = m("section.album-metadata", [
