@@ -4112,6 +4112,11 @@ function readThingCover(tdb2, thingUrn) {
   }).firstSource();
   return source ? readPhoto(tdb2, source) : void 0;
 }
+function sortByRating(photoa, photob) {
+  const ratingA = photoa.rating;
+  const ratingB = photob.rating;
+  return ratingB.toLocaleString().localeCompare(ratingA.toLocaleString());
+}
 function chooseThingCover(tdb2, thingUrn) {
   const { type, id } = asUrn(thingUrn);
   const cover = readThingCover(tdb2, thingUrn);
@@ -4122,11 +4127,7 @@ function chooseThingCover(tdb2, thingUrn) {
     source: { type: "photo" },
     target: { type, id }
   }).sources();
-  const photos = readPhotos(tdb2, new Set(results)).sort((photoa, photob) => {
-    return one(photob.rating).toLocaleString().localeCompare(
-      one(photoa.rating).toLocaleString()
-    );
-  });
+  const photos = readPhotos(tdb2, new Set(results)).sort(sortByRating);
   return photos.length > 0 ? photos[0] : null;
 }
 
@@ -5839,7 +5840,7 @@ function ThingPage() {
           (0, import_mithril35.default)(ThingTitle, { urn, things }),
           (0, import_mithril35.default)(ThingSubtitle, { urn }),
           (0, import_mithril35.default)("br"),
-          (0, import_mithril35.default)(ThingUrls, { urn, things, services }),
+          (0, import_mithril35.default)(ThingUrls, { things }),
           (0, import_mithril35.default)(ThingMetadata2, { urn, things, services }),
           (0, import_mithril35.default)("h3", "Photos"),
           (0, import_mithril35.default)(PhotoSection, { urn, things, services }),

@@ -1,16 +1,15 @@
 import m from "mithril";
 import { AlbumStats } from "../components/album-stats.ts";
 import type { Album, Services } from "../types.ts";
-import { encodeBitmapDataURL } from "../services/photos.ts";
+import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
-import * as Windows from "../services/window.ts";
+import { setTitle } from "../services/window.ts";
 import { CountryLink } from "../components/place-links.ts";
 import { block, broadcast } from "../commons/events.ts";
 import { albumYear } from "../services/albums.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { setify } from "../commons/sets.ts";
-import { loadingMode } from "../services/photos.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];
@@ -124,7 +123,7 @@ type AlbumsPageAttrs = {
 export function AlbumsPage() {
   return {
     oninit() {
-      Windows.setTitle("Albums - photos");
+      setTitle("Albums - photos");
     },
     view(vnode: m.Vnode<AlbumsPageAttrs>) {
       const { albums, services } = vnode.attrs;

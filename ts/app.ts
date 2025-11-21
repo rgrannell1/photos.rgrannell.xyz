@@ -112,7 +112,6 @@ export function AlbumApp(): m.Component<AppAttrs> {
               album,
               subjects,
               locations,
-              country: [],
               photos,
               videos,
               services: state.services,
