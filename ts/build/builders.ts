@@ -47,7 +47,7 @@ export async function buildSW() {
 export async function buildTS() {
   console.info("🌐 Rendering app");
 
-  const res = await esbuild.build({
+  await esbuild.build({
     entryPoints: ["ts/index.ts"],
     bundle: true,
     outfile: `dist/js/app.${env.publication_id}.js`,

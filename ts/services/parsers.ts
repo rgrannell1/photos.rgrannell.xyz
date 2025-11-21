@@ -26,7 +26,7 @@ import {
   VideoSchema,
 } from "../schemas.ts";
 import { safeParse } from "valibot";
-import type { TribbleDB, TripleObject } from "@rgrannell1/tribbledb";
+import type { TribbleDB } from "@rgrannell1/tribbledb";
 
 export const parseFeature = parseObject(FeatureSchema, "feature");
 export const parseCountry = parseObject(CountrySchema, "country");
@@ -41,8 +41,6 @@ export const parseFish = parseObject(FishSchema, "fish");
 export const parseVideo = parseObject(VideoSchema, "video");
 export const parsePlace = parseObject(PlaceSchema, "place");
 export const parseAlbum = parseObject(AlbumSchema, "album");
-
-// TODO add fish
 
 /*
  * Parse known subject types

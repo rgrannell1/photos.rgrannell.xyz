@@ -3,7 +3,7 @@
  * state-updates and rerenders.
  */
 
-import type { ApplicationEvents, AppWindow } from "../types.ts";
+import type { ApplicationEvents } from "../types.ts";
 
 /*
  * Broadcast a custom application event to the document.

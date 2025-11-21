@@ -10,8 +10,6 @@ type AlbumThingsAttrs = {
 export function AlbumThings() {
   return {
     view(vnode: m.Vnode<AlbumThingsAttrs>) {
-      const { locations, subjects } = vnode.attrs;
-
       // TODO
     },
   };

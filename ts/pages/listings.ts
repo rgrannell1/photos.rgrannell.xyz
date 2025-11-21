@@ -20,17 +20,6 @@ function ListingItem() {
   };
 }
 
-function ListingsTitle() {
-  return {
-    view(vnode: m.Vnode<{ type: string }>) {
-      const { type } = vnode.attrs;
-      return m(
-        "h1.albums-header",
-      );
-    },
-  };
-}
-
 export function ListingsPage() {
   return {
     view() {
