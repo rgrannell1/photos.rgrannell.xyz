@@ -44,8 +44,8 @@ export function Sidebar() {
             m(SidebarItem, { name: "PHOTOS", route: "/photos" }),
             m(SidebarItem, { name: "VIDEOS", route: "/videos" }),
             m(SidebarItem, { name: "ALBUMS", route: "/albums" }),
-            m(SidebarItem, { name: "ABOUT", route: "/about" }),
             m(SidebarItem, { name: "LISTINGS", route: "/listings" }),
+            m(SidebarItem, { name: "ABOUT", route: "/about" }),
           ]),
         ]),
       ]);
