@@ -1,5 +1,5 @@
 import m from "mithril";
-import * as Windows from "../services/window.ts";
+import { setTitle, isSmallerThan } from "../services/window.ts";
 import * as Dates from "../services/dates.ts";
 import { AlbumShareButton } from "../components/album-share-button.ts";
 import { CountryLink } from "../components/place-links.ts";
@@ -35,7 +35,7 @@ type AlbumAttrs = {
 export function AlbumPage() {
   return {
     oninit() {
-      Windows.setTitle("Album - photos");
+      setTitle("Album - photos");
     },
     view(vnode: m.Vnode<AlbumAttrs>) {
       const {
@@ -57,7 +57,7 @@ export function AlbumPage() {
       const dateRange = Dates.dateRange(
         minDate,
         maxDate,
-        Windows.isSmallerThan(500),
+        isSmallerThan(500),
       );
 
       const photoCountMessage = photosCount === 1

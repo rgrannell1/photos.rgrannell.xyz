@@ -1,5 +1,5 @@
 import m from "mithril";
-import * as Windows from "../services/window.ts";
+import { isSmallerThan } from "../services/window.ts";
 import * as Dates from "../services/dates.ts";
 import type { CountryLinkAttrs } from "./place-links.ts";
 
@@ -18,7 +18,7 @@ export function PhotoAlbumMetadata() {
       return "unknown date";
     }
 
-    const isSmall = Windows.isSmallerThan(500);
+    const isSmall = isSmallerThan(500);
     return Dates.dateRange(minDate, maxDate, isSmall);
   }
 

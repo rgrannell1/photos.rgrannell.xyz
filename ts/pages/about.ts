@@ -1,13 +1,13 @@
 import m from "mithril";
 
-import * as Windows from "../services/window.ts";
+import { setTitle } from "../services/window.ts";
 import { navigate } from "../commons/events.ts";
 
 /* */
 export function AboutPage() {
   return {
     oninit() {
-      Windows.setTitle("About - photos");
+      setTitle("About - photos");
     },
     view() {
       const years = new Date().getFullYear() - 2012;
