@@ -15,7 +15,7 @@ export function AlbumButton() {
 
       return m("a", {
         href: `#/album/${id}`,
-        onclick: () => navigate(`/album/${id}`),
+        onclick: navigate(`/album/${id}`),
       }, "[album]");
     },
   };

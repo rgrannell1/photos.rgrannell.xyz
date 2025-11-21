@@ -30,7 +30,7 @@ function HeaderBrandText() {
     view() {
       return m("a", {
         href: "#/",
-        onclick: () => navigate("/"),
+        onclick: navigate("/"),
       }, m("span.brand", BRAND_TEXT));
     },
   };

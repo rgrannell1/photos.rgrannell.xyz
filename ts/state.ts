@@ -23,7 +23,7 @@ import {
   readUnescos,
   readVideo,
 } from "./services/readers.ts";
-import { readPhotosByThingIds, readThingCover } from "./services/photos.ts";
+import { readPhotosByThingIds, chooseThingCover } from "./services/photos.ts";
 import { readThing, readThings, toThingLinks } from "./commons/things.ts";
 import { namesToUrns } from "./services/names.ts";
 
@@ -70,7 +70,7 @@ export function loadServices(tdb: TribbleDB) {
     readThings: readThings.bind(null, tdb),
     readCountries: readCountries.bind(null, tdb),
     namesToUrns: namesToUrns.bind(null, tdb),
-    readThingCover: readThingCover.bind(null, tdb),
+    readThingCover: chooseThingCover.bind(null, tdb),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb),
     toThingLinks: toThingLinks.bind(null, tdb),

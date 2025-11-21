@@ -26,6 +26,8 @@ function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
 
   const $md = m(ThingMetadata, { thing });
 
+  const { id: thingId, type } = asUrn(id);
+
   // Placeholder implementation
   return [m(PhotoAlbum, {
     imageUrl: coverPhoto.fullImage,
@@ -34,7 +36,7 @@ function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
     loading: loadingMode(idx),
     trip: undefined,
     child: $md,
-    onclick: () => navigate(`#/thing/${asUrn(id).type}:*`),
+    onclick: navigate(`/thing/${type}:${thingId}`)
   })];
 }
 
@@ -82,7 +84,7 @@ function ListingThingsButton() {
       const { type } = vnode.attrs;
       return m("a", {
         href: `#/thing/${type}:*`,
-        onclick: () => navigate(`/thing/${type}:*`),
+        onclick: navigate(`/thing/${type}:*`),
       }, `See all ${type} photos`);
     },
   };

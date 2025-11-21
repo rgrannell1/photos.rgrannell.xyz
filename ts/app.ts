@@ -26,6 +26,7 @@ import { PhotoPage } from "./pages/photo.ts";
 import { readAllPhotos } from "./services/photos.ts";
 import { readAlbum, readPhoto } from "./services/readers.ts";
 import { ListingPage } from "./pages/listing.ts";
+import { ListingsPage } from "./pages/listings.ts";
 import { readNamedTypeThings, readThing } from "./commons/things.ts";
 import type { Album } from "./types.ts";
 import { ThingPage } from "./pages/thing.ts";
@@ -301,4 +302,24 @@ export function ListingApp(): m.Component<AppAttrs> {
       );
     },
   };
+}
+
+export function ListingsApp(): m.Component<AppAttrs> {
+  return {
+    view() {
+      return m(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(Header, state),
+          m("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : undefined
+          }, [
+            m(Sidebar, { visible: state.sidebarVisible }),
+            m(ListingsPage, { }),
+          ]),
+        ],
+      );
+    }
+  }
 }

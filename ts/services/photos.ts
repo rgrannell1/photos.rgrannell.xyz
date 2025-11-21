@@ -2,7 +2,7 @@ import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { Location, Photo, Subject } from "../types.ts";
 import { parsePhoto } from "./parsers.ts";
-import { readLocations, readPhotos, readSubjects } from "./readers.ts";
+import { readLocations, readPhoto, readPhotos, readSubjects } from "./readers.ts";
 import { one } from "../commons/arrays.ts";
 
 const coloursCache: Map<string, string> = new Map();
@@ -135,16 +135,34 @@ export function readPhotosByThingIds(
   });
 }
 
+export function readThingCover(
+  tdb: TribbleDB,
+  thingUrn: string,
+): Photo | undefined {
+  const { type, id } = asUrn(thingUrn);
+
+  const source = tdb.search({
+    source: { type: "photo" },
+    relation: 'cover',
+    target: { type, id },
+  }).firstSource();
+
+  return source ? readPhoto(tdb, source) : undefined
+}
+
 /*
  * Read a cover image for a thing
  */
-export function readThingCover(
+export function chooseThingCover(
   tdb: TribbleDB,
   thingUrn: string,
 ) {
   const { type, id } = asUrn(thingUrn);
 
-  // TODO directly read the cover relation
+  const cover = readThingCover(tdb, thingUrn);
+  if (cover) {
+    return cover;
+  }
 
   const results = tdb.search({
     source: { type: "photo" },

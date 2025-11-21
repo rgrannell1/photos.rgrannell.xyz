@@ -4,6 +4,7 @@ import {
   AlbumApp,
   AlbumsApp,
   ListingApp,
+  ListingsApp,
   PhotoApp,
   PhotosApp,
   ThingApp,
@@ -19,4 +20,5 @@ m.route(document.body, "/albums", {
   "/thing/:pair": ThingApp,
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp,
+  "/listings": ListingsApp,
 });

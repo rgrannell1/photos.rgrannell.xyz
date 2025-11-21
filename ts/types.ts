@@ -13,7 +13,6 @@ import type {
   parseAmphibian,
   parseInsect,
   parseFeature,
-  parseSubject,
   parseFish,
 } from "./services/parsers.ts";
 
