@@ -7,7 +7,7 @@ import { arrayify, one } from "../commons/arrays.ts";
 import type { Services } from "../types.ts";
 import { CountryLink } from "../components/place-links.ts";
 import { Photo } from "../components/photo.ts";
-import { encodeBitmapDataURL, Photos } from "../services/photos.ts";
+import { encodeBitmapDataURL } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { block, broadcast } from "../commons/events.ts";
@@ -18,6 +18,7 @@ import { ListingLink } from "../components/listing-link.ts";
 import { FeaturesList } from "../components/features-list.ts";
 import { UnescoList } from "../components/unesco-list.ts";
 import { loadingMode } from "../services/photos.ts";
+import { ThingUrls } from "../components/thing-urls.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -35,41 +36,6 @@ function _ThingPlaces() {
 function _ThingTypeLink() {
   return {
     view() {
-    },
-  };
-}
-
-/*
- * Links to external sites about the thing
- */
-function ThingUrls() {
-  return {
-    view(vnode: m.Vnode<ThingPageAttrs>) {
-      const { things } = vnode.attrs;
-
-      if (things.length !== 1) {
-        return m("ul");
-      }
-
-      const [thing] = things;
-      const $links = [];
-
-      const wikipedia = one(thing.wikipedia);
-      if (wikipedia) {
-        $links.push(
-          m("li", m(ExternalLink, { href: wikipedia, text: "[wikipedia]" })),
-        );
-      }
-
-      const birdwatch = one(thing.birdwatchUrl);
-      if (birdwatch) {
-        $links.push(
-          m("li", m(ExternalLink, { href: birdwatch, text: "[birdwatch]" })),
-        );
-      }
-
-      // -- add google maps URL
-      return m("ul.link-list", $links);
     },
   };
 }
