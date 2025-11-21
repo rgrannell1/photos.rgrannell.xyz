@@ -1,6 +1,6 @@
 import m from "mithril";
-import { Windows } from "../services/window.ts";
-import { Dates } from "../services/dates.ts";
+import * as Windows from "../services/window.ts";
+import * as Dates from "../services/dates.ts";
 import { AlbumShareButton } from "../components/album-share-button.ts";
 import { CountryLink } from "../components/place-links.ts";
 import { Video } from "../components/video.ts";
@@ -28,7 +28,7 @@ type AlbumAttrs = {
   country: Country[];
   photos: PhotoType[];
   videos: VideoType[];
-  services: Services
+  services: Services;
 };
 
 /* */
@@ -42,7 +42,7 @@ export function AlbumPage() {
         album,
         photos,
         videos,
-        services
+        services,
       } = vnode.attrs;
 
       const {
@@ -64,7 +64,9 @@ export function AlbumPage() {
         ? "1 photo"
         : `${photosCount} photos`;
 
-      const $countryLinks = services.readCountries(services.namesToUrns(setify(country))).map(country => {
+      const $countryLinks = services.readCountries(
+        services.namesToUrns(setify(country)),
+      ).map((country) => {
         return m(CountryLink, {
           country,
           mode: "flag",
@@ -78,7 +80,7 @@ export function AlbumPage() {
         m("p.photo-album-countries", $countryLinks),
         m(
           "p.photo-album-description",
-          m.trust(preprocessDescription(description ?? '') ?? ""),
+          m.trust(preprocessDescription(description ?? "") ?? ""),
         ),
         m(AlbumShareButton, { url: location.href, name }),
         " ",

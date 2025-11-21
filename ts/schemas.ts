@@ -6,15 +6,15 @@
 import {
   any,
   array,
+  integer,
+  number,
   object,
   optional,
   pipe,
-  integer,
   string,
+  transform,
   union,
   url,
-  number,
-  transform,
 } from "valibot";
 
 const v = {
@@ -28,7 +28,7 @@ const v = {
   url,
   integer,
   number,
-  transform
+  transform,
 };
 
 export const AlbumSchema = v.object({
@@ -42,7 +42,7 @@ export const AlbumSchema = v.object({
   mosaic: v.string(),
   photosCount: v.pipe(v.string(), v.transform(Number)),
   videosCount: v.pipe(v.string(), v.transform(Number)),
-  country: v.union( [v.string(), v.array(v.string())] ),
+  country: v.union([v.string(), v.array(v.string())]),
   description: v.optional(v.string()),
 });
 

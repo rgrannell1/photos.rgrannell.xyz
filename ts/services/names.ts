@@ -1,3 +1,7 @@
+/*
+ * Handle name lookups
+ */
+
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import { KnownRelations } from "../constants.ts";
 

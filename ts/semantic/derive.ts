@@ -315,7 +315,6 @@ export function buildLocationTrees(
 
 /*
  * Rename relations (until they're remapped on the mirror side)
- *
  */
 function renameRelations(triple: Triple) {
   for (const [from, to] of RENAMED_RELATIONS) {

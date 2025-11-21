@@ -23,7 +23,7 @@ import {
   readUnescos,
   readVideo,
 } from "./services/readers.ts";
-import { readPhotosByThingIds, chooseThingCover } from "./services/photos.ts";
+import { chooseThingCover, readPhotosByThingIds } from "./services/photos.ts";
 import { readThing, readThings, toThingLinks } from "./commons/things.ts";
 import { namesToUrns } from "./services/names.ts";
 

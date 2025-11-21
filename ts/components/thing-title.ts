@@ -1,11 +1,11 @@
 import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
-import { capitalise, pluralise, binomial } from "../commons/strings.ts";
+import { binomial, capitalise, pluralise } from "../commons/strings.ts";
 import { BinomialTypes, KnownTypes } from "../constants.ts";
 import { one } from "../commons/arrays.ts";
 import { countryEmoji, placeEmoji } from "../services/emoji.ts";
-import { Windows } from "../services/window.ts";
+import * as Windows from "../services/window.ts";
 
 function computeTitle(urn: string, things: TripleObject[]): string {
   const parsed = parseUrn(urn);

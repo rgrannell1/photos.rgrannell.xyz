@@ -1,5 +1,5 @@
 import m from "mithril";
-import { Dates } from "../services/dates.ts";
+import * as Dates from "../services/dates.ts";
 import type { Photo as PhotoType, Services } from "../types.ts";
 
 type ExifDataAttrs = {

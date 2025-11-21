@@ -61,7 +61,7 @@ export function AlbumsApp(): m.Component<AppAttrs> {
         [
           m(Header, state),
           m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(AlbumsPage, {
@@ -105,7 +105,7 @@ export function AlbumApp(): m.Component<AppAttrs> {
         [
           m(Header, state),
           m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(AlbumPage, {
@@ -133,7 +133,7 @@ export function AboutApp(): m.Component<AppAttrs> {
         [
           m(Header, state),
           m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(AboutPage),
@@ -154,7 +154,7 @@ export function VideosApp(): m.Component<AppAttrs> {
         [
           m(Header, state),
           m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(VideosPage, {
@@ -177,7 +177,7 @@ export function PhotosApp(): m.Component<AppAttrs> {
         [
           m(Header, state),
           m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(PhotosPage, {
@@ -219,7 +219,7 @@ export function ThingApp(): m.Component<AppAttrs> {
         [
           m(Header, state),
           m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(ThingPage, {
@@ -257,7 +257,7 @@ export function PhotoApp(): m.Component<AppAttrs> {
         [
           m(Header, state),
           m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(PhotoPage, { photo, services: state.services }),
@@ -289,7 +289,7 @@ export function ListingApp(): m.Component<AppAttrs> {
         [
           m(Header, state),
           m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
             m(ListingPage, {
@@ -313,13 +313,13 @@ export function ListingsApp(): m.Component<AppAttrs> {
         [
           m(Header, state),
           m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
-            m(ListingsPage, { }),
+            m(ListingsPage, {}),
           ]),
         ],
       );
-    }
-  }
+    },
+  };
 }

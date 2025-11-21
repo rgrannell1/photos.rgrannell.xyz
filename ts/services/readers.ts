@@ -1,22 +1,21 @@
-
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import { readers } from "../commons/parser.ts";
 
 import {
   parseAlbum,
-  parsePlace,
   parseAmphibian,
   parseCountry,
   parseFeature,
-  parseInsect,
   parseFish,
+  parseInsect,
+  parseLocation,
   parseMammal,
   parsePhoto,
+  parsePlace,
   parseReptile,
+  parseSubject,
   parseUnesco,
   parseVideo,
-  parseSubject,
-  parseLocation
 } from "./parsers.ts";
 
 export const { one: readCountry, many: readCountries } = readers(parseCountry);

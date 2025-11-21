@@ -1,5 +1,13 @@
 import { KnownTypes } from "../constants.ts";
-import type { Amphibian, Bird, Fish, Insect, Mammal, Reptile, Stats } from "../types.ts";
+import type {
+  Amphibian,
+  Bird,
+  Fish,
+  Insect,
+  Mammal,
+  Reptile,
+  Stats,
+} from "../types.ts";
 import { parseByType, parseObject } from "../commons/parser.ts";
 import {
   AlbumSchema,
@@ -47,7 +55,7 @@ export const parseSubject = parseByType<
   [KnownTypes.REPTILE]: parseReptile,
   [KnownTypes.AMPHIBIAN]: parseAmphibian,
   [KnownTypes.INSECT]: parseInsect,
-  [KnownTypes.FISH]: parseFish
+  [KnownTypes.FISH]: parseFish,
 });
 
 /*
@@ -63,7 +71,5 @@ export const parseLocation = parseByType<any>({
  * Parse stats object
  */
 export function parseStats(stats: unknown): Stats | undefined {
-  return safeParse(StatsSchema, stats).success
-    ? (stats as Stats)
-    : undefined;
+  return safeParse(StatsSchema, stats).success ? (stats as Stats) : undefined;
 }

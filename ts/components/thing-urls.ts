@@ -1,4 +1,3 @@
-
 import m from "mithril";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";

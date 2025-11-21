@@ -2742,7 +2742,10 @@ function camelCase(str) {
   if (CAMEL_CASE_CACHE.has(str)) {
     return CAMEL_CASE_CACHE.get(str);
   }
-  const result = str.replace(/[-_ ]+([a-z0-9])/g, (_, char) => char.toUpperCase());
+  const result = str.replace(
+    /[-_ ]+([a-z0-9])/g,
+    (_, char) => char.toUpperCase()
+  );
   CAMEL_CASE_CACHE.set(str, result);
   return result;
 }
@@ -4017,7 +4020,6 @@ var { one: readPhoto, many: readPhotos } = readers(parsePhoto);
 var { one: readFeature, many: readFeatures } = readers(parseFeature);
 
 // ts/services/photos.ts
-var coloursCache = /* @__PURE__ */ new Map();
 function loadingMode(idx) {
   const viewportWidth = globalThis.innerWidth;
   const viewportHeight = globalThis.innerHeight;
@@ -4026,13 +4028,12 @@ function loadingMode(idx) {
   const maxRowsInFold = Math.floor(viewportHeight / imageDimension);
   return idx > maxImagesPerRow * maxRowsInFold + 1 ? "lazy" : "eager";
 }
+var COLOURS_CACHE = /* @__PURE__ */ new Map();
 function encodeBitmapDataURL(colours) {
-  if (coloursCache.has(colours)) {
-    return coloursCache.get(colours);
+  if (COLOURS_CACHE.has(colours)) {
+    return COLOURS_CACHE.get(colours);
   }
-  const coloursList = colours.split("#").map(
-    (colour) => `#${colour}`
-  );
+  const coloursList = colours.split("#").map((colour) => `#${colour}`);
   const canvas = window.document.createElement("canvas");
   canvas.width = 2;
   canvas.height = 2;
@@ -4048,16 +4049,14 @@ function encodeBitmapDataURL(colours) {
   ctx.fillRect(0, 1, 1, 1);
   ctx.fillStyle = coloursList[4];
   ctx.fillRect(1, 1, 1, 1);
-  coloursCache.set(colours, canvas.toDataURL("image/png"));
-  return coloursCache.get(colours);
+  COLOURS_CACHE.set(colours, canvas.toDataURL("image/png"));
+  return COLOURS_CACHE.get(colours);
 }
 function readAllPhotos(tdb2) {
-  return tdb2.search({
+  const photos = tdb2.search({
     source: { type: "photo" }
-  }).objects().flatMap((obj) => {
-    const photo = parsePhoto(tdb2, obj);
-    return photo ? [photo] : [];
-  }).sort((photoa, photob) => {
+  }).sources();
+  return readPhotos(tdb2, photos).sort((photoa, photob) => {
     return parseInt(photob.createdAt) - parseInt(photoa.createdAt);
   });
 }
@@ -4124,7 +4123,9 @@ function chooseThingCover(tdb2, thingUrn) {
     target: { type, id }
   }).sources();
   const photos = readPhotos(tdb2, new Set(results)).sort((photoa, photob) => {
-    return one(photob.rating).toLocaleString().localeCompare(one(photoa.rating).toLocaleString());
+    return one(photob.rating).toLocaleString().localeCompare(
+      one(photoa.rating).toLocaleString()
+    );
   });
   return photos.length > 0 ? photos[0] : null;
 }
@@ -4350,112 +4351,84 @@ function AlbumStats() {
 var import_mithril6 = __toESM(require_mithril());
 
 // ts/services/window.ts
-var Windows = class {
-  /*
-   * Check if the window is smaller than a given width
-   * used to detect a mobile device
-   */
-  static isSmallerThan(width = 500) {
-    return globalThis.matchMedia(`(max-width: ${width}px)`).matches;
-  }
-  /*
-   * Set the page's title
-   */
-  static setTitle(title) {
-    document.title = title;
-  }
-};
+function isSmallerThan(width = 500) {
+  return globalThis.matchMedia(`(max-width: ${width}px)`).matches;
+}
+function setTitle(title) {
+  document.title = title;
+}
 
 // ts/services/dates.ts
-var Dates = class {
-  /* */
-  static parse(dateTime) {
-    let [date, time] = dateTime.split(" ");
-    date = date.replace(/:/g, "-");
-    return /* @__PURE__ */ new Date(`${date} ${time}`);
+function formatCreatedAt(dateTime) {
+  const date = new Date(parseInt(dateTime));
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric"
+  };
+  return date.toLocaleDateString("en-US", options);
+}
+function dateRange(minDate, maxDate, short) {
+  if (!minDate && !maxDate) {
+    return "unknown date";
   }
-  /* */
-  static formatExifDate(dateTime) {
-    if (!dateTime) {
-      return dateTime;
-    }
-    const createdAt = new Date(dateTime).toISOString();
-    const [date, time] = createdAt.split("T")[0].replace(/\:/g, "-");
-    return `${date.replace(/\:/g, "/")} ${time}`;
-  }
-  /* */
-  static formatCreatedAt(dateTime) {
-    const date = new Date(parseInt(dateTime));
-    const options = {
-      year: "numeric",
-      month: "long",
+  const parsedMinDate = minDate instanceof Date ? minDate : new Date(minDate);
+  const parsedMaxDate = maxDate instanceof Date ? maxDate : new Date(maxDate);
+  if (short) {
+    const optsShort = {
       day: "numeric",
-      hour: "numeric",
-      minute: "numeric"
+      month: "short"
     };
-    return date.toLocaleDateString("en-US", options);
-  }
-  /* */
-  static dateRange(minDate, maxDate, smallDevice) {
-    if (!minDate && !maxDate) {
-      return "unknown date";
-    }
-    const parsedMinDate = minDate instanceof Date ? minDate : new Date(minDate);
-    const parsedMaxDate = maxDate instanceof Date ? maxDate : new Date(maxDate);
-    if (smallDevice) {
-      const optsShort = {
-        day: "numeric",
-        month: "short"
-      };
-      const from = parsedMinDate.toLocaleDateString("en-IE", optsShort);
-      const to = parsedMaxDate.toLocaleDateString("en-IE", optsShort);
-      const minDay = parsedMinDate.toLocaleDateString("en-IE", {
-        day: "numeric"
-      });
-      const maxDay = parsedMaxDate.toLocaleDateString("en-IE", {
-        day: "numeric"
-      });
-      const minMonth = parsedMinDate.toLocaleDateString("en-IE", {
-        month: "short"
-      });
-      const maxMonth = parsedMaxDate.toLocaleDateString("en-IE", {
-        month: "short"
-      });
-      const minYear = parsedMinDate.getFullYear();
-      const maxYear = parsedMaxDate.getFullYear();
-      const monthsEqual = minMonth === maxMonth;
-      const yearsEqual = minYear === maxYear;
-      if (from === to) {
-        return `${from} ${minYear}`;
-      } else if (monthsEqual && yearsEqual) {
-        return `${minDay} - ${maxDay} ${maxMonth} ${minYear}`;
-      } else {
-        return `${from} ${minYear} - ${to} ${maxYear}`;
-      }
+    const from = parsedMinDate.toLocaleDateString("en-IE", optsShort);
+    const to = parsedMaxDate.toLocaleDateString("en-IE", optsShort);
+    const minDay = parsedMinDate.toLocaleDateString("en-IE", {
+      day: "numeric"
+    });
+    const maxDay = parsedMaxDate.toLocaleDateString("en-IE", {
+      day: "numeric"
+    });
+    const minMonth = parsedMinDate.toLocaleDateString("en-IE", {
+      month: "short"
+    });
+    const maxMonth = parsedMaxDate.toLocaleDateString("en-IE", {
+      month: "short"
+    });
+    const minYear = parsedMinDate.getFullYear();
+    const maxYear = parsedMaxDate.getFullYear();
+    const monthsEqual = minMonth === maxMonth;
+    const yearsEqual = minYear === maxYear;
+    if (from === to) {
+      return `${from} ${minYear}`;
+    } else if (monthsEqual && yearsEqual) {
+      return `${minDay} - ${maxDay} ${maxMonth} ${minYear}`;
     } else {
-      const opts = {
-        year: "numeric",
-        month: "short",
-        day: "numeric"
-      };
-      const from = parsedMinDate.toLocaleDateString("en-IE", opts);
-      const to = parsedMaxDate.toLocaleDateString("en-IE", opts);
-      if (from === to) {
-        return from;
-      }
-      return `${from} \u2014 ${to}`;
+      return `${from} ${minYear} - ${to} ${maxYear}`;
     }
+  } else {
+    const opts = {
+      year: "numeric",
+      month: "short",
+      day: "numeric"
+    };
+    const from = parsedMinDate.toLocaleDateString("en-IE", opts);
+    const to = parsedMaxDate.toLocaleDateString("en-IE", opts);
+    if (from === to) {
+      return from;
+    }
+    return `${from} \u2014 ${to}`;
   }
-};
+}
 
 // ts/components/photo-album-metadata.ts
 function PhotoAlbumMetadata() {
-  function dateRange(minDate, maxDate) {
+  function dateRange2(minDate, maxDate) {
     if (!minDate || !maxDate) {
       return "unknown date";
     }
-    const isSmall = Windows.isSmallerThan(500);
-    return Dates.dateRange(minDate, maxDate, isSmall);
+    const isSmall = isSmallerThan(500);
+    return dateRange(minDate, maxDate, isSmall);
   }
   return {
     view(vnode) {
@@ -4464,7 +4437,7 @@ function PhotoAlbumMetadata() {
       return (0, import_mithril6.default)("div.photo-album-metadata", [
         (0, import_mithril6.default)("p.photo-album-title", title),
         (0, import_mithril6.default)("p.photo-album-date", [
-          (0, import_mithril6.default)("time", dateRange(minDate, maxDate))
+          (0, import_mithril6.default)("time", dateRange2(minDate, maxDate))
         ]),
         (0, import_mithril6.default)("div.photo-metadata-inline", [
           (0, import_mithril6.default)("p.photo-album-count", `${count} ${text}`),
@@ -4739,13 +4712,15 @@ function drawAlbum(state2, album, idx, services) {
       $albumComponents.push($h2);
     }
   }
-  const $countryLinks = services.readCountries(setify(album.country)).map((country) => {
-    return (0, import_mithril11.default)(CountryLink, {
-      country,
-      key: `album-country-${album.id}-${country.id}`,
-      mode: "flag"
-    });
-  });
+  const $countryLinks = services.readCountries(setify(album.country)).map(
+    (country) => {
+      return (0, import_mithril11.default)(CountryLink, {
+        country,
+        key: `album-country-${album.id}-${country.id}`,
+        mode: "flag"
+      });
+    }
+  );
   const $md = (0, import_mithril11.default)(PhotoAlbumMetadata, {
     title: album.name,
     minDate: album.minDate,
@@ -4788,7 +4763,7 @@ function AlbumsList() {
 function AlbumsPage() {
   return {
     oninit() {
-      Windows.setTitle("Albums - photos");
+      setTitle("Albums - photos");
     },
     view(vnode) {
       const { albums, services } = vnode.attrs;
@@ -4810,7 +4785,7 @@ var import_mithril12 = __toESM(require_mithril());
 function AboutPage() {
   return {
     oninit() {
-      Windows.setTitle("About - photos");
+      setTitle("About - photos");
     },
     view() {
       const years = (/* @__PURE__ */ new Date()).getFullYear() - 2012;
@@ -4990,7 +4965,7 @@ function AlbumsButton() {
 function AlbumPage() {
   return {
     oninit() {
-      Windows.setTitle("Album - photos");
+      setTitle("Album - photos");
     },
     view(vnode) {
       const {
@@ -5007,13 +4982,15 @@ function AlbumPage() {
         description,
         country
       } = album;
-      const dateRange = Dates.dateRange(
+      const dateRange2 = dateRange(
         minDate,
         maxDate,
-        Windows.isSmallerThan(500)
+        isSmallerThan(500)
       );
       const photoCountMessage = photosCount === 1 ? "1 photo" : `${photosCount} photos`;
-      const $countryLinks = services.readCountries(services.namesToUrns(setify(country))).map((country2) => {
+      const $countryLinks = services.readCountries(
+        services.namesToUrns(setify(country))
+      ).map((country2) => {
         return (0, import_mithril17.default)(CountryLink, {
           country: country2,
           mode: "flag"
@@ -5021,7 +4998,7 @@ function AlbumPage() {
       });
       const $albumMetadata = (0, import_mithril17.default)("section.photos-metadata", [
         (0, import_mithril17.default)("h1", name),
-        (0, import_mithril17.default)("p.photo-album-date", (0, import_mithril17.default)("time", dateRange)),
+        (0, import_mithril17.default)("p.photo-album-date", (0, import_mithril17.default)("time", dateRange2)),
         (0, import_mithril17.default)("p.photo-album-count", photoCountMessage),
         (0, import_mithril17.default)("p.photo-album-countries", $countryLinks),
         (0, import_mithril17.default)(
@@ -5197,7 +5174,7 @@ function ExifData() {
       const { photo, services } = vnode.attrs;
       const $dateTime = (0, import_mithril20.default)("tr", [
         (0, import_mithril20.default)(Heading, { text: "Date-Time" }),
-        (0, import_mithril20.default)("td", (0, import_mithril20.default)("time", Dates.formatCreatedAt(photo.createdAt)))
+        (0, import_mithril20.default)("td", (0, import_mithril20.default)("time", formatCreatedAt(photo.createdAt)))
       ]);
       const $model = (0, import_mithril20.default)("tr", [
         (0, import_mithril20.default)(Heading, { text: "Camera Model" }),
@@ -5535,10 +5512,13 @@ var import_mithril27 = __toESM(require_mithril());
 function ListingItem() {
   return {
     view(vnode) {
-      return (0, import_mithril27.default)("li", (0, import_mithril27.default)("a", {
-        class: "listing-item",
-        onclick: navigate(vnode.attrs.route)
-      }, vnode.attrs.name));
+      return (0, import_mithril27.default)(
+        "li",
+        (0, import_mithril27.default)("a", {
+          class: "listing-item",
+          onclick: navigate(vnode.attrs.route)
+        }, vnode.attrs.name)
+      );
     }
   };
 }
@@ -5591,7 +5571,7 @@ function ThingTitle() {
     view(vnode) {
       const { urn, things } = vnode.attrs;
       const title = computeTitle(urn, things);
-      Windows.setTitle(title);
+      setTitle(title);
       return (0, import_mithril28.default)("h1", title);
     }
   };
@@ -5788,7 +5768,9 @@ function AlbumSection() {
       const { things, services } = vnode.attrs;
       const urns = setOf("id", things);
       const albums = services.readAlbumsByThingIds(new Set(urns));
-      const countries = services.readCountries(setOf("country", albums));
+      const countries = services.readCountries(
+        setOf("country", albums)
+      );
       const $albums = albums.map((album) => {
         const $countryLinks = [...countries].map((country) => {
           return (0, import_mithril35.default)(CountryLink, {

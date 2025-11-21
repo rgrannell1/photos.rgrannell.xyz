@@ -2,18 +2,18 @@ import { TribbleDB } from "@rgrannell1/tribbledb";
 import type { loadServices } from "./state.ts";
 import type {
   parseAlbum,
-  parsePhoto,
-  parseVideo,
-  parsePlace,
-  parseCountry,
-  parseUnesco,
-  parseBird,
-  parseMammal,
-  parseReptile,
   parseAmphibian,
-  parseInsect,
+  parseBird,
+  parseCountry,
   parseFeature,
   parseFish,
+  parseInsect,
+  parseMammal,
+  parsePhoto,
+  parsePlace,
+  parseReptile,
+  parseUnesco,
+  parseVideo,
 } from "./services/parsers.ts";
 
 export type ApplicationEvents =
@@ -99,7 +99,7 @@ export type Fish = NonNullable<ReturnType<typeof parseFish>>;
 
 export type Feature = NonNullable<ReturnType<typeof parseFeature>>;
 
-export type Subject = Bird | Mammal | Reptile | Amphibian | Insect;
+export type Subject = Bird | Mammal | Reptile | Amphibian | Insect | Fish;
 
 export type Location = Place | Country | Unesco;
 

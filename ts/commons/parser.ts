@@ -1,4 +1,8 @@
-import { asUrn, type TribbleDB, type TripleObject } from "@rgrannell1/tribbledb";
+import {
+  asUrn,
+  type TribbleDB,
+  type TripleObject,
+} from "@rgrannell1/tribbledb";
 import { logParseWarning } from "../commons/logger.ts";
 import { type BaseSchema, type InferOutput, safeParse } from "valibot";
 import { readParsedThing, readParsedThings } from "./things.ts";
@@ -8,7 +12,6 @@ type Parser<T> = (tdb: TribbleDB, thing: TripleObject) => T | undefined;
 
 /*
  * Create a parser for a specific schema.
- *
  */
 export function parseObject<
   TSchema extends BaseSchema<unknown, unknown, any>,

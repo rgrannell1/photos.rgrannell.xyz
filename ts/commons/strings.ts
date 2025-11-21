@@ -2,7 +2,6 @@
 
 import { PLURALS } from "../constants.ts";
 
-
 export function capitalise(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -27,7 +26,10 @@ export function camelCase(str: string): string {
     return CAMEL_CASE_CACHE.get(str)!;
   }
 
-  const result = str.replace(/[-_ ]+([a-z0-9])/g, (_, char) => char.toUpperCase());
+  const result = str.replace(
+    /[-_ ]+([a-z0-9])/g,
+    (_, char) => char.toUpperCase(),
+  );
 
   CAMEL_CASE_CACHE.set(str, result);
   return result;

@@ -88,7 +88,6 @@ export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
 
 /*
  * Read albums associated with a set of thing IDs
- *
  */
 export function readAlbumsByThingIds(
   tdb: TribbleDB,

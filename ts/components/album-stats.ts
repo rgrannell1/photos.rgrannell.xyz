@@ -1,4 +1,3 @@
-
 import m from "mithril";
 import type { AppWindow } from "../types.ts";
 import { parseStats } from "../services/parsers.ts";
@@ -7,12 +6,12 @@ import { parseStats } from "../services/parsers.ts";
  * Show statistics and links for the album pages
  */
 export function AlbumStats() {
-  const stats = parseStats((window as AppWindow).stats)
+  const stats = parseStats((window as AppWindow).stats);
 
   return {
     view() {
       if (!stats) {
-        return m("p")
+        return m("p");
       }
 
       return m("p.photo-stats", [

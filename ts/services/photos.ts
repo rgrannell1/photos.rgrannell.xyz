@@ -2,15 +2,19 @@ import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
 import type { Location, Photo, Subject } from "../types.ts";
 import { parsePhoto } from "./parsers.ts";
-import { readLocations, readPhoto, readPhotos, readSubjects } from "./readers.ts";
+import {
+  readLocations,
+  readPhoto,
+  readPhotos,
+  readSubjects,
+} from "./readers.ts";
 import { one } from "../commons/arrays.ts";
 
-const coloursCache: Map<string, string> = new Map();
 
 /*
-  * Determine whether a photo should be eagerly or lazily loaded
-  * depending on page position
-  */
+* Determine whether a photo should be eagerly or lazily loaded
+* depending on page position
+*/
 export function loadingMode(idx: number): "eager" | "lazy" {
   const viewportWidth = (globalThis as any).innerWidth;
   const viewportHeight = (globalThis as any).innerHeight;
@@ -22,17 +26,17 @@ export function loadingMode(idx: number): "eager" | "lazy" {
   return idx > (maxImagesPerRow * maxRowsInFold) + 1 ? "lazy" : "eager";
 }
 
+const COLOURS_CACHE: Map<string, string> = new Map();
+
 /*
-  * Convert a mosaic colour string into a bitmap data URL
-  */
+ * Convert a mosaic colour string into a bitmap data URL
+ */
 export function encodeBitmapDataURL(colours: string): string {
-  if (coloursCache.has(colours)) {
-    return coloursCache.get(colours) as string;
+  if (COLOURS_CACHE.has(colours)) {
+    return COLOURS_CACHE.get(colours) as string;
   }
 
-  const coloursList = colours.split("#").map((colour: string) =>
-    `#${colour}`
-  );
+  const coloursList = colours.split("#").map((colour: string) => `#${colour}`);
   const canvas = (window as any).document.createElement("canvas");
   canvas.width = 2;
   canvas.height = 2;
@@ -50,20 +54,19 @@ export function encodeBitmapDataURL(colours: string): string {
   ctx.fillStyle = coloursList[4];
   ctx.fillRect(1, 1, 1, 1);
 
-  coloursCache.set(colours, canvas.toDataURL("image/png"));
-  return coloursCache.get(colours) as string;
+  COLOURS_CACHE.set(colours, canvas.toDataURL("image/png"));
+  return COLOURS_CACHE.get(colours) as string;
 }
 
 /*
- *
+ * Read all photos, sorted by date
  */
 export function readAllPhotos(tdb: TribbleDB): Photo[] {
-  return tdb.search({
-    source: { type: "photo" },
-  }).objects().flatMap((obj) => {
-    const photo = parsePhoto(tdb, obj);
-    return photo ? [photo] : [];
-  }).sort((photoa, photob) => {
+  const photos = tdb.search({
+    source: {type: 'photo'}
+  }).sources();
+
+  return readPhotos(tdb, photos).sort((photoa, photob) => {
     return parseInt(photob.createdAt) - parseInt(photoa.createdAt);
   });
 }
@@ -107,9 +110,7 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
   };
 }
 
-/*
- *
- */
+/* */
 export function readPhotosByThingIds(
   tdb: TribbleDB,
   thingsUrns: Set<string>,
@@ -143,11 +144,11 @@ export function readThingCover(
 
   const source = tdb.search({
     source: { type: "photo" },
-    relation: 'cover',
+    relation: "cover",
     target: { type, id },
   }).firstSource();
 
-  return source ? readPhoto(tdb, source) : undefined
+  return source ? readPhoto(tdb, source) : undefined;
 }
 
 /*
@@ -167,10 +168,12 @@ export function chooseThingCover(
   const results = tdb.search({
     source: { type: "photo" },
     target: { type, id },
-  }).sources()
+  }).sources();
 
   const photos = readPhotos(tdb, new Set(results)).sort((photoa, photob) => {
-    return one(photob.rating).toLocaleString().localeCompare(one(photoa.rating).toLocaleString());
+    return one(photob.rating).toLocaleString().localeCompare(
+      one(photoa.rating).toLocaleString(),
+    );
   });
 
   return photos.length > 0 ? photos[0] : null;

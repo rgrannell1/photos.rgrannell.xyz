@@ -16,12 +16,12 @@ function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
   const id = one(thing.id);
 
   if (!id) {
-    return []
+    return [];
   }
 
   const coverPhoto = services.readThingCover(id);
   if (!coverPhoto) {
-    return []
+    return [];
   }
 
   const $md = m(ThingMetadata, { thing });
@@ -36,7 +36,7 @@ function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
     loading: loadingMode(idx),
     trip: undefined,
     child: $md,
-    onclick: navigate(`/thing/${type}:${thingId}`)
+    onclick: navigate(`/thing/${type}:${thingId}`),
   })];
 }
 
@@ -46,13 +46,13 @@ function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
  */
 function AlbumsList() {
   return {
-    view(vnode: m.Vnode<{ services: Services, things: TripleObject[] }>) {
+    view(vnode: m.Vnode<{ services: Services; things: TripleObject[] }>) {
       const { services, things } = vnode.attrs;
 
       const $albumComponents = things.flatMap((thing, idx) => {
         console.log("Drawing album for thing:", thing);
-        return drawThingAlbum(services, thing, idx)
-      })
+        return drawThingAlbum(services, thing, idx);
+      });
 
       return m("section.album-container", $albumComponents);
     },
@@ -93,7 +93,7 @@ function ListingThingsButton() {
 type ListingPageAttrs = {
   type: string;
   things: TripleObject[];
-  services: Services
+  services: Services;
 };
 
 /*

@@ -1,6 +1,6 @@
 import m from "mithril";
 
-import { Windows } from "../services/window.ts";
+import * as Windows from "../services/window.ts";
 import { navigate } from "../commons/events.ts";
 
 /* */

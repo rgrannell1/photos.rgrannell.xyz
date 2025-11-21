@@ -1,7 +1,5 @@
-
 import m from "mithril";
-import { navigate } from "../commons/events";
-
+import { navigate } from "../commons/events.ts";
 
 type ListingItemAttrs = {
   name: string;
@@ -11,10 +9,13 @@ type ListingItemAttrs = {
 function ListingItem() {
   return {
     view(vnode: m.Vnode<ListingItemAttrs>) {
-      return m("li", m("a", {
-        class: "listing-item",
-        onclick: navigate(vnode.attrs.route),
-      }, vnode.attrs.name));
+      return m(
+        "li",
+        m("a", {
+          class: "listing-item",
+          onclick: navigate(vnode.attrs.route),
+        }, vnode.attrs.name),
+      );
     },
   };
 }
@@ -25,7 +26,6 @@ function ListingsTitle() {
       const { type } = vnode.attrs;
       return m(
         "h1.albums-header",
-
       );
     },
   };
@@ -36,7 +36,8 @@ export function ListingsPage() {
     view() {
       return m("div.page", [
         m("h1", "Listings"),
-        m("section",
+        m(
+          "section",
           m("ul", [
             m(ListingItem, { route: "/listing/place", name: "Places" }),
             m(ListingItem, { route: "/listing/country", name: "Countries" }),
@@ -45,10 +46,9 @@ export function ListingsPage() {
             m(ListingItem, { route: "/listing/reptile", name: "Reptiles" }),
             m(ListingItem, { route: "/listing/amphibian", name: "Amphibians" }),
             m(ListingItem, { route: "/listing/insect", name: "Insects" }),
-          ])
+          ]),
         ),
       ]);
-
-    }
-  }
+    },
+  };
 }

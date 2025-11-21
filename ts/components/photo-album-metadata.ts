@@ -1,6 +1,6 @@
 import m from "mithril";
-import { Windows } from "../services/window.ts";
-import { Dates } from "../services/dates.ts";
+import * as Windows from "../services/window.ts";
+import * as Dates from "../services/dates.ts";
 import type { CountryLinkAttrs } from "./place-links.ts";
 
 export type PhotoAlbumMetadataAttrs = {

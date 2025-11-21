@@ -13,7 +13,6 @@ export function setify<T>(value: T | T[] | undefined): Set<T> {
 
 /*
  * Collect a set of property values from a list of triple objects.
- *
  */
 export function setOf<T>(property: string, objects: TripleObject[]): Set<T> {
   const result = new Set<T>();

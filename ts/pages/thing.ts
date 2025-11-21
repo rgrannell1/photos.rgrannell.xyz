@@ -116,7 +116,9 @@ function AlbumSection() {
       const urns = setOf<string>("id", things);
       const albums = services.readAlbumsByThingIds(new Set(urns));
 
-      const countries = services.readCountries(setOf<string>("country", albums));
+      const countries = services.readCountries(
+        setOf<string>("country", albums),
+      );
 
       const $albums = albums.map((album) => {
         // duplicated model. move to render(model) code

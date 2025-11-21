@@ -4,7 +4,7 @@ import type { Album, Services } from "../types.ts";
 import { encodeBitmapDataURL } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
-import { Windows } from "../services/window.ts";
+import * as Windows from "../services/window.ts";
 import { CountryLink } from "../components/place-links.ts";
 import { block, broadcast } from "../commons/events.ts";
 import { albumYear } from "../services/albums.ts";
@@ -24,7 +24,12 @@ function onAlbumClick(id: string, title: string, event: Event) {
   block(event);
 }
 
-function drawAlbum(state: { year: number }, album: Album, idx: number, services: Services) {
+function drawAlbum(
+  state: { year: number },
+  album: Album,
+  idx: number,
+  services: Services,
+) {
   const loading = loadingMode(idx);
 
   const $albumComponents: m.Vnode<
@@ -46,13 +51,15 @@ function drawAlbum(state: { year: number }, album: Album, idx: number, services:
     }
   }
 
-  const $countryLinks = services.readCountries(setify(album.country)).map((country) => {
-    return m(CountryLink, {
-      country,
-      key: `album-country-${album.id}-${country.id}`,
-      mode: "flag",
-    });
-  });
+  const $countryLinks = services.readCountries(setify(album.country)).map(
+    (country) => {
+      return m(CountryLink, {
+        country,
+        key: `album-country-${album.id}-${country.id}`,
+        mode: "flag",
+      });
+    },
+  );
 
   const $md = m(PhotoAlbumMetadata, {
     title: album.name,
