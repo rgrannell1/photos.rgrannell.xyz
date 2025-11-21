@@ -4297,8 +4297,8 @@ function Sidebar() {
             (0, import_mithril4.default)(SidebarItem, { name: "PHOTOS", route: "/photos" }),
             (0, import_mithril4.default)(SidebarItem, { name: "VIDEOS", route: "/videos" }),
             (0, import_mithril4.default)(SidebarItem, { name: "ALBUMS", route: "/albums" }),
-            (0, import_mithril4.default)(SidebarItem, { name: "ABOUT", route: "/about" }),
-            (0, import_mithril4.default)(SidebarItem, { name: "LISTINGS", route: "/listings" })
+            (0, import_mithril4.default)(SidebarItem, { name: "LISTINGS", route: "/listings" }),
+            (0, import_mithril4.default)(SidebarItem, { name: "ABOUT", route: "/about" })
           ])
         ])
       ]);

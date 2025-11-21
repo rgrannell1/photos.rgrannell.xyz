@@ -684,7 +684,7 @@ button:disabled {
     padding: 2px;
   }
 
-  .photo-album .photo-album-metadata p {
+  .photo-album .photo-album-metadata p, .photo-album-metadata .link-list a {
     color: white;
     background-color: black;
   }
@@ -696,12 +696,12 @@ button:disabled {
     z-index: 1;
   }
 
-  .photo-album-metadata p {
+  .photo-album-metadata p, .photo-album-metadata .link-list {
     font-size: 0.8em;
     padding: 2px;
   }
 
-  .photo-album .photo-album-metadata p {
+  .photo-album .photo-album-metadata p, .photo-album-metadata .link-list {
     color: white;
     background-color: black;
   }
