@@ -5361,14 +5361,59 @@ function PhotoPage() {
 // ts/pages/listing.ts
 var import_mithril24 = __toESM(require_mithril());
 
-// ts/components/thing-album-metadata.ts
+// ts/components/thing-metadata.ts
 var import_mithril23 = __toESM(require_mithril());
-function ThingAlbumMetadata() {
+function CountryMetadata() {
   return {
     view(vnode) {
-      const { title } = vnode.attrs;
+      const { thing } = vnode.attrs;
       return (0, import_mithril23.default)("div.photo-album-metadata", [
-        (0, import_mithril23.default)("p.photo-album-title", title)
+        (0, import_mithril23.default)("p.photo-album-title", `${countryEmoji(thing)} ${one(thing.name)}`)
+      ]);
+    }
+  };
+}
+function BirdMetadata() {
+  return {
+    view(vnode) {
+      const { thing } = vnode.attrs;
+      return (0, import_mithril23.default)("div.photo-album-metadata", [
+        (0, import_mithril23.default)("p.photo-album-title", one(thing.name))
+      ]);
+    }
+  };
+}
+function AnimalMetadata() {
+  return {
+    view(vnode) {
+      const { thing } = vnode.attrs;
+      return (0, import_mithril23.default)("div.photo-album-metadata", [
+        (0, import_mithril23.default)("p.photo-album-title", one(thing.name))
+      ]);
+    }
+  };
+}
+function ThingMetadata() {
+  const animals = /* @__PURE__ */ new Set([
+    KnownTypes.AMPHIBIAN,
+    KnownTypes.REPTILE,
+    KnownTypes.INSECT,
+    KnownTypes.FISH,
+    KnownTypes.MAMMAL
+  ]);
+  return {
+    view(vnode) {
+      const { thing } = vnode.attrs;
+      const { type } = asUrn(one(thing.id));
+      if (type === KnownTypes.BIRD) {
+        return (0, import_mithril23.default)(BirdMetadata, { thing });
+      } else if (type === KnownTypes.COUNTRY) {
+        return (0, import_mithril23.default)(CountryMetadata, { thing });
+      } else if (animals.has(type)) {
+        return (0, import_mithril23.default)(AnimalMetadata, { thing });
+      }
+      return (0, import_mithril23.default)("div.photo-album-metadata", [
+        (0, import_mithril23.default)("p.photo-album-title", one(thing.name))
       ]);
     }
   };
@@ -5384,7 +5429,7 @@ function drawThingAlbum(services, thing, idx) {
   if (!coverPhoto) {
     return [];
   }
-  const $md = (0, import_mithril24.default)(ThingAlbumMetadata, { title: one(thing.name) ?? id });
+  const $md = (0, import_mithril24.default)(ThingMetadata, { thing });
   return [(0, import_mithril24.default)(PhotoAlbum, {
     imageUrl: coverPhoto.fullImage,
     thumbnailUrl: coverPhoto.thumbnailUrl,
@@ -5433,7 +5478,6 @@ function ListingPage() {
   return {
     view(vnode) {
       const { type, things, services } = vnode.attrs;
-      const $albums = [];
       const $md = [
         (0, import_mithril24.default)(ListingTitle, { type })
       ];
@@ -5660,7 +5704,7 @@ function ThingUrls() {
     }
   };
 }
-function ThingMetadata() {
+function ThingMetadata2() {
   return {
     view(vnode) {
       const metadata = {};
@@ -5786,7 +5830,7 @@ function ThingPage() {
           (0, import_mithril33.default)(ThingSubtitle, { urn }),
           (0, import_mithril33.default)("br"),
           (0, import_mithril33.default)(ThingUrls, { urn, things, services }),
-          (0, import_mithril33.default)(ThingMetadata, { urn, things, services }),
+          (0, import_mithril33.default)(ThingMetadata2, { urn, things, services }),
           (0, import_mithril33.default)("h3", "Photos"),
           (0, import_mithril33.default)(PhotoSection, { urn, things, services }),
           (0, import_mithril33.default)("h3", "Albums"),

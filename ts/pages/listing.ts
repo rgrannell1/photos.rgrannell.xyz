@@ -7,7 +7,7 @@ import type { Services } from "../types.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
 import { one } from "../commons/arrays.ts";
-import { ThingAlbumMetadata } from "../components/thing-album-metadata.ts";
+import { ThingMetadata } from "../components/thing-metadata.ts";
 
 /*
  * Draw an album for a single thing
@@ -24,7 +24,7 @@ function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
     return []
   }
 
-  const $md = m(ThingAlbumMetadata, { title: one(thing.name) ?? id });
+  const $md = m(ThingMetadata, { thing });
 
   // Placeholder implementation
   return [m(PhotoAlbum, {
@@ -102,7 +102,6 @@ export function ListingPage() {
   return {
     view(vnode: m.Vnode<ListingPageAttrs>) {
       const { type, things, services } = vnode.attrs;
-      const $albums = [];
 
       const $md = [
         m(ListingTitle, { type }),

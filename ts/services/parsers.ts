@@ -32,6 +32,8 @@ export const parseVideo = parseObject(VideoSchema, "video");
 export const parsePlace = parseObject(PlaceSchema, "place");
 export const parseAlbum = parseObject(AlbumSchema, "album");
 
+// TODO add fish
+
 /*
  * Parse known subject types
  */
