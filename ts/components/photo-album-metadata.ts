@@ -2,6 +2,7 @@ import m from "mithril";
 import { isSmallerThan } from "../services/window.ts";
 import * as Dates from "../services/dates.ts";
 import type { CountryLinkAttrs } from "./place-links.ts";
+import { SMALL_DEVICE_WIDTH } from "../constants.ts";
 
 export type PhotoAlbumMetadataAttrs = {
   title: string;
@@ -18,7 +19,7 @@ export function PhotoAlbumMetadata() {
       return "unknown date";
     }
 
-    const isSmall = isSmallerThan(500);
+    const isSmall = isSmallerThan(SMALL_DEVICE_WIDTH);
     return Dates.dateRange(minDate, maxDate, isSmall);
   }
 

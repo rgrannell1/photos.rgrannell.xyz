@@ -20,6 +20,7 @@ import type { PhotoAttrs } from "../components/photo.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
 import { preprocessDescription } from "../commons/strings.ts";
 import { setify } from "../commons/sets.ts";
+import { SMALL_DEVICE_WIDTH } from "../constants.ts";
 
 type AlbumAttrs = {
   album: Album;
@@ -57,7 +58,7 @@ export function AlbumPage() {
       const dateRange = Dates.dateRange(
         minDate,
         maxDate,
-        isSmallerThan(500),
+        isSmallerThan(SMALL_DEVICE_WIDTH),
       );
 
       const photoCountMessage = photosCount === 1

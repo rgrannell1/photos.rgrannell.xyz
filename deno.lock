@@ -4,7 +4,7 @@
     "specifiers": {
       "jsr:@std/assert@^0.218.2": "jsr:@std/assert@0.218.2",
       "jsr:@std/path": "jsr:@std/path@0.218.2",
-      "npm:@rgrannell1/tribbledb@^0.0.14": "npm:@rgrannell1/tribbledb@0.0.14",
+      "npm:@rgrannell1/tribbledb@^0.0.15": "npm:@rgrannell1/tribbledb@0.0.15",
       "npm:@types/mithril@^2.2.7": "npm:@types/mithril@2.2.7",
       "npm:csso": "npm:csso@5.0.5",
       "npm:esbuild@^0.25.9": "npm:esbuild@0.25.12",
@@ -327,8 +327,8 @@
         "integrity": "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==",
         "dependencies": {}
       },
-      "@rgrannell1/tribbledb@0.0.14": {
-        "integrity": "sha512-L2Fvd+fzrlOELNFbDj0ScnVCV8+9T4uJnoC38X9DISV0oEgz2B7Lqr9gCjToejbDWD9Ax8WBhRNi6WiNAxRGdQ==",
+      "@rgrannell1/tribbledb@0.0.15": {
+        "integrity": "sha512-h0BuyzBan43gfyUWM6ht8AgqC8sqX/VvsLVbtzQdoAkKsExfk+pKzHN+SbiKUqYaLCgj0DTGniMlX5VqNs+qNw==",
         "dependencies": {}
       },
       "@sigstore/bundle@4.0.0": {
@@ -3409,7 +3409,7 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
-        "npm:@rgrannell1/tribbledb@^0.0.14",
+        "npm:@rgrannell1/tribbledb@^0.0.15",
         "npm:@types/mithril@^2.2.7",
         "npm:esbuild@^0.25.9",
         "npm:express@^5.1.0",
