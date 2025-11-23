@@ -1733,8 +1733,8 @@ function load() {
   return localStorage.getItem("darkMode") === "true";
 }
 
-// node_modules/.deno/@rgrannell1+tribbledb@0.0.15/node_modules/@rgrannell1/tribbledb/dist/mod.js
-var IndexedSet = class {
+// node_modules/.deno/@rgrannell1+tribbledb@0.0.16/node_modules/@rgrannell1/tribbledb/dist/mod.js
+var IndexedSet = class _IndexedSet {
   #idx;
   #map;
   #reverseMap;
@@ -1792,6 +1792,13 @@ var IndexedSet = class {
   has(value) {
     return this.#map.has(value);
   }
+  clone() {
+    const newSet = new _IndexedSet();
+    for (const [key, value] of this.#map.entries()) {
+      newSet.setIndex(key, value);
+    }
+    return newSet;
+  }
 };
 var Sets = class {
   /*
@@ -1822,6 +1829,10 @@ var Sets = class {
     }
     return acc;
   }
+  /*
+   * Union two sets, and store the results in the left-hand-side set.
+   *
+   */
   static append(set0, set1) {
     for (const item of set1) {
       set0.add(item);
@@ -1834,6 +1845,9 @@ var TribbleParser = class {
   constructor() {
     this.stringIndex = new IndexedSet();
   }
+  /*
+   * Parse a triple-line of tribble format text, and return a triple
+   */
   parseTriple(line) {
     const match = line.match(/^(\d+) (\d+) (\d+)$/);
     if (!match) {
@@ -1847,6 +1861,10 @@ var TribbleParser = class {
     }
     return [src, rel, tgt];
   }
+  /*
+   * Parse a declaration line of tribble format text, and
+   * update the index.
+   */
   parseDeclaration(line) {
     const match = line.match(/^(\d+) "(.*)"$/);
     if (!match) {
@@ -1856,6 +1874,10 @@ var TribbleParser = class {
     const value = match[2];
     this.stringIndex.setIndex(value, parseInt(id, 10));
   }
+  /*
+   * Parse a line of tribble format text, and return a triple when possible. Otherwise
+   * update the index.
+   */
   parse(line) {
     const isTriple = /^(\d+)\s(\d+)\s(\d+)$/;
     if (isTriple.test(line)) {
@@ -1892,7 +1914,7 @@ function asUrn(value, namespace = "r\xF3") {
   }
   return parseUrn(value, namespace);
 }
-var IndexPerformanceMetrics = class {
+var IndexPerformanceMetrics = class _IndexPerformanceMetrics {
   mapReadCount;
   constructor() {
     this.mapReadCount = 0;
@@ -1900,8 +1922,13 @@ var IndexPerformanceMetrics = class {
   mapRead() {
     this.mapReadCount++;
   }
+  clone() {
+    const clone = new _IndexPerformanceMetrics();
+    clone.mapReadCount = this.mapReadCount;
+    return clone;
+  }
 };
-var TribbleDBPerformanceMetrics = class {
+var TribbleDBPerformanceMetrics = class _TribbleDBPerformanceMetrics {
   setCheckCount;
   constructor() {
     this.setCheckCount = 0;
@@ -1909,8 +1936,13 @@ var TribbleDBPerformanceMetrics = class {
   setCheck() {
     this.setCheckCount++;
   }
+  clone() {
+    const clone = new _TribbleDBPerformanceMetrics();
+    clone.setCheckCount = this.setCheckCount;
+    return clone;
+  }
 };
-var Index = class {
+var Index = class _Index {
   // Internal indexed representation for memory efficiency
   indexedTriples;
   // String indexing sets for memory efficiency
@@ -2110,6 +2142,31 @@ var Index = class {
     }
     this.metrics.mapRead();
     return this.targetQs.get(qsIdx);
+  }
+  /*
+   * Deep-clone the index
+   */
+  clone() {
+    const newIndex = new _Index([]);
+    newIndex.indexedTriples = this.indexedTriples.slice();
+    newIndex.stringIndex = this.stringIndex.clone();
+    const cloneMap = (original) => {
+      const newMap = /* @__PURE__ */ new Map();
+      for (const [key, valueSet] of original.entries()) {
+        newMap.set(key, new Set(valueSet));
+      }
+      return newMap;
+    };
+    newIndex.sourceType = cloneMap(this.sourceType);
+    newIndex.sourceId = cloneMap(this.sourceId);
+    newIndex.sourceQs = cloneMap(this.sourceQs);
+    newIndex.relations = cloneMap(this.relations);
+    newIndex.targetType = cloneMap(this.targetType);
+    newIndex.targetId = cloneMap(this.targetId);
+    newIndex.targetQs = cloneMap(this.targetQs);
+    newIndex.stringUrn = new Map(this.stringUrn);
+    newIndex.metrics = this.metrics.clone();
+    return newIndex;
   }
 };
 var Triples = class {
@@ -2435,14 +2492,18 @@ var TribbleDB = class _TribbleDB {
     return new _TribbleDB(this.index.triples().map(fn));
   }
   /**
-   * Flat map over the triples in the database.
+   * Flatmap over the triples in the database. This can be used to add new triples
+   * to a copy of the database.
    *
    * @param fn - A mapping function.
    * @returns A new TribbleDB instance containing the flat-mapped triples.
    */
   flatMap(fn) {
     const flatMappedTriples = this.index.triples().flatMap(fn);
-    return new _TribbleDB(flatMappedTriples);
+    const newDb = new _TribbleDB([]);
+    newDb.index = this.index.clone();
+    newDb.add(flatMappedTriples);
+    return newDb;
   }
   /**
    * Get the first triple in the database.
@@ -2497,7 +2558,7 @@ var TribbleDB = class _TribbleDB {
         obj[relation] = obj[relation] === target ? obj[relation] : [obj[relation], target];
       }
     }
-    return obj;
+    return Object.keys(obj).length > 0 ? obj : void 0;
   }
   /*
    * Get all triples in the database.
@@ -2575,42 +2636,6 @@ var TribbleDB = class _TribbleDB {
     return objs;
   }
   /*
-   * Parse a source / target node input.
-   */
-  parseNodeString(node) {
-    return { type: "unknown", id: node };
-  }
-  /*
-   * Convert a node to a node DSL object.
-   */
-  nodeAsDSL(node) {
-    if (typeof node === "undefined") {
-      return void 0;
-    }
-    if (typeof node === "string") {
-      return this.parseNodeString(node);
-    }
-    if (Array.isArray(node)) {
-      return { type: "unknown", id: node };
-    }
-    return node;
-  }
-  /*
-   * Convert a relation input to a relation DSL object
-   */
-  relationAsDSL(relation) {
-    if (typeof relation === "undefined") {
-      return void 0;
-    }
-    if (typeof relation === "string") {
-      return { relation: [relation] };
-    }
-    if (Array.isArray(relation)) {
-      return { relation };
-    }
-    return relation;
-  }
-  /*
    * Search across all triples in the database. There are two forms of query possible:
    *
    * - Object: { source?, relation?, target }
@@ -2641,6 +2666,57 @@ var TribbleDB = class _TribbleDB {
       index: this.index.metrics,
       db: this.metrics
     };
+  }
+  /*
+   * Read a single object from the data by urn. If not a urn, the
+   * value is used as an id and the type is the default type `unknown`. By default,
+   * query-strings are disregarded.
+   */
+  readThing(urn, opts = { qs: false }) {
+    if (opts.qs) {
+      const { type, id } = asUrn(urn);
+      return this.search({ source: { type, id } }).firstObject();
+    } else {
+      return this.search({ source: urn }).firstObject();
+    }
+  }
+  /*
+   * Read a set of URNs, and return any matching results. Ordered but not guaranteed to
+   * return a match for all provided URNs.
+   */
+  readThings(urns, opts = { qs: false }) {
+    const results = [];
+    for (const urn of urns) {
+      const thing = this.readThing(urn, opts);
+      if (thing !== void 0) {
+        results.push(thing);
+      }
+    }
+    return results;
+  }
+  /*
+   * Read and parse a triple object. On missing data or parse failure return undefined (or throw an exception)
+   */
+  parseThing(parser, urn, opts = { qs: false }) {
+    const thing = this.readThing(urn, opts);
+    if (thing) {
+      return parser(thing);
+    } else {
+      return void 0;
+    }
+  }
+  /*
+   * Read and parse a collection of triple objects. Skip over missing data or parse failures.
+   */
+  parseThings(parser, urns, opts = { qs: false }) {
+    const results = [];
+    for (const urn of urns) {
+      const res = this.parseThing(parser, urn, opts);
+      if (res) {
+        results.push(res);
+      }
+    }
+    return results;
   }
 };
 
@@ -4312,7 +4388,7 @@ async function loadData() {
 }
 function loadServices(tdb2) {
   return {
-    readThing: readThing.bind(null, tdb2),
+    readThing: tdb2.readThing,
     readAlbum: readAlbum.bind(null, tdb2),
     readCountry: readCountry.bind(null, tdb2),
     readPlace: readPlace.bind(null, tdb2),

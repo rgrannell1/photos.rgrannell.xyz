@@ -51,7 +51,7 @@ async function loadData() {
  */
 export function loadServices(tdb: TribbleDB) {
   return {
-    readThing: readThing.bind(null, tdb),
+    readThing: tdb.readThing,
     readAlbum: readAlbum.bind(null, tdb),
     readCountry: readCountry.bind(null, tdb),
     readPlace: readPlace.bind(null, tdb),
