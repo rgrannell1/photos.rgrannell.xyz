@@ -111,6 +111,9 @@ export function expandCdnUrls(triple: Triple): Triple[] {
   ]];
 }
 
+/*
+ * Convert relation names to camelCase
+ */
 export function convertRelationCasing(triple: Triple): Triple[] {
   const [src, rel, tgt] = triple;
 
@@ -227,46 +230,46 @@ export function expandTripleCuries(
   ];
 }
 
-// This is a bit unpleasant
-const TREE_STATE = {
-  nodes: new Map<string, {
-    id: string;
-    parents: Set<string>;
-  }>(),
-  // used later to detect whether a node is a leaf
-  branchIds: new Set<string>(),
-};
-
 /*
  * Construct a location tree based on `in` relations.
  */
 export function buildLocationTrees(
-  triple: Triple,
+  tdb: TribbleDB,
 ) {
-  const [src, rel, tgt] = triple;
 
-  if (rel !== KnownRelations.IN) {
-    return [triple];
+  // This is a bit unpleasant
+  const treeState = {
+    nodes: new Map<string, {
+      id: string;
+      parents: Set<string>;
+    }>(),
+    // used later to detect whether a node is a leaf
+    branchIds: new Set<string>(),
+  };
+
+  const results = tdb.search({
+    relation: KnownRelations.IN,
+  }).triples();
+
+  const nodes = treeState.nodes;
+  for (const [src, , tgt] of results) {
+    let srcNode = nodes.get(src);
+    if (!srcNode) {
+      srcNode = { id: src, parents: new Set() };
+      nodes.set(src, srcNode);
+    }
+
+    let tgtNode = nodes.get(tgt);
+    if (!tgtNode) {
+      tgtNode = { id: tgt, parents: new Set() };
+      nodes.set(tgt, tgtNode);
+    }
+
+    treeState.branchIds.add(tgt);
+    srcNode?.parents.add(tgt);
   }
 
-  const nodes = TREE_STATE.nodes;
-
-  let srcNode = nodes.get(src);
-  if (!srcNode) {
-    srcNode = { id: src, parents: new Set() };
-    nodes.set(src, srcNode);
-  }
-
-  let tgtNode = nodes.get(tgt);
-  if (!tgtNode) {
-    tgtNode = { id: tgt, parents: new Set() };
-    nodes.set(tgt, tgtNode);
-  }
-
-  TREE_STATE.branchIds.add(tgt);
-  srcNode?.parents.add(tgt);
-
-  return [triple];
+  return treeState;
 }
 
 /*
@@ -306,7 +309,9 @@ export const HARD_CODED_TRIPLES: Triple[] = [
 /*
  * Compose all triple modifiers together.
  *
- * This is a bottleneck (takes roughly 100ms to run as of Nov 25 tribbledb v0.16)
+ * This is a bottleneck
+ * - takes roughly 100ms to run as of Nov 25 tribbledb v0.16
+ * - takes 70ms after v0.18 Nov 25 and moving some derivations to non-linear scan adds
  *
  * @param triple The input triple to modify.
  */
@@ -322,7 +327,6 @@ export function deriveTriples(
     expandCdnUrls,
     expandUrns,
     expandTripleCuries,
-    buildLocationTrees,
   ];
 
   let outputTriples: Triple[] = [triple];
@@ -348,21 +352,23 @@ export function deriveTriples(
 export function postIndexing(tdb: TribbleDB) {
   addYear(tdb);
   addInverseRelations(tdb);
+  addNestedLocations(tdb);
 }
 
 /*
- * During the initial flatmap processing of the ingested triples,
- * we built up a tree describing which places are contained in which others.
- * Construct the transitive relations in this function.
- */
-export function addNestedLocations(): Triple[] {
+* During the initial flatmap processing of the ingested triples,
+* we built up a tree describing which places are contained in which others.
+* Construct the transitive relations in this function.
+*/
+export function addNestedLocations(tdb: TribbleDB) {
+  const treeState = buildLocationTrees(tdb);
   /*
    * Recurse up the tree from the leaves, tracing the path we followed.
    */
   function recurse(path: string[], urn: string): Triple[] {
     const triples: Triple[] = [];
 
-    const node = TREE_STATE.nodes.get(urn);
+    const node = treeState.nodes.get(urn);
 
     // Probably not possible
     if (!node) {
@@ -407,15 +413,15 @@ export function addNestedLocations(): Triple[] {
 
   // Recurse up from all leaves A :IN B, and
   // return all transitive location relations
-  for (const nodeId of TREE_STATE.nodes.keys()) {
-    if (TREE_STATE.branchIds.has(nodeId)) {
+  for (const nodeId of treeState.nodes.keys()) {
+    if (treeState.branchIds.has(nodeId)) {
       continue;
     }
 
     triples.push(...recurse([], nodeId));
   }
 
-  return triples;
+  tdb.add(triples);
 }
 
 /*

@@ -1,5 +1,5 @@
 import * as path from "jsr:@std/path";
-import { addNestedLocations, deriveTriples } from "../semantic/derive.ts";
+import { deriveTriples } from "../semantic/derive.ts";
 import { loadTriples } from "../semantic/data.ts";
 import { readAllAlbums } from "../services/albums.ts";
 
@@ -46,7 +46,6 @@ export async function loadTribbles() {
     throw new Error("No tribbles file found");
   }
   const tdb = await loadTriples(tribblesFile, {}, deriveTriples);
-  tdb.add(addNestedLocations());
   return tdb;
 }
 

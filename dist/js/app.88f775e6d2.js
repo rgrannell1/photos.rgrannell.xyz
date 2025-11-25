@@ -2768,6 +2768,59 @@ var TribbleDB = class _TribbleDB {
   }
 };
 
+// ts/semantic/data.ts
+async function* streamTribbles(url2) {
+  const parser = new TribbleParser();
+  const res = await fetch(url2);
+  if (!res.body) {
+    throw new Error("No response body");
+  }
+  const decoder = new TextDecoderStream();
+  const reader = res.body.pipeThrough(decoder).getReader();
+  let buffer = "";
+  const tripleBuffer = [];
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) {
+      break;
+    }
+    buffer += value;
+    const lines = buffer.split("\n");
+    buffer = lines.pop() ?? "";
+    for (const line of lines) {
+      const triple = parser.parse(line);
+      if (triple !== void 0) {
+        tripleBuffer.push(triple);
+      }
+      if (tripleBuffer.length >= 500) {
+        yield [...tripleBuffer];
+        tripleBuffer.length = 0;
+      }
+    }
+  }
+  if (buffer.length > 0) {
+    const triple = parser.parse(buffer);
+    if (triple !== void 0) {
+      tripleBuffer.push(triple);
+    }
+  }
+  if (tripleBuffer.length > 0) {
+    yield [...tripleBuffer];
+  }
+}
+var tdb = null;
+async function loadTriples(url2, schema = {}, perTriple = (x) => [x]) {
+  if (!tdb) {
+    tdb = new TribbleDB([], schema);
+  }
+  for await (const triples of streamTribbles(url2)) {
+    for (const triple of triples) {
+      tdb.add(perTriple(triple));
+    }
+  }
+  return tdb;
+}
+
 // ts/constants.ts
 var SMALL_DEVICE_WIDTH = 500;
 var PHOTO_WIDTH = 400;
@@ -3101,30 +3154,31 @@ function expandTripleCuries(triple) {
     ]
   ];
 }
-var TREE_STATE = {
-  nodes: /* @__PURE__ */ new Map(),
-  // used later to detect whether a node is a leaf
-  branchIds: /* @__PURE__ */ new Set()
-};
-function buildLocationTrees(triple) {
-  const [src, rel, tgt] = triple;
-  if (rel !== KnownRelations.IN) {
-    return [triple];
+function buildLocationTrees(tdb2) {
+  const treeState = {
+    nodes: /* @__PURE__ */ new Map(),
+    // used later to detect whether a node is a leaf
+    branchIds: /* @__PURE__ */ new Set()
+  };
+  const results = tdb2.search({
+    relation: KnownRelations.IN
+  }).triples();
+  const nodes = treeState.nodes;
+  for (const [src, , tgt] of results) {
+    let srcNode = nodes.get(src);
+    if (!srcNode) {
+      srcNode = { id: src, parents: /* @__PURE__ */ new Set() };
+      nodes.set(src, srcNode);
+    }
+    let tgtNode = nodes.get(tgt);
+    if (!tgtNode) {
+      tgtNode = { id: tgt, parents: /* @__PURE__ */ new Set() };
+      nodes.set(tgt, tgtNode);
+    }
+    treeState.branchIds.add(tgt);
+    srcNode?.parents.add(tgt);
   }
-  const nodes = TREE_STATE.nodes;
-  let srcNode = nodes.get(src);
-  if (!srcNode) {
-    srcNode = { id: src, parents: /* @__PURE__ */ new Set() };
-    nodes.set(src, srcNode);
-  }
-  let tgtNode = nodes.get(tgt);
-  if (!tgtNode) {
-    tgtNode = { id: tgt, parents: /* @__PURE__ */ new Set() };
-    nodes.set(tgt, tgtNode);
-  }
-  TREE_STATE.branchIds.add(tgt);
-  srcNode?.parents.add(tgt);
-  return [triple];
+  return treeState;
 }
 function renameRelations(triple) {
   for (const [from, to] of RENAMED_RELATIONS) {
@@ -3162,8 +3216,7 @@ function deriveTriples(triple) {
     convertRelationCasing,
     expandCdnUrls,
     expandUrns,
-    expandTripleCuries,
-    buildLocationTrees
+    expandTripleCuries
   ];
   let outputTriples = [triple];
   for (const fn of tripleProcessors) {
@@ -3179,11 +3232,13 @@ function deriveTriples(triple) {
 function postIndexing(tdb2) {
   addYear(tdb2);
   addInverseRelations(tdb2);
+  addNestedLocations(tdb2);
 }
-function addNestedLocations() {
+function addNestedLocations(tdb2) {
+  const treeState = buildLocationTrees(tdb2);
   function recurse(path, urn) {
     const triples2 = [];
-    const node = TREE_STATE.nodes.get(urn);
+    const node = treeState.nodes.get(urn);
     if (!node) {
       throw new Error(`no node in location tree for ${urn}`);
     }
@@ -3211,67 +3266,13 @@ function addNestedLocations() {
     return triples2;
   }
   const triples = [];
-  for (const nodeId of TREE_STATE.nodes.keys()) {
-    if (TREE_STATE.branchIds.has(nodeId)) {
+  for (const nodeId of treeState.nodes.keys()) {
+    if (treeState.branchIds.has(nodeId)) {
       continue;
     }
     triples.push(...recurse([], nodeId));
   }
-  return triples;
-}
-
-// ts/semantic/data.ts
-async function* streamTribbles(url2) {
-  const parser = new TribbleParser();
-  const res = await fetch(url2);
-  if (!res.body) {
-    throw new Error("No response body");
-  }
-  const decoder = new TextDecoderStream();
-  const reader = res.body.pipeThrough(decoder).getReader();
-  let buffer = "";
-  const tripleBuffer = [];
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) {
-      break;
-    }
-    buffer += value;
-    const lines = buffer.split("\n");
-    buffer = lines.pop() ?? "";
-    for (const line of lines) {
-      const triple = parser.parse(line);
-      if (triple !== void 0) {
-        tripleBuffer.push(triple);
-      }
-      if (tripleBuffer.length >= 500) {
-        yield [...tripleBuffer];
-        tripleBuffer.length = 0;
-      }
-    }
-  }
-  if (buffer.length > 0) {
-    const triple = parser.parse(buffer);
-    if (triple !== void 0) {
-      tripleBuffer.push(triple);
-    }
-  }
-  if (tripleBuffer.length > 0) {
-    yield [...tripleBuffer];
-  }
-}
-var tdb = null;
-async function loadTriples(url2, schema = {}, perTriple = (x) => [x]) {
-  if (!tdb) {
-    tdb = new TribbleDB([], schema);
-  }
-  for await (const triples of streamTribbles(url2)) {
-    for (const triple of triples) {
-      tdb.add(perTriple(triple));
-    }
-  }
-  tdb.add(addNestedLocations());
-  return tdb;
+  tdb2.add(triples);
 }
 
 // ts/commons/logger.ts
