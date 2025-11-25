@@ -1,7 +1,7 @@
 import type { AppWindow, State } from "./types.ts";
 import * as DarkMode from "./services/dark-mode.ts";
 import { loadTriples } from "./semantic/data.ts";
-import { deriveTriples, HARD_CODED_TRIPLES } from "./semantic/derive.ts";
+import { deriveTriples, postIndexing, HARD_CODED_TRIPLES } from "./semantic/derive.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 
 import { readAlbumsByThingIds } from "./services/albums.ts";
@@ -24,7 +24,7 @@ import {
   readVideo,
 } from "./services/readers.ts";
 import { chooseThingCover, readPhotosByThingIds } from "./services/photos.ts";
-import { readThing, readThings, toThingLinks } from "./commons/things.ts";
+import { readThings, toThingLinks } from "./commons/things.ts";
 import { namesToUrns } from "./services/names.ts";
 
 /*
@@ -33,15 +33,17 @@ import { namesToUrns } from "./services/names.ts";
  */
 async function loadData() {
   const schema = {};
-  const db = await loadTriples(
+  const tdb = await loadTriples(
     `/manifest/tribbles.${(window as AppWindow).envConfig.publication_id}.txt`,
     schema,
     deriveTriples,
   );
 
-  db.add(HARD_CODED_TRIPLES);
+  postIndexing(tdb);
 
-  return db;
+  tdb.add(HARD_CODED_TRIPLES);
+
+  return tdb;
 }
 
 /*

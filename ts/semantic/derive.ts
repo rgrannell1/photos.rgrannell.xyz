@@ -3,7 +3,7 @@
  * so some triples are modified or derived client-side
  */
 
-import type { Triple } from "@rgrannell1/tribbledb";
+import type { TribbleDB, Triple } from "@rgrannell1/tribbledb";
 
 import {
   CDN_RELATIONS,
@@ -139,65 +139,24 @@ export function expandUrns(triple: Triple): Triple[] {
 }
 
 /*
- * Allow search by season
- */
-export function addSeason(triple: Triple) {
-  const [src, rel, tgt] = triple;
-
-  if (rel !== KnownRelations.CREATED_AT) {
-    return [triple];
-  }
-
-  const date = new Date(tgt);
-  if (isNaN(date.getTime())) {
-    return [triple];
-  }
-
-  const month = date.getUTCMonth() + 1;
-  let season = "Winter";
-  if (month >= 3 && month <= 5) {
-    season = "Spring";
-  } else if (month >= 6 && month <= 8) {
-    season = "Summer";
-  } else if (month >= 9 && month <= 11) {
-    season = "Autumn";
-  }
-
-  return [
-    triple,
-    [
-      src,
-      KnownRelations.SEASON,
-      season,
-    ],
-  ];
-}
-
-/*
  * Add years as a relation, when a date is present
  */
-export function addYear(triple: Triple) {
-  const [src, rel, tgt] = triple;
+export function addYear(tdb: TribbleDB) {
+  const years = tdb.search({
+    relation: KnownRelations.CREATED_AT,
+  }).triples().flatMap(([src, rel, tgt]) => {
+    const date = new Date(tgt);
 
-  if (rel !== KnownRelations.CREATED_AT) {
-    return [triple];
-  }
+    if (isNaN(date.getTime())) {
+      return [];
+    }
 
-  const date = new Date(tgt);
-  if (isNaN(date.getTime())) {
-    return [triple];
-  }
+    const year = date.getUTCFullYear().toString();
 
-  const year = date.getUTCFullYear().toString();
+    return [[src, KnownRelations.YEAR, year]] as Triple[];
+  });
 
-  return [
-    triple,
-    [
-      src,
-      KnownRelations.YEAR,
-      year,
-    ],
-  ];
+  tdb.add(years);
 }
 
 /*
@@ -205,23 +164,20 @@ export function addYear(triple: Triple) {
  *
  * some relations imply other; X parent-of Y implies Y child-of X
  */
-export function addInverseRelations(triple: Triple) {
-  const [src, rel, tgt] = triple;
+export function addInverseRelations(tdb: TribbleDB) {
+  const triples: Triple[] = [];
 
   for (const [to, from] of RelationSymmetries) {
-    if (rel === to) {
-      return [
-        triple,
-        [
-          tgt,
-          from,
-          src,
-        ],
-      ];
+    const results = tdb.search({
+      relation: to,
+    }).triples();
+
+    for (const [src, _, tgt] of results) {
+      triples.push([ tgt, from, src ]);
     }
   }
 
-  return [triple];
+  tdb.add(triples);
 }
 
 const CURIE_CACHE = new Map<string, string>();
@@ -350,7 +306,7 @@ export const HARD_CODED_TRIPLES: Triple[] = [
 /*
  * Compose all triple modifiers together.
  *
- * This is a bottleneck (takes roughly 100ms to run)
+ * This is a bottleneck (takes roughly 100ms to run as of Nov 25 tribbledb v0.16)
  *
  * @param triple The input triple to modify.
  */
@@ -365,9 +321,6 @@ export function deriveTriples(
     convertRelationCasing,
     expandCdnUrls,
     expandUrns,
-    addSeason,
-    addYear,
-    addInverseRelations,
     expandTripleCuries,
     buildLocationTrees,
   ];
@@ -385,6 +338,16 @@ export function deriveTriples(
   }
 
   return outputTriples;
+}
+
+/*
+ * Operations that add but do not modify existing triples,
+ * to be run after all indexing is complete.
+ *
+ */
+export function postIndexing(tdb: TribbleDB) {
+  addYear(tdb);
+  addInverseRelations(tdb);
 }
 
 /*

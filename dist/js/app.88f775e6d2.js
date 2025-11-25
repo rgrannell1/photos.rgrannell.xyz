@@ -1733,7 +1733,7 @@ function load() {
   return localStorage.getItem("darkMode") === "true";
 }
 
-// node_modules/.deno/@rgrannell1+tribbledb@0.0.16/node_modules/@rgrannell1/tribbledb/dist/mod.js
+// node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class _IndexedSet {
   #idx;
   #map;
@@ -1831,7 +1831,6 @@ var Sets = class {
   }
   /*
    * Union two sets, and store the results in the left-hand-side set.
-   *
    */
   static append(set0, set1) {
     for (const item of set1) {
@@ -1947,6 +1946,7 @@ var Index = class _Index {
   indexedTriples;
   // String indexing sets for memory efficiency
   stringIndex;
+  tripleHashes;
   sourceType;
   sourceId;
   // note: QS uses a composite key: <key>=<value>
@@ -1960,6 +1960,7 @@ var Index = class _Index {
   constructor(triples) {
     this.indexedTriples = [];
     this.stringIndex = new IndexedSet();
+    this.tripleHashes = /* @__PURE__ */ new Set();
     this.sourceType = /* @__PURE__ */ new Map();
     this.sourceId = /* @__PURE__ */ new Map();
     this.sourceQs = /* @__PURE__ */ new Map();
@@ -1972,12 +1973,38 @@ var Index = class _Index {
     this.metrics = new IndexPerformanceMetrics();
   }
   /*
+   * Return the triples that are absent from the index
+   *
+   */
+  difference(triples) {
+    return triples.filter((triple) => !this.hasTriple(triple));
+  }
+  /*
+   * Check if a triple is present in the index
+   *
+   */
+  hasTriple(triple) {
+    return this.tripleHashes.has(this.hashTriple(triple));
+  }
+  /*
+   * Generate a simple hash for a triple
+   *
+   */
+  hashTriple(triple) {
+    const str = `${triple[0]}${triple[1]}${triple[2]}`;
+    let hash = 0;
+    for (let i = 0, len = str.length; i < len; i++) {
+      const chr = str.charCodeAt(i);
+      hash = (hash << 5) - hash + chr;
+      hash |= 0;
+    }
+    return hash.toString();
+  }
+  /*
    * Add new triples to the index incrementally
    */
   add(triples) {
-    const startIdx = this.indexedTriples.length;
     for (let jdx = 0; jdx < triples.length; jdx++) {
-      const idx = startIdx + jdx;
       const triple = triples[jdx];
       const source = triple[0];
       const relation = triple[1];
@@ -1997,6 +2024,11 @@ var Index = class _Index {
       const relationIdx = this.stringIndex.add(relation);
       const targetTypeIdx = this.stringIndex.add(parsedTarget.type);
       const targetIdIdx = this.stringIndex.add(parsedTarget.id);
+      if (this.tripleHashes.has(this.hashTriple(triple))) {
+        continue;
+      }
+      this.tripleHashes.add(this.hashTriple(triple));
+      const idx = this.indexedTriples.length;
       this.indexedTriples.push([
         this.stringIndex.add(source),
         relationIdx,
@@ -2066,6 +2098,7 @@ var Index = class _Index {
   }
   /*
    * Get a specific triple by index
+   *
    */
   getTriple(index) {
     if (index < 0 || index >= this.indexedTriples.length) {
@@ -2078,6 +2111,10 @@ var Index = class _Index {
       this.stringIndex.getValue(targetIdx)
     ];
   }
+  /*
+   * Get the string indices for a specific triple by triple index
+   *
+   */
   getTripleIndices(index) {
     if (index < 0 || index >= this.indexedTriples.length) {
       return void 0;
@@ -2150,6 +2187,7 @@ var Index = class _Index {
     const newIndex = new _Index([]);
     newIndex.indexedTriples = this.indexedTriples.slice();
     newIndex.stringIndex = this.stringIndex.clone();
+    newIndex.tripleHashes = new Set(this.tripleHashes);
     const cloneMap = (original) => {
       const newMap = /* @__PURE__ */ new Map();
       for (const [key, valueSet] of original.entries()) {
@@ -2718,6 +2756,16 @@ var TribbleDB = class _TribbleDB {
     }
     return results;
   }
+  /*
+   * Merge another TribbleDB into this one.
+   *
+   * @param other - The other TribbleDB to merge.
+   * @returns This TribbleDB instance.
+   */
+  merge(other) {
+    this.add(other.triples());
+    return this;
+  }
 };
 
 // ts/constants.ts
@@ -2999,67 +3047,30 @@ function expandUrns(triple) {
     typeof tgt === "string" && tgt.startsWith("::") ? `urn:r\xF3:${tgt.slice(2)}` : tgt
   ]];
 }
-function addSeason(triple) {
-  const [src, rel, tgt] = triple;
-  if (rel !== KnownRelations.CREATED_AT) {
-    return [triple];
-  }
-  const date = new Date(tgt);
-  if (isNaN(date.getTime())) {
-    return [triple];
-  }
-  const month = date.getUTCMonth() + 1;
-  let season = "Winter";
-  if (month >= 3 && month <= 5) {
-    season = "Spring";
-  } else if (month >= 6 && month <= 8) {
-    season = "Summer";
-  } else if (month >= 9 && month <= 11) {
-    season = "Autumn";
-  }
-  return [
-    triple,
-    [
-      src,
-      KnownRelations.SEASON,
-      season
-    ]
-  ];
+function addYear(tdb2) {
+  const years = tdb2.search({
+    relation: KnownRelations.CREATED_AT
+  }).triples().flatMap(([src, rel, tgt]) => {
+    const date = new Date(tgt);
+    if (isNaN(date.getTime())) {
+      return [];
+    }
+    const year = date.getUTCFullYear().toString();
+    return [[src, KnownRelations.YEAR, year]];
+  });
+  tdb2.add(years);
 }
-function addYear(triple) {
-  const [src, rel, tgt] = triple;
-  if (rel !== KnownRelations.CREATED_AT) {
-    return [triple];
-  }
-  const date = new Date(tgt);
-  if (isNaN(date.getTime())) {
-    return [triple];
-  }
-  const year = date.getUTCFullYear().toString();
-  return [
-    triple,
-    [
-      src,
-      KnownRelations.YEAR,
-      year
-    ]
-  ];
-}
-function addInverseRelations(triple) {
-  const [src, rel, tgt] = triple;
+function addInverseRelations(tdb2) {
+  const triples = [];
   for (const [to, from] of RelationSymmetries) {
-    if (rel === to) {
-      return [
-        triple,
-        [
-          tgt,
-          from,
-          src
-        ]
-      ];
+    const results = tdb2.search({
+      relation: to
+    }).triples();
+    for (const [src, _, tgt] of results) {
+      triples.push([tgt, from, src]);
     }
   }
-  return [triple];
+  tdb2.add(triples);
 }
 var CURIE_CACHE = /* @__PURE__ */ new Map();
 function expandCurie(curies, value) {
@@ -3151,9 +3162,6 @@ function deriveTriples(triple) {
     convertRelationCasing,
     expandCdnUrls,
     expandUrns,
-    addSeason,
-    addYear,
-    addInverseRelations,
     expandTripleCuries,
     buildLocationTrees
   ];
@@ -3167,6 +3175,10 @@ function deriveTriples(triple) {
     nextStep = [];
   }
   return outputTriples;
+}
+function postIndexing(tdb2) {
+  addYear(tdb2);
+  addInverseRelations(tdb2);
 }
 function addNestedLocations() {
   function recurse(path, urn) {
@@ -4378,13 +4390,14 @@ function namesToUrns(tdb2, names) {
 // ts/state.ts
 async function loadData() {
   const schema = {};
-  const db = await loadTriples(
+  const tdb2 = await loadTriples(
     `/manifest/tribbles.${window.envConfig.publication_id}.txt`,
     schema,
     deriveTriples
   );
-  db.add(HARD_CODED_TRIPLES);
-  return db;
+  postIndexing(tdb2);
+  tdb2.add(HARD_CODED_TRIPLES);
+  return tdb2;
 }
 function loadServices(tdb2) {
   return {
