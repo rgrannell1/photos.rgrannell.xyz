@@ -21,6 +21,7 @@ import { AlbumsButton } from "../components/albums-button.ts";
 import { preprocessDescription } from "../commons/strings.ts";
 import { setify } from "../commons/sets.ts";
 import { SMALL_DEVICE_WIDTH } from "../constants.ts";
+import { asUrn } from "@rgrannell1/tribbledb";
 
 type AlbumAttrs = {
   album: Album;
@@ -74,7 +75,8 @@ export function AlbumPage() {
         });
       });
 
-      const url = `https://sharephoto.rgrannell.xyz/album/${album.id}`
+      const { id } = asUrn(album.id);
+      const url = `https://sharephoto.rgrannell.xyz/album/${id}`;
 
       const $albumMetadata = m("section.photos-metadata", [
         m("h1", name),

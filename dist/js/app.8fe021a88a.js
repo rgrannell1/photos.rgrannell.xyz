@@ -5235,7 +5235,8 @@ function AlbumPage() {
           mode: "flag"
         });
       });
-      const url2 = `https://sharephoto.rgrannell.xyz/album/${album.id}`;
+      const { id } = asUrn(album.id);
+      const url2 = `https://sharephoto.rgrannell.xyz/album/${id}`;
       const $albumMetadata = (0, import_mithril17.default)("section.photos-metadata", [
         (0, import_mithril17.default)("h1", name),
         (0, import_mithril17.default)("p.photo-album-date", (0, import_mithril17.default)("time", dateRange2)),
