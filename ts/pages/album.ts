@@ -74,6 +74,8 @@ export function AlbumPage() {
         });
       });
 
+      const url = `https://sharephoto.rgrannell.xyz/album/${album.id}`
+
       const $albumMetadata = m("section.photos-metadata", [
         m("h1", name),
         m("p.photo-album-date", m("time", dateRange)),
@@ -83,7 +85,7 @@ export function AlbumPage() {
           "p.photo-album-description",
           m.trust(preprocessDescription(description ?? "") ?? ""),
         ),
-        m(AlbumShareButton, { url: location.href, name }),
+        m(AlbumShareButton, { url, name }),
         " ",
         m(AlbumsButton),
         " ",

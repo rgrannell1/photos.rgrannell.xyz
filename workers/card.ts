@@ -16,11 +16,18 @@ interface SocialCard {
 }
 
 async function getSocialCard(db: D1Database, path: string): Promise<SocialCard | null> {
-  const result = await db.prepare(
-    'SELECT path, description, title, image_url FROM social_cards WHERE path = ?'
-  ).bind(path).first<SocialCard>();
-
-  return result || null;
+  try {
+    console.log(`[DB] Querying social_cards for path: ${path}`);
+    const result = await db.prepare(
+      'SELECT path, description, title, image_url FROM social_cards WHERE path = ?'
+    ).bind(path).first<SocialCard>();
+    
+    console.log(`[DB] Query result:`, result ? `Found card for ${result.path}` : 'No card found');
+    return result || null;
+  } catch (error) {
+    console.error(`[DB] Error querying social_cards:`, error);
+    return null;
+  }
 }
 
 function extractPathFromUrl(url: string): string {
@@ -28,8 +35,8 @@ function extractPathFromUrl(url: string): string {
     const urlObj = new URL(url);
     const pathname = urlObj.pathname;
 
-    // For share.photos.rgrannell.xyz, the path is the direct pathname
-    // e.g., share.photos.rgrannell.xyz/albums/zaragoza-25 -> /albums/zaragoza-25
+    // For sharephoto.rgrannell.xyz, the path is the direct pathname
+    // e.g., sharephoto.rgrannell.xyz/albums/zaragoza-25 -> /albums/zaragoza-25
     return pathname || '/';
   } catch {
     return '/';
@@ -48,9 +55,9 @@ function getPageUrl(request: Request): string {
   const url = new URL(request.url);
   const pathname = url.pathname;
 
-  // Redirect from share.photos.rgrannell.xyz to photos.rgrannell.xyz
-  // e.g., share.photos.rgrannell.xyz/albums/zaragoza-25 -> photos.rgrannell.xyz/albums/zaragoza-25
-  return `https://photos.rgrannell.xyz${pathname}`;
+  // Redirect from sharephoto.rgrannell.xyz to photos.rgrannell.xyz
+  // e.g., sharephoto.rgrannell.xyz/albums/zaragoza-25 -> photos.rgrannell.xyz/albums/zaragoza-25
+  return `https://photos.rgrannell.xyz/#!/${pathname}`;
 }
 
 function getImageUrl(card: SocialCard | null): string | undefined  {
@@ -59,8 +66,13 @@ function getImageUrl(card: SocialCard | null): string | undefined  {
 
 export default {
   async fetch(request: Request, env: Env, _: ExecutionContext): Promise<Response> {
+    console.log(`[Worker] Incoming request: ${request.method} ${request.url}`);
+    
     const path = extractPathFromUrl(request.url);
+    console.log(`[Worker] Extracted path: ${path}`);
+    
     const card = await getSocialCard(env.PHOTO_CARDS, path);
+    console.log(`[Worker] Database lookup result:`, card ? 'Card found' : 'No card found');
 
     const title = getPageTitle(card);
     const description = getPageDescription(card);
@@ -73,6 +85,8 @@ export default {
       pageUrl,
       imageUrl,
     }
+    
+    console.log(`[Worker] Response view:`, view);
 
     // yes this is insecure, but Copilot was annoying me
     const htmlTemplate = `<!DOCTYPE html>
@@ -97,11 +111,14 @@ export default {
 <body></body>
 </html>`;
 
-    return new Response(htmlTemplate, {
+    const response = new Response(htmlTemplate, {
       headers: {
         'Content-Type': 'text/html;charset=UTF-8',
         'Cache-Control': 'public, max-age=1200',
       },
     });
+    
+    console.log(`[Worker] Returning response with status: ${response.status}`);
+    return response;
   },
 };

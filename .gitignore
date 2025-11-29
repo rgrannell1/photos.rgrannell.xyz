@@ -1,4 +1,4 @@
-
+.wranger
 .vscode
 .tap
 # Local Netlify folder
@@ -6,3 +6,4 @@
 node_modules/
 search-engine/
 manifest/tribbles-expanded.*
+.wrangler/*

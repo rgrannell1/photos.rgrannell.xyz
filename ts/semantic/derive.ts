@@ -20,10 +20,11 @@ import { camelCase } from "../commons/strings.ts";
  * Convert star ratings into rating URNs.
  */
 export function convertRatingsToUrns(tdb: TribbleDB) {
+  const rating = /⭐/g;
   tdb.searchFlatmap({
     relation: KnownRelations.RATING,
   }, ([src, rel, tgt]) => {
-    const starCount = (tgt.match(/⭐/g) || []).length;
+    const starCount = (tgt.match(rating) || []).length;
     return [[src, rel, `urn:ró:rating:${starCount - 1}`]];
   })
 }
@@ -33,10 +34,11 @@ export function convertRatingsToUrns(tdb: TribbleDB) {
  * Convert `country` relations to URNs
  */
 export function convertCountriesToUrns(tdb: TribbleDB) {
+  const spacy = / /g;
   tdb.searchFlatmap({
     relation: KnownRelations.COUNTRY,
   }, ([src, rel, tgt]) => {
-    const id = tgt.toLowerCase().replace(/ /g, "-");
+    const id = tgt.toLowerCase().replace(spacy, "-");
     return [[src, rel, `urn:ró:country:${id}`]];
   });
 }
