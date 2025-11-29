@@ -3188,64 +3188,74 @@ function preprocessDescription(description) {
 }
 
 // ts/semantic/derive.ts
-function convertRatingsToUrns(tdb2) {
-  const rating = /⭐/g;
-  tdb2.searchFlatmap({
-    relation: KnownRelations.RATING
-  }, ([src, rel, tgt]) => {
-    const starCount = (tgt.match(rating) || []).length;
-    return [[src, rel, `urn:r\xF3:rating:${starCount - 1}`]];
-  });
+function convertRatingsToUrns(triple) {
+  const [src, rel, tgt] = triple;
+  if (rel !== KnownRelations.RATING) {
+    return [triple];
+  }
+  const starCount = (tgt.match(/⭐/g) || []).length;
+  return [[
+    src,
+    rel,
+    `urn:r\xF3:rating:${starCount - 1}`
+  ]];
 }
-function convertCountriesToUrns(tdb2) {
-  const spacy = / /g;
-  tdb2.searchFlatmap({
-    relation: KnownRelations.COUNTRY
-  }, ([src, rel, tgt]) => {
-    const id = tgt.toLowerCase().replace(spacy, "-");
-    return [[src, rel, `urn:r\xF3:country:${id}`]];
-  });
+function convertCountriesToUrns(triple) {
+  const [src, rel, tgt] = triple;
+  if (rel !== KnownRelations.COUNTRY) {
+    return [triple];
+  }
+  const id = tgt.toLowerCase().replace(/ /g, "-");
+  const countryUrn = `urn:r\xF3:country:${id}`;
+  return [[
+    src,
+    rel,
+    countryUrn
+  ]];
 }
 var styleNames = /* @__PURE__ */ new Set();
-function convertStylesToUrns(tdb2) {
-  tdb2.searchFlatmap({
-    relation: KnownRelations.STYLE
-  }, ([src, rel, tgt]) => {
-    const id = tgt.toLowerCase().replace(/ /g, "-");
-    const styleUrn = `urn:r\xF3:style:${id}`;
-    if (!styleNames.has(tgt)) {
-      styleNames.add(tgt);
-      return [
-        [
-          src,
-          rel,
-          styleUrn
-        ],
-        [
-          styleUrn,
-          KnownRelations.NAME,
-          tgt
-        ]
-      ];
-    } else {
-      return [[
+function convertStylesToUrns(triple) {
+  const [src, rel, tgt] = triple;
+  if (rel !== KnownRelations.STYLE) {
+    return [triple];
+  }
+  const id = tgt.toLowerCase().replace(/ /g, "-");
+  const styleUrn = `urn:r\xF3:style:${id}`;
+  if (!styleNames.has(tgt)) {
+    styleNames.add(tgt);
+    return [
+      [
         src,
         rel,
         styleUrn
-      ]];
-    }
-  });
-}
-function expandCdnUrls(tdb2) {
-  tdb2.searchFlatmap({
-    relation: Array.from(CDN_RELATIONS)
-  }, ([src, rel, tgt]) => {
+      ],
+      [
+        styleUrn,
+        KnownRelations.NAME,
+        tgt
+      ]
+    ];
+  } else {
     return [[
       src,
       rel,
-      `${ENDPOINT}${tgt}`
+      styleUrn
     ]];
+  }
+}
+function expandCdnUrls(triple) {
+  const [src, rel, tgt] = triple;
+  const isCDNRelation = Array.from(CDN_RELATIONS).some((candidate) => {
+    return rel === candidate;
   });
+  if (!isCDNRelation) {
+    return [triple];
+  }
+  return [[
+    src,
+    rel,
+    `${ENDPOINT}${tgt}`
+  ]];
 }
 function convertRelationCasing(triple) {
   const [src, rel, tgt] = triple;
@@ -3375,7 +3385,11 @@ function deriveTriples(triple) {
     renameRelations,
     convertRelationCasing,
     expandUrns,
-    expandTripleCuries
+    expandTripleCuries,
+    convertRatingsToUrns,
+    convertCountriesToUrns,
+    expandCdnUrls,
+    convertStylesToUrns
   ];
   let outputTriples = [triple];
   for (const fn of tripleProcessors) {
@@ -3392,10 +3406,6 @@ function postIndexing(tdb2) {
   addYear(tdb2);
   addInverseRelations(tdb2);
   addNestedLocations(tdb2);
-  convertRatingsToUrns(tdb2);
-  convertCountriesToUrns(tdb2);
-  expandCdnUrls(tdb2);
-  convertStylesToUrns(tdb2);
 }
 function addNestedLocations(tdb2) {
   const treeState = buildLocationTrees(tdb2);

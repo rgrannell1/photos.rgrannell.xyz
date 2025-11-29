@@ -16,81 +16,102 @@ import {
 } from "../constants.ts";
 import { camelCase } from "../commons/strings.ts";
 
+
 /*
  * Convert star ratings into rating URNs.
  */
-export function convertRatingsToUrns(tdb: TribbleDB) {
-  const rating = /⭐/g;
-  tdb.searchFlatmap({
-    relation: KnownRelations.RATING,
-  }, ([src, rel, tgt]) => {
-    const starCount = (tgt.match(rating) || []).length;
-    return [[src, rel, `urn:ró:rating:${starCount - 1}`]];
-  })
-}
+export function convertRatingsToUrns(triple: Triple): Triple[] {
+  const [src, rel, tgt] = triple;
 
+  if (rel !== KnownRelations.RATING) {
+    return [triple];
+  }
+
+  const starCount = (tgt.match(/⭐/g) || []).length;
+  return [[
+    src,
+    rel,
+    `urn:ró:rating:${starCount - 1}`,
+  ]];
+}
 
 /*
  * Convert `country` relations to URNs
  */
-export function convertCountriesToUrns(tdb: TribbleDB) {
-  const spacy = / /g;
-  tdb.searchFlatmap({
-    relation: KnownRelations.COUNTRY,
-  }, ([src, rel, tgt]) => {
-    const id = tgt.toLowerCase().replace(spacy, "-");
-    return [[src, rel, `urn:ró:country:${id}`]];
-  });
+export function convertCountriesToUrns(triple: Triple): Triple[] {
+  const [src, rel, tgt] = triple;
+
+  if (rel !== KnownRelations.COUNTRY) {
+    return [triple];
+  }
+
+  const id = tgt.toLowerCase().replace(/ /g, "-");
+  const countryUrn = `urn:ró:country:${id}`;
+
+  return [[
+    src,
+    rel,
+    countryUrn,
+  ]];
 }
 
 const styleNames = new Set<string>();
 
 /* */
-export function convertStylesToUrns(tdb: TribbleDB) {
-  tdb.searchFlatmap({
-    relation: KnownRelations.STYLE,
-  }, ([src, rel, tgt]) => {
-    const id = tgt.toLowerCase().replace(/ /g, "-");
-    const styleUrn = `urn:ró:style:${id}`;
+export function convertStylesToUrns(triple: Triple): Triple[] {
+  const [src, rel, tgt] = triple;
 
-    if (!styleNames.has(tgt)) {
-      styleNames.add(tgt);
-      return [
-        [
-          src,
-          rel,
-          styleUrn,
-        ],
-        [
-          styleUrn,
-          KnownRelations.NAME,
-          tgt,
-        ],
-      ];
-    } else {
-      return [[
+  if (rel !== KnownRelations.STYLE) {
+    return [triple];
+  }
+
+  const id = tgt.toLowerCase().replace(/ /g, "-");
+  const styleUrn = `urn:ró:style:${id}`;
+
+  if (!styleNames.has(tgt)) {
+    styleNames.add(tgt);
+    return [
+      [
         src,
         rel,
         styleUrn,
-      ]];
-    }
-  });
+      ],
+      [
+        styleUrn,
+        KnownRelations.NAME,
+        tgt,
+      ],
+    ];
+  } else {
+    return [[
+      src,
+      rel,
+      styleUrn,
+    ]];
+  }
 }
 
 /*
  * Expand CDN urls with their endpoint
  */
-export function expandCdnUrls(tdb: TribbleDB) {
-  tdb.searchFlatmap({
-    relation: Array.from(CDN_RELATIONS),
-  }, ([src, rel, tgt]) => {
-    return [[
-      src,
-      rel,
-      `${ENDPOINT}${tgt}`,
-    ]];
+export function expandCdnUrls(triple: Triple): Triple[] {
+  const [src, rel, tgt] = triple;
+
+  const isCDNRelation = Array.from(CDN_RELATIONS).some((candidate: string) => {
+    return rel === candidate;
   });
+
+  if (!isCDNRelation) {
+    return [triple];
+  }
+
+  return [[
+    src,
+    rel,
+    `${ENDPOINT}${tgt}`,
+  ]];
 }
+
 
 /*
  * Convert relation names to camelCase
@@ -304,6 +325,10 @@ export function deriveTriples(
     convertRelationCasing,
     expandUrns,
     expandTripleCuries,
+    convertRatingsToUrns,
+    convertCountriesToUrns,
+    expandCdnUrls,
+    convertStylesToUrns
   ];
 
   let outputTriples: Triple[] = [triple];
@@ -330,10 +355,6 @@ export function postIndexing(tdb: TribbleDB) {
   addYear(tdb);
   addInverseRelations(tdb);
   addNestedLocations(tdb);
-  convertRatingsToUrns(tdb);
-  convertCountriesToUrns(tdb);
-  expandCdnUrls(tdb);
-  convertStylesToUrns(tdb);
 }
 
 /*

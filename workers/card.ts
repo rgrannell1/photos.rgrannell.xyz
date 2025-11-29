@@ -21,7 +21,7 @@ async function getSocialCard(db: D1Database, path: string): Promise<SocialCard |
     const result = await db.prepare(
       'SELECT path, description, title, image_url FROM social_cards WHERE path = ?'
     ).bind(path).first<SocialCard>();
-    
+
     console.log(`[DB] Query result:`, result ? `Found card for ${result.path}` : 'No card found');
     return result || null;
   } catch (error) {
@@ -67,10 +67,10 @@ function getImageUrl(card: SocialCard | null): string | undefined  {
 export default {
   async fetch(request: Request, env: Env, _: ExecutionContext): Promise<Response> {
     console.log(`[Worker] Incoming request: ${request.method} ${request.url}`);
-    
+
     const path = extractPathFromUrl(request.url);
     console.log(`[Worker] Extracted path: ${path}`);
-    
+
     const card = await getSocialCard(env.PHOTO_CARDS, path);
     console.log(`[Worker] Database lookup result:`, card ? 'Card found' : 'No card found');
 
@@ -85,7 +85,7 @@ export default {
       pageUrl,
       imageUrl,
     }
-    
+
     console.log(`[Worker] Response view:`, view);
 
     // yes this is insecure, but Copilot was annoying me
@@ -117,7 +117,7 @@ export default {
         'Cache-Control': 'public, max-age=1200',
       },
     });
-    
+
     console.log(`[Worker] Returning response with status: ${response.status}`);
     return response;
   },
