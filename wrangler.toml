@@ -1,0 +1,39 @@
+name = "photos-hello-world"
+main = "workers/card.ts"
+compatibility_date = "2024-11-29"
+compatibility_flags = ["nodejs_compat"]
+
+# Routes using zone configuration
+routes = ["share.photos.rgrannell.xyz/*"]
+
+# D1 Database
+[[d1_databases]]
+binding = "PHOTO_CARDS"
+database_name = "photo_cards"
+database_id = "bc12398e-14a3-4705-9091-6117eb305e29"
+
+# Worker configuration
+[env.production]
+name = "photo-cards"
+
+[[env.production.d1_databases]]
+binding = "PHOTO_CARDS"
+database_name = "photo_cards"
+database_id = "bc12398e-14a3-4705-9091-6117eb305e29"
+
+[env.staging]
+name = "photo-cards-staging"
+
+# Build configuration
+[build]
+command = ""
+
+# Local development
+[dev]
+port = 8787
+
+# Local D1 databases for development
+[[env.dev.d1_databases]]
+binding = "PHOTO_CARDS"
+database_name = "photo_cards"
+database_id = "bc12398e-14a3-4705-9091-6117eb305e29"

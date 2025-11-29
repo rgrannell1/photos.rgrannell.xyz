@@ -19,102 +19,81 @@ import { camelCase } from "../commons/strings.ts";
 /*
  * Convert star ratings into rating URNs.
  */
-export function convertRatingsToUrns(triple: Triple): Triple[] {
-  const [src, rel, tgt] = triple;
-
-  if (rel !== KnownRelations.RATING) {
-    return [triple];
-  }
-
-  const starCount = (tgt.match(/⭐/g) || []).length;
-  return [[
-    src,
-    rel,
-    `urn:ró:rating:${starCount - 1}`,
-  ]];
+export function convertRatingsToUrns(tdb: TribbleDB) {
+  tdb.searchFlatmap({
+    relation: KnownRelations.RATING,
+  }, ([src, rel, tgt]) => {
+    const starCount = (tgt.match(/⭐/g) || []).length;
+    return [[src, rel, `urn:ró:rating:${starCount - 1}`]];
+  })
 }
+
 
 /*
  * Convert `country` relations to URNs
  */
-export function convertCountriesToUrns(triple: Triple): Triple[] {
-  const [src, rel, tgt] = triple;
-
-  if (rel !== KnownRelations.COUNTRY) {
-    return [triple];
-  }
-
-  const id = tgt.toLowerCase().replace(/ /g, "-");
-  const countryUrn = `urn:ró:country:${id}`;
-
-  return [[
-    src,
-    rel,
-    countryUrn,
-  ]];
+export function convertCountriesToUrns(tdb: TribbleDB) {
+  tdb.searchFlatmap({
+    relation: KnownRelations.COUNTRY,
+  }, ([src, rel, tgt]) => {
+    const id = tgt.toLowerCase().replace(/ /g, "-");
+    return [[src, rel, `urn:ró:country:${id}`]];
+  });
 }
 
 const styleNames = new Set<string>();
 
 /* */
-export function convertStylesToUrns(triple: Triple): Triple[] {
-  const [src, rel, tgt] = triple;
+export function convertStylesToUrns(tdb: TribbleDB) {
+  tdb.searchFlatmap({
+    relation: KnownRelations.STYLE,
+  }, ([src, rel, tgt]) => {
+    const id = tgt.toLowerCase().replace(/ /g, "-");
+    const styleUrn = `urn:ró:style:${id}`;
 
-  if (rel !== KnownRelations.STYLE) {
-    return [triple];
-  }
-
-  const id = tgt.toLowerCase().replace(/ /g, "-");
-  const styleUrn = `urn:ró:style:${id}`;
-
-  if (!styleNames.has(tgt)) {
-    styleNames.add(tgt);
-    return [
-      [
+    if (!styleNames.has(tgt)) {
+      styleNames.add(tgt);
+      return [
+        [
+          src,
+          rel,
+          styleUrn,
+        ],
+        [
+          styleUrn,
+          KnownRelations.NAME,
+          tgt,
+        ],
+      ];
+    } else {
+      return [[
         src,
         rel,
         styleUrn,
-      ],
-      [
-        styleUrn,
-        KnownRelations.NAME,
-        tgt,
-      ],
-    ];
-  } else {
-    return [[
-      src,
-      rel,
-      styleUrn,
-    ]];
-  }
+      ]];
+    }
+  });
 }
 
 /*
  * Expand CDN urls with their endpoint
  */
-export function expandCdnUrls(triple: Triple): Triple[] {
-  const [src, rel, tgt] = triple;
-
-  const isCDNRelation = Array.from(CDN_RELATIONS).some((candidate: string) => {
-    return rel === candidate;
+export function expandCdnUrls(tdb: TribbleDB) {
+  tdb.searchFlatmap({
+    relation: Array.from(CDN_RELATIONS),
+  }, ([src, rel, tgt]) => {
+    return [[
+      src,
+      rel,
+      `${ENDPOINT}${tgt}`,
+    ]];
   });
-
-  if (!isCDNRelation) {
-    return [triple];
-  }
-
-  return [[
-    src,
-    rel,
-    `${ENDPOINT}${tgt}`,
-  ]];
 }
 
 /*
  * Convert relation names to camelCase
  */
-export function convertRelationCasing(triple: Triple): Triple[] {
+export function convertRelationCasing(triple: Triple) {
   const [src, rel, tgt] = triple;
 
   return [[
@@ -147,7 +126,7 @@ export function expandUrns(triple: Triple): Triple[] {
 export function addYear(tdb: TribbleDB) {
   const years = tdb.search({
     relation: KnownRelations.CREATED_AT,
-  }).triples().flatMap(([src, rel, tgt]) => {
+  }).triples().flatMap(([src, _, tgt]) => {
     const date = new Date(tgt);
 
     if (isNaN(date.getTime())) {
@@ -320,11 +299,7 @@ export function deriveTriples(
 ): Triple[] {
   const tripleProcessors = [
     renameRelations,
-    convertRatingsToUrns,
-    convertCountriesToUrns,
-    convertStylesToUrns,
     convertRelationCasing,
-    expandCdnUrls,
     expandUrns,
     expandTripleCuries,
   ];
@@ -353,6 +328,10 @@ export function postIndexing(tdb: TribbleDB) {
   addYear(tdb);
   addInverseRelations(tdb);
   addNestedLocations(tdb);
+  convertRatingsToUrns(tdb);
+  convertCountriesToUrns(tdb);
+  expandCdnUrls(tdb);
+  convertStylesToUrns(tdb);
 }
 
 /*

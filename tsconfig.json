@@ -7,6 +7,7 @@
 
     // Include DOM types for web development
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": ["@cloudflare/workers-types"],
 
     // Output settings
     "outDir": "./dist",
@@ -58,6 +59,7 @@
   "include": [
     "js/**/*.ts",
     "ts/**/*.ts",
+    "workers/**/*.ts",
     "js/**/*.js",
     "*.ts"
   ],

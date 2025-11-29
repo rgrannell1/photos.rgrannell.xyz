@@ -1733,7 +1733,7 @@ function load() {
   return localStorage.getItem("darkMode") === "true";
 }
 
-// node_modules/@rgrannell1/tribbledb/dist/mod.js
+// node_modules/.deno/@rgrannell1+tribbledb@0.0.21/node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class _IndexedSet {
   #idx;
   #map;
@@ -1837,6 +1837,18 @@ var Sets = class {
       set0.add(item);
     }
     return set0;
+  }
+  /*
+   * Compute the difference of two sets (set0 - set1)
+   */
+  static difference(set0, set1) {
+    const result = /* @__PURE__ */ new Set();
+    for (const item of set0) {
+      if (!set1.has(item)) {
+        result.add(item);
+      }
+    }
+    return result;
   }
 };
 var TribbleParser = class {
@@ -1947,6 +1959,7 @@ var Index = class _Index {
   // String indexing sets for memory efficiency
   stringIndex;
   tripleHashes;
+  hashIndices;
   sourceType;
   sourceId;
   // note: QS uses a composite key: <key>=<value>
@@ -1961,6 +1974,7 @@ var Index = class _Index {
     this.indexedTriples = [];
     this.stringIndex = new IndexedSet();
     this.tripleHashes = /* @__PURE__ */ new Set();
+    this.hashIndices = /* @__PURE__ */ new Map();
     this.sourceType = /* @__PURE__ */ new Map();
     this.sourceId = /* @__PURE__ */ new Map();
     this.sourceQs = /* @__PURE__ */ new Map();
@@ -1973,9 +1987,82 @@ var Index = class _Index {
     this.metrics = new IndexPerformanceMetrics();
   }
   /*
-   * Return the triples that are absent from the index
-   *
+   * Delete triples from the index
    */
+  delete(triples) {
+    for (let idx = 0; idx < triples.length; idx++) {
+      const triple = triples[idx];
+      const tripleIndex = this.getTripleIndex(triple);
+      if (tripleIndex !== void 0) {
+        const tripleHash = this.hashTriple(triple);
+        this.tripleHashes.delete(tripleHash);
+        this.hashIndices.delete(tripleHash);
+        this.cleanupSearchMaps(tripleIndex);
+        delete this.indexedTriples[tripleIndex];
+      }
+    }
+  }
+  /*
+   * Remove a triple index from all search maps
+   */
+  cleanupSearchMaps(tripleIndex) {
+    const indexedTriple = this.indexedTriples[tripleIndex];
+    if (!indexedTriple) {
+      return;
+    }
+    ;
+    const [sourceIdx, relationIdx, targetIdx] = indexedTriple;
+    const source = this.stringIndex.getValue(sourceIdx);
+    const relation = this.stringIndex.getValue(relationIdx);
+    const target = this.stringIndex.getValue(targetIdx);
+    if (typeof source === "undefined" || typeof relation === "undefined" || typeof target === "undefined") {
+      return;
+    }
+    ;
+    let parsedSource = this.stringUrn.get(source);
+    if (!parsedSource) {
+      parsedSource = asUrn(source);
+      this.stringUrn.set(source, parsedSource);
+    }
+    let parsedTarget = this.stringUrn.get(target);
+    if (!parsedTarget) {
+      parsedTarget = asUrn(target);
+      this.stringUrn.set(target, parsedTarget);
+    }
+    const sourceTypeIdx = this.stringIndex.getIndex(parsedSource.type);
+    const sourceIdIdx = this.stringIndex.getIndex(parsedSource.id);
+    const targetTypeIdx = this.stringIndex.getIndex(parsedTarget.type);
+    const targetIdIdx = this.stringIndex.getIndex(parsedTarget.id);
+    if (sourceTypeIdx !== void 0) {
+      this.sourceType.get(sourceTypeIdx)?.delete(tripleIndex);
+    }
+    if (sourceIdIdx !== void 0) {
+      this.sourceId.get(sourceIdIdx)?.delete(tripleIndex);
+    }
+    this.relations.get(relationIdx)?.delete(tripleIndex);
+    if (targetTypeIdx !== void 0) {
+      this.targetType.get(targetTypeIdx)?.delete(tripleIndex);
+    }
+    if (targetIdIdx !== void 0) {
+      this.targetId.get(targetIdIdx)?.delete(tripleIndex);
+    }
+    for (const [key, value] of Object.entries(parsedSource.qs)) {
+      const keyValueIdx = this.stringIndex.getIndex(`${key}=${value}`);
+      if (keyValueIdx !== void 0) {
+        this.sourceQs.get(keyValueIdx)?.delete(tripleIndex);
+      }
+    }
+    for (const [key, value] of Object.entries(parsedTarget.qs)) {
+      const keyValueIdx = this.stringIndex.getIndex(`${key}=${value}`);
+      if (keyValueIdx !== void 0) {
+        this.targetQs.get(keyValueIdx)?.delete(tripleIndex);
+      }
+    }
+  }
+  /*
+  * Return the triples that are absent from the index
+  *
+  */
   difference(triples) {
     return triples.filter((triple) => !this.hasTriple(triple));
   }
@@ -1999,6 +2086,14 @@ var Index = class _Index {
       hash |= 0;
     }
     return hash.toString();
+  }
+  /*
+   * Get the index of a specific triple
+   *
+   */
+  getTripleIndex(triple) {
+    const hash = this.hashTriple(triple);
+    return this.hashIndices.get(hash);
   }
   /*
    * Add new triples to the index incrementally
@@ -2027,8 +2122,10 @@ var Index = class _Index {
       if (this.tripleHashes.has(this.hashTriple(triple))) {
         continue;
       }
-      this.tripleHashes.add(this.hashTriple(triple));
+      const hash = this.hashTriple(triple);
+      this.tripleHashes.add(hash);
       const idx = this.indexedTriples.length;
+      this.hashIndices.set(hash, idx);
       this.indexedTriples.push([
         this.stringIndex.add(source),
         relationIdx,
@@ -2084,13 +2181,19 @@ var Index = class _Index {
    * Get the number of triples in the index
    */
   get length() {
+    return this.tripleHashes.size;
+  }
+  /*
+   * Get the actual array length including gaps (for cursor index management)
+   */
+  get arrayLength() {
     return this.indexedTriples.length;
   }
   /*
    * Reconstruct the original triples from the indexed representation
    */
   triples() {
-    return this.indexedTriples.map(([sourceIdx, relationIdx, targetIdx]) => [
+    return this.indexedTriples.filter((triple) => triple !== void 0).map(([sourceIdx, relationIdx, targetIdx]) => [
       this.stringIndex.getValue(sourceIdx),
       this.stringIndex.getValue(relationIdx),
       this.stringIndex.getValue(targetIdx)
@@ -2104,7 +2207,11 @@ var Index = class _Index {
     if (index < 0 || index >= this.indexedTriples.length) {
       return void 0;
     }
-    const [sourceIdx, relationIdx, targetIdx] = this.indexedTriples[index];
+    const indexedTriple = this.indexedTriples[index];
+    if (!indexedTriple) {
+      return void 0;
+    }
+    const [sourceIdx, relationIdx, targetIdx] = indexedTriple;
     return [
       this.stringIndex.getValue(sourceIdx),
       this.stringIndex.getValue(relationIdx),
@@ -2295,6 +2402,10 @@ function nodeMatches(query, source, index, metrics, cursorIndices) {
     const indexCopy = /* @__PURE__ */ new Set([...cursorIndices]);
     for (const idx of indexCopy) {
       const triple = index.getTriple(idx);
+      if (!triple) {
+        indexCopy.delete(idx);
+        continue;
+      }
       if (!pred2(source ? triple[0] : triple[2])) {
         indexCopy.delete(idx);
       }
@@ -2349,6 +2460,10 @@ function findMatchingRelations(query, index) {
   const pred = query.predicate;
   for (const idx of matches) {
     const triple = index.getTriple(idx);
+    if (!triple) {
+      matches.delete(idx);
+      continue;
+    }
     if (!pred(triple[1])) {
       matches.delete(idx);
     }
@@ -2487,6 +2602,8 @@ var TribbleDB = class _TribbleDB {
   }
   /*
    * Validate triples against the provided validation functions.
+   *
+   * @param triples - An array of triples to validate.
    */
   validateTriples(triples) {
     const messages = [];
@@ -2512,11 +2629,11 @@ var TribbleDB = class _TribbleDB {
    * @param triples - An array of triples to add.
    */
   add(triples) {
-    const oldLength = this.index.length;
+    const oldLength = this.index.arrayLength;
     this.validateTriples(triples);
     this.index.add(triples);
     this.triplesCount = this.index.length;
-    for (let idx = oldLength; idx < this.triplesCount; idx++) {
+    for (let idx = oldLength; idx < this.index.arrayLength; idx++) {
       this.cursorIndices.add(idx);
     }
   }
@@ -2542,6 +2659,59 @@ var TribbleDB = class _TribbleDB {
     newDb.index = this.index.clone();
     newDb.add(flatMappedTriples);
     return newDb;
+  }
+  /*
+   * Deduplicate an array of triples using hash-based comparison.
+   *
+   * @param triples - An array of triples that may contain duplicates.
+   * @returns A new array with duplicate triples removed.
+   */
+  deduplicateTriples(triples) {
+    const seen = /* @__PURE__ */ new Set();
+    const result = [];
+    for (const triple of triples) {
+      const hash = this.index.hashTriple(triple);
+      if (!seen.has(hash)) {
+        seen.add(hash);
+        result.push(triple);
+      }
+    }
+    return result;
+  }
+  /*
+   * Perform an in-place flatmap over this database. This works by:
+   * - Searching the database to get a subset of triples
+   * - Flatmapping those triples
+   * - Deleting any triples from the original subset that are no longer present after the flatmap
+   * - Adding all new triples to the database
+   *
+   * @param search - The search parameters to subset the database.
+   * @param fn - A mapping function to apply to each triple in the search result.
+   *
+   * @returns This TribbleDB instance.
+   */
+  searchFlatmap(search, fn) {
+    const searchResults = this.search(search);
+    const matchingTriples = searchResults.triples();
+    const transformedTriples = matchingTriples.flatMap(fn);
+    const deduplicatedTransformed = this.deduplicateTriples(transformedTriples);
+    const originalHashes = new Set(matchingTriples.map((triple) => this.index.hashTriple(triple)));
+    const transformedHashes = new Set(deduplicatedTransformed.map((triple) => this.index.hashTriple(triple)));
+    const triplesToDelete = [];
+    const triplesToAdd = [];
+    for (const triple of matchingTriples) {
+      if (!transformedHashes.has(this.index.hashTriple(triple))) {
+        triplesToDelete.push(triple);
+      }
+    }
+    for (const triple of deduplicatedTransformed) {
+      if (!originalHashes.has(this.index.hashTriple(triple))) {
+        triplesToAdd.push(triple);
+      }
+    }
+    this.delete(triplesToDelete);
+    this.add(triplesToAdd);
+    return this;
   }
   /**
    * Get the first triple in the database.
@@ -2692,7 +2862,10 @@ var TribbleDB = class _TribbleDB {
       this.cursorIndices,
       this.metrics
     )) {
-      matchingTriples.push(this.index.getTriple(rowIdx));
+      const triple = this.index.getTriple(rowIdx);
+      if (triple !== void 0) {
+        matchingTriples.push(triple);
+      }
     }
     return new _TribbleDB(matchingTriples);
   }
@@ -2764,6 +2937,28 @@ var TribbleDB = class _TribbleDB {
    */
   merge(other) {
     this.add(other.triples());
+    return this;
+  }
+  /*
+   * Delete triples from the database.
+   *
+   * @param triples - An array of triples to delete.
+   * @returns This TribbleDB instance.
+   *
+   */
+  delete(triples) {
+    const indicesToDelete = /* @__PURE__ */ new Set();
+    for (const triple of triples) {
+      const tripleIndex = this.index.getTripleIndex(triple);
+      if (tripleIndex !== void 0) {
+        indicesToDelete.add(tripleIndex);
+      }
+    }
+    this.index.delete(triples);
+    this.triplesCount = this.index.length;
+    for (const idx of indicesToDelete) {
+      this.cursorIndices.delete(idx);
+    }
     return this;
   }
 };
@@ -3015,74 +3210,62 @@ function preprocessDescription(description) {
 }
 
 // ts/semantic/derive.ts
-function convertRatingsToUrns(triple) {
-  const [src, rel, tgt] = triple;
-  if (rel !== KnownRelations.RATING) {
-    return [triple];
-  }
-  const starCount = (tgt.match(/⭐/g) || []).length;
-  return [[
-    src,
-    rel,
-    `urn:r\xF3:rating:${starCount - 1}`
-  ]];
+function convertRatingsToUrns(tdb2) {
+  tdb2.searchFlatmap({
+    relation: KnownRelations.RATING
+  }, ([src, rel, tgt]) => {
+    const starCount = (tgt.match(/⭐/g) || []).length;
+    return [[src, rel, `urn:r\xF3:rating:${starCount - 1}`]];
+  });
 }
-function convertCountriesToUrns(triple) {
-  const [src, rel, tgt] = triple;
-  if (rel !== KnownRelations.COUNTRY) {
-    return [triple];
-  }
-  const id = tgt.toLowerCase().replace(/ /g, "-");
-  const countryUrn = `urn:r\xF3:country:${id}`;
-  return [[
-    src,
-    rel,
-    countryUrn
-  ]];
+function convertCountriesToUrns(tdb2) {
+  tdb2.searchFlatmap({
+    relation: KnownRelations.RATING
+  }, ([src, rel, tgt]) => {
+    const id = tgt.toLowerCase().replace(/ /g, "-");
+    return [[src, rel, `urn:r\xF3:country:${id}`]];
+  });
 }
 var styleNames = /* @__PURE__ */ new Set();
-function convertStylesToUrns(triple) {
-  const [src, rel, tgt] = triple;
-  if (rel !== KnownRelations.STYLE) {
-    return [triple];
-  }
-  const id = tgt.toLowerCase().replace(/ /g, "-");
-  const styleUrn = `urn:r\xF3:style:${id}`;
-  if (!styleNames.has(tgt)) {
-    styleNames.add(tgt);
-    return [
-      [
+function convertStylesToUrns(tdb2) {
+  tdb2.searchFlatmap({
+    relation: KnownRelations.STYLE
+  }, ([src, rel, tgt]) => {
+    const id = tgt.toLowerCase().replace(/ /g, "-");
+    const styleUrn = `urn:r\xF3:style:${id}`;
+    if (!styleNames.has(tgt)) {
+      styleNames.add(tgt);
+      return [
+        [
+          src,
+          rel,
+          styleUrn
+        ],
+        [
+          styleUrn,
+          KnownRelations.NAME,
+          tgt
+        ]
+      ];
+    } else {
+      return [[
         src,
         rel,
         styleUrn
-      ],
-      [
-        styleUrn,
-        KnownRelations.NAME,
-        tgt
-      ]
-    ];
-  } else {
+      ]];
+    }
+  });
+}
+function expandCdnUrls(tdb2) {
+  tdb2.searchFlatmap({
+    relation: Array.from(CDN_RELATIONS)
+  }, ([src, rel, tgt]) => {
     return [[
       src,
       rel,
-      styleUrn
+      `${ENDPOINT}${tgt}`
     ]];
-  }
-}
-function expandCdnUrls(triple) {
-  const [src, rel, tgt] = triple;
-  const isCDNRelation = Array.from(CDN_RELATIONS).some((candidate) => {
-    return rel === candidate;
   });
-  if (!isCDNRelation) {
-    return [triple];
-  }
-  return [[
-    src,
-    rel,
-    `${ENDPOINT}${tgt}`
-  ]];
 }
 function convertRelationCasing(triple) {
   const [src, rel, tgt] = triple;
@@ -3103,7 +3286,7 @@ function expandUrns(triple) {
 function addYear(tdb2) {
   const years = tdb2.search({
     relation: KnownRelations.CREATED_AT
-  }).triples().flatMap(([src, rel, tgt]) => {
+  }).triples().flatMap(([src, _, tgt]) => {
     const date = new Date(tgt);
     if (isNaN(date.getTime())) {
       return [];
@@ -3210,11 +3393,7 @@ var HARD_CODED_TRIPLES = [
 function deriveTriples(triple) {
   const tripleProcessors = [
     renameRelations,
-    convertRatingsToUrns,
-    convertCountriesToUrns,
-    convertStylesToUrns,
     convertRelationCasing,
-    expandCdnUrls,
     expandUrns,
     expandTripleCuries
   ];
@@ -3233,6 +3412,10 @@ function postIndexing(tdb2) {
   addYear(tdb2);
   addInverseRelations(tdb2);
   addNestedLocations(tdb2);
+  convertRatingsToUrns(tdb2);
+  convertCountriesToUrns(tdb2);
+  expandCdnUrls(tdb2);
+  convertStylesToUrns(tdb2);
 }
 function addNestedLocations(tdb2) {
   const treeState = buildLocationTrees(tdb2);
@@ -3289,47 +3472,41 @@ ${JSON.stringify(issue.path, null, 2)}
   console.trace();
 }
 
-// node_modules/valibot/dist/index.js
-var store;
+// node_modules/valibot/dist/index.mjs
+var store$4;
 // @__NO_SIDE_EFFECTS__
-function getGlobalConfig(config2) {
+function getGlobalConfig(config$1) {
   return {
-    lang: config2?.lang ?? store?.lang,
-    message: config2?.message,
-    abortEarly: config2?.abortEarly ?? store?.abortEarly,
-    abortPipeEarly: config2?.abortPipeEarly ?? store?.abortPipeEarly
+    lang: config$1?.lang ?? store$4?.lang,
+    message: config$1?.message,
+    abortEarly: config$1?.abortEarly ?? store$4?.abortEarly,
+    abortPipeEarly: config$1?.abortPipeEarly ?? store$4?.abortPipeEarly
   };
 }
-var store2;
+var store$3;
 // @__NO_SIDE_EFFECTS__
 function getGlobalMessage(lang) {
-  return store2?.get(lang);
+  return store$3?.get(lang);
 }
-var store3;
+var store$2;
 // @__NO_SIDE_EFFECTS__
 function getSchemaMessage(lang) {
-  return store3?.get(lang);
+  return store$2?.get(lang);
 }
-var store4;
+var store$1;
 // @__NO_SIDE_EFFECTS__
 function getSpecificMessage(reference, lang) {
-  return store4?.get(reference)?.get(lang);
+  return store$1?.get(reference)?.get(lang);
 }
 // @__NO_SIDE_EFFECTS__
 function _stringify(input) {
   const type = typeof input;
-  if (type === "string") {
-    return `"${input}"`;
-  }
-  if (type === "number" || type === "bigint" || type === "boolean") {
-    return `${input}`;
-  }
-  if (type === "object" || type === "function") {
-    return (input && Object.getPrototypeOf(input)?.constructor?.name) ?? "null";
-  }
+  if (type === "string") return `"${input}"`;
+  if (type === "number" || type === "bigint" || type === "boolean") return `${input}`;
+  if (type === "object" || type === "function") return (input && Object.getPrototypeOf(input)?.constructor?.name) ?? "null";
   return type;
 }
-function _addIssue(context, label, dataset, config2, other) {
+function _addIssue(context, label, dataset, config$1, other) {
   const input = other && "input" in other ? other.input : dataset.value;
   const expected = other?.expected ?? context.expects ?? null;
   const received = other?.received ?? /* @__PURE__ */ _stringify(input);
@@ -3343,47 +3520,35 @@ function _addIssue(context, label, dataset, config2, other) {
     requirement: context.requirement,
     path: other?.path,
     issues: other?.issues,
-    lang: config2.lang,
-    abortEarly: config2.abortEarly,
-    abortPipeEarly: config2.abortPipeEarly
+    lang: config$1.lang,
+    abortEarly: config$1.abortEarly,
+    abortPipeEarly: config$1.abortPipeEarly
   };
   const isSchema = context.kind === "schema";
-  const message2 = other?.message ?? context.message ?? /* @__PURE__ */ getSpecificMessage(context.reference, issue.lang) ?? (isSchema ? /* @__PURE__ */ getSchemaMessage(issue.lang) : null) ?? config2.message ?? /* @__PURE__ */ getGlobalMessage(issue.lang);
-  if (message2 !== void 0) {
-    issue.message = typeof message2 === "function" ? (
-      // @ts-expect-error
-      message2(issue)
-    ) : message2;
-  }
-  if (isSchema) {
-    dataset.typed = false;
-  }
-  if (dataset.issues) {
-    dataset.issues.push(issue);
-  } else {
-    dataset.issues = [issue];
-  }
+  const message$1 = other?.message ?? context.message ?? /* @__PURE__ */ getSpecificMessage(context.reference, issue.lang) ?? (isSchema ? /* @__PURE__ */ getSchemaMessage(issue.lang) : null) ?? config$1.message ?? /* @__PURE__ */ getGlobalMessage(issue.lang);
+  if (message$1 !== void 0) issue.message = typeof message$1 === "function" ? message$1(issue) : message$1;
+  if (isSchema) dataset.typed = false;
+  if (dataset.issues) dataset.issues.push(issue);
+  else dataset.issues = [issue];
 }
 // @__NO_SIDE_EFFECTS__
 function _getStandardProps(context) {
   return {
     version: 1,
     vendor: "valibot",
-    validate(value2) {
-      return context["~run"]({ value: value2 }, /* @__PURE__ */ getGlobalConfig());
+    validate(value$1) {
+      return context["~run"]({ value: value$1 }, /* @__PURE__ */ getGlobalConfig());
     }
   };
 }
 // @__NO_SIDE_EFFECTS__
-function _joinExpects(values2, separator) {
-  const list = [...new Set(values2)];
-  if (list.length > 1) {
-    return `(${list.join(` ${separator} `)})`;
-  }
+function _joinExpects(values$1, separator) {
+  const list = [...new Set(values$1)];
+  if (list.length > 1) return `(${list.join(` ${separator} `)})`;
   return list[0] ?? "never";
 }
 // @__NO_SIDE_EFFECTS__
-function integer(message2) {
+function integer(message$1) {
   return {
     kind: "validation",
     type: "integer",
@@ -3391,11 +3556,9 @@ function integer(message2) {
     async: false,
     expects: null,
     requirement: Number.isInteger,
-    message: message2,
-    "~run"(dataset, config2) {
-      if (dataset.typed && !this.requirement(dataset.value)) {
-        _addIssue(this, "integer", dataset, config2);
-      }
+    message: message$1,
+    "~run"(dataset, config$1) {
+      if (dataset.typed && !this.requirement(dataset.value)) _addIssue(this, "integer", dataset, config$1);
       return dataset;
     }
   };
@@ -3415,7 +3578,7 @@ function transform(operation) {
   };
 }
 // @__NO_SIDE_EFFECTS__
-function url(message2) {
+function url(message$1) {
   return {
     kind: "validation",
     type: "url",
@@ -3430,34 +3593,20 @@ function url(message2) {
         return false;
       }
     },
-    message: message2,
-    "~run"(dataset, config2) {
-      if (dataset.typed && !this.requirement(dataset.value)) {
-        _addIssue(this, "URL", dataset, config2);
-      }
+    message: message$1,
+    "~run"(dataset, config$1) {
+      if (dataset.typed && !this.requirement(dataset.value)) _addIssue(this, "URL", dataset, config$1);
       return dataset;
     }
   };
 }
 // @__NO_SIDE_EFFECTS__
-function getFallback(schema, dataset, config2) {
-  return typeof schema.fallback === "function" ? (
-    // @ts-expect-error
-    schema.fallback(dataset, config2)
-  ) : (
-    // @ts-expect-error
-    schema.fallback
-  );
+function getFallback(schema, dataset, config$1) {
+  return typeof schema.fallback === "function" ? schema.fallback(dataset, config$1) : schema.fallback;
 }
 // @__NO_SIDE_EFFECTS__
-function getDefault(schema, dataset, config2) {
-  return typeof schema.default === "function" ? (
-    // @ts-expect-error
-    schema.default(dataset, config2)
-  ) : (
-    // @ts-expect-error
-    schema.default
-  );
+function getDefault(schema, dataset, config$1) {
+  return typeof schema.default === "function" ? schema.default(dataset, config$1) : schema.default;
 }
 // @__NO_SIDE_EFFECTS__
 function any() {
@@ -3477,7 +3626,7 @@ function any() {
   };
 }
 // @__NO_SIDE_EFFECTS__
-function array(item, message2) {
+function array(item, message$1) {
   return {
     kind: "schema",
     type: "array",
@@ -3485,156 +3634,125 @@ function array(item, message2) {
     expects: "Array",
     async: false,
     item,
-    message: message2,
+    message: message$1,
     get "~standard"() {
       return /* @__PURE__ */ _getStandardProps(this);
     },
-    "~run"(dataset, config2) {
+    "~run"(dataset, config$1) {
       const input = dataset.value;
       if (Array.isArray(input)) {
         dataset.typed = true;
         dataset.value = [];
         for (let key = 0; key < input.length; key++) {
-          const value2 = input[key];
-          const itemDataset = this.item["~run"]({ value: value2 }, config2);
+          const value$1 = input[key];
+          const itemDataset = this.item["~run"]({ value: value$1 }, config$1);
           if (itemDataset.issues) {
             const pathItem = {
               type: "array",
               origin: "value",
               input,
               key,
-              value: value2
+              value: value$1
             };
             for (const issue of itemDataset.issues) {
-              if (issue.path) {
-                issue.path.unshift(pathItem);
-              } else {
-                issue.path = [pathItem];
-              }
+              if (issue.path) issue.path.unshift(pathItem);
+              else issue.path = [pathItem];
               dataset.issues?.push(issue);
             }
-            if (!dataset.issues) {
-              dataset.issues = itemDataset.issues;
-            }
-            if (config2.abortEarly) {
+            if (!dataset.issues) dataset.issues = itemDataset.issues;
+            if (config$1.abortEarly) {
               dataset.typed = false;
               break;
             }
           }
-          if (!itemDataset.typed) {
-            dataset.typed = false;
-          }
+          if (!itemDataset.typed) dataset.typed = false;
           dataset.value.push(itemDataset.value);
         }
-      } else {
-        _addIssue(this, "type", dataset, config2);
-      }
+      } else _addIssue(this, "type", dataset, config$1);
       return dataset;
     }
   };
 }
 // @__NO_SIDE_EFFECTS__
-function number(message2) {
+function number(message$1) {
   return {
     kind: "schema",
     type: "number",
     reference: number,
     expects: "number",
     async: false,
-    message: message2,
+    message: message$1,
     get "~standard"() {
       return /* @__PURE__ */ _getStandardProps(this);
     },
-    "~run"(dataset, config2) {
-      if (typeof dataset.value === "number" && !isNaN(dataset.value)) {
-        dataset.typed = true;
-      } else {
-        _addIssue(this, "type", dataset, config2);
-      }
+    "~run"(dataset, config$1) {
+      if (typeof dataset.value === "number" && !isNaN(dataset.value)) dataset.typed = true;
+      else _addIssue(this, "type", dataset, config$1);
       return dataset;
     }
   };
 }
 // @__NO_SIDE_EFFECTS__
-function object(entries2, message2) {
+function object(entries$1, message$1) {
   return {
     kind: "schema",
     type: "object",
     reference: object,
     expects: "Object",
     async: false,
-    entries: entries2,
-    message: message2,
+    entries: entries$1,
+    message: message$1,
     get "~standard"() {
       return /* @__PURE__ */ _getStandardProps(this);
     },
-    "~run"(dataset, config2) {
+    "~run"(dataset, config$1) {
       const input = dataset.value;
       if (input && typeof input === "object") {
         dataset.typed = true;
         dataset.value = {};
         for (const key in this.entries) {
           const valueSchema = this.entries[key];
-          if (key in input || (valueSchema.type === "exact_optional" || valueSchema.type === "optional" || valueSchema.type === "nullish") && // @ts-expect-error
-          valueSchema.default !== void 0) {
-            const value2 = key in input ? (
-              // @ts-expect-error
-              input[key]
-            ) : /* @__PURE__ */ getDefault(valueSchema);
-            const valueDataset = valueSchema["~run"]({ value: value2 }, config2);
+          if (key in input || (valueSchema.type === "exact_optional" || valueSchema.type === "optional" || valueSchema.type === "nullish") && valueSchema.default !== void 0) {
+            const value$1 = key in input ? input[key] : /* @__PURE__ */ getDefault(valueSchema);
+            const valueDataset = valueSchema["~run"]({ value: value$1 }, config$1);
             if (valueDataset.issues) {
               const pathItem = {
                 type: "object",
                 origin: "value",
                 input,
                 key,
-                value: value2
+                value: value$1
               };
               for (const issue of valueDataset.issues) {
-                if (issue.path) {
-                  issue.path.unshift(pathItem);
-                } else {
-                  issue.path = [pathItem];
-                }
+                if (issue.path) issue.path.unshift(pathItem);
+                else issue.path = [pathItem];
                 dataset.issues?.push(issue);
               }
-              if (!dataset.issues) {
-                dataset.issues = valueDataset.issues;
-              }
-              if (config2.abortEarly) {
+              if (!dataset.issues) dataset.issues = valueDataset.issues;
+              if (config$1.abortEarly) {
                 dataset.typed = false;
                 break;
               }
             }
-            if (!valueDataset.typed) {
-              dataset.typed = false;
-            }
+            if (!valueDataset.typed) dataset.typed = false;
             dataset.value[key] = valueDataset.value;
-          } else if (valueSchema.fallback !== void 0) {
-            dataset.value[key] = /* @__PURE__ */ getFallback(valueSchema);
-          } else if (valueSchema.type !== "exact_optional" && valueSchema.type !== "optional" && valueSchema.type !== "nullish") {
-            _addIssue(this, "key", dataset, config2, {
+          } else if (valueSchema.fallback !== void 0) dataset.value[key] = /* @__PURE__ */ getFallback(valueSchema);
+          else if (valueSchema.type !== "exact_optional" && valueSchema.type !== "optional" && valueSchema.type !== "nullish") {
+            _addIssue(this, "key", dataset, config$1, {
               input: void 0,
               expected: `"${key}"`,
-              path: [
-                {
-                  type: "object",
-                  origin: "key",
-                  input,
-                  key,
-                  // @ts-expect-error
-                  value: input[key]
-                }
-              ]
+              path: [{
+                type: "object",
+                origin: "key",
+                input,
+                key,
+                value: input[key]
+              }]
             });
-            if (config2.abortEarly) {
-              break;
-            }
+            if (config$1.abortEarly) break;
           }
         }
-      } else {
-        _addIssue(this, "type", dataset, config2);
-      }
+      } else _addIssue(this, "type", dataset, config$1);
       return dataset;
     }
   };
@@ -3652,38 +3770,33 @@ function optional(wrapped, default_) {
     get "~standard"() {
       return /* @__PURE__ */ _getStandardProps(this);
     },
-    "~run"(dataset, config2) {
+    "~run"(dataset, config$1) {
       if (dataset.value === void 0) {
-        if (this.default !== void 0) {
-          dataset.value = /* @__PURE__ */ getDefault(this, dataset, config2);
-        }
+        if (this.default !== void 0) dataset.value = /* @__PURE__ */ getDefault(this, dataset, config$1);
         if (dataset.value === void 0) {
           dataset.typed = true;
           return dataset;
         }
       }
-      return this.wrapped["~run"](dataset, config2);
+      return this.wrapped["~run"](dataset, config$1);
     }
   };
 }
 // @__NO_SIDE_EFFECTS__
-function string(message2) {
+function string(message$1) {
   return {
     kind: "schema",
     type: "string",
     reference: string,
     expects: "string",
     async: false,
-    message: message2,
+    message: message$1,
     get "~standard"() {
       return /* @__PURE__ */ _getStandardProps(this);
     },
-    "~run"(dataset, config2) {
-      if (typeof dataset.value === "string") {
-        dataset.typed = true;
-      } else {
-        _addIssue(this, "type", dataset, config2);
-      }
+    "~run"(dataset, config$1) {
+      if (typeof dataset.value === "string") dataset.typed = true;
+      else _addIssue(this, "type", dataset, config$1);
       return dataset;
     }
   };
@@ -3691,107 +3804,72 @@ function string(message2) {
 // @__NO_SIDE_EFFECTS__
 function _subIssues(datasets) {
   let issues;
-  if (datasets) {
-    for (const dataset of datasets) {
-      if (issues) {
-        issues.push(...dataset.issues);
-      } else {
-        issues = dataset.issues;
-      }
-    }
-  }
+  if (datasets) for (const dataset of datasets) if (issues) issues.push(...dataset.issues);
+  else issues = dataset.issues;
   return issues;
 }
 // @__NO_SIDE_EFFECTS__
-function union(options, message2) {
+function union(options, message$1) {
   return {
     kind: "schema",
     type: "union",
     reference: union,
-    expects: /* @__PURE__ */ _joinExpects(
-      options.map((option) => option.expects),
-      "|"
-    ),
+    expects: /* @__PURE__ */ _joinExpects(options.map((option) => option.expects), "|"),
     async: false,
     options,
-    message: message2,
+    message: message$1,
     get "~standard"() {
       return /* @__PURE__ */ _getStandardProps(this);
     },
-    "~run"(dataset, config2) {
+    "~run"(dataset, config$1) {
       let validDataset;
       let typedDatasets;
       let untypedDatasets;
       for (const schema of this.options) {
-        const optionDataset = schema["~run"]({ value: dataset.value }, config2);
-        if (optionDataset.typed) {
-          if (optionDataset.issues) {
-            if (typedDatasets) {
-              typedDatasets.push(optionDataset);
-            } else {
-              typedDatasets = [optionDataset];
-            }
-          } else {
-            validDataset = optionDataset;
-            break;
-          }
-        } else {
-          if (untypedDatasets) {
-            untypedDatasets.push(optionDataset);
-          } else {
-            untypedDatasets = [optionDataset];
-          }
+        const optionDataset = schema["~run"]({ value: dataset.value }, config$1);
+        if (optionDataset.typed) if (optionDataset.issues) if (typedDatasets) typedDatasets.push(optionDataset);
+        else typedDatasets = [optionDataset];
+        else {
+          validDataset = optionDataset;
+          break;
         }
+        else if (untypedDatasets) untypedDatasets.push(optionDataset);
+        else untypedDatasets = [optionDataset];
       }
-      if (validDataset) {
-        return validDataset;
-      }
+      if (validDataset) return validDataset;
       if (typedDatasets) {
-        if (typedDatasets.length === 1) {
-          return typedDatasets[0];
-        }
-        _addIssue(this, "type", dataset, config2, {
-          issues: /* @__PURE__ */ _subIssues(typedDatasets)
-        });
+        if (typedDatasets.length === 1) return typedDatasets[0];
+        _addIssue(this, "type", dataset, config$1, { issues: /* @__PURE__ */ _subIssues(typedDatasets) });
         dataset.typed = true;
-      } else if (untypedDatasets?.length === 1) {
-        return untypedDatasets[0];
-      } else {
-        _addIssue(this, "type", dataset, config2, {
-          issues: /* @__PURE__ */ _subIssues(untypedDatasets)
-        });
-      }
+      } else if (untypedDatasets?.length === 1) return untypedDatasets[0];
+      else _addIssue(this, "type", dataset, config$1, { issues: /* @__PURE__ */ _subIssues(untypedDatasets) });
       return dataset;
     }
   };
 }
 // @__NO_SIDE_EFFECTS__
-function pipe(...pipe2) {
+function pipe(...pipe$1) {
   return {
-    ...pipe2[0],
-    pipe: pipe2,
+    ...pipe$1[0],
+    pipe: pipe$1,
     get "~standard"() {
       return /* @__PURE__ */ _getStandardProps(this);
     },
-    "~run"(dataset, config2) {
-      for (const item of pipe2) {
-        if (item.kind !== "metadata") {
-          if (dataset.issues && (item.kind === "schema" || item.kind === "transformation")) {
-            dataset.typed = false;
-            break;
-          }
-          if (!dataset.issues || !config2.abortEarly && !config2.abortPipeEarly) {
-            dataset = item["~run"](dataset, config2);
-          }
+    "~run"(dataset, config$1) {
+      for (const item of pipe$1) if (item.kind !== "metadata") {
+        if (dataset.issues && (item.kind === "schema" || item.kind === "transformation")) {
+          dataset.typed = false;
+          break;
         }
+        if (!dataset.issues || !config$1.abortEarly && !config$1.abortPipeEarly) dataset = item["~run"](dataset, config$1);
       }
       return dataset;
     }
   };
 }
 // @__NO_SIDE_EFFECTS__
-function safeParse(schema, input, config2) {
-  const dataset = schema["~run"]({ value: input }, /* @__PURE__ */ getGlobalConfig(config2));
+function safeParse(schema, input, config$1) {
+  const dataset = schema["~run"]({ value: input }, /* @__PURE__ */ getGlobalConfig(config$1));
   return {
     typed: dataset.typed,
     success: !dataset.issues,
