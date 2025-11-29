@@ -4299,9 +4299,9 @@ function readThingsByPhotoIds(tdb2, photoIds) {
     if (!obj) {
       continue;
     }
-    const location2 = obj?.location ?? [];
+    const location = obj?.location ?? [];
     const subject = obj?.subject ?? [];
-    for (const loc of location2) {
+    for (const loc of location) {
       locations.add(loc);
     }
     for (const subj of subject) {
@@ -5225,6 +5225,7 @@ function AlbumPage() {
           mode: "flag"
         });
       });
+      const url2 = `https://sharephoto.rgrannell.xyz/album/${album.id}`;
       const $albumMetadata = (0, import_mithril17.default)("section.photos-metadata", [
         (0, import_mithril17.default)("h1", name),
         (0, import_mithril17.default)("p.photo-album-date", (0, import_mithril17.default)("time", dateRange2)),
@@ -5234,7 +5235,7 @@ function AlbumPage() {
           "p.photo-album-description",
           import_mithril17.default.trust(preprocessDescription(description ?? "") ?? "")
         ),
-        (0, import_mithril17.default)(AlbumShareButton, { url: location.href, name }),
+        (0, import_mithril17.default)(AlbumShareButton, { url: url2, name }),
         " ",
         (0, import_mithril17.default)(AlbumsButton),
         " "
@@ -5829,12 +5830,12 @@ function PlacesList() {
           return (one(loca.name) ?? "").localeCompare(one(locb.name) ?? "");
         }
       );
-      const $places = locations.map((location2) => {
+      const $places = locations.map((location) => {
         const $link = (0, import_mithril29.default)(ThingLink, {
-          urn: one(location2.id),
-          thing: location2
+          urn: one(location.id),
+          thing: location
         });
-        return (0, import_mithril29.default)("li", { key: `place-${location2.id}` }, $link);
+        return (0, import_mithril29.default)("li", { key: `place-${location.id}` }, $link);
       });
       return (0, import_mithril29.default)("ul", $places);
     }
