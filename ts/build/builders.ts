@@ -54,6 +54,7 @@ export async function buildTS() {
     format: "esm",
     treeShaking: true,
     sourcemap: true,
+    minify: true,
   });
 }
 
