@@ -53,35 +53,3 @@ Deno.bench("postindexing: addNestedLocations performance", async bench => {
   addNestedLocations(tdb);
   bench.end();
 });
-
-Deno.bench("postindexing: convertRatingsToUrns performance", async bench => {
-  const tdb = await loadTriples(tribblesFile!, {}, deriveTriples);
-
-  bench.start();
-  convertRatingsToUrns(tdb);
-  bench.end();
-});
-
-Deno.bench("postindexing: convertCountriesToUrns performance", async bench => {
-  const tdb = await loadTriples(tribblesFile!, {}, deriveTriples);
-
-  bench.start();
-  convertCountriesToUrns(tdb);
-  bench.end();
-});
-
-Deno.bench("postindexing: expandCdnUrls performance", async bench => {
-  const tdb = await loadTriples(tribblesFile!, {}, deriveTriples);
-
-  bench.start();
-  expandCdnUrls(tdb);
-  bench.end();
-});
-
-Deno.bench("postindexing: convertStylesToUrns performance", async bench => {
-  const tdb = await loadTriples(tribblesFile!, {}, deriveTriples);
-
-  bench.start();
-  convertStylesToUrns(tdb);
-  bench.end();
-});
