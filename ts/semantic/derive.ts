@@ -12,28 +12,7 @@ import {
   ENDPOINT,
   KnownRelations,
   RelationSymmetries,
-  RENAMED_RELATIONS,
 } from "../constants.ts";
-
-/*
- * Convert `country` relations to URNs
- */
-export function convertCountriesToUrns(triple: Triple): Triple[] {
-  const [src, rel, tgt] = triple;
-
-  if (rel !== KnownRelations.COUNTRY) {
-    return [triple];
-  }
-
-  const id = tgt.toLowerCase().replace(/ /g, "-");
-  const countryUrn = `urn:ró:country:${id}`;
-
-  return [[
-    src,
-    rel,
-    countryUrn,
-  ]];
-}
 
 const styleNames = new Set<string>();
 
@@ -272,7 +251,6 @@ export function deriveTriples(
   const tripleProcessors = [
     expandUrns,
     expandTripleCuries,
-    convertCountriesToUrns,
     expandCdnUrls
   ];
 
