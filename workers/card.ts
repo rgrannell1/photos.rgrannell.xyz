@@ -47,10 +47,6 @@ function getPageTitle(card: SocialCard | null): string {
   return card?.title || 'photos.rgrannell.xyz';
 }
 
-function getPageDescription(card: SocialCard | null): string | undefined {
-  return card?.description ?? undefined;
-}
-
 function getPageUrl(request: Request): string {
   const url = new URL(request.url);
   const pathname = url.pathname;
@@ -75,13 +71,11 @@ export default {
     console.log(`[Worker] Database lookup result:`, card ? 'Card found' : 'No card found');
 
     const title = getPageTitle(card);
-    const description = getPageDescription(card);
     const pageUrl = getPageUrl(request);
     const imageUrl = getImageUrl(card);
 
     const view = {
       title,
-      description,
       pageUrl,
       imageUrl,
     }
@@ -89,6 +83,7 @@ export default {
     console.log(`[Worker] Response view:`, view);
 
     // yes this is insecure, but Copilot was annoying me
+    // will patch soon
     const htmlTemplate = `<!DOCTYPE html>
 <html>
 <head>
@@ -100,7 +95,6 @@ export default {
 
   <!-- Social Cards -->
   <meta property="og:title" content="${title}">
-  <meta property="og:description" content="${description}">
   <meta property="og:url" content="${pageUrl}">
   <meta property="og:image" content="${imageUrl}">
   <meta property="og:type" content="website">

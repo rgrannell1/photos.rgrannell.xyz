@@ -5,32 +5,26 @@
   "directories": {
     "test": "tests"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": { },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rgrannell1/photos.rgrannell.xyz.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rgrannell1/photos.rgrannell.xyz/issues"
   },
   "homepage": "https://github.com/rgrannell1/photos.rgrannell.xyz#readme",
   "dependencies": {
-    "@rgrannell1/tribbledb": "^0.0.24",
-    "express": "^5.1.0",
-    "htm": "^3.1.1",
-    "lit": "^3.3.1",
+    "@rgrannell1/tribbledb": "^0.0.26",
     "mithril": "^2.3.7",
-    "preact": "^10.27.2",
-    "tap": "^21.1.0",
     "valibot": "^1.1.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251128.0",
     "@types/mithril": "^2.2.7",
-    "esbuild": "^0.25.9"
+    "esbuild": "^0.25.9",
+    "tap": "^21.1.0"
   }
 }

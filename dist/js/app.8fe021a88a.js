@@ -38,19 +38,16 @@ var require_vnode = __commonJS({
       return Vnode("#", void 0, void 0, String(node), void 0, void 0);
     };
     Vnode.normalizeChildren = function(input) {
-      var children = [];
-      if (input.length) {
-        var isKeyed = input[0] != null && input[0].key != null;
-        for (var i = 1; i < input.length; i++) {
-          if ((input[i] != null && input[i].key != null) !== isKeyed) {
-            throw new TypeError(
-              isKeyed && (input[i] == null || typeof input[i] === "boolean") ? "In fragments, vnodes must either all have keys or none have keys. You may wish to consider using an explicit keyed empty fragment, m.fragment({key: ...}), instead of a hole." : "In fragments, vnodes must either all have keys or none have keys."
-            );
-          }
-        }
-        for (var i = 0; i < input.length; i++) {
-          children[i] = Vnode.normalize(input[i]);
-        }
+      var children = new Array(input.length);
+      var numKeyed = 0;
+      for (var i = 0; i < input.length; i++) {
+        children[i] = Vnode.normalize(input[i]);
+        if (children[i] !== null && children[i].key != null) numKeyed++;
+      }
+      if (numKeyed !== 0 && numKeyed !== input.length) {
+        throw new TypeError(
+          children.includes(null) ? "In fragments, vnodes must either all have keys or none have keys. You may wish to consider using an explicit keyed empty fragment, m.fragment({key: ...}), instead of a hole." : "In fragments, vnodes must either all have keys or none have keys."
+        );
       }
       return children;
     };
@@ -148,15 +145,15 @@ var require_hyperscript = __commonJS({
         vnode.is = state2.is;
         return vnode;
       }
-      var hasClass = hasOwn.call(attrs, "class");
-      var className = hasClass ? attrs.class : attrs.className;
-      if (state2.attrs !== emptyAttrs) {
-        attrs = Object.assign({}, state2.attrs, attrs);
-        if (className != null || state2.attrs.className != null) attrs.className = className != null ? state2.attrs.className != null ? String(state2.attrs.className) + " " + String(className) : className : state2.attrs.className;
-      } else {
-        if (className != null) attrs.className = className;
+      if (hasOwn.call(attrs, "class")) {
+        if (attrs.class != null) attrs.className = attrs.class;
+        attrs.class = null;
       }
-      if (hasClass) attrs.class = null;
+      if (state2.attrs !== emptyAttrs) {
+        var className = attrs.className;
+        attrs = Object.assign({}, state2.attrs, attrs);
+        if (state2.attrs.className != null) attrs.className = className != null ? String(state2.attrs.className) + " " + String(className) : state2.attrs.className;
+      }
       if (state2.tag === "input" && hasOwn.call(attrs, "type")) {
         attrs = Object.assign({ type: attrs.type }, attrs);
       }
@@ -220,11 +217,19 @@ var require_hyperscript2 = __commonJS({
   }
 });
 
+// node_modules/mithril/render/delayedRemoval.js
+var require_delayedRemoval = __commonJS({
+  "node_modules/mithril/render/delayedRemoval.js"(exports, module) {
+    "use strict";
+    module.exports = /* @__PURE__ */ new WeakMap();
+  }
+});
+
 // node_modules/mithril/render/domFor.js
 var require_domFor = __commonJS({
   "node_modules/mithril/render/domFor.js"(exports, module) {
     "use strict";
-    var delayedRemoval = /* @__PURE__ */ new WeakMap();
+    var delayedRemoval = require_delayedRemoval();
     function* domFor(vnode) {
       var dom = vnode.dom;
       var domSize = vnode.domSize;
@@ -238,10 +243,7 @@ var require_domFor = __commonJS({
         dom = nextSibling;
       } while (domSize);
     }
-    module.exports = {
-      delayedRemoval,
-      domFor
-    };
+    module.exports = domFor;
   }
 });
 
@@ -250,9 +252,8 @@ var require_render = __commonJS({
   "node_modules/mithril/render/render.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
-    var df = require_domFor();
-    var delayedRemoval = df.delayedRemoval;
-    var domFor = df.domFor;
+    var delayedRemoval = require_delayedRemoval();
+    var domFor = require_domFor();
     var cachedAttrsIsStaticMap = require_cachedAttrsIsStaticMap();
     module.exports = function() {
       var nameSpace = {
@@ -390,7 +391,7 @@ var require_render = __commonJS({
         if (vnode.instance != null) {
           createNode(parent, vnode.instance, hooks, ns, nextSibling);
           vnode.dom = vnode.instance.dom;
-          vnode.domSize = vnode.dom != null ? vnode.instance.domSize : 0;
+          vnode.domSize = vnode.instance.domSize;
         } else {
           vnode.domSize = 0;
         }
@@ -565,8 +566,8 @@ var require_render = __commonJS({
               domSize += child.domSize || 1;
             }
           }
-          if (domSize !== 1) vnode.domSize = domSize;
         }
+        vnode.domSize = domSize;
       }
       function updateElement(old, vnode, hooks, ns) {
         var element = vnode.dom = old.dom;
@@ -588,13 +589,9 @@ var require_render = __commonJS({
           else updateNode(parent, old.instance, vnode.instance, hooks, nextSibling, ns);
           vnode.dom = vnode.instance.dom;
           vnode.domSize = vnode.instance.domSize;
-        } else if (old.instance != null) {
-          removeNode(parent, old.instance);
-          vnode.dom = void 0;
-          vnode.domSize = 0;
         } else {
-          vnode.dom = old.dom;
-          vnode.domSize = old.domSize;
+          if (old.instance != null) removeNode(parent, old.instance);
+          vnode.domSize = 0;
         }
       }
       function getKeyMap(vnodes, start, end) {
@@ -655,7 +652,7 @@ var require_render = __commonJS({
       function moveDOM(parent, vnode, nextSibling) {
         if (vnode.dom != null) {
           var target;
-          if (vnode.domSize == null) {
+          if (vnode.domSize == null || vnode.domSize === 1) {
             target = vnode.dom;
           } else {
             target = getDocument(parent).createDocumentFragment();
@@ -710,7 +707,7 @@ var require_render = __commonJS({
       }
       function removeDOM(parent, vnode) {
         if (vnode.dom == null) return;
-        if (vnode.domSize == null) {
+        if (vnode.domSize == null || vnode.domSize === 1) {
           parent.removeChild(vnode.dom);
         } else {
           for (var dom of domFor(vnode)) parent.removeChild(dom);
@@ -947,7 +944,7 @@ var require_render = __commonJS({
 var require_render2 = __commonJS({
   "node_modules/mithril/render.js"(exports, module) {
     "use strict";
-    module.exports = require_render()(typeof window !== "undefined" ? window : null);
+    module.exports = require_render()();
   }
 });
 
@@ -1240,25 +1237,30 @@ var require_request2 = __commonJS({
   }
 });
 
+// node_modules/mithril/util/decodeURIComponentSafe.js
+var require_decodeURIComponentSafe = __commonJS({
+  "node_modules/mithril/util/decodeURIComponentSafe.js"(exports, module) {
+    "use strict";
+    var validUtf8Encodings = /%(?:[0-7]|(?!c[01]|e0%[89]|ed%[ab]|f0%8|f4%[9ab])(?:c|d|(?:e|f[0-4]%[89ab])[\da-f]%[89ab])[\da-f]%[89ab])[\da-f]/gi;
+    module.exports = function(str) {
+      return String(str).replace(validUtf8Encodings, decodeURIComponent);
+    };
+  }
+});
+
 // node_modules/mithril/querystring/parse.js
 var require_parse = __commonJS({
   "node_modules/mithril/querystring/parse.js"(exports, module) {
     "use strict";
-    function decodeURIComponentSave(str) {
-      try {
-        return decodeURIComponent(str);
-      } catch (err) {
-        return str;
-      }
-    }
+    var decodeURIComponentSafe = require_decodeURIComponentSafe();
     module.exports = function(string2) {
       if (string2 === "" || string2 == null) return {};
       if (string2.charAt(0) === "?") string2 = string2.slice(1);
       var entries = string2.split("&"), counters = {}, data = {};
       for (var i = 0; i < entries.length; i++) {
         var entry = entries[i].split("=");
-        var key = decodeURIComponentSave(entry[0]);
-        var value = entry.length === 2 ? decodeURIComponentSave(entry[1]) : "";
+        var key = decodeURIComponentSafe(entry[0]);
+        var value = entry.length === 2 ? decodeURIComponentSafe(entry[1]) : "";
         if (value === "true") value = true;
         else if (value === "false") value = false;
         var levels = key.split(/\]\[?|\[/);
@@ -1355,7 +1357,7 @@ var require_censor = __commonJS({
   "node_modules/mithril/util/censor.js"(exports, module) {
     "use strict";
     var hasOwn = require_hasOwn();
-    var magic = new RegExp("^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$");
+    var magic = /^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$/;
     module.exports = function(attrs, extras) {
       var result = {};
       if (extras != null) {
@@ -1381,20 +1383,13 @@ var require_router = __commonJS({
   "node_modules/mithril/api/router.js"(exports, module) {
     "use strict";
     var Vnode = require_vnode();
-    var m38 = require_hyperscript();
+    var hyperscript = require_hyperscript();
+    var decodeURIComponentSafe = require_decodeURIComponentSafe();
     var buildPathname = require_build2();
     var parsePathname = require_parse2();
     var compileTemplate = require_compileTemplate();
     var censor = require_censor();
-    function decodeURIComponentSave(component) {
-      try {
-        return decodeURIComponent(component);
-      } catch (e) {
-        return component;
-      }
-    }
     module.exports = function($window, mountRedraw) {
-      var callAsync = $window == null ? null : typeof $window.setImmediate === "function" ? $window.setImmediate : $window.setTimeout;
       var p = Promise.resolve();
       var scheduled = false;
       var ready = false;
@@ -1423,7 +1418,7 @@ var require_router = __commonJS({
             if (prefix[0] !== "/") prefix = "/" + prefix;
           }
         }
-        var path = prefix.concat().replace(/(?:%[a-f89][a-f0-9])+/gim, decodeURIComponentSave).slice(route.prefix.length);
+        var path = decodeURIComponentSafe(prefix).slice(route.prefix.length);
         var data = parsePathname(path);
         Object.assign(data.params, $window.history.state);
         function reject(e) {
@@ -1471,7 +1466,7 @@ var require_router = __commonJS({
       function fireAsync() {
         if (!scheduled) {
           scheduled = true;
-          callAsync(resolveRoute);
+          setTimeout(resolveRoute);
         }
       }
       function route(root, defaultRoute, routes) {
@@ -1524,7 +1519,7 @@ var require_router = __commonJS({
       route.prefix = "#!";
       route.Link = {
         view: function(vnode) {
-          var child = m38(
+          var child = hyperscript(
             vnode.attrs.selector || "a",
             censor(vnode.attrs, ["options", "params", "selector", "onclick"]),
             vnode.children
@@ -1584,9 +1579,9 @@ var require_mithril = __commonJS({
   "node_modules/mithril/index.js"(exports, module) {
     "use strict";
     var hyperscript = require_hyperscript2();
-    var request = require_request2();
     var mountRedraw = require_mount_redraw2();
-    var domFor = require_domFor();
+    var request = require_request2();
+    var router = require_route();
     var m38 = function m39() {
       return hyperscript.apply(this, arguments);
     };
@@ -1595,7 +1590,7 @@ var require_mithril = __commonJS({
     m38.fragment = hyperscript.fragment;
     m38.Fragment = "[";
     m38.mount = mountRedraw.mount;
-    m38.route = require_route();
+    m38.route = router;
     m38.render = require_render2();
     m38.redraw = mountRedraw.redraw;
     m38.request = request.request;
@@ -1605,7 +1600,7 @@ var require_mithril = __commonJS({
     m38.buildPathname = require_build2();
     m38.vnode = require_vnode();
     m38.censor = require_censor();
-    m38.domFor = domFor.domFor;
+    m38.domFor = require_domFor();
     module.exports = m38;
   }
 });
@@ -1733,7 +1728,7 @@ function load() {
   return localStorage.getItem("darkMode") === "true";
 }
 
-// node_modules/@rgrannell1/tribbledb/dist/mod.js
+// node_modules/.deno/@rgrannell1+tribbledb@0.0.26/node_modules/@rgrannell1/tribbledb/dist/mod.js
 var IndexedSet = class _IndexedSet {
   #idx;
   #map;
@@ -1899,15 +1894,13 @@ var TribbleParser = class {
     }
   }
 };
-function parseUrn(urn, namespace = "r\xF3") {
-  if (!urn.startsWith(`urn:${namespace}:`)) {
-    throw new Error(`Invalid URN for namespace ${namespace}: ${urn}`);
-  }
-  const delimited = urn.split(":");
+function parseUrn(urn) {
+  const delimited = urn.split(":", 4);
   const type = delimited[2];
-  const idx = urn.indexOf("?");
-  const queryString = idx !== -1 ? urn.slice(idx + 1) : "";
-  const id = idx !== -1 ? delimited[3].slice(0, delimited[3].indexOf("?")) : delimited[3];
+  const remainder = delimited[3] ?? "";
+  const idx = remainder.indexOf("?");
+  const queryString = idx !== -1 ? remainder.slice(idx + 1) : "";
+  const id = idx !== -1 ? remainder.slice(0, idx) : remainder;
   const qs = queryString ? Object.fromEntries(new URLSearchParams(queryString)) : {};
   return {
     type,
@@ -1923,7 +1916,7 @@ function asUrn(value, namespace = "r\xF3") {
       qs: {}
     };
   }
-  return parseUrn(value, namespace);
+  return parseUrn(value);
 }
 var IndexPerformanceMetrics = class _IndexPerformanceMetrics {
   mapReadCount;
