@@ -28,6 +28,8 @@ const COLOURS_CACHE: Map<string, string> = new Map();
 
 /*
  * Convert a mosaic colour string into a bitmap data URL
+ *
+ * This is extremely slow and blocking! 110ms
  */
 export function encodeBitmapDataURL(colours: string): string {
   if (COLOURS_CACHE.has(colours)) {

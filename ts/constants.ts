@@ -84,7 +84,7 @@ export const PLURALS = new Map<string, string>([
  * Renamed relations mapping
  */
 export const RENAMED_RELATIONS = new Map<string, string>([
-  [KnownRelations.FLAGS, KnownRelations.COUNTRY],
+
 ]);
 
 /*

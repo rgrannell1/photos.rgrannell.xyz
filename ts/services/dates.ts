@@ -32,7 +32,10 @@ export function formatCreatedAt(dateTime: string): string {
   return date.toLocaleDateString("en-US", options);
 }
 
-/* Format a date range */
+/*
+ * Format a date range
+ * This is very slow! 75ms! Compute on the server
+ */
 export function dateRange(
   minDate: Date | number,
   maxDate: Date | number,

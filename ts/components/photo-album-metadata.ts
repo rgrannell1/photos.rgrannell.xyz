@@ -19,6 +19,7 @@ export function PhotoAlbumMetadata() {
       return "unknown date";
     }
 
+    // very slow!
     const isSmall = isSmallerThan(SMALL_DEVICE_WIDTH);
     return Dates.dateRange(minDate, maxDate, isSmall);
   }

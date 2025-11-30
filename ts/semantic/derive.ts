@@ -14,26 +14,6 @@ import {
   RelationSymmetries,
   RENAMED_RELATIONS,
 } from "../constants.ts";
-import { camelCase } from "../commons/strings.ts";
-
-
-/*
- * Convert star ratings into rating URNs.
- */
-export function convertRatingsToUrns(triple: Triple): Triple[] {
-  const [src, rel, tgt] = triple;
-
-  if (rel !== KnownRelations.RATING) {
-    return [triple];
-  }
-
-  const starCount = (tgt.match(/⭐/g) || []).length;
-  return [[
-    src,
-    rel,
-    `urn:ró:rating:${starCount - 1}`,
-  ]];
-}
 
 /*
  * Convert `country` relations to URNs
@@ -109,20 +89,6 @@ export function expandCdnUrls(triple: Triple): Triple[] {
     src,
     rel,
     `${ENDPOINT}${tgt}`,
-  ]];
-}
-
-
-/*
- * Convert relation names to camelCase
- */
-export function convertRelationCasing(triple: Triple) {
-  const [src, rel, tgt] = triple;
-
-  return [[
-    src,
-    camelCase(rel),
-    tgt,
   ]];
 }
 
@@ -274,23 +240,6 @@ export function buildLocationTrees(
   return treeState;
 }
 
-/*
- * Rename relations (until they're remapped on the mirror side)
- */
-function renameRelations(triple: Triple) {
-  for (const [from, to] of RENAMED_RELATIONS) {
-    if (triple[1] === from) {
-      return [[
-        triple[0],
-        to,
-        triple[2],
-      ]];
-    }
-  }
-
-  return [triple];
-}
-
 // This should be in mirror, but for testing...
 export const HARD_CODED_TRIPLES: Triple[] = [
   ["urn:ró:rating:%E2%AD%90", KnownRelations.NAME, "⭐"],
@@ -321,14 +270,10 @@ export function deriveTriples(
   triple: Triple,
 ): Triple[] {
   const tripleProcessors = [
-    renameRelations,
-    convertRelationCasing,
     expandUrns,
     expandTripleCuries,
-    convertRatingsToUrns,
     convertCountriesToUrns,
-    expandCdnUrls,
-    convertStylesToUrns
+    expandCdnUrls
   ];
 
   let outputTriples: Triple[] = [triple];

@@ -6,10 +6,6 @@ import {
   addYear,
   addInverseRelations,
   addNestedLocations,
-  convertRatingsToUrns,
-  convertCountriesToUrns,
-  expandCdnUrls,
-  convertStylesToUrns
 } from '../ts/semantic/derive.ts';
 import { tribblesFile } from '../ts/build/loaders.ts';
 
