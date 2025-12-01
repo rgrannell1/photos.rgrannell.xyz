@@ -1,24 +1,22 @@
-
-import { loadTriples } from '../ts/semantic/data.ts';
+import { loadTriples } from "../ts/semantic/data.ts";
 import {
-  deriveTriples,
-  postIndexing,
-  addYear,
   addInverseRelations,
   addNestedLocations,
-} from '../ts/semantic/derive.ts';
-import { tribblesFile } from '../ts/build/loaders.ts';
+  addYear,
+  deriveTriples,
+  postIndexing,
+} from "../ts/semantic/derive.ts";
+import { tribblesFile } from "../ts/build/loaders.ts";
 
 Deno.bench("triple-loading with identify function", async () => {
-  await loadTriples(tribblesFile!, {}, x => [x]);
+  await loadTriples(tribblesFile!, {}, (x) => [x]);
 });
 
 Deno.bench("triple-loading with triple derivation", async () => {
   await loadTriples(tribblesFile!, {}, deriveTriples);
 });
 
-
-Deno.bench("postindexing performance", async bench => {
+Deno.bench("postindexing performance", async (bench) => {
   const tdb = await loadTriples(tribblesFile!, {}, deriveTriples);
 
   bench.start();
@@ -26,7 +24,7 @@ Deno.bench("postindexing performance", async bench => {
   bench.end();
 });
 
-Deno.bench("postindexing: addYear performance", async bench => {
+Deno.bench("postindexing: addYear performance", async (bench) => {
   const tdb = await loadTriples(tribblesFile!, {}, deriveTriples);
 
   bench.start();
@@ -34,7 +32,7 @@ Deno.bench("postindexing: addYear performance", async bench => {
   bench.end();
 });
 
-Deno.bench("postindexing: addInverseRelations performance", async bench => {
+Deno.bench("postindexing: addInverseRelations performance", async (bench) => {
   const tdb = await loadTriples(tribblesFile!, {}, deriveTriples);
 
   bench.start();
@@ -42,7 +40,7 @@ Deno.bench("postindexing: addInverseRelations performance", async bench => {
   bench.end();
 });
 
-Deno.bench("postindexing: addNestedLocations performance", async bench => {
+Deno.bench("postindexing: addNestedLocations performance", async (bench) => {
   const tdb = await loadTriples(tribblesFile!, {}, deriveTriples);
 
   bench.start();

@@ -15,14 +15,20 @@ interface SocialCard {
   image_url: string;
 }
 
-async function getSocialCard(db: D1Database, path: string): Promise<SocialCard | null> {
+async function getSocialCard(
+  db: D1Database,
+  path: string,
+): Promise<SocialCard | null> {
   try {
     console.log(`[DB] Querying social_cards for path: ${path}`);
     const result = await db.prepare(
-      'SELECT path, description, title, image_url FROM social_cards WHERE path = ?'
+      "SELECT path, description, title, image_url FROM social_cards WHERE path = ?",
     ).bind(path).first<SocialCard>();
 
-    console.log(`[DB] Query result:`, result ? `Found card for ${result.path}` : 'No card found');
+    console.log(
+      `[DB] Query result:`,
+      result ? `Found card for ${result.path}` : "No card found",
+    );
     return result || null;
   } catch (error) {
     console.error(`[DB] Error querying social_cards:`, error);
@@ -37,14 +43,14 @@ function extractPathFromUrl(url: string): string {
 
     // For sharephoto.rgrannell.xyz, the path is the direct pathname
     // e.g., sharephoto.rgrannell.xyz/albums/zaragoza-25 -> /albums/zaragoza-25
-    return pathname || '/';
+    return pathname || "/";
   } catch {
-    return '/';
+    return "/";
   }
 }
 
 function getPageTitle(card: SocialCard | null): string {
-  return card?.title || 'photos.rgrannell.xyz';
+  return card?.title || "photos.rgrannell.xyz";
 }
 
 function getPageUrl(request: Request): string {
@@ -56,19 +62,26 @@ function getPageUrl(request: Request): string {
   return `https://photos.rgrannell.xyz/#!/${pathname}`;
 }
 
-function getImageUrl(card: SocialCard | null): string | undefined  {
+function getImageUrl(card: SocialCard | null): string | undefined {
   return card?.image_url;
 }
 
 export default {
-  async fetch(request: Request, env: Env, _: ExecutionContext): Promise<Response> {
+  async fetch(
+    request: Request,
+    env: Env,
+    _: ExecutionContext,
+  ): Promise<Response> {
     console.log(`[Worker] Incoming request: ${request.method} ${request.url}`);
 
     const path = extractPathFromUrl(request.url);
     console.log(`[Worker] Extracted path: ${path}`);
 
     const card = await getSocialCard(env.PHOTO_CARDS, path);
-    console.log(`[Worker] Database lookup result:`, card ? 'Card found' : 'No card found');
+    console.log(
+      `[Worker] Database lookup result:`,
+      card ? "Card found" : "No card found",
+    );
 
     const title = getPageTitle(card);
     const pageUrl = getPageUrl(request);
@@ -78,7 +91,7 @@ export default {
       title,
       pageUrl,
       imageUrl,
-    }
+    };
 
     console.log(`[Worker] Response view:`, view);
 
@@ -107,8 +120,8 @@ export default {
 
     const response = new Response(htmlTemplate, {
       headers: {
-        'Content-Type': 'text/html;charset=UTF-8',
-        'Cache-Control': 'public, max-age=1200',
+        "Content-Type": "text/html;charset=UTF-8",
+        "Cache-Control": "public, max-age=1200",
       },
     });
 

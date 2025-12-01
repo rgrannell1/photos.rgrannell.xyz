@@ -5,7 +5,7 @@
   "directories": {
     "test": "tests"
   },
-  "scripts": { },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rgrannell1/photos.rgrannell.xyz.git"

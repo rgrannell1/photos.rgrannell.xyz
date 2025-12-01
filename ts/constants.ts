@@ -1,4 +1,3 @@
-
 export const SMALL_DEVICE_WIDTH = 500;
 
 export const PHOTO_WIDTH = 400;
@@ -83,9 +82,7 @@ export const PLURALS = new Map<string, string>([
 /*
  * Renamed relations mapping
  */
-export const RENAMED_RELATIONS = new Map<string, string>([
-
-]);
+export const RENAMED_RELATIONS = new Map<string, string>([]);
 
 /*
  * These relations should all expand to CDN urls

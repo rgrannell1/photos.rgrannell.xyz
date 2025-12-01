@@ -1,5 +1,5 @@
 import m from "mithril";
-import { setTitle, isSmallerThan } from "../services/window.ts";
+import { isSmallerThan, setTitle } from "../services/window.ts";
 import * as Dates from "../services/dates.ts";
 import { AlbumShareButton } from "../components/album-share-button.ts";
 import { CountryLink } from "../components/place-links.ts";

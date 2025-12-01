@@ -18,13 +18,19 @@ export type PhotoAlbumMetadataAttrs = {
 export function PhotoAlbumMetadata() {
   return {
     view(vnode: m.Vnode<PhotoAlbumMetadataAttrs>) {
-      const { title, minDate, maxDate, count, countryLinks, dateRange, shortDateRange } = vnode.attrs;
+      const {
+        title,
+        minDate,
+        maxDate,
+        count,
+        countryLinks,
+        dateRange,
+        shortDateRange,
+      } = vnode.attrs;
       const text = count === 1 ? "photo" : "photos";
       const isSmall = isSmallerThan(SMALL_DEVICE_WIDTH);
 
-      const dateRangeText = isSmall
-        ? shortDateRange
-        : dateRange;
+      const dateRangeText = isSmall ? shortDateRange : dateRange;
 
       return m("div.photo-album-metadata", [
         m("p.photo-album-title", title),

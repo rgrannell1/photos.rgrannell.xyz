@@ -8,11 +8,10 @@ import {
   readSubjects,
 } from "./readers.ts";
 
-
 /*
-* Determine whether a photo should be eagerly or lazily loaded
-* depending on page position
-*/
+ * Determine whether a photo should be eagerly or lazily loaded
+ * depending on page position
+ */
 export function loadingMode(idx: number): "eager" | "lazy" {
   const viewportWidth = (globalThis as any).innerWidth;
   const viewportHeight = (globalThis as any).innerHeight;
@@ -63,7 +62,7 @@ export function encodeBitmapDataURL(colours: string): string {
  */
 export function readAllPhotos(tdb: TribbleDB): Photo[] {
   const photos = tdb.search({
-    source: {type: 'photo'}
+    source: { type: "photo" },
   }).sources();
 
   return readPhotos(tdb, photos).sort((photoa, photob) => {

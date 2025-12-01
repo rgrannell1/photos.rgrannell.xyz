@@ -16,40 +16,6 @@ import {
 
 const styleNames = new Set<string>();
 
-/* */
-export function convertStylesToUrns(triple: Triple): Triple[] {
-  const [src, rel, tgt] = triple;
-
-  if (rel !== KnownRelations.STYLE) {
-    return [triple];
-  }
-
-  const id = tgt.toLowerCase().replace(/ /g, "-");
-  const styleUrn = `urn:ró:style:${id}`;
-
-  if (!styleNames.has(tgt)) {
-    styleNames.add(tgt);
-    return [
-      [
-        src,
-        rel,
-        styleUrn,
-      ],
-      [
-        styleUrn,
-        KnownRelations.NAME,
-        tgt,
-      ],
-    ];
-  } else {
-    return [[
-      src,
-      rel,
-      styleUrn,
-    ]];
-  }
-}
-
 /*
  * Expand CDN urls with their endpoint
  */
@@ -123,7 +89,7 @@ export function addInverseRelations(tdb: TribbleDB) {
     }).triples();
 
     for (const [src, _, tgt] of results) {
-      triples.push([ tgt, from, src ]);
+      triples.push([tgt, from, src]);
     }
   }
 
@@ -183,7 +149,6 @@ export function expandTripleCuries(
 export function buildLocationTrees(
   tdb: TribbleDB,
 ) {
-
   // This is a bit unpleasant
   const treeState = {
     nodes: new Map<string, {
@@ -251,7 +216,7 @@ export function deriveTriples(
   const tripleProcessors = [
     expandUrns,
     expandTripleCuries,
-    expandCdnUrls
+    expandCdnUrls,
   ];
 
   let outputTriples: Triple[] = [triple];
@@ -272,7 +237,6 @@ export function deriveTriples(
 /*
  * Operations that add but do not modify existing triples,
  * to be run after all indexing is complete.
- *
  */
 export function postIndexing(tdb: TribbleDB) {
   addYear(tdb);
@@ -281,10 +245,10 @@ export function postIndexing(tdb: TribbleDB) {
 }
 
 /*
-* During the initial flatmap processing of the ingested triples,
-* we built up a tree describing which places are contained in which others.
-* Construct the transitive relations in this function.
-*/
+ * During the initial flatmap processing of the ingested triples,
+ * we built up a tree describing which places are contained in which others.
+ * Construct the transitive relations in this function.
+ */
 export function addNestedLocations(tdb: TribbleDB) {
   const treeState = buildLocationTrees(tdb);
   /*

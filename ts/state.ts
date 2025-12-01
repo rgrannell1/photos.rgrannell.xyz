@@ -1,7 +1,11 @@
 import type { AppWindow, State } from "./types.ts";
 import * as DarkMode from "./services/dark-mode.ts";
 import { loadTriples } from "./semantic/data.ts";
-import { deriveTriples, postIndexing, HARD_CODED_TRIPLES } from "./semantic/derive.ts";
+import {
+  deriveTriples,
+  HARD_CODED_TRIPLES,
+  postIndexing,
+} from "./semantic/derive.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 
 import { readAlbumsByThingIds } from "./services/albums.ts";

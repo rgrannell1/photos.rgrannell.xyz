@@ -46,7 +46,7 @@ export async function loadTribbles() {
     throw new Error("No tribbles file found");
   }
   const tdb = await loadTriples(tribblesFile, {}, deriveTriples);
-  postIndexing(tdb)
+  postIndexing(tdb);
   return tdb;
 }
 
