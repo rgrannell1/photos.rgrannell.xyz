@@ -66,6 +66,9 @@ function drawAlbum(
     maxDate: album.maxDate,
     count: album.photosCount,
     countryLinks: $countryLinks,
+    services,
+    dateRange: album.dateRange,
+    shortDateRange: album.shortDateRange
   });
 
   const $album = m(PhotoAlbum, {
@@ -75,7 +78,7 @@ function drawAlbum(
     thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),
     loading: loading,
     minDate: album.minDate,
-    onclick: onAlbumClick.bind(null, album.id, album.name),
+    onclick: onAlbumClick.bind(null, album.id, album.name)
   });
 
   $albumComponents.push(

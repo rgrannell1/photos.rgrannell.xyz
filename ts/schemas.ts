@@ -44,6 +44,10 @@ export const AlbumSchema = v.object({
   videosCount: v.pipe(v.string(), v.transform(Number)),
   country: v.union([v.string(), v.array(v.string())]),
   description: v.optional(v.string()),
+
+  // 200ms to compute on the client, so now it's precomputed
+  dateRange: v.string(),
+  shortDateRange: v.string(),
 });
 
 export const CountrySchema = v.object({

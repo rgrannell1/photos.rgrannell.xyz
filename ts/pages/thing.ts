@@ -135,6 +135,8 @@ function AlbumSection() {
           maxDate: album.maxDate,
           count: album.photosCount,
           countryLinks: $countryLinks,
+          dateRange: album.dateRange,
+          shortDateRange: album.shortDateRange
         });
 
         const $album = m(PhotoAlbum, {
