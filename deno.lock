@@ -5,7 +5,7 @@
       "jsr:@std/assert@^0.218.2": "jsr:@std/assert@0.218.2",
       "jsr:@std/path": "jsr:@std/path@0.218.2",
       "npm:@cloudflare/workers-types@^4.20251128.0": "npm:@cloudflare/workers-types@4.20251128.0",
-      "npm:@rgrannell1/tribbledb@^0.0.27": "npm:@rgrannell1/tribbledb@0.0.27",
+      "npm:@rgrannell1/tribbledb@^0.0.28": "npm:@rgrannell1/tribbledb@0.0.28",
       "npm:@types/mithril@^2.2.7": "npm:@types/mithril@2.2.7",
       "npm:csso": "npm:csso@5.0.5",
       "npm:esbuild@^0.25.9": "npm:esbuild@0.25.12",
@@ -318,8 +318,8 @@
         "integrity": "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==",
         "dependencies": {}
       },
-      "@rgrannell1/tribbledb@0.0.27": {
-        "integrity": "sha512-+N0rFRpGvb4odys2CAL6i0Pzk51oFmE5uKHK3Jp8fNDs23LfVOnfH0kW98FzCOjgeG1Ias7BR7GOc86GsWY5KA==",
+      "@rgrannell1/tribbledb@0.0.28": {
+        "integrity": "sha512-lfSwpdeSxLfxhiivZZt8CdhKrI7amabGfS3ihD1GdpbqvCukdM+le2J3QbTtSMiny2uLytfhfO9FwnAApuAgTg==",
         "dependencies": {}
       },
       "@sigstore/bundle@4.0.0": {
@@ -2845,7 +2845,7 @@
     "packageJson": {
       "dependencies": [
         "npm:@cloudflare/workers-types@^4.20251128.0",
-        "npm:@rgrannell1/tribbledb@^0.0.27",
+        "npm:@rgrannell1/tribbledb@^0.0.28",
         "npm:@types/mithril@^2.2.7",
         "npm:esbuild@^0.25.9",
         "npm:mithril@^2.3.7",

@@ -54,13 +54,13 @@ export function AlbumPage() {
         photosCount,
         description,
         country,
+        dateRange,
+        shortDateRange
       } = album;
 
-      const dateRange = Dates.dateRange(
-        minDate,
-        maxDate,
-        isSmallerThan(SMALL_DEVICE_WIDTH),
-      );
+      const dateRangeText = isSmallerThan(SMALL_DEVICE_WIDTH)
+        ? shortDateRange
+        : dateRange;
 
       const photoCountMessage = photosCount === 1
         ? "1 photo"
@@ -80,7 +80,7 @@ export function AlbumPage() {
 
       const $albumMetadata = m("section.photos-metadata", [
         m("h1", name),
-        m("p.photo-album-date", m("time", dateRange)),
+        m("p.photo-album-date", m("time", dateRangeText)),
         m("p.photo-album-count", photoCountMessage),
         m("p.photo-album-countries", $countryLinks),
         m(
