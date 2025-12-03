@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/rgrannell1/photos.rgrannell.xyz#readme",
   "dependencies": {
-    "@rgrannell1/tribbledb": "^0.0.28",
+    "@rgrannell1/tribbledb": "^0.0.29",
     "mithril": "^2.3.7",
     "valibot": "^1.1.0"
   },
