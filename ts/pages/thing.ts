@@ -18,6 +18,7 @@ import { FeaturesList } from "../components/features-list.ts";
 import { UnescoList } from "../components/unesco-list.ts";
 import { loadingMode } from "../services/photos.ts";
 import { ThingUrls } from "../components/thing-urls.ts";
+import { readCountries } from "../services/readers.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -115,13 +116,12 @@ function AlbumSection() {
       const urns = setOf<string>("id", things);
       const albums = services.readAlbumsByThingIds(new Set(urns));
 
-      const countries = services.readCountries(
-        setOf<string>("country", albums as any),
-      );
 
       const $albums = albums.map((album) => {
+        const countries = services.readCountries(setify(album.country))
+
         // duplicated model. move to render(model) code
-        const $countryLinks = [...countries].map((country) => {
+        const $countryLinks = countries.map((country) => {
           return m(CountryLink, {
             country,
             key: `album-country-${album.id}-${country.id}`,
