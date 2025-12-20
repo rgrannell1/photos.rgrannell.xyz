@@ -59,6 +59,11 @@
   font-display: swap;
 }
 
+ul {
+  list-style-position: inside;
+  padding-left: 1rem !important;
+}
+
 /*
  * ++++ ++++ ++++ ~~~~ Basic Styles ~~~~ ++++ ++++ ++++
  */
