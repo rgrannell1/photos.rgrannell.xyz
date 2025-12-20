@@ -94,6 +94,7 @@ type ListingPageAttrs = {
   type: string;
   things: TripleObject[];
   services: Services;
+  visible: boolean;
 };
 
 /*
@@ -103,7 +104,7 @@ type ListingPageAttrs = {
 export function ListingPage() {
   return {
     view(vnode: m.Vnode<ListingPageAttrs>) {
-      const { type, things, services } = vnode.attrs;
+      const { type, things, services, visible } = vnode.attrs;
 
       const $md = [
         m(ListingTitle, { type }),
@@ -117,7 +118,9 @@ export function ListingPage() {
         );
       }
 
-      return m("div.page", [
+      return m("div", {
+        class: visible ? "page sidebar-visible" : "page",
+      }, [
         m("section.album-metadata", $md),
         m(AlbumsList, { services, things }),
       ]);

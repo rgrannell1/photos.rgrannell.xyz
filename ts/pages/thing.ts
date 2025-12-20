@@ -24,6 +24,7 @@ type ThingPageAttrs = {
   urn: string;
   things: TripleObject[];
   services: Services;
+  visible: boolean;
 };
 
 function _ThingPlaces() {
@@ -192,19 +193,21 @@ function PhotoSection() {
 export function ThingPage() {
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const { urn, things, services } = vnode.attrs;
+      const { urn, things, services, visible } = vnode.attrs;
 
-      return m("div.page", [
+      return m("div", {
+        class: visible ? "page sidebar-visible" : "page",
+      }, [
         m("section.thing-page", [
           m(ThingTitle, { urn, things }),
           m(ThingSubtitle, { urn }),
           m("br"),
           m(ThingUrls, { things }),
-          m(ThingMetadata, { urn, things, services }),
+          m(ThingMetadata, { urn, things, services, visible }),
           m("h3", "Photos"),
-          m(PhotoSection, { urn, things, services }),
+          m(PhotoSection, { urn, things, services, visible }),
           m("h3", "Albums"),
-          m(AlbumSection, { urn, things, services }),
+          m(AlbumSection, { urn, things, services, visible }),
         ]),
       ]);
     },

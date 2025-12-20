@@ -14,6 +14,7 @@ import { setify } from "../commons/sets.ts";
 type AlbumsListAttrs = {
   albums: Album[];
   services: Services;
+  visible: boolean;
 };
 
 function onAlbumClick(id: string, title: string, event: Event) {
@@ -120,6 +121,7 @@ function AlbumsList() {
 type AlbumsPageAttrs = {
   albums: Album[];
   services: Services;
+  visible: boolean;
 };
 
 /* */
@@ -129,17 +131,19 @@ export function AlbumsPage() {
       setTitle("Albums - photos");
     },
     view(vnode: m.Vnode<AlbumsPageAttrs>) {
-      const { albums, services } = vnode.attrs;
+      const { albums, services, visible } = vnode.attrs;
 
       const $md = m("section.album-metadata", [
         m("h1.albums-header", "Albums"),
         m(AlbumStats),
       ]);
 
-      return m("div.page", [
+      return m("div", {
+        class: visible ? "page sidebar-visible" : "page",
+      }, [
         $md,
         //m(YearCursor),
-        m(AlbumsList, { albums, services }),
+        m(AlbumsList, { albums, services, visible }),
       ]);
     },
   };

@@ -29,13 +29,14 @@ function PhotosList() {
 
 type PhotosPageAttrs = {
   photos: PhotoType[];
+  visible: boolean;
 };
 
 /* */
 export function PhotosPage() {
   return {
     view(vnode: m.Vnode<PhotosPageAttrs>) {
-      const { photos } = vnode.attrs;
+      const { photos, visible } = vnode.attrs;
 
       const countText = `${photos.length} photo${
         photos.length === 1 ? "" : "s"
@@ -46,7 +47,9 @@ export function PhotosPage() {
         m("p.photo-album-count", countText),
       ]);
 
-      return m("div.page", [$md, m(PhotosList, { photos })]);
+      return m("div", {
+        class: visible ? "page sidebar-visible" : "page",
+      }, [$md, m(PhotosList, { photos, visible })]);
     },
   };
 }

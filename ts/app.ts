@@ -38,6 +38,7 @@ listen("navigate", (event: Event) => {
   const { route } = (event as CustomEvent).detail;
   console.info(`navigating to route: ${route}`);
 
+  state.sidebarVisible = false;
   m.route.set(route);
 });
 
@@ -67,6 +68,7 @@ export function AlbumsApp(): m.Component<AppAttrs> {
             m(AlbumsPage, {
               albums: readAllAlbums(state.data),
               services: state.services,
+              visible: state.sidebarVisible,
             }),
           ]),
         ],
@@ -116,6 +118,7 @@ export function AlbumApp(): m.Component<AppAttrs> {
               photos,
               videos,
               services: state.services,
+              visible: state.sidebarVisible,
             }),
           ]),
         ],
@@ -137,7 +140,7 @@ export function AboutApp(): m.Component<AppAttrs> {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
-            m(AboutPage),
+            m(AboutPage, { visible: state.sidebarVisible }),
           ]),
         ],
       );
@@ -160,6 +163,7 @@ export function VideosApp(): m.Component<AppAttrs> {
             m(Sidebar, { visible: state.sidebarVisible }),
             m(VideosPage, {
               videos: readAllVideos(state.data),
+              visible: state.sidebarVisible,
             }),
           ]),
         ],
@@ -183,6 +187,7 @@ export function PhotosApp(): m.Component<AppAttrs> {
             m(Sidebar, { visible: state.sidebarVisible }),
             m(PhotosPage, {
               photos: readAllPhotos(state.data),
+              visible: state.sidebarVisible,
             }),
           ]),
         ],
@@ -227,6 +232,7 @@ export function ThingApp(): m.Component<AppAttrs> {
               urn: state.currentUrn,
               things,
               services: state.services,
+              visible: state.sidebarVisible,
             }),
           ]),
         ],
@@ -261,7 +267,7 @@ export function PhotoApp(): m.Component<AppAttrs> {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
-            m(PhotoPage, { photo, services: state.services }),
+            m(PhotoPage, { photo, services: state.services, visible: state.sidebarVisible }),
           ]),
         ],
       );
@@ -297,6 +303,7 @@ export function ListingApp(): m.Component<AppAttrs> {
               type: state.currentType,
               things,
               services: state.services,
+              visible: state.sidebarVisible,
             }),
           ]),
         ],
@@ -317,7 +324,7 @@ export function ListingsApp(): m.Component<AppAttrs> {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(Sidebar, { visible: state.sidebarVisible }),
-            m(ListingsPage, {}),
+            m(ListingsPage, { visible: state.sidebarVisible }),
           ]),
         ],
       );

@@ -465,12 +465,11 @@ button:disabled {
  * ++++ ++++ ++++ ~~~~ Sidebar Styling ~~~~ ++++ ++++ ++++
  */
 
-@media (hover: hover) {
   .sidebar-item:hover {
     background-color: var(--hover-background-color);
     cursor: pointer;
   }
-}
+
 
 .sidebar-item {
   padding: 20px;

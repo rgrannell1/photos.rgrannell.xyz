@@ -3,16 +3,23 @@ import m from "mithril";
 import { setTitle } from "../services/window.ts";
 import { navigate } from "../commons/events.ts";
 
+type AboutPageAttrs = {
+  visible: boolean;
+};
+
 /* */
 export function AboutPage() {
   return {
     oninit() {
       setTitle("About - photos");
     },
-    view() {
+    view(vnode: m.Vnode<AboutPageAttrs>) {
+      const { visible } = vnode.attrs;
       const years = new Date().getFullYear() - 2012;
 
-      return m("div.page", [
+      return m("div", {
+        class: visible ? "page sidebar-visible" : "page",
+      }, [
         m("section.about-page", [
           m("h1", "About"),
           m(

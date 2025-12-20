@@ -5,13 +5,14 @@ import type { VideoAttrs } from "../components/video.ts";
 
 type VideosPageAttrs = {
   videos: VideoType[];
+  visible: boolean;
 };
 
 /* */
 export function VideosPage() {
   return {
     view(vnode: m.Vnode<VideosPageAttrs>) {
-      const { videos } = vnode.attrs;
+      const { videos, visible } = vnode.attrs;
       const videoLengthText = videos.length === 1
         ? "1 video"
         : `${videos.length} videos`;
@@ -21,7 +22,10 @@ export function VideosPage() {
       });
 
       return m(
-        "div.page",
+        "div",
+        {
+          class: visible ? "page sidebar-visible" : "page",
+        },
         m("section.photos-metadata", [
           m("h1", "Videos"),
           m("p.photo-album-count", videoLengthText),

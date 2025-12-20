@@ -20,10 +20,18 @@ function ListingItem() {
   };
 }
 
+type ListingsPageAttrs = {
+  visible: boolean;
+};
+
 export function ListingsPage() {
   return {
-    view() {
-      return m("div.page", [
+    view(vnode: m.Vnode<ListingsPageAttrs>) {
+      const { visible } = vnode.attrs;
+
+      return m("div", {
+        class: visible ? "page sidebar-visible" : "page",
+      }, [
         m("h1", "Listings"),
         m(
           "section",

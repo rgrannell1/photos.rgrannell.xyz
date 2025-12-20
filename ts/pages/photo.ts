@@ -8,13 +8,14 @@ import { PhotoInfo } from "../components/photo-info.ts";
 type PhotoPageAttrs = {
   photo: PhotoType;
   services: Services;
+  visible: boolean;
 };
 
 /* */
 export function PhotoPage() {
   return {
     view(vnode: m.Vnode<PhotoPageAttrs>) {
-      const { photo, services } = vnode.attrs;
+      const { photo, services, visible } = vnode.attrs;
 
       // TODO this should be a ul
       const $links = m("li.link-list", [
@@ -38,7 +39,10 @@ export function PhotoPage() {
         }),
         $links,
         m(
-          "div.page",
+          "div",
+          {
+            class: visible ? "page sidebar-visible" : "page",
+          },
           m("h3", "Photo Information"),
           $photoInfo,
           m("h3", "Exif Data"),

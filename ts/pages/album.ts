@@ -31,6 +31,7 @@ type AlbumAttrs = {
   photos: PhotoType[];
   videos: VideoType[];
   services: Services;
+  visible: boolean;
 };
 
 /* */
@@ -45,6 +46,7 @@ export function AlbumPage() {
         photos,
         videos,
         services,
+        visible,
       } = vnode.attrs;
 
       const {
@@ -108,7 +110,10 @@ export function AlbumPage() {
       });
 
       return m(
-        "div.page",
+        "div",
+        {
+          class: visible ? "page sidebar-visible" : "page",
+        },
         $albumMetadata,
         m("section.photo-container", $photosList),
         m("section.video-container", $videosList),
