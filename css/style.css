@@ -406,7 +406,7 @@ button:disabled {
     display: none;
   }
 
-  .photo-sidebar-visible {
+  aside.sidebar-visible {
     display: block;
   }
 

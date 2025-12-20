@@ -116,9 +116,8 @@ function AlbumSection() {
       const urns = setOf<string>("id", things);
       const albums = services.readAlbumsByThingIds(new Set(urns));
 
-
       const $albums = albums.map((album) => {
-        const countries = services.readCountries(setify(album.country))
+        const countries = services.readCountries(setify(album.country));
 
         // duplicated model. move to render(model) code
         const $countryLinks = countries.map((country) => {

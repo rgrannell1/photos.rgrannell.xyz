@@ -55,7 +55,7 @@ export function AlbumPage() {
         description,
         country,
         dateRange,
-        shortDateRange
+        shortDateRange,
       } = album;
 
       const dateRangeText = isSmallerThan(SMALL_DEVICE_WIDTH)
