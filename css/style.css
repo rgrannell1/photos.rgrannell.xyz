@@ -484,7 +484,8 @@ button:disabled {
   cursor: pointer;
 }
 
-.page {
+/* todo, the section is needed for the photos page */
+.app-container > section, .app-container > .page {
   grid-row: 1;
   grid-column: 2;
   margin-top: min(5, 80px);
