@@ -22,6 +22,7 @@ export function AboutPage() {
       }, [
         m("section.about-page", [
           m("h1", "About"),
+          m("br"),
           m(
             "p",
             `I started taking photos ${years} years ago, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things`,

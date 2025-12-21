@@ -33,6 +33,9 @@ export function ListingsPage() {
         class: visible ? "page sidebar-visible" : "page",
       }, [
         m("h1", "Listings"),
+        m("br"),
+        m("p", "Collections of all places, countries, and animals"),
+        m("br"),
         m(
           "section",
           m("ul", [
