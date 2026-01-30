@@ -81,12 +81,23 @@ export function AlbumPage() {
       const { id } = asUrn(album.id);
       const url = `https://sharephoto.rgrannell.xyz/album/${id}`;
 
-      const byRatingDesc = (a: PhotoType, b: PhotoType) =>
-        (b.rating ?? "").toLocaleString().localeCompare(
+      const stylePreference = (photo: PhotoType): number => {
+        const style = ((photo as Record<string, string>).style ?? "").toLowerCase();
+        const id = style.includes(":") ? style.split(":").pop() ?? style : style;
+        if (id === "landscape") return 0;
+        if (id === "cityscape") return 1;
+        if (id === "wildlife") return 2;
+        return 3;
+      };
+      const byRatingThenStyle = (a: PhotoType, b: PhotoType) => {
+        const ratingCmp = (b.rating ?? "").toLocaleString().localeCompare(
           (a.rating ?? "").toLocaleString(),
         );
+        if (ratingCmp !== 0) return ratingCmp;
+        return stylePreference(a) - stylePreference(b);
+      };
       const bannerPhoto =
-        photos.length > 0 ? [...photos].sort(byRatingDesc)[0] : null;
+        photos.length > 0 ? [...photos].sort(byRatingThenStyle)[0] : null;
 
       const bannerSrc = bannerPhoto
         ? (bannerPhoto as Record<string, string>)[
