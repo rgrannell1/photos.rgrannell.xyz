@@ -1,6 +1,7 @@
 import m from "mithril";
 import { isSmallerThan, setTitle } from "../services/window.ts";
 import * as Dates from "../services/dates.ts";
+import { AlbumBanner } from "../components/album-banner.ts";
 import { AlbumShareButton } from "../components/album-share-button.ts";
 import { CountryLink } from "../components/place-links.ts";
 import { Video } from "../components/video.ts";
@@ -87,21 +88,16 @@ export function AlbumPage() {
       const bannerPhoto =
         photos.length > 0 ? [...photos].sort(byRatingDesc)[0] : null;
 
-      const $banner = bannerPhoto
-        ? m(
-            "section.album-banner",
-            m("img.album-banner-image", {
-              src:
-                (bannerPhoto as Record<string, string>)[
-                  KnownRelations.MID_IMAGE_LOSSY_URL
-                ] ??
-                (bannerPhoto as Record<string, string>)[
-                  KnownRelations.THUMBNAIL_URL
-                ],
-              alt: name,
-              loading: "eager",
-            }),
-          )
+      const bannerSrc = bannerPhoto
+        ? (bannerPhoto as Record<string, string>)[
+            KnownRelations.MID_IMAGE_LOSSY_URL
+          ] ??
+          (bannerPhoto as Record<string, string>)[
+            KnownRelations.THUMBNAIL_URL
+          ]
+        : null;
+      const $banner = bannerSrc
+        ? m(AlbumBanner, { src: bannerSrc, alt: name })
         : null;
 
       const $albumMetadata = m("section.photos-metadata", [
