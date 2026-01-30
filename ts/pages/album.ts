@@ -20,7 +20,7 @@ import type { PhotoAttrs } from "../components/photo.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
 import { preprocessDescription } from "../commons/strings.ts";
 import { setify } from "../commons/sets.ts";
-import { SMALL_DEVICE_WIDTH } from "../constants.ts";
+import { KnownRelations, SMALL_DEVICE_WIDTH } from "../constants.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 
 type AlbumAttrs = {
@@ -80,6 +80,30 @@ export function AlbumPage() {
       const { id } = asUrn(album.id);
       const url = `https://sharephoto.rgrannell.xyz/album/${id}`;
 
+      const byRatingDesc = (a: PhotoType, b: PhotoType) =>
+        (b.rating ?? "").toLocaleString().localeCompare(
+          (a.rating ?? "").toLocaleString(),
+        );
+      const bannerPhoto =
+        photos.length > 0 ? [...photos].sort(byRatingDesc)[0] : null;
+
+      const $banner = bannerPhoto
+        ? m(
+            "section.album-banner",
+            m("img.album-banner-image", {
+              src:
+                (bannerPhoto as Record<string, string>)[
+                  KnownRelations.MID_IMAGE_LOSSY_URL
+                ] ??
+                (bannerPhoto as Record<string, string>)[
+                  KnownRelations.THUMBNAIL_URL
+                ],
+              alt: name,
+              loading: "eager",
+            }),
+          )
+        : null;
+
       const $albumMetadata = m("section.photos-metadata", [
         m("h1", name),
         m("p.photo-album-date", m("time", dateRangeText)),
@@ -114,6 +138,7 @@ export function AlbumPage() {
         {
           class: visible ? "page sidebar-visible" : "page",
         },
+        $banner,
         $albumMetadata,
         m("section.photo-container", $photosList),
         m("section.video-container", $videosList),

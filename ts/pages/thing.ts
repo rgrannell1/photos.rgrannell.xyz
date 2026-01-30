@@ -12,7 +12,7 @@ import { PhotoAlbum } from "../components/photo-album.ts";
 import { block, broadcast } from "../commons/events.ts";
 import { PlacesList } from "../components/places-list.ts";
 import { setify, setOf } from "../commons/sets.ts";
-import { KnownRelations, KnownTypes } from "../constants.ts";
+import { KnownRelations } from "../constants.ts";
 import { ListingLink } from "../components/listing-link.ts";
 import { FeaturesList } from "../components/features-list.ts";
 import { UnescoList } from "../components/unesco-list.ts";
@@ -76,19 +76,6 @@ function ThingMetadata() {
         });
       }
 
-      const parsed = asUrn(urn);
-      if (
-        parsed?.type === KnownTypes.PLACE_FEATURE &&
-        (thing as { placesWithFeature?: string | string[] }).placesWithFeature
-      ) {
-        metadata["Places"] = m(PlacesList, {
-          services,
-          urns: setify(
-            (thing as { placesWithFeature: string | string[] }).placesWithFeature,
-          ),
-        });
-      }
-
       if (thing.unescoId) {
         metadata["UNESCO"] = m(UnescoList, {
           urns: new Set(arrayify(thing.unescoId)),
@@ -125,13 +112,9 @@ function onAlbumClick(id: string, title: string, event: Event) {
 function AlbumSection() {
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const { urn, things, services } = vnode.attrs;
+      const { things, services } = vnode.attrs;
 
-      const parsed = asUrn(urn);
-      const urns =
-        parsed?.type === KnownTypes.PLACE_FEATURE
-          ? setOf<string>(KnownRelations.PLACES_WITH_FEATURE, things)
-          : setOf<string>("id", things);
+      const urns = setOf<string>("id", things);
       const albums = services.readAlbumsByThingIds(new Set(urns));
 
       const $albums = albums.map((album) => {
@@ -185,13 +168,9 @@ function AlbumSection() {
 function PhotoSection() {
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const { urn, things, services } = vnode.attrs;
+      const { things, services } = vnode.attrs;
 
-      const parsed = asUrn(urn);
-      const urns =
-        parsed?.type === KnownTypes.PLACE_FEATURE
-          ? setOf<string>(KnownRelations.PLACES_WITH_FEATURE, things)
-          : setOf<string>("id", things);
+      const urns = setOf<string>("id", things);
       const photos = services.readPhotosByThingIds(urns);
 
       return m(
