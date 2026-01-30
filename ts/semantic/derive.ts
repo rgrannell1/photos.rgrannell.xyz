@@ -3,14 +3,16 @@
  * so some triples are modified or derived client-side
  */
 
-import type { TribbleDB, Triple } from "@rgrannell1/tribbledb";
+import { asUrn, type TribbleDB, type Triple } from "@rgrannell1/tribbledb";
 
+import { humanise } from "../commons/strings.ts";
 import {
   CDN_RELATIONS,
   CURIE_REGEX,
   CURIES,
   ENDPOINT,
   KnownRelations,
+  KnownTypes,
   RelationSymmetries,
 } from "../constants.ts";
 
@@ -73,6 +75,34 @@ export function addYear(tdb: TribbleDB) {
   });
 
   tdb.add(years);
+}
+
+/*
+ * Place features only appear as targets of [place, "features", place_feature].
+ * Add triples so each place_feature is a valid subject with id and name.
+ */
+export function addPlaceFeatureSubjects(tdb: TribbleDB) {
+  const results = tdb.search({
+    relation: KnownRelations.FEATURES,
+  }).triples();
+
+  const featureUrns = new Set<string>();
+  for (const [, , tgt] of results) {
+    const parsed = asUrn(tgt);
+    if (parsed?.type === KnownTypes.PLACE_FEATURE) {
+      featureUrns.add(tgt);
+    }
+  }
+
+  const triples: Triple[] = [];
+  for (const urn of featureUrns) {
+    const { id } = asUrn(urn)!;
+    triples.push(
+      [urn, "id", urn],
+      [urn, KnownRelations.NAME, humanise(id)],
+    );
+  }
+  tdb.add(triples);
 }
 
 /*
@@ -240,6 +270,7 @@ export function deriveTriples(
  */
 export function postIndexing(tdb: TribbleDB) {
   addYear(tdb);
+  addPlaceFeatureSubjects(tdb);
   addInverseRelations(tdb);
   addNestedLocations(tdb);
 }

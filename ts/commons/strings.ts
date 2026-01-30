@@ -40,6 +40,15 @@ export function binomial(binomial: string) {
   return capitalise(pretty);
 }
 
+/**
+ * Humanise an id for display (e.g. "train station" -> "Train station",
+ * "national-park" -> "National park").
+ */
+export function humanise(str: string): string {
+  const spaced = str.replace(/-/g, " ");
+  return spaced.charAt(0).toUpperCase() + spaced.slice(1).toLowerCase();
+}
+
 /*
  * Markdown renderer is mangling descriptions.
  */

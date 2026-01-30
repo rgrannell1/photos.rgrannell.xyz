@@ -42,6 +42,8 @@ export class KnownRelations {
 
   static CONTAINS_ALBUM = "containsAlbum";
   static TRIP = "trip";
+  static FEATURES = "features";
+  static PLACES_WITH_FEATURE = "placesWithFeature";
 }
 
 export class KnownTypes {
@@ -69,6 +71,7 @@ export const NonListableTypes = new Set([
   KnownTypes.COUNTRY,
   KnownTypes.CAMERA,
   KnownTypes.PLACE,
+  KnownTypes.PLACE_FEATURE,
 ]);
 
 /*
@@ -106,6 +109,7 @@ export const CDN_RELATIONS = new Set([
 export const RelationSymmetries = [
   [KnownRelations.IN, KnownRelations.CONTAINS],
   [KnownRelations.CONTAINS_ALBUM, KnownRelations.TRIP],
+  [KnownRelations.FEATURES, KnownRelations.PLACES_WITH_FEATURE],
 ];
 
 /*

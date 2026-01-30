@@ -9,7 +9,7 @@ type FeaturesListAttrs = {
 };
 
 /*
- * A list of place features. For the moment, things-links cannot be used
+ * A list of place features; each links to its thing page.
  */
 export function FeaturesList() {
   return {
