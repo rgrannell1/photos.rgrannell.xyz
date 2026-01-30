@@ -87,6 +87,24 @@ export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
 }
 
 /*
+ * Read all albums in a trip, sorted by minDate ascending (chronological order).
+ * Use this to show "previous hops" on an album page (albums in the same trip
+ * with an earlier minDate).
+ */
+export function getTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
+  const { type, id } = asUrn(tripUrn);
+  const ids = tdb.search({
+    source: { type: KnownTypes.ALBUM },
+    relation: KnownRelations.TRIP,
+    target: { type, id },
+  }).sources();
+
+  return (readAlbums(tdb, ids) as Album[]).sort(
+    (a: Album, b: Album) => a.minDate - b.minDate,
+  );
+}
+
+/*
  * Read albums associated with a set of thing IDs
  */
 export function readAlbumsByThingIds(

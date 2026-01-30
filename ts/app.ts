@@ -9,6 +9,7 @@ import { loadState } from "./state.ts";
 import { Sidebar } from "./components/sidebar.ts";
 import { AlbumsPage } from "./pages/albums.ts";
 import {
+  getTripAlbums,
   readAlbumPhotosByAlbumId,
   readAlbumVideosByAlbumId,
   readAllAlbums,
@@ -80,11 +81,11 @@ export function AlbumsApp(): m.Component<AppAttrs> {
 /* */
 export function AlbumApp(): m.Component<AppAttrs> {
   return {
-    oninit() {
-      const id = m.route.param("id");
-      state.currentAlbum = `urn:ró:album:${id}`;
-    },
     view() {
+      const id = m.route.param("id");
+      if (id) {
+        state.currentAlbum = `urn:ró:album:${id}`;
+      }
       if (!state.currentAlbum) {
         return m("p", "No album selected");
       }
@@ -100,6 +101,12 @@ export function AlbumApp(): m.Component<AppAttrs> {
         state.data,
         state.currentAlbum,
       );
+
+      const tripPreviousAlbums = album.trip
+        ? getTripAlbums(state.data, album.trip)
+          .filter((a) => a.minDate < album.minDate)
+          .sort((a, b) => b.minDate - a.minDate)
+        : [];
 
       return m(
         "div.photos-app",
@@ -119,6 +126,7 @@ export function AlbumApp(): m.Component<AppAttrs> {
               videos,
               services: state.services,
               visible: state.sidebarVisible,
+              tripPreviousAlbums,
             }),
           ]),
         ],

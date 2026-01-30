@@ -355,6 +355,10 @@ button:disabled {
   display: inline;
 }
 
+.photo-album-trip-previous {
+  margin-top: 1em;
+}
+
 .photo-album-count, .photo-stats {
   color: var(--secondary-text-color);
 }

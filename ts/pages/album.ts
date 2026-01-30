@@ -23,6 +23,7 @@ import { preprocessDescription } from "../commons/strings.ts";
 import { setify } from "../commons/sets.ts";
 import { KnownRelations, SMALL_DEVICE_WIDTH } from "../constants.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
+import { TripPreviousAlbums } from "../components/trip-previous-albums.ts";
 
 type AlbumAttrs = {
   album: Album;
@@ -33,6 +34,7 @@ type AlbumAttrs = {
   videos: VideoType[];
   services: Services;
   visible: boolean;
+  tripPreviousAlbums: Album[];
 };
 
 /* */
@@ -48,6 +50,7 @@ export function AlbumPage() {
         videos,
         services,
         visible,
+        tripPreviousAlbums,
       } = vnode.attrs;
 
       const {
@@ -116,6 +119,7 @@ export function AlbumPage() {
         m("p.photo-album-date", m("time", dateRangeText)),
         m("p.photo-album-count", photoCountMessage),
         m("p.photo-album-countries", $countryLinks),
+        m(TripPreviousAlbums, { albums: tripPreviousAlbums }),
         m(
           "p.photo-album-description",
           m.trust(preprocessDescription(description ?? "") ?? ""),
