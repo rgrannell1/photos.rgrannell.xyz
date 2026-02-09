@@ -34,9 +34,9 @@ export function AlbumStats() {
         m("a", { href: "#/listing/amphibian" }, "amphibians"),
         " and ",
         m("a", { href: "#/listing/reptile" }, "reptiles"),
-        " · ",
-        `${stats.unesco_sites} `,
-        m("a", { href: "#/thing/unesco:*" }, "UNESCO sites"),
+//        " · ",
+//        `${stats.unesco_sites} `,
+//        m("a", { href: "#/thing/unesco:*" }, "UNESCO sites"),
       ]);
     },
   };
