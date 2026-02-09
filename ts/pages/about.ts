@@ -2,6 +2,7 @@ import m from "mithril";
 
 import { setTitle } from "../services/window.ts";
 import { navigate } from "../commons/events.ts";
+import { AlbumBanner } from "../components/album-banner.ts";
 
 type AboutPageAttrs = {
   visible: boolean;
@@ -17,9 +18,12 @@ export function AboutPage() {
       const { visible } = vnode.attrs;
       const years = new Date().getFullYear() - 2012;
 
+      const bannerSrc = "https://photos-cdn.rgrannell.xyz/a4a694cea4.webp";
+
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
+        m(AlbumBanner, { src: bannerSrc, alt: "About" }),
         m("section.about-page", [
           m("h1", "About"),
           m("br"),
