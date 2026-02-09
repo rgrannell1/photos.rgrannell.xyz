@@ -124,6 +124,7 @@ export function AlbumPage() {
           "p.photo-album-description",
           m.trust(preprocessDescription(description ?? "") ?? ""),
         ),
+        m("br"),
         m(AlbumShareButton, { url, name }),
         " ",
         m(AlbumsButton),
