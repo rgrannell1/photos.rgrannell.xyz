@@ -156,7 +156,7 @@ export function MapPage(): m.Component<MapPageAttrs> {
       }, [
         m("section.photos-metadata", [
           m("h1", "Map"),
-          m("p.photo-album-count", "Explore photos on a map."),
+          m("p.photo-album-count", "Places I've visited"),
         ]),
         m("section.no-margin", [
           m("div.leaflet-map", {
