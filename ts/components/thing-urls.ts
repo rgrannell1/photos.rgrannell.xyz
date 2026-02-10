@@ -34,10 +34,12 @@ export function ThingUrls() {
 
       const lat = one(thing.latitude);
       const lng = one(thing.longitude);
-      const isNullIsland = lat === '0' && lng === '0';
+      const isNullIsland = lat === "0" && lng === "0";
 
       if (lat !== undefined && lng !== undefined && !isNullIsland) {
-        const mapsHref = `https://www.google.com/maps?q=${encodeURIComponent(lat)},${encodeURIComponent(lng)}`;
+        const mapsHref = `https://www.google.com/maps?q=${
+          encodeURIComponent(lat)
+        },${encodeURIComponent(lng)}`;
         $links.push(
           m("li", m(ExternalLink, { href: mapsHref, text: "[map]" })),
         );

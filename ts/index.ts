@@ -5,6 +5,7 @@ import {
   AlbumsApp,
   ListingApp,
   ListingsApp,
+  MapApp,
   PhotoApp,
   PhotosApp,
   ThingApp,
@@ -14,6 +15,7 @@ import {
 m.route(document.body, "/albums", {
   "/albums": AlbumsApp,
   "/about": AboutApp,
+  "/map": MapApp,
   "/videos": VideosApp,
   "/photos": PhotosApp,
   "/album/:id": AlbumApp,

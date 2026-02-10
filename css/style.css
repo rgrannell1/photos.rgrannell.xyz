@@ -109,7 +109,6 @@ h1 {
   font-weight: lighter;
 }
 
-
 .thing-binomial {
   font-size: 2em;
   font-weight: lighter;
@@ -211,7 +210,6 @@ button:disabled {
   background-color: var(--hover-background-color);
 }
 
-
 .thumbnail-video {
   background-color: var(--image-placeholder-background-color);
   height: 400px;
@@ -289,8 +287,6 @@ button:disabled {
   font-size: 2em;
   display: none;
 }
-
-
 
 /* On non-hover devices, just show a metadata overlay */
 @media (hover: none), (pointer: coarse) {
@@ -448,7 +444,6 @@ button:disabled {
     padding: 2px;
   }
 
-
   /* hide the page when sidebar is visible */
   .page {
     display: block;
@@ -568,7 +563,6 @@ button:disabled {
   font-weight: bold;
 }
 
-
 .exif-heading {
   text-align: left;
 }
@@ -614,7 +608,7 @@ button:disabled {
 
 .unesco-link {
   color: white;
-  background-color:  var(--tag-color-0);
+  background-color: var(--tag-color-0);
 }
 
 .bird-link, .bird-binomial {
@@ -641,7 +635,7 @@ button:disabled {
   border-left: 8px solid var(--tag-color-6);
 }
 
-.place-link,  .camera-link, .rating-link, .style-link, .country-link {
+.place-link, .camera-link, .rating-link, .style-link, .country-link {
   border-left: 8px solid var(--tag-color-7);
 }
 
@@ -675,8 +669,6 @@ button:disabled {
     display: inline;
   }
 }
-
-
 
 /* photo album css. not clear if needed in JS or just here */
 
@@ -749,14 +741,12 @@ button:disabled {
     width: max(180px, min(80vw, 400px));
     max-width: max(180px, 80vw);
   }
-
 }
 
 .photo-metadata-inline {
   display: flex;
   gap: 10px;
 }
-
 
 .thumbnail-placeholder {
   position: absolute;
@@ -767,6 +757,26 @@ button:disabled {
   background-color: hsl(0, 0%, 69%);
 }
 
+/*
+ * ++++ ++++ ++++ ~~~~ Map Page ~~~~ ++++ ++++ ++++
+ */
+.leaflet-map {
+  width: 100%;
+  height: calc(100vh - 240px);
+  min-height: 420px;
+  margin-right: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+@media (max-width: 500px) {
+  .leaflet-map {
+    height: calc(100vh - 200px);
+    min-height: 320px;
+    margin-right: 0;
+    border-radius: 0;
+  }
+}
 
 /* No floor queries? Round would work ig */
 @media (min-width: 600px) {
@@ -798,7 +808,6 @@ button:disabled {
     max-width: 1800px;
   }
 }
-
 
 .photo-album-title {
   margin: 4px 0px;
@@ -851,7 +860,6 @@ button:disabled {
   display: flex;
   gap: 10px;
 }
-
 
 .thumbnail-placeholder {
   position: absolute;

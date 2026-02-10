@@ -2797,8 +2797,10 @@
       "dependencies": [
         "npm:@cloudflare/workers-types@^4.20251128.0",
         "npm:@rgrannell1/tribbledb@^0.0.32",
+        "npm:@types/leaflet@^1.9.20",
         "npm:@types/mithril@^2.2.7",
         "npm:esbuild@~0.25.9",
+        "npm:leaflet@^1.9.4",
         "npm:mithril@^2.3.7",
         "npm:tap@^21.1.0",
         "npm:valibot@^1.1.0"

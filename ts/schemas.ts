@@ -73,6 +73,8 @@ export const PlaceSchema = v.object({
   shortName: v.optional(v.string()),
   wikipedia: v.optional(v.string()),
   unescoId: v.optional(v.string()),
+  longitude: v.optional(v.pipe(v.string(), v.transform(Number))),
+  latitude: v.optional(v.pipe(v.string(), v.transform(Number))),
 });
 
 export const PhotoSchema = v.object({

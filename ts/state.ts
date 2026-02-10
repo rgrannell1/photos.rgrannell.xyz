@@ -30,6 +30,7 @@ import {
 import { chooseThingCover, readPhotosByThingIds } from "./services/photos.ts";
 import { readThings, toThingLinks } from "./commons/things.ts";
 import { namesToUrns } from "./services/names.ts";
+import { readGeocodedPlaces } from "./services/places.ts";
 
 /*
  * Load data from the tribbles file.
@@ -80,6 +81,7 @@ export function loadServices(tdb: TribbleDB) {
     readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb),
     toThingLinks: toThingLinks.bind(null, tdb),
+    readGeocodedPlaces: readGeocodedPlaces.bind(null, tdb),
   };
 }
 

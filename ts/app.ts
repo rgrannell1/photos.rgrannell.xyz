@@ -31,9 +31,24 @@ import { ListingsPage } from "./pages/listings.ts";
 import { readNamedTypeThings, readThing } from "./commons/things.ts";
 import type { Album } from "./types.ts";
 import { ThingPage } from "./pages/thing.ts";
+import { MapPage } from "./pages/map.ts";
+import type { GeocodedPlace } from "./services/places.ts";
 
 type AppAttrs = {};
 const state = await loadState();
+
+const headerComponent: m.Component<any> = Header();
+const sidebarComponent: m.Component<any> = Sidebar();
+const albumsPageComponent: m.Component<any> = AlbumsPage();
+const albumPageComponent: m.Component<any> = AlbumPage();
+const aboutPageComponent: m.Component<any> = AboutPage();
+const videosPageComponent: m.Component<any> = VideosPage();
+const photosPageComponent: m.Component<any> = PhotosPage();
+const photoPageComponent: m.Component<any> = PhotoPage();
+const listingPageComponent: m.Component<any> = ListingPage();
+const listingsPageComponent: m.Component<any> = ListingsPage();
+const thingPageComponent: m.Component<any> = ThingPage();
+const mapPageComponent: m.Component<any> = MapPage();
 
 listen("navigate", (event: Event) => {
   const { route } = (event as CustomEvent).detail;
@@ -61,12 +76,12 @@ export function AlbumsApp(): m.Component<AppAttrs> {
         "div.photos-app",
         { class: state.darkMode ? "dark-mode" : undefined },
         [
-          m(Header, state),
+          m(headerComponent, state),
           m("div.app-container", {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
-            m(Sidebar, { visible: state.sidebarVisible }),
-            m(AlbumsPage, {
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(albumsPageComponent, {
               albums: readAllAlbums(state.data),
               services: state.services,
               visible: state.sidebarVisible,
@@ -112,12 +127,12 @@ export function AlbumApp(): m.Component<AppAttrs> {
         "div.photos-app",
         { class: state.darkMode ? "dark-mode" : undefined },
         [
-          m(Header, state),
+          m(headerComponent, state),
           m("div.app-container", {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
-            m(Sidebar, { visible: state.sidebarVisible }),
-            m(AlbumPage, {
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(albumPageComponent, {
               album,
               subjects,
               country: album.country || [],
@@ -143,12 +158,12 @@ export function AboutApp(): m.Component<AppAttrs> {
         "div.photos-app",
         { class: state.darkMode ? "dark-mode" : undefined },
         [
-          m(Header, state),
+          m(headerComponent, state),
           m("div.app-container", {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
-            m(Sidebar, { visible: state.sidebarVisible }),
-            m(AboutPage, { visible: state.sidebarVisible }),
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(aboutPageComponent, { visible: state.sidebarVisible }),
           ]),
         ],
       );
@@ -164,12 +179,12 @@ export function VideosApp(): m.Component<AppAttrs> {
         "div.photos-app",
         { class: state.darkMode ? "dark-mode" : undefined },
         [
-          m(Header, state),
+          m(headerComponent, state),
           m("div.app-container", {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
-            m(Sidebar, { visible: state.sidebarVisible }),
-            m(VideosPage, {
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(videosPageComponent, {
               videos: readAllVideos(state.data),
               visible: state.sidebarVisible,
             }),
@@ -188,12 +203,12 @@ export function PhotosApp(): m.Component<AppAttrs> {
         "div.photos-app",
         { class: state.darkMode ? "dark-mode" : undefined },
         [
-          m(Header, state),
+          m(headerComponent, state),
           m("div.app-container", {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
-            m(Sidebar, { visible: state.sidebarVisible }),
-            m(PhotosPage, {
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(photosPageComponent, {
               photos: readAllPhotos(state.data),
               visible: state.sidebarVisible,
             }),
@@ -231,12 +246,12 @@ export function ThingApp(): m.Component<AppAttrs> {
         "div.photos-app",
         { class: state.darkMode ? "dark-mode" : undefined },
         [
-          m(Header, state),
+          m(headerComponent, state),
           m("div.app-container", {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
-            m(Sidebar, { visible: state.sidebarVisible }),
-            m(ThingPage, {
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(thingPageComponent, {
               urn: state.currentUrn,
               things,
               services: state.services,
@@ -270,12 +285,16 @@ export function PhotoApp(): m.Component<AppAttrs> {
         "div.photos-app",
         { class: state.darkMode ? "dark-mode" : undefined },
         [
-          m(Header, state),
+          m(headerComponent, state),
           m("div.app-container", {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
-            m(Sidebar, { visible: state.sidebarVisible }),
-            m(PhotoPage, { photo, services: state.services, visible: state.sidebarVisible }),
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(photoPageComponent, {
+              photo,
+              services: state.services,
+              visible: state.sidebarVisible,
+            }),
           ]),
         ],
       );
@@ -302,12 +321,12 @@ export function ListingApp(): m.Component<AppAttrs> {
         "div.photos-app",
         { class: state.darkMode ? "dark-mode" : undefined },
         [
-          m(Header, state),
+          m(headerComponent, state),
           m("div.app-container", {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
-            m(Sidebar, { visible: state.sidebarVisible }),
-            m(ListingPage, {
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(listingPageComponent, {
               type: state.currentType,
               things,
               services: state.services,
@@ -327,12 +346,39 @@ export function ListingsApp(): m.Component<AppAttrs> {
         "div.photos-app",
         { class: state.darkMode ? "dark-mode" : undefined },
         [
-          m(Header, state),
+          m(headerComponent, state),
           m("div.app-container", {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
-            m(Sidebar, { visible: state.sidebarVisible }),
-            m(ListingsPage, { visible: state.sidebarVisible }),
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(listingsPageComponent, { visible: state.sidebarVisible }),
+          ]),
+        ],
+      );
+    },
+  };
+}
+
+/* */
+export function MapApp(): m.Component<AppAttrs> {
+  return {
+    view() {
+      const geocodedPlaces: GeocodedPlace[] = state.services
+        .readGeocodedPlaces();
+
+      return m(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(headerComponent, state),
+          m("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
+          }, [
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(mapPageComponent, {
+              visible: state.sidebarVisible,
+              places: geocodedPlaces,
+            }),
           ]),
         ],
       );
