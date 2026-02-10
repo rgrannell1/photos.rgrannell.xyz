@@ -9,9 +9,12 @@ type MapPageAttrs = {
   places: GeocodedPlace[];
 };
 
-const OSM_TILES = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
+const TERRAIN_TILES =
+  "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png";
 
-const OSM_ATTRIBUTION =
+const TERRAIN_ATTRIBUTION =
+  `Map tiles by <a href="https://stadiamaps.com/">Stadia Maps</a> ` +
+  `&amp; <a href="https://stamen.com/">Stamen Design</a>, ` +
   `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`;
 
 function createLeafletMap(container: HTMLElement): LeafletMap {
@@ -22,9 +25,9 @@ function createLeafletMap(container: HTMLElement): LeafletMap {
     worldCopyJump: true,
   });
 
-  L.tileLayer(OSM_TILES, {
-    maxZoom: 19,
-    attribution: OSM_ATTRIBUTION,
+  L.tileLayer(TERRAIN_TILES, {
+    maxZoom: 20,
+    attribution: TERRAIN_ATTRIBUTION,
   }).addTo(leafletMap);
 
   return leafletMap;
