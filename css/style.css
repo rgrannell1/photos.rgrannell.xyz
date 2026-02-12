@@ -778,6 +778,17 @@ button:disabled {
   }
 }
 
+.leaflet-popup-thumbnail {
+  display: block;
+  max-width: 160px;
+  max-height: 120px;
+  width: auto;
+  height: auto;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
 /* No floor queries? Round would work ig */
 @media (min-width: 600px) {
   .unesco-links {

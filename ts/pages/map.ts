@@ -1,12 +1,16 @@
 import m from "mithril";
 import * as L from "leaflet";
 import type { Map as LeafletMap } from "leaflet";
+import type { TripPolyline } from "../services/albums.ts";
 import type { GeocodedPlace } from "../services/places.ts";
 import { urnToUrl } from "../models/urn.ts";
 
+type PlaceWithCover = GeocodedPlace & { coverThumbnailUrl?: string };
+
 type MapPageAttrs = {
   visible: boolean;
-  places: GeocodedPlace[];
+  places: PlaceWithCover[];
+  tripPolylines: TripPolyline[];
 };
 
 const TERRAIN_TILES =
@@ -67,7 +71,7 @@ function invalidateMapSizeSoon(existingMap: LeafletMap | undefined) {
 function syncPlaceMarkers(
   existingMap: LeafletMap | undefined,
   existingLayer: L.LayerGroup | undefined,
-  places: GeocodedPlace[],
+  places: PlaceWithCover[],
 ): L.LayerGroup | undefined {
   if (!existingMap) {
     return existingLayer;
@@ -94,9 +98,13 @@ function syncPlaceMarkers(
     const href = urnToUrl(place.id);
     const popupLabel = place.name || "Unknown Place";
 
-    marker.bindPopup(
-      `<a href="${href}">${popupLabel}</a>`,
-    );
+    const imagePart = place.coverThumbnailUrl
+      ? `<img src="${place.coverThumbnailUrl}" alt="" class="leaflet-popup-thumbnail" loading="lazy" /><br />`
+      : "";
+    const linkPart = `<a href="${href}">${popupLabel}</a>`;
+    const popupContent = imagePart + linkPart;
+
+    marker.bindPopup(popupContent);
 
     marker.addTo(markersLayer);
     bounds.extend([latitude, longitude]);
@@ -109,12 +117,117 @@ function syncPlaceMarkers(
   return markersLayer;
 }
 
+const TRIP_LINE_OPTIONS: L.PolylineOptions = {
+  color: "#2563eb",
+  weight: 3,
+  opacity: 0.7,
+};
+
+const SEGMENTS_PER_LEG = 16;
+const BULGE_FACTOR = 0.25;
+
+/*
+ * Quadratic Bezier point: B(t) = (1-t)²A + 2(1-t)tC + t²B.
+ */
+function bezierPoint(
+  start: [number, number],
+  control: [number, number],
+  end: [number, number],
+  t: number,
+): [number, number] {
+  const u = 1 - t;
+  const lat = u * u * start[0] + 2 * u * t * control[0] + t * t * end[0];
+  const lng = u * u * start[1] + 2 * u * t * control[1] + t * t * end[1];
+  return [lat, lng];
+}
+
+/*
+ * Arc between two points that bulges "up" (north): control point is offset
+ * perpendicular to the segment, on the north side, by a fraction of the
+ * segment length so short lines get a gentle circular-style bend.
+ */
+function arcLatLngs(
+  start: [number, number],
+  end: [number, number],
+  segmentsPerLeg: number,
+): [number, number][] {
+  const dlat = end[0] - start[0];
+  const dlng = end[1] - start[1];
+  const len = Math.sqrt(dlat * dlat + dlng * dlng) || 1e-6;
+  let perpLat = dlng;
+  let perpLng = -dlat;
+  if (perpLat < 0) {
+    perpLat = -dlng;
+    perpLng = dlat;
+  }
+  const perpLen = Math.sqrt(perpLat * perpLat + perpLng * perpLng) || 1e-6;
+  perpLat /= perpLen;
+  perpLng /= perpLen;
+  const bulge = BULGE_FACTOR * len;
+  const midLat = (start[0] + end[0]) / 2;
+  const midLng = (start[1] + end[1]) / 2;
+  const control: [number, number] = [
+    midLat + bulge * perpLat,
+    midLng + bulge * perpLng,
+  ];
+  const out: [number, number][] = [start];
+  for (let s = 1; s < segmentsPerLeg; s++) {
+    out.push(bezierPoint(start, control, end, s / segmentsPerLeg));
+  }
+  out.push(end);
+  return out;
+}
+
+function smoothLatLngs(
+  latLngs: [number, number][],
+  segmentsPerLeg: number,
+): [number, number][] {
+  if (latLngs.length < 2) {
+    return latLngs;
+  }
+  const out: [number, number][] = [];
+  for (let idx = 0; idx < latLngs.length - 1; idx++) {
+    const leg = arcLatLngs(
+      latLngs[idx],
+      latLngs[idx + 1],
+      segmentsPerLeg,
+    );
+    if (idx === 0) {
+      out.push(...leg);
+    } else {
+      out.push(...leg.slice(1));
+    }
+  }
+  return out;
+}
+
+function syncTripPolylines(
+  existingMap: LeafletMap | undefined,
+  existingLayer: L.LayerGroup | undefined,
+  tripPolylines: TripPolyline[],
+): L.LayerGroup | undefined {
+  if (!existingMap) {
+    return existingLayer;
+  }
+
+  const linesLayer = existingLayer ?? L.layerGroup().addTo(existingMap);
+  linesLayer.clearLayers();
+
+  for (const { latLngs } of tripPolylines) {
+    const curved = smoothLatLngs(latLngs, SEGMENTS_PER_LEG);
+    L.polyline(curved, TRIP_LINE_OPTIONS).addTo(linesLayer);
+  }
+
+  return linesLayer;
+}
+
 /* */
 export function MapPage(): m.Component<MapPageAttrs> {
   let leafletMap: LeafletMap | undefined;
   let mapContainer: HTMLElement | undefined;
   let lastSidebarVisible: boolean | undefined;
   let markersLayer: L.LayerGroup | undefined;
+  let tripLinesLayer: L.LayerGroup | undefined;
 
   return {
     oncreate(vnode) {
@@ -123,6 +236,11 @@ export function MapPage(): m.Component<MapPageAttrs> {
         undefined;
 
       leafletMap = ensureLeafletMap(leafletMap, mapContainer);
+      tripLinesLayer = syncTripPolylines(
+        leafletMap,
+        tripLinesLayer,
+        vnode.attrs.tripPolylines,
+      );
       markersLayer = syncPlaceMarkers(
         leafletMap,
         markersLayer,
@@ -138,6 +256,11 @@ export function MapPage(): m.Component<MapPageAttrs> {
       }
       lastSidebarVisible = vnode.attrs.visible;
 
+      tripLinesLayer = syncTripPolylines(
+        leafletMap,
+        tripLinesLayer,
+        vnode.attrs.tripPolylines,
+      );
       markersLayer = syncPlaceMarkers(
         leafletMap,
         markersLayer,
@@ -149,6 +272,7 @@ export function MapPage(): m.Component<MapPageAttrs> {
       leafletMap = destroyLeafletMap(leafletMap);
       mapContainer = undefined;
       markersLayer = undefined;
+      tripLinesLayer = undefined;
     },
 
     view(vnode) {

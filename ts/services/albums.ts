@@ -4,7 +4,30 @@ import type { Photo, Video } from "../types.ts";
 import { readThingsByPhotoIds } from "./photos.ts";
 import { readPhotos } from "./readers.ts";
 import { KnownRelations, KnownTypes } from "../constants.ts";
-import { readAlbums, readVideos } from "./readers.ts";
+import { readAlbums, readPlace, readVideos } from "./readers.ts";
+
+const NULL_ISLAND_THRESHOLD = 1e-4;
+
+function hasValidCoordinates(
+  latitude: number | undefined,
+  longitude: number | undefined,
+): boolean {
+  if (
+    latitude === undefined ||
+    longitude === undefined ||
+    !Number.isFinite(latitude) ||
+    !Number.isFinite(longitude)
+  ) {
+    return false;
+  }
+  if (
+    Math.abs(latitude) < NULL_ISLAND_THRESHOLD &&
+    Math.abs(longitude) < NULL_ISLAND_THRESHOLD
+  ) {
+    return false;
+  }
+  return true;
+}
 
 /*
  * Get the album date
@@ -141,4 +164,61 @@ export function readAlbumsByThingIds(
   }
 
   return readAlbums(tdb, albumIds);
+}
+
+export type TripPolyline = {
+  tripUrn: string;
+  latLngs: [number, number][];
+};
+
+/*
+ * For each trip, get transfers (place URNs in order), resolve each to lat/long.
+ * Return polylines for drawing on the map (only trips with at least two valid
+ * points; skip null island).
+ */
+export function getTripPolylines(tdb: TribbleDB): TripPolyline[] {
+  const allAlbums = readAllAlbums(tdb);
+  const tripUrns = [
+    ...new Set(
+      allAlbums
+        .filter((album) => album.trip != null)
+        .map((album) => album.trip as string),
+    ),
+  ];
+
+  const result: TripPolyline[] = [];
+
+  for (const tripUrn of tripUrns) {
+    const { type, id } = asUrn(tripUrn);
+    const transferTriples = tdb
+      .search({
+        source: { type, id },
+        relation: KnownRelations.TRANSFERS,
+      })
+      .triples();
+    const placeUrnsInOrder = [...transferTriples].map(
+      (triple) => triple[2] as string,
+    );
+
+    const latLngs: [number, number][] = [];
+
+    for (const placeUrn of placeUrnsInOrder) {
+      const place = readPlace(tdb, placeUrn);
+      if (!place) {
+        continue;
+      }
+      const latitude = (place as { latitude?: number }).latitude;
+      const longitude = (place as { longitude?: number }).longitude;
+      if (!hasValidCoordinates(latitude, longitude)) {
+        continue;
+      }
+      latLngs.push([latitude as number, longitude as number]);
+    }
+
+    if (latLngs.length >= 2) {
+      result.push({ tripUrn, latLngs });
+    }
+  }
+
+  return result;
 }

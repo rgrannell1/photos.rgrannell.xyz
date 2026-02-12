@@ -8,7 +8,10 @@ import {
 } from "./semantic/derive.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb";
 
-import { readAlbumsByThingIds } from "./services/albums.ts";
+import {
+  getTripPolylines,
+  readAlbumsByThingIds,
+} from "./services/albums.ts";
 import {
   readAlbum,
   readAmphibian,
@@ -82,6 +85,7 @@ export function loadServices(tdb: TribbleDB) {
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb),
     toThingLinks: toThingLinks.bind(null, tdb),
     readGeocodedPlaces: readGeocodedPlaces.bind(null, tdb),
+    readTripPolylines: getTripPolylines.bind(null, tdb),
   };
 }
 

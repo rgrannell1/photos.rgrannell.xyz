@@ -40,8 +40,10 @@ export class KnownRelations {
   // horrible
   static FLAGS = "flags";
 
+  static CENTRAL_PLACE = "centralPlace";
   static CONTAINS_ALBUM = "containsAlbum";
   static TRIP = "trip";
+  static TRANSFERS = "transfers";
   static FEATURES = "features";
   static PLACES_WITH_FEATURE = "placesWithFeature";
 }
