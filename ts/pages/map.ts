@@ -117,11 +117,18 @@ function syncPlaceMarkers(
   return markersLayer;
 }
 
-const TRIP_LINE_OPTIONS: L.PolylineOptions = {
-  color: "#2563eb",
-  weight: 3,
-  opacity: 0.7,
-};
+const TRIP_LINE_DEFAULT = "#2563eb";
+const TRIP_LINE_CAR_TRAIN = "#60a5fa";
+
+function tripLineOptions(mode: string | undefined): L.PolylineOptions {
+  const color =
+    mode === "car" || mode === "train" ? TRIP_LINE_CAR_TRAIN : TRIP_LINE_DEFAULT;
+  return {
+    color,
+    weight: 3,
+    opacity: 0.7,
+  };
+}
 
 const SEGMENTS_PER_LEG = 16;
 const BULGE_FACTOR = 0.25;
@@ -213,9 +220,9 @@ function syncTripPolylines(
   const linesLayer = existingLayer ?? L.layerGroup().addTo(existingMap);
   linesLayer.clearLayers();
 
-  for (const { latLngs } of tripPolylines) {
+  for (const { latLngs, mode } of tripPolylines) {
     const curved = smoothLatLngs(latLngs, SEGMENTS_PER_LEG);
-    L.polyline(curved, TRIP_LINE_OPTIONS).addTo(linesLayer);
+    L.polyline(curved, tripLineOptions(mode)).addTo(linesLayer);
   }
 
   return linesLayer;

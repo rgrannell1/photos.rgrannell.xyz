@@ -22,6 +22,7 @@ import {
   PlaceSchema,
   ReptileSchema,
   StatsSchema,
+  TransferSchema,
   UnescoSchema,
   VideoSchema,
 } from "../schemas.ts";
@@ -41,6 +42,7 @@ export const parseFish = parseObject(FishSchema, "fish");
 export const parseVideo = parseObject(VideoSchema, "video");
 export const parsePlace = parseObject(PlaceSchema, "place");
 export const parseAlbum = parseObject(AlbumSchema, "album");
+export const parseTransfer = parseObject(TransferSchema, "transfer");
 
 /*
  * Parse known subject types

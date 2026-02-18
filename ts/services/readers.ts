@@ -14,6 +14,7 @@ import {
   parsePlace,
   parseReptile,
   parseSubject,
+  parseTransfer,
   parseUnesco,
   parseVideo,
 } from "./parsers.ts";
@@ -25,6 +26,7 @@ export const { one: readLocation, many: readLocations } = readers(
 );
 export const { one: readUnesco, many: readUnescos } = readers(parseUnesco);
 export const { one: readAlbum, many: readAlbums } = readers(parseAlbum);
+export const { one: readTransfer, many: readTransfers } = readers(parseTransfer);
 export const { one: readMammal, many: readMammals } = readers(parseMammal);
 export const { one: readReptile, many: readReptiles } = readers(parseReptile);
 export const { one: readInsect, many: readInsects } = readers(parseInsect);

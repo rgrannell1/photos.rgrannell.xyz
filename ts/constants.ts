@@ -44,6 +44,8 @@ export class KnownRelations {
   static CONTAINS_ALBUM = "containsAlbum";
   static TRIP = "trip";
   static TRANSFERS = "transfers";
+  static SOURCE = "source";
+  static DESTINATION = "destination";
   static FEATURES = "features";
   static PLACES_WITH_FEATURE = "placesWithFeature";
 }
@@ -60,6 +62,7 @@ export class KnownTypes {
   static PHOTO = "photo";
   static VIDEO = "video";
   static ALBUM = "album";
+  static TRANSFER = "transfer";
   static UNESCO = "unesco";
   static FISH = "fish";
   static PLACE_FEATURE = "place_feature";

@@ -374,7 +374,7 @@ export function MapApp(): m.Component<AppAttrs> {
         };
       });
 
-      const tripPolylines = state.services.readTripPolylines();
+      const tripPolylines = state.services.readTransferPolylines();
 
       return m(
         "div.photos-app",

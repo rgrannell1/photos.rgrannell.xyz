@@ -12,6 +12,7 @@ import type {
   parsePhoto,
   parsePlace,
   parseReptile,
+  parseTransfer,
   parseUnesco,
   parseVideo,
 } from "./services/parsers.ts";
@@ -74,6 +75,8 @@ export type State = {
  */
 
 export type Album = NonNullable<ReturnType<typeof parseAlbum>>;
+
+export type Transfer = NonNullable<ReturnType<typeof parseTransfer>>;
 
 export type Photo = NonNullable<ReturnType<typeof parsePhoto>>;
 

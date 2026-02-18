@@ -9,7 +9,7 @@ import {
 import { TribbleDB } from "@rgrannell1/tribbledb";
 
 import {
-  getTripPolylines,
+  getTransferPolylines,
   readAlbumsByThingIds,
 } from "./services/albums.ts";
 import {
@@ -85,7 +85,7 @@ export function loadServices(tdb: TribbleDB) {
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb),
     toThingLinks: toThingLinks.bind(null, tdb),
     readGeocodedPlaces: readGeocodedPlaces.bind(null, tdb),
-    readTripPolylines: getTripPolylines.bind(null, tdb),
+    readTransferPolylines: getTransferPolylines.bind(null, tdb),
   };
 }
 

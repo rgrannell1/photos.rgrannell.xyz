@@ -174,3 +174,10 @@ export const FeatureSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
 });
+
+export const TransferSchema = v.object({
+  id: v.string(),
+  source: v.string(),
+  destination: v.string(),
+  mode: v.optional(v.string()),
+});
