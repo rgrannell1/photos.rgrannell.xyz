@@ -27,6 +27,13 @@ export function Video() {
         videoUrlUnscaled,
       } = video;
 
+      // Check if any video URLs are available
+      const hasValidUrl = videoUrl480p && videoUrl480p.length > 0;
+
+      if (!hasValidUrl) {
+        return m("div", "Video unavailable");
+      }
+
       const $source = m("source", {
         src: videoUrl480p,
         type: "video/mp4",
