@@ -6,7 +6,7 @@ import { AlbumShareButton } from "../components/album-share-button.ts";
 import { CountryLink } from "../components/place-links.ts";
 import { Video } from "../components/video.ts";
 import type { VideoAttrs } from "../components/video.ts";
-import { loadingMode } from "../services/photos.ts";
+import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
 
 import type {
   Album,
@@ -84,38 +84,16 @@ export function AlbumPage() {
       const { id } = asUrn(album.id);
       const url = `https://sharephoto.rgrannell.xyz/album/${id}`;
 
-      const stylePreference = (photo: PhotoType): number => {
-        const style = ((photo as Record<string, string>).style ?? "")
-          .toLowerCase();
-        const id = style.includes(":")
-          ? style.split(":").pop() ?? style
-          : style;
-        if (id === "landscape") return 0;
-        if (id === "cityscape") return 1;
-        if (id === "wildlife") return 2;
-        return 3;
-      };
-      const byRatingThenStyle = (a: PhotoType, b: PhotoType) => {
-        const ratingCmp = (b.rating ?? "").toLocaleString().localeCompare(
-          (a.rating ?? "").toLocaleString(),
-        );
-        if (ratingCmp !== 0) return ratingCmp;
-        return stylePreference(a) - stylePreference(b);
-      };
-      const bannerPhoto = photos.length > 0
-        ? [...photos].sort(byRatingThenStyle)[0]
-        : null;
-
+      const bannerPhoto = album.albumBanner ? services.readPhoto(album.albumBanner) : null;
       const bannerSrc = bannerPhoto
-        ? (bannerPhoto as Record<string, string>)[
-          KnownRelations.MID_IMAGE_LOSSY_URL
-        ] ??
-          (bannerPhoto as Record<string, string>)[
-            KnownRelations.THUMBNAIL_URL
-          ]
+        ? (bannerPhoto as Record<string, string>)[KnownRelations.MID_IMAGE_LOSSY_URL] ??
+          (bannerPhoto as Record<string, string>)[KnownRelations.THUMBNAIL_URL]
         : null;
+      const bannerMosaic = (bannerPhoto as Record<string, string> | null)?.[KnownRelations.MOSAIC_BANNER] ?? null;
+      const thumbnailDataUrl = bannerMosaic ? encodeBitmapDataURL(bannerMosaic, 10, 10) : null;
+
       const $banner = bannerSrc
-        ? m(AlbumBanner, { src: bannerSrc, alt: name })
+        ? m(AlbumBanner, { src: bannerSrc, alt: name, thumbnailDataUrl })
         : null;
 
       const $albumMetadata = m("section.photos-metadata", [

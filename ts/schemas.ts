@@ -48,6 +48,7 @@ export const AlbumSchema = v.object({
   // 200ms to compute on the client, so now it's precomputed
   dateRange: v.string(),
   shortDateRange: v.string(),
+  albumBanner: v.optional(v.string()),
 });
 
 export const CountrySchema = v.object({
@@ -101,6 +102,7 @@ export const PhotoSchema = v.object({
   description: v.optional(v.string()),
   summary: v.optional(v.string()),
   contrastingGrey: v.string(),
+  mosaicBanner: v.optional(v.string()),
 });
 
 export const MammalSchema = v.object({

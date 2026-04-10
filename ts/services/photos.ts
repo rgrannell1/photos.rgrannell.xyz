@@ -26,35 +26,39 @@ export function loadingMode(idx: number): "eager" | "lazy" {
 const COLOURS_CACHE: Map<string, string> = new Map();
 
 /*
- * Convert a mosaic colour string into a bitmap data URL
+ * Convert a mosaic colour string into a bitmap data URL.
+ * The string is a #-separated list of hex colours in row-major order.
+ * cols and rows default to 2 for backward compatibility.
  *
  * This is extremely slow and blocking! 110ms
  */
-export function encodeBitmapDataURL(colours: string): string {
-  if (COLOURS_CACHE.has(colours)) {
-    return COLOURS_CACHE.get(colours) as string;
+export function encodeBitmapDataURL(colours: string, cols = 2, rows = 2): string {
+  const cacheKey = `${cols}x${rows}:${colours}`;
+  if (COLOURS_CACHE.has(cacheKey)) {
+    return COLOURS_CACHE.get(cacheKey) as string;
   }
 
-  const coloursList = colours.split("#").map((colour: string) => `#${colour}`);
+  const coloursList = colours.split("#").filter(Boolean).map((colour: string) => `#${colour}`);
   const canvas = (window as any).document.createElement("canvas");
-  canvas.width = 2;
-  canvas.height = 2;
+  canvas.width = cols;
+  canvas.height = rows;
 
   const ctx = canvas.getContext("2d");
   if (!ctx) {
     throw new Error("context missing");
   }
-  ctx.fillStyle = coloursList[1];
-  ctx.fillRect(0, 0, 1, 1);
-  ctx.fillStyle = coloursList[2];
-  ctx.fillRect(1, 0, 1, 1);
-  ctx.fillStyle = coloursList[3];
-  ctx.fillRect(0, 1, 1, 1);
-  ctx.fillStyle = coloursList[4];
-  ctx.fillRect(1, 1, 1, 1);
 
-  COLOURS_CACHE.set(colours, canvas.toDataURL("image/png"));
-  return COLOURS_CACHE.get(colours) as string;
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      const colour = coloursList[row * cols + col];
+      if (!colour) break;
+      ctx.fillStyle = colour;
+      ctx.fillRect(col, row, 1, 1);
+    }
+  }
+
+  COLOURS_CACHE.set(cacheKey, canvas.toDataURL("image/png"));
+  return COLOURS_CACHE.get(cacheKey) as string;
 }
 
 /*

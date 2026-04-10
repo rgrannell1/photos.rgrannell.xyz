@@ -37,6 +37,8 @@ export class KnownRelations {
   static CONTAINS = "contains";
   static IN = "in";
   static STYLE = "style";
+  static ALBUM_BANNER = "albumBanner";
+  static MOSAIC_BANNER = "mosaicBanner";
   // horrible
   static FLAGS = "flags";
 

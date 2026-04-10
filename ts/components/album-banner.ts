@@ -1,9 +1,10 @@
 import m from "mithril";
+import { BannerImagePair } from "./photo.ts";
 
 const PARALLAX_RATE = 0.15;
 const PARALLAX_MAX_PX = 80;
 
-export type AlbumBannerAttrs = { src: string; alt: string };
+export type AlbumBannerAttrs = { src: string; alt: string; thumbnailDataUrl: string | null };
 
 export function AlbumBanner(): m.Component<AlbumBannerAttrs> {
   let rafId: number | null = null;
@@ -41,17 +42,13 @@ export function AlbumBanner(): m.Component<AlbumBannerAttrs> {
       if (rafId !== null) cancelAnimationFrame(rafId);
     },
     view(vnode: m.Vnode<AlbumBannerAttrs>) {
-      const { src, alt } = vnode.attrs;
+      const { src, alt, thumbnailDataUrl } = vnode.attrs;
       return m(
         "section.album-banner",
         { "aria-label": alt },
-        m("div.album-banner-inner", [
-          m("img.album-banner-image", {
-            src,
-            alt,
-            loading: "eager",
-          }),
-        ]),
+        m("div.album-banner-inner",
+          m(BannerImagePair, { thumbnailUrl: src, thumbnailDataUrl }),
+        ),
       );
     },
   };
