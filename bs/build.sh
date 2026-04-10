@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
-rm dist/css/*
-rm dist/js/*
+rm -f dist/css/*
+rm -f dist/js/*
 
 cp fonts/* dist/fonts/
 
