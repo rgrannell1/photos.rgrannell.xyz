@@ -1,3 +1,4 @@
+import * as esbuild from "https://deno.land/x/esbuild/mod.js";
 import {
   buildCSS,
   buildExpandedTribbles,
@@ -15,3 +16,5 @@ await Promise.all([
   buildHTML(),
   buildExpandedTribbles(),
 ]);
+
+esbuild.stop();
