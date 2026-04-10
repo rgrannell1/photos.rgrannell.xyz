@@ -90,16 +90,13 @@ export function Header() {
   return {
     view(vnode: m.Vnode<HeaderAttrs>) {
       return m("nav.header", { role: "navigation" }, [
-        // TODO this is a bad fix to an unknown reversion which messed up header item placement
-        // ideally we should find out what's actually wrong with the css, but for now...
-        // also, it doesn't work properly in Chrome
-        m("ul", { style: "display: ruby" }, [
+        m("ul", { style: "display: flex; align-items: baseline; padding-left: 0px !important;" }, [
           m("li.header-item", {}, m(BurgerMenu())),
           m("li.header-item", {}, m(HeaderBrandText())),
-          m("li.rss-tag header-item", { style: "float: right" }, m(RSSIcon())),
+          m("li.rss-tag header-item", { style: "margin-left: auto" }, m(RSSIcon())),
           m(
             "li.header-item",
-            { style: "float: right" },
+            {},
             m(ThemeSwitch(), {
               darkMode: vnode.attrs.darkMode,
             }),

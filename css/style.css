@@ -59,7 +59,7 @@
   font-display: swap;
 }
 
-ul {
+ul:not(.header ul) {
   list-style-position: inside;
   padding-left: 1rem !important;
 }
@@ -190,14 +190,12 @@ button:disabled {
   padding-right: 25px;
 
   ul {
-    overflow: hidden;
     padding: 1px;
     margin: 0px;
   }
 
   li {
     list-style-type: none;
-    float: left;
   }
 }
 
