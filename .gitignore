@@ -7,3 +7,5 @@ node_modules/
 search-engine/
 manifest/tribbles-expanded.*
 .wrangler/*
+quality/
+quality.sh
