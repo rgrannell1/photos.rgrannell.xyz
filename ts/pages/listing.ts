@@ -10,9 +10,25 @@ import { one } from "../commons/arrays.ts";
 import { ThingMetadata } from "../components/thing-metadata.ts";
 
 /*
+ * Derive an optional inline badge for the listing card title.
+ * Irish birds (those with a birdwatch URL) get the Ireland flag.
+ */
+function listingTitleExtra(thing: TripleObject, listingType: string): string | undefined {
+  if (listingType === KnownTypes.BIRD && thing.birdwatchUrl) {
+    return "🇮🇪";
+  }
+  return undefined;
+}
+
+/*
  * Draw an album for a single thing
  */
-function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
+function drawThingAlbum(
+  services: Services,
+  thing: TripleObject,
+  listingType: string,
+  idx: number,
+) {
   const id = one(thing.id);
 
   if (!id) {
@@ -24,18 +40,15 @@ function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
     return [];
   }
 
-  const $md = m(ThingMetadata, { thing });
-
   const { id: thingId, type } = asUrn(id);
 
-  // Placeholder implementation
   return [m(PhotoAlbum, {
     imageUrl: coverPhoto.fullImage,
     thumbnailUrl: coverPhoto.thumbnailUrl,
     thumbnailDataUrl: encodeBitmapDataURL(coverPhoto?.mosaicColours),
     loading: loadingMode(idx),
     trip: undefined,
-    child: $md,
+    child: m(ThingMetadata, { thing, titleExtra: listingTitleExtra(thing, listingType) }),
     onclick: navigate(`/thing/${type}:${thingId}`),
   })];
 }
@@ -46,12 +59,11 @@ function drawThingAlbum(services: Services, thing: TripleObject, idx: number) {
  */
 function AlbumsList() {
   return {
-    view(vnode: m.Vnode<{ services: Services; things: TripleObject[] }>) {
-      const { services, things } = vnode.attrs;
+    view(vnode: m.Vnode<{ services: Services; things: TripleObject[]; listingType: string }>) {
+      const { services, things, listingType } = vnode.attrs;
 
       const $albumComponents = things.flatMap((thing, idx) => {
-        console.log("Drawing album for thing:", thing);
-        return drawThingAlbum(services, thing, idx);
+        return drawThingAlbum(services, thing, listingType, idx);
       });
 
       return m("section.album-container", $albumComponents);
@@ -176,7 +188,7 @@ export function ListingPage() {
         class: visible ? "page sidebar-visible" : "page",
       }, [
         m("section.album-metadata", $md),
-        m(AlbumsList, { services, things }),
+        m(AlbumsList, { services, things, listingType: type }),
       ]);
     },
   };

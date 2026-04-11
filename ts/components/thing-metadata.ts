@@ -16,8 +16,8 @@ export function ThingMetadata() {
   ]);
 
   return {
-    view(vnode: m.Vnode<{ thing: TripleObject }>) {
-      const { thing } = vnode.attrs;
+    view(vnode: m.Vnode<{ thing: TripleObject; titleExtra?: string }>) {
+      const { thing, titleExtra } = vnode.attrs;
       const { type } = asUrn(one(thing.id) as string);
 
       const $links = m(ThingUrls, { things: [thing] });
@@ -25,8 +25,12 @@ export function ThingMetadata() {
         ? `${countryEmoji(thing)} ${one(thing.name)}`
         : one(thing.name);
 
+      const titleContent = titleExtra
+        ? [title, " ", titleExtra]
+        : title;
+
       return m("div.photo-album-metadata", [
-        m("p.photo-album-title", title),
+        m("p.photo-album-title", titleContent),
         $links,
       ]);
     },
