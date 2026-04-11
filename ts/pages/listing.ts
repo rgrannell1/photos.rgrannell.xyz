@@ -60,6 +60,17 @@ function AlbumsList() {
 }
 
 /*
+ * Display type-specific detail content beneath the listing title
+ */
+function ListingDetails() {
+  return {
+    view(_vnode: m.Vnode<{ type: string }>) {
+      return null;
+    },
+  };
+}
+
+/*
  * Display a pluralised title for the listing page,
  * e.g "Countries"
  */
@@ -108,6 +119,7 @@ export function ListingPage() {
 
       const $md = [
         m(ListingTitle, { type }),
+        m(ListingDetails, { type }),
       ];
 
       if (!NonListableTypes.has(type)) {
