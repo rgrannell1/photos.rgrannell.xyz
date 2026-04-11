@@ -6,7 +6,7 @@ import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { setTitle } from "../services/window.ts";
 import { CountryLink } from "../components/place-links.ts";
-import { block, broadcast } from "../commons/events.ts";
+import { block, broadcast, navigate } from "../commons/events.ts";
 import { albumYear } from "../services/albums.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { setify } from "../commons/sets.ts";
@@ -135,10 +135,14 @@ export function AlbumsPage() {
     view(vnode: m.Vnode<AlbumsPageAttrs>) {
       const { albums, services, visible, selectedCountry } = vnode.attrs;
 
+      const onSelectCountry = (slug: string | undefined) => {
+        broadcast("navigate", { route: slug ? `/albums/${slug}` : "/albums" });
+      };
+
       const $md = m("section.album-metadata", [
         m("h1.albums-header", "Albums"),
         m(AlbumStats),
-        m(CountryFilter, { services, selectedCountry }),
+        m(CountryFilter, { services, selectedCountry, onSelect: onSelectCountry }),
       ]);
 
       return m("div", {

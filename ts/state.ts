@@ -102,7 +102,6 @@ export async function loadState(): Promise<State> {
     currentPhoto: undefined,
     currentUrn: undefined,
     currentType: undefined,
-    selectedCountry: undefined,
     data,
     darkMode: DarkMode.load(),
     sidebarVisible: false,

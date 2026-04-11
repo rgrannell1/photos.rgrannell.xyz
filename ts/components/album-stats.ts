@@ -23,7 +23,7 @@ export function AlbumStats() {
         " · ",
         `${stats.albums} albums · ${stats.years} years · `,
         `${stats.countries} `,
-        m("a", { href: "#/listing/country" }, "countries"),
+        m("a", { href: "#/listing/country", title: "well, territories" }, "countries"),
         " · ",
         `${stats.bird_species} `,
         m("a", { href: "#/listing/bird" }, "bird species"),

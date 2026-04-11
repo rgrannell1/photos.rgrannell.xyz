@@ -67,20 +67,18 @@ listen("click_burger_menu", () => {
   state.sidebarVisible = !state.sidebarVisible;
 });
 
-listen("filter_country", (event: Event) => {
-  const { id } = (event as CustomEvent).detail;
-  state.selectedCountry = state.selectedCountry === id ? undefined : id;
-});
-
 /* */
 export function AlbumsApp(): m.Component<AppAttrs> {
   return {
     oninit() {
     },
     view() {
+      const countrySlug = m.route.param("country");
+      const selectedCountry = countrySlug ? `urn:ró:country:${countrySlug}` : undefined;
+
       const allAlbums = readAllAlbums(state.data);
-      const albums = state.selectedCountry
-        ? allAlbums.filter((album) => setify(album.country).has(state.selectedCountry!))
+      const albums = selectedCountry
+        ? allAlbums.filter((album) => setify(album.country).has(selectedCountry))
         : allAlbums;
 
       return m(
@@ -96,7 +94,7 @@ export function AlbumsApp(): m.Component<AppAttrs> {
               albums,
               services: state.services,
               visible: state.sidebarVisible,
-              selectedCountry: state.selectedCountry,
+              selectedCountry,
             }),
           ]),
         ],

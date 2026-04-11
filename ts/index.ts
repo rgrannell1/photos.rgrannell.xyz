@@ -14,6 +14,7 @@ import {
 
 m.route(document.body, "/albums", {
   "/albums": AlbumsApp,
+  "/albums/:country": AlbumsApp,
   "/about": AboutApp,
   "/map": MapApp,
   "/videos": VideosApp,
