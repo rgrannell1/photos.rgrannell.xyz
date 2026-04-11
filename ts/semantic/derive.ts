@@ -19,6 +19,15 @@ import {
 const styleNames = new Set<string>();
 
 /*
+ * Canonical URN for each known alias. Any triple whose source or target
+ * matches an alias key is rewritten to use the canonical form, ensuring
+ * duplicate country (or other) entities are merged before indexing.
+ */
+const URN_ALIASES = new Map<string, string>([
+  ["urn:ró:country:usa", "urn:ró:country:united-states-of-america"],
+]);
+
+/*
  * Expand CDN urls with their endpoint
  */
 export function expandCdnUrls(triple: Triple): Triple[] {
@@ -36,6 +45,20 @@ export function expandCdnUrls(triple: Triple): Triple[] {
     src,
     rel,
     `${ENDPOINT}${tgt}`,
+  ]];
+}
+
+/*
+ * Rewrite aliased URNs to their canonical form so duplicate entities are
+ * merged before indexing. E.g. country:usa → country:united-states-of-america.
+ */
+export function canonicaliseUrns(triple: Triple): Triple[] {
+  const [src, rel, tgt] = triple;
+
+  return [[
+    typeof src === "string" ? (URN_ALIASES.get(src) ?? src) : src,
+    rel,
+    typeof tgt === "string" ? (URN_ALIASES.get(tgt) ?? tgt) : tgt,
   ]];
 }
 
@@ -247,6 +270,7 @@ export function deriveTriples(
     expandUrns,
     expandTripleCuries,
     expandCdnUrls,
+    canonicaliseUrns,
   ];
 
   let outputTriples: Triple[] = [triple];
