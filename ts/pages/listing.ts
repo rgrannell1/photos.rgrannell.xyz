@@ -76,6 +76,22 @@ function BirdListingDetails() {
 }
 
 /*
+ * Mammal-specific listing details: species counts broken down by wild/total and Irish wild
+ */
+function MammalListingDetails() {
+  return {
+    view(vnode: m.Vnode<{ services: Services }>) {
+      const { services } = vnode.attrs;
+      const { wildSpecies, totalSpecies, irishWildSpecies } = services.readMammalStats();
+
+      return m("p.listing-details",
+        `🇮🇪 ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
+      );
+    },
+  };
+}
+
+/*
  * Display type-specific detail content beneath the listing title
  */
 function ListingDetails() {
@@ -85,6 +101,10 @@ function ListingDetails() {
 
       if (type === KnownTypes.BIRD) {
         return m(BirdListingDetails, { services });
+      }
+
+      if (type === KnownTypes.MAMMAL) {
+        return m(MammalListingDetails, { services });
       }
 
       return null;

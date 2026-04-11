@@ -3,7 +3,7 @@ import { readers } from "../commons/parser.ts";
 import { KnownRelations, KnownTypes } from "../constants.ts";
 import type { Country } from "../types.ts";
 
-export type BirdStats = {
+export type SubjectStats = {
   wildSpecies: number;
   totalSpecies: number;
   irishWildSpecies: number;
@@ -54,7 +54,7 @@ export const { one: readFeature, many: readFeatures } = readers(parseFeature);
  * "Wild" means the subject URN has ?context=wild (or no context).
  * "Irish" means the base bird URN has a birdwatchUrl relation.
  */
-export function readBirdStats(tdb: TribbleDB): BirdStats {
+export function readBirdStats(tdb: TribbleDB): SubjectStats {
   const wildBirdSubjects = tdb.search({
     relation: KnownRelations.SUBJECT,
     target: { type: KnownTypes.BIRD, qs: { context: "wild" } },
@@ -84,6 +84,65 @@ export function readBirdStats(tdb: TribbleDB): BirdStats {
     wildSpecies: wildBirdIds.size,
     totalSpecies: allBirdIds.size,
     irishWildSpecies,
+  };
+}
+
+const IRELAND_URN = "urn:ró:country:ireland";
+
+/*
+ * Count wild, total, and Irish wild mammal species seen across all photos.
+ *
+ * "Wild" means the subject URN has ?context=wild (or no context).
+ * "Irish" means the photo also has a location relation to Ireland (transitive).
+ */
+export function readMammalStats(tdb: TribbleDB): SubjectStats {
+  const wildMammalTriples = tdb.search({
+    relation: KnownRelations.SUBJECT,
+    target: { type: KnownTypes.MAMMAL, qs: { context: "wild" } },
+  }).triples();
+
+  const allMammalSubjects = tdb.search({
+    relation: KnownRelations.SUBJECT,
+    target: { type: KnownTypes.MAMMAL },
+  }).triples();
+
+  // Build photo -> [mammal ids] map for wild subjects
+  const wildPhotoToMammals = new Map<string, Set<string>>();
+  for (const [photoUrn, , targetUrn] of wildMammalTriples) {
+    const mammalId = asUrn(targetUrn).id;
+    let mammalSet = wildPhotoToMammals.get(photoUrn);
+    if (!mammalSet) {
+      mammalSet = new Set();
+      wildPhotoToMammals.set(photoUrn, mammalSet);
+    }
+    mammalSet.add(mammalId);
+  }
+
+  // Photos with an Ireland location (transitive, so includes places within Ireland)
+  const irelandPhotoUrns = new Set(
+    tdb.search({
+      relation: KnownRelations.LOCATION,
+      target: IRELAND_URN,
+    }).sources(),
+  );
+
+  // Wild mammal species seen in Ireland
+  const irishWildMammalIds = new Set<string>();
+  for (const [photoUrn, mammalIds] of wildPhotoToMammals) {
+    if (irelandPhotoUrns.has(photoUrn)) {
+      for (const mammalId of mammalIds) {
+        irishWildMammalIds.add(mammalId);
+      }
+    }
+  }
+
+  const wildMammalIds = new Set(wildMammalTriples.map(([, , targetUrn]) => asUrn(targetUrn).id));
+  const allMammalIds = new Set(allMammalSubjects.map(([, , targetUrn]) => asUrn(targetUrn).id));
+
+  return {
+    wildSpecies: wildMammalIds.size,
+    totalSpecies: allMammalIds.size,
+    irishWildSpecies: irishWildMammalIds.size,
   };
 }
 
