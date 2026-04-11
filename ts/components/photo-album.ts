@@ -1,5 +1,6 @@
 import m from "mithril";
 import { ImagePair } from "./photo.ts";
+import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../constants.ts";
 
 // use this to keep track of trips, to assign each a
 // colour distinct from the adjacent ones
@@ -59,6 +60,8 @@ export function PhotoAlbum() {
           thumbnailDataUrl,
           loading,
           onclick,
+          width: PHOTO_WIDTH,
+          height: PHOTO_HEIGHT,
         }),
         // NODE this might be broken
         child,

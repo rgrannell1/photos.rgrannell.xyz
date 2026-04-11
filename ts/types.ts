@@ -22,7 +22,8 @@ export type ApplicationEvents =
   | "switch_theme"
   | "click_photo_metadata"
   | "photo_loaded"
-  | "navigate";
+  | "navigate"
+  | "filter_country";
 
 export type EnvConfig = {
   photos_url: string;
@@ -68,6 +69,7 @@ export type State = {
   currentPhoto: string | undefined;
   currentType: string | undefined;
   currentUrn: string | undefined;
+  selectedCountry: string | undefined;
 };
 
 /*

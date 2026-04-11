@@ -19,6 +19,7 @@ import { AboutPage } from "./pages/about.ts";
 import { VideosPage } from "./pages/videos.ts";
 import { readAllVideos } from "./services/videos.ts";
 import { listen } from "./commons/events.ts";
+import { setify } from "./commons/sets.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
@@ -66,12 +67,22 @@ listen("click_burger_menu", () => {
   state.sidebarVisible = !state.sidebarVisible;
 });
 
+listen("filter_country", (event: Event) => {
+  const { id } = (event as CustomEvent).detail;
+  state.selectedCountry = state.selectedCountry === id ? undefined : id;
+});
+
 /* */
 export function AlbumsApp(): m.Component<AppAttrs> {
   return {
     oninit() {
     },
     view() {
+      const allAlbums = readAllAlbums(state.data);
+      const albums = state.selectedCountry
+        ? allAlbums.filter((album) => setify(album.country).has(state.selectedCountry!))
+        : allAlbums;
+
       return m(
         "div.photos-app",
         { class: state.darkMode ? "dark-mode" : undefined },
@@ -82,9 +93,10 @@ export function AlbumsApp(): m.Component<AppAttrs> {
           }, [
             m(sidebarComponent, { visible: state.sidebarVisible }),
             m(albumsPageComponent, {
-              albums: readAllAlbums(state.data),
+              albums,
               services: state.services,
               visible: state.sidebarVisible,
+              selectedCountry: state.selectedCountry,
             }),
           ]),
         ],

@@ -349,6 +349,23 @@ button:disabled {
   display: inline;
 }
 
+.country-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+}
+
+.country-filter-flag {
+  font-size: 1.4em;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.country-filter-flag--selected,
+.country-filter:not(:has(.country-filter-flag--selected)) .country-filter-flag {
+  opacity: 1;
+}
+
 .photo-album-trip-previous {
   margin-top: 1em;
 }

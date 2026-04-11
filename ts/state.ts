@@ -14,6 +14,7 @@ import {
 } from "./services/albums.ts";
 import {
   readAlbum,
+  readAllCountries,
   readAmphibian,
   readCountries,
   readCountry,
@@ -79,6 +80,7 @@ export function loadServices(tdb: TribbleDB) {
     readUnescos: readUnescos.bind(null, tdb),
     readThings: readThings.bind(null, tdb),
     readCountries: readCountries.bind(null, tdb),
+    readAllCountries: readAllCountries.bind(null, tdb),
     namesToUrns: namesToUrns.bind(null, tdb),
     readThingCover: chooseThingCover.bind(null, tdb),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb),
@@ -100,6 +102,7 @@ export async function loadState(): Promise<State> {
     currentPhoto: undefined,
     currentUrn: undefined,
     currentType: undefined,
+    selectedCountry: undefined,
     data,
     darkMode: DarkMode.load(),
     sidebarVisible: false,

@@ -10,6 +10,7 @@ import { block, broadcast } from "../commons/events.ts";
 import { albumYear } from "../services/albums.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { setify } from "../commons/sets.ts";
+import { CountryFilter } from "../components/country-filter.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];
@@ -122,6 +123,7 @@ type AlbumsPageAttrs = {
   albums: Album[];
   services: Services;
   visible: boolean;
+  selectedCountry: string | undefined;
 };
 
 /* */
@@ -131,11 +133,12 @@ export function AlbumsPage() {
       setTitle("Albums - photos");
     },
     view(vnode: m.Vnode<AlbumsPageAttrs>) {
-      const { albums, services, visible } = vnode.attrs;
+      const { albums, services, visible, selectedCountry } = vnode.attrs;
 
       const $md = m("section.album-metadata", [
         m("h1.albums-header", "Albums"),
         m(AlbumStats),
+        m(CountryFilter, { services, selectedCountry }),
       ]);
 
       return m("div", {

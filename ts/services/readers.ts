@@ -1,5 +1,7 @@
 import { TribbleDB } from "@rgrannell1/tribbledb";
 import { readers } from "../commons/parser.ts";
+import { KnownTypes } from "../constants.ts";
+import type { Country } from "../types.ts";
 
 import {
   parseAlbum,
@@ -39,3 +41,26 @@ export const { one: readAmphibian, many: readAmphibians } = readers(
 export const { one: readVideo, many: readVideos } = readers(parseVideo);
 export const { one: readPhoto, many: readPhotos } = readers(parsePhoto);
 export const { one: readFeature, many: readFeatures } = readers(parseFeature);
+
+/*
+ * Read all countries from the TribbleDB, sorted by name
+ */
+export function readAllCountries(tdb: TribbleDB): Country[] {
+  const ids = tdb.search({
+    source: { type: KnownTypes.COUNTRY },
+  }).sources();
+
+  const countries = readCountries(tdb, ids) as Country[];
+
+  const flagToName = new Map(
+    countries
+      .filter((country) => country.flag)
+      .map((country) => [country.flag!, country.name]),
+  );
+
+  return countries.sort((countryA, countryB) => {
+    const nameA = flagToName.get(countryA.flag ?? "") ?? countryA.name;
+    const nameB = flagToName.get(countryB.flag ?? "") ?? countryB.name;
+    return nameA.localeCompare(nameB);
+  });
+}
