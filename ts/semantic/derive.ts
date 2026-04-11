@@ -297,6 +297,7 @@ export function postIndexing(tdb: TribbleDB) {
   addPlaceFeatureSubjects(tdb);
   addInverseRelations(tdb);
   addNestedLocations(tdb);
+  addTransitivePhotoLocations(tdb);
 }
 
 /*
@@ -369,6 +370,36 @@ export function addNestedLocations(tdb: TribbleDB) {
 }
 
 /*
- * TODO: if a photo is in Zaragoza, it's in Spain. Make sure that
-         link is captured.
+ * For every photo that has a direct location, walk up the transitive `in`
+ * hierarchy (which addNestedLocations already pre-computed) and emit a
+ * location triple for every ancestor. This means a photo tagged with
+ * Stockholm will also appear when browsing Sweden.
+ *
+ * Must run after addNestedLocations.
  */
+export function addTransitivePhotoLocations(tdb: TribbleDB) {
+  const photoLocationTriples = tdb.search({
+    source: { type: KnownTypes.PHOTO },
+    relation: KnownRelations.LOCATION,
+  }).triples();
+
+  const newTriples: Triple[] = [];
+
+  for (const [photoUrn, , locationUrn] of photoLocationTriples) {
+    const parsed = asUrn(locationUrn);
+    if (!parsed) {
+      continue;
+    }
+
+    const ancestorTriples = tdb.search({
+      source: { type: parsed.type, id: parsed.id },
+      relation: KnownRelations.IN,
+    }).triples();
+
+    for (const [, , ancestorUrn] of ancestorTriples) {
+      newTriples.push([photoUrn, KnownRelations.LOCATION, ancestorUrn]);
+    }
+  }
+
+  tdb.add(newTriples);
+}
