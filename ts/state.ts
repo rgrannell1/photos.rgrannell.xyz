@@ -16,6 +16,7 @@ import {
   readAlbum,
   readAllCountries,
   readAmphibian,
+  readBirdStats,
   readCountries,
   readCountry,
   readFeatures,
@@ -88,6 +89,7 @@ export function loadServices(tdb: TribbleDB) {
     toThingLinks: toThingLinks.bind(null, tdb),
     readGeocodedPlaces: readGeocodedPlaces.bind(null, tdb),
     readTransferPolylines: getTransferPolylines.bind(null, tdb),
+    readBirdStats: readBirdStats.bind(null, tdb),
   };
 }
 

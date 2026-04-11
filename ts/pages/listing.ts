@@ -1,5 +1,5 @@
 import m from "mithril";
-import { NonListableTypes } from "../constants.ts";
+import { KnownTypes, NonListableTypes } from "../constants.ts";
 import { capitalise, pluralise } from "../commons/strings.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { navigate } from "../commons/events.ts";
@@ -60,11 +60,33 @@ function AlbumsList() {
 }
 
 /*
+ * Bird-specific listing details: species counts broken down by wild/total and Irish wild
+ */
+function BirdListingDetails() {
+  return {
+    view(vnode: m.Vnode<{ services: Services }>) {
+      const { services } = vnode.attrs;
+      const { wildSpecies, totalSpecies, irishWildSpecies } = services.readBirdStats();
+
+      return m("p.listing-details",
+        `🇮🇪 ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
+      );
+    },
+  };
+}
+
+/*
  * Display type-specific detail content beneath the listing title
  */
 function ListingDetails() {
   return {
-    view(_vnode: m.Vnode<{ type: string }>) {
+    view(vnode: m.Vnode<{ type: string; services: Services }>) {
+      const { type, services } = vnode.attrs;
+
+      if (type === KnownTypes.BIRD) {
+        return m(BirdListingDetails, { services });
+      }
+
       return null;
     },
   };
@@ -119,7 +141,7 @@ export function ListingPage() {
 
       const $md = [
         m(ListingTitle, { type }),
-        m(ListingDetails, { type }),
+        m(ListingDetails, { type, services }),
       ];
 
       if (!NonListableTypes.has(type)) {
