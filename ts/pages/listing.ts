@@ -2,7 +2,7 @@ import m from "mithril";
 import { KnownTypes, NonListableTypes } from "../constants.ts";
 import { capitalise, pluralise } from "../commons/strings.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { navigate } from "../commons/events.ts";
+import { broadcast, navigate } from "../commons/events.ts";
 import type { Services } from "../types.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
@@ -72,16 +72,23 @@ function AlbumsList() {
 }
 
 /*
- * Bird-specific listing details: species counts broken down by wild/total and Irish wild
+ * Bird-specific listing details: species counts broken down by wild/total and Irish wild.
+ * The Ireland flag is clickable to toggle filtering to Irish species only.
  */
 function BirdListingDetails() {
   return {
-    view(vnode: m.Vnode<{ services: Services }>) {
-      const { services } = vnode.attrs;
+    view(vnode: m.Vnode<{ services: Services; filter: string | undefined; onToggleIreland: () => void }>) {
+      const { services, filter, onToggleIreland } = vnode.attrs;
       const { wildSpecies, totalSpecies, irishWildSpecies } = services.readBirdStats();
+      const irelandActive = filter === "ireland";
 
       return m("p.listing-details",
-        `🇮🇪 ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
+        m("span.listing-filter-flag", {
+          title: "Filter to Irish species",
+          class: irelandActive ? "listing-filter-flag--selected" : undefined,
+          onclick: onToggleIreland,
+        }, "🇮🇪"),
+        ` ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
       );
     },
   };
@@ -108,11 +115,11 @@ function MammalListingDetails() {
  */
 function ListingDetails() {
   return {
-    view(vnode: m.Vnode<{ type: string; services: Services }>) {
-      const { type, services } = vnode.attrs;
+    view(vnode: m.Vnode<{ type: string; services: Services; filter: string | undefined; onToggleIreland: () => void }>) {
+      const { type, services, filter, onToggleIreland } = vnode.attrs;
 
       if (type === KnownTypes.BIRD) {
-        return m(BirdListingDetails, { services });
+        return m(BirdListingDetails, { services, filter, onToggleIreland });
       }
 
       if (type === KnownTypes.MAMMAL) {
@@ -160,6 +167,7 @@ type ListingPageAttrs = {
   things: TripleObject[];
   services: Services;
   visible: boolean;
+  filter: string | undefined;
 };
 
 /*
@@ -169,11 +177,20 @@ type ListingPageAttrs = {
 export function ListingPage() {
   return {
     view(vnode: m.Vnode<ListingPageAttrs>) {
-      const { type, things, services, visible } = vnode.attrs;
+      const { type, things, services, visible, filter } = vnode.attrs;
+
+      const onToggleIreland = () => {
+        const isActive = filter === "ireland";
+        broadcast("navigate", { route: isActive ? `/listing/${type}` : `/listing/${type}/ireland` });
+      };
+
+      const displayThings = (type === KnownTypes.BIRD && filter === "ireland")
+        ? things.filter((thing) => thing.birdwatchUrl)
+        : things;
 
       const $md = [
         m(ListingTitle, { type }),
-        m(ListingDetails, { type, services }),
+        m(ListingDetails, { type, services, filter, onToggleIreland }),
       ];
 
       if (!NonListableTypes.has(type)) {
@@ -188,7 +205,7 @@ export function ListingPage() {
         class: visible ? "page sidebar-visible" : "page",
       }, [
         m("section.album-metadata", $md),
-        m(AlbumsList, { services, things, listingType: type }),
+        m(AlbumsList, { services, things: displayThings, listingType: type }),
       ]);
     },
   };

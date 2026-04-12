@@ -325,6 +325,7 @@ export function ListingApp(): m.Component<AppAttrs> {
         return m("p", "No type selected");
       }
 
+      const filter = m.route.param("filter") as string | undefined;
       const things = readNamedTypeThings(state.data, state.currentType);
 
       return m(
@@ -341,6 +342,7 @@ export function ListingApp(): m.Component<AppAttrs> {
               things,
               services: state.services,
               visible: state.sidebarVisible,
+              filter,
             }),
           ]),
         ],

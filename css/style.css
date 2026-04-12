@@ -366,6 +366,15 @@ button:disabled {
   opacity: 1;
 }
 
+.listing-filter-flag {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.listing-filter-flag--selected {
+  opacity: 1;
+}
+
 .photo-album-trip-previous {
   margin-top: 1em;
 }

@@ -23,5 +23,6 @@ m.route(document.body, "/albums", {
   "/thing/:pair": ThingApp,
   "/photo/:id": PhotoApp,
   "/listing/:type": ListingApp,
+  "/listing/:type/:filter": ListingApp,
   "/listings": ListingsApp,
 });
