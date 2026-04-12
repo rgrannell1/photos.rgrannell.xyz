@@ -3,6 +3,7 @@ import {
   AboutApp,
   AlbumApp,
   AlbumsApp,
+  ChecklistApp,
   ListingApp,
   ListingsApp,
   MapApp,
@@ -25,4 +26,6 @@ m.route(document.body, "/albums", {
   "/listing/:type": ListingApp,
   "/listing/:type/:filter": ListingApp,
   "/listings": ListingsApp,
+  "/checklist": ChecklistApp,
+  "/checklist/:filter": ChecklistApp,
 });

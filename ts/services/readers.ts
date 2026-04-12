@@ -148,6 +148,82 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
   };
 }
 
+export type ChecklistEntry = {
+  birdId: string;
+  name: string;
+  firstSeen: string;
+  isIrish: boolean;
+  isWild: boolean;
+};
+
+/*
+ * Read the bird life-list, sorted chronologically by first sighting.
+ *
+ * Includes both wild and captive sightings. "First seen" is the earliest
+ * createdAt timestamp among all photos featuring that bird as a subject.
+ * isWild is true if the bird has been photographed in a wild context at least once.
+ */
+export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
+  const allBirdTriples = tdb.search({
+    relation: KnownRelations.SUBJECT,
+    target: { type: KnownTypes.BIRD },
+  }).triples();
+
+  const wildBirdIds = new Set(
+    tdb.search({
+      relation: KnownRelations.SUBJECT,
+      target: { type: KnownTypes.BIRD, qs: { context: "wild" } },
+    }).triples().map(([, , birdUrn]) => asUrn(birdUrn).id),
+  );
+
+  // Map birdId -> earliest createdAt (as numeric string) across all photos
+  const birdFirstSeen = new Map<string, string>();
+
+  for (const [photoUrn, , birdUrn] of allBirdTriples) {
+    const birdId = asUrn(birdUrn).id;
+    if (birdId === "unknown") continue;
+
+    const photoId = asUrn(photoUrn).id;
+
+    const photo = tdb.search({
+      source: { type: KnownTypes.PHOTO, id: photoId },
+    }).firstObject();
+
+    const createdAt = photo?.createdAt as string | undefined;
+    if (!createdAt) continue;
+
+    const existing = birdFirstSeen.get(birdId);
+    if (!existing || parseInt(createdAt) < parseInt(existing)) {
+      birdFirstSeen.set(birdId, createdAt);
+    }
+  }
+
+  const entries: ChecklistEntry[] = [];
+
+  for (const [birdId, firstSeen] of birdFirstSeen) {
+    const birdThing = tdb.search({
+      source: { type: KnownTypes.BIRD, id: birdId },
+    }).firstObject();
+
+    const rawName = birdThing?.name;
+    const name = (Array.isArray(rawName) ? rawName[0] : rawName as string | undefined) ?? birdId;
+
+    const isIrish = tdb.search({
+      source: { type: KnownTypes.BIRD, id: birdId },
+      relation: KnownRelations.BIRDWATCH_URL,
+    }).triples().length > 0;
+
+    const isWild = wildBirdIds.has(birdId);
+
+    entries.push({ birdId, name, firstSeen, isIrish, isWild });
+  }
+
+  // Sort chronologically — earliest first-sighting first
+  entries.sort((entryA, entryB) => parseInt(entryA.firstSeen) - parseInt(entryB.firstSeen));
+
+  return entries;
+}
+
 /*
  * Read all countries from the TribbleDB, sorted by name
  */

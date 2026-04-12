@@ -29,6 +29,8 @@ import { chooseThingCover, readAllPhotos } from "./services/photos.ts";
 import { readAlbum, readPhoto } from "./services/readers.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { ListingsPage } from "./pages/listings.ts";
+import { ChecklistPage } from "./pages/checklist.ts";
+import { readWildBirdChecklist } from "./services/readers.ts";
 import { readNamedTypeThings, readThing } from "./commons/things.ts";
 import type { Album } from "./types.ts";
 import { ThingPage } from "./pages/thing.ts";
@@ -48,6 +50,7 @@ const photosPageComponent: m.Component<any> = PhotosPage();
 const photoPageComponent: m.Component<any> = PhotoPage();
 const listingPageComponent: m.Component<any> = ListingPage();
 const listingsPageComponent: m.Component<any> = ListingsPage();
+const checklistPageComponent: m.Component<any> = ChecklistPage();
 const thingPageComponent: m.Component<any> = ThingPage();
 const mapPageComponent: m.Component<any> = MapPage();
 
@@ -366,6 +369,35 @@ export function ListingsApp(): m.Component<AppAttrs> {
             m(listingsPageComponent, {
               visible: state.sidebarVisible,
               services: state.services,
+            }),
+          ]),
+        ],
+      );
+    },
+  };
+}
+
+/* */
+export function ChecklistApp(): m.Component<AppAttrs> {
+  return {
+    view() {
+      const filter = m.route.param("filter") as string | undefined;
+      const entries = readWildBirdChecklist(state.data);
+
+      return m(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(headerComponent, state),
+          m("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
+          }, [
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(checklistPageComponent, {
+              entries,
+              services: state.services,
+              visible: state.sidebarVisible,
+              filter,
             }),
           ]),
         ],

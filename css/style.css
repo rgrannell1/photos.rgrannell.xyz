@@ -916,3 +916,69 @@ button:disabled {
   height: auto;
   background-color: hsl(0, 0%, 69%);
 }
+
+/*
+ * ++++ ++++ ++++ ~~~~ Checklist Page ~~~~ ++++ ++++ ++++
+ */
+
+.checklist-container {
+  margin: 0 20px 40px;
+}
+
+.checklist-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 900px;
+}
+
+.checklist-table th {
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--border-color, #ccc);
+  font-weight: bold;
+}
+
+.checklist-table td {
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border-color, #eee);
+  vertical-align: middle;
+}
+
+.checklist-table tr:last-child td {
+  border-bottom: none;
+}
+
+.checklist-number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--secondary-text-color);
+  width: 3em;
+}
+
+.checklist-species {
+  font-style: italic;
+  color: var(--secondary-text-color);
+}
+
+.checklist-first-seen {
+  white-space: nowrap;
+}
+
+.checklist-link-cell {
+  text-align: center;
+  width: 2em;
+}
+
+.checklist-link {
+  text-decoration: none;
+  color: var(--font-colour);
+  font-size: 1.1em;
+}
+
+.checklist-link:hover {
+  opacity: 0.6;
+}
+
+.checklist-irish-flag {
+  margin-right: 2px;
+}
