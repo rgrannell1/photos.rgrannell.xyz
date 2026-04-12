@@ -1,54 +1,77 @@
 import m from "mithril";
 import { navigate } from "../commons/events.ts";
+import type { Services } from "../types.ts";
+import { PhotoAlbum } from "../components/photo-album.ts";
+import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
 
-type ListingItemAttrs = {
-  name: string;
+type CategoryDef = {
+  type: string;
+  label: string;
   route: string;
+  preferLandscape?: boolean;
 };
 
-function ListingItem() {
-  return {
-    view(vnode: m.Vnode<ListingItemAttrs>) {
-      return m(
-        "li",
-        m("a", {
-          class: "listing-item",
-          onclick: navigate(vnode.attrs.route),
-        }, vnode.attrs.name),
-      );
-    },
-  };
+const CATEGORIES: CategoryDef[] = [
+  { type: "place", label: "Places", route: "/listing/place", preferLandscape: true },
+  { type: "country", label: "Countries", route: "/listing/country", preferLandscape: true },
+  { type: "bird", label: "Birds", route: "/listing/bird" },
+  { type: "mammal", label: "Mammals", route: "/listing/mammal" },
+  { type: "reptile", label: "Reptiles", route: "/listing/reptile" },
+  { type: "amphibian", label: "Amphibians", route: "/listing/amphibian" },
+  { type: "insect", label: "Insects", route: "/listing/insect" },
+  { type: "plane", label: "Planes", route: "/listing/plane" },
+];
+
+/*
+ * Render a single category album card with its best-rated cover photo.
+ * Returns an empty array if no cover photo is available for the category.
+ */
+function drawCategoryAlbum(
+  services: Services,
+  category: CategoryDef,
+  idx: number,
+): m.Children[] {
+  const cover = services.readCategoryCover(
+    category.type,
+    category.preferLandscape ? { preferLandscape: true } : {},
+  );
+  if (!cover) {
+    return [];
+  }
+
+  return [m(PhotoAlbum, {
+    imageUrl: cover.fullImage,
+    thumbnailUrl: cover.thumbnailUrl,
+    thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),
+    loading: loadingMode(idx),
+    trip: undefined,
+    child: m("p.album-title", category.label),
+    onclick: navigate(category.route),
+  })];
 }
 
 type ListingsPageAttrs = {
   visible: boolean;
+  services: Services;
 };
 
 export function ListingsPage() {
   return {
     view(vnode: m.Vnode<ListingsPageAttrs>) {
-      const { visible } = vnode.attrs;
+      const { visible, services } = vnode.attrs;
+
+      const $albums = CATEGORIES.flatMap((category, idx) =>
+        drawCategoryAlbum(services, category, idx)
+      );
 
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
-        m("h1", "Listings"),
-        m("br"),
-        m("p", "Collections of all places, countries, and animals"),
-        m("br"),
-        m(
-          "section",
-          m("ul", [
-            m(ListingItem, { route: "/listing/place", name: "Places" }),
-            m(ListingItem, { route: "/listing/country", name: "Countries" }),
-            m(ListingItem, { route: "/listing/bird", name: "Birds" }),
-            m(ListingItem, { route: "/listing/mammal", name: "Mammals" }),
-            m(ListingItem, { route: "/listing/reptile", name: "Reptiles" }),
-            m(ListingItem, { route: "/listing/amphibian", name: "Amphibians" }),
-            m(ListingItem, { route: "/listing/insect", name: "Insects" }),
-            m(ListingItem, { route: "/listing/plane", name: "Planes" }),
-          ]),
-        ),
+        m("section.album-metadata", [
+          m("h1.albums-header", "Listings"),
+          m("p", "Collections of all places, countries, and animals"),
+        ]),
+        m("section.album-container", $albums),
       ]);
     },
   };

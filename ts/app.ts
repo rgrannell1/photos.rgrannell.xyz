@@ -361,7 +361,10 @@ export function ListingsApp(): m.Component<AppAttrs> {
             class: state.sidebarVisible ? "sidebar-visible" : undefined,
           }, [
             m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(listingsPageComponent, { visible: state.sidebarVisible }),
+            m(listingsPageComponent, {
+              visible: state.sidebarVisible,
+              services: state.services,
+            }),
           ]),
         ],
       );

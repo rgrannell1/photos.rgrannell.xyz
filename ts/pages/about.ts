@@ -29,7 +29,7 @@ export function AboutPage() {
           m("br"),
           m(
             "p",
-            `I started taking photos ${years} years ago, and have taken a lot of photos since. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things`,
+            `I started taking photos ${years} years ago. It's a fun hobby; it motivates me to get outside and see interesting things and interact with nature. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things`,
             m("a", {
               href: "https://photos.rgrannell.xyz/#/thing/rating:4",
               onclick: navigate(`/thing/rating:4`),

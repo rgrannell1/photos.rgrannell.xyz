@@ -162,6 +162,48 @@ function sortByRating(photoa: Photo, photob: Photo) {
 }
 
 /*
+ * Map each listing type to the relation a photo uses to reference it.
+ * Without this, a bird-at-a-park photo would pollute the place cover search
+ * because it carries both a "subject" (bird) and a "location" (place) triple.
+ */
+const TYPE_RELATION: Record<string, string> = {
+  place: KnownRelations.LOCATION,
+  country: KnownRelations.COUNTRY,
+};
+
+const DEFAULT_SUBJECT_RELATION = KnownRelations.SUBJECT;
+
+/*
+ * Read the highest-rated photo across all things of a given type (e.g. "bird", "plane").
+ * Used to generate cover images for the top-level listings page.
+ *
+ * When preferLandscape is true, the best landscape photo is returned if one exists,
+ * falling back to the overall best-rated photo if none are landscape.
+ */
+export function chooseCategoryCover(
+  tdb: TribbleDB,
+  type: string,
+  options: { preferLandscape?: boolean } = {},
+): Photo | undefined {
+  const relation = TYPE_RELATION[type] ?? DEFAULT_SUBJECT_RELATION;
+
+  const photoIds = tdb.search({
+    source: { type: "photo" },
+    relation,
+    target: { type },
+  }).sources();
+
+  const photos = readPhotos(tdb, new Set(photoIds)).sort(sortByRating);
+
+  if (options.preferLandscape) {
+    const landscapePhoto = photos.find((photo) => photo.style?.toLowerCase().includes("landscape"));
+    if (landscapePhoto) return landscapePhoto;
+  }
+
+  return photos.length > 0 ? photos[0] : undefined;
+}
+
+/*
  * Read a cover image for a thing
  */
 export function chooseThingCover(
