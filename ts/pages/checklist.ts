@@ -143,6 +143,7 @@ export function ChecklistPage() {
           m("h1.albums-header", "Checklist"),
           m(ChecklistDetails, { entries, filter, onSelect }),
         ]),
+        m("p.photo-album-description", "I am not a very committed birder, but I do like photographing the different species I see. Here's my life list."),
         m("section.checklist-container", [
           m(ChecklistTable, { entries, filter }),
         ]),
