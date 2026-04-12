@@ -1,3 +1,3 @@
 #!/bin/bash
 
-find ts css | entr -r ./bs/build.sh
+find ts css manifest | entr -r ./bs/build.sh

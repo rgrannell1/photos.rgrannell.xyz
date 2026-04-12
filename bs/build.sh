@@ -10,4 +10,4 @@ publication_id="$(jq -r .publication_id ./manifest/env.json)"
 deno run -A /home/rg/Code/tribbledb/cli.ts stringify < "./manifest/triples.${publication_id}.json" > "./manifest/tribbles.${publication_id}.txt"
 deno run -A ts/build/index.ts
 
-echo "reloaded at $(date +%H:%M)"
+echo -e "\033[1;32m✓ reloaded at $(date +%H:%M)\033[0m"

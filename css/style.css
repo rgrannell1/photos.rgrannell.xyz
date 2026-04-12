@@ -705,12 +705,14 @@ button:disabled {
 .photo-album-count {
   display: inline;
 }
-.photo-album-countries, .photo-album-count {
+.photo-album-count {
   display: inline;
 }
 
 .photo-album-countries {
   padding-left: 8px;
+  display: inline-flex;
+  gap: 4px;
 }
 
 .photo-album-count {
@@ -854,7 +856,11 @@ button:disabled {
 .photo-album-count {
   display: inline;
 }
-.photo-album-countries, .photo-album-count {
+.photo-album-countries {
+  display: inline-flex;
+  gap: 4px;
+}
+.photo-album-count {
   display: inline;
 }
 
