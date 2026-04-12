@@ -135,6 +135,12 @@ export const InsectSchema = v.object({
   wikipedia: v.optional(v.string()),
 });
 
+export const PlaneSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+  wikipedia: v.optional(v.string()),
+});
+
 export const SubjectSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),

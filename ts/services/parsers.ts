@@ -20,6 +20,7 @@ import {
   MammalSchema,
   PhotoSchema,
   PlaceSchema,
+  PlaneSchema,
   ReptileSchema,
   StatsSchema,
   TransferSchema,
@@ -39,6 +40,7 @@ export const parseReptile = parseObject(ReptileSchema, "reptile");
 export const parseAmphibian = parseObject(AmphibianSchema, "amphibian");
 export const parseInsect = parseObject(InsectSchema, "insect");
 export const parseFish = parseObject(FishSchema, "fish");
+export const parsePlane = parseObject(PlaneSchema, "plane");
 export const parseVideo = parseObject(VideoSchema, "video");
 export const parsePlace = parseObject(PlaceSchema, "place");
 export const parseAlbum = parseObject(AlbumSchema, "album");

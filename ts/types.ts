@@ -11,6 +11,7 @@ import type {
   parseMammal,
   parsePhoto,
   parsePlace,
+  parsePlane,
   parseReptile,
   parseTransfer,
   parseUnesco,
@@ -100,9 +101,11 @@ export type Insect = NonNullable<ReturnType<typeof parseInsect>>;
 
 export type Fish = NonNullable<ReturnType<typeof parseFish>>;
 
+export type Plane = NonNullable<ReturnType<typeof parsePlane>>;
+
 export type Feature = NonNullable<ReturnType<typeof parseFeature>>;
 
-export type Subject = Bird | Mammal | Reptile | Amphibian | Insect | Fish;
+export type Subject = Bird | Mammal | Reptile | Amphibian | Insect | Fish | Plane;
 
 export type Location = Place | Country | Unesco;
 
@@ -117,7 +120,8 @@ export type Thing =
   | Mammal
   | Reptile
   | Amphibian
-  | Insect;
+  | Insect
+  | Plane;
 
 export function isACountry(place: Place | Country): place is Country {
   return (place as Country).type === "country";

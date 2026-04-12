@@ -68,6 +68,7 @@ export class KnownTypes {
   static UNESCO = "unesco";
   static FISH = "fish";
   static PLACE_FEATURE = "place_feature";
+  static PLANE = "plane";
 }
 
 /*

@@ -46,6 +46,7 @@ export function ListingsPage() {
             m(ListingItem, { route: "/listing/reptile", name: "Reptiles" }),
             m(ListingItem, { route: "/listing/amphibian", name: "Amphibians" }),
             m(ListingItem, { route: "/listing/insect", name: "Insects" }),
+            m(ListingItem, { route: "/listing/plane", name: "Planes" }),
           ]),
         ),
       ]);
