@@ -53,20 +53,46 @@ function drawThingAlbum(
   })];
 }
 
+type AlbumsListAttrs = { services: Services; things: TripleObject[]; listingType: string };
+
+const BATCH_SIZE = 10;
+
 /*
- * Display the component albums and metadata
- * in the listing page
+ * Display the component albums incrementally to avoid blocking the DOM.
+ * The first batch renders synchronously; subsequent batches are scheduled
+ * via setTimeout so the browser can paint between each one.
  */
 function AlbumsList() {
+  let rendered = BATCH_SIZE;
+  let batchScheduled = false;
+
+  function scheduleBatch(total: number) {
+    if (rendered >= total || batchScheduled) return;
+    batchScheduled = true;
+    setTimeout(() => {
+      rendered = Math.min(rendered + BATCH_SIZE, total);
+      batchScheduled = false;
+      m.redraw();
+    }, 1);
+  }
+
   return {
-    view(vnode: m.Vnode<{ services: Services; things: TripleObject[]; listingType: string }>) {
+    onbeforeupdate(vnode: m.Vnode<AlbumsListAttrs>, old: m.VnodeDOM<AlbumsListAttrs>) {
+      if (vnode.attrs.listingType !== old.attrs.listingType) {
+        rendered = BATCH_SIZE;
+      }
+    },
+    oncreate(vnode: m.VnodeDOM<AlbumsListAttrs>) {
+      scheduleBatch(vnode.attrs.things.length);
+    },
+    onupdate(vnode: m.VnodeDOM<AlbumsListAttrs>) {
+      scheduleBatch(vnode.attrs.things.length);
+    },
+    view(vnode: m.Vnode<AlbumsListAttrs>) {
       const { services, things, listingType } = vnode.attrs;
-
-      const $albumComponents = things.flatMap((thing, idx) => {
-        return drawThingAlbum(services, thing, listingType, idx);
-      });
-
-      return m("section.album-container", $albumComponents);
+      return m("section.album-container",
+        things.slice(0, rendered).flatMap((thing, idx) => drawThingAlbum(services, thing, listingType, idx))
+      );
     },
   };
 }
