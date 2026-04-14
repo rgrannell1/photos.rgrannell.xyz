@@ -162,57 +162,21 @@ function sortByRating(photoa: Photo, photob: Photo) {
 }
 
 /*
- * Map each listing type to the relation a photo uses to reference it.
- * Without this, a bird-at-a-park photo would pollute the place cover search
- * because it carries both a "subject" (bird) and a "location" (place) triple.
+ * Look up the pre-computed cover photo for a top-level listing type (e.g. "bird", "place").
+ * The cover triple is written by mirror's ListingCoverReader during publish and has the form:
+ *   urn:ró:photo:<id>  cover  urn:ró:listing:<type>
  */
-const TYPE_RELATION: Record<string, string> = {
-  place: KnownRelations.LOCATION,
-  country: KnownRelations.COUNTRY,
-};
-
-const DEFAULT_SUBJECT_RELATION = KnownRelations.SUBJECT;
-
-const categoryCoverCache: Map<string, Photo | undefined> = new Map();
-
-/*
- * Read the highest-rated photo across all things of a given type (e.g. "bird", "plane").
- * Used to generate cover images for the top-level listings page.
- *
- * When preferLandscape is true, the best landscape photo is returned if one exists,
- * falling back to the overall best-rated photo if none are landscape.
- *
- * Results are memoised — TDB data is immutable during a session.
- */
-export function chooseCategoryCover(
+export function readCategoryCover(
   tdb: TribbleDB,
   type: string,
-  options: { preferLandscape?: boolean } = {},
 ): Photo | undefined {
-  const cacheKey = `${type}:${options.preferLandscape ?? false}`;
-  if (categoryCoverCache.has(cacheKey)) {
-    return categoryCoverCache.get(cacheKey);
-  }
-
-  const relation = TYPE_RELATION[type] ?? DEFAULT_SUBJECT_RELATION;
-
-  const photoIds = tdb.search({
+  const source = tdb.search({
     source: { type: "photo" },
-    relation,
-    target: { type },
-  }).sources();
+    relation: "cover",
+    target: { type: "listing", id: type },
+  }).firstSource();
 
-  const photos = readPhotos(tdb, new Set(photoIds)).sort(sortByRating);
-
-  let result: Photo | undefined;
-  if (options.preferLandscape) {
-    result = photos.find((photo) => photo.style?.toLowerCase().includes("landscape")) ?? photos[0];
-  } else {
-    result = photos[0];
-  }
-
-  categoryCoverCache.set(cacheKey, result);
-  return result;
+  return source ? readPhoto(tdb, source) : undefined;
 }
 
 /*

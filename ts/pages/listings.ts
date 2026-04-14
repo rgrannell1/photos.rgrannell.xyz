@@ -8,12 +8,11 @@ type CategoryDef = {
   type: string;
   label: string;
   route: string;
-  preferLandscape?: boolean;
 };
 
 const CATEGORIES: CategoryDef[] = [
-  { type: "place", label: "Places", route: "/listing/place", preferLandscape: true },
-  { type: "country", label: "Countries", route: "/listing/country", preferLandscape: true },
+  { type: "place", label: "Places", route: "/listing/place" },
+  { type: "country", label: "Countries", route: "/listing/country" },
   { type: "bird", label: "Birds", route: "/listing/bird" },
   { type: "mammal", label: "Mammals", route: "/listing/mammal" },
   { type: "reptile", label: "Reptiles", route: "/listing/reptile" },
@@ -34,10 +33,7 @@ function drawCategoryAlbum(
   category: CategoryDef,
   idx: number,
 ): m.Children[] {
-  const cover = services.readCategoryCover(
-    category.type,
-    category.preferLandscape ? { preferLandscape: true } : {},
-  );
+  const cover = services.readCategoryCover(category.type);
   if (!cover) {
     return [];
   }
