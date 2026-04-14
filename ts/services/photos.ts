@@ -173,18 +173,27 @@ const TYPE_RELATION: Record<string, string> = {
 
 const DEFAULT_SUBJECT_RELATION = KnownRelations.SUBJECT;
 
+const categoryCoverCache: Map<string, Photo | undefined> = new Map();
+
 /*
  * Read the highest-rated photo across all things of a given type (e.g. "bird", "plane").
  * Used to generate cover images for the top-level listings page.
  *
  * When preferLandscape is true, the best landscape photo is returned if one exists,
  * falling back to the overall best-rated photo if none are landscape.
+ *
+ * Results are memoised — TDB data is immutable during a session.
  */
 export function chooseCategoryCover(
   tdb: TribbleDB,
   type: string,
   options: { preferLandscape?: boolean } = {},
 ): Photo | undefined {
+  const cacheKey = `${type}:${options.preferLandscape ?? false}`;
+  if (categoryCoverCache.has(cacheKey)) {
+    return categoryCoverCache.get(cacheKey);
+  }
+
   const relation = TYPE_RELATION[type] ?? DEFAULT_SUBJECT_RELATION;
 
   const photoIds = tdb.search({
@@ -195,12 +204,15 @@ export function chooseCategoryCover(
 
   const photos = readPhotos(tdb, new Set(photoIds)).sort(sortByRating);
 
+  let result: Photo | undefined;
   if (options.preferLandscape) {
-    const landscapePhoto = photos.find((photo) => photo.style?.toLowerCase().includes("landscape"));
-    if (landscapePhoto) return landscapePhoto;
+    result = photos.find((photo) => photo.style?.toLowerCase().includes("landscape")) ?? photos[0];
+  } else {
+    result = photos[0];
   }
 
-  return photos.length > 0 ? photos[0] : undefined;
+  categoryCoverCache.set(cacheKey, result);
+  return result;
 }
 
 /*
