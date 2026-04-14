@@ -25,7 +25,7 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
-import { chooseThingCover, readAllPhotos } from "./services/photos.ts";
+import { readThingCover, readAllPhotos } from "./services/photos.ts";
 import { readAlbum, readPhoto } from "./services/readers.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { ListingsPage } from "./pages/listings.ts";
@@ -414,7 +414,7 @@ export function MapApp(): m.Component<AppAttrs> {
         .readGeocodedPlaces();
 
       const placesForMap = geocodedPlaces.map((place) => {
-        const cover = chooseThingCover(state.data, place.id);
+        const cover = readThingCover(state.data, place.id);
         return {
           ...place,
           coverThumbnailUrl: cover?.thumbnailUrl,

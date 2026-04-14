@@ -154,13 +154,6 @@ export function readThingCover(
   return source ? readPhoto(tdb, source) : undefined;
 }
 
-function sortByRating(photoa: Photo, photob: Photo) {
-  const ratingA = photoa.rating;
-  const ratingB = photob.rating;
-
-  return ratingB.toLocaleString().localeCompare(ratingA.toLocaleString());
-}
-
 /*
  * Look up the pre-computed cover photo for a top-level listing type (e.g. "bird", "place").
  * The cover triple is written by mirror's ListingCoverReader during publish and has the form:
@@ -179,26 +172,3 @@ export function readCategoryCover(
   return source ? readPhoto(tdb, source) : undefined;
 }
 
-/*
- * Read a cover image for a thing
- */
-export function chooseThingCover(
-  tdb: TribbleDB,
-  thingUrn: string,
-) {
-  const { type, id } = asUrn(thingUrn);
-
-  const cover = readThingCover(tdb, thingUrn);
-  if (cover) {
-    return cover;
-  }
-
-  const results = tdb.search({
-    source: { type: "photo" },
-    target: { type, id },
-  }).sources();
-
-  const photos = readPhotos(tdb, new Set(results)).sort(sortByRating);
-
-  return photos.length > 0 ? photos[0] : null;
-}

@@ -34,7 +34,7 @@ import {
   readUnescos,
   readVideo,
 } from "./services/readers.ts";
-import { readCategoryCover, chooseThingCover, readPhotosByThingIds } from "./services/photos.ts";
+import { readCategoryCover, readThingCover, readPhotosByThingIds } from "./services/photos.ts";
 import { readThings, toThingLinks } from "./commons/things.ts";
 import { namesToUrns } from "./services/names.ts";
 import { readGeocodedPlaces } from "./services/places.ts";
@@ -86,7 +86,7 @@ export function loadServices(tdb: TribbleDB) {
     readCountries: readCountries.bind(null, tdb),
     readAllCountries: readAllCountries.bind(null, tdb),
     namesToUrns: namesToUrns.bind(null, tdb),
-    readThingCover: chooseThingCover.bind(null, tdb),
+    readThingCover: readThingCover.bind(null, tdb),
     readCategoryCover: readCategoryCover.bind(null, tdb),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb),
