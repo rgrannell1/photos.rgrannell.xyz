@@ -21,6 +21,8 @@ const CATEGORIES: CategoryDef[] = [
   { type: "insect", label: "Insects", route: "/listing/insect" },
   { type: "fish", label: "Fish", route: "/listing/fish" },
   { type: "plane", label: "Planes", route: "/listing/plane" },
+  { type: "train", label: "Trains", route: "/listing/train" },
+  { type: "car", label: "Cars", route: "/listing/car" },
 ];
 
 /*

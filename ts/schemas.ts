@@ -141,6 +141,18 @@ export const PlaneSchema = v.object({
   wikipedia: v.optional(v.string()),
 });
 
+export const TrainSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+  wikipedia: v.optional(v.string()),
+});
+
+export const CarSchema = v.object({
+  id: v.string(),
+  name: v.optional(v.string()),
+  wikipedia: v.optional(v.string()),
+});
+
 export const SubjectSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),

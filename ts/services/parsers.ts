@@ -13,6 +13,7 @@ import {
   AlbumSchema,
   AmphibianSchema,
   BirdSchema,
+  CarSchema,
   CountrySchema,
   FeatureSchema,
   FishSchema,
@@ -23,6 +24,7 @@ import {
   PlaneSchema,
   ReptileSchema,
   StatsSchema,
+  TrainSchema,
   TransferSchema,
   UnescoSchema,
   VideoSchema,
@@ -41,6 +43,8 @@ export const parseAmphibian = parseObject(AmphibianSchema, "amphibian");
 export const parseInsect = parseObject(InsectSchema, "insect");
 export const parseFish = parseObject(FishSchema, "fish");
 export const parsePlane = parseObject(PlaneSchema, "plane");
+export const parseTrain = parseObject(TrainSchema, "train");
+export const parseCar = parseObject(CarSchema, "car");
 export const parseVideo = parseObject(VideoSchema, "video");
 export const parsePlace = parseObject(PlaceSchema, "place");
 export const parseAlbum = parseObject(AlbumSchema, "album");
