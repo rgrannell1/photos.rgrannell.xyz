@@ -3,25 +3,35 @@ import type { Photo as PhotoType } from "../types.ts";
 import { Photo } from "../components/photo.ts";
 import { loadingMode } from "../services/photos.ts";
 
-/* */
+const BATCH_SIZE = 10;
+
 function PhotosList() {
+  let rendered = BATCH_SIZE;
+  let batchScheduled = false;
+
+  function scheduleBatch(total: number) {
+    if (rendered >= total || batchScheduled) return;
+    batchScheduled = true;
+    setTimeout(() => {
+      rendered = Math.min(rendered + BATCH_SIZE, total);
+      batchScheduled = false;
+      m.redraw();
+    }, 1);
+  }
+
   return {
+    oncreate(vnode: m.VnodeDOM<PhotosPageAttrs>) {
+      scheduleBatch(vnode.attrs.photos.length);
+    },
+    onupdate(vnode: m.VnodeDOM<PhotosPageAttrs>) {
+      scheduleBatch(vnode.attrs.photos.length);
+    },
     view(vnode: m.Vnode<PhotosPageAttrs>) {
       const { photos } = vnode.attrs;
-
-      // TODO: load photos lazily
-      return m(
-        "section.photo-container",
-        photos.map((photo, idx) => {
-          const loading = loadingMode(idx);
-
-          return m(Photo, {
-            key: `photo-${photo.id}`,
-            photo,
-            loading,
-            interactive: true,
-          });
-        }),
+      return m("section.photo-container",
+        photos.slice(0, rendered).map((photo, idx) =>
+          m(Photo, { key: `photo-${photo.id}`, photo, loading: loadingMode(idx), interactive: true })
+        ),
       );
     },
   };
