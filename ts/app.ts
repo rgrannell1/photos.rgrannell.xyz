@@ -215,6 +215,9 @@ export function VideosApp(): m.Component<AppAttrs> {
 
 /* */
 export function PhotosApp(): m.Component<AppAttrs> {
+  // readAllPhotos is expensive (1000+ photos, sort) — compute once per app mount
+  const photos = readAllPhotos(state.data);
+
   return {
     view() {
       return m(
@@ -227,7 +230,7 @@ export function PhotosApp(): m.Component<AppAttrs> {
           }, [
             m(sidebarComponent, { visible: state.sidebarVisible }),
             m(photosPageComponent, {
-              photos: readAllPhotos(state.data),
+              photos,
               visible: state.sidebarVisible,
             }),
           ]),
