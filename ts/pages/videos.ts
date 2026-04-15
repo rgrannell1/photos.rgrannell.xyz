@@ -36,7 +36,7 @@ function VideosList() {
       return m(
         "section.photo-container",
         videos.slice(0, rendered).map((video) =>
-          m(Video, { video, preload: "auto" } satisfies VideoAttrs)
+          m(Video, { video, preload: "auto", interactive: true } satisfies VideoAttrs)
         ),
       );
     },

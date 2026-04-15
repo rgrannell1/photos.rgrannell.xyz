@@ -21,13 +21,14 @@ import { readAllVideos } from "./services/videos.ts";
 import { listen } from "./commons/events.ts";
 import { setify } from "./commons/sets.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { albumUrn, countryUrn, photoUrn } from "./models/urn.ts";
+import { albumUrn, countryUrn, photoUrn, videoUrn } from "./models/urn.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
 import { readAllPhotoUrns, readThingCover } from "./services/photos.ts";
-import { readAlbum, readPhoto } from "./services/readers.ts";
+import { readAlbum, readPhoto, readVideo } from "./services/readers.ts";
+import { VideoPage } from "./pages/video.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { ListingsPage } from "./pages/listings.ts";
 import { ChecklistPage } from "./pages/checklist.ts";
@@ -48,6 +49,7 @@ const albumsPageComponent: m.Component<any> = AlbumsPage();
 const albumPageComponent: m.Component<any> = AlbumPage();
 const aboutPageComponent: m.Component<any> = AboutPage();
 const videosPageComponent: m.Component<any> = VideosPage();
+const videoPageComponent: m.Component<any> = VideoPage();
 const photosPageComponent: m.Component<any> = PhotosPage();
 const photoPageComponent: m.Component<any> = PhotoPage();
 const listingPageComponent: m.Component<any> = ListingPage();
@@ -315,6 +317,44 @@ export function PhotoApp(): m.Component<AppAttrs> {
             m(sidebarComponent, { visible: state.sidebarVisible }),
             m(photoPageComponent, {
               photo,
+              services: state.services,
+              visible: state.sidebarVisible,
+            }),
+          ]),
+        ],
+      );
+    },
+  };
+}
+
+/* */
+export function VideoApp(): m.Component<AppAttrs> {
+  return {
+    oninit() {
+      const id = m.route.param("id");
+      state.currentUrn = videoUrn(id);
+    },
+    view() {
+      if (!state.currentUrn) {
+        return m("p", "No video selected");
+      }
+      const video = readVideo(state.data, state.currentUrn);
+
+      if (!video) {
+        return m("p", "Video not found");
+      }
+
+      return m(
+        "div.photos-app",
+        { class: state.darkMode ? "dark-mode" : undefined },
+        [
+          m(headerComponent, state),
+          m("div.app-container", {
+            class: state.sidebarVisible ? "sidebar-visible" : undefined,
+          }, [
+            m(sidebarComponent, { visible: state.sidebarVisible }),
+            m(videoPageComponent, {
+              video,
               services: state.services,
               visible: state.sidebarVisible,
             }),

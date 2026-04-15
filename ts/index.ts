@@ -10,6 +10,7 @@ import {
   PhotoApp,
   PhotosApp,
   ThingApp,
+  VideoApp,
   VideosApp,
 } from "./app.ts";
 
@@ -23,6 +24,7 @@ m.route(document.body, "/albums", {
   "/album/:id": AlbumApp,
   "/thing/:pair": ThingApp,
   "/photo/:id": PhotoApp,
+  "/video/:id": VideoApp,
   "/listing/:type": ListingApp,
   "/listing/:type/:filter": ListingApp,
   "/listings": ListingsApp,

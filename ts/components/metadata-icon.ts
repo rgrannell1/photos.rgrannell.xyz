@@ -24,7 +24,7 @@ function InfoSVG() {
 }
 
 type MetadataIconAttrs = {
-  id: string;
+  route: string;
   colour: string;
 };
 
@@ -32,10 +32,10 @@ type MetadataIconAttrs = {
 export function MetadataIcon() {
   return {
     view(vnode: m.Vnode<MetadataIconAttrs>) {
-      const { id, colour } = vnode.attrs;
+      const { route, colour } = vnode.attrs;
 
       return m("div.photo-metadata-popover", {
-        onclick: () => broadcast("navigate", { route: `/photo/${id}` }),
+        onclick: () => broadcast("navigate", { route }),
       }, m(InfoSVG, { colour }));
     },
   };

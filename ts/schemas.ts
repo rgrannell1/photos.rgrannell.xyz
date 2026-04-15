@@ -176,6 +176,10 @@ export const VideoSchema = v.object({
   videoUrl480p: v.optional(v.pipe(v.string(), v.url())),
   videoUrl720p: v.optional(v.pipe(v.string(), v.url())),
   videoUrlUnscaled: v.optional(v.pipe(v.string(), v.url())),
+  location: v.optional(v.union([v.string(), v.array(v.string())])),
+  rating: v.optional(v.string()),
+  style: v.optional(v.string()),
+  subject: v.optional(v.union([v.string(), v.array(v.string())])),
 });
 
 export const StatsSchema = v.object({

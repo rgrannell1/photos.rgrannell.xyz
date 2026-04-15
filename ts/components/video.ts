@@ -1,9 +1,16 @@
 import m from "mithril";
+import { parseUrn } from "@rgrannell1/tribbledb";
 import type { Video } from "../types.ts";
+import { MetadataIcon } from "./metadata-icon.ts";
+
+function formatId(id: string): string {
+  return id.startsWith("urn:") ? parseUrn(id).id : id;
+}
 
 export type VideoAttrs = {
   preload: string;
   video: Video;
+  interactive?: boolean;
 };
 
 /* */
@@ -13,6 +20,7 @@ export function Video() {
       const {
         preload,
         video,
+        interactive = false,
       } = vnode.attrs;
 
       if (!video) {
@@ -20,6 +28,7 @@ export function Video() {
       }
 
       const {
+        id: rawId,
         posterUrl,
         videoUrl1080p,
         videoUrl480p,
@@ -27,7 +36,7 @@ export function Video() {
         videoUrlUnscaled,
       } = video;
 
-      // Check if any video URLs are available
+      const id = formatId(rawId);
       const hasValidUrl = videoUrl480p && videoUrl480p.length > 0;
 
       if (!hasValidUrl) {
@@ -46,12 +55,21 @@ export function Video() {
         m("a", { href: videoUrl480p }, "[XS]"),
       ]);
 
-      return m("div", { key: `video-${video.id}` }, [
-        m("video.thumbnail-video", {
-          controls: true,
-          preload,
-          poster: posterUrl,
-        }, $source),
+      const $video = m("video.thumbnail-video", {
+        controls: true,
+        preload,
+        poster: posterUrl,
+      }, $source);
+
+      const $mdIcon = interactive
+        ? m(MetadataIcon, { route: `/video/${id}`, colour: "white" })
+        : null;
+
+      return m("div", { key: `video-${id}` }, [
+        m("div.photo", [
+          $mdIcon,
+          $video,
+        ]),
         $resolutionLinks,
       ]);
     },
