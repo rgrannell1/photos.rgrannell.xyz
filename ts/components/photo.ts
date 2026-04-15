@@ -139,12 +139,18 @@ export function ImagePair() {
       } = vnode.attrs;
 
       const children = [
-        thumbnailDataUrl ? m(PlaceholderImage, { thumbnailDataUrl, width, height }) : null,
+        thumbnailDataUrl
+          ? m(PlaceholderImage, { thumbnailDataUrl, width, height })
+          : null,
         m(Image, { thumbnailUrl, loading, onclick, width, height }),
       ];
 
       return imageUrl
-        ? m("a", { href: imageUrl, target: "_blank", rel: "external" }, children)
+        ? m(
+          "a",
+          { href: imageUrl, target: "_blank", rel: "external" },
+          children,
+        )
         : m("div", children);
     },
   };

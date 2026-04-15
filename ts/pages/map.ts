@@ -98,8 +98,9 @@ const TRIP_LINE_DEFAULT = "#2563eb";
 const TRIP_LINE_CAR_TRAIN = "#60a5fa";
 
 function tripLineOptions(mode: string | undefined): L.PolylineOptions {
-  const color =
-    mode === "car" || mode === "train" ? TRIP_LINE_CAR_TRAIN : TRIP_LINE_DEFAULT;
+  const color = mode === "car" || mode === "train"
+    ? TRIP_LINE_CAR_TRAIN
+    : TRIP_LINE_DEFAULT;
   return {
     color,
     weight: 3,
@@ -247,7 +248,11 @@ export function MapPage(): m.Component<MapPageAttrs> {
 
       leafletMap = ensureLeafletMap(leafletMap, mapContainer);
       markersLayer = L.layerGroup().addTo(leafletMap!);
-      tripLinesLayer = syncTripPolylines(leafletMap, tripLinesLayer, vnode.attrs.tripPolylines);
+      tripLinesLayer = syncTripPolylines(
+        leafletMap,
+        tripLinesLayer,
+        vnode.attrs.tripPolylines,
+      );
       startPlaceMarkers(vnode.attrs.places);
       invalidateMapSizeSoon(leafletMap);
     },
@@ -258,7 +263,11 @@ export function MapPage(): m.Component<MapPageAttrs> {
       }
       lastSidebarVisible = vnode.attrs.visible;
 
-      tripLinesLayer = syncTripPolylines(leafletMap, tripLinesLayer, vnode.attrs.tripPolylines);
+      tripLinesLayer = syncTripPolylines(
+        leafletMap,
+        tripLinesLayer,
+        vnode.attrs.tripPolylines,
+      );
 
       if (vnode.attrs.places !== lastPlaces) {
         startPlaceMarkers(vnode.attrs.places);

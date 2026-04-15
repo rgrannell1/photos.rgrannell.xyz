@@ -35,7 +35,9 @@ export const { one: readLocation, many: readLocations } = readers(
 );
 export const { one: readUnesco, many: readUnescos } = readers(parseUnesco);
 export const { one: readAlbum, many: readAlbums } = readers(parseAlbum);
-export const { one: readTransfer, many: readTransfers } = readers(parseTransfer);
+export const { one: readTransfer, many: readTransfers } = readers(
+  parseTransfer,
+);
 export const { one: readMammal, many: readMammals } = readers(parseMammal);
 export const { one: readReptile, many: readReptiles } = readers(parseReptile);
 export const { one: readInsect, many: readInsects } = readers(parseInsect);
@@ -67,8 +69,12 @@ export function readBirdStats(tdb: TribbleDB): SubjectStats {
     target: { type: KnownTypes.BIRD },
   }).triples();
 
-  const wildBirdIds = new Set(wildBirdSubjects.map(([, , targetUrn]) => asUrn(targetUrn).id));
-  const allBirdIds = new Set(allBirdSubjects.map(([, , targetUrn]) => asUrn(targetUrn).id));
+  const wildBirdIds = new Set(
+    wildBirdSubjects.map(([, , targetUrn]) => asUrn(targetUrn).id),
+  );
+  const allBirdIds = new Set(
+    allBirdSubjects.map(([, , targetUrn]) => asUrn(targetUrn).id),
+  );
 
   let irishWildSpecies = 0;
   for (const birdId of wildBirdIds) {
@@ -138,8 +144,12 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
     }
   }
 
-  const wildMammalIds = new Set(wildMammalTriples.map(([, , targetUrn]) => asUrn(targetUrn).id));
-  const allMammalIds = new Set(allMammalSubjects.map(([, , targetUrn]) => asUrn(targetUrn).id));
+  const wildMammalIds = new Set(
+    wildMammalTriples.map(([, , targetUrn]) => asUrn(targetUrn).id),
+  );
+  const allMammalIds = new Set(
+    allMammalSubjects.map(([, , targetUrn]) => asUrn(targetUrn).id),
+  );
 
   return {
     wildSpecies: wildMammalIds.size,
@@ -206,7 +216,9 @@ export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
     }).firstObject();
 
     const rawName = birdThing?.name;
-    const name = (Array.isArray(rawName) ? rawName[0] : rawName as string | undefined) ?? birdId;
+    const name =
+      (Array.isArray(rawName) ? rawName[0] : rawName as string | undefined) ??
+        birdId;
 
     const isIrish = tdb.search({
       source: { type: KnownTypes.BIRD, id: birdId },
@@ -219,7 +231,9 @@ export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
   }
 
   // Sort chronologically — earliest first-sighting first
-  entries.sort((entryA, entryB) => parseInt(entryA.firstSeen) - parseInt(entryB.firstSeen));
+  entries.sort((entryA, entryB) =>
+    parseInt(entryA.firstSeen) - parseInt(entryB.firstSeen)
+  );
 
   return entries;
 }

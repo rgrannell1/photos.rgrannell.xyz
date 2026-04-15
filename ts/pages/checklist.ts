@@ -11,8 +11,14 @@ import type { ChecklistEntry } from "../services/readers.ts";
 function formatFirstSeen(timestamp: string): string {
   const numeric = parseInt(timestamp);
   // Heuristic: timestamps under 10^10 are in seconds, larger are in milliseconds
-  const date = numeric > 9_999_999_999 ? new Date(numeric) : new Date(numeric * 1000);
-  return date.toLocaleDateString("en-GB", { year: "numeric", month: "short", day: "numeric" });
+  const date = numeric > 9_999_999_999
+    ? new Date(numeric)
+    : new Date(numeric * 1000);
+  return date.toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }
 
 /*
@@ -21,21 +27,35 @@ function formatFirstSeen(timestamp: string): string {
  */
 function ChecklistDetails() {
   return {
-    view(vnode: m.Vnode<{ entries: ChecklistEntry[]; filter: string | undefined; onSelect: (filter: string | undefined) => void }>) {
+    view(
+      vnode: m.Vnode<
+        {
+          entries: ChecklistEntry[];
+          filter: string | undefined;
+          onSelect: (filter: string | undefined) => void;
+        }
+      >,
+    ) {
       const { entries, filter, onSelect } = vnode.attrs;
 
-      const irishWildCount = entries.filter((entry) => entry.isIrish && entry.isWild).length;
+      const irishWildCount =
+        entries.filter((entry) => entry.isIrish && entry.isWild).length;
       const wildCount = entries.filter((entry) => entry.isWild).length;
       const totalCount = entries.length;
 
-      const displayCount = filter === "ireland" ? irishWildCount
-        : filter === "all" ? totalCount
+      const displayCount = filter === "ireland"
+        ? irishWildCount
+        : filter === "all"
+        ? totalCount
         : wildCount;
 
-      return m("p.listing-details",
+      return m(
+        "p.listing-details",
         m("span.listing-filter-flag", {
           title: "Irish wild species",
-          class: filter === "ireland" ? "listing-filter-flag--selected" : undefined,
+          class: filter === "ireland"
+            ? "listing-filter-flag--selected"
+            : undefined,
           onclick: () => onSelect("ireland"),
         }, "🇮🇪"),
         " ",
@@ -87,11 +107,16 @@ function ChecklistRow() {
  */
 function ChecklistTable() {
   return {
-    view(vnode: m.Vnode<{ entries: ChecklistEntry[]; filter: string | undefined }>) {
+    view(
+      vnode: m.Vnode<{ entries: ChecklistEntry[]; filter: string | undefined }>,
+    ) {
       const { entries, filter } = vnode.attrs;
 
       // Assign position numbers from the full unfiltered list, then apply filter
-      const withPositions = entries.map((entry, idx) => ({ entry, position: idx + 1 }));
+      const withPositions = entries.map((entry, idx) => ({
+        entry,
+        position: idx + 1,
+      }));
       const displayed = filter === "ireland"
         ? withPositions.filter(({ entry }) => entry.isIrish && entry.isWild)
         : filter === "all"
@@ -108,9 +133,12 @@ function ChecklistTable() {
             m("th"),
           ]),
         ]),
-        m("tbody", displayed.map(({ entry, position }) =>
-          m(ChecklistRow, { entry, position })
-        )),
+        m(
+          "tbody",
+          displayed.map(({ entry, position }) =>
+            m(ChecklistRow, { entry, position })
+          ),
+        ),
       ]);
     },
   };
@@ -133,7 +161,9 @@ export function ChecklistPage() {
       const { entries, visible, filter } = vnode.attrs;
 
       const onSelect = (newFilter: string | undefined) => {
-        broadcast("navigate", { route: newFilter ? `/checklist/${newFilter}` : "/checklist" });
+        broadcast("navigate", {
+          route: newFilter ? `/checklist/${newFilter}` : "/checklist",
+        });
       };
 
       return m("div", {
@@ -143,7 +173,10 @@ export function ChecklistPage() {
           m("h1.albums-header", "Checklist"),
           m(ChecklistDetails, { entries, filter, onSelect }),
         ]),
-        m("p.photo-album-description", "I am not a very committed birder, but I do like photographing the different species I see. Here's my life list."),
+        m(
+          "p.photo-album-description",
+          "I am not a very committed birder, but I do like photographing the different species I see. Here's my life list.",
+        ),
         m("section.checklist-container", [
           m(ChecklistTable, { entries, filter }),
         ]),

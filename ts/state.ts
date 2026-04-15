@@ -17,7 +17,6 @@ import {
   readAllCountries,
   readAmphibian,
   readBirdStats,
-  readMammalStats,
   readCountries,
   readCountry,
   readFeatures,
@@ -26,6 +25,7 @@ import {
   readLocation,
   readLocations,
   readMammal,
+  readMammalStats,
   readPhoto,
   readPhotos,
   readPlace,
@@ -34,7 +34,11 @@ import {
   readUnescos,
   readVideo,
 } from "./services/readers.ts";
-import { readCategoryCover, readThingCover, readPhotosByThingIds } from "./services/photos.ts";
+import {
+  readCategoryCover,
+  readPhotosByThingIds,
+  readThingCover,
+} from "./services/photos.ts";
 import { readThings, toThingLinks } from "./commons/things.ts";
 import { namesToUrns } from "./services/names.ts";
 import { readGeocodedPlaces } from "./services/places.ts";

@@ -142,7 +142,11 @@ export function AlbumsPage() {
       const $md = m("section.album-metadata", [
         m("h1.albums-header", "Albums"),
         m(AlbumStats),
-        m(CountryFilter, { services, selectedCountry, onSelect: onSelectCountry }),
+        m(CountryFilter, {
+          services,
+          selectedCountry,
+          onSelect: onSelectCountry,
+        }),
       ]);
 
       return m("div", {

@@ -13,7 +13,10 @@ import { ThingMetadata } from "../components/thing-metadata.ts";
  * Derive an optional inline badge for the listing card title.
  * Irish birds (those with a birdwatch URL) get the Ireland flag.
  */
-function listingTitleExtra(thing: TripleObject, listingType: string): string | undefined {
+function listingTitleExtra(
+  thing: TripleObject,
+  listingType: string,
+): string | undefined {
   if (listingType === KnownTypes.BIRD && thing.birdwatchUrl) {
     return "🇮🇪";
   }
@@ -48,12 +51,19 @@ function drawThingAlbum(
     thumbnailDataUrl: encodeBitmapDataURL(coverPhoto?.mosaicColours),
     loading: loadingMode(idx),
     trip: undefined,
-    child: m(ThingMetadata, { thing, titleExtra: listingTitleExtra(thing, listingType) }),
+    child: m(ThingMetadata, {
+      thing,
+      titleExtra: listingTitleExtra(thing, listingType),
+    }),
     onclick: navigate(`/thing/${type}:${thingId}`),
   })];
 }
 
-type AlbumsListAttrs = { services: Services; things: TripleObject[]; listingType: string };
+type AlbumsListAttrs = {
+  services: Services;
+  things: TripleObject[];
+  listingType: string;
+};
 
 const BATCH_SIZE = 10;
 
@@ -77,7 +87,10 @@ function AlbumsList() {
   }
 
   return {
-    onbeforeupdate(vnode: m.Vnode<AlbumsListAttrs>, old: m.VnodeDOM<AlbumsListAttrs>) {
+    onbeforeupdate(
+      vnode: m.Vnode<AlbumsListAttrs>,
+      old: m.VnodeDOM<AlbumsListAttrs>,
+    ) {
       if (vnode.attrs.listingType !== old.attrs.listingType) {
         rendered = BATCH_SIZE;
       }
@@ -90,8 +103,11 @@ function AlbumsList() {
     },
     view(vnode: m.Vnode<AlbumsListAttrs>) {
       const { services, things, listingType } = vnode.attrs;
-      return m("section.album-container",
-        things.slice(0, rendered).flatMap((thing, idx) => drawThingAlbum(services, thing, listingType, idx))
+      return m(
+        "section.album-container",
+        things.slice(0, rendered).flatMap((thing, idx) =>
+          drawThingAlbum(services, thing, listingType, idx)
+        ),
       );
     },
   };
@@ -103,12 +119,22 @@ function AlbumsList() {
  */
 function BirdListingDetails() {
   return {
-    view(vnode: m.Vnode<{ services: Services; filter: string | undefined; onToggleIreland: () => void }>) {
+    view(
+      vnode: m.Vnode<
+        {
+          services: Services;
+          filter: string | undefined;
+          onToggleIreland: () => void;
+        }
+      >,
+    ) {
       const { services, filter, onToggleIreland } = vnode.attrs;
-      const { wildSpecies, totalSpecies, irishWildSpecies } = services.readBirdStats();
+      const { wildSpecies, totalSpecies, irishWildSpecies } = services
+        .readBirdStats();
       const irelandActive = filter === "ireland";
 
-      return m("p.listing-details",
+      return m(
+        "p.listing-details",
         m("span.listing-filter-flag", {
           title: "Filter to Irish species",
           class: irelandActive ? "listing-filter-flag--selected" : undefined,
@@ -127,9 +153,11 @@ function MammalListingDetails() {
   return {
     view(vnode: m.Vnode<{ services: Services }>) {
       const { services } = vnode.attrs;
-      const { wildSpecies, totalSpecies, irishWildSpecies } = services.readMammalStats();
+      const { wildSpecies, totalSpecies, irishWildSpecies } = services
+        .readMammalStats();
 
-      return m("p.listing-details",
+      return m(
+        "p.listing-details",
         `🇮🇪 ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
       );
     },
@@ -141,7 +169,16 @@ function MammalListingDetails() {
  */
 function ListingDetails() {
   return {
-    view(vnode: m.Vnode<{ type: string; services: Services; filter: string | undefined; onToggleIreland: () => void }>) {
+    view(
+      vnode: m.Vnode<
+        {
+          type: string;
+          services: Services;
+          filter: string | undefined;
+          onToggleIreland: () => void;
+        }
+      >,
+    ) {
       const { type, services, filter, onToggleIreland } = vnode.attrs;
 
       if (type === KnownTypes.BIRD) {
@@ -207,7 +244,9 @@ export function ListingPage() {
 
       const onToggleIreland = () => {
         const isActive = filter === "ireland";
-        broadcast("navigate", { route: isActive ? `/listing/${type}` : `/listing/${type}/ireland` });
+        broadcast("navigate", {
+          route: isActive ? `/listing/${type}` : `/listing/${type}/ireland`,
+        });
       };
 
       const displayThings = (type === KnownTypes.BIRD && filter === "ireland")

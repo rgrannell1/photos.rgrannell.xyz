@@ -33,8 +33,11 @@ function VideosList() {
     },
     view(vnode: m.Vnode<VideosPageAttrs>) {
       const { videos } = vnode.attrs;
-      return m("section.photo-container",
-        videos.slice(0, rendered).map((video) => m(Video, { video, preload: "auto" } satisfies VideoAttrs))
+      return m(
+        "section.photo-container",
+        videos.slice(0, rendered).map((video) =>
+          m(Video, { video, preload: "auto" } satisfies VideoAttrs)
+        ),
       );
     },
   };

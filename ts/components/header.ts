@@ -90,10 +90,17 @@ export function Header() {
   return {
     view(vnode: m.Vnode<HeaderAttrs>) {
       return m("nav.header", { role: "navigation" }, [
-        m("ul", { style: "display: flex; align-items: baseline; padding-left: 0px !important;" }, [
+        m("ul", {
+          style:
+            "display: flex; align-items: baseline; padding-left: 0px !important;",
+        }, [
           m("li.header-item", {}, m(BurgerMenu())),
           m("li.header-item", {}, m(HeaderBrandText())),
-          m("li.rss-tag header-item", { style: "margin-left: auto" }, m(RSSIcon())),
+          m(
+            "li.rss-tag header-item",
+            { style: "margin-left: auto" },
+            m(RSSIcon()),
+          ),
           m(
             "li.header-item",
             {},

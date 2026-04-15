@@ -25,9 +25,7 @@ export function ThingMetadata() {
         ? `${countryEmoji(thing)} ${one(thing.name)}`
         : one(thing.name);
 
-      const titleContent = titleExtra
-        ? [title, " ", titleExtra]
-        : title;
+      const titleContent = titleExtra ? [title, " ", titleExtra] : title;
 
       return m("div.photo-album-metadata", [
         m("p.photo-album-title", titleContent),

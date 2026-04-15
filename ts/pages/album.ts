@@ -72,23 +72,32 @@ export function AlbumPage() {
         ? "1 photo"
         : `${photosCount} photos`;
 
-      const $countryLinks = services.readCountries(setify(country)).map((country) => {
-        return m(CountryLink, {
-          country,
-          mode: "flag",
-        });
-      });
+      const $countryLinks = services.readCountries(setify(country)).map(
+        (country) => {
+          return m(CountryLink, {
+            country,
+            mode: "flag",
+          });
+        },
+      );
 
       const { id } = asUrn(album.id);
       const url = `https://sharephoto.rgrannell.xyz/album/${id}`;
 
-      const bannerPhoto = album.albumBanner ? services.readPhoto(album.albumBanner) : null;
+      const bannerPhoto = album.albumBanner
+        ? services.readPhoto(album.albumBanner)
+        : null;
       const bannerSrc = bannerPhoto
-        ? (bannerPhoto as Record<string, string>)[KnownRelations.MID_IMAGE_LOSSY_URL] ??
+        ? (bannerPhoto as Record<string, string>)[
+          KnownRelations.MID_IMAGE_LOSSY_URL
+        ] ??
           (bannerPhoto as Record<string, string>)[KnownRelations.THUMBNAIL_URL]
         : null;
-      const bannerMosaic = (bannerPhoto as Record<string, string> | null)?.[KnownRelations.MOSAIC_BANNER] ?? null;
-      const thumbnailDataUrl = bannerMosaic ? encodeBitmapDataURL(bannerMosaic, 10, 10) : null;
+      const bannerMosaic = (bannerPhoto as Record<string, string> | null)
+        ?.[KnownRelations.MOSAIC_BANNER] ?? null;
+      const thumbnailDataUrl = bannerMosaic
+        ? encodeBitmapDataURL(bannerMosaic, 10, 10)
+        : null;
 
       const $banner = bannerSrc
         ? m(AlbumBanner, { src: bannerSrc, alt: name, thumbnailDataUrl })

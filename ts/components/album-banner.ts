@@ -4,7 +4,11 @@ import { BannerImagePair } from "./photo.ts";
 const PARALLAX_RATE = 0.15;
 const PARALLAX_MAX_PX = 80;
 
-export type AlbumBannerAttrs = { src: string; alt: string; thumbnailDataUrl: string | null };
+export type AlbumBannerAttrs = {
+  src: string;
+  alt: string;
+  thumbnailDataUrl: string | null;
+};
 
 export function AlbumBanner(): m.Component<AlbumBannerAttrs> {
   let rafId: number | null = null;
@@ -46,7 +50,8 @@ export function AlbumBanner(): m.Component<AlbumBannerAttrs> {
       return m(
         "section.album-banner",
         { "aria-label": alt },
-        m("div.album-banner-inner",
+        m(
+          "div.album-banner-inner",
           m(BannerImagePair, { thumbnailUrl: src, thumbnailDataUrl }),
         ),
       );

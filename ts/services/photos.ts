@@ -32,13 +32,19 @@ const COLOURS_CACHE: Map<string, string> = new Map();
  *
  * This is extremely slow and blocking! 110ms
  */
-export function encodeBitmapDataURL(colours: string, cols = 2, rows = 2): string {
+export function encodeBitmapDataURL(
+  colours: string,
+  cols = 2,
+  rows = 2,
+): string {
   const cacheKey = `${cols}x${rows}:${colours}`;
   if (COLOURS_CACHE.has(cacheKey)) {
     return COLOURS_CACHE.get(cacheKey) as string;
   }
 
-  const coloursList = colours.split("#").filter(Boolean).map((colour: string) => `#${colour}`);
+  const coloursList = colours.split("#").filter(Boolean).map((colour: string) =>
+    `#${colour}`
+  );
   const canvas = (window as any).document.createElement("canvas");
   canvas.width = cols;
   canvas.height = rows;
@@ -171,4 +177,3 @@ export function readCategoryCover(
 
   return source ? readPhoto(tdb, source) : undefined;
 }
-

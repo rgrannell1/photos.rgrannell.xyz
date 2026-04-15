@@ -28,9 +28,15 @@ function PhotosList() {
     },
     view(vnode: m.Vnode<PhotosPageAttrs>) {
       const { photos } = vnode.attrs;
-      return m("section.photo-container",
+      return m(
+        "section.photo-container",
         photos.slice(0, rendered).map((photo, idx) =>
-          m(Photo, { key: `photo-${photo.id}`, photo, loading: loadingMode(idx), interactive: true })
+          m(Photo, {
+            key: `photo-${photo.id}`,
+            photo,
+            loading: loadingMode(idx),
+            interactive: true,
+          })
         ),
       );
     },

@@ -1,2 +1,32 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom"><id>/atom-page-7d28e1c6.xml</id><title>Photos.rgrannell.xyz</title><updated>2026-02-22T17:09:11+00:00</updated><author><name>Róisín</name></author><link href="https://photos.rgrannell.xyz/manifest/atom/atom-page-7d28e1c6.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><entry><id>https://photos-cdn.rgrannell.xyz/d109b38ebc.webp</id><title>Photo</title><updated>2026-03-18T20:00:22.447871+00:00</updated><content type="html">&lt;img src="https://photos-cdn.rgrannell.xyz/8fddf3173a.webp"/&gt;</content><link href="https://photos-cdn.rgrannell.xyz/d109b38ebc.webp"/></entry><entry><id>https://photos-cdn.rgrannell.xyz/7a2f9d1653.webp</id><title>Photo</title><updated>2026-03-18T20:00:22.447868+00:00</updated><content type="html">&lt;img src="https://photos-cdn.rgrannell.xyz/f586a8f794.webp"/&gt;</content><link href="https://photos-cdn.rgrannell.xyz/7a2f9d1653.webp"/></entry><entry><id>https://photos-cdn.rgrannell.xyz/b2103a4620.webp</id><title>Photo</title><updated>2026-03-18T20:00:22.447865+00:00</updated><content type="html">&lt;img src="https://photos-cdn.rgrannell.xyz/75fe9e0ac3.webp"/&gt;</content><link href="https://photos-cdn.rgrannell.xyz/b2103a4620.webp"/></entry><entry><id>https://photos-cdn.rgrannell.xyz/2057d482a5.webp</id><title>Photo</title><updated>2026-03-18T20:00:22.447861+00:00</updated><content type="html">&lt;img src="https://photos-cdn.rgrannell.xyz/9f31980195.webp"/&gt;</content><link href="https://photos-cdn.rgrannell.xyz/2057d482a5.webp"/></entry></feed>
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><id>/atom-page-7d28e1c6.xml</id><title
+  >Photos.rgrannell.xyz</title><updated
+  >2026-02-22T17:09:11+00:00</updated><author><name>Róisín</name></author><link
+    href="https://photos.rgrannell.xyz/manifest/atom/atom-page-7d28e1c6.xml"
+    rel="self"
+  /><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0"
+  >python-feedgen</generator><entry><id
+    >https://photos-cdn.rgrannell.xyz/d109b38ebc.webp</id><title
+    >Photo</title><updated>2026-03-18T20:00:22.447871+00:00</updated><content
+      type="html"
+    >&lt;img src="https://photos-cdn.rgrannell.xyz/8fddf3173a.webp"/&gt;</content><link
+      href="https://photos-cdn.rgrannell.xyz/d109b38ebc.webp"
+    /></entry><entry><id
+    >https://photos-cdn.rgrannell.xyz/7a2f9d1653.webp</id><title
+    >Photo</title><updated>2026-03-18T20:00:22.447868+00:00</updated><content
+      type="html"
+    >&lt;img src="https://photos-cdn.rgrannell.xyz/f586a8f794.webp"/&gt;</content><link
+      href="https://photos-cdn.rgrannell.xyz/7a2f9d1653.webp"
+    /></entry><entry><id
+    >https://photos-cdn.rgrannell.xyz/b2103a4620.webp</id><title
+    >Photo</title><updated>2026-03-18T20:00:22.447865+00:00</updated><content
+      type="html"
+    >&lt;img src="https://photos-cdn.rgrannell.xyz/75fe9e0ac3.webp"/&gt;</content><link
+      href="https://photos-cdn.rgrannell.xyz/b2103a4620.webp"
+    /></entry><entry><id
+    >https://photos-cdn.rgrannell.xyz/2057d482a5.webp</id><title
+    >Photo</title><updated>2026-03-18T20:00:22.447861+00:00</updated><content
+      type="html"
+    >&lt;img src="https://photos-cdn.rgrannell.xyz/9f31980195.webp"/&gt;</content><link
+      href="https://photos-cdn.rgrannell.xyz/2057d482a5.webp"
+    /></entry></feed>

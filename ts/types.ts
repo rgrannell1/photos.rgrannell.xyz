@@ -105,7 +105,14 @@ export type Plane = NonNullable<ReturnType<typeof parsePlane>>;
 
 export type Feature = NonNullable<ReturnType<typeof parseFeature>>;
 
-export type Subject = Bird | Mammal | Reptile | Amphibian | Insect | Fish | Plane;
+export type Subject =
+  | Bird
+  | Mammal
+  | Reptile
+  | Amphibian
+  | Insect
+  | Fish
+  | Plane;
 
 export type Location = Place | Country | Unesco;
 

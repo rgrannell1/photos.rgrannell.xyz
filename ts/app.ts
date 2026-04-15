@@ -25,7 +25,7 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
-import { readThingCover, readAllPhotos } from "./services/photos.ts";
+import { readAllPhotos, readThingCover } from "./services/photos.ts";
 import { readAlbum, readPhoto } from "./services/readers.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { ListingsPage } from "./pages/listings.ts";
@@ -78,11 +78,15 @@ export function AlbumsApp(): m.Component<AppAttrs> {
     },
     view() {
       const countrySlug = m.route.param("country");
-      const selectedCountry = countrySlug ? `urn:ró:country:${countrySlug}` : undefined;
+      const selectedCountry = countrySlug
+        ? `urn:ró:country:${countrySlug}`
+        : undefined;
 
       const allAlbums = readAllAlbums(state.data);
       const albums = selectedCountry
-        ? allAlbums.filter((album) => setify(album.country).has(selectedCountry))
+        ? allAlbums.filter((album) =>
+          setify(album.country).has(selectedCountry)
+        )
         : allAlbums;
 
       return m(
