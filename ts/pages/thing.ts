@@ -165,8 +165,40 @@ function AlbumSection() {
   };
 }
 
+const PHOTO_BATCH_SIZE = 10;
+
 function PhotoSection() {
+  let rendered = PHOTO_BATCH_SIZE;
+  let batchScheduled = false;
+  let currentUrn = "";
+
+  function scheduleBatch(total: number) {
+    if (rendered >= total || batchScheduled) return;
+    batchScheduled = true;
+    setTimeout(() => {
+      rendered = Math.min(rendered + PHOTO_BATCH_SIZE, total);
+      batchScheduled = false;
+      m.redraw();
+    }, 1);
+  }
+
   return {
+    oncreate(vnode: m.VnodeDOM<ThingPageAttrs>) {
+      currentUrn = vnode.attrs.urn;
+      const urns = setOf<string>("id", vnode.attrs.things);
+      const photos = vnode.attrs.services.readPhotosByThingIds(urns);
+      scheduleBatch(photos.length);
+    },
+    onupdate(vnode: m.VnodeDOM<ThingPageAttrs>) {
+      if (vnode.attrs.urn !== currentUrn) {
+        currentUrn = vnode.attrs.urn;
+        rendered = PHOTO_BATCH_SIZE;
+        batchScheduled = false;
+      }
+      const urns = setOf<string>("id", vnode.attrs.things);
+      const photos = vnode.attrs.services.readPhotosByThingIds(urns);
+      scheduleBatch(photos.length);
+    },
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const { things, services } = vnode.attrs;
 
@@ -175,16 +207,14 @@ function PhotoSection() {
 
       return m(
         "section.photo-container",
-        photos.map((photo, idx) => {
-          const loading = loadingMode(idx);
-
-          return m(Photo, {
+        photos.slice(0, rendered).map((photo, idx) =>
+          m(Photo, {
             key: `photo-${photo.id}`,
             photo,
-            loading,
+            loading: loadingMode(idx),
             interactive: true,
-          });
-        }),
+          })
+        ),
       );
     },
   };
