@@ -235,6 +235,19 @@ button:disabled {
   display: block;
 }
 
+@keyframes banner-parallax {
+  from { transform: translateY(0); }
+  to   { transform: translateY(80px); }
+}
+
+/* CSS scroll-driven parallax — used when browser supports animation-timeline: scroll() */
+.album-banner.parallax-css .album-banner-image {
+  animation: banner-parallax linear both;
+  animation-timeline: scroll(root block);
+  /* mirrors JS constants: PARALLAX_MAX_PX=80 / PARALLAX_RATE=0.15 ≈ 533px scroll travel */
+  animation-range: 0px 533px;
+}
+
 .album-container, .photo-container, .video-container {
   display: flex;
   flex-wrap: wrap;
