@@ -25,7 +25,7 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
-import { readAllPhotos, readThingCover } from "./services/photos.ts";
+import { readAllPhotoUrns, readThingCover } from "./services/photos.ts";
 import { readAlbum, readPhoto } from "./services/readers.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { ListingsPage } from "./pages/listings.ts";
@@ -215,8 +215,8 @@ export function VideosApp(): m.Component<AppAttrs> {
 
 /* */
 export function PhotosApp(): m.Component<AppAttrs> {
-  // readAllPhotos is expensive (1000+ photos, sort) — compute once per app mount
-  const photos = readAllPhotos(state.data);
+  // Sort URNs by date without parsing each photo — parsing is deferred to render batches
+  const photoUrns = readAllPhotoUrns(state.data);
 
   return {
     view() {
@@ -230,7 +230,8 @@ export function PhotosApp(): m.Component<AppAttrs> {
           }, [
             m(sidebarComponent, { visible: state.sidebarVisible }),
             m(photosPageComponent, {
-              photos,
+              photoUrns,
+              services: state.services,
               visible: state.sidebarVisible,
             }),
           ]),

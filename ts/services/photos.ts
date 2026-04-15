@@ -7,6 +7,7 @@ import {
   readPhotos,
   readSubjects,
 } from "./readers.ts";
+import { one } from "../commons/arrays.ts";
 
 /*
  * Determine whether a photo should be eagerly or lazily loaded
@@ -78,6 +79,23 @@ export function readAllPhotos(tdb: TribbleDB): Photo[] {
   return readPhotos(tdb, photos).sort((photoa, photob) => {
     return parseInt(photob.createdAt) - parseInt(photoa.createdAt);
   });
+}
+
+/*
+ * Return all photo URNs sorted by date, without parsing each photo.
+ * Sorting on raw TripleObjects avoids 1000+ valibot validation calls upfront.
+ */
+export function readAllPhotoUrns(tdb: TribbleDB): string[] {
+  const photoObjects = tdb.search({
+    source: { type: "photo" },
+  }).objects();
+
+  return photoObjects
+    .sort((objA, objB) =>
+      parseInt(objB.createdAt as string) - parseInt(objA.createdAt as string)
+    )
+    .map((obj) => one(obj.id)!)
+    .filter((urn): urn is string => Boolean(urn));
 }
 
 /*

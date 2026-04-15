@@ -1,9 +1,15 @@
 import m from "mithril";
-import type { Photo as PhotoType } from "../types.ts";
+import type { Photo as PhotoType, Services } from "../types.ts";
 import { Photo } from "../components/photo.ts";
 import { loadingMode } from "../services/photos.ts";
 
 const BATCH_SIZE = 10;
+
+type PhotosListAttrs = {
+  photoUrns: string[];
+  services: Services;
+  visible: boolean;
+};
 
 function PhotosList() {
   let rendered = BATCH_SIZE;
@@ -20,17 +26,26 @@ function PhotosList() {
   }
 
   return {
-    oncreate(vnode: m.VnodeDOM<PhotosPageAttrs>) {
-      scheduleBatch(vnode.attrs.photos.length);
+    oncreate(vnode: m.VnodeDOM<PhotosListAttrs>) {
+      scheduleBatch(vnode.attrs.photoUrns.length);
     },
-    onupdate(vnode: m.VnodeDOM<PhotosPageAttrs>) {
-      scheduleBatch(vnode.attrs.photos.length);
+    onupdate(vnode: m.VnodeDOM<PhotosListAttrs>) {
+      scheduleBatch(vnode.attrs.photoUrns.length);
     },
-    view(vnode: m.Vnode<PhotosPageAttrs>) {
-      const { photos } = vnode.attrs;
+    view(vnode: m.Vnode<PhotosListAttrs>) {
+      const { photoUrns, services } = vnode.attrs;
+
+      const photos: PhotoType[] = [];
+      for (const urn of photoUrns.slice(0, rendered)) {
+        const photo = services.readPhoto(urn);
+        if (photo) {
+          photos.push(photo);
+        }
+      }
+
       return m(
         "section.photo-container",
-        photos.slice(0, rendered).map((photo, idx) =>
+        photos.map((photo, idx) =>
           m(Photo, {
             key: `photo-${photo.id}`,
             photo,
@@ -44,7 +59,8 @@ function PhotosList() {
 }
 
 type PhotosPageAttrs = {
-  photos: PhotoType[];
+  photoUrns: string[];
+  services: Services;
   visible: boolean;
 };
 
@@ -52,10 +68,10 @@ type PhotosPageAttrs = {
 export function PhotosPage() {
   return {
     view(vnode: m.Vnode<PhotosPageAttrs>) {
-      const { photos, visible } = vnode.attrs;
+      const { photoUrns, services, visible } = vnode.attrs;
 
-      const countText = `${photos.length} photo${
-        photos.length === 1 ? "" : "s"
+      const countText = `${photoUrns.length} photo${
+        photoUrns.length === 1 ? "" : "s"
       }`;
 
       const $md = m("section.photos-metadata", [
@@ -65,7 +81,7 @@ export function PhotosPage() {
 
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
-      }, [$md, m(PhotosList, { photos, visible })]);
+      }, [$md, m(PhotosList, { photoUrns, services, visible })]);
     },
   };
 }
