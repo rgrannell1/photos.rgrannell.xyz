@@ -5,6 +5,7 @@ import { readThingsByPhotoIds } from "./photos.ts";
 import { readPhotos } from "./readers.ts";
 import { KnownRelations, KnownTypes } from "../constants.ts";
 import { readAlbums, readPlace, readTransfers, readVideos } from "./readers.ts";
+import { albumUrn } from "../models/urn.ts";
 
 const NULL_ISLAND_THRESHOLD = 1e-4;
 
@@ -159,7 +160,7 @@ export function readAlbumsByThingIds(
     }).targets();
 
     for (const id of albums) {
-      albumIds.add(`urn:ró:album:${id}`);
+      albumIds.add(albumUrn(id));
     }
   }
 

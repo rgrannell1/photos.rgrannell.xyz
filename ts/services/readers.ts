@@ -1,4 +1,5 @@
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
+import { countryUrn } from "../models/urn.ts";
 import { readers } from "../commons/parser.ts";
 import { KnownRelations, KnownTypes } from "../constants.ts";
 import type { Country } from "../types.ts";
@@ -95,7 +96,7 @@ export function readBirdStats(tdb: TribbleDB): SubjectStats {
   };
 }
 
-const IRELAND_URN = "urn:ró:country:ireland";
+const IRELAND_URN = countryUrn("ireland");
 
 /*
  * Count wild, total, and Irish wild mammal species seen across all photos.

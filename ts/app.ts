@@ -21,6 +21,7 @@ import { readAllVideos } from "./services/videos.ts";
 import { listen } from "./commons/events.ts";
 import { setify } from "./commons/sets.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
+import { albumUrn, countryUrn, photoUrn } from "./models/urn.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
@@ -79,7 +80,7 @@ export function AlbumsApp(): m.Component<AppAttrs> {
     view() {
       const countrySlug = m.route.param("country");
       const selectedCountry = countrySlug
-        ? `urn:ró:country:${countrySlug}`
+        ? countryUrn(countrySlug)
         : undefined;
 
       const allAlbums = readAllAlbums(state.data);
@@ -117,7 +118,7 @@ export function AlbumApp(): m.Component<AppAttrs> {
     view() {
       const id = m.route.param("id");
       if (id) {
-        state.currentAlbum = `urn:ró:album:${id}`;
+        state.currentAlbum = albumUrn(id);
       }
       if (!state.currentAlbum) {
         return m("p", "No album selected");
@@ -291,7 +292,7 @@ export function PhotoApp(): m.Component<AppAttrs> {
   return {
     oninit() {
       const id = m.route.param("id");
-      state.currentPhoto = `urn:ró:photo:${id}`;
+      state.currentPhoto = photoUrn(id);
     },
     view() {
       if (!state.currentPhoto) {
