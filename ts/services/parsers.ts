@@ -14,7 +14,6 @@ import {
   AmphibianSchema,
   BirdSchema,
   CarSchema,
-  CountrySchema,
   FeatureSchema,
   FishSchema,
   InsectSchema,
@@ -33,7 +32,7 @@ import { safeParse } from "valibot";
 import type { TribbleDB } from "@rgrannell1/tribbledb";
 
 export const parseFeature = parseObject(FeatureSchema, "feature");
-export const parseCountry = parseObject(CountrySchema, "country");
+export const parseCountry = parseObject(PlaceSchema, "place");
 export const parseUnesco = parseObject(UnescoSchema, "unesco");
 export const parsePhoto = parseObject(PhotoSchema, "photo");
 export const parseBird = parseObject(BirdSchema, "bird");
@@ -69,7 +68,6 @@ export const parseSubject = parseByType<
  */
 export const parseLocation = parseByType<any>({
   [KnownTypes.PLACE]: parsePlace,
-  [KnownTypes.COUNTRY]: parseCountry,
   [KnownTypes.UNESCO]: parseUnesco,
 });
 

@@ -4,7 +4,7 @@ import m from "mithril";
 import { binomial, capitalise, pluralise } from "../commons/strings.ts";
 import { BinomialTypes, KnownTypes } from "../constants.ts";
 import { one } from "../commons/arrays.ts";
-import { countryEmoji, placeEmoji } from "../services/emoji.ts";
+import { placeEmoji } from "../services/emoji.ts";
 import { setTitle } from "../services/window.ts";
 
 function computeTitle(urn: string, things: TripleObject[]): string {
@@ -22,9 +22,7 @@ function computeTitle(urn: string, things: TripleObject[]): string {
   const [thing] = things;
   const name = one(thing.name) ?? parsed.id;
 
-  if (parsed.type === KnownTypes.COUNTRY) {
-    return `${countryEmoji(thing)} ${name}`;
-  } else if (parsed.type === KnownTypes.PLACE) {
+  if (parsed.type === KnownTypes.PLACE) {
     return `${placeEmoji(thing)} ${name}`;
   }
 

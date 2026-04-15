@@ -225,7 +225,8 @@ export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
  */
 export function readAllCountries(tdb: TribbleDB): Country[] {
   const ids = tdb.search({
-    source: { type: KnownTypes.COUNTRY },
+    source: { type: KnownTypes.PLACE },
+    relation: KnownRelations.FLAG,
   }).sources();
 
   const countries = readCountries(tdb, ids) as Country[];

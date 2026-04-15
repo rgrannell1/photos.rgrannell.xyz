@@ -14,6 +14,12 @@ import type { Thing } from "../types.ts";
  * @param thing The place
  */
 export function placeEmoji(thing: any): string {
+  // Country-places have a flag; prefer that over a feature emoji
+  const flag = one(thing.flag);
+  if (flag) {
+    return flag as string;
+  }
+
   const feature = one(thing.features);
   const { id: featureId } = asUrn(feature);
 
@@ -86,8 +92,6 @@ export function thingEmoji(urn: string, _: string, thing: Thing): string {
   switch (type) {
     case KnownTypes.PLACE:
       return placeEmoji(thing);
-    case KnownTypes.COUNTRY:
-      return countryEmoji(thing);
     case KnownTypes.BIRD:
       return birdEmoji();
     case KnownTypes.CAMERA:

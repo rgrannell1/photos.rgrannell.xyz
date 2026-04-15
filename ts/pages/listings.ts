@@ -12,7 +12,6 @@ type CategoryDef = {
 
 const CATEGORIES: CategoryDef[] = [
   { type: "place", label: "Places", route: "/listing/place" },
-  { type: "country", label: "Countries", route: "/listing/country" },
   { type: "bird", label: "Birds", route: "/listing/bird" },
   { type: "mammal", label: "Mammals", route: "/listing/mammal" },
   { type: "reptile", label: "Reptiles", route: "/listing/reptile" },
@@ -68,7 +67,7 @@ export function ListingsPage() {
       }, [
         m("section.album-metadata", [
           m("h1.albums-header", "Listings"),
-          m("p", "Collections of all places, countries, and animals"),
+          m("p", "Collections of all places and animals"),
         ]),
         m("section.album-container", $albums),
       ]);

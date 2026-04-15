@@ -55,7 +55,6 @@ export class KnownRelations {
 
 export class KnownTypes {
   static PLACE = "place";
-  static COUNTRY = "country";
   static BIRD = "bird";
   static MAMMAL = "mammal";
   static REPTILE = "reptile";
@@ -79,18 +78,14 @@ export class KnownTypes {
  * so designate some types as non-listable on the Listing page
  */
 export const NonListableTypes = new Set([
-  KnownTypes.COUNTRY,
   KnownTypes.CAMERA,
   KnownTypes.PLACE,
 ]);
 
 /*
- * A few words have irregular plurals; store them here
- * so we can display them without saying `Countrys`
+ * A few words have irregular plurals; store them here.
  */
-export const PLURALS = new Map<string, string>([
-  ["country", "countries"],
-]);
+export const PLURALS = new Map<string, string>();
 
 /*
  * Renamed relations mapping

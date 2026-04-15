@@ -42,7 +42,7 @@ export const AlbumSchema = v.object({
   mosaic: v.string(),
   photosCount: v.pipe(v.string(), v.transform(Number)),
   videosCount: v.pipe(v.string(), v.transform(Number)),
-  country: v.union([v.string(), v.array(v.string())]),
+  country: v.optional(v.union([v.string(), v.array(v.string())])),
   description: v.optional(v.string()),
 
   // 200ms to compute on the client, so now it's precomputed
@@ -69,6 +69,7 @@ export const UnescoSchema = v.object({
 export const PlaceSchema = v.object({
   id: v.string(),
   name: v.string(),
+  flag: v.optional(v.string()),
   features: v.optional(v.union([v.string(), v.array(v.string())])),
   in: v.optional(v.union([v.string(), v.array(v.string())])),
   shortName: v.optional(v.string()),
@@ -169,12 +170,12 @@ export const BirdSchema = v.object({
 export const VideoSchema = v.object({
   id: v.string(),
   albumId: v.string(),
-  description: v.string(),
-  posterUrl: v.pipe(v.string(), v.url()),
-  videoUrl1080p: v.pipe(v.string(), v.url()),
-  videoUrl480p: v.pipe(v.string(), v.url()),
-  videoUrl720p: v.pipe(v.string(), v.url()),
-  videoUrlUnscaled: v.pipe(v.string(), v.url()),
+  description: v.optional(v.string()),
+  posterUrl: v.optional(v.pipe(v.string(), v.url())),
+  videoUrl1080p: v.optional(v.pipe(v.string(), v.url())),
+  videoUrl480p: v.optional(v.pipe(v.string(), v.url())),
+  videoUrl720p: v.optional(v.pipe(v.string(), v.url())),
+  videoUrlUnscaled: v.optional(v.pipe(v.string(), v.url())),
 });
 
 export const StatsSchema = v.object({

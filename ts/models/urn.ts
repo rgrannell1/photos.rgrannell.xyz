@@ -4,7 +4,7 @@ const URN_PREFIX = "urn:ró";
 
 export const albumUrn = (id: string) => `${URN_PREFIX}:album:${id}`;
 export const photoUrn = (id: string) => `${URN_PREFIX}:photo:${id}`;
-export const countryUrn = (id: string) => `${URN_PREFIX}:country:${id}`;
+export const countryUrn = (id: string) => `${URN_PREFIX}:place:${id}`;
 export const typeUrn = (type: string, id: string) => `${URN_PREFIX}:${type}:${id}`;
 
 /*

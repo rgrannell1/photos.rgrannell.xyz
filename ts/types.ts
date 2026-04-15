@@ -131,5 +131,5 @@ export type Thing =
   | Plane;
 
 export function isACountry(place: Place | Country): place is Country {
-  return (place as Country).type === "country";
+  return !!(place as Country).flag;
 }

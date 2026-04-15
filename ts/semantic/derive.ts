@@ -21,11 +21,9 @@ const styleNames = new Set<string>();
 /*
  * Canonical URN for each known alias. Any triple whose source or target
  * matches an alias key is rewritten to use the canonical form, ensuring
- * duplicate country (or other) entities are merged before indexing.
+ * duplicate entities are merged before indexing.
  */
-const URN_ALIASES = new Map<string, string>([
-  ["urn:ró:country:usa", "urn:ró:country:united-states-of-america"],
-]);
+const URN_ALIASES = new Map<string, string>();
 
 /*
  * Expand CDN urls with their endpoint
