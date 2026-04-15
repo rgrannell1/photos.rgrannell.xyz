@@ -14,6 +14,7 @@ export class KnownRelations {
   static RATING = "rating";
   static NAME = "name";
   static BIRDWATCH_URL = "birdwatchUrl";
+  static FIRST_SEEN = "firstSeen";
   static WIKIPEDIA = "wikipedia";
   static CREATED_AT = "createdAt";
   static SEASON = "season";

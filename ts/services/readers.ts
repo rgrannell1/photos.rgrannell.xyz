@@ -169,14 +169,14 @@ export type ChecklistEntry = {
 /*
  * Read the bird life-list, sorted chronologically by first sighting.
  *
- * Includes both wild and captive sightings. "First seen" is the earliest
- * createdAt timestamp among all photos featuring that bird as a subject.
+ * Includes both wild and captive sightings. "First seen" is read directly
+ * from the firstSeen triple relation on each bird URN.
  * isWild is true if the bird has been photographed in a wild context at least once.
  */
 export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
-  const allBirdTriples = tdb.search({
-    relation: KnownRelations.SUBJECT,
-    target: { type: KnownTypes.BIRD },
+  const firstSeenTriples = tdb.search({
+    source: { type: KnownTypes.BIRD },
+    relation: KnownRelations.FIRST_SEEN,
   }).triples();
 
   const wildBirdIds = new Set(
@@ -186,31 +186,12 @@ export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
     }).triples().map(([, , birdUrn]) => asUrn(birdUrn).id),
   );
 
-  // Map birdId -> earliest createdAt (as numeric string) across all photos
-  const birdFirstSeen = new Map<string, string>();
+  const entries: ChecklistEntry[] = [];
 
-  for (const [photoUrn, , birdUrn] of allBirdTriples) {
+  for (const [birdUrn, , firstSeen] of firstSeenTriples) {
     const birdId = asUrn(birdUrn).id;
     if (birdId === "unknown") continue;
 
-    const photoId = asUrn(photoUrn).id;
-
-    const photo = tdb.search({
-      source: { type: KnownTypes.PHOTO, id: photoId },
-    }).firstObject();
-
-    const createdAt = photo?.createdAt as string | undefined;
-    if (!createdAt) continue;
-
-    const existing = birdFirstSeen.get(birdId);
-    if (!existing || parseInt(createdAt) < parseInt(existing)) {
-      birdFirstSeen.set(birdId, createdAt);
-    }
-  }
-
-  const entries: ChecklistEntry[] = [];
-
-  for (const [birdId, firstSeen] of birdFirstSeen) {
     const birdThing = tdb.search({
       source: { type: KnownTypes.BIRD, id: birdId },
     }).firstObject();
@@ -227,7 +208,7 @@ export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
 
     const isWild = wildBirdIds.has(birdId);
 
-    entries.push({ birdId, name, firstSeen, isIrish, isWild });
+    entries.push({ birdId, name, firstSeen: firstSeen as string, isIrish, isWild });
   }
 
   // Sort chronologically — earliest first-sighting first
