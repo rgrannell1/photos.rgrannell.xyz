@@ -68,53 +68,30 @@ function invalidateMapSizeSoon(existingMap: LeafletMap | undefined) {
   requestAnimationFrame(() => existingMap.invalidateSize());
 }
 
-function syncPlaceMarkers(
-  existingMap: LeafletMap | undefined,
-  existingLayer: L.LayerGroup | undefined,
-  places: PlaceWithCover[],
-): L.LayerGroup | undefined {
-  if (!existingMap) {
-    return existingLayer;
+const MARKER_BATCH_SIZE = 20;
+
+function addMarker(
+  leafletMap: LeafletMap,
+  markersLayer: L.LayerGroup,
+  bounds: L.LatLngBounds,
+  place: PlaceWithCover,
+): void {
+  const latitude = (place as any).latitude as number;
+  const longitude = (place as any).longitude as number;
+
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+    return;
   }
 
-  const markersLayer = existingLayer ?? L.layerGroup().addTo(existingMap);
-  markersLayer.clearLayers();
-
-  if (places.length === 0) {
-    return markersLayer;
-  }
-
-  const bounds = L.latLngBounds([]);
-
-  for (const place of places) {
-    const latitude = (place as any).latitude as number;
-    const longitude = (place as any).longitude as number;
-
-    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-      continue;
-    }
-
-    const marker = L.marker([latitude, longitude]);
-    const href = urnToUrl(place.id);
-    const popupLabel = place.name || "Unknown Place";
-
-    const imagePart = place.coverThumbnailUrl
-      ? `<img src="${place.coverThumbnailUrl}" alt="" class="leaflet-popup-thumbnail" loading="lazy" /><br />`
-      : "";
-    const linkPart = `<a href="${href}">${popupLabel}</a>`;
-    const popupContent = imagePart + linkPart;
-
-    marker.bindPopup(popupContent);
-
-    marker.addTo(markersLayer);
-    bounds.extend([latitude, longitude]);
-  }
-
-  if (bounds.isValid()) {
-    existingMap.fitBounds(bounds, { padding: [20, 20], maxZoom: 8 });
-  }
-
-  return markersLayer;
+  const marker = L.marker([latitude, longitude]);
+  const href = urnToUrl(place.id);
+  const popupLabel = place.name || "Unknown Place";
+  const imagePart = place.coverThumbnailUrl
+    ? `<img src="${place.coverThumbnailUrl}" alt="" class="leaflet-popup-thumbnail" loading="lazy" /><br />`
+    : "";
+  marker.bindPopup(imagePart + `<a href="${href}">${popupLabel}</a>`);
+  marker.addTo(markersLayer);
+  bounds.extend([latitude, longitude]);
 }
 
 const TRIP_LINE_DEFAULT = "#2563eb";
@@ -235,6 +212,32 @@ export function MapPage(): m.Component<MapPageAttrs> {
   let lastSidebarVisible: boolean | undefined;
   let markersLayer: L.LayerGroup | undefined;
   let tripLinesLayer: L.LayerGroup | undefined;
+  let lastPlaces: PlaceWithCover[] = [];
+  let markerBatchIdx = 0;
+  let markerBounds = L.latLngBounds([]);
+
+  function addMarkerBatch() {
+    if (!leafletMap || !markersLayer) return;
+    const end = Math.min(markerBatchIdx + MARKER_BATCH_SIZE, lastPlaces.length);
+    for (let idx = markerBatchIdx; idx < end; idx++) {
+      addMarker(leafletMap, markersLayer, markerBounds, lastPlaces[idx]);
+    }
+    markerBatchIdx = end;
+    if (markerBatchIdx < lastPlaces.length) {
+      setTimeout(addMarkerBatch, 1);
+    } else if (markerBounds.isValid()) {
+      leafletMap.fitBounds(markerBounds, { padding: [20, 20], maxZoom: 8 });
+    }
+  }
+
+  function startPlaceMarkers(places: PlaceWithCover[]) {
+    if (!markersLayer) return;
+    markersLayer.clearLayers();
+    lastPlaces = places;
+    markerBatchIdx = 0;
+    markerBounds = L.latLngBounds([]);
+    addMarkerBatch();
+  }
 
   return {
     oncreate(vnode) {
@@ -243,36 +246,23 @@ export function MapPage(): m.Component<MapPageAttrs> {
         undefined;
 
       leafletMap = ensureLeafletMap(leafletMap, mapContainer);
-      tripLinesLayer = syncTripPolylines(
-        leafletMap,
-        tripLinesLayer,
-        vnode.attrs.tripPolylines,
-      );
-      markersLayer = syncPlaceMarkers(
-        leafletMap,
-        markersLayer,
-        vnode.attrs.places,
-      );
+      markersLayer = L.layerGroup().addTo(leafletMap!);
+      tripLinesLayer = syncTripPolylines(leafletMap, tripLinesLayer, vnode.attrs.tripPolylines);
+      startPlaceMarkers(vnode.attrs.places);
       invalidateMapSizeSoon(leafletMap);
     },
 
     onupdate(vnode) {
-      // When the sidebar visibility changes (esp. on mobile), the map needs a resize.
       if (lastSidebarVisible !== vnode.attrs.visible) {
         invalidateMapSizeSoon(leafletMap);
       }
       lastSidebarVisible = vnode.attrs.visible;
 
-      tripLinesLayer = syncTripPolylines(
-        leafletMap,
-        tripLinesLayer,
-        vnode.attrs.tripPolylines,
-      );
-      markersLayer = syncPlaceMarkers(
-        leafletMap,
-        markersLayer,
-        vnode.attrs.places,
-      );
+      tripLinesLayer = syncTripPolylines(leafletMap, tripLinesLayer, vnode.attrs.tripPolylines);
+
+      if (vnode.attrs.places !== lastPlaces) {
+        startPlaceMarkers(vnode.attrs.places);
+      }
     },
 
     onremove() {
@@ -280,6 +270,7 @@ export function MapPage(): m.Component<MapPageAttrs> {
       mapContainer = undefined;
       markersLayer = undefined;
       tripLinesLayer = undefined;
+      lastPlaces = [];
     },
 
     view(vnode) {

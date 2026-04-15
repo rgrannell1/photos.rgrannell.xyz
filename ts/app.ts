@@ -36,6 +36,7 @@ import type { Album } from "./types.ts";
 import { ThingPage } from "./pages/thing.ts";
 import { MapPage } from "./pages/map.ts";
 import type { GeocodedPlace } from "./services/places.ts";
+import type { TripPolyline } from "./services/albums.ts";
 
 type AppAttrs = {};
 const state = await loadState();
@@ -408,21 +409,19 @@ export function ChecklistApp(): m.Component<AppAttrs> {
 
 /* */
 export function MapApp(): m.Component<AppAttrs> {
+  let placesForMap: (GeocodedPlace & { coverThumbnailUrl?: string })[] = [];
+  let tripPolylines: TripPolyline[] = [];
+
   return {
-    view() {
-      const geocodedPlaces: GeocodedPlace[] = state.services
-        .readGeocodedPlaces();
-
-      const placesForMap = geocodedPlaces.map((place) => {
+    oninit() {
+      const geocodedPlaces = state.services.readGeocodedPlaces();
+      placesForMap = geocodedPlaces.map((place) => {
         const cover = readThingCover(state.data, place.id);
-        return {
-          ...place,
-          coverThumbnailUrl: cover?.thumbnailUrl,
-        };
+        return { ...place, coverThumbnailUrl: cover?.thumbnailUrl };
       });
-
-      const tripPolylines = state.services.readTransferPolylines();
-
+      tripPolylines = state.services.readTransferPolylines();
+    },
+    view() {
       return m(
         "div.photos-app",
         { class: state.darkMode ? "dark-mode" : undefined },
