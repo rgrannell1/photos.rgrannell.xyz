@@ -1,10 +1,10 @@
 import m from "mithril";
-import * as L from "leaflet";
-import type { Map as LeafletMap } from "leaflet";
+import type { Map as LeafletMap, LayerGroup, LatLngBounds, PolylineOptions } from "leaflet";
 import type { TripPolyline } from "../services/albums.ts";
 import type { GeocodedPlace } from "../services/places.ts";
 import { urnToUrl } from "../models/urn.ts";
 
+type LeafletLib = typeof import("leaflet");
 type PlaceWithCover = GeocodedPlace & { coverThumbnailUrl?: string };
 
 type MapPageAttrs = {
@@ -21,7 +21,21 @@ const TERRAIN_ATTRIBUTION =
   `&amp; <a href="https://stamen.com/">Stamen Design</a>, ` +
   `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`;
 
-function createLeafletMap(container: HTMLElement): LeafletMap {
+const LEAFLET_CSS_URL = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+const LEAFLET_CSS_INTEGRITY = "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=";
+
+function injectLeafletCSS(): void {
+  if (document.querySelector("link[data-leaflet-css]")) return;
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = LEAFLET_CSS_URL;
+  link.integrity = LEAFLET_CSS_INTEGRITY;
+  link.crossOrigin = "";
+  link.setAttribute("data-leaflet-css", "");
+  document.head.appendChild(link);
+}
+
+function createLeafletMap(L: LeafletLib, container: HTMLElement): LeafletMap {
   const leafletMap = L.map(container, {
     center: [20, 0],
     zoom: 2,
@@ -38,14 +52,14 @@ function createLeafletMap(container: HTMLElement): LeafletMap {
 }
 
 function ensureLeafletMap(
+  L: LeafletLib,
   existingMap: LeafletMap | undefined,
   container: HTMLElement | undefined,
 ): LeafletMap | undefined {
   if (existingMap || !container) {
     return existingMap;
   }
-
-  return createLeafletMap(container);
+  return createLeafletMap(L, container);
 }
 
 function destroyLeafletMap(
@@ -54,7 +68,6 @@ function destroyLeafletMap(
   if (!existingMap) {
     return existingMap;
   }
-
   existingMap.remove();
   return undefined;
 }
@@ -63,17 +76,16 @@ function invalidateMapSizeSoon(existingMap: LeafletMap | undefined) {
   if (!existingMap) {
     return;
   }
-
-  // Allow layout to settle first (sidebar open/close, responsive layout, etc.)
   requestAnimationFrame(() => existingMap.invalidateSize());
 }
 
 const MARKER_BATCH_SIZE = 20;
 
 function addMarker(
+  L: LeafletLib,
   leafletMap: LeafletMap,
-  markersLayer: L.LayerGroup,
-  bounds: L.LatLngBounds,
+  markersLayer: LayerGroup,
+  bounds: LatLngBounds,
   place: PlaceWithCover,
 ): void {
   const latitude = (place as any).latitude as number;
@@ -97,7 +109,7 @@ function addMarker(
 const TRIP_LINE_DEFAULT = "#2563eb";
 const TRIP_LINE_CAR_TRAIN = "#60a5fa";
 
-function tripLineOptions(mode: string | undefined): L.PolylineOptions {
+function tripLineOptions(mode: string | undefined): PolylineOptions {
   const color = mode === "car" || mode === "train"
     ? TRIP_LINE_CAR_TRAIN
     : TRIP_LINE_DEFAULT;
@@ -187,10 +199,11 @@ function smoothLatLngs(
 }
 
 function syncTripPolylines(
+  L: LeafletLib,
   existingMap: LeafletMap | undefined,
-  existingLayer: L.LayerGroup | undefined,
+  existingLayer: LayerGroup | undefined,
   tripPolylines: TripPolyline[],
-): L.LayerGroup | undefined {
+): LayerGroup | undefined {
   if (!existingMap) {
     return existingLayer;
   }
@@ -208,20 +221,22 @@ function syncTripPolylines(
 
 /* */
 export function MapPage(): m.Component<MapPageAttrs> {
+  let leafletLib: LeafletLib | undefined;
   let leafletMap: LeafletMap | undefined;
   let mapContainer: HTMLElement | undefined;
   let lastSidebarVisible: boolean | undefined;
-  let markersLayer: L.LayerGroup | undefined;
-  let tripLinesLayer: L.LayerGroup | undefined;
+  let markersLayer: LayerGroup | undefined;
+  let tripLinesLayer: LayerGroup | undefined;
   let lastPlaces: PlaceWithCover[] = [];
+  let lastTripPolylines: TripPolyline[] = [];
   let markerBatchIdx = 0;
-  let markerBounds = L.latLngBounds([]);
+  let markerBounds: LatLngBounds | undefined;
 
   function addMarkerBatch() {
-    if (!leafletMap || !markersLayer) return;
+    if (!leafletLib || !leafletMap || !markersLayer || !markerBounds) return;
     const end = Math.min(markerBatchIdx + MARKER_BATCH_SIZE, lastPlaces.length);
     for (let idx = markerBatchIdx; idx < end; idx++) {
-      addMarker(leafletMap, markersLayer, markerBounds, lastPlaces[idx]);
+      addMarker(leafletLib, leafletMap, markersLayer, markerBounds, lastPlaces[idx]);
     }
     markerBatchIdx = end;
     if (markerBatchIdx < lastPlaces.length) {
@@ -232,29 +247,37 @@ export function MapPage(): m.Component<MapPageAttrs> {
   }
 
   function startPlaceMarkers(places: PlaceWithCover[]) {
-    if (!markersLayer) return;
+    if (!leafletLib || !markersLayer) return;
     markersLayer.clearLayers();
     lastPlaces = places;
     markerBatchIdx = 0;
-    markerBounds = L.latLngBounds([]);
+    markerBounds = leafletLib.latLngBounds([]);
     addMarkerBatch();
+  }
+
+  function initMap(L: LeafletLib, vnode: m.VnodeDOM<MapPageAttrs>) {
+    leafletLib = L;
+    const root = vnode.dom as HTMLElement;
+    mapContainer = root.querySelector(".leaflet-map") as HTMLElement | null ||
+      undefined;
+
+    leafletMap = ensureLeafletMap(L, leafletMap, mapContainer);
+    markersLayer = L.layerGroup().addTo(leafletMap!);
+    tripLinesLayer = syncTripPolylines(
+      L,
+      leafletMap,
+      tripLinesLayer,
+      vnode.attrs.tripPolylines,
+    );
+    lastTripPolylines = vnode.attrs.tripPolylines;
+    startPlaceMarkers(vnode.attrs.places);
+    invalidateMapSizeSoon(leafletMap);
   }
 
   return {
     oncreate(vnode) {
-      const root = vnode.dom as HTMLElement;
-      mapContainer = root.querySelector(".leaflet-map") as HTMLElement | null ||
-        undefined;
-
-      leafletMap = ensureLeafletMap(leafletMap, mapContainer);
-      markersLayer = L.layerGroup().addTo(leafletMap!);
-      tripLinesLayer = syncTripPolylines(
-        leafletMap,
-        tripLinesLayer,
-        vnode.attrs.tripPolylines,
-      );
-      startPlaceMarkers(vnode.attrs.places);
-      invalidateMapSizeSoon(leafletMap);
+      injectLeafletCSS();
+      import("leaflet").then((L) => initMap(L, vnode));
     },
 
     onupdate(vnode) {
@@ -263,11 +286,15 @@ export function MapPage(): m.Component<MapPageAttrs> {
       }
       lastSidebarVisible = vnode.attrs.visible;
 
-      tripLinesLayer = syncTripPolylines(
-        leafletMap,
-        tripLinesLayer,
-        vnode.attrs.tripPolylines,
-      );
+      if (leafletLib && vnode.attrs.tripPolylines !== lastTripPolylines) {
+        tripLinesLayer = syncTripPolylines(
+          leafletLib,
+          leafletMap,
+          tripLinesLayer,
+          vnode.attrs.tripPolylines,
+        );
+        lastTripPolylines = vnode.attrs.tripPolylines;
+      }
 
       if (vnode.attrs.places !== lastPlaces) {
         startPlaceMarkers(vnode.attrs.places);
@@ -280,6 +307,8 @@ export function MapPage(): m.Component<MapPageAttrs> {
       markersLayer = undefined;
       tripLinesLayer = undefined;
       lastPlaces = [];
+      lastTripPolylines = [];
+      leafletLib = undefined;
     },
 
     view(vnode) {
