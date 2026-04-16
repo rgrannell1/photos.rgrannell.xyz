@@ -20,6 +20,7 @@ import { UnescoList } from "../components/unesco-list.ts";
 import { loadingMode } from "../services/photos.ts";
 import { ThingUrls } from "../components/thing-urls.ts";
 import { readCountries } from "../services/readers.ts";
+import { HeartRain } from "../components/love.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -251,6 +252,11 @@ function PhotoSection() {
   };
 }
 
+function isOlm(urn: string): boolean {
+  const parsed = asUrn(urn);
+  return parsed.type === "amphibian" && parsed.id === "proteus-anguinus";
+}
+
 export function ThingPage() {
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
@@ -259,6 +265,7 @@ export function ThingPage() {
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
+        isOlm(urn) ? m(HeartRain) : null,
         m("section.thing-page", [
           m(ThingTitle, { urn, things }),
           m(ThingSubtitle, { urn }),

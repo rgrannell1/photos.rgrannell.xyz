@@ -996,3 +996,30 @@ button:disabled {
 .checklist-irish-flag {
   margin-right: 2px;
 }
+
+/*
+ * ++++ ++++ ++++ ~~~~ Heart Rain ~~~~ ++++ ++++ ++++
+ */
+
+.heart-rain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.heart-rain-heart {
+  position: absolute;
+  top: -2em;
+  animation: heart-fall linear forwards;
+  pointer-events: none;
+  user-select: none;
+}
+
+@keyframes heart-fall {
+  to {
+    transform: translateY(105vh);
+    opacity: 0.6;
+  }
+}
