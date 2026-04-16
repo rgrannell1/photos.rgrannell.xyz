@@ -27,6 +27,15 @@ async function shareImage(
   state.sharing = true;
 
   try {
+    const canShareFiles = navigator.canShare?.({
+      files: [new File([], "image", { type: format })],
+    });
+
+    if (!canShareFiles) {
+      await navigator.share({ title: "Sharing Image", url });
+      return;
+    }
+
     const response = await fetch(url);
     if (!response.ok) {
       handleError(`failed to fetch image! status: ${response.status}`);
@@ -34,22 +43,10 @@ async function shareImage(
     }
 
     const blob = await response.blob();
-    const file = new File([blob], "image", { type: format });
-    const shareData: ShareData = {
-      files: [file],
+    await navigator.share({
+      files: [new File([blob], "image", { type: format })],
       title: "Sharing Image",
-    };
-
-    if (!navigator.canShare?.(shareData)) {
-      await navigator.share({
-        title: "Sharing Image",
-        url,
-      });
-
-      return;
-    }
-
-    await navigator.share(shareData);
+    });
   } catch (error) {
     handleError("Error sharing image" + error);
   } finally {
