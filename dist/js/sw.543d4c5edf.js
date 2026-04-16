@@ -7,9 +7,10 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-32x32.png",
   "/favicon.ico",
   "/favicon-32x32.png",
-  "/dist/css/photo-album.16bd9b1c1f.css",
-  "/dist/css/style.16bd9b1c1f.css",
-  "/dist/js/app.16bd9b1c1f.js",
+  "/dist/css/photo-album.543d4c5edf.css",
+  "/dist/css/style.543d4c5edf.css",
+  "/dist/js/app.543d4c5edf.js",
+  "https://photos-cdn.rgrannell.xyz/a4a694cea4.webp",
 ];
 
 const HOMEPAGE_THUMBNAILS = new Set();
@@ -70,6 +71,13 @@ function isCacheable(url) {
     if (url.includes(`/manifest/${entry}`)) {
       return true;
     }
+  }
+
+  /*
+   * We cache static banner images hosted on the CDN
+   */
+  if (CACHEABLE_RESOURCES.some((resource) => url === resource)) {
+    return true;
   }
 
   /*

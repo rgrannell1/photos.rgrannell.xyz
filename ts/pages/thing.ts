@@ -178,17 +178,20 @@ function VideoSection() {
         return null;
       }
 
-      return m(
-        "section.photo-container",
-        videos.map((video) =>
-          m(Video, {
-            key: `video-${video.id}`,
-            video,
-            preload: "none",
-            interactive: true,
-          })
+      return m("div", [
+        m("h3", "Videos"),
+        m(
+          "section.photo-container",
+          videos.map((video) =>
+            m(Video, {
+              key: `video-${video.id}`,
+              video,
+              preload: "none",
+              interactive: true,
+            })
+          ),
         ),
-      );
+      ]);
     },
   };
 }
@@ -264,7 +267,6 @@ export function ThingPage() {
           m(ThingMetadata, { urn, things, services, visible }),
           m("h3", "Photos"),
           m(PhotoSection, { urn, things, services, visible }),
-          m("h3", "Videos"),
           m(VideoSection, { urn, things, services, visible }),
           m("h3", "Albums"),
           m(AlbumSection, { urn, things, services, visible }),

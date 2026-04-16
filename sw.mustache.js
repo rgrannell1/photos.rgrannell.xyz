@@ -10,6 +10,7 @@ const CACHEABLE_RESOURCES = [
   "/dist/css/photo-album.{{ publicationId }}.css",
   "/dist/css/style.{{ publicationId }}.css",
   "/dist/js/app.{{ publicationId }}.js",
+  "https://photos-cdn.rgrannell.xyz/a4a694cea4.webp",
 ];
 
 const HOMEPAGE_THUMBNAILS = new Set();
@@ -70,6 +71,13 @@ function isCacheable(url) {
     if (url.includes(`/manifest/${entry}`)) {
       return true;
     }
+  }
+
+  /*
+   * We cache static banner images hosted on the CDN
+   */
+  if (CACHEABLE_RESOURCES.some((resource) => url === resource)) {
+    return true;
   }
 
   /*
