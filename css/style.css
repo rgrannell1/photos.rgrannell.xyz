@@ -272,7 +272,7 @@ button:disabled {
 }
 
 .thumbnail-video {
-  margin: 5px;
+  display: block;
   width: var(--photo-width);
 }
 
