@@ -12,7 +12,7 @@ export function ThingUrls() {
       const { things } = vnode.attrs;
 
       if (things.length !== 1) {
-        return m("ul");
+        return null;
       }
 
       const [thing] = things;
@@ -43,6 +43,10 @@ export function ThingUrls() {
         $links.push(
           m("li", m(ExternalLink, { href: mapsHref, text: "[map]" })),
         );
+      }
+
+      if ($links.length === 0) {
+        return null;
       }
 
       return m("ul.link-list", $links);
