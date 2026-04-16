@@ -30,10 +30,7 @@ export function Video() {
       const {
         id: rawId,
         posterUrl,
-        videoUrl1080p,
         videoUrl480p,
-        videoUrl720p,
-        videoUrlUnscaled,
       } = video;
 
       const id = formatId(rawId);
@@ -47,13 +44,6 @@ export function Video() {
         src: videoUrl480p,
         type: "video/mp4",
       });
-
-      const $resolutionLinks = m("ul", [
-        m("a", { href: videoUrlUnscaled }, "[L]"),
-        m("a", { href: videoUrl1080p }, "[M]"),
-        m("a", { href: videoUrl720p }, "[S]"),
-        m("a", { href: videoUrl480p }, "[XS]"),
-      ]);
 
       const $video = m("video.thumbnail-video", {
         controls: true,
@@ -70,7 +60,6 @@ export function Video() {
           $mdIcon,
           $video,
         ]),
-        $resolutionLinks,
       ]);
     },
   };

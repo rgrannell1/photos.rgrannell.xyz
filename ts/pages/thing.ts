@@ -6,6 +6,7 @@ import { arrayify } from "../commons/arrays.ts";
 import type { Services } from "../types.ts";
 import { CountryLink } from "../components/place-links.ts";
 import { Photo } from "../components/photo.ts";
+import { Video } from "../components/video.ts";
 import { encodeBitmapDataURL } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
@@ -165,6 +166,33 @@ function AlbumSection() {
   };
 }
 
+function VideoSection() {
+  return {
+    view(vnode: m.Vnode<ThingPageAttrs>) {
+      const { things, services } = vnode.attrs;
+
+      const urns = setOf<string>("id", things);
+      const videos = services.readVideosByThingIds(new Set(urns));
+
+      if (videos.length === 0) {
+        return null;
+      }
+
+      return m(
+        "section.photo-container",
+        videos.map((video) =>
+          m(Video, {
+            key: `video-${video.id}`,
+            video,
+            preload: "none",
+            interactive: true,
+          })
+        ),
+      );
+    },
+  };
+}
+
 const PHOTO_BATCH_SIZE = 10;
 
 function PhotoSection() {
@@ -236,6 +264,8 @@ export function ThingPage() {
           m(ThingMetadata, { urn, things, services, visible }),
           m("h3", "Photos"),
           m(PhotoSection, { urn, things, services, visible }),
+          m("h3", "Videos"),
+          m(VideoSection, { urn, things, services, visible }),
           m("h3", "Albums"),
           m(AlbumSection, { urn, things, services, visible }),
         ]),

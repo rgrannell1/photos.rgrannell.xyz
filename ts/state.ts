@@ -12,6 +12,7 @@ import {
   getTransferPolylines,
   readAlbumsByThingIds,
 } from "./services/albums.ts";
+import { readVideosByThingIds } from "./services/videos.ts";
 import {
   readAlbum,
   readAllCountries,
@@ -94,6 +95,7 @@ export function loadServices(tdb: TribbleDB) {
     readCategoryCover: readCategoryCover.bind(null, tdb),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb),
+    readVideosByThingIds: readVideosByThingIds.bind(null, tdb),
     toThingLinks: toThingLinks.bind(null, tdb),
     readGeocodedPlaces: readGeocodedPlaces.bind(null, tdb),
     readTransferPolylines: getTransferPolylines.bind(null, tdb),

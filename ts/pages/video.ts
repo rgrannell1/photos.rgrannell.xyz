@@ -16,7 +16,17 @@ export function VideoPage() {
     view(vnode: m.Vnode<VideoPageAttrs>) {
       const { video, services, visible } = vnode.attrs;
 
-      const $links = m("li.link-list", [m(AlbumButton, { id: video.albumId })]);
+      const $links = m("li.link-list", [
+        m("a", { href: video.videoUrlUnscaled }, "[L]"),
+        " ",
+        m("a", { href: video.videoUrl1080p }, "[M]"),
+        " ",
+        m("a", { href: video.videoUrl720p }, "[S]"),
+        " ",
+        m("a", { href: video.videoUrl480p }, "[XS]"),
+        " ",
+        m(AlbumButton, { id: video.albumId }),
+      ]);
 
       const $videoInfo = m(VideoInfo, { video, services });
 
