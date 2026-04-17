@@ -86,7 +86,9 @@ export const NonListableTypes = new Set([
 /*
  * A few words have irregular plurals; store them here.
  */
-export const PLURALS = new Map<string, string>();
+export const PLURALS = new Map<string, string>([
+  ["place_feature", "Place Features"],
+]);
 
 /*
  * Renamed relations mapping

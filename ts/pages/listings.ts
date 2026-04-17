@@ -12,6 +12,7 @@ type CategoryDef = {
 
 const CATEGORIES: CategoryDef[] = [
   { type: "place", label: "Places", route: "/listing/place" },
+  { type: "place_feature", label: "Place Features", route: "/listing/place_feature" },
   { type: "bird", label: "Birds", route: "/listing/bird" },
   { type: "mammal", label: "Mammals", route: "/listing/mammal" },
   { type: "reptile", label: "Reptiles", route: "/listing/reptile" },

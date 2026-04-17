@@ -1,8 +1,8 @@
 import m from "mithril";
-import { type TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
 import { KnownTypes } from "../constants.ts";
-import { placeEmoji } from "../services/emoji.ts";
+import { placeEmoji, placeFeatureEmoji } from "../services/emoji.ts";
 import { ThingUrls } from "./thing-urls.ts";
 
 export function ThingMetadata() {
@@ -19,8 +19,13 @@ export function ThingMetadata() {
     view(vnode: m.Vnode<{ thing: TripleObject; titleExtra?: string }>) {
       const { thing, titleExtra } = vnode.attrs;
       const $links = m(ThingUrls, { things: [thing] });
+      const id = one(thing.id) as string | undefined;
+      const urnType = id ? asUrn(id)?.type : undefined;
+
       const title = one(thing.flag)
         ? `${placeEmoji(thing)} ${one(thing.name)}`
+        : urnType === KnownTypes.PLACE_FEATURE && id
+        ? `${placeFeatureEmoji(id)} ${one(thing.name)}`
         : one(thing.name);
 
       const titleContent = titleExtra ? [title, " ", titleExtra] : title;
