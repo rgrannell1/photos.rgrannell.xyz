@@ -26,7 +26,6 @@ export class KnownRelations {
   static WIDTH = "width";
   static HEIGHT = "height";
   static THUMBNAIL_URL = "thumbnailUrl";
-  static PNG_URL = "pngUrl";
   static MID_IMAGE_LOSSY_URL = "midImageLossyUrl";
   static PREVIEW_JPEG_URL = "previewJpegUrl";
   static FULL_IMAGE = "fullImage";
@@ -100,7 +99,6 @@ export const RENAMED_RELATIONS = new Map<string, string>([]);
  */
 export const CDN_RELATIONS = new Set([
   KnownRelations.THUMBNAIL_URL,
-  KnownRelations.PNG_URL,
   KnownRelations.MID_IMAGE_LOSSY_URL,
   KnownRelations.PREVIEW_JPEG_URL,
   KnownRelations.FULL_IMAGE,

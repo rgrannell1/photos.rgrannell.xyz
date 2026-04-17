@@ -95,7 +95,7 @@ export const PhotoSchema = v.object({
   midImageLossyUrl: v.string(),
   model: v.optional(v.string()),
   mosaicColours: v.string(),
-  pngUrl: v.string(),
+  previewJpegUrl: v.string(),
   rating: v.string(),
   style: v.optional(v.string()),
   thumbnailUrl: v.string(),
