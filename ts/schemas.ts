@@ -198,6 +198,7 @@ export const StatsSchema = v.object({
 export const FeatureSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
+  placesWithFeature: v.optional(v.union([v.string(), v.array(v.string())])),
 });
 
 export const TransferSchema = v.object({

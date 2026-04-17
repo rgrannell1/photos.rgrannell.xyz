@@ -287,6 +287,37 @@ export function deriveTriples(
 }
 
 /*
+ * For each photo at a place, emit photo → location → place_feature
+ * for all features of that place. Must run after addInverseRelations.
+ */
+export function addFeaturePhotoLocations(tdb: TribbleDB) {
+  const photoLocationTriples = tdb.search({
+    source: { type: KnownTypes.PHOTO },
+    relation: KnownRelations.LOCATION,
+  }).triples();
+
+  const newTriples: Triple[] = [];
+
+  for (const [photoUrn, , locationUrn] of photoLocationTriples) {
+    const parsed = asUrn(locationUrn);
+    if (!parsed || parsed.type !== KnownTypes.PLACE) {
+      continue;
+    }
+
+    const featureTriples = tdb.search({
+      source: { type: parsed.type, id: parsed.id },
+      relation: KnownRelations.FEATURES,
+    }).triples();
+
+    for (const [, , featureUrn] of featureTriples) {
+      newTriples.push([photoUrn, KnownRelations.LOCATION, featureUrn]);
+    }
+  }
+
+  tdb.add(newTriples);
+}
+
+/*
  * Operations that add but do not modify existing triples,
  * to be run after all indexing is complete.
  */
@@ -296,6 +327,7 @@ export function postIndexing(tdb: TribbleDB) {
   addInverseRelations(tdb);
   addNestedLocations(tdb);
   addTransitivePhotoLocations(tdb);
+  addFeaturePhotoLocations(tdb);
 }
 
 /*

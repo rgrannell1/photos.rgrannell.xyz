@@ -78,6 +78,13 @@ function ThingMetadata() {
         });
       }
 
+      if (thing.placesWithFeature) {
+        metadata["Places"] = m(PlacesList, {
+          services,
+          urns: setify(thing.placesWithFeature),
+        });
+      }
+
       if (thing.unescoId) {
         metadata["UNESCO"] = m(UnescoList, {
           urns: new Set(arrayify(thing.unescoId)),

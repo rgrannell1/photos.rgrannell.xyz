@@ -28,6 +28,7 @@ export class KnownRelations {
   static THUMBNAIL_URL = "thumbnailUrl";
   static PNG_URL = "pngUrl";
   static MID_IMAGE_LOSSY_URL = "midImageLossyUrl";
+  static PREVIEW_JPEG_URL = "previewJpegUrl";
   static FULL_IMAGE = "fullImage";
   static POSTER_URL = "posterUrl";
   static VIDEO_URL_1080P = "videoUrl1080p";
@@ -99,6 +100,7 @@ export const CDN_RELATIONS = new Set([
   KnownRelations.THUMBNAIL_URL,
   KnownRelations.PNG_URL,
   KnownRelations.MID_IMAGE_LOSSY_URL,
+  KnownRelations.PREVIEW_JPEG_URL,
   KnownRelations.FULL_IMAGE,
   KnownRelations.POSTER_URL,
   KnownRelations.VIDEO_URL_1080P,
@@ -114,6 +116,7 @@ export const CDN_RELATIONS = new Set([
 export const RelationSymmetries = [
   [KnownRelations.IN, KnownRelations.CONTAINS],
   [KnownRelations.CONTAINS_ALBUM, KnownRelations.TRIP],
+  [KnownRelations.FEATURES, KnownRelations.PLACES_WITH_FEATURE],
 ];
 
 /*

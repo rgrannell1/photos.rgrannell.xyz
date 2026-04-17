@@ -7,9 +7,9 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-32x32.png",
   "/favicon.ico",
   "/favicon-32x32.png",
-  "/dist/css/photo-album.3b8d057fb9.css",
-  "/dist/css/style.3b8d057fb9.css",
-  "/dist/js/app.3b8d057fb9.js",
+  "/dist/css/photo-album.b1a6cb75c1.css",
+  "/dist/css/style.b1a6cb75c1.css",
+  "/dist/js/app.b1a6cb75c1.js",
   "https://photos-cdn.rgrannell.xyz/a4a694cea4.webp",
 ];
 
