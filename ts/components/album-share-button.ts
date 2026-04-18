@@ -20,7 +20,7 @@ async function shareAlbum(
   name: string,
 ) {
   if (!navigator.share) {
-    handleError("navigator.share not available");
+    window.open(url, "_blank", "noreferrer");
     return;
   }
 
@@ -52,7 +52,6 @@ export function AlbumShareButton() {
       const { url, name } = vnode.attrs;
 
       return m("button.photo-share-button", {
-        disabled: !navigator.share,
         onclick: shareAlbum.bind(null, localState, url, name),
       }, buttonText(localState));
     },
