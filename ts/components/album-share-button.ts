@@ -20,7 +20,7 @@ async function shareAlbum(
   name: string,
 ) {
   if (!navigator.share) {
-    window.open(url, "_blank", "noreferrer");
+    await navigator.clipboard.writeText(url);
     return;
   }
 
