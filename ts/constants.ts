@@ -80,6 +80,7 @@ export class KnownTypes {
 export const NonListableTypes = new Set([
   KnownTypes.CAMERA,
   KnownTypes.PLACE,
+  KnownTypes.PLACE_FEATURE,
 ]);
 
 /*

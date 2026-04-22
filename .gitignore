@@ -9,3 +9,4 @@ manifest/tribbles-expanded.*
 .wrangler/*
 quality/
 quality.sh
+.claude/
