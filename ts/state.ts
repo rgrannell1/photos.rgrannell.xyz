@@ -38,7 +38,6 @@ import {
 import {
   readCategoryCover,
   readPhotosByThingIds,
-  readSeenInCountries,
   readThingCover,
 } from "./services/photos.ts";
 import { readThings, toThingLinks } from "./commons/things.ts";
@@ -95,7 +94,6 @@ export function loadServices(tdb: TribbleDB) {
     readThingCover: readThingCover.bind(null, tdb),
     readCategoryCover: readCategoryCover.bind(null, tdb),
     readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb),
-    readSeenInCountries: readSeenInCountries.bind(null, tdb),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb),
     readVideosByThingIds: readVideosByThingIds.bind(null, tdb),
     toThingLinks: toThingLinks.bind(null, tdb),
