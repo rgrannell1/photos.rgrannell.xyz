@@ -1,7 +1,7 @@
 import m from "mithril";
 import type { Photo as PhotoType, Services } from "../types.ts";
-import { arrayify } from "../commons/arrays.ts";
 import { preprocessDescription } from "../commons/strings.ts";
+import { MediaLocations } from "./media-locations.ts";
 
 type HeadingAttrs = {
   text: string;
@@ -40,17 +40,6 @@ function Description() {
   };
 }
 
-/* */
-function Location() {
-  return {
-    view(vnode: m.Vnode<PhotoComponentAttrs>) {
-      const { photo, services } = vnode.attrs;
-
-      const $locations = services.toThingLinks(arrayify(photo.location));
-      return m("td", $locations.length > 0 ? $locations : "—");
-    },
-  };
-}
 
 /* */
 function Rating() {
@@ -88,17 +77,6 @@ function Subject() {
   };
 }
 
-/* */
-function Country() {
-  return {
-    view(vnode: m.Vnode<PhotoComponentAttrs>) {
-      const { photo, services } = vnode.attrs;
-
-      const $countries = services.toThingLinks(arrayify(photo.country));
-      return m("td", $countries.length > 0 ? $countries : "—");
-    },
-  };
-}
 
 type PhotoInfoAttrs = {
   photo: PhotoType;
@@ -122,12 +100,12 @@ export function PhotoInfo() {
 
       infoItems.push(
         m("tr", [
-          m(Heading, { text: "Country" }),
-          m(Country, { photo, services }),
+          m(Heading, { text: "Location" }),
+          m(MediaLocations, { location: photo.location, services, mode: "geographic" }),
         ]),
         m("tr", [
-          m(Heading, { text: "Location" }),
-          m(Location, { photo, services }),
+          m(Heading, { text: "Place Type" }),
+          m(MediaLocations, { location: photo.location, services, mode: "feature" }),
         ]),
         m("tr", [
           m(Heading, { text: "Rating" }),

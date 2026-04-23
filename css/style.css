@@ -614,6 +614,14 @@ button:disabled {
 /*
  * ++++ ++++ ++++ ~~~~ Things Page ~~~~ ++++ ++++ ++++
  */
+
+/* tag-style left borders don't suit the compact metadata table context */
+.metadata-table .country-link,
+.metadata-table .place-link {
+  border-left: none;
+  padding-left: 0;
+}
+
 .thing-link {
   display: block;
 }
@@ -630,6 +638,7 @@ button:disabled {
 .fish-link,
 .amphibian-link,
 .place-link,
+.place_feature-link,
 .camera-link,
 .rating-link,
 .style-link,
@@ -674,6 +683,10 @@ button:disabled {
 
 .place-link, .camera-link, .rating-link, .style-link, .country-link {
   border-left: 8px solid var(--tag-color-7);
+}
+
+.place_feature-link {
+  border-left: 8px solid var(--tag-color-3);
 }
 
 .unesco-links {

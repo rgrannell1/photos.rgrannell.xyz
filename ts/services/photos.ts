@@ -1,13 +1,14 @@
 import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
 import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
-import type { Location, Photo, Subject } from "../types.ts";
+import type { Country, Location, Photo, Subject } from "../types.ts";
 import {
+  readCountries,
   readLocations,
   readPhoto,
   readPhotos,
   readSubjects,
 } from "./readers.ts";
-import { one } from "../commons/arrays.ts";
+import { arrayify, one } from "../commons/arrays.ts";
 
 /*
  * Determine whether a photo should be eagerly or lazily loaded
@@ -176,6 +177,27 @@ export function readThingCover(
   }).firstSource();
 
   return source ? readPhoto(tdb, source) : undefined;
+}
+
+/*
+ * Find all unique countries where photos of a given set of things were taken, sorted by name.
+ */
+export function readSeenInCountries(
+  tdb: TribbleDB,
+  thingUrns: Set<string>,
+): Country[] {
+  const photos = readPhotosByThingIds(tdb, thingUrns);
+  const countryUrnSet = new Set<string>();
+
+  for (const photo of photos) {
+    for (const countryUrn of arrayify(photo.country)) {
+      countryUrnSet.add(countryUrn);
+    }
+  }
+
+  return (readCountries(tdb, countryUrnSet) as Country[]).sort(
+    (countryA, countryB) => countryA.name.localeCompare(countryB.name),
+  );
 }
 
 /*

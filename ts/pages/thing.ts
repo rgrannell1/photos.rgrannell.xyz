@@ -13,7 +13,7 @@ import { PhotoAlbum } from "../components/photo-album.ts";
 import { block, broadcast } from "../commons/events.ts";
 import { PlacesList } from "../components/places-list.ts";
 import { setify, setOf } from "../commons/sets.ts";
-import { KnownRelations } from "../constants.ts";
+import { BinomialTypes, KnownRelations } from "../constants.ts";
 import { ListingLink } from "../components/listing-link.ts";
 import { FeaturesList } from "../components/features-list.ts";
 import { UnescoList } from "../components/unesco-list.ts";
@@ -92,7 +92,18 @@ function ThingMetadata() {
         });
       }
 
-      // TODO add `seen in`, first photographed
+      if (BinomialTypes.has(asUrn(urn).type)) {
+        const thingUrns = setOf<string>("id", things);
+        const seenIn = services.readSeenInCountries(thingUrns);
+
+        if (seenIn.length > 0) {
+          metadata["Seen In"] = seenIn.map((country) =>
+            m(CountryLink, { country, mode: "name", key: `seen-in-${country.id}` })
+          );
+        }
+      }
+
+      // TODO add first photographed
 
       // convert the metadaTa to a table
 
