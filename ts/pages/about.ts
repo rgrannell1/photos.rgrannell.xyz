@@ -18,7 +18,7 @@ export function AboutPage() {
       const { visible } = vnode.attrs;
       const years = new Date().getFullYear() - 2012;
 
-      const bannerSrc = "https://photos-cdn.rgrannell.xyz/a4a694cea4.webp";
+      const bannerSrc = "https://photos-cdn.rgrannell.xyz/1006a94072.webp";
 
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
