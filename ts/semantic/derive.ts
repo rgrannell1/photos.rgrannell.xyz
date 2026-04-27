@@ -287,18 +287,18 @@ export function deriveTriples(
 }
 
 /*
- * For each photo at a place, emit photo → location → place_feature
+ * For each media item at a place, emit source → location → place_feature
  * for all features of that place. Must run after addInverseRelations.
  */
-export function addFeaturePhotoLocations(tdb: TribbleDB) {
-  const photoLocationTriples = tdb.search({
-    source: { type: KnownTypes.PHOTO },
+function addFeatureLocationsForType(tdb: TribbleDB, sourceType: string) {
+  const locationTriples = tdb.search({
+    source: { type: sourceType },
     relation: KnownRelations.LOCATION,
   }).triples();
 
   const newTriples: Triple[] = [];
 
-  for (const [photoUrn, , locationUrn] of photoLocationTriples) {
+  for (const [sourceUrn, , locationUrn] of locationTriples) {
     const parsed = asUrn(locationUrn);
     if (!parsed || parsed.type !== KnownTypes.PLACE) {
       continue;
@@ -310,11 +310,16 @@ export function addFeaturePhotoLocations(tdb: TribbleDB) {
     }).triples();
 
     for (const [, , featureUrn] of featureTriples) {
-      newTriples.push([photoUrn, KnownRelations.LOCATION, featureUrn]);
+      newTriples.push([sourceUrn, KnownRelations.LOCATION, featureUrn]);
     }
   }
 
   tdb.add(newTriples);
+}
+
+export function addFeatureMediaLocations(tdb: TribbleDB) {
+  addFeatureLocationsForType(tdb, KnownTypes.PHOTO);
+  addFeatureLocationsForType(tdb, KnownTypes.VIDEO);
 }
 
 /*
@@ -326,8 +331,8 @@ export function postIndexing(tdb: TribbleDB) {
   addPlaceFeatureSubjects(tdb);
   addInverseRelations(tdb);
   addNestedLocations(tdb);
-  addTransitivePhotoLocations(tdb);
-  addFeaturePhotoLocations(tdb);
+  addTransitiveMediaLocations(tdb);
+  addFeatureMediaLocations(tdb);
 }
 
 /*
@@ -400,22 +405,19 @@ export function addNestedLocations(tdb: TribbleDB) {
 }
 
 /*
- * For every photo that has a direct location, walk up the transitive `in`
- * hierarchy (which addNestedLocations already pre-computed) and emit a
- * location triple for every ancestor. This means a photo tagged with
- * Stockholm will also appear when browsing Sweden.
- *
- * Must run after addNestedLocations.
+ * For every item of the given source type with a direct location, walk up the
+ * transitive `in` hierarchy (pre-computed by addNestedLocations) and emit a
+ * location triple for every ancestor. Must run after addNestedLocations.
  */
-export function addTransitivePhotoLocations(tdb: TribbleDB) {
-  const photoLocationTriples = tdb.search({
-    source: { type: KnownTypes.PHOTO },
+function addTransitiveLocationsForType(tdb: TribbleDB, sourceType: string) {
+  const locationTriples = tdb.search({
+    source: { type: sourceType },
     relation: KnownRelations.LOCATION,
   }).triples();
 
   const newTriples: Triple[] = [];
 
-  for (const [photoUrn, , locationUrn] of photoLocationTriples) {
+  for (const [sourceUrn, , locationUrn] of locationTriples) {
     const parsed = asUrn(locationUrn);
     if (!parsed) {
       continue;
@@ -427,9 +429,14 @@ export function addTransitivePhotoLocations(tdb: TribbleDB) {
     }).triples();
 
     for (const [, , ancestorUrn] of ancestorTriples) {
-      newTriples.push([photoUrn, KnownRelations.LOCATION, ancestorUrn]);
+      newTriples.push([sourceUrn, KnownRelations.LOCATION, ancestorUrn]);
     }
   }
 
   tdb.add(newTriples);
+}
+
+export function addTransitiveMediaLocations(tdb: TribbleDB) {
+  addTransitiveLocationsForType(tdb, KnownTypes.PHOTO);
+  addTransitiveLocationsForType(tdb, KnownTypes.VIDEO);
 }

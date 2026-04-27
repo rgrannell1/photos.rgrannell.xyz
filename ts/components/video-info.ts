@@ -2,6 +2,7 @@ import m from "mithril";
 import type { Video as VideoType, Services } from "../types.ts";
 import { arrayify } from "../commons/arrays.ts";
 import { preprocessDescription } from "../commons/strings.ts";
+import { MediaLocations } from "./media-locations.ts";
 
 type HeadingAttrs = {
   text: string;
@@ -34,18 +35,6 @@ function Description() {
       }
 
       return m("td", "—");
-    },
-  };
-}
-
-/* */
-function Location() {
-  return {
-    view(vnode: m.Vnode<VideoComponentAttrs>) {
-      const { video, services } = vnode.attrs;
-
-      const $locations = services.toThingLinks(arrayify(video.location));
-      return m("td", $locations.length > 0 ? $locations : "—");
     },
   };
 }
@@ -109,7 +98,11 @@ export function VideoInfo() {
       infoItems.push(
         m("tr", [
           m(Heading, { text: "Location" }),
-          m(Location, { video, services }),
+          m(MediaLocations, { location: video.location, services, mode: "geographic" }),
+        ]),
+        m("tr", [
+          m(Heading, { text: "Place Type" }),
+          m(MediaLocations, { location: video.location, services, mode: "feature" }),
         ]),
         m("tr", [
           m(Heading, { text: "Rating" }),
