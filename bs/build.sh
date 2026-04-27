@@ -1,4 +1,5 @@
 #! /usr/bin/env bash
+set -e
 
 rm -f dist/css/*
 rm -f dist/js/*
