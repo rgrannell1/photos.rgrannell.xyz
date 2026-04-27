@@ -36,20 +36,6 @@
   --tag-color-7: #100b2a;
 }
 
-.dark-mode {
-  --secondary-text-color: hsl(0, 0%, 66%);
-  --font-colour: hsl(0, 0%, 100%);
-  --navbar-font-colour: hsl(0, 0%, 100%);
-  --background-color: hsl(0, 0%, 8%);
-  --link-color: hsl(211, 84%, 74%);
-  --disabled-link-color: hsl(0, 0%, 60%);
-  --brand-color: hsl(211, 100%, 78%);
-  --link-background-color: hsl(211, 87%, 62%);
-  --hover-background-color: hsl(211, 87%, 62%);
-  --marker-color: hsl(0, 0%, 100%);
-  --nav-border-color: hsl(0, 0%, 100%);
-  --image-placeholder-background-color: hsl(0, 0%, 25%);
-}
 
 @font-face {
   font-family: "Rubik";

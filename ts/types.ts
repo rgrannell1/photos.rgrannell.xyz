@@ -20,7 +20,6 @@ import type {
 
 export type ApplicationEvents =
   | "click_burger_menu"
-  | "switch_theme"
   | "click_photo_metadata"
   | "photo_loaded"
   | "navigate";
@@ -63,7 +62,6 @@ export type Services = ReturnType<typeof loadServices>;
 export type State = {
   data: TribbleDB;
   services: Services;
-  darkMode: boolean;
   sidebarVisible: boolean;
   currentAlbum: string | undefined;
   currentPhoto: string | undefined;

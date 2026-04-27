@@ -66,10 +66,6 @@ listen("navigate", (event: Event) => {
   m.route.set(route);
 });
 
-listen("switch_theme", () => {
-  state.darkMode = !state.darkMode;
-});
-
 listen("click_burger_menu", () => {
   state.sidebarVisible = !state.sidebarVisible;
 });
@@ -94,7 +90,7 @@ export function AlbumsApp(): m.Component<AppAttrs> {
 
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {
@@ -146,7 +142,7 @@ export function AlbumApp(): m.Component<AppAttrs> {
 
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {
@@ -177,7 +173,7 @@ export function AboutApp(): m.Component<AppAttrs> {
     view() {
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {
@@ -198,7 +194,7 @@ export function VideosApp(): m.Component<AppAttrs> {
     view() {
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {
@@ -225,7 +221,7 @@ export function PhotosApp(): m.Component<AppAttrs> {
     view() {
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {
@@ -269,7 +265,7 @@ export function ThingApp(): m.Component<AppAttrs> {
 
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {
@@ -308,7 +304,7 @@ export function PhotoApp(): m.Component<AppAttrs> {
 
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {
@@ -346,7 +342,7 @@ export function VideoApp(): m.Component<AppAttrs> {
 
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {
@@ -383,7 +379,7 @@ export function ListingApp(): m.Component<AppAttrs> {
 
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {
@@ -409,7 +405,7 @@ export function ListingsApp(): m.Component<AppAttrs> {
     view() {
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {
@@ -436,7 +432,7 @@ export function ChecklistApp(): m.Component<AppAttrs> {
 
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {
@@ -473,7 +469,7 @@ export function MapApp(): m.Component<AppAttrs> {
     view() {
       return m(
         "div.photos-app",
-        { class: state.darkMode ? "dark-mode" : undefined },
+        {},
         [
           m(headerComponent, state),
           m("div.app-container", {

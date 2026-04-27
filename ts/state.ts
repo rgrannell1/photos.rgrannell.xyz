@@ -1,5 +1,4 @@
 import type { AppWindow, State } from "./types.ts";
-import * as DarkMode from "./services/dark-mode.ts";
 import { loadTriples } from "./semantic/data.ts";
 import {
   deriveTriples,
@@ -118,7 +117,6 @@ export async function loadState(): Promise<State> {
     currentUrn: undefined,
     currentType: undefined,
     data,
-    darkMode: DarkMode.load(),
     sidebarVisible: false,
     services: loadServices(data),
   };
