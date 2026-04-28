@@ -174,7 +174,7 @@ export function AboutApp(): m.Component<AppAttrs> {
     view() {
       return m(
         "div.photos-app",
-        {},
+        { class: "album-page" },
         [
           m(headerComponent, state),
           m("div.app-container", {
