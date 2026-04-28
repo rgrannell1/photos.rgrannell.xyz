@@ -140,9 +140,10 @@ export function AlbumApp(): m.Component<AppAttrs> {
           .sort((a, b) => b.minDate - a.minDate)
         : [];
 
+      const hasBanner = !!(album.albumBanner);
       return m(
         "div.photos-app",
-        {},
+        { class: hasBanner ? "album-page" : undefined },
         [
           m(headerComponent, state),
           m("div.app-container", {

@@ -10,3 +10,4 @@ manifest/tribbles-expanded.*
 quality/
 quality.sh
 .claude/
+logs/

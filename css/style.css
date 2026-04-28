@@ -408,8 +408,41 @@ button:disabled {
 
 /* Small Devices */
 @media (max-width: 500px) {
+  /* position: relative makes .album-page the containing block for the absolute header */
+  .album-page {
+    position: relative;
+    overflow-x: clip;
+  }
+
+  /* navbar floats over the banner as a black-block overlay, matching album metadata style */
+  .album-page .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background: transparent;
+  }
+
+  .album-page .burger,
+  .album-page .brand {
+    color: white;
+    background-color: black;
+  }
+
+  /* remove the page top-margin so the banner touches the top */
+  .album-page .app-container > .page {
+    margin-top: 0;
+  }
+
   .album-banner {
-    display: none;
+    display: block;
+    height: 60vh;
+    aspect-ratio: unset;
+    /* break out of any grid/padding offset to reach the viewport left edge */
+    width: 100vw;
+    margin-left: calc(-1 * (100vw - 100%));
+    margin-bottom: 1.5rem;
   }
 
   h1 {
