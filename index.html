@@ -14,7 +14,8 @@
     <link rel="preconnect" href="https://photos-cdn.rgrannell.xyz">
 
     <!-- Preloads -->
-    <link rel="preload" href="/dist/js/app.d9db4a9817.js" as="script">
+    <link rel="preload" href="/dist/js/app.83b50cfbe0.js" as="script">
+    <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/3afa490d25.avif" as="image">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/380cbe1d8a.avif" as="image">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/64e45d97a0.avif" as="image">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/4760b4c1d2.avif" as="image">
@@ -26,7 +27,6 @@
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/eb4339e53b.avif" as="image">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/32b1ab5fc6.avif" as="image">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/68b61c9f96.avif" as="image">
-    <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/2cfe25b5b0.avif" as="image">
 
     <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/manifest/atom/atom-index.xml" />
 
@@ -44,7 +44,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0056b3">
 
-    <link rel="stylesheet" href="/dist/css/style.d9db4a9817.css" as="style">
+    <link rel="stylesheet" href="/dist/css/style.83b50cfbe0.css" as="style">
     <link
       rel="preload"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -65,12 +65,12 @@
     <script>
       // reduce blocking requests by injecting critical data into the page
 
-      window.envConfig = {"photos_url": "https://photos-cdn.rgrannell.xyz", "publication_id": "d9db4a9817"}
-      window.homepageThumbnails = ["/380cbe1d8a.avif","/64e45d97a0.avif","/4760b4c1d2.avif","/d05b35bf0a.avif","/b7f352c7dd.avif","/12c012adcf.avif","/c629199abc.avif","/44b6c401e9.avif","/eb4339e53b.avif","/32b1ab5fc6.avif","/68b61c9f96.avif","/2cfe25b5b0.avif","/d8f1b447d1.avif","/25feddaa4b.avif","/5c6f45ebdb.avif","/7706a15c36.avif","/75d1e92814.avif","/af9d13a775.avif","/baab9cee76.avif","/fe5547ad7b.avif","/df81819e78.avif","/47e459f02f.avif","/a45a960408.avif","/af2dfc91c7.avif","/397e42e2ad.avif","/398a12a8ae.avif","/ba65fb5c16.avif","/8d77e6c15a.avif","/f51c7f4dff.avif","/b3ec26da24.avif","/81ef9d34cc.avif","/9690b61615.avif","/acd59a509d.avif","/f1a863e54a.avif","/f82e75d14f.avif","/2b2bdf131c.avif","/68a75ee450.avif","/d8dabf563a.avif","/9bd2200cc3.avif","/fce218f331.avif","/2d4763cfd5.avif","/f9c8434ee7.avif","/cd881c54b9.avif","/afd281603e.avif","/2aacf78df1.avif","/a35e466744.avif","/5097bf3ac7.avif","/aee0cea676.avif","/f88df4b017.avif","/1aa46595cb.avif","/c210900183.avif","/c16852d39f.avif","/29a9357fd8.avif","/2df4eb26c9.avif","/87d19e981e.avif","/cc96ee9040.avif","/f48f94fb84.avif","/6f51722e37.avif","/9e2db424a3.avif","/292ac8c29b.avif","/ba4a9b79f0.avif","/c3fb42a93b.avif","/495275bccc.avif","/599ff25758.avif","/442ee01f79.avif","/6785a0ea65.avif","/e13c237b3f.avif","/7bc5ee2977.avif","/831f5ed09f.avif","/16af1de320.avif","/b504e14410.avif","/4158a52706.avif","/f31659c5a5.avif","/bddd8893b5.avif","/df77c719c5.avif","/ad7826871e.avif","/f9b1ad79dd.avif","/e38c82b194.avif","/590d9af45f.avif","/71c2fbf4cc.avif","/192cee7728.avif","/dbe69a6481.avif","/e1996a871e.avif","/514e735937.avif","/d709d52f53.avif","/4dcc992cd0.avif","/0cd7cc1f5f.avif","/7f261382a3.avif","/5d45dc6559.avif","/1ef840be8d.avif","/7a558ae746.avif","/8ce230bffe.avif","/cffff27881.avif","/f8ebacd233.avif","/c7fa5d3f26.avif","/44f909596c.avif","/27048422f8.avif","/65f949ea07.avif","/4d6b370995.avif","/2b24b0fb60.avif","/d7ac6e6cbe.avif","/76970665a3.avif","/6674f59e2a.avif","/99dc1a0381.avif","/d2f94bb57c.avif","/9af7c8cf50.avif","/38218ef9d3.avif","/a63f8d1c78.avif","/f32612b6ba.avif","/31d638a4bc.avif","/46ad947087.avif","/1eaf20417b.avif","/1732c9f1eb.avif","/1184d8c3fa.avif","/1c800ffe51.avif","/66614e68dd.avif","/70fd453e8b.avif","/a1fb6d12f6.avif","/cf257f7a70.avif","/8a850ee9b9.avif"].map(url => `${url}.webp`)
-      window.stats = {"photos":1350,"videos":89,"albums":120,"years":13,"countries":19,"bird_species":148,"mammal_species":67,"reptile_species":18,"amphibian_species":6,"fish_species":6,"unesco_sites":22}
+      window.envConfig = {"photos_url": "https://photos-cdn.rgrannell.xyz", "publication_id": "83b50cfbe0"}
+      window.homepageThumbnails = ["/3afa490d25.avif","/380cbe1d8a.avif","/64e45d97a0.avif","/4760b4c1d2.avif","/d05b35bf0a.avif","/b7f352c7dd.avif","/12c012adcf.avif","/c629199abc.avif","/44b6c401e9.avif","/eb4339e53b.avif","/32b1ab5fc6.avif","/68b61c9f96.avif","/2cfe25b5b0.avif","/d8f1b447d1.avif","/25feddaa4b.avif","/5c6f45ebdb.avif","/7706a15c36.avif","/75d1e92814.avif","/af9d13a775.avif","/baab9cee76.avif","/fe5547ad7b.avif","/df81819e78.avif","/47e459f02f.avif","/a45a960408.avif","/af2dfc91c7.avif","/397e42e2ad.avif","/398a12a8ae.avif","/ba65fb5c16.avif","/8d77e6c15a.avif","/f51c7f4dff.avif","/b3ec26da24.avif","/81ef9d34cc.avif","/9690b61615.avif","/acd59a509d.avif","/f1a863e54a.avif","/f82e75d14f.avif","/2b2bdf131c.avif","/68a75ee450.avif","/d8dabf563a.avif","/9bd2200cc3.avif","/fce218f331.avif","/2d4763cfd5.avif","/f9c8434ee7.avif","/cd881c54b9.avif","/afd281603e.avif","/2aacf78df1.avif","/a35e466744.avif","/5097bf3ac7.avif","/aee0cea676.avif","/f88df4b017.avif","/1aa46595cb.avif","/c210900183.avif","/c16852d39f.avif","/29a9357fd8.avif","/2df4eb26c9.avif","/87d19e981e.avif","/cc96ee9040.avif","/f48f94fb84.avif","/6f51722e37.avif","/9e2db424a3.avif","/292ac8c29b.avif","/ba4a9b79f0.avif","/c3fb42a93b.avif","/495275bccc.avif","/599ff25758.avif","/442ee01f79.avif","/6785a0ea65.avif","/e13c237b3f.avif","/7bc5ee2977.avif","/831f5ed09f.avif","/16af1de320.avif","/b504e14410.avif","/4158a52706.avif","/f31659c5a5.avif","/bddd8893b5.avif","/df77c719c5.avif","/ad7826871e.avif","/f9b1ad79dd.avif","/e38c82b194.avif","/590d9af45f.avif","/71c2fbf4cc.avif","/192cee7728.avif","/dbe69a6481.avif","/e1996a871e.avif","/514e735937.avif","/d709d52f53.avif","/4dcc992cd0.avif","/0cd7cc1f5f.avif","/7f261382a3.avif","/5d45dc6559.avif","/1ef840be8d.avif","/7a558ae746.avif","/8ce230bffe.avif","/cffff27881.avif","/f8ebacd233.avif","/c7fa5d3f26.avif","/44f909596c.avif","/27048422f8.avif","/65f949ea07.avif","/4d6b370995.avif","/2b24b0fb60.avif","/d7ac6e6cbe.avif","/76970665a3.avif","/6674f59e2a.avif","/99dc1a0381.avif","/d2f94bb57c.avif","/9af7c8cf50.avif","/38218ef9d3.avif","/a63f8d1c78.avif","/f32612b6ba.avif","/31d638a4bc.avif","/46ad947087.avif","/1eaf20417b.avif","/1732c9f1eb.avif","/1184d8c3fa.avif","/1c800ffe51.avif","/66614e68dd.avif","/70fd453e8b.avif","/a1fb6d12f6.avif","/cf257f7a70.avif","/8a850ee9b9.avif"].map(url => `${url}.webp`)
+      window.stats = {"photos":1386,"videos":90,"albums":121,"years":13,"countries":19,"bird_species":148,"mammal_species":67,"reptile_species":18,"amphibian_species":6,"fish_species":6,"unesco_sites":22}
 
     </script>
-    <script type="module" src="/dist/js/app.d9db4a9817.js"></script>
+    <script type="module" src="/dist/js/app.83b50cfbe0.js"></script>
 
     <title>photos.rgrannell.xyz</title>
   </head>
@@ -80,10 +80,10 @@
   <script async fetchpriority="low">
     // -- register a service-worker
     if('serviceWorker' in navigator) {
-      console.log('⚙️ loading service worker: /sw.d9db4a9817.js')
+      console.log('⚙️ loading service worker: /sw.83b50cfbe0.js')
 
-      navigator.serviceWorker.register('/dist/js/sw.d9db4a9817.js').catch(err => {
-        console.error(`⚙️ failed service worker: /sw.d9db4a9817.js ${err}`)
+      navigator.serviceWorker.register('/dist/js/sw.83b50cfbe0.js').catch(err => {
+        console.error(`⚙️ failed service worker: /sw.83b50cfbe0.js ${err}`)
       });
 
       navigator.serviceWorker.ready.then(registration => {
@@ -100,7 +100,7 @@
         console.error(`⚙️ failed to send homepage thumbnails to service worker: ${err}`)
       });
     } else {
-      console.error('⚙️ service worker not supported: /sw.d9db4a9817.js')
+      console.error('⚙️ service worker not supported: /sw.83b50cfbe0.js')
     }
   </script>
 </html>
