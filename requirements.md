@@ -1,1 +1,3 @@
 On mobile devices (viewport width ≤ 500px), the album page should display a full-width banner image that touches the very top of the screen. The navbar should float over the banner as a transparent overlay with a subtle dark gradient so the navigation text remains legible against light or dark photos. The banner should occupy roughly 60% of the viewport height. Currently the album banner is hidden on mobile and this feature is desktop-only.
+
+On mobile devices, videos render full-screen (edge-to-edge, matching the behaviour of photos on mobile). Video controls are hidden by default and appear only after the user first interacts with the video.

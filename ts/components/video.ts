@@ -15,6 +15,13 @@ export type VideoAttrs = {
 
 /* */
 export function Video() {
+  let controlsVisible = false;
+
+  function onInteract() {
+    controlsVisible = true;
+    m.redraw();
+  }
+
   return {
     view(vnode: m.Vnode<VideoAttrs>) {
       const {
@@ -46,9 +53,10 @@ export function Video() {
       });
 
       const $video = m("video.thumbnail-video", {
-        controls: true,
+        controls: controlsVisible,
         preload,
         poster: posterUrl,
+        onclick: onInteract,
       }, $source);
 
       const $mdIcon = interactive

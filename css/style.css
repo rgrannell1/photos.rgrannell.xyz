@@ -552,9 +552,31 @@ button:disabled {
     display: block;
   }
 
-  .thumbnail-video {
-    width: max(180px, min(80vw, var(--photo-width)));
-    max-width: max(180px, 80vw);
+  /* break video grid out to full width, same technique as photo-container */
+  .video-container {
+    width: 100vw;
+    margin-left: calc(-1 * (100vw - 100%));
+    column-gap: 0;
+    flex-direction: column;
+  }
+
+  /* each Video() renders an outer div wrapper — make it fill the row */
+  .video-container > div {
+    width: 100%;
+  }
+
+  .video-container .photo {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    display: block;
+  }
+
+  .video-container .thumbnail-video {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
   }
 
   .photo-sidebar {
