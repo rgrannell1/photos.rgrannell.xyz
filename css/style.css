@@ -929,6 +929,8 @@ button:disabled {
 
 @media (max-width: 500px) {
   .leaflet-map {
+    width: 100vw;
+    margin-left: calc(-1 * (100vw - 100%));
     height: calc(100vh - 200px);
     min-height: 320px;
     margin-right: 0;
