@@ -6,7 +6,7 @@
 
 - `bs/lint.sh` — type-check with `tsc --noEmit`
 - `bs/build.sh` — full build (CSS, JS, tribbles)
-- `bs/dev.sh` / `bs/dev:watch.sh` — local dev server (port 3000; `rs dev` starts a live-reload socket)
+- `bs/dev.sh` / `bs/dev:watch.sh` — local dev server (port 3030; `rs dev` starts a live-reload socket)
 - `bs/test.sh` — run tests
 - `bs/deploy.sh` — deploy to production
 

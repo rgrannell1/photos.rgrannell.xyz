@@ -482,6 +482,39 @@ button:disabled {
     margin-left: 0 !important;
   }
 
+  /* break photo grid out of the app's left padding so images touch screen edges */
+  .photo-container {
+    width: 100vw;
+    margin-left: calc(-1 * (100vw - 100%));
+    column-gap: 0;
+    flex-direction: column;
+  }
+
+  /* each Photo() renders an outer div wrapper — make it fill the row */
+  .photo-container > div {
+    width: 100%;
+  }
+
+  .photo-container .photo {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    display: block;
+  }
+
+  /* the a wrapping ImagePair is inline by default, which clips both image and absolute icon */
+  .photo-container .photo a {
+    display: block;
+    width: 100%;
+  }
+
+  .photo-container .thumbnail-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
   .thumbnail-video {
     width: max(180px, min(80vw, var(--photo-width)));
     max-width: max(180px, 80vw);

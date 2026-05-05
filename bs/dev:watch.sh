@@ -2,7 +2,7 @@
 
 ./bs/build.sh
 
-python3 -m http.server 3000 &
+python3 -m http.server 3030 &
 SERVER_PID=$!
 trap "kill $SERVER_PID" EXIT
 
