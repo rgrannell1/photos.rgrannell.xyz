@@ -349,8 +349,8 @@ button:disabled {
 }
 
 .country-filter {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 2em);
   gap: 0.4em;
 }
 
@@ -480,6 +480,43 @@ button:disabled {
 
   .photo-album {
     margin-left: 0 !important;
+  }
+
+  /* break album grid out to full width, same technique as photo-container */
+  .album-container {
+    width: 100vw;
+    margin-left: calc(-1 * (100vw - 100%));
+    column-gap: 0;
+    flex-direction: column;
+  }
+
+  /* each album is wrapped in an anonymous div; make it fill the row */
+  .album-container > div {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .album-container .photo-album {
+    width: 100%;
+    display: block;
+  }
+
+  /* the a wrapping ImagePair is inline by default */
+  .album-container .photo-album a {
+    display: block;
+    width: 100%;
+  }
+
+  .album-container .thumbnail-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* give year headings left breathing room since the container now spans the full viewport */
+  .album-container > h2.album-year-heading {
+    padding-left: 1rem;
   }
 
   /* break photo grid out of the app's left padding so images touch screen edges */
