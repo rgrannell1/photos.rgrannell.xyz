@@ -1,5 +1,6 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
+import { sharePhotoUrl } from "../services/window.ts";
 import { Photo } from "../components/photo.ts";
 import type { Photo as PhotoType, Services } from "../types.ts";
 import { AlbumButton } from "../components/album-button.ts";
@@ -18,7 +19,7 @@ export function PhotoPage() {
     view(vnode: m.Vnode<PhotoPageAttrs>) {
       const { photo, services, visible } = vnode.attrs;
 
-      const shareUrl = `https://sharephoto.rgrannell.xyz/photo/${asUrn(photo.id).id}`;
+      const shareUrl = sharePhotoUrl(`photo/${asUrn(photo.id).id}`);
 
       // TODO this should be a ul
       const $links = m("li.link-list", [

@@ -82,6 +82,9 @@ export async function buildCSS() {
 export async function buildHTML() {
   console.info("🌐 Rendering index.html");
 
+  const siteUrl = env.photos_url.replace("photos-cdn.", "photos.");
+  const siteHostname = new URL(siteUrl).hostname;
+
   await Deno.writeTextFile(
     "index.html",
     render(htmlTemplateText, {
@@ -94,6 +97,8 @@ export async function buildHTML() {
       cdnUrl: env.photos_url,
       buildId: env.build_id,
       publicationId: env.publication_id,
+      siteUrl,
+      siteHostname,
     }),
   );
 }

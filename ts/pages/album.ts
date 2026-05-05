@@ -1,5 +1,5 @@
 import m from "mithril";
-import { isSmallerThan, setTitle } from "../services/window.ts";
+import { isSmallerThan, setTitle, sharePhotoUrl } from "../services/window.ts";
 import * as Dates from "../services/dates.ts";
 import { AlbumBanner } from "../components/album-banner.ts";
 import { AlbumShareButton } from "../components/album-share-button.ts";
@@ -82,7 +82,7 @@ export function AlbumPage() {
       );
 
       const { id } = asUrn(album.id);
-      const url = `https://sharephoto.rgrannell.xyz/album/${id}`;
+      const url = sharePhotoUrl(`album/${id}`);
 
       const bannerPhoto = album.albumBanner
         ? services.readPhoto(album.albumBanner)

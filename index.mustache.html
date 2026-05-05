@@ -5,10 +5,10 @@
     <meta name="googlebot" content="noindex">
 
     <meta charset="utf-8">
-    <meta name="application-name" content="photos.rgrannell.xyz">
+    <meta name="application-name" content="{{ siteHostname }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="Description" content="My personal photo library">
-    <link rel="canonical" href="https://photos.rgrannell.xyz/">
+    <link rel="canonical" href="{{ siteUrl }}/">
 
     <!-- Preconnects -->
     <link rel="preconnect" href="{{{ cdnUrl }}}">
@@ -22,12 +22,12 @@
     <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/manifest/atom/atom-index.xml" />
 
     <!-- OpenGraph Attributes -->
-    <meta property="og:title" content="photos.rgrannell.xyz">
+    <meta property="og:title" content="{{ siteHostname }}">
     <meta property="og:description" content="My personal photo library">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="en_IE">
-    <meta property="og:url" content="https://photos.rgrannell.xyz">
-    <meta property="og:site_name" content="photos.rgrannell.xyz">
+    <meta property="og:url" content="{{ siteUrl }}">
+    <meta property="og:site_name" content="{{ siteHostname }}">
 
     <link rel="manifest" href="/site.webmanifest">
     <link rel="shortcut icon" type="image/png" href="/icons/favicon-32x32.png"/ defer="" fetchpriorty="low">
@@ -63,7 +63,7 @@
     </script>
     <script type="module" src="/dist/js/app.{{ publicationId }}.js"></script>
 
-    <title>photos.rgrannell.xyz</title>
+    <title>{{ siteHostname }}</title>
   </head>
 
   <body></body>

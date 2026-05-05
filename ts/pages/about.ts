@@ -31,7 +31,7 @@ export function AboutPage() {
             "p",
             `I started taking photos ${years} years ago. It's a fun hobby; it motivates me to get outside and see interesting things and interact with nature. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things`,
             m("a", {
-              href: "https://photos.rgrannell.xyz/#/thing/rating:4",
+              href: "/#/thing/rating:4",
               onclick: navigate(`/thing/rating:4`),
             }, " I found beautiful in this world."),
           ),
@@ -46,7 +46,7 @@ export function AboutPage() {
             "No, absolutely not. The ",
             m(
               "a",
-              { href: "http://photos.rgrannell.xyz/robots.txt" },
+              { href: "/robots.txt" },
               "robots.txt",
             ),
             " file for this site explicitly prohibits this.",
@@ -55,7 +55,7 @@ export function AboutPage() {
           m(
             "p",
             "See ",
-            m("a", { href: "https://rgrannell.xyz/" }, "my personal site"),
+            m("a", { href: "https://rho.ie/" }, "my personal site"),
             " for contact details.",
           ),
         ]),

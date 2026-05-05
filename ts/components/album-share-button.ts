@@ -26,7 +26,7 @@ async function shareAlbum(
 
   try {
     await navigator.share({
-      title: `${name} - photos.rgrannell.xyz`,
+      title: `${name} - ${window.location.hostname}`,
       url,
     });
   } catch (error) {

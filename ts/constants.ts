@@ -133,7 +133,7 @@ export const CURIES = {
 // Curies match this pattern
 export const CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
 
-// TODO inject via environmental variable
+// CDN base URL for expanding relative CDN paths in triples
 export const ENDPOINT = "https://photos-cdn.rgrannell.xyz";
 
 export const SCROLL_HIDE_THRESHOLD = 200;

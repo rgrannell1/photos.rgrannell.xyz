@@ -41,25 +41,26 @@ function extractPathFromUrl(url: string): string {
     const urlObj = new URL(url);
     const pathname = urlObj.pathname;
 
-    // For sharephoto.rgrannell.xyz, the path is the direct pathname
-    // e.g., sharephoto.rgrannell.xyz/albums/zaragoza-25 -> /albums/zaragoza-25
+    // For sharephoto.*, the path is the direct pathname
+    // e.g., sharephoto.rho.ie/albums/zaragoza-25 -> /albums/zaragoza-25
     return pathname || "/";
   } catch {
     return "/";
   }
 }
 
-function getPageTitle(card: SocialCard | null): string {
-  return card?.title || "photos.rgrannell.xyz";
+function getPageTitle(card: SocialCard | null, request: Request): string {
+  const host = new URL(request.url).hostname.replace(/^sharephoto\./, "photos.");
+  return card?.title || host;
 }
 
 function getPageUrl(request: Request): string {
   const url = new URL(request.url);
   const pathname = url.pathname;
+  const host = url.hostname.replace(/^sharephoto\./, "photos.");
 
-  // Redirect from sharephoto.rgrannell.xyz to photos.rgrannell.xyz
-  // e.g., sharephoto.rgrannell.xyz/albums/zaragoza-25 -> photos.rgrannell.xyz/albums/zaragoza-25
-  return `https://photos.rgrannell.xyz/#!/${pathname}`;
+  // Redirect from sharephoto.* to photos.* preserving the path
+  return `https://${host}/#!/${pathname}`;
 }
 
 function getImageUrl(card: SocialCard | null): string | undefined {
@@ -83,7 +84,7 @@ export default {
       card ? "Card found" : "No card found",
     );
 
-    const title = getPageTitle(card);
+    const title = getPageTitle(card, request);
     const pageUrl = getPageUrl(request);
     const imageUrl = getImageUrl(card);
 
@@ -103,7 +104,7 @@ export default {
   <meta name="robots" content="noindex">
   <meta name="googlebot" content="noindex">
   <meta charset="utf-8">
-  <meta name="application-name" content="photos.rgrannell.xyz">
+  <meta name="application-name" content="${new URL(pageUrl).hostname}">
   <title>${title}</title>
 
   <!-- Social Cards -->
