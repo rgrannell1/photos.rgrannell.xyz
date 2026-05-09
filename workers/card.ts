@@ -60,7 +60,7 @@ function getPageUrl(request: Request): string {
   const host = url.hostname.replace(/^sharephoto\./, "photos.");
 
   // Redirect from sharephoto.* to photos.* preserving the path
-  return `https://${host}/#!/${pathname}`;
+  return `https://${host}/#!${pathname}`;
 }
 
 function getImageUrl(card: SocialCard | null): string | undefined {
@@ -109,6 +109,7 @@ export default {
 
   <!-- Social Cards -->
   <meta property="og:title" content="${title}">
+  <meta property="og:description" content="${card?.description ?? ""}">
   <meta property="og:url" content="${pageUrl}">
   <meta property="og:image" content="${imageUrl}">
   <meta property="og:type" content="website">

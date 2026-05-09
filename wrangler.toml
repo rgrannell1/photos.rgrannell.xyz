@@ -15,6 +15,7 @@ database_id = "bc12398e-14a3-4705-9091-6117eb305e29"
 # Worker configuration
 [env.production]
 name = "photo-cards"
+routes = ["sharephoto.rho.ie/*"]
 
 [[env.production.d1_databases]]
 binding = "PHOTO_CARDS"
