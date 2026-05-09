@@ -3,3 +3,5 @@ On mobile devices (viewport width ≤ 500px), the album page should display a fu
 On mobile devices, videos render full-screen (edge-to-edge, matching the behaviour of photos on mobile). Video controls are hidden by default and appear only after the user first interacts with the video.
 
 On mobile devices, the map renders full-width (edge-to-edge), matching the treatment applied to photos and videos.
+
+The build system produces cache-busting filenames for CSS, JavaScript, and service-worker assets using a two-part ID composed of the publication ID (from manifest/env.json, tied to photo publishing) and the current git short hash (tied to code changes). Data files (tribbles, stats, triples) continue to use the publication ID alone. This ensures that a code-only deploy always produces new asset URLs and browsers do not serve stale assets.

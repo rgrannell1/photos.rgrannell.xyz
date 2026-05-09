@@ -1,5 +1,6 @@
 import * as esbuild from "https://deno.land/x/esbuild/mod.js";
 import { render } from "https://deno.land/x/mustache_ts/mustache.ts";
+import { walk } from "jsr:@std/fs";
 import {
   env,
   envText,
@@ -12,6 +13,22 @@ import {
 } from "./loaders.ts";
 import { minify as cssoMinify } from "npm:csso";
 import { TribbleStringifier } from "@rgrannell1/tribbledb";
+
+async function computeSourceHash(): Promise<string> {
+  const contents: string[] = [];
+
+  for await (const entry of walk("ts", { exts: [".ts"] })) {
+    contents.push(await Deno.readTextFile(entry.path));
+  }
+  contents.push(await Deno.readTextFile("css/style.css"));
+
+  const encoded = new TextEncoder().encode(contents.join(""));
+  const hashBuffer = await crypto.subtle.digest("SHA-256", encoded);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("").slice(0, 8);
+}
+
+const buildId = `${env.publication_id}-${await computeSourceHash()}`;
 
 export async function buildExpandedTribbles() {
   console.info("🌐 Rendering expanded tribbles");
@@ -32,11 +49,11 @@ export async function buildSW() {
   console.info("🌐 Rendering service-worker");
 
   await Deno.writeTextFile(
-    `dist/js/sw.${env.publication_id}.js`,
+    `dist/js/sw.${buildId}.js`,
     render(swTemplateText, {
       prefetched: findPrefetchTargets(),
       homepageThumbnails: JSON.stringify(findHomepageThumbnails()),
-      publicationId: env.publication_id,
+      buildId,
     }),
   );
 }
@@ -50,7 +67,7 @@ export async function buildTS() {
   await esbuild.build({
     entryPoints: ["ts/index.ts"],
     bundle: true,
-    outfile: `dist/js/app.${env.publication_id}.js`,
+    outfile: `dist/js/app.${buildId}.js`,
     format: "esm",
     treeShaking: true,
     sourcemap: true,
@@ -71,7 +88,7 @@ export async function buildCSS() {
   const minified = cssoMinify(result.code).css;
 
   await Deno.writeTextFile(
-    `dist/css/style.${env.publication_id}.css`,
+    `dist/css/style.${buildId}.css`,
     minified,
   );
 }
@@ -95,7 +112,7 @@ export async function buildHTML() {
         findHomepageThumbnails().map((url) => url.replace(/\.webp$/, "")),
       ),
       cdnUrl: env.photos_url,
-      buildId: env.build_id,
+      buildId,
       publicationId: env.publication_id,
       siteUrl,
       siteHostname,
