@@ -716,6 +716,10 @@ button:disabled {
   text-align: left;
 }
 
+.seen-in-list .country-link {
+  border-left: none;
+}
+
 .link-list {
   list-style: none;
   display: flex;
