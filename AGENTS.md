@@ -10,6 +10,10 @@
 - `bs/test.sh` — run tests
 - `bs/deploy.sh` — deploy to production
 
+## Git
+
+- Before committing, always ask the user to confirm the feature works visually — do not proceed to commit until they confirm
+
 ## Project
 
 - run `rs build` to build
