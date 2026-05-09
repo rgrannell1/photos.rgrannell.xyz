@@ -573,7 +573,8 @@ button:disabled {
     display: block;
   }
 
-  .video-container .thumbnail-video {
+  .video-container .thumbnail-video,
+  .thumbnail-video {
     width: 100%;
     max-width: 100%;
     height: auto;
@@ -898,7 +899,7 @@ button:disabled {
     z-index: 1;
   }
 
-  .thumbnail-image, .thumbnail-video {
+  .thumbnail-image {
     width: max(180px, min(80vw, 400px));
     max-width: max(180px, 80vw);
   }
@@ -1034,7 +1035,7 @@ button:disabled {
     z-index: 1;
   }
 
-  .thumbnail-image, .thumbnail-video {
+  .thumbnail-image {
     width: max(180px, min(80vw, 400px));
     max-width: max(180px, 80vw);
   }

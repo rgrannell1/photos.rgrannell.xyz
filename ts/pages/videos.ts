@@ -34,7 +34,7 @@ function VideosList() {
     view(vnode: m.Vnode<VideosPageAttrs>) {
       const { videos } = vnode.attrs;
       return m(
-        "section.photo-container",
+        "section.video-container",
         videos.slice(0, rendered).map((video) =>
           m(Video, { video, preload: "auto", interactive: true } satisfies VideoAttrs)
         ),
