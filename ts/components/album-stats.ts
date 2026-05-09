@@ -25,7 +25,7 @@ export function AlbumStats() {
         `${stats.countries} `,
         m(
           "a",
-          { href: "#/listing/country", title: "well, territories" },
+          { href: "#/thing/place_feature:country", title: "well, territories" },
           "countries",
         ),
         " · ",
