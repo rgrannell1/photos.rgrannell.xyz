@@ -88,15 +88,10 @@ function ChecklistRow() {
         m("td.checklist-number", `${position}`),
         m("td.checklist-name", [
           entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
-          entry.name,
+          m("a.checklist-name-link", { href: `#/thing/bird:${entry.birdId}` }, entry.name),
         ]),
         m("td.checklist-species", binomial(entry.birdId)),
         m("td.checklist-first-seen", formatFirstSeen(entry.firstSeen)),
-        m("td.checklist-link-cell", [
-          m("a.checklist-link", {
-            href: `#/thing/bird:${entry.birdId}`,
-          }, "→"),
-        ]),
       ]);
     },
   };
@@ -128,9 +123,8 @@ function ChecklistTable() {
           m("tr", [
             m("th.checklist-number", "#"),
             m("th", "Name"),
-            m("th", "Species"),
+            m("th.checklist-species", "Species"),
             m("th", "First seen"),
-            m("th"),
           ]),
         ]),
         m(

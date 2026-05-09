@@ -1099,23 +1099,24 @@ button:disabled {
   color: var(--secondary-text-color);
 }
 
+@media (max-width: 500px) {
+  .checklist-species,
+  .checklist-number {
+    display: none;
+  }
+}
+
 .checklist-first-seen {
   white-space: nowrap;
 }
 
-.checklist-link-cell {
-  text-align: center;
-  width: 2em;
-}
-
-.checklist-link {
+.checklist-name-link {
+  color: var(--link-color);
   text-decoration: none;
-  color: var(--font-colour);
-  font-size: 1.1em;
 }
 
-.checklist-link:hover {
-  opacity: 0.6;
+.checklist-name-link:hover {
+  text-decoration: underline;
 }
 
 .checklist-irish-flag {

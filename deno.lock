@@ -2,7 +2,10 @@
   "version": "5",
   "specifiers": {
     "jsr:@std/assert@~0.218.2": "0.218.2",
-    "jsr:@std/path@*": "0.218.2",
+    "jsr:@std/fs@*": "1.0.23",
+    "jsr:@std/internal@^1.0.12": "1.0.13",
+    "jsr:@std/path@*": "1.1.4",
+    "jsr:@std/path@^1.1.4": "1.1.4",
     "npm:@cloudflare/workers-types@^4.20251128.0": "4.20251128.0",
     "npm:@types/mithril@^2.2.7": "2.2.7",
     "npm:csso@*": "5.0.5",
@@ -15,10 +18,26 @@
     "@std/assert@0.218.2": {
       "integrity": "7f0a5a1a8cf86607cd6c2c030584096e1ffad27fc9271429a8cb48cfbdee5eaf"
     },
+    "@std/fs@1.0.23": {
+      "integrity": "3ecbae4ce4fee03b180fa710caff36bb5adb66631c46a6460aaad49515565a37",
+      "dependencies": [
+        "jsr:@std/internal",
+        "jsr:@std/path@^1.1.4"
+      ]
+    },
+    "@std/internal@1.0.13": {
+      "integrity": "2f9546691d4ac2d32859c82dff284aaeac980ddeca38430d07941e7e288725c0"
+    },
     "@std/path@0.218.2": {
       "integrity": "b568fd923d9e53ad76d17c513e7310bda8e755a3e825e6289a0ce536404e2662",
       "dependencies": [
         "jsr:@std/assert"
+      ]
+    },
+    "@std/path@1.1.4": {
+      "integrity": "1d2d43f39efb1b42f0b1882a25486647cb851481862dc7313390b2bb044314b5",
+      "dependencies": [
+        "jsr:@std/internal"
       ]
     }
   },
@@ -2782,7 +2801,7 @@
     }
   },
   "redirects": {
-    "https://deno.land/x/esbuild/mod.js": "https://deno.land/x/esbuild@v0.25.11/mod.js",
+    "https://deno.land/x/esbuild/mod.js": "https://deno.land/x/esbuild@v0.28.0/mod.js",
     "https://deno.land/x/mustache_ts/mustache.ts": "https://deno.land/x/mustache_ts@v0.4.1.1/mustache.ts"
   },
   "remote": {
@@ -2790,6 +2809,7 @@
     "https://deno.land/x/denoflate@1.2.1/pkg/denoflate.js": "b9f9ad9457d3f12f28b1fb35c555f57443427f74decb403113d67364e4f2caf4",
     "https://deno.land/x/denoflate@1.2.1/pkg/denoflate_bg.wasm.js": "d581956245407a2115a3d7e8d85a9641c032940a8e810acbd59ca86afd34d44d",
     "https://deno.land/x/esbuild@v0.25.11/mod.js": "718047e96449a45ce5b4433a39fe1bc1edf10064c50faad59dd82ebe004ec43a",
+    "https://deno.land/x/esbuild@v0.28.0/mod.js": "ed5c47ee39cdee835df395b26a35259bc16757a07c91acac5825dcbf5e39281b",
     "https://deno.land/x/mustache_ts@v0.4.1.1/mustache.ts": "228a1138f55735e399b2232c87bcbb415ee462a067a10c71c14ae207c0b36a78"
   },
   "workspace": {
