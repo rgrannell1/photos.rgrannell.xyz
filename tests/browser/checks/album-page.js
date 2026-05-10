@@ -9,11 +9,20 @@ module.exports = {
   async run(page, tst) {
     await page.goto(`${BASE_URL}/#/albums`, { waitUntil: "load" });
     await page.waitForSelector("img.thumbnail-image", { timeout: 15_000 });
-    await page.click("img.thumbnail-image");
 
-    // album page replaces the albums H1 with the album name
+    await Promise.all([
+      page.waitForFunction(
+        () => window.location.hash.startsWith("#!/album/"),
+        { timeout: 15_000 },
+      ),
+      page.click("img.thumbnail-image"),
+    ]);
+
     await page.waitForFunction(
-      () => document.querySelector("h1")?.textContent?.trim() !== "Albums",
+      () => {
+        const text = document.querySelector("h1")?.textContent?.trim();
+        return text && text !== "Albums";
+      },
       { timeout: 15_000 },
     );
 
