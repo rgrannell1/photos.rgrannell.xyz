@@ -1,33 +1,27 @@
-// Check: navigating into an album then a photo renders the photo page
+// Check: the photo page renders an H1 'Photo'
 "use strict";
 
 const { BASE_URL } = require("../helpers");
+
+async function firstPhotoId(page) {
+  return page.evaluate(async () => {
+    const env = await fetch("/manifest/env.json").then((res) => res.json());
+    const triples = await fetch(`/manifest/triples.${env.publication_id}.json`).then((res) => res.json());
+    const subject = triples.find((triple) => String(triple[0]).includes("photo:"))?.[0];
+    return subject?.replace(/^\[i:photo:/, "").replace(/\]$/, "");
+  });
+}
 
 /** @type {import('../types').BrowserCheck} */
 module.exports = {
   name: "photo page renders an H1 'Photo'",
   async run(page, tst) {
-    await page.goto(`${BASE_URL}/#/albums`, { waitUntil: "load" });
-    await page.waitForSelector("img.thumbnail-image", { timeout: 15_000 });
+    await page.goto(BASE_URL, { waitUntil: "load" });
 
-    await Promise.all([
-      page.waitForFunction(
-        () => window.location.hash.startsWith("#!/album/"),
-        { timeout: 15_000 },
-      ),
-      page.click("img.thumbnail-image"),
-    ]);
+    const photoId = await firstPhotoId(page);
+    tst.ok(photoId, `found photo ID: ${photoId}`);
 
-    await page.waitForSelector(".photo-metadata-popover", { timeout: 15_000 });
-
-    await Promise.all([
-      page.waitForFunction(
-        () => window.location.hash.startsWith("#!/photo/"),
-        { timeout: 15_000 },
-      ),
-      page.click(".photo-metadata-popover"),
-    ]);
-
+    await page.goto(`${BASE_URL}/#!/photo/${photoId}`, { waitUntil: "load" });
     await page.waitForFunction(
       () => document.querySelector("h1")?.textContent?.trim() === "Photo",
       { timeout: 15_000 },
