@@ -1,5 +1,7 @@
 # `photos.rgrannell.xyz`
 
+[![Integration Tests](https://github.com/rgrannell1/photos.rgrannell.xyz/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/rgrannell1/photos.rgrannell.xyz/actions/workflows/integration-tests.yml)
+
 My personal photo hosting website. The photo library is curated with a second
 project, [mirror](https://github.com/rgrannell1/mirror).
 
