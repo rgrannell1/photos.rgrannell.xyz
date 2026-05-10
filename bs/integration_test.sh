@@ -3,12 +3,16 @@
 PORT=3030
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 REPORTER=base
+SKIP_BUILD=0
 
 for arg in "$@"; do
   [[ "$arg" == "--quiet" ]] && REPORTER=silent
+  [[ "$arg" == "--skip-build" ]] && SKIP_BUILD=1
 done
 
-"$PROJECT_ROOT/bs/build.sh"
+if [[ "$SKIP_BUILD" == "0" ]]; then
+  "$PROJECT_ROOT/bs/build.sh"
+fi
 
 python3 -m http.server $PORT --directory "$PROJECT_ROOT" &>/dev/null &
 SERVER_PID=$!

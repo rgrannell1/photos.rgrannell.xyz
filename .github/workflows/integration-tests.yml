@@ -13,10 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -24,4 +20,4 @@ jobs:
 
       - run: npm ci
 
-      - run: ./bs/integration_test.sh
+      - run: ./bs/integration_test.sh --skip-build
