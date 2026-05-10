@@ -5,3 +5,5 @@ On mobile devices, videos render full-screen (edge-to-edge, matching the behavio
 On mobile devices, the map renders full-width (edge-to-edge), matching the treatment applied to photos and videos.
 
 The build system produces cache-busting filenames for CSS, JavaScript, and service-worker assets using a two-part ID composed of the publication ID (from manifest/env.json, tied to photo publishing) and the current git short hash (tied to code changes). Data files (tribbles, stats, triples) continue to use the publication ID alone. This ensures that a code-only deploy always produces new asset URLs and browsers do not serve stale assets.
+
+The project has a browser integration test suite using Puppeteer. The test runner starts the development server, launches a headless browser, and runs tests against the live local site — catching regressions that unit tests cannot detect. The first test checks that the root page renders an H1 element with the text "Albums".

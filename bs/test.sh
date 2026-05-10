@@ -1,3 +1,3 @@
 #! /usr/bin/env bash
 
-deno test -A
+deno test -A tests/*.test.ts
