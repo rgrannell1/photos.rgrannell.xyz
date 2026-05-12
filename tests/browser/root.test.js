@@ -12,6 +12,7 @@ const checks = [
   require("./checks/album-page"),
   require("./checks/listings"),
   require("./checks/photo-page"),
+  require("./checks/listing-page"),
 ];
 
 for (const check of checks) {
