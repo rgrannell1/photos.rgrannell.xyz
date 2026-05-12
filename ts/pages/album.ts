@@ -104,13 +104,14 @@ export function AlbumPage() {
         : null;
 
       const $albumMetadata = m("section.photos-metadata", [
-        m("h1", name),
-        m("p.photo-album-date", m("time", dateRangeText)),
-        m("p.photo-album-count", photoCountMessage),
-        m("p.photo-album-countries", $countryLinks),
+        m("h1", { "data-testid": "album-heading" }, name),
+        m("p.photo-album-date", { "data-testid": "album-date" }, m("time", dateRangeText)),
+        m("p.photo-album-count", { "data-testid": "album-count" }, photoCountMessage),
+        m("p.photo-album-countries", { "data-testid": "album-countries" }, $countryLinks),
         m(TripPreviousAlbums, { albums: tripPreviousAlbums }),
         m(
           "p.photo-album-description",
+          { "data-testid": "album-description" },
           m.trust(preprocessDescription(description ?? "") ?? ""),
         ),
         m("br"),
@@ -141,7 +142,7 @@ export function AlbumPage() {
         },
         $banner,
         $albumMetadata,
-        m("section.photo-container", $photosList),
+        m("section.photo-container", { "data-testid": "album-photo-grid" }, $photosList),
         m("section.video-container", $videosList),
       );
     },

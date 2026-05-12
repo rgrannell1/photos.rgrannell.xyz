@@ -44,7 +44,7 @@ function drawCategoryAlbum(
     thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),
     loading: loadingMode(idx),
     trip: undefined,
-    child: m("p.album-title", category.label),
+    child: m("p.album-title", { "data-testid": "listing-card-label", "data-listing-type": category.type }, category.label),
     onclick: navigate(category.route),
   })];
 }
@@ -67,10 +67,10 @@ export function ListingsPage() {
         class: visible ? "page sidebar-visible" : "page",
       }, [
         m("section.album-metadata", [
-          m("h1.albums-header", "Listings"),
+          m("h1.albums-header", { "data-testid": "listings-heading" }, "Listings"),
           m("p", "Collections of all places and animals"),
         ]),
-        m("section.album-container", $albums),
+        m("section.album-container", { "data-testid": "listings-grid" }, $albums),
       ]);
     },
   };

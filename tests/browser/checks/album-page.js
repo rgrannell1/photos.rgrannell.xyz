@@ -1,4 +1,4 @@
-// Check: the album page renders an H1 with the album name
+// Check: the album page renders with correct metadata
 "use strict";
 
 const { BASE_URL } = require("../helpers");
@@ -14,7 +14,7 @@ async function firstAlbumId(page) {
 
 /** @type {import('../types').BrowserCheck} */
 module.exports = {
-  name: "album page renders an H1",
+  name: "album page renders with correct metadata",
   async run(page, tst) {
     await page.goto(BASE_URL, { waitUntil: "load" });
 
@@ -22,15 +22,18 @@ module.exports = {
     tst.ok(albumId, `found album ID: ${albumId}`);
 
     await page.goto(`${BASE_URL}/#!/album/${albumId}`, { waitUntil: "load" });
-    await page.waitForFunction(
-      () => {
-        const text = document.querySelector("h1")?.textContent?.trim();
-        return text && text !== "Albums";
-      },
-      { timeout: 15_000 },
-    );
+    await page.waitForSelector("[data-testid='album-heading']", { timeout: 15_000 });
 
-    const h1Text = await page.$eval("h1", (el) => el.textContent?.trim());
-    tst.ok(h1Text && h1Text.length > 0, `album H1 reads "${h1Text}"`);
+    const headingText = await page.$eval("[data-testid='album-heading']", (el) => el.textContent?.trim());
+    tst.ok(headingText && headingText.length > 0, `album heading reads "${headingText}"`);
+
+    const dateText = await page.$eval("[data-testid='album-date']", (el) => el.textContent?.trim());
+    tst.ok(dateText && dateText.length > 0, `album date is present: "${dateText}"`);
+
+    const countText = await page.$eval("[data-testid='album-count']", (el) => el.textContent?.trim());
+    tst.ok(/\d+ photos?/.test(countText ?? ""), `album count reads "${countText}"`);
+
+    const photoGridCount = await page.$$eval("[data-testid='album-photo-grid'] img", (els) => els.length);
+    tst.ok(photoGridCount > 0, `album photo grid has ${photoGridCount} images`);
   },
 };

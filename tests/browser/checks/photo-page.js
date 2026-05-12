@@ -1,4 +1,4 @@
-// Check: the photo page renders an H1 'Photo'
+// Check: the photo page renders with heading and download links
 "use strict";
 
 const { BASE_URL } = require("../helpers");
@@ -22,12 +22,12 @@ module.exports = {
     tst.ok(photoId, `found photo ID: ${photoId}`);
 
     await page.goto(`${BASE_URL}/#!/photo/${photoId}`, { waitUntil: "load" });
-    await page.waitForFunction(
-      () => document.querySelector("h1")?.textContent?.trim() === "Photo",
-      { timeout: 15_000 },
-    );
+    await page.waitForSelector("[data-testid='photo-heading']", { timeout: 15_000 });
 
-    const h1Text = await page.$eval("h1", (el) => el.textContent?.trim());
-    tst.equal(h1Text, "Photo");
+    const headingText = await page.$eval("[data-testid='photo-heading']", (el) => el.textContent?.trim());
+    tst.equal(headingText, "Photo", `photo heading reads "${headingText}"`);
+
+    const linksEl = await page.$("[data-testid='photo-links']");
+    tst.ok(linksEl, "photo download links are present");
   },
 };

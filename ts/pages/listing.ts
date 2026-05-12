@@ -105,6 +105,7 @@ function AlbumsList() {
       const { services, things, listingType } = vnode.attrs;
       return m(
         "section.album-container",
+        { "data-testid": "listing-cards" },
         things.slice(0, rendered).flatMap((thing, idx) =>
           drawThingAlbum(services, thing, listingType, idx)
         ),
@@ -135,6 +136,7 @@ function BirdListingDetails() {
 
       return m(
         "p.listing-details",
+        { "data-testid": "listing-details" },
         m("span.listing-filter-flag", {
           title: "Filter to Irish species",
           class: irelandActive ? "listing-filter-flag--selected" : undefined,
@@ -158,6 +160,7 @@ function MammalListingDetails() {
 
       return m(
         "p.listing-details",
+        { "data-testid": "listing-details" },
         `🇮🇪 ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
       );
     },
@@ -204,6 +207,7 @@ function ListingTitle() {
       const { type } = vnode.attrs;
       return m(
         "h1.albums-header",
+        { "data-testid": "listing-title", "data-listing-type": type },
         `${capitalise(pluralise(type))}`,
       );
     },
@@ -220,6 +224,7 @@ function ListingThingsButton() {
       return m("a", {
         href: `#/thing/${type}:*`,
         onclick: navigate(`/thing/${type}:*`),
+        "data-testid": "listing-things-link",
       }, `See all ${type} photos`);
     },
   };
