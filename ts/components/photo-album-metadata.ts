@@ -33,13 +33,13 @@ export function PhotoAlbumMetadata() {
       const dateRangeText = isSmall ? shortDateRange : dateRange;
 
       return m("div.photo-album-metadata", [
-        m("p.photo-album-title", title),
+        m("p.photo-album-title", { "data-testid": "album-title" }, title),
         m("p.photo-album-date", [
-          m("time", dateRangeText),
+          m("time", { "data-testid": "album-date" }, dateRangeText),
         ]),
         m("div.photo-metadata-inline", [
-          m("p.photo-album-count", `${count} ${text}`),
-          m("p.photo-album-countries", countryLinks),
+          m("p.photo-album-count", { "data-testid": "album-count" }, `${count} ${text}`),
+          m("p.photo-album-countries", { "data-testid": "album-countries" }, countryLinks),
         ]),
       ]);
     },

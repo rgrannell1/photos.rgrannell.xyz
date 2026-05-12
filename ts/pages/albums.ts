@@ -86,6 +86,8 @@ function drawAlbum(
   $albumComponents.push(
     m("div", {
       key: `album-${album.id}`,
+      "data-testid": "album-row",
+      "data-album-title": album.name,
     }, [
       $album,
       $md,

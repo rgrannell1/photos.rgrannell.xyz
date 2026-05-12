@@ -29,31 +29,20 @@ module.exports = {
   name: "albums page shows at least one album card",
   async run(page, tst) {
     await page.goto(`${BASE_URL}/#/albums`, { waitUntil: "load" });
-    await page.waitForSelector(".photo-album", { timeout: 15_000 });
+    await page.waitForSelector("[data-testid='album-row']", { timeout: 15_000 });
 
-    const albumCount = await page.$$eval(".photo-album", (els) => els.length);
+    const albumCount = await page.$$eval("[data-testid='album-row']", (els) => els.length);
     tst.ok(albumCount > 0, `${albumCount} album cards visible`);
 
-    // Each album row is a div wrapping .photo-album + .photo-album-metadata (siblings)
-    const rowEls = await page.$$(".album-container > div");
-
     for (const expected of EXPECTED_ALBUMS) {
-      let matched = null;
-
-      for (const rowEl of rowEls) {
-        const title = await textOf(rowEl, ".photo-album-title");
-        if (title === expected.title) {
-          matched = rowEl;
-          break;
-        }
-      }
+      const matched = await page.$(`[data-testid='album-row'][data-album-title='${expected.title}']`);
 
       tst.ok(matched, `album "${expected.title}" present`);
       if (!matched) continue;
 
-      const date = await textOf(matched, "time");
-      const count = await textOf(matched, ".photo-album-count");
-      const countries = await textOf(matched, ".photo-album-countries");
+      const date = await textOf(matched, "[data-testid='album-date']");
+      const count = await textOf(matched, "[data-testid='album-count']");
+      const countries = await textOf(matched, "[data-testid='album-countries']");
 
       tst.equal(date, expected.date, `"${expected.title}" date is ${expected.date}`);
       tst.equal(count, expected.count, `"${expected.title}" has ${expected.count}`);
