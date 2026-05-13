@@ -11,6 +11,11 @@
 - `bs/test.sh` — run tests
 - `bs/deploy.sh` — deploy to production
 
+## CI
+
+- CI checks out the repo and serves the committed `dist/` directly — no build step runs in CI
+- Any TypeScript change must be accompanied by a rebuilt `dist/` in the same commit, or CI tests will fail against stale assets
+
 ## Project
 
 - run `rs build` to build
