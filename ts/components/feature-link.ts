@@ -11,8 +11,9 @@ export type FeatureLinkAttrs = {
 
 /*
  * Ideally, we'll extend the `thing` system to support more complex queries, which would
- * be needed here. The query would be "show all photos / videos" where the place has feature X, which
- * is more complex than the current system of "show all photos / videos" where the place is Y.
+ * be needed here. The query would be "show all photos / videos" where the place has
+ * feature X, which is more complex than the current system of "show all photos / videos"
+ * where the place is Y.
  */
 export function FeatureLink() {
   return {

@@ -6,6 +6,7 @@ import {
   PHONE_MODELS,
   PLACE_FEATURES_TO_EMOJI,
 } from "../constants.ts";
+import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Thing } from "../types.ts";
 
 /*
@@ -73,8 +74,8 @@ function birdEmoji(): string {
  *
  * @param thing The thing to get the emoji for, based on id
  */
-function cameraEmoji(thing: Thing): string {
-  const { id } = asUrn(thing.id);
+function cameraEmoji(thing: Thing | TripleObject): string {
+  const { id } = asUrn(one(thing.id) ?? "");
 
   if (CAMERA_MODELS.has(id)) {
     return "📷";
@@ -86,7 +87,7 @@ function cameraEmoji(thing: Thing): string {
 }
 
 /* */
-export function thingEmoji(urn: string, _: string, thing: Thing): string {
+export function thingEmoji(urn: string, _: string, thing: Thing | TripleObject): string {
   const { type } = asUrn(urn);
 
   switch (type) {

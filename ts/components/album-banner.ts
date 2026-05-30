@@ -8,7 +8,7 @@ const PARALLAX_MAX_PX = 80;
 export type AlbumBannerAttrs = {
   src: string;
   alt: string;
-  thumbnailDataUrl: string | null;
+  thumbnailDataUrl?: string | null;
 };
 
 export function AlbumBanner(): m.Component<AlbumBannerAttrs> {
@@ -62,7 +62,7 @@ export function AlbumBanner(): m.Component<AlbumBannerAttrs> {
         { "aria-label": alt },
         m(
           "div.album-banner-inner",
-          m(BannerImagePair, { thumbnailUrl: src, thumbnailDataUrl }),
+          m(BannerImagePair, { thumbnailUrl: src, thumbnailDataUrl: thumbnailDataUrl ?? null }),
         ),
       );
     },

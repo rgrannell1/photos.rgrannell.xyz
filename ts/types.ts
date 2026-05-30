@@ -70,7 +70,8 @@ export type State = {
 };
 
 /*
- * TribbleDB is untyped; it provides triples not objects. So we'll parse triples onto these data-structures.
+ * TribbleDB is untyped; it provides triples not objects. So we'll parse triples onto
+ * these data-structures.
  */
 
 export type Album = NonNullable<ReturnType<typeof parseAlbum>>;

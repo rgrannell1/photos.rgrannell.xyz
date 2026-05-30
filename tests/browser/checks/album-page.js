@@ -6,11 +6,15 @@ const { BASE_URL } = require("../helpers");
 async function firstAlbumId(page) {
   return page.evaluate(async () => {
     const env = await fetch("/manifest/env.json").then((res) => res.json());
-    const triples = await fetch(`/manifest/triples.${env.publication_id}.json`).then((res) => res.json());
+    const triplesUrl = `/manifest/triples.${env.publication_id}.json`;
+    const triples = await fetch(triplesUrl).then((res) => res.json());
     const subject = triples.find((triple) => String(triple[0]).includes("album:"))?.[0];
     return subject?.replace(/^\[i:album:/, "").replace(/\]$/, "");
   });
 }
+
+const trimmedText = (page, selector) =>
+  page.$eval(selector, (el) => el.textContent?.trim());
 
 /** @type {import('../types').BrowserCheck} */
 module.exports = {
@@ -24,16 +28,17 @@ module.exports = {
     await page.goto(`${BASE_URL}/#!/album/${albumId}`, { waitUntil: "load" });
     await page.waitForSelector("[data-testid='album-heading']", { timeout: 15_000 });
 
-    const headingText = await page.$eval("[data-testid='album-heading']", (el) => el.textContent?.trim());
+    const headingText = await trimmedText(page, "[data-testid='album-heading']");
     tst.ok(headingText && headingText.length > 0, `album heading reads "${headingText}"`);
 
-    const dateText = await page.$eval("[data-testid='album-date']", (el) => el.textContent?.trim());
+    const dateText = await trimmedText(page, "[data-testid='album-date']");
     tst.ok(dateText && dateText.length > 0, `album date is present: "${dateText}"`);
 
-    const countText = await page.$eval("[data-testid='album-count']", (el) => el.textContent?.trim());
+    const countText = await trimmedText(page, "[data-testid='album-count']");
     tst.ok(/\d+ photos?/.test(countText ?? ""), `album count reads "${countText}"`);
 
-    const photoGridCount = await page.$$eval("[data-testid='album-photo-grid'] img", (els) => els.length);
+    const gridSelector = "[data-testid='album-photo-grid'] img";
+    const photoGridCount = await page.$$eval(gridSelector, (els) => els.length);
     tst.ok(photoGridCount > 0, `album photo grid has ${photoGridCount} images`);
   },
 };

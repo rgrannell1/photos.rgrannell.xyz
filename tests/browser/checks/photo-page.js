@@ -6,7 +6,8 @@ const { BASE_URL } = require("../helpers");
 async function firstPhotoId(page) {
   return page.evaluate(async () => {
     const env = await fetch("/manifest/env.json").then((res) => res.json());
-    const triples = await fetch(`/manifest/triples.${env.publication_id}.json`).then((res) => res.json());
+    const triplesUrl = `/manifest/triples.${env.publication_id}.json`;
+    const triples = await fetch(triplesUrl).then((res) => res.json());
     const subject = triples.find((triple) => String(triple[0]).includes("photo:"))?.[0];
     return subject?.replace(/^\[i:photo:/, "").replace(/\]$/, "");
   });
@@ -24,7 +25,8 @@ module.exports = {
     await page.goto(`${BASE_URL}/#!/photo/${photoId}`, { waitUntil: "load" });
     await page.waitForSelector("[data-testid='photo-heading']", { timeout: 15_000 });
 
-    const headingText = await page.$eval("[data-testid='photo-heading']", (el) => el.textContent?.trim());
+    const headingSelector = "[data-testid='photo-heading']";
+    const headingText = await page.$eval(headingSelector, (el) => el.textContent?.trim());
     tst.equal(headingText, "Photo", `photo heading reads "${headingText}"`);
 
     const linksEl = await page.$("[data-testid='photo-links']");

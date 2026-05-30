@@ -1,0 +1,7 @@
+{
+  "lint": {
+    "plugins": ["./lint-plugins/no-single-letter-vars.ts"],
+    "include": ["ts/", "tests/", "workers/", "lint-plugins/"],
+    "exclude": ["node_modules/", "dist/", "search-engine/"]
+  }
+}

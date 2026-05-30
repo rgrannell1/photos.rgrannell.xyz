@@ -5,7 +5,7 @@ import type { GeocodedPlace } from "../services/places.ts";
 import { urnToUrl } from "../models/urn.ts";
 
 type LeafletLib = typeof import("leaflet");
-type PlaceWithCover = GeocodedPlace & { coverThumbnailUrl?: string };
+type PlaceWithCover = GeocodedPlace & { coverThumbnailUrl?: string | undefined };
 
 type MapPageAttrs = {
   visible: boolean;
@@ -98,9 +98,11 @@ function addMarker(
   const marker = L.marker([latitude, longitude]);
   const href = urnToUrl(place.id);
   const popupLabel = place.name || "Unknown Place";
-  const imagePart = place.coverThumbnailUrl
-    ? `<img src="${place.coverThumbnailUrl}" alt="" class="leaflet-popup-thumbnail" loading="lazy" /><br />`
+  const thumbnailImg = place.coverThumbnailUrl
+    ? `<img src="${place.coverThumbnailUrl}" alt="" ` +
+      `class="leaflet-popup-thumbnail" loading="lazy" />`
     : "";
+  const imagePart = thumbnailImg ? `${thumbnailImg}<br />` : "";
   marker.bindPopup(imagePart + `<a href="${href}">${popupLabel}</a>`);
   marker.addTo(markersLayer);
   bounds.extend([latitude, longitude]);

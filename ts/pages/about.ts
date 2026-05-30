@@ -8,6 +8,11 @@ type AboutPageAttrs = {
   visible: boolean;
 };
 
+const USAGE_TERMS =
+  "You may use this website and its content for personal, non-commerical purposes " +
+  "only. For example, using photos as a desktop wallpaper is fine, selling these " +
+  "photos is not.";
+
 /* */
 export function AboutPage() {
   return {
@@ -17,6 +22,12 @@ export function AboutPage() {
     view(vnode: m.Vnode<AboutPageAttrs>) {
       const { visible } = vnode.attrs;
       const years = new Date().getFullYear() - 2012;
+
+      const intro = `I started taking photos ${years} years ago. It's a fun hobby; it ` +
+        "motivates me to get outside and see interesting things and interact with " +
+        "nature. I've become, in my opinion, a reasonable wildlife photographer " +
+        "(though hit-or-miss at other styles of photography). I built this website to " +
+        "share the things";
 
       const bannerSrc = "https://photos-cdn.rgrannell.xyz/1006a94072.webp";
 
@@ -29,7 +40,7 @@ export function AboutPage() {
           m("br"),
           m(
             "p",
-            `I started taking photos ${years} years ago. It's a fun hobby; it motivates me to get outside and see interesting things and interact with nature. I've become, in my opinion, a reasonable wildlife photographer (though hit-or-miss at other styles of photography). I built this website to share the things`,
+            intro,
             m("a", {
               href: "/#/thing/rating:4",
               onclick: navigate(`/thing/rating:4`),
@@ -38,7 +49,7 @@ export function AboutPage() {
           m("h2", "Can I use the photos on this site?"),
           m(
             "p",
-            "You may use this website and its content for personal, non-commerical purposes only. For example, using photos as a desktop wallpaper is fine, selling these photos is not.",
+            USAGE_TERMS,
           ),
           m("h2", "Can I use data from this site to train AI?"),
           m(

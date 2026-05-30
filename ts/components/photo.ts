@@ -29,8 +29,8 @@ type ImageAttrs = {
   thumbnailUrl: string;
   loading: "eager" | "lazy";
   onclick: ((e: Event) => void) | undefined;
-  width?: number;
-  height?: number;
+  width?: number | undefined;
+  height?: number | undefined;
 };
 
 /*
@@ -55,8 +55,8 @@ function Image() {
 
 type PlaceholderImageAttrs = {
   thumbnailDataUrl: string;
-  width?: number;
-  height?: number;
+  width?: number | undefined;
+  height?: number | undefined;
 };
 
 /*

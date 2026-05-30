@@ -455,7 +455,7 @@ export function ChecklistApp(): m.Component<AppAttrs> {
 
 /* */
 export function MapApp(): m.Component<AppAttrs> {
-  let placesForMap: (GeocodedPlace & { coverThumbnailUrl?: string })[] = [];
+  let placesForMap: (GeocodedPlace & { coverThumbnailUrl?: string | undefined })[] = [];
   let tripPolylines: TripPolyline[] = [];
 
   return {

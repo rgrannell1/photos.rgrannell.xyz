@@ -68,7 +68,6 @@ function drawAlbum(
     maxDate: album.maxDate,
     count: album.photosCount,
     countryLinks: $countryLinks,
-    services,
     dateRange: album.dateRange,
     shortDateRange: album.shortDateRange,
   });

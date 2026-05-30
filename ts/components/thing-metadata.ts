@@ -16,7 +16,7 @@ export function ThingMetadata() {
   ]);
 
   return {
-    view(vnode: m.Vnode<{ thing: TripleObject; titleExtra?: string }>) {
+    view(vnode: m.Vnode<{ thing: TripleObject; titleExtra?: string | undefined }>) {
       const { thing, titleExtra } = vnode.attrs;
       const $links = m(ThingUrls, { things: [thing] });
       const id = one(thing.id) as string | undefined;

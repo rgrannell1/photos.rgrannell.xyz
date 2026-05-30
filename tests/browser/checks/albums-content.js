@@ -35,7 +35,9 @@ module.exports = {
     tst.ok(albumCount > 0, `${albumCount} album cards visible`);
 
     for (const expected of EXPECTED_ALBUMS) {
-      const matched = await page.$(`[data-testid='album-row'][data-album-title='${expected.title}']`);
+      const rowSelector =
+        `[data-testid='album-row'][data-album-title='${expected.title}']`;
+      const matched = await page.$(rowSelector);
 
       tst.ok(matched, `album "${expected.title}" present`);
       if (!matched) continue;
@@ -46,7 +48,11 @@ module.exports = {
 
       tst.equal(date, expected.date, `"${expected.title}" date is ${expected.date}`);
       tst.equal(count, expected.count, `"${expected.title}" has ${expected.count}`);
-      tst.ok(countries?.includes(expected.country), `"${expected.title}" shows ${expected.country} (got: ${countries})`);
+
+      const hasCountry = countries?.includes(expected.country);
+      const countryMsg =
+        `"${expected.title}" shows ${expected.country} (got: ${countries})`;
+      tst.ok(hasCountry, countryMsg);
     }
   },
 };

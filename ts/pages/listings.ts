@@ -38,13 +38,18 @@ function drawCategoryAlbum(
     return [];
   }
 
+  const labelAttrs = {
+    "data-testid": "listing-card-label",
+    "data-listing-type": category.type,
+  };
+
   return [m(PhotoAlbum, {
     imageUrl: cover.fullImage,
     thumbnailUrl: cover.thumbnailUrl,
     thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),
     loading: loadingMode(idx),
     trip: undefined,
-    child: m("p.album-title", { "data-testid": "listing-card-label", "data-listing-type": category.type }, category.label),
+    child: m("p.album-title", labelAttrs, category.label),
     onclick: navigate(category.route),
   })];
 }

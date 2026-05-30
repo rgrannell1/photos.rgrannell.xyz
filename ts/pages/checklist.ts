@@ -160,6 +160,9 @@ export function ChecklistPage() {
         });
       };
 
+      const description = "I am not a very committed birder, but I do like " +
+        "photographing the different species I see. Here's my life list.";
+
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
@@ -169,7 +172,7 @@ export function ChecklistPage() {
         ]),
         m(
           "p.photo-album-description",
-          "I am not a very committed birder, but I do like photographing the different species I see. Here's my life list.",
+          description,
         ),
         m("section.checklist-container", [
           m(ChecklistTable, { entries, filter }),
