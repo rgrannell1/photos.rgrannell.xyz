@@ -12,3 +12,4 @@ quality.sh
 .claude/
 logs/
 .playwright-mcp/
+llms.txt
