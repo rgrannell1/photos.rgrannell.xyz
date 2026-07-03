@@ -44,6 +44,9 @@ function _ThingTypeLink() {
 }
 
 function ThingMetadata() {
+  let seenInUrn: string | null = null;
+  let seenInCache: ReturnType<Services["readSeenInCountries"]> = [];
+
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const metadata: Record<string, m.Children> = {};
@@ -93,8 +96,12 @@ function ThingMetadata() {
       }
 
       if (BinomialTypes.has(asUrn(urn).type)) {
-        const thingUrns = setOf<string>("id", things);
-        const seenIn = services.readSeenInCountries(thingUrns);
+        // pure over loaded data; compute once per URN, not per redraw
+        if (urn !== seenInUrn) {
+          seenInUrn = urn;
+          seenInCache = services.readSeenInCountries(setOf<string>("id", things));
+        }
+        const seenIn = seenInCache;
 
         if (seenIn.length > 0) {
           metadata["Seen In"] = m(".seen-in-list", seenIn.map((country) =>
@@ -129,17 +136,35 @@ function onAlbumClick(id: string, title: string, event: Event) {
   block(event);
 }
 
+type AlbumEntry = {
+  album: ReturnType<Services["readAlbumsByThingIds"]>[number];
+  countries: ReturnType<Services["readCountries"]>;
+};
+
 function AlbumSection() {
+  let cachedUrn: string | null = null;
+  let cachedEntries: AlbumEntry[] = [];
+
+  // album and country reads are pure over loaded data; compute once per
+  // URN rather than on every redraw of the batched photo grid
+  function entriesFor(vnode: m.Vnode<ThingPageAttrs>): AlbumEntry[] {
+    const { things, services, urn } = vnode.attrs;
+
+    if (urn !== cachedUrn) {
+      cachedUrn = urn;
+      const urns = setOf<string>("id", things);
+      cachedEntries = services.readAlbumsByThingIds(new Set(urns))
+        .map((album) => ({
+          album,
+          countries: services.readCountries(setify(album.country)),
+        }));
+    }
+    return cachedEntries;
+  }
+
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const { things, services } = vnode.attrs;
-
-      const urns = setOf<string>("id", things);
-      const albums = services.readAlbumsByThingIds(new Set(urns));
-
-      const $albums = albums.map((album) => {
-        const countries = services.readCountries(setify(album.country));
-
+      const $albums = entriesFor(vnode).map(({ album, countries }) => {
         // duplicated model. move to render(model) code
         const $countryLinks = countries.map((country) => {
           return m(CountryLink, {
@@ -186,12 +211,19 @@ function AlbumSection() {
 }
 
 function VideoSection() {
+  let cachedUrn: string | null = null;
+  let cachedVideos: ReturnType<Services["readVideosByThingIds"]> = [];
+
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const { things, services } = vnode.attrs;
+      const { things, services, urn } = vnode.attrs;
 
-      const urns = setOf<string>("id", things);
-      const videos = services.readVideosByThingIds(new Set(urns));
+      if (urn !== cachedUrn) {
+        cachedUrn = urn;
+        const urns = setOf<string>("id", things);
+        cachedVideos = services.readVideosByThingIds(new Set(urns));
+      }
+      const videos = cachedVideos;
 
       if (videos.length === 0) {
         return null;
@@ -221,6 +253,20 @@ function PhotoSection() {
   let rendered = PHOTO_BATCH_SIZE;
   let batchScheduled = false;
   let currentUrn = "";
+  let cachedPhotos: ReturnType<Services["readPhotosByThingIds"]> | null = null;
+
+  // reading and parsing every matching photo is expensive on high fan-out
+  // pages, so compute once per URN rather than on every batched redraw
+  function photosFor(vnode: m.Vnode<ThingPageAttrs>) {
+    if (vnode.attrs.urn !== currentUrn || cachedPhotos === null) {
+      currentUrn = vnode.attrs.urn;
+      rendered = PHOTO_BATCH_SIZE;
+      batchScheduled = false;
+      const urns = setOf<string>("id", vnode.attrs.things);
+      cachedPhotos = vnode.attrs.services.readPhotosByThingIds(urns);
+    }
+    return cachedPhotos;
+  }
 
   function scheduleBatch(total: number) {
     if (rendered >= total || batchScheduled) return;
@@ -234,26 +280,13 @@ function PhotoSection() {
 
   return {
     oncreate(vnode: m.VnodeDOM<ThingPageAttrs>) {
-      currentUrn = vnode.attrs.urn;
-      const urns = setOf<string>("id", vnode.attrs.things);
-      const photos = vnode.attrs.services.readPhotosByThingIds(urns);
-      scheduleBatch(photos.length);
+      scheduleBatch(photosFor(vnode).length);
     },
     onupdate(vnode: m.VnodeDOM<ThingPageAttrs>) {
-      if (vnode.attrs.urn !== currentUrn) {
-        currentUrn = vnode.attrs.urn;
-        rendered = PHOTO_BATCH_SIZE;
-        batchScheduled = false;
-      }
-      const urns = setOf<string>("id", vnode.attrs.things);
-      const photos = vnode.attrs.services.readPhotosByThingIds(urns);
-      scheduleBatch(photos.length);
+      scheduleBatch(photosFor(vnode).length);
     },
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const { things, services } = vnode.attrs;
-
-      const urns = setOf<string>("id", things);
-      const photos = services.readPhotosByThingIds(urns);
+      const photos = photosFor(vnode);
 
       return m(
         "section.photo-container",

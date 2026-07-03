@@ -1,4 +1,4 @@
-import { TribbleDB } from "@rgrannell1/tribbledb";
+import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Place } from "../types.ts";
 import { KnownTypes } from "../constants.ts";
 import { readPlaces } from "./readers.ts";

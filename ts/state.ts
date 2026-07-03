@@ -5,7 +5,7 @@ import {
   HARD_CODED_TRIPLES,
   postIndexing,
 } from "./semantic/derive.ts";
-import { TribbleDB } from "@rgrannell1/tribbledb";
+import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 
 import {
   getTransferPolylines,

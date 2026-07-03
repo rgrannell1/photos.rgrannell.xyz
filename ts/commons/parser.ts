@@ -1,8 +1,5 @@
-import {
-  asUrn,
-  type TribbleDB,
-  type TripleObject,
-} from "@rgrannell1/tribbledb";
+import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
+import { type TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { logParseWarning } from "../commons/logger.ts";
 import { type BaseSchema, type InferOutput, safeParse } from "valibot";
 import { readParsedThing, readParsedThings } from "./things.ts";

@@ -3,7 +3,8 @@
  * so some triples are modified or derived client-side
  */
 
-import { asUrn, type TribbleDB, type Triple } from "@rgrannell1/tribbledb";
+import { asUrn, type Triple } from "@rgrannell1/tribbledb";
+import { type TribbleDB } from "@rgrannell1/tribbledb/v2";
 
 import { humanise } from "../commons/strings.ts";
 import {
@@ -291,28 +292,14 @@ export function deriveTriples(
  * for all features of that place. Must run after addInverseRelations.
  */
 function addFeatureLocationsForType(tdb: TribbleDB, sourceType: string) {
-  const locationTriples = tdb.search({
-    source: { type: sourceType },
-    relation: KnownRelations.LOCATION,
-  }).triples();
+  const pairs = tdb.paths({ type: sourceType })
+    .follow(KnownRelations.LOCATION, { where: { type: KnownTypes.PLACE } })
+    .follow(KnownRelations.FEATURES)
+    .pairs();
 
-  const newTriples: Triple[] = [];
-
-  for (const [sourceUrn, , locationUrn] of locationTriples) {
-    const parsed = asUrn(locationUrn);
-    if (!parsed || parsed.type !== KnownTypes.PLACE) {
-      continue;
-    }
-
-    const featureTriples = tdb.search({
-      source: { type: parsed.type, id: parsed.id },
-      relation: KnownRelations.FEATURES,
-    }).triples();
-
-    for (const [, , featureUrn] of featureTriples) {
-      newTriples.push([sourceUrn, KnownRelations.LOCATION, featureUrn]);
-    }
-  }
+  const newTriples: Triple[] = pairs.map(([sourceUrn, featureUrn]) => {
+    return [sourceUrn, KnownRelations.LOCATION, featureUrn];
+  });
 
   tdb.add(newTriples);
 }
@@ -410,28 +397,14 @@ export function addNestedLocations(tdb: TribbleDB) {
  * location triple for every ancestor. Must run after addNestedLocations.
  */
 function addTransitiveLocationsForType(tdb: TribbleDB, sourceType: string) {
-  const locationTriples = tdb.search({
-    source: { type: sourceType },
-    relation: KnownRelations.LOCATION,
-  }).triples();
+  const pairs = tdb.paths({ type: sourceType })
+    .follow(KnownRelations.LOCATION)
+    .follow(KnownRelations.IN)
+    .pairs();
 
-  const newTriples: Triple[] = [];
-
-  for (const [sourceUrn, , locationUrn] of locationTriples) {
-    const parsed = asUrn(locationUrn);
-    if (!parsed) {
-      continue;
-    }
-
-    const ancestorTriples = tdb.search({
-      source: { type: parsed.type, id: parsed.id },
-      relation: KnownRelations.IN,
-    }).triples();
-
-    for (const [, , ancestorUrn] of ancestorTriples) {
-      newTriples.push([sourceUrn, KnownRelations.LOCATION, ancestorUrn]);
-    }
-  }
+  const newTriples: Triple[] = pairs.map(([sourceUrn, ancestorUrn]) => {
+    return [sourceUrn, KnownRelations.LOCATION, ancestorUrn];
+  });
 
   tdb.add(newTriples);
 }

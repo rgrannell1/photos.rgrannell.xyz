@@ -1,5 +1,6 @@
 import m from "mithril";
-import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
+import { asUrn } from "@rgrannell1/tribbledb";
+import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { ThingLink } from "../components/thing-link.ts";
 import type { ThingLinkAttrs } from "../components/thing-link.ts";

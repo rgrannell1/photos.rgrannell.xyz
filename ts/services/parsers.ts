@@ -29,7 +29,7 @@ import {
   VideoSchema,
 } from "../schemas.ts";
 import { safeParse } from "valibot";
-import type { TribbleDB } from "@rgrannell1/tribbledb";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 
 export const parseFeature = parseObject(FeatureSchema, "feature");
 export const parseCountry = parseObject(PlaceSchema, "place");

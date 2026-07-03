@@ -2,7 +2,7 @@
  * Load tribblefile from a URL as a stream of triples.
  */
 
-import { TribbleDB } from "@rgrannell1/tribbledb";
+import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Triple } from "@rgrannell1/tribbledb";
 import { TribbleParser } from "@rgrannell1/tribbledb";
 
@@ -82,9 +82,7 @@ export async function loadTriples(
   }
 
   for await (const triples of streamTribbles(url)) {
-    for (const triple of triples) {
-      tdb.add(perTriple(triple));
-    }
+    tdb.add(triples.flatMap(perTriple));
   }
 
   return tdb;

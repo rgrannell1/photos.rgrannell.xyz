@@ -1,4 +1,5 @@
-import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
+import { asUrn } from "@rgrannell1/tribbledb";
+import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Album } from "../types.ts";
 import type { Photo, Video } from "../types.ts";
 import { readThingsByPhotoIds } from "./photos.ts";
@@ -135,36 +136,20 @@ export function readAlbumsByThingIds(
   tdb: TribbleDB,
   thingsUrns: Set<string>,
 ) {
-  const photoIds = new Set<string>();
-
-  // first, collect photo-ids associated with the things
+  // select the things by type and id, so qs-variant URNs match too
+  let things = tdb.nodes([]);
   for (const thingUrn of thingsUrns) {
     const { type, id } = asUrn(thingUrn);
-
-    const results = tdb.search({ target: { type, id } }).sources();
-
-    for (const result of results) {
-      photoIds.add(result);
-    }
+    things = things.union(tdb.nodes({ type, id }));
   }
 
-  const albumIds = new Set<string>();
+  const albumIds = things
+    .referencedBy()
+    .follow(KnownRelations.ALBUM_ID)
+    .ids();
 
-  // next, collect album-ids associated with the photos
-  for (const photoId of photoIds) {
-    const pid = asUrn(photoId);
-
-    const albums = tdb.search({
-      source: { type: pid.type, id: pid.id },
-      relation: KnownRelations.ALBUM_ID,
-    }).targets();
-
-    for (const id of albums) {
-      albumIds.add(albumUrn(id));
-    }
-  }
-
-  return readAlbums(tdb, albumIds);
+  const albumUrns = new Set([...albumIds].map(albumUrn));
+  return readAlbums(tdb, albumUrns);
 }
 
 export type TripPolyline = {

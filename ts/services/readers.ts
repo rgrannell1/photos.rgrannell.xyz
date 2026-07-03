@@ -1,4 +1,5 @@
-import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
+import { asUrn } from "@rgrannell1/tribbledb";
+import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { countryUrn } from "../models/urn.ts";
 import { readers } from "../commons/parser.ts";
 import { KnownRelations, KnownTypes } from "../constants.ts";
@@ -77,17 +78,10 @@ export function readBirdStats(tdb: TribbleDB): SubjectStats {
     allBirdSubjects.map(([, , targetUrn]) => asUrn(targetUrn).id),
   );
 
-  let irishWildSpecies = 0;
-  for (const birdId of wildBirdIds) {
-    const hasBirdwatch = tdb.search({
-      source: { type: KnownTypes.BIRD, id: birdId },
-      relation: KnownRelations.BIRDWATCH_URL,
-    }).triples().length > 0;
-
-    if (hasBirdwatch) {
-      irishWildSpecies++;
-    }
-  }
+  const irishWildSpecies = tdb
+    .nodes({ type: KnownTypes.BIRD, id: [...wildBirdIds] })
+    .filter({ has: KnownRelations.BIRDWATCH_URL })
+    .ids().size;
 
   return {
     wildSpecies: wildBirdIds.size,

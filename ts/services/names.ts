@@ -2,7 +2,7 @@
  * Handle name lookups
  */
 
-import { TribbleDB } from "@rgrannell1/tribbledb";
+import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { KnownRelations } from "../constants.ts";
 
 const NAME_TO_URN_CACHE: Map<string, string> = new Map();

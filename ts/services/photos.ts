@@ -1,5 +1,6 @@
 import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
-import { asUrn, TribbleDB } from "@rgrannell1/tribbledb";
+import { asUrn } from "@rgrannell1/tribbledb";
+import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Country, Location, Photo, Subject } from "../types.ts";
 import {
   readCountries,
@@ -143,21 +144,17 @@ export function readPhotosByThingIds(
   tdb: TribbleDB,
   thingsUrns: Set<string>,
 ): Photo[] {
-  const photoIds = new Set<string>();
-
+  // select the things by type and id, so qs-variant URNs match too
+  let things = tdb.nodes([]);
   for (const thingUrn of thingsUrns) {
     const { type, id } = asUrn(thingUrn);
-
-    const results = tdb.search({
-      source: { type: "photo" },
-      //relation: KnownRelations.SUBJECT, TODO
-      target: { type, id },
-    }).sources();
-
-    for (const result of results) {
-      photoIds.add(result);
-    }
+    things = things.union(tdb.nodes({ type, id }));
   }
+
+  const photoIds = things
+    .referencedBy()
+    .filter({ type: "photo" })
+    .urns();
 
   return readPhotos(tdb, photoIds).sort((photoa, photob) => {
     return parseInt(photob.createdAt) - parseInt(photoa.createdAt);

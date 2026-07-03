@@ -1,4 +1,4 @@
-import { TribbleDB } from "@rgrannell1/tribbledb";
+import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { loadServices } from "./state.ts";
 import type {
   parseAlbum,
