@@ -145,6 +145,7 @@ export function readAlbumsByThingIds(
 
   const albumIds = things
     .referencedBy()
+    .widen()
     .follow(KnownRelations.ALBUM_ID)
     .ids();
 

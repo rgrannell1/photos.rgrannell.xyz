@@ -13,6 +13,11 @@ export function isPlaceFeature(urn: string): boolean {
   return asUrn(urn).type === KnownTypes.PLACE_FEATURE;
 }
 
+/* geographic locations exclude country/continent — only concrete places are shown */
+export function isPlace(urn: string): boolean {
+  return asUrn(urn).type === KnownTypes.PLACE;
+}
+
 type MediaLocationsAttrs = {
   location: string | string[] | undefined;
   services: Services;
@@ -28,7 +33,7 @@ export function MediaLocations() {
       const allUrns = arrayify(location);
       const urns = mode === "feature"
         ? allUrns.filter(isPlaceFeature)
-        : allUrns.filter((urn) => !isPlaceFeature(urn));
+        : allUrns.filter(isPlace);
 
       const $links = services.toThingLinks(urns);
       return m("td", $links.length > 0 ? $links : "—");

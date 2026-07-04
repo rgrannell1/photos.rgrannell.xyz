@@ -294,6 +294,7 @@ export function deriveTriples(
 function addFeatureLocationsForType(tdb: TribbleDB, sourceType: string) {
   const pairs = tdb.paths({ type: sourceType })
     .follow(KnownRelations.LOCATION, { where: { type: KnownTypes.PLACE } })
+    .widen()
     .follow(KnownRelations.FEATURES)
     .pairs();
 
@@ -399,6 +400,7 @@ export function addNestedLocations(tdb: TribbleDB) {
 function addTransitiveLocationsForType(tdb: TribbleDB, sourceType: string) {
   const pairs = tdb.paths({ type: sourceType })
     .follow(KnownRelations.LOCATION)
+    .widen()
     .follow(KnownRelations.IN)
     .pairs();
 

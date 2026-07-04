@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://photos-cdn.rgrannell.xyz">
 
     <!-- Preloads -->
-    <link rel="preload" href="/dist/js/app.d048577d01-8cd3d713.js" as="script">
+    <link rel="preload" href="/dist/js/app.d048577d01-ec129d26.js" as="script">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/b3f272115e.avif" as="image">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/8a1a8e8b39.avif" as="image">
     <link rel="preload" fetchpriority="high" href="https://photos-cdn.rgrannell.xyz/223cf8ffd4.avif" as="image">
@@ -44,7 +44,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0056b3">
 
-    <link rel="stylesheet" href="/dist/css/style.d048577d01-8cd3d713.css" as="style">
+    <link rel="stylesheet" href="/dist/css/style.d048577d01-ec129d26.css" as="style">
     <link
       rel="preload"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -70,7 +70,7 @@
       window.stats = {"photos":1441,"videos":92,"albums":127,"years":13,"countries":20,"bird_species":152,"mammal_species":70,"reptile_species":18,"amphibian_species":6,"fish_species":6,"unesco_sites":22}
 
     </script>
-    <script type="module" src="/dist/js/app.d048577d01-8cd3d713.js"></script>
+    <script type="module" src="/dist/js/app.d048577d01-ec129d26.js"></script>
 
     <title>photos.rgrannell.xyz</title>
   </head>
@@ -80,10 +80,10 @@
   <script async fetchpriority="low">
     // -- register a service-worker
     if('serviceWorker' in navigator) {
-      console.log('⚙️ loading service worker: /sw.d048577d01-8cd3d713.js')
+      console.log('⚙️ loading service worker: /sw.d048577d01-ec129d26.js')
 
-      navigator.serviceWorker.register('/dist/js/sw.d048577d01-8cd3d713.js').catch(err => {
-        console.error(`⚙️ failed service worker: /sw.d048577d01-8cd3d713.js ${err}`)
+      navigator.serviceWorker.register('/dist/js/sw.d048577d01-ec129d26.js').catch(err => {
+        console.error(`⚙️ failed service worker: /sw.d048577d01-ec129d26.js ${err}`)
       });
 
       navigator.serviceWorker.ready.then(registration => {
@@ -100,7 +100,7 @@
         console.error(`⚙️ failed to send homepage thumbnails to service worker: ${err}`)
       });
     } else {
-      console.error('⚙️ service worker not supported: /sw.d048577d01-8cd3d713.js')
+      console.error('⚙️ service worker not supported: /sw.d048577d01-ec129d26.js')
     }
   </script>
 </html>
