@@ -716,21 +716,37 @@ button:disabled {
  * ++++ ++++ ++++ ~~~~ Sidebar Styling ~~~~ ++++ ++++ ++++
  */
 
-.sidebar-item:hover {
-  background-color: var(--hover-background-color);
-  cursor: pointer;
-}
-
 .sidebar-item {
   /* transparent border on every item so the active one's coloured bar doesn't
      shift the text; padding-left trimmed by the border width to stay aligned */
   padding: 20px 20px 20px 15px;
   border-left: 5px solid transparent;
+  transition: border-left-color 0.15s ease, background-color 0.15s ease;
+}
+
+/*
+ * Per-item accent, stepping down the sidebar from the brand blue at the top to a
+ * soft pink at the bottom. Used for the hover/active left bar and hover tint, so
+ * each entry lights up in its own colour rather than one fixed hue.
+ */
+.sidebar-item:nth-child(1) { --item-accent: hsl(208, 100%, 50%); }
+.sidebar-item:nth-child(2) { --item-accent: hsl(230, 92%, 60%); }
+.sidebar-item:nth-child(3) { --item-accent: hsl(252, 84%, 65%); }
+.sidebar-item:nth-child(4) { --item-accent: hsl(274, 78%, 68%); }
+.sidebar-item:nth-child(5) { --item-accent: hsl(296, 78%, 72%); }
+.sidebar-item:nth-child(6) { --item-accent: hsl(316, 84%, 76%); }
+.sidebar-item:nth-child(7) { --item-accent: hsl(334, 90%, 80%); }
+
+.sidebar-item:hover {
+  background-color: var(--hover-background-color);
+  background-color: color-mix(in srgb, var(--item-accent, var(--tag-color-1)) 18%, transparent);
+  border-left-color: var(--item-accent, var(--tag-color-1));
+  cursor: pointer;
 }
 
 /* coloured left bar marking the sidebar entry for the current page */
 .sidebar-item--active {
-  border-left-color: var(--tag-color-1);
+  border-left-color: var(--item-accent, var(--tag-color-1));
   color: var(--navbar-font-colour);
   font-weight: bold;
 }
