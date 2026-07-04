@@ -29,7 +29,7 @@ export function AboutPage() {
         "(though hit-or-miss at other styles of photography). I built this website to " +
         "share the things";
 
-      const bannerSrc = "https://photos-cdn.rgrannell.xyz/1006a94072.webp";
+      const bannerSrc = "https://photos-cdn.rgrannell.xyz/6744c802d1.webp";
 
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",

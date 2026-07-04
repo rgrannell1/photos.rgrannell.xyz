@@ -201,7 +201,9 @@ button:disabled {
 }
 
 .album-banner {
-  width: 100%;
+  /* extend into the page grid's 10px right-gutter column so the banner
+     bleeds to the viewport's right edge (zero right margin) */
+  width: calc(100% + 10px);
   aspect-ratio: 3 / 1;
   margin-bottom: 1rem;
   overflow: hidden;

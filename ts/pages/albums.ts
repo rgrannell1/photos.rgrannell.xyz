@@ -150,9 +150,9 @@ export function AlbumsPage() {
         }),
       ]);
 
-      // hardcoded CDN banner (mid_image_lossy role of photo:548d64a50a), as on
-      // the About page. update by hand if the photo is re-encoded.
-      const bannerSrc = "https://photos-cdn.rgrannell.xyz/4aadbad413.webp";
+      // hardcoded CDN banner: the high-res `banner` rendition of photo:548d64a50a
+      // (mirror BANNER_SOURCE_FILES). update by hand if the photo is re-encoded.
+      const bannerSrc = "https://photos-cdn.rgrannell.xyz/d6cf0f7cc7.webp";
 
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
