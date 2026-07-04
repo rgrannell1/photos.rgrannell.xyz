@@ -234,29 +234,26 @@ button:disabled {
   animation-range: 0px 533px;
 }
 
-.video-container {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 10px;
-}
-
 /*
- * Photo & album grids. auto-fill columns each grow from --photo-width up to an
- * even 1fr, so the square tiles flex slightly in size to divide the row exactly
- * rather than leaving trailing whitespace on the right. Pure CSS, reflows on
- * resize. min(100%, ...) keeps a single column from overflowing narrow viewports.
+ * Photo, album & video grids. auto-fill columns each grow from --photo-width up
+ * to an even 1fr, so the square tiles flex slightly in size to divide the row
+ * exactly rather than leaving trailing whitespace on the right. Pure CSS, reflows
+ * on resize. min(100%, ...) keeps a single column from overflowing narrow viewports.
  */
 .photo-container,
-.album-container {
+.album-container,
+.video-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--photo-width)), 1fr));
   gap: 10px;
 }
 
-/* fill the grid cell: the tile, its link, and the image all span the column */
+/* fill the grid cell: the tile, its link, and the media all span the column */
 .photo-container .photo,
 .album-container > div,
-.album-container .photo-album {
+.album-container .photo-album,
+.video-container > div,
+.video-container .photo {
   margin: 0;
   width: 100%;
 }
@@ -274,11 +271,23 @@ button:disabled {
   display: block;
 }
 
+/* videos are square cover-cropped tiles, matching the photo grid; aspect-ratio
+   keeps them square as the column flexes (they have no square intrinsic size) */
+.photo-container .thumbnail-video,
+.video-container .thumbnail-video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
 /* breathing room on the right, matching the map/about pages. non-mobile only:
    the mobile layout deliberately runs the grids full-bleed to the screen edge. */
 @media (min-width: 501px) {
   .photo-container,
-  .album-container {
+  .album-container,
+  .video-container {
     margin-right: 40px;
   }
 }
