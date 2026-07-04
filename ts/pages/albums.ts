@@ -1,6 +1,7 @@
 import m from "mithril";
 import { AlbumBanner } from "../components/album-banner.ts";
 import { AlbumStats } from "../components/album-stats.ts";
+import { YearRecap } from "../components/year-recap.ts";
 import type { Album, Services } from "../types.ts";
 import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
@@ -34,10 +35,7 @@ function drawAlbum(
 ) {
   const loading = loadingMode(idx);
 
-  const $albumComponents: m.Vnode<
-    unknown,
-    unknown
-  >[] = [];
+  const $albumComponents: m.Children[] = [];
 
   // push year header if a new year
   if (state.year !== albumYear(album)) {
@@ -46,10 +44,17 @@ function drawAlbum(
     if (state.year !== new Date().getFullYear()) {
       const $h2 = m(
         "h2.album-year-heading",
-        { key: `year-${state.year}` },
+        { key: `year-${state.year}`, id: `year-${state.year}` },
         state.year.toString(),
       );
       $albumComponents.push($h2);
+
+      const recap = services.readYearRecap(state.year);
+      if (recap) {
+        $albumComponents.push(
+          m(YearRecap, { key: `year-recap-${state.year}`, markdown: recap }),
+        );
+      }
     }
   }
 
@@ -106,10 +111,7 @@ function AlbumsList() {
       const state = { year: 2005 };
       const { albums, services } = vnode.attrs;
 
-      const $albumComponents: m.Vnode<
-        unknown,
-        unknown
-      >[] = [];
+      const $albumComponents: m.Children[] = [];
 
       // TODO this blocks render too long
       for (let idx = 0; idx < albums.length; idx++) {
@@ -128,11 +130,105 @@ type AlbumsPageAttrs = {
   selectedCountry: string | undefined;
 };
 
+// px below the viewport top at which a year heading becomes the "current" year
+const YEAR_SCROLL_OFFSET = 140;
+
+/*
+ * The year whose heading currently sits at the top of the viewport, or null
+ * (e.g. while the banner is still in view). Headings are in document order
+ * (newest year first), so the last one above the offset wins.
+ */
+function currentYearInView(): string | null {
+  const headings = Array.from(
+    document.querySelectorAll<HTMLElement>(".album-year-heading"),
+  );
+
+  let current: string | null = null;
+  for (const heading of headings) {
+    if (heading.getBoundingClientRect().top > YEAR_SCROLL_OFFSET) {
+      break;
+    }
+    current = heading.textContent?.trim() ?? null;
+  }
+  return current;
+}
+
+/*
+ * Reflect the year in the URL as a `year` param without triggering a re-render.
+ * replaceState (rather than m.route.set) keeps the router's route and the scroll
+ * position intact while making the URL shareable/bookmarkable to a year.
+ */
+function reflectYearInUrl(year: string): void {
+  const base = m.route.get().split("?")[0];
+  history.replaceState(history.state, "", `#!${base}?year=${year}`);
+}
+
+// max correction passes for a deep-link scroll while lazy images settle
+const YEAR_SCROLL_MAX_PASSES = 20;
+
+/*
+ * Keep the year heading at the top while album images above it load and grow
+ * the layout — re-scroll until the required scroll position stops changing, or
+ * we hit the pass cap. Bails if the heading is gone (navigation).
+ */
+function settleYearScroll(
+  year: string,
+  spy: { passes: number; previousY: number },
+): void {
+  const heading = document.getElementById(`year-${year}`);
+  if (!heading) {
+    return;
+  }
+
+  heading.scrollIntoView();
+  spy.passes += 1;
+
+  if (window.scrollY !== spy.previousY && spy.passes < YEAR_SCROLL_MAX_PASSES) {
+    spy.previousY = window.scrollY;
+    setTimeout(() => settleYearScroll(year, spy), 120);
+  }
+}
+
+/* Scroll a year's heading to the top, for an initial ?year= deep link. */
+function scrollToYear(year: string): void {
+  settleYearScroll(year, { passes: 0, previousY: -1 });
+}
+
 /* */
 export function AlbumsPage() {
+  let scrollFrame: number | null = null;
+  let reflectedYear: string | null = null;
+
+  const onScroll = () => {
+    if (scrollFrame !== null) {
+      return;
+    }
+    scrollFrame = requestAnimationFrame(() => {
+      scrollFrame = null;
+      const year = currentYearInView();
+      if (year && year !== reflectedYear) {
+        reflectedYear = year;
+        reflectYearInUrl(year);
+      }
+    });
+  };
+
   return {
     oninit() {
       setTitle("Albums - photos");
+    },
+    oncreate() {
+      const initialYear = m.route.param("year");
+      if (initialYear) {
+        requestAnimationFrame(() => scrollToYear(initialYear));
+      }
+      window.addEventListener("scroll", onScroll, { passive: true });
+    },
+    onremove() {
+      window.removeEventListener("scroll", onScroll);
+      if (scrollFrame !== null) {
+        cancelAnimationFrame(scrollFrame);
+      }
     },
     view(vnode: m.Vnode<AlbumsPageAttrs>) {
       const { albums, services, visible, selectedCountry } = vnode.attrs;

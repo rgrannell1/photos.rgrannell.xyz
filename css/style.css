@@ -452,8 +452,24 @@ button:disabled {
      grid-column for the grid layout; flex-basis is the flexbox fallback. */
   grid-column: 1 / -1;
   flex-basis: 100%;
-  font-size: 2.5em;
+  font-size: 3.5em;
+  font-weight: lighter;
   margin-left: 5px;
+  margin-bottom: 0.1em;
+}
+
+/* optional per-year markdown recap, rendered under the year heading */
+.year-recap {
+  grid-column: 1 / -1;
+  flex-basis: 100%;
+  max-width: 900px;
+  margin: 0 5px 1.5em;
+  color: var(--font-colour);
+  word-spacing: normal;
+}
+
+.year-recap p {
+  margin-bottom: 0.5em;
 }
 
 .about-page {
@@ -706,7 +722,17 @@ button:disabled {
 }
 
 .sidebar-item {
-  padding: 20px;
+  /* transparent border on every item so the active one's coloured bar doesn't
+     shift the text; padding-left trimmed by the border width to stay aligned */
+  padding: 20px 20px 20px 15px;
+  border-left: 5px solid transparent;
+}
+
+/* coloured left bar marking the sidebar entry for the current page */
+.sidebar-item--active {
+  border-left-color: var(--tag-color-1);
+  color: var(--navbar-font-colour);
+  font-weight: bold;
 }
 
 .photo-sidebar {

@@ -2823,6 +2823,7 @@
         "npm:leaflet@^1.9.4",
         "npm:mithril@^2.3.7",
         "npm:puppeteer-core@^22.12.0",
+        "npm:snarkdown@2",
         "npm:tap@^21.1.0",
         "npm:valibot@^1.1.0"
       ]

@@ -10,6 +10,7 @@ import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import {
   getTransferPolylines,
   readAlbumsByThingIds,
+  readYearRecap,
 } from "./services/albums.ts";
 import { readVideosByThingIds } from "./services/videos.ts";
 import {
@@ -96,6 +97,7 @@ export function loadServices(tdb: TribbleDB) {
     readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb),
     readSeenInCountries: readSeenInCountries.bind(null, tdb),
     readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb),
+    readYearRecap: readYearRecap.bind(null, tdb),
     readVideosByThingIds: readVideosByThingIds.bind(null, tdb),
     toThingLinks: toThingLinks.bind(null, tdb),
     readGeocodedPlaces: readGeocodedPlaces.bind(null, tdb),

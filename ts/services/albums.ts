@@ -39,6 +39,17 @@ export function albumYear(album: Album): number {
 }
 
 /*
+ * Read the optional markdown recap for a year, published by mirror as
+ * `urn:ró:year:<YYYY>  recap  <markdown>`. Returns undefined when none exists.
+ */
+export function readYearRecap(tdb: TribbleDB, year: number): string | undefined {
+  return tdb.search({
+    source: { type: KnownTypes.YEAR, id: String(year) },
+    relation: KnownRelations.RECAP,
+  }).firstTarget();
+}
+
+/*
  * Read albums from the TribbleDB
  */
 export function readAllAlbums(tdb: TribbleDB): Album[] {

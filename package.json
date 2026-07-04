@@ -20,6 +20,7 @@
     "@rgrannell1/tribbledb": "^0.0.32",
     "leaflet": "^1.9.4",
     "mithril": "^2.3.7",
+    "snarkdown": "^2.0.0",
     "valibot": "^1.1.0"
   },
   "devDependencies": {

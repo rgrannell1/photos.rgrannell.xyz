@@ -35,6 +35,7 @@ export class KnownRelations {
   static VIDEO_URL_720P = "videoUrl720p";
   static VIDEO_URL_UNSCALED = "videoUrlUnscaled";
   static YEAR = "year";
+  static RECAP = "recap";
   static CONTAINS = "contains";
   static IN = "in";
   static STYLE = "style";
@@ -76,6 +77,7 @@ export class KnownTypes {
   static HELICOPTER = "helicopter";
   static SPACECRAFT = "spacecraft";
   static BOAT = "boat";
+  static YEAR = "year";
 }
 
 /*

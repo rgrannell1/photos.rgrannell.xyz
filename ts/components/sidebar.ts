@@ -11,15 +11,34 @@ type SidebarAttrs = {
 };
 
 /*
+ * Map the current route to the sidebar entry it belongs under, so singular
+ * detail routes (/album/:id, /photo/:id, /listing/:type) still light up their
+ * section in the sidebar.
+ */
+function resolveSidebarRoute(current: string): string {
+  if (current.startsWith("/album")) return "/albums";
+  if (current.startsWith("/photo")) return "/photos";
+  if (current.startsWith("/video")) return "/videos";
+  if (current.startsWith("/listing")) return "/listings";
+  if (current.startsWith("/checklist")) return "/checklist";
+  if (current.startsWith("/map")) return "/map";
+  if (current.startsWith("/about")) return "/about";
+  return current;
+}
+
+/*
  * Defines each item in the sidebar
  */
 function SidebarItem() {
   return {
     view(vnode: m.Vnode<SidebarItemAttrs>) {
+      const { name, route } = vnode.attrs;
+      const isActive = resolveSidebarRoute(m.route.get() ?? "") === route;
+
       return m("li", {
-        class: "sidebar-item",
-        onclick: navigate(vnode.attrs.route),
-      }, vnode.attrs.name);
+        class: isActive ? "sidebar-item sidebar-item--active" : "sidebar-item",
+        onclick: navigate(route),
+      }, name);
     },
   };
 }
