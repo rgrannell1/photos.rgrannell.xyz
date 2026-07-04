@@ -1,4 +1,5 @@
 import m from "mithril";
+import { AlbumBanner } from "../components/album-banner.ts";
 import { AlbumStats } from "../components/album-stats.ts";
 import type { Album, Services } from "../types.ts";
 import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
@@ -141,7 +142,6 @@ export function AlbumsPage() {
       };
 
       const $md = m("section.album-metadata", [
-        m("h1.albums-header", "Albums"),
         m(AlbumStats),
         m(CountryFilter, {
           services,
@@ -150,9 +150,14 @@ export function AlbumsPage() {
         }),
       ]);
 
+      // hardcoded CDN banner (mid_image_lossy role of photo:548d64a50a), as on
+      // the About page. update by hand if the photo is re-encoded.
+      const bannerSrc = "https://photos-cdn.rgrannell.xyz/4aadbad413.webp";
+
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
+        m(AlbumBanner, { src: bannerSrc, alt: "Albums" }),
         $md,
         //m(YearCursor),
         m(AlbumsList, { albums, services, visible }),
