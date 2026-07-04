@@ -274,6 +274,15 @@ button:disabled {
   display: block;
 }
 
+/* breathing room on the right, matching the map/about pages. non-mobile only:
+   the mobile layout deliberately runs the grids full-bleed to the screen edge. */
+@media (min-width: 501px) {
+  .photo-container,
+  .album-container {
+    margin-right: 40px;
+  }
+}
+
 #year-cursor {
   position: fixed;
   top: 0;
