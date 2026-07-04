@@ -106,6 +106,16 @@ export const PrunableEntityTypes = new Set<string>([
 ]);
 
 /*
+ * Place-type features too generic to surface in the "Place Type" row — every
+ * photo is in some country and continent, so these add no information. Their
+ * concrete places still show in the location row.
+ */
+export const HiddenPlaceFeatures = new Set<string>([
+  "country",
+  "continent",
+]);
+
+/*
  * It does make sense to say "show every place photo",
  * so designate some types as non-listable on the Listing page
  */

@@ -6,11 +6,14 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { arrayify } from "../commons/arrays.ts";
-import { KnownTypes } from "../constants.ts";
+import { HiddenPlaceFeatures, KnownTypes } from "../constants.ts";
 import type { Services } from "../types.ts";
 
-export function isPlaceFeature(urn: string): boolean {
-  return asUrn(urn).type === KnownTypes.PLACE_FEATURE;
+/* a place feature worth showing as a "place type" — excludes overly-generic
+   ones (country, continent) that every photo trivially has */
+export function isVisiblePlaceFeature(urn: string): boolean {
+  const { type, id } = asUrn(urn);
+  return type === KnownTypes.PLACE_FEATURE && !HiddenPlaceFeatures.has(id);
 }
 
 /* geographic locations exclude country/continent — only concrete places are shown */
@@ -32,7 +35,7 @@ export function MediaLocations() {
 
       const allUrns = arrayify(location);
       const urns = mode === "feature"
-        ? allUrns.filter(isPlaceFeature)
+        ? allUrns.filter(isVisiblePlaceFeature)
         : allUrns.filter(isPlace);
 
       const $links = services.toThingLinks(urns);
