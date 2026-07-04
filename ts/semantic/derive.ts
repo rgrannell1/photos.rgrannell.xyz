@@ -14,6 +14,7 @@ import {
   ENDPOINT,
   KnownRelations,
   KnownTypes,
+  PrunableEntityTypes,
   RelationSymmetries,
 } from "../constants.ts";
 
@@ -311,6 +312,74 @@ export function addFeatureMediaLocations(tdb: TribbleDB) {
 }
 
 /*
+ * Strip any query-string variant (e.g. ?context=wild) from a URN, so all
+ * variants of an entity collapse to one identity.
+ */
+function baseUrn(value: unknown): string {
+  return typeof value === "string" ? value.split("?")[0] : "";
+}
+
+/*
+ * Whether any photo or video references this entity. Counts references to every
+ * query-string variant, so a bird photographed only in one context still counts.
+ */
+function hasMediaReference(tdb: TribbleDB, urn: string): boolean {
+  const { type, id } = asUrn(urn);
+  const referencing = tdb.nodes({ type, id }).referencedBy();
+
+  if (referencing.filter({ type: KnownTypes.PHOTO }).count() > 0) {
+    return true;
+  }
+
+  return referencing.filter({ type: KnownTypes.VIDEO }).count() > 0;
+}
+
+/*
+ * Collect the base URNs of browseable entities that no photo or video
+ * references. Query-string variants collapse to one base URN.
+ */
+function collectMedialessThings(tdb: TribbleDB): Set<string> {
+  const medialess = new Set<string>();
+
+  for (const type of PrunableEntityTypes) {
+    const entityUrns = tdb.search({ source: { type } }).sources();
+
+    for (const urn of entityUrns) {
+      if (!hasMediaReference(tdb, urn)) {
+        medialess.add(baseUrn(urn));
+      }
+    }
+  }
+
+  return medialess;
+}
+
+/*
+ * Remove browseable entities (wildlife, vehicles, places) that no photo or video
+ * references — directly or transitively. Must run after the transitive and
+ * feature media-location derivations, so ancestor places and features of
+ * photographed places are correctly retained. Every triple mentioning a pruned
+ * entity, as source or target, is deleted, so no surviving entity can link to a
+ * removed one.
+ */
+export function pruneMedialessThings(tdb: TribbleDB) {
+  const medialess = collectMedialessThings(tdb);
+  if (medialess.size === 0) {
+    return;
+  }
+
+  const staleTriples: Triple[] = [];
+  for (const triple of tdb.triples()) {
+    const [src, , tgt] = triple;
+    if (medialess.has(baseUrn(src)) || medialess.has(baseUrn(tgt))) {
+      staleTriples.push(triple);
+    }
+  }
+
+  tdb.delete(staleTriples);
+}
+
+/*
  * Operations that add but do not modify existing triples,
  * to be run after all indexing is complete.
  */
@@ -321,6 +390,7 @@ export function postIndexing(tdb: TribbleDB) {
   addNestedLocations(tdb);
   addTransitiveMediaLocations(tdb);
   addFeatureMediaLocations(tdb);
+  pruneMedialessThings(tdb);
 }
 
 /*

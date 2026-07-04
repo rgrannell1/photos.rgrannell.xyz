@@ -3,12 +3,14 @@
  * I run into data inconsistencies, so lets test them out of existence...
  */
 
+import { asUrn } from "@rgrannell1/tribbledb";
 import { loadTribbles } from "../ts/build/loaders.ts";
 import {
   readAlbumPhotosByAlbumId,
   readAllAlbums,
 } from "../ts/services/albums.ts";
 import { readCountries } from "../ts/services/readers.ts";
+import { KnownTypes, PrunableEntityTypes } from "../ts/constants.ts";
 
 const tdb = await loadTribbles();
 
@@ -33,6 +35,32 @@ Deno.test("Album photo counts match renderable photos", () => {
   if (mismatches.length > 0) {
     throw new Error(
       `Album photo count mismatch:\n${mismatches.join("\n")}`,
+    );
+  }
+});
+
+Deno.test("Browseable entities all have media after pruning", () => {
+  // pruneMedialessThings (run by postIndexing) must remove every browseable
+  // entity that no photo or video references, so nothing empty is reachable
+  // anywhere in the app (map markers, listings, links, thing pages).
+  const orphans: string[] = [];
+
+  for (const type of PrunableEntityTypes) {
+    for (const urn of tdb.search({ source: { type } }).sources()) {
+      const { type: entityType, id } = asUrn(urn);
+      const referencing = tdb.nodes({ type: entityType, id }).referencedBy();
+      const hasPhoto = referencing.filter({ type: KnownTypes.PHOTO }).count() > 0;
+      const hasVideo = referencing.filter({ type: KnownTypes.VIDEO }).count() > 0;
+
+      if (!hasPhoto && !hasVideo) {
+        orphans.push(urn);
+      }
+    }
+  }
+
+  if (orphans.length > 0) {
+    throw new Error(
+      `Media-less entities survived pruning:\n${orphans.join("\n")}`,
     );
   }
 });

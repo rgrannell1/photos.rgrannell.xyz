@@ -71,7 +71,39 @@ export class KnownTypes {
   static PLANE = "plane";
   static TRAIN = "train";
   static CAR = "car";
+  static ARTHROPOD = "arthropod";
+  static CTENOPHORE = "ctenophore";
+  static HELICOPTER = "helicopter";
+  static SPACECRAFT = "spacecraft";
+  static BOAT = "boat";
 }
+
+/*
+ * Browseable "thing" entity types — wildlife, vehicles, places. Entities of
+ * these types with no photo or video reference (directly or transitively) are
+ * pruned at load, so they never surface anywhere in the app: no map markers,
+ * listing cards, thing links, located-in chains, or thing pages. Infrastructure
+ * types (photo, video, album, camera, geoname, transfer, rating, style, trip,
+ * unesco) are never pruned.
+ */
+export const PrunableEntityTypes = new Set<string>([
+  KnownTypes.PLACE,
+  KnownTypes.PLACE_FEATURE,
+  KnownTypes.BIRD,
+  KnownTypes.MAMMAL,
+  KnownTypes.REPTILE,
+  KnownTypes.AMPHIBIAN,
+  KnownTypes.FISH,
+  KnownTypes.INSECT,
+  KnownTypes.ARTHROPOD,
+  KnownTypes.CTENOPHORE,
+  KnownTypes.PLANE,
+  KnownTypes.TRAIN,
+  KnownTypes.CAR,
+  KnownTypes.HELICOPTER,
+  KnownTypes.SPACECRAFT,
+  KnownTypes.BOAT,
+]);
 
 /*
  * It does make sense to say "show every place photo",
