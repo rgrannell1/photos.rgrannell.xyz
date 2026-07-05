@@ -11,16 +11,14 @@ import { encodeBitmapDataURL } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { block, broadcast, isModifiedClick } from "../commons/events.ts";
-import { PlacesList } from "../components/places-list.ts";
+import { ThingList } from "../components/thing-list.ts";
 import { setify, setOf } from "../commons/sets.ts";
 import { BinomialTypes, KnownRelations } from "../constants.ts";
 import { ListingLink } from "../components/listing-link.ts";
-import { FeaturesList } from "../components/features-list.ts";
-import { UnescoList } from "../components/unesco-list.ts";
 import { loadingMode } from "../services/photos.ts";
 import { ThingUrls } from "../components/thing-urls.ts";
-import { readCountries } from "../services/readers.ts";
 import { HeartRain } from "../components/love.ts";
+import { createBatchRenderer } from "../components/batch-render.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -57,7 +55,11 @@ function ThingMetadata() {
       const locatedIn = setOf<string>(KnownRelations.IN, things);
 
       if (locatedIn.size > 0) {
-        metadata["Located In"] = m(PlacesList, { services, urns: locatedIn });
+        metadata["Located In"] = m(ThingList, {
+          kind: "place",
+          services,
+          urns: locatedIn,
+        });
       }
 
       if (things.length !== 1) {
@@ -68,28 +70,32 @@ function ThingMetadata() {
       // The non-wildcard case
 
       if (thing.features) {
-        metadata["Place Type"] = m(FeaturesList, {
+        metadata["Place Type"] = m(ThingList, {
+          kind: "feature",
           urns: setify(thing.features),
           services,
         });
       }
 
       if (thing.contains) {
-        metadata["Contains"] = m(PlacesList, {
+        metadata["Contains"] = m(ThingList, {
+          kind: "place",
           services,
           urns: setify(thing.contains),
         });
       }
 
       if (thing.placesWithFeature) {
-        metadata["Places"] = m(PlacesList, {
+        metadata["Places"] = m(ThingList, {
+          kind: "place",
           services,
           urns: setify(thing.placesWithFeature),
         });
       }
 
       if (thing.unescoId) {
-        metadata["UNESCO"] = m(UnescoList, {
+        metadata["UNESCO"] = m(ThingList, {
+          kind: "unesco",
           urns: new Set(arrayify(thing.unescoId)),
           services,
         });
@@ -270,8 +276,7 @@ function VideoSection() {
 const PHOTO_BATCH_SIZE = 10;
 
 function PhotoSection() {
-  let rendered = PHOTO_BATCH_SIZE;
-  let batchScheduled = false;
+  const batch = createBatchRenderer(PHOTO_BATCH_SIZE);
   let currentUrn = "";
   let cachedPhotos: ReturnType<Services["readPhotosByThingIds"]> | null = null;
 
@@ -280,30 +285,19 @@ function PhotoSection() {
   function photosFor(vnode: m.Vnode<ThingPageAttrs>) {
     if (vnode.attrs.urn !== currentUrn || cachedPhotos === null) {
       currentUrn = vnode.attrs.urn;
-      rendered = PHOTO_BATCH_SIZE;
-      batchScheduled = false;
+      batch.reset();
       const urns = setOf<string>("id", vnode.attrs.things);
       cachedPhotos = vnode.attrs.services.readPhotosByThingIds(urns);
     }
     return cachedPhotos;
   }
 
-  function scheduleBatch(total: number) {
-    if (rendered >= total || batchScheduled) return;
-    batchScheduled = true;
-    setTimeout(() => {
-      rendered = Math.min(rendered + PHOTO_BATCH_SIZE, total);
-      batchScheduled = false;
-      m.redraw();
-    }, 1);
-  }
-
   return {
     oncreate(vnode: m.VnodeDOM<ThingPageAttrs>) {
-      scheduleBatch(photosFor(vnode).length);
+      batch.schedule(photosFor(vnode).length);
     },
     onupdate(vnode: m.VnodeDOM<ThingPageAttrs>) {
-      scheduleBatch(photosFor(vnode).length);
+      batch.schedule(photosFor(vnode).length);
     },
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const photos = photosFor(vnode);
@@ -316,7 +310,7 @@ function PhotoSection() {
         m("h3", "Photos"),
         m(
           "section.photo-container",
-          photos.slice(0, rendered).map((photo, idx) =>
+          photos.slice(0, batch.count()).map((photo, idx) =>
             m(Photo, {
               key: `photo-${photo.id}`,
               photo,

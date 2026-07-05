@@ -31,8 +31,6 @@ export function AboutPage() {
         "(though hit-or-miss at other styles of photography). I built this website to " +
         "share the things";
 
-      // hardcoded CDN banner: the high-res `banner` rendition of photo:dd378e3a76
-      // (mirror BANNER_SOURCE_FILES). update by hand if the photo is re-encoded.
       const bannerSrc = "https://photos-cdn.rgrannell.xyz/6744c802d1.webp";
       const bannerDataUrl = encodeBitmapDataURL(
         ABOUT_BANNER_MOSAIC,
@@ -57,7 +55,7 @@ export function AboutPage() {
             m("a", {
               href: "/#/thing/rating:4",
               onclick: navigate(`/thing/rating:4`),
-            }, " I found beautiful in this world."),
+            }, " I found beautiful in this world. It's also, from one angle, a journal of the my life."),
           ),
           m("h2", "Can I use the photos on this site?"),
           m(

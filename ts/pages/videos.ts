@@ -2,6 +2,7 @@ import m from "mithril";
 import type { Video as VideoType } from "../types.ts";
 import { Video } from "../components/video.ts";
 import type { VideoAttrs } from "../components/video.ts";
+import { createBatchRenderer } from "../components/batch-render.ts";
 
 type VideosPageAttrs = {
   videos: VideoType[];
@@ -11,31 +12,20 @@ type VideosPageAttrs = {
 const BATCH_SIZE = 10;
 
 function VideosList() {
-  let rendered = BATCH_SIZE;
-  let batchScheduled = false;
-
-  function scheduleBatch(total: number) {
-    if (rendered >= total || batchScheduled) return;
-    batchScheduled = true;
-    setTimeout(() => {
-      rendered = Math.min(rendered + BATCH_SIZE, total);
-      batchScheduled = false;
-      m.redraw();
-    }, 1);
-  }
+  const batch = createBatchRenderer(BATCH_SIZE);
 
   return {
     oncreate(vnode: m.VnodeDOM<VideosPageAttrs>) {
-      scheduleBatch(vnode.attrs.videos.length);
+      batch.schedule(vnode.attrs.videos.length);
     },
     onupdate(vnode: m.VnodeDOM<VideosPageAttrs>) {
-      scheduleBatch(vnode.attrs.videos.length);
+      batch.schedule(vnode.attrs.videos.length);
     },
     view(vnode: m.Vnode<VideosPageAttrs>) {
       const { videos } = vnode.attrs;
       return m(
         "section.video-container",
-        videos.slice(0, rendered).map((video) =>
+        videos.slice(0, batch.count()).map((video) =>
           m(Video, { video, preload: "auto", interactive: true } satisfies VideoAttrs)
         ),
       );

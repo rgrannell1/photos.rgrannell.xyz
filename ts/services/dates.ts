@@ -6,16 +6,15 @@ export function parse(dateTime: string): Date {
   return new Date(`${date} ${time}`);
 }
 
-/* Format an exif date as a normal datestring */
+/* Format an exif date (e.g "2024:05:01 12:34:56") as a normal datestring */
 export function formatExifDate(dateTime: string): string {
   if (!dateTime) {
     return dateTime;
   }
 
-  const createdAt = new Date(dateTime).toISOString();
-  const [date, time] = createdAt.split("T")[0].replace(/\:/g, "-");
+  const [date, time] = dateTime.split(" ");
 
-  return `${date.replace(/\:/g, "/")} ${time}`;
+  return `${date.replace(/:/g, "/")} ${time}`;
 }
 
 /* Format the created-at timestamp to a human-readable date */

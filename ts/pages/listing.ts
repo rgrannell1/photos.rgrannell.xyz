@@ -8,6 +8,7 @@ import { PhotoAlbum } from "../components/photo-album.ts";
 import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
 import { one } from "../commons/arrays.ts";
 import { ThingMetadata } from "../components/thing-metadata.ts";
+import { createBatchRenderer } from "../components/batch-render.ts";
 
 /*
  * Derive an optional inline badge for the listing card title.
@@ -73,18 +74,7 @@ const BATCH_SIZE = 10;
  * via setTimeout so the browser can paint between each one.
  */
 function AlbumsList() {
-  let rendered = BATCH_SIZE;
-  let batchScheduled = false;
-
-  function scheduleBatch(total: number) {
-    if (rendered >= total || batchScheduled) return;
-    batchScheduled = true;
-    setTimeout(() => {
-      rendered = Math.min(rendered + BATCH_SIZE, total);
-      batchScheduled = false;
-      m.redraw();
-    }, 1);
-  }
+  const batch = createBatchRenderer(BATCH_SIZE);
 
   return {
     onbeforeupdate(
@@ -92,21 +82,21 @@ function AlbumsList() {
       old: m.VnodeDOM<AlbumsListAttrs>,
     ) {
       if (vnode.attrs.listingType !== old.attrs.listingType) {
-        rendered = BATCH_SIZE;
+        batch.reset();
       }
     },
     oncreate(vnode: m.VnodeDOM<AlbumsListAttrs>) {
-      scheduleBatch(vnode.attrs.things.length);
+      batch.schedule(vnode.attrs.things.length);
     },
     onupdate(vnode: m.VnodeDOM<AlbumsListAttrs>) {
-      scheduleBatch(vnode.attrs.things.length);
+      batch.schedule(vnode.attrs.things.length);
     },
     view(vnode: m.Vnode<AlbumsListAttrs>) {
       const { services, things, listingType } = vnode.attrs;
       return m(
         "section.album-container",
         { "data-testid": "listing-cards" },
-        things.slice(0, rendered).flatMap((thing, idx) =>
+        things.slice(0, batch.count()).flatMap((thing, idx) =>
           drawThingAlbum(services, thing, listingType, idx)
         ),
       );

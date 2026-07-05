@@ -1,7 +1,7 @@
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import type { Place } from "../types.ts";
-import { KnownTypes } from "../constants.ts";
-import { readPlaces } from "./readers.ts";
+import type { Country, Place } from "../types.ts";
+import { KnownRelations, KnownTypes } from "../constants.ts";
+import { readCountries, readPlaces } from "./readers.ts";
 
 export type GeocodedPlace = Place & {
   latitude: number;
@@ -41,4 +41,28 @@ export function readGeocodedPlaces(tdb: TribbleDB): GeocodedPlace[] {
   const places = readPlaces(tdb, placeUrns);
 
   return places.filter(hasValidCoordinates);
+}
+
+/*
+ * Read all countries from the TribbleDB, sorted by name
+ */
+export function readAllCountries(tdb: TribbleDB): Country[] {
+  const ids = tdb.search({
+    source: { type: KnownTypes.PLACE },
+    relation: KnownRelations.FLAG,
+  }).sources();
+
+  const countries = readCountries(tdb, ids) as Country[];
+
+  const flagToName = new Map(
+    countries
+      .filter((country) => country.flag)
+      .map((country) => [country.flag!, country.name]),
+  );
+
+  return countries.sort((countryA, countryB) => {
+    const nameA = flagToName.get(countryA.flag ?? "") ?? countryA.name;
+    const nameB = flagToName.get(countryB.flag ?? "") ?? countryB.name;
+    return nameA.localeCompare(nameB);
+  });
 }

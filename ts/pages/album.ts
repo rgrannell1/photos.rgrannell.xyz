@@ -1,6 +1,5 @@
 import m from "mithril";
 import { isSmallerThan, setTitle, sharePhotoUrl } from "../services/window.ts";
-import * as Dates from "../services/dates.ts";
 import { AlbumBanner } from "../components/album-banner.ts";
 import { AlbumShareButton } from "../components/album-share-button.ts";
 import { CountryLink } from "../components/place-links.ts";
@@ -55,8 +54,6 @@ export function AlbumPage() {
 
       const {
         name,
-        minDate,
-        maxDate,
         photosCount,
         description,
         country,

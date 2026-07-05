@@ -2,7 +2,7 @@ import m from "mithril";
 import { broadcast } from "../commons/events.ts";
 import { binomial } from "../commons/strings.ts";
 import type { Services } from "../types.ts";
-import type { ChecklistEntry } from "../services/readers.ts";
+import type { ChecklistEntry } from "../services/stats.ts";
 
 /*
  * Format a Unix timestamp string into a human-readable date.
@@ -123,7 +123,7 @@ function ChecklistTable() {
           m("tr", [
             m("th.checklist-number", "#"),
             m("th", "Name"),
-            m("th.checklist-species", "Species"),
+            m("th.checklist-species"),
             m("th", "First seen"),
           ]),
         ]),

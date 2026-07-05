@@ -2,6 +2,7 @@ import m from "mithril";
 import type { Photo as PhotoType, Services } from "../types.ts";
 import { Photo } from "../components/photo.ts";
 import { loadingMode } from "../services/photos.ts";
+import { createBatchRenderer } from "../components/batch-render.ts";
 
 const BATCH_SIZE = 10;
 
@@ -12,31 +13,20 @@ type PhotosListAttrs = {
 };
 
 function PhotosList() {
-  let rendered = BATCH_SIZE;
-  let batchScheduled = false;
-
-  function scheduleBatch(total: number) {
-    if (rendered >= total || batchScheduled) return;
-    batchScheduled = true;
-    setTimeout(() => {
-      rendered = Math.min(rendered + BATCH_SIZE, total);
-      batchScheduled = false;
-      m.redraw();
-    }, 1);
-  }
+  const batch = createBatchRenderer(BATCH_SIZE);
 
   return {
     oncreate(vnode: m.VnodeDOM<PhotosListAttrs>) {
-      scheduleBatch(vnode.attrs.photoUrns.length);
+      batch.schedule(vnode.attrs.photoUrns.length);
     },
     onupdate(vnode: m.VnodeDOM<PhotosListAttrs>) {
-      scheduleBatch(vnode.attrs.photoUrns.length);
+      batch.schedule(vnode.attrs.photoUrns.length);
     },
     view(vnode: m.Vnode<PhotosListAttrs>) {
       const { photoUrns, services } = vnode.attrs;
 
       const photos: PhotoType[] = [];
-      for (const urn of photoUrns.slice(0, rendered)) {
+      for (const urn of photoUrns.slice(0, batch.count())) {
         const photo = services.readPhoto(urn);
         if (photo) {
           photos.push(photo);

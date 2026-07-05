@@ -18,12 +18,13 @@ import {
   RelationSymmetries,
 } from "../constants.ts";
 
-const styleNames = new Set<string>();
-
 /*
  * Canonical URN for each known alias. Any triple whose source or target
  * matches an alias key is rewritten to use the canonical form, ensuring
  * duplicate entities are merged before indexing.
+ *
+ * Deliberately empty at present: past aliases (e.g country:usa) were fixed
+ * upstream in mirror. Kept as an extension point for future data slips.
  */
 const URN_ALIASES = new Map<string, string>();
 
@@ -53,6 +54,10 @@ export function expandCdnUrls(triple: Triple): Triple[] {
  * merged before indexing. E.g. country:usa → country:united-states-of-america.
  */
 export function canonicaliseUrns(triple: Triple): Triple[] {
+  if (URN_ALIASES.size === 0) {
+    return [triple];
+  }
+
   const [src, rel, tgt] = triple;
 
   return [[
@@ -380,17 +385,84 @@ export function pruneMedialessThings(tdb: TribbleDB) {
 }
 
 /*
+ * A named derivation pass over the TribbleDB, with explicit dependencies on
+ * other passes. Ordering constraints live here as data, not prose comments.
+ */
+type DerivationPass = {
+  name: string;
+  after: string[];
+  run: (tdb: TribbleDB) => void;
+};
+
+/*
+ * Order passes so each runs after everything it depends on. Stable with
+ * respect to declaration order; throws on unknown or cyclic dependencies.
+ */
+export function orderPasses(passes: DerivationPass[]): DerivationPass[] {
+  const passNames = new Set(passes.map((pass) => pass.name));
+
+  for (const pass of passes) {
+    for (const dependency of pass.after) {
+      if (!passNames.has(dependency)) {
+        throw new Error(
+          `pass "${pass.name}" depends on unknown pass "${dependency}"`,
+        );
+      }
+    }
+  }
+
+  const ordered: DerivationPass[] = [];
+  const completed = new Set<string>();
+  const remaining = [...passes];
+
+  while (remaining.length > 0) {
+    const readyIdx = remaining.findIndex((pass) =>
+      pass.after.every((dependency) => completed.has(dependency))
+    );
+
+    if (readyIdx === -1) {
+      const stuck = remaining.map((pass) => pass.name).join(", ");
+      throw new Error(`cyclic pass dependencies among: ${stuck}`);
+    }
+
+    const [ready] = remaining.splice(readyIdx, 1);
+    ordered.push(ready);
+    completed.add(ready.name);
+  }
+
+  return ordered;
+}
+
+/*
  * Operations that add but do not modify existing triples,
  * to be run after all indexing is complete.
  */
+const POST_INDEXING_PASSES: DerivationPass[] = [
+  { name: "addYear", after: [], run: addYear },
+  { name: "addPlaceFeatureSubjects", after: [], run: addPlaceFeatureSubjects },
+  { name: "addInverseRelations", after: [], run: addInverseRelations },
+  { name: "addNestedLocations", after: [], run: addNestedLocations },
+  {
+    name: "addTransitiveMediaLocations",
+    after: ["addNestedLocations"],
+    run: addTransitiveMediaLocations,
+  },
+  {
+    name: "addFeatureMediaLocations",
+    after: ["addInverseRelations"],
+    run: addFeatureMediaLocations,
+  },
+  {
+    name: "pruneMedialessThings",
+    after: ["addTransitiveMediaLocations", "addFeatureMediaLocations"],
+    run: pruneMedialessThings,
+  },
+];
+
 export function postIndexing(tdb: TribbleDB) {
-  addYear(tdb);
-  addPlaceFeatureSubjects(tdb);
-  addInverseRelations(tdb);
-  addNestedLocations(tdb);
-  addTransitiveMediaLocations(tdb);
-  addFeatureMediaLocations(tdb);
-  pruneMedialessThings(tdb);
+  for (const pass of orderPasses(POST_INDEXING_PASSES)) {
+    pass.run(tdb);
+  }
 }
 
 /*

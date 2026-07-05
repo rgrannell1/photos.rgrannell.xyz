@@ -9,15 +9,18 @@ import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 
 import {
   getTransferPolylines,
+  getTripAlbums,
+  readAlbumPhotosByAlbumId,
   readAlbumsByThingIds,
+  readAlbumVideosByAlbumId,
+  readAllAlbums,
+  readThingsByAlbumId,
   readYearRecap,
 } from "./services/albums.ts";
-import { readVideosByThingIds } from "./services/videos.ts";
+import { readAllVideos, readVideosByThingIds } from "./services/videos.ts";
 import {
   readAlbum,
-  readAllCountries,
   readAmphibian,
-  readBirdStats,
   readCountries,
   readCountry,
   readFeatures,
@@ -26,7 +29,6 @@ import {
   readLocation,
   readLocations,
   readMammal,
-  readMammalStats,
   readPhoto,
   readPhotos,
   readPlace,
@@ -35,15 +37,23 @@ import {
   readUnescos,
   readVideo,
 } from "./services/readers.ts";
+import { readBirdStats, readMammalStats } from "./services/stats.ts";
 import {
+  readAllPhotoUrns,
   readCategoryCover,
   readPhotosByThingIds,
   readSeenInCountries,
   readThingCover,
 } from "./services/photos.ts";
-import { readThings, toThingLinks } from "./commons/things.ts";
+import {
+  readNamedTypeThings,
+  readThing,
+  readThings,
+  toThingLinks,
+} from "./commons/things.ts";
+import { readWildBirdChecklist } from "./services/stats.ts";
 import { namesToUrns } from "./services/names.ts";
-import { readGeocodedPlaces } from "./services/places.ts";
+import { readAllCountries, readGeocodedPlaces } from "./services/places.ts";
 
 /*
  * Load data from the tribbles file.
@@ -71,7 +81,7 @@ async function loadData() {
  */
 export function loadServices(tdb: TribbleDB) {
   return {
-    readThing: tdb.readThing,
+    readThing: readThing.bind(null, tdb),
     readAlbum: readAlbum.bind(null, tdb),
     readCountry: readCountry.bind(null, tdb),
     readPlace: readPlace.bind(null, tdb),
@@ -104,6 +114,15 @@ export function loadServices(tdb: TribbleDB) {
     readTransferPolylines: getTransferPolylines.bind(null, tdb),
     readBirdStats: readBirdStats.bind(null, tdb),
     readMammalStats: readMammalStats.bind(null, tdb),
+    readAllAlbums: readAllAlbums.bind(null, tdb),
+    readAlbumPhotosByAlbumId: readAlbumPhotosByAlbumId.bind(null, tdb),
+    readAlbumVideosByAlbumId: readAlbumVideosByAlbumId.bind(null, tdb),
+    readThingsByAlbumId: readThingsByAlbumId.bind(null, tdb),
+    readTripAlbums: getTripAlbums.bind(null, tdb),
+    readAllVideos: readAllVideos.bind(null, tdb),
+    readAllPhotoUrns: readAllPhotoUrns.bind(null, tdb),
+    readWildBirdChecklist: readWildBirdChecklist.bind(null, tdb),
+    readNamedTypeThings: readNamedTypeThings.bind(null, tdb),
   };
 }
 

@@ -1,6 +1,10 @@
 /*
- * Mithril's Router wants components, so for the moment each page has a
- * wrapper app.
+ * The route table and shared page shell. Each route is a PageEntry: an
+ * optional `onmatch` hook for per-navigation work (param reads, per-visit
+ * loads) and a `resolve` function building the page's attrs on each redraw.
+ * One RouteResolver renders every page inside the same header/sidebar shell —
+ * Mithril's documented pattern for wrapping a layout. Page components stay
+ * module-level singletons, created once, so mount semantics are unchanged.
  */
 
 import m from "mithril";
@@ -8,16 +12,8 @@ import { Header } from "./components/header.ts";
 import { loadState } from "./state.ts";
 import { Sidebar } from "./components/sidebar.ts";
 import { AlbumsPage } from "./pages/albums.ts";
-import {
-  getTripAlbums,
-  readAlbumPhotosByAlbumId,
-  readAlbumVideosByAlbumId,
-  readAllAlbums,
-  readThingsByAlbumId,
-} from "./services/albums.ts";
 import { AboutPage } from "./pages/about.ts";
 import { VideosPage } from "./pages/videos.ts";
-import { readAllVideos } from "./services/videos.ts";
 import { listen } from "./commons/events.ts";
 import { setify } from "./commons/sets.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
@@ -26,22 +22,18 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 import { AlbumPage } from "./pages/album.ts";
 import { PhotosPage } from "./pages/photos.ts";
 import { PhotoPage } from "./pages/photo.ts";
-import { readAllPhotoUrns, readThingCover } from "./services/photos.ts";
-import { readAlbum, readPhoto, readVideo } from "./services/readers.ts";
 import { VideoPage } from "./pages/video.ts";
 import { ListingPage } from "./pages/listing.ts";
 import { ListingsPage } from "./pages/listings.ts";
 import { ChecklistPage } from "./pages/checklist.ts";
-import { readWildBirdChecklist } from "./services/readers.ts";
-import { readNamedTypeThings, readThing } from "./commons/things.ts";
 import type { Album } from "./types.ts";
 import { ThingPage } from "./pages/thing.ts";
 import { MapPage } from "./pages/map.ts";
 import type { GeocodedPlace } from "./services/places.ts";
 import type { TripPolyline } from "./services/albums.ts";
 
-type AppAttrs = {};
 const state = await loadState();
+const services = state.services;
 
 const headerComponent: m.Component<any> = Header();
 const sidebarComponent: m.Component<any> = Sidebar();
@@ -70,421 +62,341 @@ listen("click_burger_menu", () => {
   state.sidebarVisible = !state.sidebarVisible;
 });
 
-/* */
-export function AlbumsApp(): m.Component<AppAttrs> {
+/*
+ * A resolved page render: the page's attrs, plus an optional extra class on
+ * the shell root (e.g the album-banner layout).
+ */
+type ResolvedPage = {
+  attrs: Record<string, unknown>;
+  appClass?: string | undefined;
+};
+
+type PageEntry = {
+  page: m.Component<any>;
+  // runs once per navigation: read params, do per-visit loads
+  onmatch?: (params: m.Params) => void;
+  // builds the page attrs each redraw; a string is an error rendered bare
+  resolve: () => ResolvedPage | string;
+};
+
+/*
+ * Wrap a PageEntry in the shared shell. Using a RouteResolver `render` (not a
+ * per-route component) is what lets one layout serve every route without
+ * remounting the header and sidebar on navigation.
+ */
+function routeResolver(entry: PageEntry): m.RouteResolver {
   return {
-    oninit() {
+    onmatch(params: m.Params) {
+      entry.onmatch?.(params);
     },
-    view() {
-      const countrySlug = m.route.param("country");
-      const selectedCountry = countrySlug
-        ? countryUrn(countrySlug)
-        : undefined;
+    render() {
+      const resolved = entry.resolve();
 
-      const allAlbums = readAllAlbums(state.data);
-      const albums = selectedCountry
-        ? allAlbums.filter((album) =>
-          setify(album.country).has(selectedCountry)
-        )
-        : allAlbums;
-
-      return m(
-        "div.photos-app",
-        {},
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(albumsPageComponent, {
-              albums,
-              services: state.services,
-              visible: state.sidebarVisible,
-              selectedCountry,
-            }),
-          ]),
-        ],
-      );
-    },
-  };
-}
-
-/* */
-export function AlbumApp(): m.Component<AppAttrs> {
-  return {
-    view() {
-      const id = m.route.param("id");
-      if (id) {
-        state.currentAlbum = albumUrn(id);
-      }
-      if (!state.currentAlbum) {
-        return m("p", "No album selected");
-      }
-      const album = readAlbum(state.data, state.currentAlbum) as Album;
-      const photos = readAlbumPhotosByAlbumId(state.data, state.currentAlbum);
-      const videos = readAlbumVideosByAlbumId(state.data, state.currentAlbum);
-
-      if (!album) {
-        return m("p", "Album not found");
+      if (typeof resolved === "string") {
+        return m("p", resolved);
       }
 
-      const { subjects, locations } = readThingsByAlbumId(
-        state.data,
-        state.currentAlbum,
-      );
-
-      const tripPreviousAlbums = album.trip
-        ? getTripAlbums(state.data, album.trip)
-          .filter((a) => a.minDate < album.minDate)
-          .sort((a, b) => b.minDate - a.minDate)
-        : [];
-
-      const hasBanner = !!(album.albumBanner);
-      return m(
-        "div.photos-app",
-        { class: hasBanner ? "album-page" : undefined },
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(albumPageComponent, {
-              album,
-              subjects,
-              country: album.country || [],
-              locations,
-              photos,
-              videos,
-              services: state.services,
-              visible: state.sidebarVisible,
-              tripPreviousAlbums,
-            }),
-          ]),
-        ],
-      );
+      return m("div.photos-app", { class: resolved.appClass }, [
+        m(headerComponent, state),
+        m("div.app-container", {
+          class: state.sidebarVisible ? "sidebar-visible" : undefined,
+        }, [
+          m(sidebarComponent, { visible: state.sidebarVisible }),
+          m(entry.page, resolved.attrs),
+        ]),
+      ]);
     },
   };
 }
 
 /* */
-export function AboutApp(): m.Component<AppAttrs> {
-  return {
-    view() {
-      return m(
-        "div.photos-app",
-        { class: "album-page" },
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(aboutPageComponent, { visible: state.sidebarVisible }),
-          ]),
-        ],
-      );
-    },
-  };
-}
+const albumsEntry: PageEntry = {
+  page: albumsPageComponent,
+  resolve() {
+    const countrySlug = m.route.param("country");
+    const selectedCountry = countrySlug ? countryUrn(countrySlug) : undefined;
+
+    const allAlbums = services.readAllAlbums();
+    const albums = selectedCountry
+      ? allAlbums.filter((album) => setify(album.country).has(selectedCountry))
+      : allAlbums;
+
+    return {
+      attrs: {
+        albums,
+        services,
+        visible: state.sidebarVisible,
+        selectedCountry,
+      },
+    };
+  },
+};
 
 /* */
-export function VideosApp(): m.Component<AppAttrs> {
-  return {
-    view() {
-      return m(
-        "div.photos-app",
-        {},
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(videosPageComponent, {
-              videos: readAllVideos(state.data),
-              visible: state.sidebarVisible,
-            }),
-          ]),
-        ],
-      );
-    },
-  };
-}
+const albumEntry: PageEntry = {
+  page: albumPageComponent,
+  resolve() {
+    const id = m.route.param("id");
+    if (id) {
+      state.currentAlbum = albumUrn(id);
+    }
+    if (!state.currentAlbum) {
+      return "No album selected";
+    }
+
+    const album = services.readAlbum(state.currentAlbum) as Album;
+    if (!album) {
+      return "Album not found";
+    }
+
+    const photos = services.readAlbumPhotosByAlbumId(state.currentAlbum);
+    const videos = services.readAlbumVideosByAlbumId(state.currentAlbum);
+    const { subjects, locations } = services.readThingsByAlbumId(
+      state.currentAlbum,
+    );
+
+    const tripPreviousAlbums = album.trip
+      ? services.readTripAlbums(album.trip)
+        .filter((tripAlbum) => tripAlbum.minDate < album.minDate)
+        .sort((albumA, albumB) => albumB.minDate - albumA.minDate)
+      : [];
+
+    return {
+      appClass: album.albumBanner ? "album-page" : undefined,
+      attrs: {
+        album,
+        subjects,
+        country: album.country || [],
+        locations,
+        photos,
+        videos,
+        services,
+        visible: state.sidebarVisible,
+        tripPreviousAlbums,
+      },
+    };
+  },
+};
 
 /* */
-export function PhotosApp(): m.Component<AppAttrs> {
-  // Sort URNs by date without parsing each photo — parsing is deferred to render batches
-  const photoUrns = readAllPhotoUrns(state.data);
-
-  return {
-    view() {
-      return m(
-        "div.photos-app",
-        {},
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(photosPageComponent, {
-              photoUrns,
-              services: state.services,
-              visible: state.sidebarVisible,
-            }),
-          ]),
-        ],
-      );
-    },
-  };
-}
+const aboutEntry: PageEntry = {
+  page: aboutPageComponent,
+  resolve() {
+    return {
+      appClass: "album-page",
+      attrs: { visible: state.sidebarVisible },
+    };
+  },
+};
 
 /* */
-export function ThingApp(): m.Component<AppAttrs> {
-  let things: TripleObject[] = [];
+const videosEntry: PageEntry = {
+  page: videosPageComponent,
+  resolve() {
+    return {
+      attrs: {
+        videos: services.readAllVideos(),
+        visible: state.sidebarVisible,
+      },
+    };
+  },
+};
 
-  return {
-    view() {
-      const pair = m.route.param("pair");
-      state.currentUrn = `urn:ró:${pair}`;
+// Sort URNs by date without parsing each photo — parsing is deferred to
+// render batches. Loaded per navigation in onmatch, not per redraw.
+let photoUrns: string[] = [];
 
-      const parsed = asUrn(state.currentUrn);
-      if (parsed.id === "*") {
-        things = readNamedTypeThings(state.data, pair.split(":")[0]);
-      } else {
-        const thing = readThing(state.data, state.currentUrn);
-        if (thing) {
-          things = [thing];
-        }
+/* */
+const photosEntry: PageEntry = {
+  page: photosPageComponent,
+  onmatch() {
+    photoUrns = services.readAllPhotoUrns();
+  },
+  resolve() {
+    return {
+      attrs: { photoUrns, services, visible: state.sidebarVisible },
+    };
+  },
+};
+
+/* */
+const thingEntry: PageEntry = {
+  page: thingPageComponent,
+  resolve() {
+    const pair = m.route.param("pair");
+    state.currentUrn = `urn:ró:${pair}`;
+
+    if (!state.currentUrn) {
+      return "No thing selected";
+    }
+
+    let things: TripleObject[] = [];
+    const parsed = asUrn(state.currentUrn);
+    if (parsed.id === "*") {
+      things = services.readNamedTypeThings(pair.split(":")[0]);
+    } else {
+      const thing = services.readThing(state.currentUrn);
+      if (thing) {
+        things = [thing];
       }
+    }
 
-      if (!state.currentUrn) {
-        return m("p", "No thing selected");
-      }
-
-      return m(
-        "div.photos-app",
-        {},
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(thingPageComponent, {
-              urn: state.currentUrn,
-              things,
-              services: state.services,
-              visible: state.sidebarVisible,
-            }),
-          ]),
-        ],
-      );
-    },
-  };
-}
+    return {
+      attrs: {
+        urn: state.currentUrn,
+        things,
+        services,
+        visible: state.sidebarVisible,
+      },
+    };
+  },
+};
 
 /* */
-export function PhotoApp(): m.Component<AppAttrs> {
-  return {
-    oninit() {
-      const id = m.route.param("id");
-      state.currentPhoto = photoUrn(id);
-    },
-    view() {
-      if (!state.currentPhoto) {
-        return m("p", "No photo selected");
-      }
-      const photo = readPhoto(state.data, state.currentPhoto);
+const photoEntry: PageEntry = {
+  page: photoPageComponent,
+  onmatch(params) {
+    state.currentPhoto = photoUrn(params.id as string);
+  },
+  resolve() {
+    if (!state.currentPhoto) {
+      return "No photo selected";
+    }
 
-      if (!photo) {
-        return m("p", "Photo not found");
-      }
+    const photo = services.readPhoto(state.currentPhoto);
+    if (!photo) {
+      return "Photo not found";
+    }
 
-      return m(
-        "div.photos-app",
-        {},
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(photoPageComponent, {
-              photo,
-              services: state.services,
-              visible: state.sidebarVisible,
-            }),
-          ]),
-        ],
-      );
-    },
-  };
-}
+    return {
+      attrs: { photo, services, visible: state.sidebarVisible },
+    };
+  },
+};
 
 /* */
-export function VideoApp(): m.Component<AppAttrs> {
-  return {
-    oninit() {
-      const id = m.route.param("id");
-      state.currentUrn = videoUrn(id);
-    },
-    view() {
-      if (!state.currentUrn) {
-        return m("p", "No video selected");
-      }
-      const video = readVideo(state.data, state.currentUrn);
+const videoEntry: PageEntry = {
+  page: videoPageComponent,
+  onmatch(params) {
+    state.currentUrn = videoUrn(params.id as string);
+  },
+  resolve() {
+    if (!state.currentUrn) {
+      return "No video selected";
+    }
 
-      if (!video) {
-        return m("p", "Video not found");
-      }
+    const video = services.readVideo(state.currentUrn);
+    if (!video) {
+      return "Video not found";
+    }
 
-      return m(
-        "div.photos-app",
-        {},
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(videoPageComponent, {
-              video,
-              services: state.services,
-              visible: state.sidebarVisible,
-            }),
-          ]),
-        ],
-      );
-    },
-  };
-}
+    return {
+      attrs: { video, services, visible: state.sidebarVisible },
+    };
+  },
+};
 
 /* */
-export function ListingApp(): m.Component<AppAttrs> {
-  return {
-    oninit() {
-      const type = m.route.param("type");
-      state.currentType = type;
-    },
+const listingEntry: PageEntry = {
+  page: listingPageComponent,
+  onmatch(params) {
+    state.currentType = params.type as string;
+  },
+  resolve() {
+    if (!state.currentType) {
+      return "No type selected";
+    }
 
-    view() {
-      if (!state.currentType) {
-        return m("p", "No type selected");
-      }
+    const filter = m.route.param("filter") as string | undefined;
+    const things = services.readNamedTypeThings(state.currentType);
 
-      const filter = m.route.param("filter") as string | undefined;
-      const things = readNamedTypeThings(state.data, state.currentType);
-
-      return m(
-        "div.photos-app",
-        {},
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(listingPageComponent, {
-              type: state.currentType,
-              things,
-              services: state.services,
-              visible: state.sidebarVisible,
-              filter,
-            }),
-          ]),
-        ],
-      );
-    },
-  };
-}
-
-export function ListingsApp(): m.Component<AppAttrs> {
-  return {
-    view() {
-      return m(
-        "div.photos-app",
-        {},
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(listingsPageComponent, {
-              visible: state.sidebarVisible,
-              services: state.services,
-            }),
-          ]),
-        ],
-      );
-    },
-  };
-}
+    return {
+      attrs: {
+        type: state.currentType,
+        things,
+        services,
+        visible: state.sidebarVisible,
+        filter,
+      },
+    };
+  },
+};
 
 /* */
-export function ChecklistApp(): m.Component<AppAttrs> {
-  return {
-    view() {
-      const filter = m.route.param("filter") as string | undefined;
-      const entries = readWildBirdChecklist(state.data);
-
-      return m(
-        "div.photos-app",
-        {},
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(checklistPageComponent, {
-              entries,
-              services: state.services,
-              visible: state.sidebarVisible,
-              filter,
-            }),
-          ]),
-        ],
-      );
-    },
-  };
-}
+const listingsEntry: PageEntry = {
+  page: listingsPageComponent,
+  resolve() {
+    return {
+      attrs: { visible: state.sidebarVisible, services },
+    };
+  },
+};
 
 /* */
-export function MapApp(): m.Component<AppAttrs> {
-  let placesForMap: (GeocodedPlace & { coverThumbnailUrl?: string | undefined })[] = [];
-  let tripPolylines: TripPolyline[] = [];
+const checklistEntry: PageEntry = {
+  page: checklistPageComponent,
+  resolve() {
+    const filter = m.route.param("filter") as string | undefined;
+    const entries = services.readWildBirdChecklist();
 
-  return {
-    oninit() {
-      const geocodedPlaces = state.services.readGeocodedPlaces();
-      placesForMap = geocodedPlaces.map((place) => {
-        const cover = readThingCover(state.data, place.id);
-        return { ...place, coverThumbnailUrl: cover?.thumbnailUrl };
-      });
-      tripPolylines = state.services.readTransferPolylines();
-    },
-    view() {
-      return m(
-        "div.photos-app",
-        {},
-        [
-          m(headerComponent, state),
-          m("div.app-container", {
-            class: state.sidebarVisible ? "sidebar-visible" : undefined,
-          }, [
-            m(sidebarComponent, { visible: state.sidebarVisible }),
-            m(mapPageComponent, {
-              visible: state.sidebarVisible,
-              places: placesForMap,
-              tripPolylines,
-            }),
-          ]),
-        ],
-      );
-    },
-  };
-}
+    return {
+      attrs: {
+        entries,
+        services,
+        visible: state.sidebarVisible,
+        filter,
+      },
+    };
+  },
+};
+
+// map data is loaded per navigation in onmatch, not per redraw
+let placesForMap:
+  (GeocodedPlace & { coverThumbnailUrl?: string | undefined })[] = [];
+let tripPolylines: TripPolyline[] = [];
+
+/* */
+const mapEntry: PageEntry = {
+  page: mapPageComponent,
+  onmatch() {
+    const geocodedPlaces = services.readGeocodedPlaces();
+    placesForMap = geocodedPlaces.map((place) => {
+      const cover = services.readThingCover(place.id);
+      return { ...place, coverThumbnailUrl: cover?.thumbnailUrl };
+    });
+    tripPolylines = services.readTransferPolylines();
+  },
+  resolve() {
+    return {
+      attrs: {
+        visible: state.sidebarVisible,
+        places: placesForMap,
+        tripPolylines,
+      },
+    };
+  },
+};
+
+const PAGE_ENTRIES: Record<string, PageEntry> = {
+  "/albums": albumsEntry,
+  "/albums/:country": albumsEntry,
+  "/about": aboutEntry,
+  "/map": mapEntry,
+  "/videos": videosEntry,
+  "/photos": photosEntry,
+  "/album/:id": albumEntry,
+  "/thing/:pair": thingEntry,
+  "/photo/:id": photoEntry,
+  "/video/:id": videoEntry,
+  "/listing/:type": listingEntry,
+  "/listing/:type/:filter": listingEntry,
+  "/listings": listingsEntry,
+  "/checklist": checklistEntry,
+  "/checklist/:filter": checklistEntry,
+};
+
+export const routes: Record<string, m.RouteResolver> = Object.fromEntries(
+  Object.entries(PAGE_ENTRIES).map((
+    [route, entry],
+  ) => [route, routeResolver(entry)]),
+);
