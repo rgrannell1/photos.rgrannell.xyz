@@ -3,6 +3,8 @@ import m from "mithril";
 import { setTitle } from "../services/window.ts";
 import { navigate } from "../commons/events.ts";
 import { AlbumBanner } from "../components/album-banner.ts";
+import { encodeBitmapDataURL } from "../services/photos.ts";
+import { ABOUT_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../constants.ts";
 
 type AboutPageAttrs = {
   visible: boolean;
@@ -29,12 +31,23 @@ export function AboutPage() {
         "(though hit-or-miss at other styles of photography). I built this website to " +
         "share the things";
 
+      // hardcoded CDN banner: the high-res `banner` rendition of photo:dd378e3a76
+      // (mirror BANNER_SOURCE_FILES). update by hand if the photo is re-encoded.
       const bannerSrc = "https://photos-cdn.rgrannell.xyz/6744c802d1.webp";
+      const bannerDataUrl = encodeBitmapDataURL(
+        ABOUT_BANNER_MOSAIC,
+        BANNER_MOSAIC_DIMENSION,
+        BANNER_MOSAIC_DIMENSION,
+      );
 
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
-        m(AlbumBanner, { src: bannerSrc, alt: "About" }),
+        m(AlbumBanner, {
+          src: bannerSrc,
+          alt: "About",
+          thumbnailDataUrl: bannerDataUrl,
+        }),
         m("section.about-page", [
           m("h1", "About"),
           m("br"),

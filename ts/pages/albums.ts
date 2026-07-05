@@ -18,6 +18,7 @@ import { albumYear } from "../services/albums.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { setify } from "../commons/sets.ts";
 import { CountryFilter } from "../components/country-filter.ts";
+import { ALBUMS_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../constants.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];
@@ -275,11 +276,20 @@ export function AlbumsPage() {
       // hardcoded CDN banner: the high-res `banner` rendition of photo:548d64a50a
       // (mirror BANNER_SOURCE_FILES). update by hand if the photo is re-encoded.
       const bannerSrc = "https://photos-cdn.rgrannell.xyz/d6cf0f7cc7.webp";
+      const bannerDataUrl = encodeBitmapDataURL(
+        ALBUMS_BANNER_MOSAIC,
+        BANNER_MOSAIC_DIMENSION,
+        BANNER_MOSAIC_DIMENSION,
+      );
 
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
-        m(AlbumBanner, { src: bannerSrc, alt: "Albums" }),
+        m(AlbumBanner, {
+          src: bannerSrc,
+          alt: "Albums",
+          thumbnailDataUrl: bannerDataUrl,
+        }),
         $md,
         //m(YearCursor),
         m(AlbumsList, { albums, services, visible, selectedCountry }),
