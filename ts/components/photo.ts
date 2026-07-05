@@ -78,6 +78,7 @@ function PlaceholderImage() {
 
 type ImagePairAttrs = {
   imageUrl?: string;
+  href?: string;
   thumbnailUrl: string;
   thumbnailDataUrl: string | null;
   loading: "eager" | "lazy";
@@ -123,13 +124,17 @@ export function BannerImagePair() {
 /*
  * The underlying pair of images. One is the actual thumbnail, which
  * takes time to load. The other will be a grid data URL that instantly loads.
- * If imageUrl is provided the pair is wrapped in a link to that image.
+ * If imageUrl is provided the pair is wrapped in a new-tab link to that image.
+ * If href is provided instead, the pair is wrapped in a same-tab link (e.g. an
+ * album route) whose onclick drives SPA navigation but leaves modified clicks
+ * to the browser, so the target can be opened in a new tab.
  */
 export function ImagePair() {
   return {
     view(vnode: m.Vnode<ImagePairAttrs>) {
       const {
         imageUrl,
+        href,
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
@@ -138,20 +143,31 @@ export function ImagePair() {
         height,
       } = vnode.attrs;
 
+      // when wrapping in an href anchor the onclick lives on the anchor, so the
+      // inner image must not also fire it
+      const isHrefLink = Boolean(href) && !imageUrl;
+      const imageOnclick = isHrefLink ? undefined : onclick;
+
       const children = [
         thumbnailDataUrl
           ? m(PlaceholderImage, { thumbnailDataUrl, width, height })
           : null,
-        m(Image, { thumbnailUrl, loading, onclick, width, height }),
+        m(Image, { thumbnailUrl, loading, onclick: imageOnclick, width, height }),
       ];
 
-      return imageUrl
-        ? m(
+      if (imageUrl) {
+        return m(
           "a",
           { href: imageUrl, target: "_blank", rel: "external" },
           children,
-        )
-        : m("div", children);
+        );
+      }
+
+      if (href) {
+        return m("a", { href, onclick }, children);
+      }
+
+      return m("div", children);
     },
   };
 }

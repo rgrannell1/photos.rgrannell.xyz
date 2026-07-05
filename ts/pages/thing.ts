@@ -10,7 +10,7 @@ import { Video } from "../components/video.ts";
 import { encodeBitmapDataURL } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
-import { block, broadcast } from "../commons/events.ts";
+import { block, broadcast, isModifiedClick } from "../commons/events.ts";
 import { PlacesList } from "../components/places-list.ts";
 import { setify, setOf } from "../commons/sets.ts";
 import { BinomialTypes, KnownRelations } from "../constants.ts";
@@ -129,7 +129,20 @@ function ThingMetadata() {
   };
 }
 
+// hashbang route to an album's page, used as the anchor href so albums can be
+// opened in a new tab
+function albumRoute(id: string): string {
+  const parsed = asUrn(id);
+  return `#!/album/${parsed.id}`;
+}
+
 function onAlbumClick(id: string, title: string, event: Event) {
+  // let modified/middle clicks fall through to the browser so the album route
+  // opens in a new tab
+  if (isModifiedClick(event as MouseEvent)) {
+    return;
+  }
+
   const parsed = asUrn(id);
 
   broadcast("navigate", { route: `/album/${parsed.id}`, title });
@@ -185,7 +198,7 @@ function AlbumSection() {
         });
 
         const $album = m(PhotoAlbum, {
-          imageUrl: album.thumbnailUrl,
+          href: albumRoute(album.id),
           thumbnailUrl: album.thumbnailUrl,
           thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),
           loading: "lazy",

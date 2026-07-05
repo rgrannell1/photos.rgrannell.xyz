@@ -28,7 +28,8 @@ function TripTag() {
 
 export type PhotoAlbumAttrs = {
   trip: string | undefined;
-  imageUrl: string;
+  imageUrl?: string;
+  href?: string;
   thumbnailUrl: string;
   thumbnailDataUrl: string;
   loading: "eager" | "lazy";
@@ -43,6 +44,7 @@ export function PhotoAlbum() {
     view(vnode: m.Vnode<PhotoAlbumAttrs>) {
       const {
         imageUrl,
+        href,
         thumbnailUrl,
         thumbnailDataUrl,
         loading,
@@ -55,13 +57,14 @@ export function PhotoAlbum() {
       return m("div.photo-album", { "data-min-date": minDate }, [
         m(TripTag, { trip }),
         m(ImagePair, {
-          imageUrl,
           thumbnailUrl,
           thumbnailDataUrl,
           loading,
           onclick,
           width: PHOTO_WIDTH,
           height: PHOTO_HEIGHT,
+          ...(imageUrl !== undefined && { imageUrl }),
+          ...(href !== undefined && { href }),
         }),
         // NODE this might be broken
         child,

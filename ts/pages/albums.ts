@@ -8,7 +8,12 @@ import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { setTitle } from "../services/window.ts";
 import { CountryLink } from "../components/place-links.ts";
-import { block, broadcast, navigate } from "../commons/events.ts";
+import {
+  block,
+  broadcast,
+  isModifiedClick,
+  navigate,
+} from "../commons/events.ts";
 import { albumYear } from "../services/albums.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { setify } from "../commons/sets.ts";
@@ -20,7 +25,20 @@ type AlbumsListAttrs = {
   visible: boolean;
 };
 
+// hashbang route to an album's page, used as the anchor href so albums can be
+// opened in a new tab
+function albumRoute(id: string): string {
+  const parsed = asUrn(id);
+  return `#!/album/${parsed.id}`;
+}
+
 function onAlbumClick(id: string, title: string, event: Event) {
+  // let modified/middle clicks fall through to the browser so the album route
+  // opens in a new tab
+  if (isModifiedClick(event as MouseEvent)) {
+    return;
+  }
+
   const parsed = asUrn(id);
 
   broadcast("navigate", { route: `/album/${parsed.id}`, title });
@@ -80,7 +98,7 @@ function drawAlbum(
 
   const $album = m(PhotoAlbum, {
     trip: album.trip,
-    imageUrl: album.thumbnailUrl,
+    href: albumRoute(album.id),
     thumbnailUrl: album.thumbnailUrl,
     thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),
     loading: loading,
