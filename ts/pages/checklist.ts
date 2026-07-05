@@ -1,6 +1,5 @@
 import m from "mithril";
 import { broadcast } from "../commons/events.ts";
-import { binomial } from "../commons/strings.ts";
 import type { Services } from "../types.ts";
 import type { ChecklistEntry } from "../services/stats.ts";
 
@@ -90,7 +89,6 @@ function ChecklistRow() {
           entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
           m("a.checklist-name-link", { href: `#/thing/bird:${entry.birdId}` }, entry.name),
         ]),
-        m("td.checklist-species", binomial(entry.birdId)),
         m("td.checklist-first-seen", formatFirstSeen(entry.firstSeen)),
       ]);
     },
@@ -123,7 +121,6 @@ function ChecklistTable() {
           m("tr", [
             m("th.checklist-number", "#"),
             m("th", "Name"),
-            m("th.checklist-species"),
             m("th", "First seen"),
           ]),
         ]),

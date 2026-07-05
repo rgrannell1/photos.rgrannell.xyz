@@ -1229,13 +1229,7 @@ button:disabled {
   width: 3em;
 }
 
-.checklist-species {
-  font-style: italic;
-  color: var(--secondary-text-color);
-}
-
 @media (max-width: 500px) {
-  .checklist-species,
   .checklist-number {
     display: none;
   }
