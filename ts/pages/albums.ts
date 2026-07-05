@@ -23,6 +23,7 @@ type AlbumsListAttrs = {
   albums: Album[];
   services: Services;
   visible: boolean;
+  selectedCountry: string | undefined;
 };
 
 // hashbang route to an album's page, used as the anchor href so albums can be
@@ -50,6 +51,7 @@ function drawAlbum(
   album: Album,
   idx: number,
   services: Services,
+  showRecap: boolean,
 ) {
   const loading = loadingMode(idx);
 
@@ -67,7 +69,9 @@ function drawAlbum(
       );
       $albumComponents.push($h2);
 
-      const recap = services.readYearRecap(state.year);
+      // only show the year recap on the unfiltered album view; hide it when
+      // filtering by country
+      const recap = showRecap ? services.readYearRecap(state.year) : null;
       if (recap) {
         $albumComponents.push(
           m(YearRecap, { key: `year-recap-${state.year}`, markdown: recap }),
@@ -127,13 +131,17 @@ function AlbumsList() {
   return {
     view(vnode: m.Vnode<AlbumsListAttrs>) {
       const state = { year: 2005 };
-      const { albums, services } = vnode.attrs;
+      const { albums, services, selectedCountry } = vnode.attrs;
+
+      const showRecap = selectedCountry === undefined;
 
       const $albumComponents: m.Children[] = [];
 
       // TODO this blocks render too long
       for (let idx = 0; idx < albums.length; idx++) {
-        $albumComponents.push(...drawAlbum(state, albums[idx], idx, services));
+        $albumComponents.push(
+          ...drawAlbum(state, albums[idx], idx, services, showRecap),
+        );
       }
 
       return m("section.album-container", $albumComponents);
@@ -274,7 +282,7 @@ export function AlbumsPage() {
         m(AlbumBanner, { src: bannerSrc, alt: "Albums" }),
         $md,
         //m(YearCursor),
-        m(AlbumsList, { albums, services, visible }),
+        m(AlbumsList, { albums, services, visible, selectedCountry }),
       ]);
     },
   };
