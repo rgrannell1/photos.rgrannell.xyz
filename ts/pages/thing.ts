@@ -215,10 +215,17 @@ function AlbumSection() {
         );
       });
 
-      return m(
-        "section.album-container",
-        $albums,
-      );
+      if ($albums.length === 0) {
+        return null;
+      }
+
+      return m("div", [
+        m("h3", "Albums"),
+        m(
+          "section.album-container",
+          $albums,
+        ),
+      ]);
     },
   };
 }
@@ -301,17 +308,24 @@ function PhotoSection() {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const photos = photosFor(vnode);
 
-      return m(
-        "section.photo-container",
-        photos.slice(0, rendered).map((photo, idx) =>
-          m(Photo, {
-            key: `photo-${photo.id}`,
-            photo,
-            loading: loadingMode(idx),
-            interactive: true,
-          })
+      if (photos.length === 0) {
+        return null;
+      }
+
+      return m("div", [
+        m("h3", "Photos"),
+        m(
+          "section.photo-container",
+          photos.slice(0, rendered).map((photo, idx) =>
+            m(Photo, {
+              key: `photo-${photo.id}`,
+              photo,
+              loading: loadingMode(idx),
+              interactive: true,
+            })
+          ),
         ),
-      );
+      ]);
     },
   };
 }
@@ -336,10 +350,8 @@ export function ThingPage() {
           m("br"),
           m(ThingUrls, { things }),
           m(ThingMetadata, { urn, things, services, visible }),
-          m("h3", "Photos"),
           m(PhotoSection, { urn, things, services, visible }),
           m(VideoSection, { urn, things, services, visible }),
-          m("h3", "Albums"),
           m(AlbumSection, { urn, things, services, visible }),
         ]),
       ]);
