@@ -4,13 +4,13 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { arrayify } from "../commons/arrays.ts";
 import type { Services } from "../types.ts";
-import { CountryLink } from "../components/place-links.ts";
+import { CountryLink, countryFlagLinks } from "../components/place-links.ts";
 import { Photo } from "../components/photo.ts";
 import { Video } from "../components/video.ts";
 import { encodeBitmapDataURL } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
-import { block, broadcast, isModifiedClick } from "../commons/events.ts";
+import { albumRoute, onAlbumClick } from "../commons/album-nav.ts";
 import { ThingList } from "../components/thing-list.ts";
 import { setify, setOf } from "../commons/sets.ts";
 import { BinomialTypes, KnownRelations } from "../constants.ts";
@@ -26,20 +26,6 @@ type ThingPageAttrs = {
   services: Services;
   visible: boolean;
 };
-
-function _ThingPlaces() {
-  return {
-    view() {
-    },
-  };
-}
-
-function _ThingTypeLink() {
-  return {
-    view() {
-    },
-  };
-}
 
 function ThingMetadata() {
   let seenInUrn: string | null = null;
@@ -135,26 +121,6 @@ function ThingMetadata() {
   };
 }
 
-// hashbang route to an album's page, used as the anchor href so albums can be
-// opened in a new tab
-function albumRoute(id: string): string {
-  const parsed = asUrn(id);
-  return `#!/album/${parsed.id}`;
-}
-
-function onAlbumClick(id: string, title: string, event: Event) {
-  // let modified/middle clicks fall through to the browser so the album route
-  // opens in a new tab
-  if (isModifiedClick(event as MouseEvent)) {
-    return;
-  }
-
-  const parsed = asUrn(id);
-
-  broadcast("navigate", { route: `/album/${parsed.id}`, title });
-  block(event);
-}
-
 type AlbumEntry = {
   album: ReturnType<Services["readAlbumsByThingIds"]>[number];
   countries: ReturnType<Services["readCountries"]>;
@@ -184,14 +150,7 @@ function AlbumSection() {
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const $albums = entriesFor(vnode).map(({ album, countries }) => {
-        // duplicated model. move to render(model) code
-        const $countryLinks = countries.map((country) => {
-          return m(CountryLink, {
-            country,
-            key: `album-country-${album.id}-${country.id}`,
-            mode: "flag",
-          });
-        });
+        const $countryLinks = countryFlagLinks(album.id, countries);
 
         const $md = m(PhotoAlbumMetadata, {
           title: album.name,

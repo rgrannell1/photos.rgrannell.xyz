@@ -294,15 +294,6 @@ button:disabled {
   }
 }
 
-#year-cursor {
-  position: fixed;
-  top: 0;
-  right: 10px;
-  display: none;
-  padding: 3px;
-  font-size: 0.8em;
-}
-
 .photo {
   margin: 5px;
   cursor: pointer;
@@ -521,11 +512,6 @@ button:disabled {
 
   h1 {
     font-size: 2em;
-  }
-
-  #year-cursor {
-    background-color: black;
-    color: white;
   }
 
   .album-year-heading {

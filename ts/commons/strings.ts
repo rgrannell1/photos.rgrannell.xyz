@@ -14,6 +14,15 @@ export function pluralise(str: string): string {
   return str + "s";
 }
 
+/*
+ * A count with its pluralised noun, e.g countLabel(3, "photo") -> "3 photos"
+ * and countLabel(1, "photo") -> "1 photo".
+ */
+export function countLabel(count: number, noun: string): string {
+  const word = count === 1 ? noun : pluralise(noun);
+  return `${count} ${word}`;
+}
+
 const CAMEL_CASE_CACHE = new Map<string, string>();
 
 export function camelCase(str: string): string {

@@ -140,9 +140,9 @@ dependency throws at startup.
 ## Bugs fixed in passing
 
 - `formatExifDate` (`services/dates.ts`) destructured a string as if it were an
-  array, returning garbage. Rewritten to split an EXIF datetime correctly.
-  Note: the function is currently unused (nothing calls it; `pages/album.ts`
-  imported the module without using it).
+  array, returning garbage. It was unused (nothing called it), so it was later
+  deleted outright along with the equally-unused `parse` helper, rather than
+  kept fixed. Only `formatCreatedAt` remains in `services/dates.ts`.
 - `canonicaliseUrns` / `URN_ALIASES` (`semantic/derive.ts`): the alias map has
   been empty since commit 435924d4 ("removes countries") deliberately dropped
   the usa→united-states alias after the data was fixed upstream in mirror. Not
@@ -177,5 +177,25 @@ Pre-existing issues found while verifying (not introduced here):
 - Item 4 (layer inversions) and item 5 (dumping-ground splits) are documented
   above as proposals; no code moved yet.
 - `models/triples.ts` is near-vestigial; fold into callers when next touched.
-- Dead code: `AlbumThings` component, `_ThingPlaces`/`_ThingTypeLink` stubs in
-  `pages/thing.ts`, commented-out `YearCursor` wiring in `pages/albums.ts`.
+
+## Small dedupes
+
+- `albumRoute` + `onAlbumClick` were byte-identical in `pages/albums.ts` and
+  `pages/thing.ts`. Extracted to `ts/commons/album-nav.ts` (no view imports, so
+  it stays a clean common).
+- Count-pluralisation (`n === 1 ? …`) was reimplemented in
+  `pages/photos.ts`, `pages/videos.ts`, and `pages/album.ts`. Replaced by
+  `countLabel(count, noun)` in `commons/strings.ts`, which reuses `pluralise`.
+- The album-card country-flag construction repeated in `pages/albums.ts`,
+  `pages/album.ts`, and `pages/thing.ts`. Extracted to `countryFlagLinks(albumId,
+  countries)` in `components/place-links.ts`. The "seen-in" list in `thing.ts`
+  (mode `name`, different key scheme) still uses `CountryLink` directly.
+
+## Dead code removed
+
+- `ts/components/album-things.ts` (`AlbumThings`, empty-`view` stub, no imports).
+- `ts/components/year-cursor.ts` (`YearCursor`, only referenced by a
+  commented-out line) plus that comment in `pages/albums.ts` and the orphaned
+  `#year-cursor` CSS rules.
+- `_ThingPlaces` / `_ThingTypeLink` empty stubs in `pages/thing.ts`.
+- Unused `parse` and `formatExifDate` in `services/dates.ts` (see bugs section).

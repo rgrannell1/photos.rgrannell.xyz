@@ -7,15 +7,10 @@ import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
 import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { setTitle } from "../services/window.ts";
-import { CountryLink } from "../components/place-links.ts";
-import {
-  block,
-  broadcast,
-  isModifiedClick,
-  navigate,
-} from "../commons/events.ts";
+import { countryFlagLinks } from "../components/place-links.ts";
+import { broadcast } from "../commons/events.ts";
 import { albumYear } from "../services/albums.ts";
-import { asUrn } from "@rgrannell1/tribbledb";
+import { albumRoute, onAlbumClick } from "../commons/album-nav.ts";
 import { setify } from "../commons/sets.ts";
 import { CountryFilter } from "../components/country-filter.ts";
 import { ALBUMS_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../constants.ts";
@@ -26,26 +21,6 @@ type AlbumsListAttrs = {
   visible: boolean;
   selectedCountry: string | undefined;
 };
-
-// hashbang route to an album's page, used as the anchor href so albums can be
-// opened in a new tab
-function albumRoute(id: string): string {
-  const parsed = asUrn(id);
-  return `#!/album/${parsed.id}`;
-}
-
-function onAlbumClick(id: string, title: string, event: Event) {
-  // let modified/middle clicks fall through to the browser so the album route
-  // opens in a new tab
-  if (isModifiedClick(event as MouseEvent)) {
-    return;
-  }
-
-  const parsed = asUrn(id);
-
-  broadcast("navigate", { route: `/album/${parsed.id}`, title });
-  block(event);
-}
 
 function drawAlbum(
   state: { year: number },
@@ -81,14 +56,9 @@ function drawAlbum(
     }
   }
 
-  const $countryLinks = services.readCountries(setify(album.country)).map(
-    (country) => {
-      return m(CountryLink, {
-        country,
-        key: `album-country-${album.id}-${country.id}`,
-        mode: "flag",
-      });
-    },
+  const $countryLinks = countryFlagLinks(
+    album.id,
+    services.readCountries(setify(album.country)),
   );
 
   const $md = m(PhotoAlbumMetadata, {
@@ -291,7 +261,6 @@ export function AlbumsPage() {
           thumbnailDataUrl: bannerDataUrl,
         }),
         $md,
-        //m(YearCursor),
         m(AlbumsList, { albums, services, visible, selectedCountry }),
       ]);
     },

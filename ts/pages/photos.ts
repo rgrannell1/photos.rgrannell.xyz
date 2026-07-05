@@ -3,6 +3,7 @@ import type { Photo as PhotoType, Services } from "../types.ts";
 import { Photo } from "../components/photo.ts";
 import { loadingMode } from "../services/photos.ts";
 import { createBatchRenderer } from "../components/batch-render.ts";
+import { countLabel } from "../commons/strings.ts";
 
 const BATCH_SIZE = 10;
 
@@ -60,9 +61,7 @@ export function PhotosPage() {
     view(vnode: m.Vnode<PhotosPageAttrs>) {
       const { photoUrns, services, visible } = vnode.attrs;
 
-      const countText = `${photoUrns.length} photo${
-        photoUrns.length === 1 ? "" : "s"
-      }`;
+      const countText = countLabel(photoUrns.length, "photo");
 
       const $md = m("section.photos-metadata", [
         m("h1", "Photos"),

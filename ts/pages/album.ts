@@ -2,7 +2,7 @@ import m from "mithril";
 import { isSmallerThan, setTitle, sharePhotoUrl } from "../services/window.ts";
 import { AlbumBanner } from "../components/album-banner.ts";
 import { AlbumShareButton } from "../components/album-share-button.ts";
-import { CountryLink } from "../components/place-links.ts";
+import { countryFlagLinks } from "../components/place-links.ts";
 import { Video } from "../components/video.ts";
 import type { VideoAttrs } from "../components/video.ts";
 import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
@@ -18,7 +18,7 @@ import type {
 import { Photo } from "../components/photo.ts";
 import type { PhotoAttrs } from "../components/photo.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
-import { preprocessDescription } from "../commons/strings.ts";
+import { countLabel, preprocessDescription } from "../commons/strings.ts";
 import { setify } from "../commons/sets.ts";
 import { KnownRelations, SMALL_DEVICE_WIDTH } from "../constants.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
@@ -65,17 +65,11 @@ export function AlbumPage() {
         ? shortDateRange
         : dateRange;
 
-      const photoCountMessage = photosCount === 1
-        ? "1 photo"
-        : `${photosCount} photos`;
+      const photoCountMessage = countLabel(photosCount, "photo");
 
-      const $countryLinks = services.readCountries(setify(country)).map(
-        (country) => {
-          return m(CountryLink, {
-            country,
-            mode: "flag",
-          });
-        },
+      const $countryLinks = countryFlagLinks(
+        album.id,
+        services.readCountries(setify(country)),
       );
 
       const { id } = asUrn(album.id);

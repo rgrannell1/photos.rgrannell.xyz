@@ -13,6 +13,23 @@ export type CountryLinkAttrs = {
 };
 
 /*
+ * Flag links for an album's countries, keyed by album and country so Mithril
+ * can diff them. Used wherever an album card shows its countries.
+ */
+export function countryFlagLinks(
+  albumId: string,
+  countries: Country[],
+): m.Vnode<CountryLinkAttrs>[] {
+  return countries.map((country) =>
+    m(CountryLink, {
+      country,
+      key: `album-country-${albumId}-${country.id}`,
+      mode: "flag",
+    })
+  );
+}
+
+/*
  * Construct a link to a country. Reuse existing emoji lookup logic
  */
 export function CountryLink() {

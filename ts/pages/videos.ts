@@ -3,6 +3,7 @@ import type { Video as VideoType } from "../types.ts";
 import { Video } from "../components/video.ts";
 import type { VideoAttrs } from "../components/video.ts";
 import { createBatchRenderer } from "../components/batch-render.ts";
+import { countLabel } from "../commons/strings.ts";
 
 type VideosPageAttrs = {
   videos: VideoType[];
@@ -38,9 +39,7 @@ export function VideosPage() {
   return {
     view(vnode: m.Vnode<VideosPageAttrs>) {
       const { videos, visible } = vnode.attrs;
-      const videoLengthText = videos.length === 1
-        ? "1 video"
-        : `${videos.length} videos`;
+      const videoLengthText = countLabel(videos.length, "video");
 
       return m(
         "div",

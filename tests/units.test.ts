@@ -1,9 +1,7 @@
 /*
- * Unit regression tests for pure helpers: exif date formatting and
- * derivation-pass ordering.
+ * Unit regression tests for the derivation-pass ordering.
  */
 
-import { formatExifDate } from "../ts/services/dates.ts";
 import { orderPasses } from "../ts/semantic/derive.ts";
 
 function assertEquals(actual: unknown, expected: unknown) {
@@ -22,27 +20,6 @@ function assertThrows(fn: () => unknown) {
     return;
   }
   throw new Error("expected function to throw");
-}
-
-// regression: formatExifDate previously destructured a string as an array,
-// returning single characters instead of the date and time parts
-const EXIF_DATE_CASES = [
-  {
-    name: "formats an exif datetime",
-    input: "2024:05:01 12:34:56",
-    expected: "2024/05/01 12:34:56",
-  },
-  {
-    name: "passes empty input through",
-    input: "",
-    expected: "",
-  },
-];
-
-for (const testCase of EXIF_DATE_CASES) {
-  Deno.test(`formatExifDate: ${testCase.name}`, () => {
-    assertEquals(formatExifDate(testCase.input), testCase.expected);
-  });
 }
 
 function namedPass(name: string, after: string[]) {
