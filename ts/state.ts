@@ -53,7 +53,11 @@ import {
 } from "./commons/things.ts";
 import { readWildBirdChecklist } from "./services/stats.ts";
 import { namesToUrns } from "./services/names.ts";
-import { readAllCountries, readGeocodedPlaces } from "./services/places.ts";
+import {
+  readAllCountries,
+  readGeocodedPlaces,
+  readGeocodedPlacesWithCovers,
+} from "./services/places.ts";
 
 /*
  * Load data from the tribbles file.
@@ -111,6 +115,7 @@ export function loadServices(tdb: TribbleDB) {
     readVideosByThingIds: readVideosByThingIds.bind(null, tdb),
     toThingLinks: toThingLinks.bind(null, tdb),
     readGeocodedPlaces: readGeocodedPlaces.bind(null, tdb),
+    readGeocodedPlacesWithCovers: readGeocodedPlacesWithCovers.bind(null, tdb),
     readTransferPolylines: getTransferPolylines.bind(null, tdb),
     readBirdStats: readBirdStats.bind(null, tdb),
     readMammalStats: readMammalStats.bind(null, tdb),

@@ -29,7 +29,7 @@ import { ChecklistPage } from "./pages/checklist.ts";
 import type { Album } from "./types.ts";
 import { ThingPage } from "./pages/thing.ts";
 import { MapPage } from "./pages/map.ts";
-import type { GeocodedPlace } from "./services/places.ts";
+import type { GeocodedPlaceWithCover } from "./services/places.ts";
 import type { TripPolyline } from "./services/albums.ts";
 
 const state = await loadState();
@@ -351,19 +351,14 @@ const checklistEntry: PageEntry = {
 };
 
 // map data is loaded per navigation in onmatch, not per redraw
-let placesForMap:
-  (GeocodedPlace & { coverThumbnailUrl?: string | undefined })[] = [];
+let placesForMap: GeocodedPlaceWithCover[] = [];
 let tripPolylines: TripPolyline[] = [];
 
 /* */
 const mapEntry: PageEntry = {
   page: mapPageComponent,
   onmatch() {
-    const geocodedPlaces = services.readGeocodedPlaces();
-    placesForMap = geocodedPlaces.map((place) => {
-      const cover = services.readThingCover(place.id);
-      return { ...place, coverThumbnailUrl: cover?.thumbnailUrl };
-    });
+    placesForMap = services.readGeocodedPlacesWithCovers();
     tripPolylines = services.readTransferPolylines();
   },
   resolve() {

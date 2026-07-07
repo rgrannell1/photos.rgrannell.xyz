@@ -10,6 +10,8 @@ import {
   readAllAlbums,
 } from "../ts/services/albums.ts";
 import { readCountries } from "../ts/services/readers.ts";
+import { readThingCover } from "../ts/services/photos.ts";
+import { readGeocodedPlacesWithCovers } from "../ts/services/places.ts";
 import { KnownTypes, PrunableEntityTypes } from "../ts/constants.ts";
 
 const tdb = await loadTribbles();
@@ -61,6 +63,29 @@ Deno.test("Browseable entities all have media after pruning", () => {
   if (orphans.length > 0) {
     throw new Error(
       `Media-less entities survived pruning:\n${orphans.join("\n")}`,
+    );
+  }
+});
+
+Deno.test("Bulk place covers match per-place cover lookups", () => {
+  // readGeocodedPlacesWithCovers replaced a readThingCover call per place on
+  // the map page (a ~1.3s main-thread block); the bulk join must return the
+  // same thumbnails the per-place path did.
+  const mismatches: string[] = [];
+
+  for (const place of readGeocodedPlacesWithCovers(tdb)) {
+    const expected = readThingCover(tdb, place.id)?.thumbnailUrl;
+
+    if (place.coverThumbnailUrl !== expected) {
+      mismatches.push(
+        `${place.id}: expected ${expected}, got ${place.coverThumbnailUrl}`,
+      );
+    }
+  }
+
+  if (mismatches.length > 0) {
+    throw new Error(
+      `Place cover mismatch:\n${mismatches.join("\n")}`,
     );
   }
 });

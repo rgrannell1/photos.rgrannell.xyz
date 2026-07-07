@@ -1,11 +1,17 @@
+import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Country, Place } from "../types.ts";
 import { KnownRelations, KnownTypes } from "../constants.ts";
 import { readCountries, readPlaces } from "./readers.ts";
+import { readPlaceCovers } from "./photos.ts";
 
 export type GeocodedPlace = Place & {
   latitude: number;
   longitude: number;
+};
+
+export type GeocodedPlaceWithCover = GeocodedPlace & {
+  coverThumbnailUrl?: string | undefined;
 };
 
 function hasValidCoordinates(place: Place): place is GeocodedPlace {
@@ -41,6 +47,21 @@ export function readGeocodedPlaces(tdb: TribbleDB): GeocodedPlace[] {
   const places = readPlaces(tdb, placeUrns);
 
   return places.filter(hasValidCoordinates);
+}
+
+/*
+ * Read all geocoded places, each joined with its cover photo thumbnail.
+ * The covers come from one bulk search rather than a per-place lookup.
+ */
+export function readGeocodedPlacesWithCovers(
+  tdb: TribbleDB,
+): GeocodedPlaceWithCover[] {
+  const covers = readPlaceCovers(tdb);
+
+  return readGeocodedPlaces(tdb).map((place) => {
+    const cover = covers.get(asUrn(place.id).id);
+    return { ...place, coverThumbnailUrl: cover?.thumbnailUrl };
+  });
 }
 
 /*

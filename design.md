@@ -13,3 +13,6 @@ Only show the recap of the year on when the album view is unfiltered; not when f
 
 Task-4:
 Ensure that the album banner has a blurry pre-render, as on the about page. Crucially, check a higher resolution mosaic is rendered (this should exist in ~/Code/mirror) but only for albums, album, and about banner images. Make sure about, album banners, and the obverall albums banner have these better mosiacs too.
+
+Task-5:
+We have a bird checklist. I want alternating bands of darkened and normal year text colour by year, to help deliniate which birds where seen in which years.

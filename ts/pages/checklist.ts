@@ -4,20 +4,31 @@ import type { Services } from "../types.ts";
 import type { ChecklistEntry } from "../services/stats.ts";
 
 /*
- * Format a Unix timestamp string into a human-readable date.
+ * Parse a Unix timestamp string into a Date.
  * Handles both second-precision (10-digit) and millisecond-precision (13-digit) timestamps.
  */
-function formatFirstSeen(timestamp: string): string {
+function parseFirstSeen(timestamp: string): Date {
   const numeric = parseInt(timestamp);
   // Heuristic: timestamps under 10^10 are in seconds, larger are in milliseconds
-  const date = numeric > 9_999_999_999
-    ? new Date(numeric)
-    : new Date(numeric * 1000);
-  return date.toLocaleDateString("en-GB", {
+  return numeric > 9_999_999_999 ? new Date(numeric) : new Date(numeric * 1000);
+}
+
+/*
+ * Format a Unix timestamp string into a human-readable date.
+ */
+function formatFirstSeen(timestamp: string): string {
+  return parseFirstSeen(timestamp).toLocaleDateString("en-GB", {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
+}
+
+/*
+ * The calendar year a bird was first seen in.
+ */
+function firstSeenYear(timestamp: string): number {
+  return parseFirstSeen(timestamp).getFullYear();
 }
 
 /*
@@ -80,11 +91,17 @@ function ChecklistDetails() {
  */
 function ChecklistRow() {
   return {
-    view(vnode: m.Vnode<{ entry: ChecklistEntry; position: number }>) {
-      const { entry, position } = vnode.attrs;
+    view(
+      vnode: m.Vnode<
+        { entry: ChecklistEntry; position: number; highlightedYear: boolean }
+      >,
+    ) {
+      const { entry, position, highlightedYear } = vnode.attrs;
 
       return m("tr.checklist-row", [
-        m("td.checklist-number", `${position}`),
+        m("td.checklist-number", {
+          class: highlightedYear ? "checklist-number--highlighted" : undefined,
+        }, `${position}`),
         m("td.checklist-name", [
           entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
           m("a.checklist-name-link", { href: `#/thing/bird:${entry.birdId}` }, entry.name),
@@ -116,6 +133,16 @@ function ChecklistTable() {
         ? withPositions
         : withPositions.filter(({ entry }) => entry.isWild);
 
+      // Alternate year bands between dimmed and highlighted position numbers,
+      // so it is easy to see which birds were first seen in which year
+      const yearParity = new Map<number, number>();
+      for (const { entry } of displayed) {
+        const year = firstSeenYear(entry.firstSeen);
+        if (!yearParity.has(year)) {
+          yearParity.set(year, yearParity.size % 2);
+        }
+      }
+
       return m("table.checklist-table", [
         m("thead", [
           m("tr", [
@@ -126,9 +153,14 @@ function ChecklistTable() {
         ]),
         m(
           "tbody",
-          displayed.map(({ entry, position }) =>
-            m(ChecklistRow, { entry, position })
-          ),
+          displayed.map(({ entry, position }) => {
+            const parity = yearParity.get(firstSeenYear(entry.firstSeen));
+            return m(ChecklistRow, {
+              entry,
+              position,
+              highlightedYear: parity === 1,
+            });
+          }),
         ),
       ]);
     },
