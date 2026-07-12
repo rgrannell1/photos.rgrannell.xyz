@@ -1,7 +1,12 @@
 import m from "mithril";
 import { broadcast } from "../commons/events.ts";
-import type { Services } from "../types.ts";
+import { ImagePair } from "../components/photo.ts";
+import { encodeBitmapDataURL } from "../services/photos.ts";
+import type { Photo, Services } from "../types.ts";
 import type { ChecklistEntry } from "../services/stats.ts";
+
+// Side length in pixels of the per-species cover thumbnail in the life-list.
+const CHECKLIST_THUMB_PX = 144;
 
 /*
  * Parse a Unix timestamp string into a Date.
@@ -87,24 +92,57 @@ function ChecklistDetails() {
 }
 
 /*
+ * The per-species cover thumbnail cell, with a blur-up placeholder. Links to the
+ * species page. Renders an empty cell when a species has no cover photo.
+ */
+function ChecklistPhoto() {
+  return {
+    view(vnode: m.Vnode<{ cover: Photo | undefined; href: string }>) {
+      const { cover, href } = vnode.attrs;
+
+      if (!cover) {
+        return m("td.checklist-photo");
+      }
+
+      return m("td.checklist-photo", m(ImagePair, {
+        href,
+        thumbnailUrl: cover.thumbnailUrl,
+        thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),
+        loading: "lazy",
+        onclick: undefined,
+        width: CHECKLIST_THUMB_PX,
+        height: CHECKLIST_THUMB_PX,
+      }));
+    },
+  };
+}
+
+/*
  * A single row in the checklist table.
  */
 function ChecklistRow() {
   return {
     view(
       vnode: m.Vnode<
-        { entry: ChecklistEntry; position: number; highlightedYear: boolean }
+        {
+          entry: ChecklistEntry;
+          cover: Photo | undefined;
+          position: number;
+          highlightedYear: boolean;
+        }
       >,
     ) {
-      const { entry, position, highlightedYear } = vnode.attrs;
+      const { entry, cover, position, highlightedYear } = vnode.attrs;
+      const href = `#/thing/bird:${entry.birdId}`;
 
       return m("tr.checklist-row", [
         m("td.checklist-number", {
           class: highlightedYear ? "checklist-number--highlighted" : undefined,
         }, `${position}`),
+        m(ChecklistPhoto, { cover, href }),
         m("td.checklist-name", [
           entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
-          m("a.checklist-name-link", { href: `#/thing/bird:${entry.birdId}` }, entry.name),
+          m("a.checklist-name-link", { href }, entry.name),
         ]),
         m("td.checklist-first-seen", formatFirstSeen(entry.firstSeen)),
       ]);
@@ -118,9 +156,15 @@ function ChecklistRow() {
 function ChecklistTable() {
   return {
     view(
-      vnode: m.Vnode<{ entries: ChecklistEntry[]; filter: string | undefined }>,
+      vnode: m.Vnode<
+        {
+          entries: ChecklistEntry[];
+          covers: Map<string, Photo>;
+          filter: string | undefined;
+        }
+      >,
     ) {
-      const { entries, filter } = vnode.attrs;
+      const { entries, covers, filter } = vnode.attrs;
 
       // Assign position numbers from the full unfiltered list, then apply filter
       const withPositions = entries.map((entry, idx) => ({
@@ -147,6 +191,7 @@ function ChecklistTable() {
         m("thead", [
           m("tr", [
             m("th.checklist-number", "#"),
+            m("th.checklist-photo", ""),
             m("th", "Name"),
             m("th", "First seen"),
           ]),
@@ -157,6 +202,7 @@ function ChecklistTable() {
             const parity = yearParity.get(firstSeenYear(entry.firstSeen));
             return m(ChecklistRow, {
               entry,
+              cover: covers.get(entry.birdId),
               position,
               highlightedYear: parity === 1,
             });
@@ -169,6 +215,7 @@ function ChecklistTable() {
 
 type ChecklistPageAttrs = {
   entries: ChecklistEntry[];
+  covers: Map<string, Photo>;
   services: Services;
   visible: boolean;
   filter: string | undefined;
@@ -181,11 +228,11 @@ type ChecklistPageAttrs = {
 export function ChecklistPage() {
   return {
     view(vnode: m.Vnode<ChecklistPageAttrs>) {
-      const { entries, visible, filter } = vnode.attrs;
+      const { entries, covers, visible, filter } = vnode.attrs;
 
       const onSelect = (newFilter: string | undefined) => {
         broadcast("navigate", {
-          route: newFilter ? `/checklist/${newFilter}` : "/checklist",
+          route: newFilter ? `/life-list/${newFilter}` : "/life-list",
         });
       };
 
@@ -196,7 +243,7 @@ export function ChecklistPage() {
         class: visible ? "page sidebar-visible" : "page",
       }, [
         m("section.album-metadata", [
-          m("h1.albums-header", "Checklist"),
+          m("h1.albums-header", "Life List"),
           m(ChecklistDetails, { entries, filter, onSelect }),
         ]),
         m(
@@ -204,7 +251,7 @@ export function ChecklistPage() {
           description,
         ),
         m("section.checklist-container", [
-          m(ChecklistTable, { entries, filter }),
+          m(ChecklistTable, { entries, covers, filter }),
         ]),
       ]);
     },

@@ -1225,6 +1225,27 @@ button:disabled {
   white-space: nowrap;
 }
 
+.checklist-photo {
+  width: 144px;
+  padding-right: 0;
+}
+
+.checklist-photo .thumbnail-image {
+  width: 144px;
+  height: 144px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
+.checklist-photo .photo,
+.checklist-photo a {
+  position: relative;
+  display: block;
+  width: 144px;
+  height: 144px;
+}
+
 .checklist-number--highlighted {
   color: var(--font-colour);
 }

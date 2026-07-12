@@ -191,6 +191,34 @@ export function readPlaceCovers(tdb: TribbleDB): Map<string, Photo> {
   return covers;
 }
 
+/*
+ * Read every cover photo for a given thing type in a single search, keyed by URN id.
+ * Bulk equivalent of readThingCover — avoids a per-row search on the life-list,
+ * each of which re-resolves the full photo node set and blocks the main thread.
+ */
+export function readSpeciesCovers(tdb: TribbleDB, type: string): Map<string, Photo> {
+  const coverTriples = tdb.search({
+    source: { type: "photo" },
+    relation: "cover",
+    target: { type },
+  }).triples();
+
+  const covers = new Map<string, Photo>();
+  for (const coverTriple of coverTriples) {
+    const source: string = coverTriple[0];
+    const id = asUrn(coverTriple[2]).id;
+    if (covers.has(id)) {
+      continue;
+    }
+    const photo = readPhoto(tdb, source);
+    if (photo) {
+      covers.set(id, photo);
+    }
+  }
+
+  return covers;
+}
+
 export function readThingCover(
   tdb: TribbleDB,
   thingUrn: string,

@@ -338,10 +338,12 @@ const checklistEntry: PageEntry = {
   resolve() {
     const filter = m.route.param("filter") as string | undefined;
     const entries = services.readWildBirdChecklist();
+    const covers = services.readSpeciesCovers("bird");
 
     return {
       attrs: {
         entries,
+        covers,
         services,
         visible: state.sidebarVisible,
         filter,
@@ -386,8 +388,8 @@ const PAGE_ENTRIES: Record<string, PageEntry> = {
   "/listing/:type": listingEntry,
   "/listing/:type/:filter": listingEntry,
   "/listings": listingsEntry,
-  "/checklist": checklistEntry,
-  "/checklist/:filter": checklistEntry,
+  "/life-list": checklistEntry,
+  "/life-list/:filter": checklistEntry,
 };
 
 export const routes: Record<string, m.RouteResolver> = Object.fromEntries(

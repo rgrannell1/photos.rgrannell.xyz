@@ -20,7 +20,7 @@ function resolveSidebarRoute(current: string): string {
   if (current.startsWith("/photo")) return "/photos";
   if (current.startsWith("/video")) return "/videos";
   if (current.startsWith("/listing")) return "/listings";
-  if (current.startsWith("/checklist")) return "/checklist";
+  if (current.startsWith("/life-list")) return "/life-list";
   if (current.startsWith("/map")) return "/map";
   if (current.startsWith("/about")) return "/about";
   return current;
@@ -64,7 +64,7 @@ export function Sidebar() {
             m(SidebarItem, { name: "VIDEOS", route: "/videos" }),
             m(SidebarItem, { name: "ALBUMS", route: "/albums" }),
             m(SidebarItem, { name: "LISTINGS", route: "/listings" }),
-            m(SidebarItem, { name: "CHECKLIST", route: "/checklist" }),
+            m(SidebarItem, { name: "LIFE LIST", route: "/life-list" }),
             m(SidebarItem, { name: "MAP", route: "/map" }),
             m(SidebarItem, { name: "ABOUT", route: "/about" }),
           ]),
