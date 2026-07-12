@@ -124,13 +124,62 @@ export function countRegularBirdSpecies(tdb: TribbleDB): number {
   }).triples().length;
 }
 
+export type NemesisBird = {
+  birdId: string;
+  name: string;
+};
+
+/*
+ * Nemesis birds (things.toml nemesis="true") not yet photographed — the "yet to
+ * see" targets. Must be read before medialess-species pruning drops them.
+ */
+export function collectUnphotographedNemesisBirds(tdb: TribbleDB): NemesisBird[] {
+  const nemesisTriples = tdb.search({
+    source: { type: KnownTypes.BIRD },
+    relation: "nemesis",
+    target: "true",
+  }).triples();
+
+  const birds: NemesisBird[] = [];
+  for (const [birdUrn] of nemesisTriples) {
+    const birdId = asUrn(birdUrn).id;
+    const photographed = tdb.search({
+      source: { type: KnownTypes.BIRD, id: birdId },
+      relation: KnownRelations.FIRST_SEEN,
+    }).triples().length > 0;
+    if (photographed) {
+      continue;
+    }
+    const birdThing = tdb.search({
+      source: { type: KnownTypes.BIRD, id: birdId },
+    }).firstObject();
+    birds.push({ birdId, name: firstValue(birdThing?.name) ?? birdId });
+  }
+  return birds;
+}
+
+// Rarity bands (from wildlife.llm.toml) that count as scarce for the tag.
+const SCARCE_RARITY_BANDS = new Set(["scarce", "rare", "vagrant"]);
+
 export type ChecklistEntry = {
   birdId: string;
   name: string;
   firstSeen: string;
   isIrish: boolean;
   isWild: boolean;
+  scarce: boolean;
+  nemesis: boolean;
 };
+
+/*
+ * First value of a triple field, which TribbleDB may return as a scalar or array.
+ */
+function firstValue(raw: unknown): string | undefined {
+  if (Array.isArray(raw)) {
+    return raw[0] as string | undefined;
+  }
+  return raw as string | undefined;
+}
 
 /*
  * Read the bird life-list, sorted chronologically by first sighting.
@@ -162,10 +211,7 @@ export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
       source: { type: KnownTypes.BIRD, id: birdId },
     }).firstObject();
 
-    const rawName = birdThing?.name;
-    const name =
-      (Array.isArray(rawName) ? rawName[0] : rawName as string | undefined) ??
-        birdId;
+    const name = firstValue(birdThing?.name) ?? birdId;
 
     const isIrish = tdb.search({
       source: { type: KnownTypes.BIRD, id: birdId },
@@ -174,7 +220,20 @@ export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
 
     const isWild = wildBirdIds.has(birdId);
 
-    entries.push({ birdId, name, firstSeen: firstSeen as string, isIrish, isWild });
+    // scarce (data-derived): IRBC-rare status, or a low abundance band
+    const scarce = firstValue(birdThing?.status) === "rare" ||
+      SCARCE_RARITY_BANDS.has(firstValue(birdThing?.rarity) ?? "");
+    const nemesis = firstValue(birdThing?.nemesis) === "true";
+
+    entries.push({
+      birdId,
+      name,
+      firstSeen: firstSeen as string,
+      isIrish,
+      isWild,
+      scarce,
+      nemesis,
+    });
   }
 
   // Sort chronologically — earliest first-sighting first

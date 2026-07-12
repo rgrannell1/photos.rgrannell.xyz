@@ -1263,6 +1263,55 @@ button:disabled {
   margin-right: 2px;
 }
 
+.checklist-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 0.72em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  vertical-align: middle;
+}
+
+.checklist-tag--scarce {
+  color: #8a5a00;
+  background: #fbe9c8;
+}
+
+.checklist-tag--nemesis {
+  color: #7a1030;
+  background: #f7d2dd;
+}
+
+/* Pokémon-style mystery silhouette for an unphotographed nemesis bird */
+.mystery-bird {
+  width: 144px;
+  height: 144px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e9edf2, #d3dae4);
+}
+
+.mystery-bird-glyph {
+  font-size: 76px;
+  line-height: 1;
+  /* flatten the emoji to a solid silhouette */
+  filter: brightness(0) opacity(0.4);
+}
+
+.checklist-row--mystery .checklist-mystery-name {
+  color: var(--secondary-text-color);
+}
+
+.checklist-first-seen--pending {
+  color: var(--secondary-text-color);
+  font-style: italic;
+}
+
 /*
  * ++++ ++++ ++++ ~~~~ Heart Rain ~~~~ ++++ ++++ ++++
  */

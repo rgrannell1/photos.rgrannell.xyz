@@ -53,6 +53,7 @@ import {
   toThingLinks,
 } from "./commons/things.ts";
 import {
+  collectUnphotographedNemesisBirds,
   countRegularBirdSpecies,
   readWildBirdChecklist,
 } from "./services/stats.ts";
@@ -75,14 +76,15 @@ async function loadData() {
     deriveTriples,
   );
 
-  // Count the full Irish catalogue before pruning drops unphotographed species.
+  // Read catalogue facts before pruning drops unphotographed species.
   const regularBirdSpecies = countRegularBirdSpecies(tdb);
+  const unphotographedNemesis = collectUnphotographedNemesisBirds(tdb);
 
   postIndexing(tdb);
 
   tdb.add(HARD_CODED_TRIPLES);
 
-  return { tdb, regularBirdSpecies };
+  return { tdb, regularBirdSpecies, unphotographedNemesis };
 }
 
 /*
@@ -143,7 +145,7 @@ export function loadServices(tdb: TribbleDB) {
  * Load the application state from localStorage or return defaults.
  */
 export async function loadState(): Promise<State> {
-  const { tdb, regularBirdSpecies } = await loadData();
+  const { tdb, regularBirdSpecies, unphotographedNemesis } = await loadData();
 
   return {
     currentAlbum: undefined,
@@ -152,6 +154,7 @@ export async function loadState(): Promise<State> {
     currentType: undefined,
     data: tdb,
     regularBirdSpecies,
+    unphotographedNemesis,
     sidebarVisible: false,
     services: loadServices(tdb),
   };

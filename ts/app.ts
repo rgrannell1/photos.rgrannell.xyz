@@ -347,6 +347,7 @@ const checklistEntry: PageEntry = {
         entries,
         covers,
         regularCount,
+        nemesisBirds: state.unphotographedNemesis,
         services,
         visible: state.sidebarVisible,
         filter,

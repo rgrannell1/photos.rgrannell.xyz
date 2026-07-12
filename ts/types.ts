@@ -1,5 +1,6 @@
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { loadServices } from "./state.ts";
+import type { NemesisBird } from "./services/stats.ts";
 import type {
   parseAlbum,
   parseAmphibian,
@@ -62,8 +63,9 @@ export type Services = ReturnType<typeof loadServices>;
 export type State = {
   data: TribbleDB;
   services: Services;
-  // Catalogue count captured before medialess species are pruned from `data`.
+  // Catalogue facts captured before medialess species are pruned from `data`.
   regularBirdSpecies: number;
+  unphotographedNemesis: NemesisBird[];
   sidebarVisible: boolean;
   currentAlbum: string | undefined;
   currentPhoto: string | undefined;

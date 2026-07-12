@@ -3,7 +3,7 @@ import { broadcast } from "../commons/events.ts";
 import { ImagePair } from "../components/photo.ts";
 import { encodeBitmapDataURL } from "../services/photos.ts";
 import type { Photo, Services } from "../types.ts";
-import type { ChecklistEntry } from "../services/stats.ts";
+import type { ChecklistEntry, NemesisBird } from "../services/stats.ts";
 
 // Side length in pixels of the per-species cover thumbnail in the life-list.
 const CHECKLIST_THUMB_PX = 144;
@@ -119,6 +119,20 @@ function ChecklistPhoto() {
 }
 
 /*
+ * Inline [nemesis] / [scarce] tags shown after a species name.
+ */
+function speciesTags(entry: { scarce: boolean; nemesis: boolean }): m.Children[] {
+  const tags: m.Children[] = [];
+  if (entry.nemesis) {
+    tags.push(m("span.checklist-tag.checklist-tag--nemesis", "nemesis"));
+  }
+  if (entry.scarce) {
+    tags.push(m("span.checklist-tag.checklist-tag--scarce", "scarce"));
+  }
+  return tags;
+}
+
+/*
  * A single row in the checklist table.
  */
 function ChecklistRow() {
@@ -130,10 +144,11 @@ function ChecklistRow() {
           cover: Photo | undefined;
           position: number;
           highlightedYear: boolean;
+          showTags: boolean;
         }
       >,
     ) {
-      const { entry, cover, position, highlightedYear } = vnode.attrs;
+      const { entry, cover, position, highlightedYear, showTags } = vnode.attrs;
       const href = `#/thing/bird:${entry.birdId}`;
 
       return m("tr.checklist-row", [
@@ -144,8 +159,31 @@ function ChecklistRow() {
         m("td.checklist-name", [
           entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
           m("a.checklist-name-link", { href }, entry.name),
+          ...(showTags ? speciesTags(entry) : []),
         ]),
         m("td.checklist-first-seen", formatFirstSeen(entry.firstSeen)),
+      ]);
+    },
+  };
+}
+
+/*
+ * A "yet to see" row for an unphotographed nemesis bird: a Pokémon-style mystery
+ * silhouette in place of a photo, with the name and a nemesis tag.
+ */
+function ChecklistMysteryRow() {
+  return {
+    view(vnode: m.Vnode<{ bird: NemesisBird }>) {
+      const { bird } = vnode.attrs;
+
+      return m("tr.checklist-row.checklist-row--mystery", [
+        m("td.checklist-number"),
+        m("td.checklist-photo", m("div.mystery-bird", m("span.mystery-bird-glyph", "🐦"))),
+        m("td.checklist-name", [
+          m("span.checklist-mystery-name", bird.name),
+          m("span.checklist-tag.checklist-tag--nemesis", "nemesis"),
+        ]),
+        m("td.checklist-first-seen.checklist-first-seen--pending", "yet to photograph"),
       ]);
     },
   };
@@ -161,11 +199,15 @@ function ChecklistTable() {
         {
           entries: ChecklistEntry[];
           covers: Map<string, Photo>;
+          nemesisBirds: NemesisBird[];
           filter: string | undefined;
         }
       >,
     ) {
-      const { entries, covers, filter } = vnode.attrs;
+      const { entries, covers, nemesisBirds, filter } = vnode.attrs;
+
+      // Scarce/nemesis storytelling (tags + "yet to see" birds) is Irish-only.
+      const irishView = filter === "ireland";
 
       // Assign position numbers from the full unfiltered list, then apply filter
       const withPositions = entries.map((entry, idx) => ({
@@ -197,18 +239,22 @@ function ChecklistTable() {
             m("th", "First seen"),
           ]),
         ]),
-        m(
-          "tbody",
-          displayed.map(({ entry, position }) => {
+        m("tbody", [
+          ...displayed.map(({ entry, position }) => {
             const parity = yearParity.get(firstSeenYear(entry.firstSeen));
             return m(ChecklistRow, {
               entry,
               cover: covers.get(entry.birdId),
               position,
               highlightedYear: parity === 1,
+              showTags: irishView,
             });
           }),
-        ),
+          // Unphotographed nemesis birds ("yet to see") at the bottom, Irish view only
+          ...(irishView
+            ? nemesisBirds.map((bird) => m(ChecklistMysteryRow, { bird }))
+            : []),
+        ]),
       ]);
     },
   };
@@ -218,6 +264,7 @@ type ChecklistPageAttrs = {
   entries: ChecklistEntry[];
   covers: Map<string, Photo>;
   regularCount: number;
+  nemesisBirds: NemesisBird[];
   services: Services;
   visible: boolean;
   filter: string | undefined;
@@ -250,7 +297,8 @@ function lifeListPreamble(
 export function ChecklistPage() {
   return {
     view(vnode: m.Vnode<ChecklistPageAttrs>) {
-      const { entries, covers, regularCount, visible, filter } = vnode.attrs;
+      const { entries, covers, regularCount, nemesisBirds, visible, filter } =
+        vnode.attrs;
 
       const onSelect = (newFilter: string) => {
         broadcast("navigate", { route: `/life-list/${newFilter}` });
@@ -273,7 +321,7 @@ export function ChecklistPage() {
           description,
         ),
         m("section.checklist-container", [
-          m(ChecklistTable, { entries, covers, filter }),
+          m(ChecklistTable, { entries, covers, nemesisBirds, filter }),
         ]),
       ]);
     },
