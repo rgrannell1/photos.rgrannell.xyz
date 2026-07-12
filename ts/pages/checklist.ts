@@ -8,6 +8,7 @@ import type { ChecklistEntry } from "../services/stats.ts";
 // Side length in pixels of the per-species cover thumbnail in the life-list.
 const CHECKLIST_THUMB_PX = 144;
 
+
 /*
  * Parse a Unix timestamp string into a Date.
  * Handles both second-precision (10-digit) and millisecond-precision (13-digit) timestamps.
@@ -47,7 +48,7 @@ function ChecklistDetails() {
         {
           entries: ChecklistEntry[];
           filter: string | undefined;
-          onSelect: (filter: string | undefined) => void;
+          onSelect: (filter: string) => void;
         }
       >,
     ) {
@@ -76,8 +77,8 @@ function ChecklistDetails() {
         " ",
         m("span.listing-filter-flag", {
           title: "All wild species",
-          class: !filter ? "listing-filter-flag--selected" : undefined,
-          onclick: () => onSelect(undefined),
+          class: filter === "wild" ? "listing-filter-flag--selected" : undefined,
+          onclick: () => onSelect("wild"),
         }, "🗺️"),
         " ",
         m("span.listing-filter-flag", {
@@ -216,10 +217,31 @@ function ChecklistTable() {
 type ChecklistPageAttrs = {
   entries: ChecklistEntry[];
   covers: Map<string, Photo>;
+  regularCount: number;
   services: Services;
   visible: boolean;
   filter: string | undefined;
 };
+
+/*
+ * A one-line intro: how many wild species photographed in Ireland, since when,
+ * and roughly how many Ireland regularly records. Null until there is a sighting.
+ */
+function lifeListPreamble(
+  entries: ChecklistEntry[],
+  regularCount: number,
+): string | null {
+  const irishWild = entries.filter((entry) => entry.isIrish && entry.isWild);
+  if (irishWild.length === 0) {
+    return null;
+  }
+
+  // entries are sorted earliest-first, so the first Irish entry is the earliest
+  const sinceYear = firstSeenYear(irishWild[0].firstSeen);
+
+  return `I've photographed ${irishWild.length} wild species in Ireland since ` +
+    `${sinceYear}; Ireland regularly records about ${regularCount}.`;
+}
 
 /*
  * Render the bird life-list checklist page.
@@ -228,14 +250,13 @@ type ChecklistPageAttrs = {
 export function ChecklistPage() {
   return {
     view(vnode: m.Vnode<ChecklistPageAttrs>) {
-      const { entries, covers, visible, filter } = vnode.attrs;
+      const { entries, covers, regularCount, visible, filter } = vnode.attrs;
 
-      const onSelect = (newFilter: string | undefined) => {
-        broadcast("navigate", {
-          route: newFilter ? `/life-list/${newFilter}` : "/life-list",
-        });
+      const onSelect = (newFilter: string) => {
+        broadcast("navigate", { route: `/life-list/${newFilter}` });
       };
 
+      const preamble = lifeListPreamble(entries, regularCount);
       const description = "I am not a very committed birder, but I do like " +
         "photographing the different species I see. Here's my life list.";
 
@@ -246,6 +267,7 @@ export function ChecklistPage() {
           m("h1.albums-header", "Life List"),
           m(ChecklistDetails, { entries, filter, onSelect }),
         ]),
+        preamble ? m("p.photo-album-description", preamble) : null,
         m(
           "p.photo-album-description",
           description,

@@ -112,6 +112,18 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
   };
 }
 
+/*
+ * Count bird species Ireland regularly records, from the wildlife.llm.toml
+ * status="regular" relation. Must be read before medialess-species pruning,
+ * which drops the unphotographed catalogue entries. Returns 0 if absent.
+ */
+export function countRegularBirdSpecies(tdb: TribbleDB): number {
+  return tdb.search({
+    relation: "status",
+    target: "regular",
+  }).triples().length;
+}
+
 export type ChecklistEntry = {
   birdId: string;
   name: string;

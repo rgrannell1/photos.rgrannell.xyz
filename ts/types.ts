@@ -62,6 +62,8 @@ export type Services = ReturnType<typeof loadServices>;
 export type State = {
   data: TribbleDB;
   services: Services;
+  // Catalogue count captured before medialess species are pruned from `data`.
+  regularBirdSpecies: number;
   sidebarVisible: boolean;
   currentAlbum: string | undefined;
   currentPhoto: string | undefined;

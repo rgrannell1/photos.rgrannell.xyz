@@ -336,14 +336,17 @@ const listingsEntry: PageEntry = {
 const checklistEntry: PageEntry = {
   page: checklistPageComponent,
   resolve() {
-    const filter = m.route.param("filter") as string | undefined;
+    // The life-list defaults to the Irish view when no filter is in the URL.
+    const filter = (m.route.param("filter") as string | undefined) ?? "ireland";
     const entries = services.readWildBirdChecklist();
     const covers = services.readSpeciesCovers("bird");
+    const regularCount = state.regularBirdSpecies;
 
     return {
       attrs: {
         entries,
         covers,
+        regularCount,
         services,
         visible: state.sidebarVisible,
         filter,
