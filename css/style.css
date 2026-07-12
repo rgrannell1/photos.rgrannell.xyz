@@ -1285,6 +1285,11 @@ button:disabled {
   background: #f7d2dd;
 }
 
+.checklist-tag--target {
+  color: #075d3a;
+  background: #cceedd;
+}
+
 /* Pokémon-style mystery silhouette for an unphotographed nemesis bird */
 .mystery-bird {
   width: 144px;

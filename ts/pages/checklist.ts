@@ -119,16 +119,19 @@ function ChecklistPhoto() {
 }
 
 /*
- * Inline [nemesis] / [scarce] tags shown after a species name.
- * Nemesis always shows; scarce only in the Irish view.
+ * Inline status tags shown after a species name.
+ * Target and nemesis always show; scarce only in the Irish view.
  */
 function speciesTags(
-  entry: { scarce: boolean; nemesis: boolean },
+  entry: { scarce: boolean; nemesis: boolean; target: boolean },
   showScarce: boolean,
 ): m.Children[] {
   const tags: m.Children[] = [];
   if (entry.nemesis) {
     tags.push(m("span.checklist-tag.checklist-tag--nemesis", "nemesis"));
+  }
+  if (entry.target) {
+    tags.push(m("span.checklist-tag.checklist-tag--target", "target"));
   }
   if (showScarce && entry.scarce) {
     tags.push(m("span.checklist-tag.checklist-tag--scarce", "scarce"));
@@ -210,7 +213,7 @@ function ChecklistTable() {
     ) {
       const { entries, covers, nemesisBirds, filter } = vnode.attrs;
 
-      // Scarce tags and "yet to see" birds are Irish-only; nemesis tags always show.
+      // Scarce tags and "yet to see" birds are Irish-only; status tags always show.
       const irishView = filter === "ireland";
 
       // Assign position numbers from the full unfiltered list, then apply filter

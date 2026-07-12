@@ -169,6 +169,7 @@ export type ChecklistEntry = {
   isWild: boolean;
   scarce: boolean;
   nemesis: boolean;
+  target: boolean;
 };
 
 /*
@@ -224,6 +225,7 @@ export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
     const scarce = firstValue(birdThing?.status) === "rare" ||
       SCARCE_RARITY_BANDS.has(firstValue(birdThing?.rarity) ?? "");
     const nemesis = firstValue(birdThing?.nemesis) === "true";
+    const target = firstValue(birdThing?.target) === "true";
 
     entries.push({
       birdId,
@@ -233,6 +235,7 @@ export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
       isWild,
       scarce,
       nemesis,
+      target,
     });
   }
 
