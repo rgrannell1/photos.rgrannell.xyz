@@ -120,13 +120,17 @@ function ChecklistPhoto() {
 
 /*
  * Inline [nemesis] / [scarce] tags shown after a species name.
+ * Nemesis always shows; scarce only in the Irish view.
  */
-function speciesTags(entry: { scarce: boolean; nemesis: boolean }): m.Children[] {
+function speciesTags(
+  entry: { scarce: boolean; nemesis: boolean },
+  showScarce: boolean,
+): m.Children[] {
   const tags: m.Children[] = [];
   if (entry.nemesis) {
     tags.push(m("span.checklist-tag.checklist-tag--nemesis", "nemesis"));
   }
-  if (entry.scarce) {
+  if (showScarce && entry.scarce) {
     tags.push(m("span.checklist-tag.checklist-tag--scarce", "scarce"));
   }
   return tags;
@@ -144,11 +148,11 @@ function ChecklistRow() {
           cover: Photo | undefined;
           position: number;
           highlightedYear: boolean;
-          showTags: boolean;
+          showScarce: boolean;
         }
       >,
     ) {
-      const { entry, cover, position, highlightedYear, showTags } = vnode.attrs;
+      const { entry, cover, position, highlightedYear, showScarce } = vnode.attrs;
       const href = `#/thing/bird:${entry.birdId}`;
 
       return m("tr.checklist-row", [
@@ -159,7 +163,7 @@ function ChecklistRow() {
         m("td.checklist-name", [
           entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
           m("a.checklist-name-link", { href }, entry.name),
-          ...(showTags ? speciesTags(entry) : []),
+          ...speciesTags(entry, showScarce),
         ]),
         m("td.checklist-first-seen", formatFirstSeen(entry.firstSeen)),
       ]);
@@ -206,7 +210,7 @@ function ChecklistTable() {
     ) {
       const { entries, covers, nemesisBirds, filter } = vnode.attrs;
 
-      // Scarce/nemesis storytelling (tags + "yet to see" birds) is Irish-only.
+      // Scarce tags and "yet to see" birds are Irish-only; nemesis tags always show.
       const irishView = filter === "ireland";
 
       // Assign position numbers from the full unfiltered list, then apply filter
@@ -247,7 +251,7 @@ function ChecklistTable() {
               cover: covers.get(entry.birdId),
               position,
               highlightedYear: parity === 1,
-              showTags: irishView,
+              showScarce: irishView,
             });
           }),
           // Unphotographed nemesis birds ("yet to see") at the bottom, Irish view only
