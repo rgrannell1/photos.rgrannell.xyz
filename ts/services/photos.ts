@@ -16,8 +16,8 @@ import { arrayify, one } from "../commons/arrays.ts";
  * depending on page position
  */
 export function loadingMode(idx: number): "eager" | "lazy" {
-  const viewportWidth = (globalThis as any).innerWidth;
-  const viewportHeight = (globalThis as any).innerHeight;
+  const viewportWidth = globalThis.innerWidth;
+  const viewportHeight = globalThis.innerHeight;
 
   const imageDimension = PHOTO_WIDTH;
   const maxImagesPerRow = Math.floor(viewportWidth / imageDimension);
@@ -48,7 +48,7 @@ export function encodeBitmapDataURL(
   const coloursList = colours.split("#").filter(Boolean).map((colour: string) =>
     `#${colour}`
   );
-  const canvas = (window as any).document.createElement("canvas");
+  const canvas = document.createElement("canvas");
   canvas.width = cols;
   canvas.height = rows;
 
@@ -250,7 +250,7 @@ export function readSeenInCountries(
     }
   }
 
-  return (readCountries(tdb, countryUrnSet) as Country[]).sort(
+  return readCountries(tdb, countryUrnSet).sort(
     (countryA, countryB) => countryA.name.localeCompare(countryB.name),
   );
 }

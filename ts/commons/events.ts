@@ -14,7 +14,7 @@ export function broadcast(
 ) {
   console.info(`broadcasting event: ${label}`, detail);
 
-  (window as any).document.dispatchEvent(
+  document.dispatchEvent(
     new CustomEvent(label, {
       detail,
     }),
@@ -28,7 +28,7 @@ export function listen(
   label: ApplicationEvents,
   callback: (event: Event) => void,
 ) {
-  (window as any).document.addEventListener(label, callback);
+  document.addEventListener(label, callback);
 }
 
 /*

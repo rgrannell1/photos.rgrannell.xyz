@@ -1,6 +1,6 @@
-// TODO dd typing
+import type { BaseIssue } from "valibot";
 
-export function logParseWarning(issues: any): void {
+export function logParseWarning(issues: BaseIssue<unknown>[]): void {
   const message: string[] = [];
 
   for (const issue of issues) {

@@ -5,8 +5,10 @@ import type {
   Fish,
   Insect,
   Mammal,
+  Place,
   Reptile,
   Stats,
+  Unesco,
 } from "../types.ts";
 import { parseByType, parseObject } from "../commons/parser.ts";
 import {
@@ -66,7 +68,7 @@ export const parseSubject = parseByType<
 /*
  * Parse on object identified by a location relation
  */
-export const parseLocation = parseByType<any>({
+export const parseLocation = parseByType<Place | Unesco>({
   [KnownTypes.PLACE]: parsePlace,
   [KnownTypes.UNESCO]: parseUnesco,
 });

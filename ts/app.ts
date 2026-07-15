@@ -35,20 +35,20 @@ import type { TripPolyline } from "./services/albums.ts";
 const state = await loadState();
 const services = state.services;
 
-const headerComponent: m.Component<any> = Header();
-const sidebarComponent: m.Component<any> = Sidebar();
-const albumsPageComponent: m.Component<any> = AlbumsPage();
-const albumPageComponent: m.Component<any> = AlbumPage();
-const aboutPageComponent: m.Component<any> = AboutPage();
-const videosPageComponent: m.Component<any> = VideosPage();
-const videoPageComponent: m.Component<any> = VideoPage();
-const photosPageComponent: m.Component<any> = PhotosPage();
-const photoPageComponent: m.Component<any> = PhotoPage();
-const listingPageComponent: m.Component<any> = ListingPage();
-const listingsPageComponent: m.Component<any> = ListingsPage();
-const checklistPageComponent: m.Component<any> = ChecklistPage();
-const thingPageComponent: m.Component<any> = ThingPage();
-const mapPageComponent: m.Component<any> = MapPage();
+const headerComponent = Header();
+const sidebarComponent = Sidebar();
+const albumsPageComponent = AlbumsPage();
+const albumPageComponent = AlbumPage();
+const aboutPageComponent = AboutPage();
+const videosPageComponent = VideosPage();
+const videoPageComponent = VideoPage();
+const photosPageComponent = PhotosPage();
+const photoPageComponent = PhotoPage();
+const listingPageComponent = ListingPage();
+const listingsPageComponent = ListingsPage();
+const checklistPageComponent = ChecklistPage();
+const thingPageComponent = ThingPage();
+const mapPageComponent = MapPage();
 
 listen("navigate", (event: Event) => {
   const { route } = (event as CustomEvent).detail;
@@ -66,25 +66,33 @@ listen("click_burger_menu", () => {
  * A resolved page render: the page's attrs, plus an optional extra class on
  * the shell root (e.g the album-banner layout).
  */
-type ResolvedPage = {
-  attrs: Record<string, unknown>;
+type ResolvedPage<PageAttrs> = {
+  attrs: PageAttrs;
   appClass?: string | undefined;
 };
 
-type PageEntry = {
-  page: m.Component<any>;
+type PageEntry<PageAttrs> = {
+  page: m.Component<PageAttrs>;
   // runs once per navigation: read params, do per-visit loads
   onmatch?: (params: m.Params) => void;
   // builds the page attrs each redraw; a string is an error rendered bare
-  resolve: () => ResolvedPage | string;
+  resolve: () => ResolvedPage<NoInfer<PageAttrs>> | string;
 };
+
+/*
+ * Identity helper: infers the attrs type from the page component, so each
+ * entry's resolve() is checked against what its page actually accepts.
+ */
+function pageEntry<PageAttrs>(entry: PageEntry<PageAttrs>): PageEntry<PageAttrs> {
+  return entry;
+}
 
 /*
  * Wrap a PageEntry in the shared shell. Using a RouteResolver `render` (not a
  * per-route component) is what lets one layout serve every route without
  * remounting the header and sidebar on navigation.
  */
-function routeResolver(entry: PageEntry): m.RouteResolver {
+function routeResolver<PageAttrs>(entry: PageEntry<PageAttrs>): m.RouteResolver {
   return {
     onmatch(params: m.Params) {
       entry.onmatch?.(params);
@@ -97,12 +105,14 @@ function routeResolver(entry: PageEntry): m.RouteResolver {
       }
 
       return m("div.photos-app", { class: resolved.appClass }, [
-        m(headerComponent, state),
+        m(headerComponent),
         m("div.app-container", {
           class: state.sidebarVisible ? "sidebar-visible" : undefined,
         }, [
           m(sidebarComponent, { visible: state.sidebarVisible }),
-          m(entry.page, resolved.attrs),
+          // The generic attrs satisfy the page's attrs by construction, but
+          // m()'s overloads cannot see through the type parameter
+          m(entry.page, resolved.attrs as PageAttrs & m.Attributes),
         ]),
       ]);
     },
@@ -110,7 +120,7 @@ function routeResolver(entry: PageEntry): m.RouteResolver {
 }
 
 /* */
-const albumsEntry: PageEntry = {
+const albumsEntry = pageEntry({
   page: albumsPageComponent,
   resolve() {
     const countrySlug = m.route.param("country");
@@ -130,10 +140,10 @@ const albumsEntry: PageEntry = {
       },
     };
   },
-};
+});
 
 /* */
-const albumEntry: PageEntry = {
+const albumEntry = pageEntry({
   page: albumPageComponent,
   resolve() {
     const id = m.route.param("id");
@@ -144,7 +154,7 @@ const albumEntry: PageEntry = {
       return "No album selected";
     }
 
-    const album = services.readAlbum(state.currentAlbum) as Album;
+    const album = services.readAlbum(state.currentAlbum);
     if (!album) {
       return "Album not found";
     }
@@ -176,10 +186,10 @@ const albumEntry: PageEntry = {
       },
     };
   },
-};
+});
 
 /* */
-const aboutEntry: PageEntry = {
+const aboutEntry = pageEntry({
   page: aboutPageComponent,
   resolve() {
     return {
@@ -187,10 +197,10 @@ const aboutEntry: PageEntry = {
       attrs: { visible: state.sidebarVisible },
     };
   },
-};
+});
 
 /* */
-const videosEntry: PageEntry = {
+const videosEntry = pageEntry({
   page: videosPageComponent,
   resolve() {
     return {
@@ -200,14 +210,14 @@ const videosEntry: PageEntry = {
       },
     };
   },
-};
+});
 
 // Sort URNs by date without parsing each photo — parsing is deferred to
 // render batches. Loaded per navigation in onmatch, not per redraw.
 let photoUrns: string[] = [];
 
 /* */
-const photosEntry: PageEntry = {
+const photosEntry = pageEntry({
   page: photosPageComponent,
   onmatch() {
     photoUrns = services.readAllPhotoUrns();
@@ -217,10 +227,10 @@ const photosEntry: PageEntry = {
       attrs: { photoUrns, services, visible: state.sidebarVisible },
     };
   },
-};
+});
 
 /* */
-const thingEntry: PageEntry = {
+const thingEntry = pageEntry({
   page: thingPageComponent,
   resolve() {
     const pair = m.route.param("pair");
@@ -250,10 +260,10 @@ const thingEntry: PageEntry = {
       },
     };
   },
-};
+});
 
 /* */
-const photoEntry: PageEntry = {
+const photoEntry = pageEntry({
   page: photoPageComponent,
   onmatch(params) {
     state.currentPhoto = photoUrn(params.id as string);
@@ -272,10 +282,10 @@ const photoEntry: PageEntry = {
       attrs: { photo, services, visible: state.sidebarVisible },
     };
   },
-};
+});
 
 /* */
-const videoEntry: PageEntry = {
+const videoEntry = pageEntry({
   page: videoPageComponent,
   onmatch(params) {
     state.currentUrn = videoUrn(params.id as string);
@@ -294,10 +304,10 @@ const videoEntry: PageEntry = {
       attrs: { video, services, visible: state.sidebarVisible },
     };
   },
-};
+});
 
 /* */
-const listingEntry: PageEntry = {
+const listingEntry = pageEntry({
   page: listingPageComponent,
   onmatch(params) {
     state.currentType = params.type as string;
@@ -320,20 +330,20 @@ const listingEntry: PageEntry = {
       },
     };
   },
-};
+});
 
 /* */
-const listingsEntry: PageEntry = {
+const listingsEntry = pageEntry({
   page: listingsPageComponent,
   resolve() {
     return {
       attrs: { visible: state.sidebarVisible, services },
     };
   },
-};
+});
 
 /* */
-const checklistEntry: PageEntry = {
+const checklistEntry = pageEntry({
   page: checklistPageComponent,
   resolve() {
     // The life-list defaults to the Irish view when no filter is in the URL.
@@ -354,14 +364,14 @@ const checklistEntry: PageEntry = {
       },
     };
   },
-};
+});
 
 // map data is loaded per navigation in onmatch, not per redraw
 let placesForMap: GeocodedPlaceWithCover[] = [];
 let tripPolylines: TripPolyline[] = [];
 
 /* */
-const mapEntry: PageEntry = {
+const mapEntry = pageEntry({
   page: mapPageComponent,
   onmatch() {
     placesForMap = services.readGeocodedPlacesWithCovers();
@@ -376,28 +386,22 @@ const mapEntry: PageEntry = {
       },
     };
   },
-};
+});
 
-const PAGE_ENTRIES: Record<string, PageEntry> = {
-  "/albums": albumsEntry,
-  "/albums/:country": albumsEntry,
-  "/about": aboutEntry,
-  "/map": mapEntry,
-  "/videos": videosEntry,
-  "/photos": photosEntry,
-  "/album/:id": albumEntry,
-  "/thing/:pair": thingEntry,
-  "/photo/:id": photoEntry,
-  "/video/:id": videoEntry,
-  "/listing/:type": listingEntry,
-  "/listing/:type/:filter": listingEntry,
-  "/listings": listingsEntry,
-  "/life-list": checklistEntry,
-  "/life-list/:filter": checklistEntry,
+export const routes: Record<string, m.RouteResolver> = {
+  "/albums": routeResolver(albumsEntry),
+  "/albums/:country": routeResolver(albumsEntry),
+  "/about": routeResolver(aboutEntry),
+  "/map": routeResolver(mapEntry),
+  "/videos": routeResolver(videosEntry),
+  "/photos": routeResolver(photosEntry),
+  "/album/:id": routeResolver(albumEntry),
+  "/thing/:pair": routeResolver(thingEntry),
+  "/photo/:id": routeResolver(photoEntry),
+  "/video/:id": routeResolver(videoEntry),
+  "/listing/:type": routeResolver(listingEntry),
+  "/listing/:type/:filter": routeResolver(listingEntry),
+  "/listings": routeResolver(listingsEntry),
+  "/life-list": routeResolver(checklistEntry),
+  "/life-list/:filter": routeResolver(checklistEntry),
 };
-
-export const routes: Record<string, m.RouteResolver> = Object.fromEntries(
-  Object.entries(PAGE_ENTRIES).map((
-    [route, entry],
-  ) => [route, routeResolver(entry)]),
-);

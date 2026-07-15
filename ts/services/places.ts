@@ -15,8 +15,8 @@ export type GeocodedPlaceWithCover = GeocodedPlace & {
 };
 
 function hasValidCoordinates(place: Place): place is GeocodedPlace {
-  const latitude = (place as any).latitude as number | undefined;
-  const longitude = (place as any).longitude as number | undefined;
+  const latitude = place.latitude;
+  const longitude = place.longitude;
 
   if (latitude === undefined || longitude === undefined) {
     return false;
@@ -73,7 +73,7 @@ export function readAllCountries(tdb: TribbleDB): Country[] {
     relation: KnownRelations.FLAG,
   }).sources();
 
-  const countries = readCountries(tdb, ids) as Country[];
+  const countries = readCountries(tdb, ids);
 
   const flagToName = new Map(
     countries

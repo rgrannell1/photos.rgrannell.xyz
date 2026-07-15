@@ -30,7 +30,7 @@ export function HeartRain() {
       intervalId = setInterval(
         () => spawnHeart(container),
         SPAWN_INTERVAL_MS,
-      ) as unknown as number;
+      );
     },
     onremove() {
       if (intervalId !== null) {

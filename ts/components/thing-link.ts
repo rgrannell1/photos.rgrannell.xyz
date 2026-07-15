@@ -11,7 +11,7 @@ import { navigate } from "../commons/events.ts";
 import { one } from "../commons/arrays.ts";
 import { thingEmoji } from "../services/emoji.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type { Thing } from "../types.ts";
+import type { Feature, Thing, Unesco } from "../types.ts";
 
 /*
  * Shared rendering for the family: the class list is the CSS contract, so it
@@ -31,7 +31,7 @@ function drawThingLink(
 
 export type ThingLinkAttrs = {
   urn: string;
-  thing: Thing | TripleObject;
+  thing: Thing | Unesco | TripleObject;
 };
 
 /* */
@@ -61,7 +61,7 @@ export function ThingLink() {
 
 export type FeatureLinkAttrs = {
   urn: string;
-  thing: any;
+  thing: Feature;
 };
 
 /*
@@ -86,7 +86,7 @@ export function FeatureLink() {
 
 export type UnescoLinkAttrs = {
   urn: string;
-  thing: any;
+  thing: Unesco;
 };
 
 /* */

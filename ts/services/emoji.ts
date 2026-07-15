@@ -7,21 +7,27 @@ import {
   PLACE_FEATURES_TO_EMOJI,
 } from "../constants.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type { Thing } from "../types.ts";
+import type { Country, Feature, Place, Thing, Unesco } from "../types.ts";
+
+// Anything an emoji can be looked up for: parsed things or raw triple objects
+type EmojiThing = Thing | Feature | Unesco | TripleObject;
 
 /*
  * Pick an emoji based on the place feature
  *
  * @param thing The place
  */
-export function placeEmoji(thing: any): string {
+export function placeEmoji(thing: Place | TripleObject): string {
   // Country-places have a flag; prefer that over a feature emoji
   const flag = one(thing.flag);
   if (flag) {
-    return flag as string;
+    return flag;
   }
 
   const feature = one(thing.features);
+  if (!feature) {
+    return "📍";
+  }
   const { id: featureId } = asUrn(feature);
 
   if (
@@ -57,9 +63,9 @@ export function placeFeatureEmoji(featureUrn: string): string {
  *
  * @param thing The country thing
  */
-export function countryEmoji(thing: any): string {
+export function countryEmoji(thing: Country): string {
   const flag = one(thing.flag);
-  return flag; //?? "🏳️";
+  return flag ?? ""; //?? "🏳️";
 }
 
 /*
@@ -74,7 +80,7 @@ function birdEmoji(): string {
  *
  * @param thing The thing to get the emoji for, based on id
  */
-function cameraEmoji(thing: Thing | TripleObject): string {
+function cameraEmoji(thing: EmojiThing): string {
   const { id } = asUrn(one(thing.id) ?? "");
 
   if (CAMERA_MODELS.has(id)) {
@@ -87,12 +93,17 @@ function cameraEmoji(thing: Thing | TripleObject): string {
 }
 
 /* */
-export function thingEmoji(urn: string, _: string, thing: Thing | TripleObject): string {
+export function thingEmoji(
+  urn: string,
+  _: string,
+  thing: EmojiThing,
+): string {
   const { type } = asUrn(urn);
 
   switch (type) {
     case KnownTypes.PLACE:
-      return placeEmoji(thing);
+      // The URN type guarantees a place; the compiler cannot see that
+      return placeEmoji(thing as Place | TripleObject);
     case KnownTypes.BIRD:
       return birdEmoji();
     case KnownTypes.CAMERA:

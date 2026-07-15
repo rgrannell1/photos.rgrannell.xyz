@@ -88,8 +88,8 @@ function addMarker(
   bounds: LatLngBounds,
   place: PlaceWithCover,
 ): void {
-  const latitude = (place as any).latitude as number;
-  const longitude = (place as any).longitude as number;
+  const latitude = place.latitude;
+  const longitude = place.longitude;
 
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
     return;

@@ -9,7 +9,7 @@ import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
 
 import type {
   Album,
-  Country,
+  Location,
   Photo as PhotoType,
   Services,
   Thing,
@@ -28,7 +28,8 @@ type AlbumAttrs = {
   album: Album;
   subjects: Thing[];
   locations: Location[];
-  country: Country[];
+  // country URNs; resolved to Country objects via services.readCountries
+  country: string | string[];
   photos: PhotoType[];
   videos: VideoType[];
   services: Services;
