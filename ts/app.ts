@@ -349,7 +349,7 @@ const checklistEntry = pageEntry({
     // The life-list defaults to the Irish view when no filter is in the URL.
     const filter = (m.route.param("filter") as string | undefined) ?? "ireland";
     const entries = services.readWildBirdChecklist();
-    const covers = services.readSpeciesCovers("bird");
+    const covers = services.readThingCovers("bird");
     const regularCount = state.regularBirdSpecies;
 
     return {

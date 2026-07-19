@@ -6,6 +6,19 @@ import { albumUrn } from "../models/urn.ts";
 import { KnownTypes } from "../constants.ts";
 
 /*
+ * Sort videos by their album's start date, newest album first.
+ */
+function sortByAlbumDate(tdb: TribbleDB, videos: Video[]): Video[] {
+  const albumMinDate = new Map(
+    videos.map((video) => [video.albumId, readAlbum(tdb, albumUrn(video.albumId))?.minDate ?? 0])
+  );
+
+  return videos.sort((videoA, videoB) =>
+    (albumMinDate.get(videoB.albumId) ?? 0) - (albumMinDate.get(videoA.albumId) ?? 0)
+  );
+}
+
+/*
  * Read and parse all videos, sorted chronologically by album date (oldest first).
  *
  * @param tdb The TribbleDB instance
@@ -17,15 +30,7 @@ export function readAllVideos(tdb: TribbleDB): Video[] {
     source: { type: "video" },
   }).sources();
 
-  const videos = readVideos(tdb, videoUrns);
-
-  const albumMinDate = new Map(
-    videos.map((video) => [video.albumId, readAlbum(tdb, albumUrn(video.albumId))?.minDate ?? 0])
-  );
-
-  return videos.sort((videoA, videoB) =>
-    (albumMinDate.get(videoB.albumId) ?? 0) - (albumMinDate.get(videoA.albumId) ?? 0)
-  );
+  return sortByAlbumDate(tdb, readVideos(tdb, videoUrns));
 }
 
 /*
@@ -50,13 +55,5 @@ export function readVideosByThingIds(
     }
   }
 
-  const videos = readVideos(tdb, videoIds);
-
-  const albumMinDate = new Map(
-    videos.map((video) => [video.albumId, readAlbum(tdb, albumUrn(video.albumId))?.minDate ?? 0])
-  );
-
-  return videos.sort((videoA, videoB) =>
-    (albumMinDate.get(videoB.albumId) ?? 0) - (albumMinDate.get(videoA.albumId) ?? 0)
-  );
+  return sortByAlbumDate(tdb, readVideos(tdb, videoIds));
 }

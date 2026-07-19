@@ -5,7 +5,7 @@ import { Photo } from "../components/photo.ts";
 import type { Photo as PhotoType, Services } from "../types.ts";
 import { AlbumButton } from "../components/album-button.ts";
 import { ExifData } from "../components/exif-data.ts";
-import { PhotoInfo } from "../components/photo-info.ts";
+import { MediaInfo } from "../components/media-info.ts";
 
 type PhotoPageAttrs = {
   photo: PhotoType;
@@ -33,7 +33,7 @@ export function PhotoPage() {
       ]);
 
       const $exif = m(ExifData, { photo, services });
-      const $photoInfo = m(PhotoInfo, { photo, services });
+      const $photoInfo = m(MediaInfo, { media: photo, services });
 
       return m("section", { "data-testid": "photo-page" }, [
         m("h1", { "data-testid": "photo-heading" }, "Photo"),

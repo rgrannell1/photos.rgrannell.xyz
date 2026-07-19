@@ -58,9 +58,7 @@ export class KnownRelations {
   static STYLE = "style";
   static ALBUM_BANNER = "albumBanner";
   static MOSAIC_BANNER = "mosaicBanner";
-  // horrible
   static FLAGS = "flags";
-
   static CENTRAL_PLACE = "centralPlace";
   static CONTAINS_ALBUM = "containsAlbum";
   static TRIP = "trip";

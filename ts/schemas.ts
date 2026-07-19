@@ -112,58 +112,24 @@ export const MammalSchema = v.object({
   wikipedia: v.optional(v.string()),
 });
 
-export const ReptileSchema = v.object({
+// the shared shape of most photo subjects: species, vehicles, and so on
+export const NamedThingSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
   wikipedia: v.optional(v.string()),
 });
 
-export const FishSchema = v.object({
-  id: v.string(),
-  name: v.optional(v.string()),
-  wikipedia: v.optional(v.string()),
-});
-
-export const AmphibianSchema = v.object({
-  id: v.string(),
-  name: v.optional(v.string()),
-  wikipedia: v.optional(v.string()),
-});
-
-export const InsectSchema = v.object({
-  id: v.string(),
-  name: v.optional(v.string()),
-  wikipedia: v.optional(v.string()),
-});
-
-export const PlaneSchema = v.object({
-  id: v.string(),
-  name: v.optional(v.string()),
-  wikipedia: v.optional(v.string()),
-});
-
-export const TrainSchema = v.object({
-  id: v.string(),
-  name: v.optional(v.string()),
-  wikipedia: v.optional(v.string()),
-});
-
-export const CarSchema = v.object({
-  id: v.string(),
-  name: v.optional(v.string()),
-  wikipedia: v.optional(v.string()),
-});
-
-export const SubjectSchema = v.object({
-  id: v.string(),
-  name: v.optional(v.string()),
-  wikipedia: v.optional(v.string()),
-});
+export const ReptileSchema = NamedThingSchema;
+export const FishSchema = NamedThingSchema;
+export const AmphibianSchema = NamedThingSchema;
+export const InsectSchema = NamedThingSchema;
+export const PlaneSchema = NamedThingSchema;
+export const TrainSchema = NamedThingSchema;
+export const CarSchema = NamedThingSchema;
+export const SubjectSchema = NamedThingSchema;
 
 export const BirdSchema = v.object({
-  id: v.string(),
-  name: v.optional(v.string()),
-  wikipedia: v.optional(v.string()),
+  ...NamedThingSchema.entries,
   birdwatchUrl: v.optional(v.union([v.string(), v.array(v.string())])),
 });
 

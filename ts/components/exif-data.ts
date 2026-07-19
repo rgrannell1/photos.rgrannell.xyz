@@ -1,25 +1,12 @@
 import m from "mithril";
 import * as Dates from "../services/dates.ts";
 import type { Photo as PhotoType, Services } from "../types.ts";
+import { Heading } from "./heading.ts";
 
 type ExifDataAttrs = {
   photo: PhotoType;
   services: Services;
 };
-
-type HeadingAttrs = {
-  text: string;
-};
-
-/* */
-function Heading() {
-  return {
-    view(vnode: m.Vnode<HeadingAttrs>) {
-      const { text } = vnode.attrs;
-      return m("th.exif-heading", text);
-    },
-  };
-}
 
 /*
  * Display the camera model

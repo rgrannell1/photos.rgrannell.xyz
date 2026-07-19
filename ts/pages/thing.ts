@@ -3,22 +3,17 @@ import { ThingSubtitle, ThingTitle } from "../components/thing-title.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { arrayify } from "../commons/arrays.ts";
-import type { Services } from "../types.ts";
-import { CountryLink, countryFlagLinks } from "../components/place-links.ts";
-import { Photo } from "../components/photo.ts";
+import type { Photo as PhotoType, Services } from "../types.ts";
+import { CountryLink } from "../components/place-links.ts";
 import { Video } from "../components/video.ts";
-import { encodeBitmapDataURL } from "../services/photos.ts";
-import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
-import { PhotoAlbum } from "../components/photo-album.ts";
-import { albumRoute, onAlbumClick } from "../commons/album-nav.ts";
+import { AlbumCard } from "../components/album-card.ts";
+import { PhotoGrid } from "../components/photo-grid.ts";
 import { ThingList } from "../components/thing-list.ts";
 import { setify, setOf } from "../commons/sets.ts";
 import { BinomialTypes, KnownRelations } from "../constants.ts";
 import { ListingLink } from "../components/listing-link.ts";
-import { loadingMode } from "../services/photos.ts";
 import { ThingUrls } from "../components/thing-urls.ts";
 import { HeartRain } from "../components/love.ts";
-import { createBatchRenderer } from "../components/batch-render.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -149,36 +144,15 @@ function AlbumSection() {
 
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const $albums = entriesFor(vnode).map(({ album, countries }) => {
-        const $countryLinks = countryFlagLinks(album.id, countries);
-
-        const $md = m(PhotoAlbumMetadata, {
-          title: album.name,
-          minDate: album.minDate,
-          maxDate: album.maxDate,
-          count: album.photosCount,
-          countryLinks: $countryLinks,
-          dateRange: album.dateRange,
-          shortDateRange: album.shortDateRange,
-        });
-
-        const $album = m(PhotoAlbum, {
-          href: albumRoute(album.id),
-          thumbnailUrl: album.thumbnailUrl,
-          thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),
+      const $albums = entriesFor(vnode).map(({ album, countries }) =>
+        m(AlbumCard, {
+          album,
+          countries,
           loading: "lazy",
-          minDate: album.minDate,
-          onclick: onAlbumClick.bind(null, album.id, album.name),
           trip: undefined,
           child: m("p"),
-        });
-
-        return m(
-          "div",
-          $album,
-          $md,
-        );
-      });
+        })
+      );
 
       if ($albums.length === 0) {
         return null;
@@ -232,10 +206,12 @@ function VideoSection() {
   };
 }
 
-const PHOTO_BATCH_SIZE = 10;
+/* */
+function slicePhotos(photos: PhotoType[], limit: number): PhotoType[] {
+  return photos.slice(0, limit);
+}
 
 function PhotoSection() {
-  const batch = createBatchRenderer(PHOTO_BATCH_SIZE);
   let currentUrn = "";
   let cachedPhotos: ReturnType<Services["readPhotosByThingIds"]> | null = null;
 
@@ -244,7 +220,6 @@ function PhotoSection() {
   function photosFor(vnode: m.Vnode<ThingPageAttrs>) {
     if (vnode.attrs.urn !== currentUrn || cachedPhotos === null) {
       currentUrn = vnode.attrs.urn;
-      batch.reset();
       const urns = setOf<string>("id", vnode.attrs.things);
       cachedPhotos = vnode.attrs.services.readPhotosByThingIds(urns);
     }
@@ -252,12 +227,6 @@ function PhotoSection() {
   }
 
   return {
-    oncreate(vnode: m.VnodeDOM<ThingPageAttrs>) {
-      batch.schedule(photosFor(vnode).length);
-    },
-    onupdate(vnode: m.VnodeDOM<ThingPageAttrs>) {
-      batch.schedule(photosFor(vnode).length);
-    },
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const photos = photosFor(vnode);
 
@@ -267,17 +236,11 @@ function PhotoSection() {
 
       return m("div", [
         m("h3", "Photos"),
-        m(
-          "section.photo-container",
-          photos.slice(0, batch.count()).map((photo, idx) =>
-            m(Photo, {
-              key: `photo-${photo.id}`,
-              photo,
-              loading: loadingMode(idx),
-              interactive: true,
-            })
-          ),
-        ),
+        m(PhotoGrid, {
+          total: photos.length,
+          getPhotos: slicePhotos.bind(null, photos),
+          resetKey: vnode.attrs.urn,
+        }),
       ]);
     },
   };

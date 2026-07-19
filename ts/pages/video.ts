@@ -2,7 +2,7 @@ import m from "mithril";
 import { Video } from "../components/video.ts";
 import type { Video as VideoType, Services } from "../types.ts";
 import { AlbumButton } from "../components/album-button.ts";
-import { VideoInfo } from "../components/video-info.ts";
+import { MediaInfo } from "../components/media-info.ts";
 
 type VideoPageAttrs = {
   video: VideoType;
@@ -28,7 +28,7 @@ export function VideoPage() {
         m(AlbumButton, { id: video.albumId }),
       ]);
 
-      const $videoInfo = m(VideoInfo, { video, services });
+      const $videoInfo = m(MediaInfo, { media: video, services });
 
       return m("section", [
         m("h1", "Video"),

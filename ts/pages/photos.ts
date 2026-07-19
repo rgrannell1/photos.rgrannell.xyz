@@ -1,52 +1,22 @@
 import m from "mithril";
 import type { Photo as PhotoType, Services } from "../types.ts";
-import { Photo } from "../components/photo.ts";
-import { loadingMode } from "../services/photos.ts";
-import { createBatchRenderer } from "../components/batch-render.ts";
+import { PhotoGrid } from "../components/photo-grid.ts";
 import { countLabel } from "../commons/strings.ts";
 
-const BATCH_SIZE = 10;
-
-type PhotosListAttrs = {
-  photoUrns: string[];
-  services: Services;
-  visible: boolean;
-};
-
-function PhotosList() {
-  const batch = createBatchRenderer(BATCH_SIZE);
-
-  return {
-    oncreate(vnode: m.VnodeDOM<PhotosListAttrs>) {
-      batch.schedule(vnode.attrs.photoUrns.length);
-    },
-    onupdate(vnode: m.VnodeDOM<PhotosListAttrs>) {
-      batch.schedule(vnode.attrs.photoUrns.length);
-    },
-    view(vnode: m.Vnode<PhotosListAttrs>) {
-      const { photoUrns, services } = vnode.attrs;
-
-      const photos: PhotoType[] = [];
-      for (const urn of photoUrns.slice(0, batch.count())) {
-        const photo = services.readPhoto(urn);
-        if (photo) {
-          photos.push(photo);
-        }
-      }
-
-      return m(
-        "section.photo-container",
-        photos.map((photo, idx) =>
-          m(Photo, {
-            key: `photo-${photo.id}`,
-            photo,
-            loading: loadingMode(idx),
-            interactive: true,
-          })
-        ),
-      );
-    },
-  };
+/* Read the first `limit` photos by URN, skipping unparseable entries. */
+function readPhotosByLimit(
+  services: Services,
+  photoUrns: string[],
+  limit: number,
+): PhotoType[] {
+  const photos: PhotoType[] = [];
+  for (const urn of photoUrns.slice(0, limit)) {
+    const photo = services.readPhoto(urn);
+    if (photo) {
+      photos.push(photo);
+    }
+  }
+  return photos;
 }
 
 type PhotosPageAttrs = {
@@ -70,7 +40,13 @@ export function PhotosPage() {
 
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
-      }, [$md, m(PhotosList, { photoUrns, services, visible })]);
+      }, [
+        $md,
+        m(PhotoGrid, {
+          total: photoUrns.length,
+          getPhotos: readPhotosByLimit.bind(null, services, photoUrns),
+        }),
+      ]);
     },
   };
 }

@@ -3,7 +3,7 @@ import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Country, Place } from "../types.ts";
 import { KnownRelations, KnownTypes } from "../constants.ts";
 import { readCountries, readPlaces } from "./readers.ts";
-import { readPlaceCovers } from "./photos.ts";
+import { readThingCovers } from "./photos.ts";
 
 export type GeocodedPlace = Place & {
   latitude: number;
@@ -56,7 +56,7 @@ export function readGeocodedPlaces(tdb: TribbleDB): GeocodedPlace[] {
 export function readGeocodedPlacesWithCovers(
   tdb: TribbleDB,
 ): GeocodedPlaceWithCover[] {
-  const covers = readPlaceCovers(tdb);
+  const covers = readThingCovers(tdb, "place");
 
   return readGeocodedPlaces(tdb).map((place) => {
     const cover = covers.get(asUrn(place.id).id);

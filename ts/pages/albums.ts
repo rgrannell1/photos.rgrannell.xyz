@@ -4,13 +4,10 @@ import { AlbumStats } from "../components/album-stats.ts";
 import { YearRecap } from "../components/year-recap.ts";
 import type { Album, Services } from "../types.ts";
 import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
-import { PhotoAlbumMetadata } from "../components/photo-album-metadata.ts";
-import { PhotoAlbum } from "../components/photo-album.ts";
+import { AlbumCard } from "../components/album-card.ts";
 import { setTitle } from "../services/window.ts";
-import { countryFlagLinks } from "../components/place-links.ts";
 import { broadcast } from "../commons/events.ts";
 import { albumYear } from "../services/albums.ts";
-import { albumRoute, onAlbumClick } from "../commons/album-nav.ts";
 import { setify } from "../commons/sets.ts";
 import { CountryFilter } from "../components/country-filter.ts";
 import { ALBUMS_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../constants.ts";
@@ -56,40 +53,18 @@ function drawAlbum(
     }
   }
 
-  const $countryLinks = countryFlagLinks(
-    album.id,
-    services.readCountries(setify(album.country)),
-  );
-
-  const $md = m(PhotoAlbumMetadata, {
-    title: album.name,
-    minDate: album.minDate,
-    maxDate: album.maxDate,
-    count: album.photosCount,
-    countryLinks: $countryLinks,
-    dateRange: album.dateRange,
-    shortDateRange: album.shortDateRange,
-  });
-
-  const $album = m(PhotoAlbum, {
-    trip: album.trip,
-    href: albumRoute(album.id),
-    thumbnailUrl: album.thumbnailUrl,
-    thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),
-    loading: loading,
-    minDate: album.minDate,
-    onclick: onAlbumClick.bind(null, album.id, album.name),
-  });
-
   $albumComponents.push(
-    m("div", {
+    m(AlbumCard, {
       key: `album-${album.id}`,
-      "data-testid": "album-row",
-      "data-album-title": album.name,
-    }, [
-      $album,
-      $md,
-    ]),
+      album,
+      countries: services.readCountries(setify(album.country)),
+      loading,
+      trip: album.trip,
+      containerAttrs: {
+        "data-testid": "album-row",
+        "data-album-title": album.name,
+      },
+    }),
   );
 
   return $albumComponents;

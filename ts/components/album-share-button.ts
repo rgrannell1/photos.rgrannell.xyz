@@ -6,14 +6,6 @@ type AlbumShareButtonAttrs = {
 };
 
 /* */
-function handleError(message: string) {
-  if (message.includes("Shared canceled")) {
-    return;
-  }
-  alert(message);
-}
-
-/* */
 async function shareAlbum(
   state: { sharing: boolean },
   url: string,
