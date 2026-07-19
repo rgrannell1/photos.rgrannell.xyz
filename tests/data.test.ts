@@ -12,14 +12,33 @@ import {
 import { readCountries } from "../ts/services/readers.ts";
 import { readThingCover } from "../ts/services/photos.ts";
 import { readGeocodedPlacesWithCovers } from "../ts/services/places.ts";
-import { KnownTypes, PrunableEntityTypes } from "../ts/constants.ts";
+import {
+  KnownRelations,
+  KnownTypes,
+  PrunableEntityTypes,
+} from "../ts/constants/data.ts";
 
 const tdb = await loadTribbles();
 
 Deno.test("All countries are named and have a flag", () => {
-  const countries = tdb.search({ source: { type: "country" } }).sources();
+  // countries are place entities with a flag; there is no `country` type
+  const countryUrns = [...tdb.search({
+    source: { type: KnownTypes.PLACE },
+    relation: KnownRelations.FLAG,
+  }).sources()];
 
-  readCountries(tdb, countries);
+  if (countryUrns.length === 0) {
+    throw new Error("no countries found in the data");
+  }
+
+  const unnamed = readCountries(tdb, countryUrns)
+    .filter((country) => !country.name || !country.flag);
+
+  if (unnamed.length > 0) {
+    throw new Error(
+      `countries missing name or flag: ${JSON.stringify(unnamed)}`,
+    );
+  }
 });
 
 Deno.test("Album photo counts match renderable photos", () => {

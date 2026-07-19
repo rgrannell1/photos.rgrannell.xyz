@@ -16,7 +16,7 @@ import {
   KnownTypes,
   PrunableEntityTypes,
   RelationSymmetries,
-} from "../constants.ts";
+} from "../constants/data.ts";
 
 /*
  * Canonical URN for each known alias. Any triple whose source or target

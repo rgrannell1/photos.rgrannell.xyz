@@ -1,5 +1,6 @@
 import m from "mithril";
-import { KnownTypes, NonListableTypes } from "../constants.ts";
+import { KnownTypes } from "../constants/data.ts";
+import { NonListableTypes } from "../constants/display.ts";
 import { capitalise, pluralise } from "../commons/strings.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { broadcast, navigate } from "../commons/events.ts";

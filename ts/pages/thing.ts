@@ -10,7 +10,7 @@ import { AlbumCard } from "../components/album-card.ts";
 import { PhotoGrid } from "../components/photo-grid.ts";
 import { ThingList } from "../components/thing-list.ts";
 import { setify, setOf } from "../commons/sets.ts";
-import { BinomialTypes, KnownRelations } from "../constants.ts";
+import { BinomialTypes, KnownRelations } from "../constants/data.ts";
 import { ListingLink } from "../components/listing-link.ts";
 import { ThingUrls } from "../components/thing-urls.ts";
 import { HeartRain } from "../components/love.ts";

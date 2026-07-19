@@ -3,6 +3,7 @@ import { navigate } from "../commons/events.ts";
 import type { Services } from "../types.ts";
 import { PhotoAlbum } from "../components/photo-album.ts";
 import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
+import { LISTED_TYPES } from "../constants/display.ts";
 
 type CategoryDef = {
   type: string;
@@ -10,19 +11,11 @@ type CategoryDef = {
   route: string;
 };
 
-const CATEGORIES: CategoryDef[] = [
-  { type: "place", label: "Places", route: "/listing/place" },
-  { type: "place_feature", label: "Place Features", route: "/listing/place_feature" },
-  { type: "bird", label: "Birds", route: "/listing/bird" },
-  { type: "mammal", label: "Mammals", route: "/listing/mammal" },
-  { type: "reptile", label: "Reptiles", route: "/listing/reptile" },
-  { type: "amphibian", label: "Amphibians", route: "/listing/amphibian" },
-  { type: "insect", label: "Insects", route: "/listing/insect" },
-  { type: "fish", label: "Fish", route: "/listing/fish" },
-  { type: "plane", label: "Planes", route: "/listing/plane" },
-  { type: "train", label: "Trains", route: "/listing/train" },
-  { type: "car", label: "Cars", route: "/listing/car" },
-];
+const CATEGORIES: CategoryDef[] = LISTED_TYPES.map(([type, label]) => ({
+  type,
+  label,
+  route: `/listing/${type}`,
+}));
 
 /*
  * Render a single category album card with its best-rated cover photo.

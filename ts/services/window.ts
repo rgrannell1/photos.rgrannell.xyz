@@ -2,7 +2,7 @@
  * Window lookup
  */
 
-import { SMALL_DEVICE_WIDTH } from "../constants";
+import { SMALL_DEVICE_WIDTH } from "../constants/layout.ts";
 
 /*
  * Check if the window is smaller than a given width

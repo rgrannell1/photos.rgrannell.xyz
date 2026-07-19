@@ -2,7 +2,7 @@ import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
 import { binomial, capitalise, pluralise } from "../commons/strings.ts";
-import { BinomialTypes, KnownTypes } from "../constants.ts";
+import { BinomialTypes, KnownTypes } from "../constants/data.ts";
 import { one } from "../commons/arrays.ts";
 import { placeEmoji } from "../services/emoji.ts";
 import { setTitle } from "../services/window.ts";

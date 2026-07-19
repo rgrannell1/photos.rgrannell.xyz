@@ -4,7 +4,7 @@ import { setTitle } from "../services/window.ts";
 import { navigate } from "../commons/events.ts";
 import { AlbumBanner } from "../components/album-banner.ts";
 import { encodeBitmapDataURL } from "../services/photos.ts";
-import { ABOUT_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../constants.ts";
+import { ABOUT_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../constants/banners.ts";
 
 type AboutPageAttrs = {
   visible: boolean;

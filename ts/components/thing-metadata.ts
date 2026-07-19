@@ -1,7 +1,7 @@
 import m from "mithril";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
-import { KnownTypes } from "../constants.ts";
+import { KnownTypes } from "../constants/data.ts";
 import { placeEmoji, placeFeatureEmoji } from "../services/emoji.ts";
 import { ThingUrls } from "./thing-urls.ts";
 

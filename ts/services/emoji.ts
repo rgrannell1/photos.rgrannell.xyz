@@ -1,11 +1,7 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
-import {
-  CAMERA_MODELS,
-  KnownTypes,
-  PHONE_MODELS,
-  PLACE_FEATURES_TO_EMOJI,
-} from "../constants.ts";
+import { CAMERA_MODELS, KnownTypes, PHONE_MODELS } from "../constants/data.ts";
+import { PLACE_FEATURES_TO_EMOJI } from "../constants/display.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Country, Feature, Place, Thing, Unesco } from "../types.ts";
 

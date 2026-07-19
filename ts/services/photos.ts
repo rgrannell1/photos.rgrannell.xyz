@@ -1,4 +1,5 @@
-import { KnownRelations, PHOTO_WIDTH } from "../constants.ts";
+import { PHOTO_WIDTH } from "../constants/layout.ts";
+import { KnownRelations, KnownTypes } from "../constants/data.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Country, Location, Photo, Subject } from "../types.ts";
@@ -75,7 +76,7 @@ export function encodeBitmapDataURL(
  */
 export function readAllPhotos(tdb: TribbleDB): Photo[] {
   const photos = tdb.search({
-    source: { type: "photo" },
+    source: { type: KnownTypes.PHOTO },
   }).sources();
 
   return readPhotos(tdb, photos).sort((photoa, photob) => {
@@ -89,7 +90,7 @@ export function readAllPhotos(tdb: TribbleDB): Photo[] {
  */
 export function readAllPhotoUrns(tdb: TribbleDB): string[] {
   const photoObjects = tdb.search({
-    source: { type: "photo" },
+    source: { type: KnownTypes.PHOTO },
   }).objects();
 
   return photoObjects
@@ -153,7 +154,7 @@ export function readPhotosByThingIds(
 
   const photoIds = things
     .referencedBy()
-    .filter({ type: "photo" })
+    .filter({ type: KnownTypes.PHOTO })
     .urns();
 
   return readPhotos(tdb, photoIds).sort((photoa, photob) => {
@@ -168,8 +169,8 @@ export function readPhotosByThingIds(
  */
 export function readThingCovers(tdb: TribbleDB, type: string): Map<string, Photo> {
   const coverTriples = tdb.search({
-    source: { type: "photo" },
-    relation: "cover",
+    source: { type: KnownTypes.PHOTO },
+    relation: KnownRelations.COVER,
     target: { type },
   }).triples();
 
@@ -196,8 +197,8 @@ export function readThingCover(
   const { type, id } = asUrn(thingUrn);
 
   const source = tdb.search({
-    source: { type: "photo" },
-    relation: "cover",
+    source: { type: KnownTypes.PHOTO },
+    relation: KnownRelations.COVER,
     target: { type, id },
   }).firstSource();
 
@@ -229,15 +230,20 @@ export function readSeenInCountries(
  * Look up the pre-computed cover photo for a top-level listing type (e.g. "bird", "place").
  * The cover triple is written by mirror's ListingCoverReader during publish and has the form:
  *   urn:ró:photo:<id>  cover  urn:ró:listing:<type>
+ * Falls back to any entity cover of the type when mirror has no listing cover.
  */
 export function readCategoryCover(
   tdb: TribbleDB,
   type: string,
 ): Photo | undefined {
   const source = tdb.search({
-    source: { type: "photo" },
-    relation: "cover",
-    target: { type: "listing", id: type },
+    source: { type: KnownTypes.PHOTO },
+    relation: KnownRelations.COVER,
+    target: { type: KnownTypes.LISTING, id: type },
+  }).firstSource() ?? tdb.search({
+    source: { type: KnownTypes.PHOTO },
+    relation: KnownRelations.COVER,
+    target: { type },
   }).firstSource();
 
   return source ? readPhoto(tdb, source) : undefined;

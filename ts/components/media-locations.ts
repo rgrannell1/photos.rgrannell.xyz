@@ -6,7 +6,8 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { arrayify } from "../commons/arrays.ts";
-import { HiddenPlaceFeatures, KnownTypes } from "../constants.ts";
+import { KnownTypes } from "../constants/data.ts";
+import { HiddenPlaceFeatures } from "../constants/display.ts";
 import type { Services } from "../types.ts";
 
 /* a place feature worth showing as a "place type" — excludes overly-generic

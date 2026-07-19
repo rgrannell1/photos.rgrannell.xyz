@@ -4,7 +4,7 @@ import type { Album } from "../types.ts";
 import type { Photo, Video } from "../types.ts";
 import { readThingsByPhotoIds } from "./photos.ts";
 import { readPhotos } from "./readers.ts";
-import { KnownRelations, KnownTypes } from "../constants.ts";
+import { KnownRelations, KnownTypes } from "../constants/data.ts";
 import { readAlbums, readPlace, readTransfers, readVideos } from "./readers.ts";
 import { albumUrn } from "../models/urn.ts";
 

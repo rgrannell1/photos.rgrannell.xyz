@@ -1,7 +1,7 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Country, Place } from "../types.ts";
-import { KnownRelations, KnownTypes } from "../constants.ts";
+import { KnownRelations, KnownTypes } from "../constants/data.ts";
 import { readCountries, readPlaces } from "./readers.ts";
 import { readThingCovers } from "./photos.ts";
 

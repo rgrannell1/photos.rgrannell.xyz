@@ -20,7 +20,8 @@ import type { PhotoAttrs } from "../components/photo.ts";
 import { AlbumsButton } from "../components/albums-button.ts";
 import { countLabel, preprocessDescription } from "../commons/strings.ts";
 import { setify } from "../commons/sets.ts";
-import { KnownRelations, SMALL_DEVICE_WIDTH } from "../constants.ts";
+import { SMALL_DEVICE_WIDTH } from "../constants/layout.ts";
+import { KnownRelations } from "../constants/data.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TripPreviousAlbums } from "../components/trip-previous-albums.ts";
 

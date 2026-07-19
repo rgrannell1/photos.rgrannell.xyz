@@ -1,4 +1,4 @@
-import { KnownTypes } from "../constants.ts";
+import { KnownTypes } from "../constants/data.ts";
 import type {
   Amphibian,
   Bird,

@@ -5,7 +5,7 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { countryUrn } from "../models/urn.ts";
-import { KnownRelations, KnownTypes } from "../constants.ts";
+import { KnownRelations, KnownTypes } from "../constants/data.ts";
 
 export type SubjectStats = {
   wildSpecies: number;
@@ -119,7 +119,7 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
  */
 export function countRegularBirdSpecies(tdb: TribbleDB): number {
   return tdb.search({
-    relation: "status",
+    relation: KnownRelations.STATUS,
     target: "regular",
   }).triples().length;
 }
@@ -136,7 +136,7 @@ export type NemesisBird = {
 export function collectUnphotographedNemesisBirds(tdb: TribbleDB): NemesisBird[] {
   const nemesisTriples = tdb.search({
     source: { type: KnownTypes.BIRD },
-    relation: "nemesis",
+    relation: KnownRelations.NEMESIS,
     target: "true",
   }).triples();
 

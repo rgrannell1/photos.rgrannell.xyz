@@ -3,7 +3,7 @@
  */
 
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { KnownRelations } from "../constants.ts";
+import { KnownRelations } from "../constants/data.ts";
 
 const NAME_TO_URN_CACHE: Map<string, string> = new Map();
 

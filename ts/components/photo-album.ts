@@ -1,6 +1,6 @@
 import m from "mithril";
 import { ImagePair } from "./photo.ts";
-import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../constants.ts";
+import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../constants/layout.ts";
 
 // use this to keep track of trips, to assign each a
 // colour distinct from the adjacent ones

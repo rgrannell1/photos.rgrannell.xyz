@@ -1,7 +1,7 @@
 import m from "mithril";
 import { isSmallerThan } from "../services/window.ts";
 import type { CountryLinkAttrs } from "./place-links.ts";
-import { SMALL_DEVICE_WIDTH } from "../constants.ts";
+import { SMALL_DEVICE_WIDTH } from "../constants/layout.ts";
 import type { Services } from "../types.ts";
 
 export type PhotoAlbumMetadataAttrs = {

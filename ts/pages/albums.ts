@@ -10,7 +10,7 @@ import { broadcast } from "../commons/events.ts";
 import { albumYear } from "../services/albums.ts";
 import { setify } from "../commons/sets.ts";
 import { CountryFilter } from "../components/country-filter.ts";
-import { ALBUMS_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../constants.ts";
+import { ALBUMS_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../constants/banners.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];

@@ -3,7 +3,7 @@ import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Video } from "../types.ts";
 import { readAlbum, readVideos } from "./readers.ts";
 import { albumUrn } from "../models/urn.ts";
-import { KnownTypes } from "../constants.ts";
+import { KnownTypes } from "../constants/data.ts";
 
 /*
  * Sort videos by their album's start date, newest album first.
@@ -27,7 +27,7 @@ function sortByAlbumDate(tdb: TribbleDB, videos: Video[]): Video[] {
  */
 export function readAllVideos(tdb: TribbleDB): Video[] {
   const videoUrns = tdb.search({
-    source: { type: "video" },
+    source: { type: KnownTypes.VIDEO },
   }).sources();
 
   return sortByAlbumDate(tdb, readVideos(tdb, videoUrns));
