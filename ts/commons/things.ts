@@ -2,8 +2,8 @@ import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { ThingLink } from "../components/thing-link.ts";
-import type { ThingLinkAttrs } from "../components/thing-link.ts";
+import { ThingLink } from "../components/thing/thing-link.ts";
+import type { ThingLinkAttrs } from "../components/thing/thing-link.ts";
 import { one } from "../commons/arrays.ts";
 
 /*

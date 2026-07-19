@@ -5,11 +5,11 @@ import { capitalise, pluralise } from "../commons/strings.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { broadcast, navigate } from "../commons/events.ts";
 import type { Services } from "../types.ts";
-import { PhotoAlbum } from "../components/photo-album.ts";
+import { PhotoAlbum } from "../components/album/photo-album.ts";
 import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
 import { one } from "../commons/arrays.ts";
-import { ThingMetadata } from "../components/thing-metadata.ts";
-import { createBatchRenderer } from "../components/batch-render.ts";
+import { ThingCaption } from "../components/thing/thing-caption.ts";
+import { createBatchRenderer } from "../components/media/batch-render.ts";
 
 /*
  * Derive an optional inline badge for the listing card title.
@@ -53,7 +53,7 @@ function drawThingAlbum(
     thumbnailDataUrl: encodeBitmapDataURL(coverPhoto?.mosaicColours),
     loading: loadingMode(idx),
     trip: undefined,
-    child: m(ThingMetadata, {
+    child: m(ThingCaption, {
       thing,
       titleExtra: listingTitleExtra(thing, listingType),
     }),

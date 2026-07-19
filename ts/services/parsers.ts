@@ -11,25 +11,27 @@ import type {
   Unesco,
 } from "../types.ts";
 import { parseByType, parseObject } from "../commons/parser.ts";
+import { AlbumSchema } from "../schemas/album.ts";
+import { PhotoSchema } from "../schemas/photo.ts";
+import { VideoSchema } from "../schemas/video.ts";
 import {
-  AlbumSchema,
+  FeatureSchema,
+  PlaceSchema,
+  UnescoSchema,
+} from "../schemas/place.ts";
+import {
   AmphibianSchema,
   BirdSchema,
   CarSchema,
-  FeatureSchema,
   FishSchema,
   InsectSchema,
   MammalSchema,
-  PhotoSchema,
-  PlaceSchema,
   PlaneSchema,
   ReptileSchema,
-  StatsSchema,
   TrainSchema,
-  TransferSchema,
-  UnescoSchema,
-  VideoSchema,
-} from "../schemas.ts";
+} from "../schemas/subject.ts";
+import { TransferSchema } from "../schemas/transfer.ts";
+import { StatsSchema } from "../schemas/stats.ts";
 import { safeParse } from "valibot";
 import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 

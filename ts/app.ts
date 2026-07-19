@@ -8,9 +8,9 @@
  */
 
 import m from "mithril";
-import { Header } from "./components/header.ts";
+import { Header } from "./components/shell/header.ts";
 import { loadState } from "./state.ts";
-import { Sidebar } from "./components/sidebar.ts";
+import { Sidebar } from "./components/shell/sidebar.ts";
 import { AlbumsPage } from "./pages/albums.ts";
 import { AboutPage } from "./pages/about.ts";
 import { VideosPage } from "./pages/videos.ts";
