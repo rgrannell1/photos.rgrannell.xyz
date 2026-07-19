@@ -317,7 +317,7 @@ function mammalPreamble(
     return null;
   }
 
-  return `I've photographed ${irishWild.length} wild mammal species in Ireland; ` +
+  return `I've photographed ${irishWild.length} wild Irish mammal species; ` +
     `the island has about ${irishMammalCount}.`;
 }
 
