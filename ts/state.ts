@@ -37,7 +37,13 @@ import {
   readUnescos,
   readVideo,
 } from "./services/readers.ts";
-import { readBirdStats, readMammalStats } from "./services/stats.ts";
+import {
+  collectUnphotographedNemesisBirds,
+  countRegularBirdSpecies,
+  readBirdStats,
+  readMammalStats,
+  readWildBirdChecklist,
+} from "./services/stats.ts";
 import {
   readAllPhotoUrns,
   readCategoryCover,
@@ -52,11 +58,6 @@ import {
   readThings,
   toThingLinks,
 } from "./commons/things.ts";
-import {
-  collectUnphotographedNemesisBirds,
-  countRegularBirdSpecies,
-  readWildBirdChecklist,
-} from "./services/stats.ts";
 import { namesToUrns } from "./services/names.ts";
 import {
   readAllCountries,
@@ -87,58 +88,89 @@ async function loadData() {
   return { tdb, regularBirdSpecies, unphotographedNemesis };
 }
 
+// any reader taking the TribbleDB as its first argument
+type TdbReader = (tdb: TribbleDB, ...args: never[]) => unknown;
+
+// the same reader with the TribbleDB argument already applied
+type BoundReader<Reader> = Reader extends
+  (tdb: TribbleDB, ...args: infer Args) => infer Ret ? (...args: Args) => Ret
+  : never;
+
+type BoundReaders<Readers> = { [Name in keyof Readers]: BoundReader<Readers[Name]> };
+
+/*
+ * Bind every reader in a record to one TribbleDB instance, preserving each
+ * reader's remaining signature.
+ */
+function bindReaders<Readers extends Record<string, TdbReader>>(
+  tdb: TribbleDB,
+  readers: Readers,
+): BoundReaders<Readers> {
+  const bound = Object.fromEntries(
+    Object.entries(readers).map((
+      [name, reader],
+    ) => [name, reader.bind(null, tdb)]),
+  );
+
+  return bound as BoundReaders<Readers>;
+}
+
+/*
+ * Every service reader, unbound. The key is the service name; a few readers
+ * are renamed here to keep the service API uniform.
+ */
+const SERVICE_READERS = {
+  readThing,
+  readAlbum,
+  readCountry,
+  readPlace,
+  readPhoto,
+  readMammal,
+  readReptile,
+  readAmphibian,
+  readFish,
+  readInsect,
+  readVideo,
+  readLocation,
+  readUnesco,
+  readLocations,
+  readFeatures,
+  readPhotos,
+  readUnescos,
+  readThings,
+  readCountries,
+  readAllCountries,
+  namesToUrns,
+  readThingCover,
+  readThingCovers,
+  readCategoryCover,
+  readPhotosByThingIds,
+  readSeenInCountries,
+  readAlbumsByThingIds,
+  readYearRecap,
+  readVideosByThingIds,
+  toThingLinks,
+  readGeocodedPlaces,
+  readGeocodedPlacesWithCovers,
+  readTransferPolylines: getTransferPolylines,
+  readBirdStats,
+  readMammalStats,
+  readAllAlbums,
+  readAlbumPhotosByAlbumId,
+  readAlbumVideosByAlbumId,
+  readThingsByAlbumId,
+  readTripAlbums: getTripAlbums,
+  readAllVideos,
+  readAllPhotoUrns,
+  readWildBirdChecklist,
+  readNamedTypeThings,
+};
+
 /*
  * Commonly used services that depend on state
- *
- * This is not pleasant, though I don't see a simpler method.
  */
 export function loadServices(tdb: TribbleDB) {
-  return {
-    readThing: readThing.bind(null, tdb),
-    readAlbum: readAlbum.bind(null, tdb),
-    readCountry: readCountry.bind(null, tdb),
-    readPlace: readPlace.bind(null, tdb),
-    readPhoto: readPhoto.bind(null, tdb),
-    readMammal: readMammal.bind(null, tdb),
-    readReptile: readReptile.bind(null, tdb),
-    readAmphibian: readAmphibian.bind(null, tdb),
-    readFish: readFish.bind(null, tdb),
-    readInsect: readInsect.bind(null, tdb),
-    readVideo: readVideo.bind(null, tdb),
-    readLocation: readLocation.bind(null, tdb),
-    readUnesco: readUnesco.bind(null, tdb),
-    readLocations: readLocations.bind(null, tdb),
-    readFeatures: readFeatures.bind(null, tdb),
-    readPhotos: readPhotos.bind(null, tdb),
-    readUnescos: readUnescos.bind(null, tdb),
-    readThings: readThings.bind(null, tdb),
-    readCountries: readCountries.bind(null, tdb),
-    readAllCountries: readAllCountries.bind(null, tdb),
-    namesToUrns: namesToUrns.bind(null, tdb),
-    readThingCover: readThingCover.bind(null, tdb),
-    readThingCovers: readThingCovers.bind(null, tdb),
-    readCategoryCover: readCategoryCover.bind(null, tdb),
-    readPhotosByThingIds: readPhotosByThingIds.bind(null, tdb),
-    readSeenInCountries: readSeenInCountries.bind(null, tdb),
-    readAlbumsByThingIds: readAlbumsByThingIds.bind(null, tdb),
-    readYearRecap: readYearRecap.bind(null, tdb),
-    readVideosByThingIds: readVideosByThingIds.bind(null, tdb),
-    toThingLinks: toThingLinks.bind(null, tdb),
-    readGeocodedPlaces: readGeocodedPlaces.bind(null, tdb),
-    readGeocodedPlacesWithCovers: readGeocodedPlacesWithCovers.bind(null, tdb),
-    readTransferPolylines: getTransferPolylines.bind(null, tdb),
-    readBirdStats: readBirdStats.bind(null, tdb),
-    readMammalStats: readMammalStats.bind(null, tdb),
-    readAllAlbums: readAllAlbums.bind(null, tdb),
-    readAlbumPhotosByAlbumId: readAlbumPhotosByAlbumId.bind(null, tdb),
-    readAlbumVideosByAlbumId: readAlbumVideosByAlbumId.bind(null, tdb),
-    readThingsByAlbumId: readThingsByAlbumId.bind(null, tdb),
-    readTripAlbums: getTripAlbums.bind(null, tdb),
-    readAllVideos: readAllVideos.bind(null, tdb),
-    readAllPhotoUrns: readAllPhotoUrns.bind(null, tdb),
-    readWildBirdChecklist: readWildBirdChecklist.bind(null, tdb),
-    readNamedTypeThings: readNamedTypeThings.bind(null, tdb),
-  };
+  return bindReaders(tdb, SERVICE_READERS);
 }
 
 /*
