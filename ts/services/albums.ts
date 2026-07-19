@@ -127,7 +127,7 @@ export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
  * Use this to show "previous hops" on an album page (albums in the same trip
  * with an earlier minDate).
  */
-export function getTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
+export function readTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
   const { type, id } = asUrn(tripUrn);
   const ids = tdb.search({
     source: { type: KnownTypes.ALBUM },
@@ -175,7 +175,7 @@ export type TripPolyline = {
  * to lat/long. Return one polyline per transfer for drawing on the map (skip
  * null island).
  */
-export function getTransferPolylines(tdb: TribbleDB): TripPolyline[] {
+export function readTransferPolylines(tdb: TribbleDB): TripPolyline[] {
   const transferUrns = new Set(
     tdb.search({ source: { type: KnownTypes.TRANSFER } }).sources(),
   );

@@ -1,3 +1,7 @@
+/*
+ * Loads the triple store and binds the service registry to it.
+ */
+
 import type { AppWindow, State } from "./types.ts";
 import { loadTriples } from "./semantic/data.ts";
 import {
@@ -6,68 +10,15 @@ import {
   postIndexing,
 } from "./semantic/derive.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-
-import {
-  getTransferPolylines,
-  getTripAlbums,
-  readAlbumPhotosByAlbumId,
-  readAlbumsByThingIds,
-  readAlbumVideosByAlbumId,
-  readAllAlbums,
-  readThingsByAlbumId,
-  readYearRecap,
-} from "./services/albums.ts";
-import { readAllVideos, readVideosByThingIds } from "./services/videos.ts";
-import {
-  readAlbum,
-  readAmphibian,
-  readCountries,
-  readCountry,
-  readFeatures,
-  readFish,
-  readInsect,
-  readLocation,
-  readLocations,
-  readMammal,
-  readPhoto,
-  readPhotos,
-  readPlace,
-  readReptile,
-  readUnesco,
-  readUnescos,
-  readVideo,
-} from "./services/readers.ts";
+import { SERVICE_READERS } from "./services/mod.ts";
 import {
   collectUnphotographedNemesisBirds,
   countRegularBirdSpecies,
-  readBirdStats,
-  readMammalStats,
-  readWildBirdChecklist,
 } from "./services/stats.ts";
-import {
-  readAllPhotoUrns,
-  readCategoryCover,
-  readPhotosByThingIds,
-  readSeenInCountries,
-  readThingCover,
-  readThingCovers,
-} from "./services/photos.ts";
-import {
-  readNamedTypeThings,
-  readThing,
-  readThings,
-  toThingLinks,
-} from "./commons/things.ts";
-import { namesToUrns } from "./services/names.ts";
-import {
-  readAllCountries,
-  readGeocodedPlaces,
-  readGeocodedPlacesWithCovers,
-} from "./services/places.ts";
 
 /*
  * Load data from the tribbles file.
- * This is ccurrently done in a single blocking load which is not efficient.
+ * This is currently done in a single blocking load which is not efficient.
  */
 async function loadData() {
   const schema = {};
@@ -114,57 +65,6 @@ function bindReaders<Readers extends Record<string, TdbReader>>(
 
   return bound as BoundReaders<Readers>;
 }
-
-/*
- * Every service reader, unbound. The key is the service name; a few readers
- * are renamed here to keep the service API uniform.
- */
-const SERVICE_READERS = {
-  readThing,
-  readAlbum,
-  readCountry,
-  readPlace,
-  readPhoto,
-  readMammal,
-  readReptile,
-  readAmphibian,
-  readFish,
-  readInsect,
-  readVideo,
-  readLocation,
-  readUnesco,
-  readLocations,
-  readFeatures,
-  readPhotos,
-  readUnescos,
-  readThings,
-  readCountries,
-  readAllCountries,
-  namesToUrns,
-  readThingCover,
-  readThingCovers,
-  readCategoryCover,
-  readPhotosByThingIds,
-  readSeenInCountries,
-  readAlbumsByThingIds,
-  readYearRecap,
-  readVideosByThingIds,
-  toThingLinks,
-  readGeocodedPlaces,
-  readGeocodedPlacesWithCovers,
-  readTransferPolylines: getTransferPolylines,
-  readBirdStats,
-  readMammalStats,
-  readAllAlbums,
-  readAlbumPhotosByAlbumId,
-  readAlbumVideosByAlbumId,
-  readThingsByAlbumId,
-  readTripAlbums: getTripAlbums,
-  readAllVideos,
-  readAllPhotoUrns,
-  readWildBirdChecklist,
-  readNamedTypeThings,
-};
 
 /*
  * Commonly used services that depend on state
