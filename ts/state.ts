@@ -12,9 +12,11 @@ import {
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { SERVICE_READERS } from "./services/mod.ts";
 import {
-  collectUnphotographedNemesisBirds,
+  collectUnphotographedNemesis,
+  countIrishMammalSpecies,
   countRegularBirdSpecies,
 } from "./services/stats.ts";
+import { KnownTypes } from "./constants/data.ts";
 
 /*
  * Load data from the tribbles file.
@@ -30,13 +32,24 @@ async function loadData() {
 
   // Read catalogue facts before pruning drops unphotographed species.
   const regularBirdSpecies = countRegularBirdSpecies(tdb);
-  const unphotographedNemesis = collectUnphotographedNemesisBirds(tdb);
+  const irishMammalSpecies = countIrishMammalSpecies(tdb);
+  const unphotographedNemesis = collectUnphotographedNemesis(tdb, KnownTypes.BIRD);
+  const unphotographedNemesisMammals = collectUnphotographedNemesis(
+    tdb,
+    KnownTypes.MAMMAL,
+  );
 
   postIndexing(tdb);
 
   tdb.add(HARD_CODED_TRIPLES);
 
-  return { tdb, regularBirdSpecies, unphotographedNemesis };
+  return {
+    tdb,
+    regularBirdSpecies,
+    irishMammalSpecies,
+    unphotographedNemesis,
+    unphotographedNemesisMammals,
+  };
 }
 
 // any reader taking the TribbleDB as its first argument
@@ -77,7 +90,13 @@ export function loadServices(tdb: TribbleDB) {
  * Load the application state from localStorage or return defaults.
  */
 export async function loadState(): Promise<State> {
-  const { tdb, regularBirdSpecies, unphotographedNemesis } = await loadData();
+  const {
+    tdb,
+    regularBirdSpecies,
+    irishMammalSpecies,
+    unphotographedNemesis,
+    unphotographedNemesisMammals,
+  } = await loadData();
 
   return {
     currentAlbum: undefined,
@@ -86,7 +105,9 @@ export async function loadState(): Promise<State> {
     currentType: undefined,
     data: tdb,
     regularBirdSpecies,
+    irishMammalSpecies,
     unphotographedNemesis,
+    unphotographedNemesisMammals,
     sidebarVisible: false,
     services: loadServices(tdb),
   };

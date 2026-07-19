@@ -271,6 +271,8 @@ export const checklistEntry = pageEntry({
     const entries = services.readWildBirdChecklist();
     const covers = services.readThingCovers("bird");
     const regularCount = state.regularBirdSpecies;
+    const mammalEntries = services.readWildMammalChecklist();
+    const mammalCovers = services.readThingCovers("mammal");
 
     return {
       attrs: {
@@ -278,6 +280,10 @@ export const checklistEntry = pageEntry({
         covers,
         regularCount,
         nemesisBirds: state.unphotographedNemesis,
+        mammalEntries,
+        mammalCovers,
+        irishMammalCount: state.irishMammalSpecies,
+        nemesisMammals: state.unphotographedNemesisMammals,
         services,
         visible: state.sidebarVisible,
         filter,

@@ -1,9 +1,9 @@
 import { KnownTypes } from "../constants/data.ts";
 import type {
   Amphibian,
+  Arthropod,
   Bird,
   Fish,
-  Insect,
   Mammal,
   Place,
   Reptile,
@@ -21,10 +21,10 @@ import {
 } from "../schemas/place.ts";
 import {
   AmphibianSchema,
+  ArthropodSchema,
   BirdSchema,
   CarSchema,
   FishSchema,
-  InsectSchema,
   MammalSchema,
   PlaneSchema,
   ReptileSchema,
@@ -43,7 +43,7 @@ export const parseBird = parseObject(BirdSchema, "bird");
 export const parseMammal = parseObject(MammalSchema, "mammal");
 export const parseReptile = parseObject(ReptileSchema, "reptile");
 export const parseAmphibian = parseObject(AmphibianSchema, "amphibian");
-export const parseInsect = parseObject(InsectSchema, "insect");
+export const parseArthropod = parseObject(ArthropodSchema, "arthropod");
 export const parseFish = parseObject(FishSchema, "fish");
 export const parsePlane = parseObject(PlaneSchema, "plane");
 export const parseTrain = parseObject(TrainSchema, "train");
@@ -57,13 +57,13 @@ export const parseTransfer = parseObject(TransferSchema, "transfer");
  * Parse known subject types
  */
 export const parseSubject = parseByType<
-  Bird | Mammal | Reptile | Amphibian | Insect | Fish
+  Bird | Mammal | Reptile | Amphibian | Arthropod | Fish
 >({
   [KnownTypes.BIRD]: parseBird,
   [KnownTypes.MAMMAL]: parseMammal,
   [KnownTypes.REPTILE]: parseReptile,
   [KnownTypes.AMPHIBIAN]: parseAmphibian,
-  [KnownTypes.INSECT]: parseInsect,
+  [KnownTypes.ARTHROPOD]: parseArthropod,
   [KnownTypes.FISH]: parseFish,
 });
 

@@ -22,7 +22,7 @@ import {
   readCountry,
   readFeatures,
   readFish,
-  readInsect,
+  readArthropod,
   readLocation,
   readLocations,
   readMammal,
@@ -38,6 +38,7 @@ import {
   readBirdStats,
   readMammalStats,
   readWildBirdChecklist,
+  readWildMammalChecklist,
 } from "./stats.ts";
 import {
   readAllPhotoUrns,
@@ -70,7 +71,7 @@ export const SERVICE_READERS = {
   readReptile,
   readAmphibian,
   readFish,
-  readInsect,
+  readArthropod,
   readVideo,
   readLocation,
   readUnesco,
@@ -104,5 +105,6 @@ export const SERVICE_READERS = {
   readAllVideos,
   readAllPhotoUrns,
   readWildBirdChecklist,
+  readWildMammalChecklist,
   readNamedTypeThings,
 };

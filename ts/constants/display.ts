@@ -17,7 +17,6 @@ export const LISTED_TYPES: [string, string][] = [
   [KnownTypes.MAMMAL, "Mammals"],
   [KnownTypes.REPTILE, "Reptiles"],
   [KnownTypes.AMPHIBIAN, "Amphibians"],
-  [KnownTypes.INSECT, "Insects"],
   [KnownTypes.FISH, "Fish"],
   [KnownTypes.ARTHROPOD, "Arthropods"],
   [KnownTypes.CTENOPHORE, "Ctenophores"],

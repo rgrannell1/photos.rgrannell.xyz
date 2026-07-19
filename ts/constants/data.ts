@@ -20,6 +20,7 @@ export class KnownRelations {
   static FLAG = "flag";
   static NAME = "name";
   static BIRDWATCH_URL = "birdwatchUrl";
+  static IRISH = "irish";
   static FIRST_SEEN = "firstSeen";
   static CREATED_AT = "createdAt";
   static THUMBNAIL_URL = "thumbnailUrl";
@@ -48,7 +49,6 @@ export class KnownTypes {
   static MAMMAL = "mammal";
   static REPTILE = "reptile";
   static AMPHIBIAN = "amphibian";
-  static INSECT = "insect";
   static CAMERA = "camera";
   static PHOTO = "photo";
   static VIDEO = "video";
@@ -86,7 +86,6 @@ export const PrunableEntityTypes = new Set<string>([
   KnownTypes.REPTILE,
   KnownTypes.AMPHIBIAN,
   KnownTypes.FISH,
-  KnownTypes.INSECT,
   KnownTypes.ARTHROPOD,
   KnownTypes.CTENOPHORE,
   KnownTypes.PLANE,
@@ -104,7 +103,6 @@ export const BinomialTypes = new Set([
   KnownTypes.REPTILE,
   KnownTypes.AMPHIBIAN,
   KnownTypes.FISH,
-  KnownTypes.INSECT,
 ]);
 
 /*

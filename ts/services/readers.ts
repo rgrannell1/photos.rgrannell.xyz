@@ -7,10 +7,10 @@ import { readers } from "../commons/parser.ts";
 import {
   parseAlbum,
   parseAmphibian,
+  parseArthropod,
   parseCountry,
   parseFeature,
   parseFish,
-  parseInsect,
   parseLocation,
   parseMammal,
   parsePhoto,
@@ -35,7 +35,7 @@ export const { one: readTransfer, many: readTransfers } = readers(
 );
 export const { one: readMammal, many: readMammals } = readers(parseMammal);
 export const { one: readReptile, many: readReptiles } = readers(parseReptile);
-export const { one: readInsect, many: readInsects } = readers(parseInsect);
+export const { one: readArthropod, many: readArthropods } = readers(parseArthropod);
 // Thank you, english.
 export const { one: readFish, many: readFishes } = readers(parseFish);
 export const { one: readPlane, many: readPlanes } = readers(parsePlane);

@@ -124,45 +124,49 @@ export function countRegularBirdSpecies(tdb: TribbleDB): number {
   }).triples().length;
 }
 
-export type NemesisBird = {
-  birdId: string;
+export type NemesisSpecies = {
+  speciesId: string;
   name: string;
 };
 
 /*
- * Nemesis birds (things.toml nemesis="true") not yet photographed — the "yet to
- * see" targets. Must be read before medialess-species pruning drops them.
+ * Nemesis species (things.toml nemesis="true") of one type not yet photographed —
+ * the "yet to see" targets. Must be read before medialess-species pruning drops them.
  */
-export function collectUnphotographedNemesisBirds(tdb: TribbleDB): NemesisBird[] {
+export function collectUnphotographedNemesis(
+  tdb: TribbleDB,
+  speciesType: string,
+): NemesisSpecies[] {
   const nemesisTriples = tdb.search({
-    source: { type: KnownTypes.BIRD },
+    source: { type: speciesType },
     relation: KnownRelations.NEMESIS,
     target: "true",
   }).triples();
 
-  const birds: NemesisBird[] = [];
-  for (const [birdUrn] of nemesisTriples) {
-    const birdId = asUrn(birdUrn).id;
+  const species: NemesisSpecies[] = [];
+  for (const [speciesUrn] of nemesisTriples) {
+    const speciesId = asUrn(speciesUrn).id;
     const photographed = tdb.search({
-      source: { type: KnownTypes.BIRD, id: birdId },
+      source: { type: speciesType, id: speciesId },
       relation: KnownRelations.FIRST_SEEN,
     }).triples().length > 0;
     if (photographed) {
       continue;
     }
-    const birdThing = tdb.search({
-      source: { type: KnownTypes.BIRD, id: birdId },
+    const speciesThing = tdb.search({
+      source: { type: speciesType, id: speciesId },
     }).firstObject();
-    birds.push({ birdId, name: firstValue(birdThing?.name) ?? birdId });
+    species.push({ speciesId, name: firstValue(speciesThing?.name) ?? speciesId });
   }
-  return birds;
+  return species;
 }
 
 // Rarity bands (from wildlife.llm.toml) that count as scarce for the tag.
 const SCARCE_RARITY_BANDS = new Set(["scarce", "rare", "vagrant"]);
 
 export type ChecklistEntry = {
-  birdId: string;
+  speciesId: string;
+  speciesType: string;
   name: string;
   firstSeen: string;
   isIrish: boolean;
@@ -183,52 +187,56 @@ function firstValue(raw: unknown): string | undefined {
 }
 
 /*
- * Read the bird life-list, sorted chronologically by first sighting.
+ * Read the life-list for one species type, sorted chronologically by first sighting.
  *
  * Includes both wild and captive sightings. "First seen" is read directly
- * from the firstSeen triple relation on each bird URN.
- * isWild is true if the bird has been photographed in a wild context at least once.
+ * from the firstSeen triple relation on each species URN.
+ * isWild is true if the species has been photographed in a wild context at least once.
+ * isIrish comes from the wildlife catalogue's irish marker, with the BirdWatch
+ * URL as a fallback for birds published before the marker existed.
  */
-export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
+function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEntry[] {
   const firstSeenTriples = tdb.search({
-    source: { type: KnownTypes.BIRD },
+    source: { type: speciesType },
     relation: KnownRelations.FIRST_SEEN,
   }).triples();
 
-  const wildBirdIds = new Set(
+  const wildSpeciesIds = new Set(
     tdb.search({
       relation: KnownRelations.SUBJECT,
-      target: { type: KnownTypes.BIRD, qs: { context: "wild" } },
-    }).triples().map(([, , birdUrn]) => asUrn(birdUrn).id),
+      target: { type: speciesType, qs: { context: "wild" } },
+    }).triples().map(([, , speciesUrn]) => asUrn(speciesUrn).id),
   );
 
   const entries: ChecklistEntry[] = [];
 
-  for (const [birdUrn, , firstSeen] of firstSeenTriples) {
-    const birdId = asUrn(birdUrn).id;
-    if (birdId === "unknown") continue;
+  for (const [speciesUrn, , firstSeen] of firstSeenTriples) {
+    const speciesId = asUrn(speciesUrn).id;
+    if (speciesId === "unknown") continue;
 
-    const birdThing = tdb.search({
-      source: { type: KnownTypes.BIRD, id: birdId },
+    const speciesThing = tdb.search({
+      source: { type: speciesType, id: speciesId },
     }).firstObject();
 
-    const name = firstValue(birdThing?.name) ?? birdId;
+    const name = firstValue(speciesThing?.name) ?? speciesId;
 
-    const isIrish = tdb.search({
-      source: { type: KnownTypes.BIRD, id: birdId },
+    const hasBirdwatchUrl = tdb.search({
+      source: { type: speciesType, id: speciesId },
       relation: KnownRelations.BIRDWATCH_URL,
     }).triples().length > 0;
+    const isIrish = firstValue(speciesThing?.irish) === "true" || hasBirdwatchUrl;
 
-    const isWild = wildBirdIds.has(birdId);
+    const isWild = wildSpeciesIds.has(speciesId);
 
     // scarce (data-derived): IRBC-rare status, or a low abundance band
-    const scarce = firstValue(birdThing?.status) === "rare" ||
-      SCARCE_RARITY_BANDS.has(firstValue(birdThing?.rarity) ?? "");
-    const nemesis = firstValue(birdThing?.nemesis) === "true";
-    const target = firstValue(birdThing?.target) === "true";
+    const scarce = firstValue(speciesThing?.status) === "rare" ||
+      SCARCE_RARITY_BANDS.has(firstValue(speciesThing?.rarity) ?? "");
+    const nemesis = firstValue(speciesThing?.nemesis) === "true";
+    const target = firstValue(speciesThing?.target) === "true";
 
     entries.push({
-      birdId,
+      speciesId,
+      speciesType,
       name,
       firstSeen: firstSeen as string,
       isIrish,
@@ -245,4 +253,31 @@ export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
   );
 
   return entries;
+}
+
+/*
+ * Read the bird life-list.
+ */
+export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
+  return readWildlifeChecklist(tdb, KnownTypes.BIRD);
+}
+
+/*
+ * Read the mammal life-list.
+ */
+export function readWildMammalChecklist(tdb: TribbleDB): ChecklistEntry[] {
+  return readWildlifeChecklist(tdb, KnownTypes.MAMMAL);
+}
+
+/*
+ * Count mammal species in the Irish wildlife catalogue, via the irish marker
+ * triple. Must be read before medialess-species pruning drops the
+ * unphotographed catalogue entries. Returns 0 if absent.
+ */
+export function countIrishMammalSpecies(tdb: TribbleDB): number {
+  return tdb.search({
+    source: { type: KnownTypes.MAMMAL },
+    relation: KnownRelations.IRISH,
+    target: "true",
+  }).triples().length;
 }

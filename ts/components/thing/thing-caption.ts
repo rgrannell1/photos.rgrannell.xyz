@@ -6,15 +6,6 @@ import { placeEmoji, placeFeatureEmoji } from "../../services/emoji.ts";
 import { ThingUrls } from "./thing-urls.ts";
 
 export function ThingCaption() {
-  // excluding birds
-  const animals = new Set([
-    KnownTypes.AMPHIBIAN,
-    KnownTypes.REPTILE,
-    KnownTypes.INSECT,
-    KnownTypes.FISH,
-    KnownTypes.MAMMAL,
-  ]);
-
   return {
     view(vnode: m.Vnode<{ thing: TripleObject; titleExtra?: string | undefined }>) {
       const { thing, titleExtra } = vnode.attrs;

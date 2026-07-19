@@ -3,7 +3,7 @@ import { broadcast } from "../../commons/events.ts";
 import { ImagePair } from "../media/photo.ts";
 import { encodeBitmapDataURL } from "../../services/photos.ts";
 import type { Photo, Services } from "../../types.ts";
-import type { ChecklistEntry, NemesisBird } from "../../services/stats.ts";
+import type { ChecklistEntry, NemesisSpecies } from "../../services/stats.ts";
 
 // Side length in pixels of the per-species cover thumbnail in the life-list.
 const CHECKLIST_THUMB_PX = 144;
@@ -156,7 +156,7 @@ function ChecklistRow() {
       >,
     ) {
       const { entry, cover, position, highlightedYear, showScarce } = vnode.attrs;
-      const href = `#/thing/bird:${entry.birdId}`;
+      const href = `#/thing/${entry.speciesType}:${entry.speciesId}`;
 
       return m("tr.checklist-row", [
         m("td.checklist-number", {
@@ -175,19 +175,19 @@ function ChecklistRow() {
 }
 
 /*
- * A "yet to see" row for an unphotographed nemesis bird: a Pokémon-style mystery
+ * A "yet to see" row for an unphotographed nemesis species: a Pokémon-style mystery
  * silhouette in place of a photo, with the name and a nemesis tag.
  */
 function ChecklistMysteryRow() {
   return {
-    view(vnode: m.Vnode<{ bird: NemesisBird }>) {
-      const { bird } = vnode.attrs;
+    view(vnode: m.Vnode<{ species: NemesisSpecies; glyph: string }>) {
+      const { species, glyph } = vnode.attrs;
 
       return m("tr.checklist-row.checklist-row--mystery", [
         m("td.checklist-number"),
-        m("td.checklist-photo", m("div.mystery-bird", m("span.mystery-bird-glyph", "🐦"))),
+        m("td.checklist-photo", m("div.mystery-bird", m("span.mystery-bird-glyph", glyph))),
         m("td.checklist-name", [
-          m("span.checklist-mystery-name", bird.name),
+          m("span.checklist-mystery-name", species.name),
           m("span.checklist-tag.checklist-tag--nemesis", "nemesis"),
         ]),
         m("td.checklist-first-seen.checklist-first-seen--pending", "yet to photograph"),
@@ -206,12 +206,13 @@ function ChecklistTable() {
         {
           entries: ChecklistEntry[];
           covers: Map<string, Photo>;
-          nemesisBirds: NemesisBird[];
+          nemesisSpecies: NemesisSpecies[];
+          mysteryGlyph: string;
           filter: string | undefined;
         }
       >,
     ) {
-      const { entries, covers, nemesisBirds, filter } = vnode.attrs;
+      const { entries, covers, nemesisSpecies, mysteryGlyph, filter } = vnode.attrs;
 
       // Scarce tags and "yet to see" birds are Irish-only; status tags always show.
       const irishView = filter === "ireland";
@@ -251,15 +252,17 @@ function ChecklistTable() {
             const parity = yearParity.get(firstSeenYear(entry.firstSeen));
             return m(ChecklistRow, {
               entry,
-              cover: covers.get(entry.birdId),
+              cover: covers.get(entry.speciesId),
               position,
               highlightedYear: parity === 1,
               showScarce: irishView,
             });
           }),
-          // Unphotographed nemesis birds ("yet to see") at the bottom, Irish view only
+          // Unphotographed nemesis species ("yet to see") at the bottom, Irish view only
           ...(irishView
-            ? nemesisBirds.map((bird) => m(ChecklistMysteryRow, { bird }))
+            ? nemesisSpecies.map((species) =>
+              m(ChecklistMysteryRow, { species, glyph: mysteryGlyph })
+            )
             : []),
         ]),
       ]);
@@ -271,7 +274,11 @@ type ChecklistPageAttrs = {
   entries: ChecklistEntry[];
   covers: Map<string, Photo>;
   regularCount: number;
-  nemesisBirds: NemesisBird[];
+  nemesisBirds: NemesisSpecies[];
+  mammalEntries: ChecklistEntry[];
+  mammalCovers: Map<string, Photo>;
+  irishMammalCount: number;
+  nemesisMammals: NemesisSpecies[];
   services: Services;
   visible: boolean;
   filter: string | undefined;
@@ -298,14 +305,80 @@ function lifeListPreamble(
 }
 
 /*
- * Render the bird life-list checklist page.
- * Only includes birds seen in a wild context.
+ * A one-line intro for the mammal section: how many wild mammal species
+ * photographed in Ireland, and roughly how many the island has.
+ */
+function mammalPreamble(
+  mammalEntries: ChecklistEntry[],
+  irishMammalCount: number,
+): string | null {
+  const irishWild = mammalEntries.filter((entry) => entry.isIrish && entry.isWild);
+  if (irishWild.length === 0) {
+    return null;
+  }
+
+  return `I've photographed ${irishWild.length} wild mammal species in Ireland; ` +
+    `the island has about ${irishMammalCount}.`;
+}
+
+/*
+ * The Irish mammal section, appended below the bird table in the Irish view.
+ */
+function MammalSection() {
+  return {
+    view(
+      vnode: m.Vnode<
+        {
+          mammalEntries: ChecklistEntry[];
+          mammalCovers: Map<string, Photo>;
+          irishMammalCount: number;
+          nemesisMammals: NemesisSpecies[];
+        }
+      >,
+    ) {
+      const { mammalEntries, mammalCovers, irishMammalCount, nemesisMammals } =
+        vnode.attrs;
+
+      const preamble = mammalPreamble(mammalEntries, irishMammalCount);
+
+      return [
+        m("section.album-metadata", [
+          m("h2.albums-header", "Mammals"),
+        ]),
+        preamble ? m("p.photo-album-description", preamble) : null,
+        m("section.checklist-container", [
+          m(ChecklistTable, {
+            entries: mammalEntries,
+            covers: mammalCovers,
+            nemesisSpecies: nemesisMammals,
+            mysteryGlyph: "🐾",
+            filter: "ireland",
+          }),
+        ]),
+      ];
+    },
+  };
+}
+
+/*
+ * Render the life-list checklist page: birds, with Irish mammals appended
+ * in the Irish view. Only includes species seen in a wild context.
  */
 export function ChecklistPage() {
   return {
     view(vnode: m.Vnode<ChecklistPageAttrs>) {
-      const { entries, covers, regularCount, nemesisBirds, visible, filter } =
-        vnode.attrs;
+      const {
+        entries,
+        covers,
+        regularCount,
+        nemesisBirds,
+        mammalEntries,
+        mammalCovers,
+        irishMammalCount,
+        nemesisMammals,
+        visible,
+        filter,
+      } = vnode.attrs;
 
       const onSelect = (newFilter: string) => {
         broadcast("navigate", { route: `/life-list/${newFilter}` });
@@ -314,6 +387,9 @@ export function ChecklistPage() {
       const preamble = lifeListPreamble(entries, regularCount);
       const description = "I am not a very committed birder, but I do like " +
         "photographing the different species I see. Here's my life list.";
+
+      // The mammal section only shows in the Irish view; other views stay birds-only.
+      const irishView = filter === "ireland";
 
       return m("div", {
         class: visible ? "page sidebar-visible" : "page",
@@ -328,8 +404,22 @@ export function ChecklistPage() {
           description,
         ),
         m("section.checklist-container", [
-          m(ChecklistTable, { entries, covers, nemesisBirds, filter }),
+          m(ChecklistTable, {
+            entries,
+            covers,
+            nemesisSpecies: nemesisBirds,
+            mysteryGlyph: "🐦",
+            filter,
+          }),
         ]),
+        irishView
+          ? m(MammalSection, {
+            mammalEntries,
+            mammalCovers,
+            irishMammalCount,
+            nemesisMammals,
+          })
+          : null,
       ]);
     },
   };

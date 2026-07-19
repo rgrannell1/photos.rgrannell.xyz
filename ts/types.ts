@@ -1,14 +1,14 @@
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { loadServices } from "./state.ts";
-import type { NemesisBird } from "./services/stats.ts";
+import type { NemesisSpecies } from "./services/stats.ts";
 import type {
   parseAlbum,
   parseAmphibian,
   parseBird,
   parseCountry,
   parseFeature,
+  parseArthropod,
   parseFish,
-  parseInsect,
   parseMammal,
   parsePhoto,
   parsePlace,
@@ -65,7 +65,9 @@ export type State = {
   services: Services;
   // Catalogue facts captured before medialess species are pruned from `data`.
   regularBirdSpecies: number;
-  unphotographedNemesis: NemesisBird[];
+  irishMammalSpecies: number;
+  unphotographedNemesis: NemesisSpecies[];
+  unphotographedNemesisMammals: NemesisSpecies[];
   sidebarVisible: boolean;
   currentAlbum: string | undefined;
   currentPhoto: string | undefined;
@@ -100,7 +102,7 @@ export type Reptile = NonNullable<ReturnType<typeof parseReptile>>;
 
 export type Amphibian = NonNullable<ReturnType<typeof parseAmphibian>>;
 
-export type Insect = NonNullable<ReturnType<typeof parseInsect>>;
+export type Arthropod = NonNullable<ReturnType<typeof parseArthropod>>;
 
 export type Fish = NonNullable<ReturnType<typeof parseFish>>;
 
@@ -113,7 +115,7 @@ export type Subject =
   | Mammal
   | Reptile
   | Amphibian
-  | Insect
+  | Arthropod
   | Fish
   | Plane;
 
@@ -130,7 +132,7 @@ export type Thing =
   | Mammal
   | Reptile
   | Amphibian
-  | Insect
+  | Arthropod
   | Plane;
 
 export function isACountry(place: Place | Country): place is Country {

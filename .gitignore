@@ -14,3 +14,4 @@ logs/
 .playwright-mcp/
 llms.txt
 plan.md
+design.md
