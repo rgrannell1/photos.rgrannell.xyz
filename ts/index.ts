@@ -1,4 +1,5 @@
 import m from "mithril";
-import { routes } from "./app.ts";
+import "./app/listeners.ts";
+import { routes } from "./app/routes.ts";
 
 m.route(document.body, "/albums", routes);

@@ -1,42 +1,31 @@
 /*
- * The route table and shared page shell. Each route is a PageEntry: an
- * optional `onmatch` hook for per-navigation work (param reads, per-visit
- * loads) and a `resolve` function building the page's attrs on each redraw.
- * One RouteResolver renders every page inside the same header/sidebar shell —
- * Mithril's documented pattern for wrapping a layout. Page components stay
- * module-level singletons, created once, so mount semantics are unchanged.
+ * The route entries: one PageEntry per page, reading params and services to
+ * build each page's attrs. Page components stay module-level singletons,
+ * created once, so mount semantics are unchanged.
  */
 
 import m from "mithril";
-import { Header } from "./components/shell/header.ts";
-import { loadState } from "./state.ts";
-import { Sidebar } from "./components/shell/sidebar.ts";
-import { AlbumsPage } from "./components/pages/albums.ts";
-import { AboutPage } from "./components/pages/about.ts";
-import { VideosPage } from "./components/pages/videos.ts";
-import { listen } from "./commons/events.ts";
-import { setify } from "./commons/sets.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { albumUrn, countryUrn, photoUrn, videoUrn } from "./models/urn.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { AlbumPage } from "./components/pages/album.ts";
-import { PhotosPage } from "./components/pages/photos.ts";
-import { PhotoPage } from "./components/pages/photo.ts";
-import { VideoPage } from "./components/pages/video.ts";
-import { ListingPage } from "./components/pages/listing.ts";
-import { ListingsPage } from "./components/pages/listings.ts";
-import { ChecklistPage } from "./components/pages/checklist.ts";
-import type { Album } from "./types.ts";
-import { ThingPage } from "./components/pages/thing.ts";
-import { MapPage } from "./components/pages/map.ts";
-import type { GeocodedPlaceWithCover } from "./services/places.ts";
-import type { TripPolyline } from "./services/albums.ts";
+import { setify } from "../commons/sets.ts";
+import { albumUrn, countryUrn, photoUrn, videoUrn } from "../models/urn.ts";
+import { AlbumsPage } from "../components/pages/albums.ts";
+import { AboutPage } from "../components/pages/about.ts";
+import { VideosPage } from "../components/pages/videos.ts";
+import { AlbumPage } from "../components/pages/album.ts";
+import { PhotosPage } from "../components/pages/photos.ts";
+import { PhotoPage } from "../components/pages/photo.ts";
+import { VideoPage } from "../components/pages/video.ts";
+import { ListingPage } from "../components/pages/listing.ts";
+import { ListingsPage } from "../components/pages/listings.ts";
+import { ChecklistPage } from "../components/pages/checklist.ts";
+import { ThingPage } from "../components/pages/thing.ts";
+import { MapPage } from "../components/pages/map.ts";
+import type { GeocodedPlaceWithCover } from "../services/places.ts";
+import type { TripPolyline } from "../services/albums.ts";
+import { services, state } from "./context.ts";
+import { pageEntry } from "./shell.ts";
 
-const state = await loadState();
-const services = state.services;
-
-const headerComponent = Header();
-const sidebarComponent = Sidebar();
 const albumsPageComponent = AlbumsPage();
 const albumPageComponent = AlbumPage();
 const aboutPageComponent = AboutPage();
@@ -50,77 +39,8 @@ const checklistPageComponent = ChecklistPage();
 const thingPageComponent = ThingPage();
 const mapPageComponent = MapPage();
 
-listen("navigate", (event: Event) => {
-  const { route } = (event as CustomEvent).detail;
-  console.info(`navigating to route: ${route}`);
-
-  state.sidebarVisible = false;
-  m.route.set(route);
-});
-
-listen("click_burger_menu", () => {
-  state.sidebarVisible = !state.sidebarVisible;
-});
-
-/*
- * A resolved page render: the page's attrs, plus an optional extra class on
- * the shell root (e.g the album-banner layout).
- */
-type ResolvedPage<PageAttrs> = {
-  attrs: PageAttrs;
-  appClass?: string | undefined;
-};
-
-type PageEntry<PageAttrs> = {
-  page: m.Component<PageAttrs>;
-  // runs once per navigation: read params, do per-visit loads
-  onmatch?: (params: m.Params) => void;
-  // builds the page attrs each redraw; a string is an error rendered bare
-  resolve: () => ResolvedPage<NoInfer<PageAttrs>> | string;
-};
-
-/*
- * Identity helper: infers the attrs type from the page component, so each
- * entry's resolve() is checked against what its page actually accepts.
- */
-function pageEntry<PageAttrs>(entry: PageEntry<PageAttrs>): PageEntry<PageAttrs> {
-  return entry;
-}
-
-/*
- * Wrap a PageEntry in the shared shell. Using a RouteResolver `render` (not a
- * per-route component) is what lets one layout serve every route without
- * remounting the header and sidebar on navigation.
- */
-function routeResolver<PageAttrs>(entry: PageEntry<PageAttrs>): m.RouteResolver {
-  return {
-    onmatch(params: m.Params) {
-      entry.onmatch?.(params);
-    },
-    render() {
-      const resolved = entry.resolve();
-
-      if (typeof resolved === "string") {
-        return m("p", resolved);
-      }
-
-      return m("div.photos-app", { class: resolved.appClass }, [
-        m(headerComponent),
-        m("div.app-container", {
-          class: state.sidebarVisible ? "sidebar-visible" : undefined,
-        }, [
-          m(sidebarComponent, { visible: state.sidebarVisible }),
-          // The generic attrs satisfy the page's attrs by construction, but
-          // m()'s overloads cannot see through the type parameter
-          m(entry.page, resolved.attrs as PageAttrs & m.Attributes),
-        ]),
-      ]);
-    },
-  };
-}
-
 /* */
-const albumsEntry = pageEntry({
+export const albumsEntry = pageEntry({
   page: albumsPageComponent,
   resolve() {
     const countrySlug = m.route.param("country");
@@ -143,7 +63,7 @@ const albumsEntry = pageEntry({
 });
 
 /* */
-const albumEntry = pageEntry({
+export const albumEntry = pageEntry({
   page: albumPageComponent,
   resolve() {
     const id = m.route.param("id");
@@ -189,7 +109,7 @@ const albumEntry = pageEntry({
 });
 
 /* */
-const aboutEntry = pageEntry({
+export const aboutEntry = pageEntry({
   page: aboutPageComponent,
   resolve() {
     return {
@@ -200,7 +120,7 @@ const aboutEntry = pageEntry({
 });
 
 /* */
-const videosEntry = pageEntry({
+export const videosEntry = pageEntry({
   page: videosPageComponent,
   resolve() {
     return {
@@ -217,7 +137,7 @@ const videosEntry = pageEntry({
 let photoUrns: string[] = [];
 
 /* */
-const photosEntry = pageEntry({
+export const photosEntry = pageEntry({
   page: photosPageComponent,
   onmatch() {
     photoUrns = services.readAllPhotoUrns();
@@ -230,7 +150,7 @@ const photosEntry = pageEntry({
 });
 
 /* */
-const thingEntry = pageEntry({
+export const thingEntry = pageEntry({
   page: thingPageComponent,
   resolve() {
     const pair = m.route.param("pair");
@@ -263,7 +183,7 @@ const thingEntry = pageEntry({
 });
 
 /* */
-const photoEntry = pageEntry({
+export const photoEntry = pageEntry({
   page: photoPageComponent,
   onmatch(params) {
     state.currentPhoto = photoUrn(params.id as string);
@@ -285,7 +205,7 @@ const photoEntry = pageEntry({
 });
 
 /* */
-const videoEntry = pageEntry({
+export const videoEntry = pageEntry({
   page: videoPageComponent,
   onmatch(params) {
     state.currentUrn = videoUrn(params.id as string);
@@ -307,7 +227,7 @@ const videoEntry = pageEntry({
 });
 
 /* */
-const listingEntry = pageEntry({
+export const listingEntry = pageEntry({
   page: listingPageComponent,
   onmatch(params) {
     state.currentType = params.type as string;
@@ -333,7 +253,7 @@ const listingEntry = pageEntry({
 });
 
 /* */
-const listingsEntry = pageEntry({
+export const listingsEntry = pageEntry({
   page: listingsPageComponent,
   resolve() {
     return {
@@ -343,7 +263,7 @@ const listingsEntry = pageEntry({
 });
 
 /* */
-const checklistEntry = pageEntry({
+export const checklistEntry = pageEntry({
   page: checklistPageComponent,
   resolve() {
     // The life-list defaults to the Irish view when no filter is in the URL.
@@ -371,7 +291,7 @@ let placesForMap: GeocodedPlaceWithCover[] = [];
 let tripPolylines: TripPolyline[] = [];
 
 /* */
-const mapEntry = pageEntry({
+export const mapEntry = pageEntry({
   page: mapPageComponent,
   onmatch() {
     placesForMap = services.readGeocodedPlacesWithCovers();
@@ -387,21 +307,3 @@ const mapEntry = pageEntry({
     };
   },
 });
-
-export const routes: Record<string, m.RouteResolver> = {
-  "/albums": routeResolver(albumsEntry),
-  "/albums/:country": routeResolver(albumsEntry),
-  "/about": routeResolver(aboutEntry),
-  "/map": routeResolver(mapEntry),
-  "/videos": routeResolver(videosEntry),
-  "/photos": routeResolver(photosEntry),
-  "/album/:id": routeResolver(albumEntry),
-  "/thing/:pair": routeResolver(thingEntry),
-  "/photo/:id": routeResolver(photoEntry),
-  "/video/:id": routeResolver(videoEntry),
-  "/listing/:type": routeResolver(listingEntry),
-  "/listing/:type/:filter": routeResolver(listingEntry),
-  "/listings": routeResolver(listingsEntry),
-  "/life-list": routeResolver(checklistEntry),
-  "/life-list/:filter": routeResolver(checklistEntry),
-};
