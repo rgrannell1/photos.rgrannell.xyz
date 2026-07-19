@@ -1,11 +1,11 @@
 import m from "mithril";
-import { isSmallerThan, setTitle, sharePhotoUrl } from "../services/window.ts";
-import { AlbumBanner } from "../components/album/album-banner.ts";
-import { AlbumShareButton } from "../components/album/album-share-button.ts";
-import { countryFlagLinks } from "../components/thing/place-links.ts";
-import { Video } from "../components/media/video.ts";
-import type { VideoAttrs } from "../components/media/video.ts";
-import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
+import { isSmallerThan, setTitle, sharePhotoUrl } from "../../services/window.ts";
+import { AlbumBanner } from "../album/album-banner.ts";
+import { AlbumShareButton } from "../album/album-share-button.ts";
+import { countryFlagLinks } from "../thing/place-links.ts";
+import { Video } from "../media/video.ts";
+import type { VideoAttrs } from "../media/video.ts";
+import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
 
 import type {
   Album,
@@ -14,16 +14,16 @@ import type {
   Services,
   Thing,
   Video as VideoType,
-} from "../types.ts";
-import { Photo } from "../components/media/photo.ts";
-import type { PhotoAttrs } from "../components/media/photo.ts";
-import { AlbumsButton } from "../components/album/albums-button.ts";
-import { countLabel, preprocessDescription } from "../commons/strings.ts";
-import { setify } from "../commons/sets.ts";
-import { SMALL_DEVICE_WIDTH } from "../constants/layout.ts";
-import { KnownRelations } from "../constants/data.ts";
+} from "../../types.ts";
+import { Photo } from "../media/photo.ts";
+import type { PhotoAttrs } from "../media/photo.ts";
+import { AlbumsButton } from "../album/albums-button.ts";
+import { countLabel, preprocessDescription } from "../../commons/strings.ts";
+import { setify } from "../../commons/sets.ts";
+import { SMALL_DEVICE_WIDTH } from "../../constants/layout.ts";
+import { KnownRelations } from "../../constants/data.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { TripPreviousAlbums } from "../components/album/trip-previous-albums.ts";
+import { TripPreviousAlbums } from "../album/trip-previous-albums.ts";
 
 type AlbumAttrs = {
   album: Album;

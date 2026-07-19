@@ -1,19 +1,19 @@
 import m from "mithril";
-import { ThingSubtitle, ThingTitle } from "../components/thing/thing-title.ts";
+import { ThingSubtitle, ThingTitle } from "../thing/thing-title.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { arrayify } from "../commons/arrays.ts";
-import type { Photo as PhotoType, Services } from "../types.ts";
-import { CountryLink } from "../components/thing/place-links.ts";
-import { Video } from "../components/media/video.ts";
-import { AlbumCard } from "../components/album/album-card.ts";
-import { PhotoGrid } from "../components/media/photo-grid.ts";
-import { ThingList } from "../components/thing/thing-list.ts";
-import { setify, setOf } from "../commons/sets.ts";
-import { BinomialTypes, KnownRelations } from "../constants/data.ts";
-import { ListingLink } from "../components/thing/listing-link.ts";
-import { ThingUrls } from "../components/thing/thing-urls.ts";
-import { HeartRain } from "../components/shell/love.ts";
+import { arrayify } from "../../commons/arrays.ts";
+import type { Photo as PhotoType, Services } from "../../types.ts";
+import { CountryLink } from "../thing/place-links.ts";
+import { Video } from "../media/video.ts";
+import { AlbumCard } from "../album/album-card.ts";
+import { PhotoGrid } from "../media/photo-grid.ts";
+import { ThingList } from "../thing/thing-list.ts";
+import { setify, setOf } from "../../commons/sets.ts";
+import { BinomialTypes, KnownRelations } from "../../constants/data.ts";
+import { ListingLink } from "../thing/listing-link.ts";
+import { ThingUrls } from "../thing/thing-urls.ts";
+import { HeartRain } from "../shell/love.ts";
 
 type ThingPageAttrs = {
   urn: string;

@@ -1,8 +1,8 @@
 import m from "mithril";
 import type { Map as LeafletMap, LayerGroup, LatLngBounds, PolylineOptions } from "leaflet";
-import type { TripPolyline } from "../services/albums.ts";
-import type { GeocodedPlace } from "../services/places.ts";
-import { urnToUrl } from "../models/urn.ts";
+import type { TripPolyline } from "../../services/albums.ts";
+import type { GeocodedPlace } from "../../services/places.ts";
+import { urnToUrl } from "../../models/urn.ts";
 
 type LeafletLib = typeof import("leaflet");
 type PlaceWithCover = GeocodedPlace & { coverThumbnailUrl?: string | undefined };

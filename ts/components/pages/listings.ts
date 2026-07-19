@@ -1,9 +1,9 @@
 import m from "mithril";
-import { navigate } from "../commons/events.ts";
-import type { Services } from "../types.ts";
-import { PhotoAlbum } from "../components/album/photo-album.ts";
-import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
-import { LISTED_TYPES } from "../constants/display.ts";
+import { navigate } from "../../commons/events.ts";
+import type { Services } from "../../types.ts";
+import { PhotoAlbum } from "../album/photo-album.ts";
+import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
+import { LISTED_TYPES } from "../../constants/display.ts";
 
 type CategoryDef = {
   type: string;

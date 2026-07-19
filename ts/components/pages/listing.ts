@@ -1,15 +1,15 @@
 import m from "mithril";
-import { KnownTypes } from "../constants/data.ts";
-import { NonListableTypes } from "../constants/display.ts";
-import { capitalise, pluralise } from "../commons/strings.ts";
+import { KnownTypes } from "../../constants/data.ts";
+import { NonListableTypes } from "../../constants/display.ts";
+import { capitalise, pluralise } from "../../commons/strings.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { broadcast, navigate } from "../commons/events.ts";
-import type { Services } from "../types.ts";
-import { PhotoAlbum } from "../components/album/photo-album.ts";
-import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
-import { one } from "../commons/arrays.ts";
-import { ThingCaption } from "../components/thing/thing-caption.ts";
-import { createBatchRenderer } from "../components/media/batch-render.ts";
+import { broadcast, navigate } from "../../commons/events.ts";
+import type { Services } from "../../types.ts";
+import { PhotoAlbum } from "../album/photo-album.ts";
+import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
+import { one } from "../../commons/arrays.ts";
+import { ThingCaption } from "../thing/thing-caption.ts";
+import { createBatchRenderer } from "../media/batch-render.ts";
 
 /*
  * Derive an optional inline badge for the listing card title.

@@ -1,11 +1,11 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { sharePhotoUrl } from "../services/window.ts";
-import { Photo } from "../components/media/photo.ts";
-import type { Photo as PhotoType, Services } from "../types.ts";
-import { AlbumButton } from "../components/album/album-button.ts";
-import { ExifData } from "../components/media/exif-data.ts";
-import { MediaInfo } from "../components/media/media-info.ts";
+import { sharePhotoUrl } from "../../services/window.ts";
+import { Photo } from "../media/photo.ts";
+import type { Photo as PhotoType, Services } from "../../types.ts";
+import { AlbumButton } from "../album/album-button.ts";
+import { ExifData } from "../media/exif-data.ts";
+import { MediaInfo } from "../media/media-info.ts";
 
 type PhotoPageAttrs = {
   photo: PhotoType;

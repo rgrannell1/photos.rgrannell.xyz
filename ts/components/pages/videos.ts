@@ -1,9 +1,9 @@
 import m from "mithril";
-import type { Video as VideoType } from "../types.ts";
-import { Video } from "../components/media/video.ts";
-import type { VideoAttrs } from "../components/media/video.ts";
-import { createBatchRenderer } from "../components/media/batch-render.ts";
-import { countLabel } from "../commons/strings.ts";
+import type { Video as VideoType } from "../../types.ts";
+import { Video } from "../media/video.ts";
+import type { VideoAttrs } from "../media/video.ts";
+import { createBatchRenderer } from "../media/batch-render.ts";
+import { countLabel } from "../../commons/strings.ts";
 
 type VideosPageAttrs = {
   videos: VideoType[];

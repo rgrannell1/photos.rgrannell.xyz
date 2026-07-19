@@ -1,7 +1,7 @@
 import m from "mithril";
-import type { Photo as PhotoType, Services } from "../types.ts";
-import { PhotoGrid } from "../components/media/photo-grid.ts";
-import { countLabel } from "../commons/strings.ts";
+import type { Photo as PhotoType, Services } from "../../types.ts";
+import { PhotoGrid } from "../media/photo-grid.ts";
+import { countLabel } from "../../commons/strings.ts";
 
 /* Read the first `limit` photos by URN, skipping unparseable entries. */
 function readPhotosByLimit(

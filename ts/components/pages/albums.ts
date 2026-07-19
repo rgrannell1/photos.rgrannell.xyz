@@ -1,16 +1,16 @@
 import m from "mithril";
-import { AlbumBanner } from "../components/album/album-banner.ts";
-import { AlbumStats } from "../components/album/album-stats.ts";
-import { YearRecap } from "../components/album/year-recap.ts";
-import type { Album, Services } from "../types.ts";
-import { encodeBitmapDataURL, loadingMode } from "../services/photos.ts";
-import { AlbumCard } from "../components/album/album-card.ts";
-import { setTitle } from "../services/window.ts";
-import { broadcast } from "../commons/events.ts";
-import { albumYear } from "../services/albums.ts";
-import { setify } from "../commons/sets.ts";
-import { CountryFilter } from "../components/album/country-filter.ts";
-import { ALBUMS_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../constants/banners.ts";
+import { AlbumBanner } from "../album/album-banner.ts";
+import { AlbumStats } from "../album/album-stats.ts";
+import { YearRecap } from "../album/year-recap.ts";
+import type { Album, Services } from "../../types.ts";
+import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
+import { AlbumCard } from "../album/album-card.ts";
+import { setTitle } from "../../services/window.ts";
+import { broadcast } from "../../commons/events.ts";
+import { albumYear } from "../../services/albums.ts";
+import { setify } from "../../commons/sets.ts";
+import { CountryFilter } from "../album/country-filter.ts";
+import { ALBUMS_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../../constants/banners.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];

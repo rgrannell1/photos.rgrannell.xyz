@@ -1,8 +1,8 @@
 import m from "mithril";
-import { Video } from "../components/media/video.ts";
-import type { Video as VideoType, Services } from "../types.ts";
-import { AlbumButton } from "../components/album/album-button.ts";
-import { MediaInfo } from "../components/media/media-info.ts";
+import { Video } from "../media/video.ts";
+import type { Video as VideoType, Services } from "../../types.ts";
+import { AlbumButton } from "../album/album-button.ts";
+import { MediaInfo } from "../media/media-info.ts";
 
 type VideoPageAttrs = {
   video: VideoType;

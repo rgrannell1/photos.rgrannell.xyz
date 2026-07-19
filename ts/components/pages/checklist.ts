@@ -1,9 +1,9 @@
 import m from "mithril";
-import { broadcast } from "../commons/events.ts";
-import { ImagePair } from "../components/media/photo.ts";
-import { encodeBitmapDataURL } from "../services/photos.ts";
-import type { Photo, Services } from "../types.ts";
-import type { ChecklistEntry, NemesisBird } from "../services/stats.ts";
+import { broadcast } from "../../commons/events.ts";
+import { ImagePair } from "../media/photo.ts";
+import { encodeBitmapDataURL } from "../../services/photos.ts";
+import type { Photo, Services } from "../../types.ts";
+import type { ChecklistEntry, NemesisBird } from "../../services/stats.ts";
 
 // Side length in pixels of the per-species cover thumbnail in the life-list.
 const CHECKLIST_THUMB_PX = 144;
