@@ -2,6 +2,10 @@
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "es2022", "deno.ns"]
   },
+  "imports": {
+    "@rgrannell1/tribbledb": "../../tribbledb/src/mod.ts",
+    "@rgrannell1/tribbledb/v2": "../../tribbledb/src/v2/mod.ts"
+  },
   "lint": {
     "plugins": ["./lint-plugins/no-single-letter-vars.ts"],
     "include": ["ts/", "tests/", "workers/", "lint-plugins/"],

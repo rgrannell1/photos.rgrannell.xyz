@@ -1,5 +1,6 @@
 import m from "mithril";
 import { navigate } from "../../commons/events.ts";
+import { MISCELLANEOUS_ALBUM_ID } from "../../constants/data.ts";
 
 type AlbumButtonAttrs = {
   id: string;
@@ -12,6 +13,11 @@ export function AlbumButton() {
   return {
     view(vnode: m.Vnode<AlbumButtonAttrs>) {
       const { id } = vnode.attrs;
+
+      // the hidden miscellaneous album has no album page to link to
+      if (id === MISCELLANEOUS_ALBUM_ID) {
+        return null;
+      }
 
       return m("a", {
         href: `#/album/${id}`,

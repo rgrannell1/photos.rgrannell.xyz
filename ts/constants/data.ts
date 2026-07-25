@@ -146,6 +146,9 @@ export const CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
 // CDN base URL for expanding relative CDN paths in triples
 export const ENDPOINT = "https://photos-cdn.rgrannell.xyz";
 
+// Hidden album id; its photos publish but no album page exists, so never link to it
+export const MISCELLANEOUS_ALBUM_ID = "miscellaneous";
+
 /*
  * A list of cameras I've taken photos on
  */
