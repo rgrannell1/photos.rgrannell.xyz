@@ -72,6 +72,11 @@ export async function buildTS() {
     treeShaking: true,
     sourcemap: true,
     minify: true,
+    // bundle against the tribbledb source, matching the deno.json import map
+    alias: {
+      "@rgrannell1/tribbledb/v2": "../../tribbledb/src/v2/mod.ts",
+      "@rgrannell1/tribbledb": "../../tribbledb/src/mod.ts",
+    },
   });
 }
 

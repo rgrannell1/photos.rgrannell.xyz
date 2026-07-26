@@ -31,7 +31,7 @@ Deno.test("All countries are named and have a flag", () => {
     throw new Error("no countries found in the data");
   }
 
-  const unnamed = readCountries(tdb, countryUrns)
+  const unnamed = readCountries(tdb, new Set(countryUrns))
     .filter((country) => !country.name || !country.flag);
 
   if (unnamed.length > 0) {

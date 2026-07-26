@@ -11,11 +11,6 @@ async function shareAlbum(
   url: string,
   name: string,
 ) {
-  if (!navigator.share) {
-    await navigator.clipboard.writeText(url);
-    return;
-  }
-
   try {
     await navigator.share({
       title: `${name} - ${window.location.hostname}`,
@@ -42,6 +37,11 @@ export function AlbumShareButton() {
   return {
     view(vnode: m.Vnode<AlbumShareButtonAttrs>) {
       const { url, name } = vnode.attrs;
+
+      // without the share API (desktop), link straight to the sharephoto domain
+      if (!navigator.share) {
+        return m("a.photo-share-button", { href: url, rel: "noreferrer" }, "[share]");
+      }
 
       return m("button.photo-share-button", {
         onclick: shareAlbum.bind(null, localState, url, name),

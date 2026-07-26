@@ -2816,7 +2816,7 @@
     "packageJson": {
       "dependencies": [
         "npm:@cloudflare/workers-types@^4.20251128.0",
-        "npm:@rgrannell1/tribbledb@^0.0.32",
+        "npm:@rgrannell1/tribbledb@^0.0.33",
         "npm:@types/csso@^5.0.4",
         "npm:@types/leaflet@^1.9.20",
         "npm:@types/mithril@^2.2.7",
