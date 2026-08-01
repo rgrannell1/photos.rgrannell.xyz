@@ -151,20 +151,15 @@ button:disabled {
   padding: 0px 20px 0px 36px;
 }
 
-.dark-light-button-toggle {
-  cursor: pointer;
-}
-
-.header li a, .header li .dark-light-button-toggle {
+.header li a {
   display: block;
   color: var(--navbar-font-colour);
   text-align: left;
-  padding: 4px 15px;
   padding: 4px 0px;
   text-decoration: none;
 }
 
-.brand, .burger, .dark-light-button-toggle {
+.brand, .burger {
   font-size: 0.75em;
   color: var(--brand-color);
   cursor: pointer;
@@ -188,10 +183,6 @@ button:disabled {
 .burger:hover {
   background-color: var(--hover-background-color);
   cursor: pointer;
-}
-
-.dark-light-button-toggle:hover {
-  background-color: var(--hover-background-color);
 }
 
 .thumbnail-video {
@@ -299,7 +290,6 @@ button:disabled {
   cursor: pointer;
   position: relative;
   display: inline-block;
-  flex: content;
 }
 
 .thumbnail-video {
@@ -308,7 +298,7 @@ button:disabled {
 }
 
 @media (hover: hover) {
-  .photo:hover, photo-album:hover {
+  .photo:hover {
     filter: brightness(80%);
   }
 }
@@ -393,10 +383,6 @@ button:disabled {
   margin-top: 1em;
   max-width: 900px;
   word-spacing: normal;
-}
-
-.photo-album-countries {
-  display: inline;
 }
 
 .country-filter {
@@ -553,7 +539,6 @@ button:disabled {
     width: 100vw;
     margin-left: calc(-1 * (100vw - 100%));
     column-gap: 0;
-    flex-direction: column;
   }
 
   /* each album is wrapped in an anonymous div; make it fill the row */
@@ -590,7 +575,6 @@ button:disabled {
     width: 100vw;
     margin-left: calc(-1 * (100vw - 100%));
     column-gap: 0;
-    flex-direction: column;
   }
 
   /* each Photo() renders an outer div wrapper — make it fill the row */
@@ -623,7 +607,6 @@ button:disabled {
     width: 100vw;
     margin-left: calc(-1 * (100vw - 100%));
     column-gap: 0;
-    flex-direction: column;
   }
 
   /* each Video() renders an outer div wrapper — make it fill the row */
@@ -750,15 +733,10 @@ button:disabled {
   padding-right: 10px;
 }
 
-.dark-light-button-toggle {
-  cursor: pointer;
-}
-
 /* todo, the section is needed for the photos page */
 .app-container > section, .app-container > .page {
   grid-row: 1;
   grid-column: 2;
-  margin-top: min(5, 80px);
 }
 
 /*
@@ -807,11 +785,6 @@ button:disabled {
 
 .photo-share-button[disabled] {
   cursor: not-allowed;
-}
-
-.photo-tag-list {
-  padding-top: 8px;
-  margin-left: 20px;
 }
 
 .link-list li, nav ul li {
@@ -943,20 +916,6 @@ button:disabled {
   list-style-type: none;
 }
 
-.unesco-text-short {
-  display: none;
-}
-
-@media (max-width: 750px) {
-  .unesco-text-full {
-    display: none;
-  }
-
-  .unesco-text-short {
-    display: inline;
-  }
-}
-
 /* photo album css. not clear if needed in JS or just here */
 
 .photo-album-title {
@@ -976,9 +935,7 @@ button:disabled {
 
 .photo-album-count {
   display: inline;
-}
-.photo-album-count {
-  display: inline;
+  color: var(--secondary-text-color);
 }
 
 .photo-album-countries {
@@ -987,34 +944,19 @@ button:disabled {
   gap: 4px;
 }
 
-.photo-album-count {
-  color: hsl(0, 0%, 60%);
+.photo-album-metadata, .thing-metadata {
+  margin-bottom: 30px;
 }
 
 @media (max-width: 500px) {
-  .photo-album-metadata p {
-    font-size: 0.8em;
-    padding: 2px;
-  }
-
-  .photo-album .photo-album-metadata p, .photo-album-metadata .link-list a {
-    color: white;
-    background-color: black;
-  }
-
-  /* hover metadata over the album */
-  .photo-album-metadata {
-    position: absolute;
-    transform: translate(10px, -100px);
-    z-index: 1;
-  }
-
   .photo-album-metadata p, .photo-album-metadata .link-list {
     font-size: 0.8em;
     padding: 2px;
   }
 
-  .photo-album .photo-album-metadata p, .photo-album-metadata .link-list {
+  .photo-album-metadata p,
+  .photo-album-metadata .link-list,
+  .photo-album-metadata .link-list a {
     color: white;
     background-color: black;
   }
@@ -1043,7 +985,7 @@ button:disabled {
 
 .thumbnail-image {
   height: auto;
-  background-color: hsl(0, 0%, 69%);
+  background-color: var(--image-placeholder-background-color);
 }
 
 .banner-placeholder {
@@ -1115,71 +1057,6 @@ button:disabled {
   .unesco-links {
     max-width: 1800px;
   }
-}
-
-.photo-album-title {
-  margin: 4px 0px;
-  font-weight: bolder;
-  max-width: max(180px, min(60vw, 400px));
-}
-
-.photo-album-date {
-  max-width: max(180px, min(60vw, 400px));
-}
-
-.photo-album-count {
-  display: inline;
-}
-.photo-album-countries {
-  display: inline-flex;
-  gap: 4px;
-}
-.photo-album-count {
-  display: inline;
-}
-
-.photo-album-count {
-  color: hsl(0, 0%, 60%);
-}
-
-.photo-album-metadata, .thing-metadata {
-  margin-bottom: 30px;
-}
-
-@media (max-width: 500px) {
-  /* hover metadata over the album */
-  .photo-album-metadata p {
-    font-size: 0.8em;
-    padding: 2px;
-    color: white;
-    background-color: black;
-  }
-
-  /* hover metadata over the album */
-  .photo-album-metadata {
-    position: absolute;
-    transform: translate(10px, -100px);
-    z-index: 1;
-  }
-
-  .thumbnail-image {
-    width: max(180px, min(80vw, 400px));
-    max-width: max(180px, 80vw);
-  }
-}
-
-.photo-metadata-inline {
-  display: flex;
-  gap: 10px;
-}
-
-.thumbnail-placeholder {
-  position: absolute;
-}
-
-.thumbnail-image {
-  height: auto;
-  background-color: hsl(0, 0%, 69%);
 }
 
 /*
