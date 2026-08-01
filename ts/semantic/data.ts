@@ -64,26 +64,34 @@ export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
 let tdb: TribbleDB | null = null;
 
 /*
- * Load triples from a URL. This takes about 500ms to run (Oct 27 2025) and
- * takes about 60% of load-time of the page. This needs to be reworked, as in the litelement
- * version, to incrementally stream load the database while allowing the page to render.
- *
- * For now, lets make blocking load faster than 500ms...
- *
- * October 28 2025: about 250ms now
+ * The shared TribbleDB instance. Created empty so the app can mount and
+ * bind services before the tribble stream fills it.
+ */
+export function getTribbleDB(schema: Record<string, any> = {}): TribbleDB {
+  if (!tdb) {
+    tdb = new TribbleDB([], schema);
+  }
+
+  return tdb;
+}
+
+/*
+ * Load triples from a URL into the shared TribbleDB. Batches stream in;
+ * onBatch fires after each batch lands, so the caller can derive and redraw
+ * while the load is in flight.
  */
 export async function loadTriples(
   url: string,
   schema: Record<string, any> = {},
   perTriple: (triple: Triple) => Triple[] = (x) => [x],
+  onBatch?: () => void,
 ): Promise<TribbleDB> {
-  if (!tdb) {
-    tdb = new TribbleDB([], schema);
-  }
+  const target = getTribbleDB(schema);
 
   for await (const triples of streamTribbles(url)) {
-    tdb.add(triples.flatMap(perTriple));
+    target.add(triples.flatMap(perTriple));
+    onBatch?.();
   }
 
-  return tdb;
+  return target;
 }

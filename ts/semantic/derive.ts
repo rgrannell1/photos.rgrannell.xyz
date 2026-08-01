@@ -434,24 +434,29 @@ export function orderPasses(passes: DerivationPass[]): DerivationPass[] {
 }
 
 /*
- * Operations that add but do not modify existing triples,
- * to be run after all indexing is complete.
+ * Cheap idempotent derivations, safe to re-run while the tribble stream is
+ * still loading. TribbleDB adds deduplicate, so repeat runs are no-ops for
+ * triples already derived.
  */
-const POST_INDEXING_PASSES: DerivationPass[] = [
+const STREAM_PASSES: DerivationPass[] = [
   { name: "addYear", after: [], run: addYear },
   { name: "addPlaceFeatureSubjects", after: [], run: addPlaceFeatureSubjects },
   { name: "addInverseRelations", after: [], run: addInverseRelations },
+];
+
+/*
+ * Whole-dataset derivations: transitive joins and the prune. Run once, after
+ * the stream completes and after a final stream-pass run, so the joins see
+ * complete inverse relations.
+ */
+const FINAL_PASSES: DerivationPass[] = [
   { name: "addNestedLocations", after: [], run: addNestedLocations },
   {
     name: "addTransitiveMediaLocations",
     after: ["addNestedLocations"],
     run: addTransitiveMediaLocations,
   },
-  {
-    name: "addFeatureMediaLocations",
-    after: ["addInverseRelations"],
-    run: addFeatureMediaLocations,
-  },
+  { name: "addFeatureMediaLocations", after: [], run: addFeatureMediaLocations },
   {
     name: "pruneMedialessThings",
     after: ["addTransitiveMediaLocations", "addFeatureMediaLocations"],
@@ -459,10 +464,22 @@ const POST_INDEXING_PASSES: DerivationPass[] = [
   },
 ];
 
-export function postIndexing(tdb: TribbleDB) {
-  for (const pass of orderPasses(POST_INDEXING_PASSES)) {
+export function runStreamPasses(tdb: TribbleDB) {
+  for (const pass of orderPasses(STREAM_PASSES)) {
     pass.run(tdb);
   }
+}
+
+export function runFinalPasses(tdb: TribbleDB) {
+  for (const pass of orderPasses(FINAL_PASSES)) {
+    pass.run(tdb);
+  }
+}
+
+/* Run every derivation pass; used by the build and benchmarks. */
+export function postIndexing(tdb: TribbleDB) {
+  runStreamPasses(tdb);
+  runFinalPasses(tdb);
 }
 
 /*

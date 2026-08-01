@@ -140,7 +140,8 @@ export const videosEntry = pageEntry({
 });
 
 // Sort URNs by date without parsing each photo — parsing is deferred to
-// render batches. Loaded per navigation in onmatch, not per redraw.
+// render batches. Loaded per navigation in onmatch, not per redraw. While
+// the stream is still loading, each redraw re-reads so new photos appear.
 let photoUrns: string[] = [];
 
 /* */
@@ -150,6 +151,10 @@ export const photosEntry = pageEntry({
     photoUrns = services.readAllPhotoUrns();
   },
   resolve() {
+    if (!state.loaded) {
+      photoUrns = services.readAllPhotoUrns();
+    }
+
     return {
       attrs: { photoUrns, services, visible: state.sidebarVisible },
     };
@@ -160,6 +165,11 @@ export const photosEntry = pageEntry({
 export const thingEntry = pageEntry({
   page: thingPageComponent,
   resolve() {
+    // needs pruned, fully-derived data
+    if (!state.loaded) {
+      return "";
+    }
+
     const pair = m.route.param("pair");
     state.currentUrn = `urn:ró:${pair}`;
 
@@ -240,6 +250,11 @@ export const listingEntry = pageEntry({
     state.currentType = params.type as string;
   },
   resolve() {
+    // needs pruned, fully-derived data
+    if (!state.loaded) {
+      return "";
+    }
+
     if (!state.currentType) {
       return "No type selected";
     }
@@ -263,6 +278,11 @@ export const listingEntry = pageEntry({
 export const listingsEntry = pageEntry({
   page: listingsPageComponent,
   resolve() {
+    // needs pruned, fully-derived data
+    if (!state.loaded) {
+      return "";
+    }
+
     return {
       attrs: { visible: state.sidebarVisible, services },
     };
@@ -273,6 +293,11 @@ export const listingsEntry = pageEntry({
 export const checklistEntry = pageEntry({
   page: checklistPageComponent,
   resolve() {
+    // needs the pre-prune catalogue stats from the final pass
+    if (!state.loaded) {
+      return "";
+    }
+
     // The life-list defaults to the Irish view when no filter is in the URL.
     const filter = (m.route.param("filter") as string | undefined) ?? "ireland";
     const entries = services.readWildBirdChecklist();
@@ -299,18 +324,36 @@ export const checklistEntry = pageEntry({
   },
 });
 
-// map data is loaded per navigation in onmatch, not per redraw
+// map data is loaded per navigation in onmatch, not per redraw. If the page
+// is visited before the stream completes, resolve backfills once loaded.
 let placesForMap: GeocodedPlaceWithCover[] = [];
 let tripPolylines: TripPolyline[] = [];
+let mapDataRead = false;
+
+function readMapData() {
+  placesForMap = services.readGeocodedPlacesWithCovers();
+  tripPolylines = services.readTransferPolylines();
+  mapDataRead = true;
+}
 
 /* */
 export const mapEntry = pageEntry({
   page: mapPageComponent,
   onmatch() {
-    placesForMap = services.readGeocodedPlacesWithCovers();
-    tripPolylines = services.readTransferPolylines();
+    if (state.loaded) {
+      readMapData();
+    }
   },
   resolve() {
+    // needs pruned, fully-derived data
+    if (!state.loaded) {
+      return "";
+    }
+
+    if (!mapDataRead) {
+      readMapData();
+    }
+
     return {
       attrs: {
         visible: state.sidebarVisible,

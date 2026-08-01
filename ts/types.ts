@@ -63,6 +63,8 @@ export type Services = ReturnType<typeof loadServices>;
 export type State = {
   data: TribbleDB;
   services: Services;
+  // false until the tribble stream and the final derivation pass complete
+  loaded: boolean;
   // Catalogue facts captured before medialess species are pruned from `data`.
   regularBirdSpecies: number;
   irishMammalSpecies: number;
