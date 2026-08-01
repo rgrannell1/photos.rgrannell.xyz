@@ -18,9 +18,7 @@ const DERIVED_RELATIONS = new Set<string>([
 
 // relations mirror now publishes, but the committed manifest predates; remove
 // each entry once a republished manifest lands
-const PENDING_RELATIONS = new Set<string>([
-  KnownRelations.TITLE,
-]);
+const PENDING_RELATIONS = new Set<string>([]);
 
 // curie-shortened URNs look like [i:type:id]
 const CURIE_TYPE_REGEX = /^\[i:([a-z_]+):/;
