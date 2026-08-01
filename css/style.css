@@ -360,6 +360,12 @@ button:disabled {
   z-index: 2;
 }
 
+/* the tag is an anchor; keep the block-link rules for the image anchor from
+   stretching it across the card */
+.album-container .photo-album a.trip-tag {
+  width: 0px;
+}
+
 .trip-tag::before {
   content: "";
   position: absolute;
