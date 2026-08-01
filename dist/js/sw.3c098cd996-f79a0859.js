@@ -7,8 +7,8 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-32x32.png",
   "/favicon.ico",
   "/favicon-32x32.png",
-  "/dist/css/style.3c098cd996-8864845b.css",
-  "/dist/js/app.3c098cd996-8864845b.js",
+  "/dist/css/style.3c098cd996-f79a0859.css",
+  "/dist/js/app.3c098cd996-f79a0859.js",
   "https://photos-cdn.rgrannell.xyz/a4a694cea4.webp",
 ];
 
@@ -56,6 +56,14 @@ function isCacheable(url) {
    * We can cache CSS files, since they also have build-IDs
    */
   if (url.includes("css/style")) {
+    return true;
+  }
+
+  /*
+   * We can cache territory flag SVGs. They are tiny and effectively
+   * immutable; a redesigned flag must ship under a new filename.
+   */
+  if (url.includes("/flags/")) {
     return true;
   }
 

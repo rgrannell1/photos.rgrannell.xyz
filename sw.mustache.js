@@ -59,6 +59,14 @@ function isCacheable(url) {
     return true;
   }
 
+  /*
+   * We can cache territory flag SVGs. They are tiny and effectively
+   * immutable; a redesigned flag must ship under a new filename.
+   */
+  if (url.includes("/flags/")) {
+    return true;
+  }
+
   const manifestEntries = [
     "tribbles",
   ];
