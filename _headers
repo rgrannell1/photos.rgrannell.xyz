@@ -3,3 +3,19 @@
   X-Frame-Options: DENY
   X-XSS-Protection: 1; mode=block
   X-Content-Type-Options: nosniff
+
+# build-id in the filename busts the cache on change
+/dist/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# publication-id in the filename busts the cache on change
+/manifest/tribbles.*
+  Cache-Control: public, max-age=31536000, immutable
+
+# version in the directory name busts the cache on change
+/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# not content-hashed: cache for a week only
+/fonts/*
+  Cache-Control: public, max-age=604800
