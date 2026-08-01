@@ -16,12 +16,28 @@ async function textOf(parent, selector) {
 }
 
 /**
+ * Extract country flags in a card: SVG flag icons by alt text, else emoji.
+ * @param {import('playwright').ElementHandle} parent
+ * @returns {Promise<string|null>}
+ */
+async function countriesOf(parent) {
+  const el = await parent.$("[data-testid='album-countries']");
+  if (!el) return null;
+
+  return (await el.evaluate((node) => {
+    const icons = [...node.querySelectorAll("img.flag-icon")]
+      .map((img) => img.getAttribute("alt") ?? "");
+    return [...icons, node.textContent ?? ""].join(" ");
+  })).trim();
+}
+
+/**
  * @typedef {{ title: string, date: string, count: string, country: string }} AlbumExpectation
  */
 
 /** @type {AlbumExpectation[]} */
 const EXPECTED_ALBUMS = [
-  { title: "Wicklow", date: "9 May 2026", count: "17 photos", country: "🇮🇪" },
+  { title: "Wicklow", date: "9 May 2026", count: "17 photos", country: "Ireland flag" },
 ];
 
 /** @type {import('../types').BrowserCheck} */
@@ -44,7 +60,7 @@ module.exports = {
 
       const date = await textOf(matched, "[data-testid='album-date']");
       const count = await textOf(matched, "[data-testid='album-count']");
-      const countries = await textOf(matched, "[data-testid='album-countries']");
+      const countries = await countriesOf(matched);
 
       tst.equal(date, expected.date, `"${expected.title}" date is ${expected.date}`);
       tst.equal(count, expected.count, `"${expected.title}" has ${expected.count}`);
