@@ -6,6 +6,7 @@ import { isACountry } from "../../types.ts";
 import type { Country, Place } from "../../types.ts";
 import { one } from "../../commons/arrays.ts";
 import { countryEmoji, placeEmoji } from "../../services/emoji.ts";
+import { FlagIcon } from "../flag.ts";
 
 export type CountryLinkAttrs = {
   country: Country;
@@ -42,7 +43,7 @@ export function CountryLink() {
         return m("p");
       }
 
-      const flag = countryEmoji(country);
+      const flag = m(FlagIcon, { name, emoji: countryEmoji(country) });
 
       const parsed = asUrn(id);
       const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
@@ -54,7 +55,7 @@ export function CountryLink() {
       return m(
         "a.country-link",
         { href: urnToUrl(id), onclick },
-        `${flag} ${name}`,
+        [flag, ` ${name}`],
       );
     },
   };
@@ -66,19 +67,14 @@ export function CountryLink() {
 export function PlaceLink() {
   return {
     view(vnode: m.Vnode<{ location: Place; mode: "flag" | "name" }>) {
-      const { location, mode } = vnode.attrs;
-
-      let text = "";
-      if (mode === "flag") {
-        text = placeEmoji(location);
-      }
-
-      text = `${placeEmoji(location)} ${one(location.name) || "Unknown Place"}`;
+      const { location } = vnode.attrs;
+      const name = one(location.name);
+      const flag = m(FlagIcon, { name, emoji: placeEmoji(location) });
 
       return m("a.place-link", {
         href: urnToUrl(location.id),
         onclick: navigate(`/thing/place:${location.id}`),
-      }, text);
+      }, [flag, ` ${name || "Unknown Place"}`]);
     },
   };
 }

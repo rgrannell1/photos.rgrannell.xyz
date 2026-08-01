@@ -398,6 +398,15 @@ button:disabled {
   opacity: 0.5;
 }
 
+/* SVG flags for territories with no Unicode flag; sized to sit like emoji */
+.flag-icon {
+  height: 1em;
+  width: 1.35em;
+  object-fit: contain;
+  vertical-align: -0.15em;
+  border-radius: 2px;
+}
+
 .country-filter-flag--selected,
 .country-filter:not(:has(.country-filter-flag--selected)) .country-filter-flag {
   opacity: 1;

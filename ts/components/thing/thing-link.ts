@@ -10,6 +10,7 @@ import { navigate } from "../../commons/events.ts";
 
 import { one } from "../../commons/arrays.ts";
 import { thingEmoji } from "../../services/emoji.ts";
+import { FlagIcon } from "../flag.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Feature, Thing, Unesco } from "../../types.ts";
 
@@ -21,7 +22,7 @@ function drawThingLink(
   tag: string,
   type: string,
   attrs: Record<string, unknown>,
-  label: string,
+  label: m.Children,
 ) {
   return m(tag, {
     ...attrs,
@@ -54,7 +55,7 @@ export function ThingLink() {
       return drawThingLink("a", type, {
         href: urn,
         onclick: navigate(`/thing/${type}:${id}`),
-      }, `${emoji}\t${name}`);
+      }, [m(FlagIcon, { name, emoji }), `\t${name}`]);
     },
   };
 }
@@ -79,7 +80,10 @@ export function FeatureLink() {
       const name = one(thing.name) ?? id;
       const emoji = thingEmoji(urn, name, thing);
 
-      return drawThingLink("p", type, {}, `${emoji}\t${name}`);
+      return drawThingLink("p", type, {}, [
+        m(FlagIcon, { name, emoji }),
+        `\t${name}`,
+      ]);
     },
   };
 }

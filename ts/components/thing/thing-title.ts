@@ -5,6 +5,7 @@ import { binomial, capitalise, pluralise } from "../../commons/strings.ts";
 import { BinomialTypes, KnownTypes } from "../../constants/data.ts";
 import { one } from "../../commons/arrays.ts";
 import { placeEmoji } from "../../services/emoji.ts";
+import { FlagIcon } from "../flag.ts";
 import { setTitle } from "../../services/window.ts";
 
 function computeTitle(urn: string, things: TripleObject[]): string {
@@ -41,6 +42,16 @@ export function ThingTitle() {
       const title = computeTitle(urn, things);
 
       setTitle(title);
+
+      const parsed = parseUrn(urn);
+      const [thing] = things;
+      if (parsed.type === KnownTypes.PLACE && thing && one(thing.flag)) {
+        const name = one(thing.name) ?? parsed.id;
+        return m("h1", [
+          m(FlagIcon, { name, emoji: placeEmoji(thing) }),
+          ` ${name}`,
+        ]);
+      }
 
       return m("h1", title);
     },

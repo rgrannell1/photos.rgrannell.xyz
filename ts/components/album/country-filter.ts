@@ -2,6 +2,7 @@ import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { Services } from "../../types.ts";
 import { countryEmoji } from "../../services/emoji.ts";
+import { FlagIcon } from "../flag.ts";
 
 type CountryFilterAttrs = {
   services: Services;
@@ -32,7 +33,7 @@ export function CountryFilter() {
             title: country.name,
             class: isSelected ? "country-filter-flag--selected" : undefined,
             onclick,
-          }, countryEmoji(country));
+          }, m(FlagIcon, { name: country.name, emoji: countryEmoji(country) }));
         }),
       );
     },

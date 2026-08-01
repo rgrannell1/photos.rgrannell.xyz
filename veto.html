@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Flag veto: Canary islands + Mallorca</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --muted: #666;
+    --line: #ddd;
+  }
+  body {
+    font-family: Rubik, system-ui, sans-serif;
+    color: var(--ink);
+    max-width: 60rem;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  h1 { font-size: 1.4rem; }
+  h2 { font-size: 1.1rem; margin-top: 2.5rem; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; }
+  p.note { color: var(--muted); font-size: 0.9rem; }
+
+  .emoji-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.4rem;
+    font-size: 1.1rem;
+  }
+  .emoji-grid span { white-space: nowrap; }
+
+  table { border-collapse: collapse; width: 100%; }
+  td, th { padding: 0.7rem; border: 1px solid var(--line); text-align: center; vertical-align: middle; }
+  th { font-size: 0.85rem; font-weight: 500; color: var(--muted); }
+  td.name { text-align: left; font-weight: 500; }
+
+  .flag {
+    border-radius: 12%/18%;
+    vertical-align: -0.15em;
+  }
+  .flag.big { width: 120px; height: 80px; border-radius: 6px; }
+  .flag.small { width: 1.2em; height: 0.8em; }
+  .ref img { width: 120px; display: block; margin: 0 auto; }
+
+  .caption-sample {
+    font-size: 1.05rem;
+    line-height: 2;
+  }
+  .strip {
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+  }
+  .strip.dark { background: #191919; color: #eee; }
+  .strip.light { background: #fafafa; border: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<h1>Flag veto: per-island Canary flags + Mallorca</h1>
+<p class="note">
+  Candidates are hand-written crest-less SVGs, rounded to sit alongside emoji.
+  References are the official (crested) flags from Wikimedia Commons.
+</p>
+
+<h2>1. Existing flags (emoji, as rendered on this system)</h2>
+<div class="emoji-grid">
+  <span>🇮🇪 Ireland</span>
+  <span>🏴󠁧󠁢󠁥󠁮󠁧󠁿 England</span>
+  <span>🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland</span>
+  <span>🏴󠁧󠁢󠁷󠁬󠁳󠁿 Wales</span>
+  <span>🇬🇧 UK</span>
+  <span>🇪🇸 Spain</span>
+  <span>🇮🇨 Canary Islands</span>
+  <span>🇫🇷 France</span>
+  <span>🇩🇪 Germany</span>
+  <span>🇮🇹 Italy</span>
+  <span>🇳🇱 Netherlands</span>
+  <span>🇳🇴 Norway</span>
+  <span>🇵🇹 Portugal</span>
+  <span>🇸🇪 Sweden</span>
+  <span>🇸🇮 Slovenia</span>
+  <span>🇨🇭 Switzerland</span>
+  <span>🇺🇸 USA</span>
+</div>
+<p class="note">Today Tenerife, Lanzarote, and Gran Canaria all show 🇮🇨. Mallorca shows 🇪🇸.</p>
+
+<h2>2. Candidates vs references</h2>
+<table>
+  <tr>
+    <th>Place</th>
+    <th>Current</th>
+    <th>Candidate (crest-less)</th>
+    <th>Reference (official)</th>
+  </tr>
+
+  <tr>
+    <td class="name">Tenerife</td>
+    <td style="font-size:2rem">🇮🇨</td>
+    <td>
+      <svg class="flag big" viewBox="0 0 750 500">
+        <rect width="750" height="500" fill="#072357"/>
+        <path fill="#fff" d="M0 73.4 280.7 250 0 426.6V500h71.9L375 309.3 678.1 500H750v-73.4L469.3 250 750 73.4V0h-71.9L375 190.7 71.9 0H0v73.4z"/>
+      </svg>
+    </td>
+    <td class="ref"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Flag%20of%20Tenerife.svg?width=240" alt="Flag of Tenerife (reference)"></td>
+  </tr>
+
+  <tr>
+    <td class="name">Gran Canaria</td>
+    <td style="font-size:2rem">🇮🇨</td>
+    <td>
+      <svg class="flag big" viewBox="0 0 750 500">
+        <rect width="750" height="500" fill="#0f47af"/>
+        <path fill="#fcdd09" d="M0 0h750L0 500z"/>
+      </svg>
+    </td>
+    <td class="ref"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Flag%20of%20Gran%20Canaria.svg?width=240" alt="Flag of Gran Canaria (reference)"></td>
+  </tr>
+
+  <tr>
+    <td class="name">Lanzarote</td>
+    <td style="font-size:2rem">🇮🇨</td>
+    <td>
+      <svg class="flag big" viewBox="0 0 750 500">
+        <rect width="750" height="500" fill="#0f47af"/>
+        <path fill="#da121a" d="M0 0h750L0 500z"/>
+      </svg>
+    </td>
+    <td class="ref"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Flag%20of%20Lanzarote.svg?width=240" alt="Flag of Lanzarote (reference)"></td>
+  </tr>
+
+  <tr>
+    <td class="name">Mallorca</td>
+    <td style="font-size:2rem">🇪🇸</td>
+    <td>
+      <svg class="flag big" viewBox="0 0 750 500">
+        <rect width="750" height="500" fill="#fcdd09"/>
+        <rect y="55.6" width="750" height="55.6" fill="#da121a"/>
+        <rect y="166.7" width="750" height="55.6" fill="#da121a"/>
+        <rect y="277.8" width="750" height="55.6" fill="#da121a"/>
+        <rect y="388.9" width="750" height="55.6" fill="#da121a"/>
+        <rect width="250" height="500" fill="#40104c"/>
+        <!-- simplified crenellated castle wall along the hoist -->
+        <g fill="#fff">
+          <rect x="100" width="50" height="500"/>
+          <rect x="80" y="30" width="20" height="35"/>
+          <rect x="80" y="130" width="20" height="35"/>
+          <rect x="80" y="230" width="20" height="35"/>
+          <rect x="80" y="330" width="20" height="35"/>
+          <rect x="80" y="430" width="20" height="35"/>
+          <rect x="150" y="30" width="20" height="35"/>
+          <rect x="150" y="130" width="20" height="35"/>
+          <rect x="150" y="230" width="20" height="35"/>
+          <rect x="150" y="330" width="20" height="35"/>
+          <rect x="150" y="430" width="20" height="35"/>
+        </g>
+      </svg>
+    </td>
+    <td class="ref"><img src="https://commons.wikimedia.org/wiki/Special:FilePath/Flag%20of%20Mallorca.svg?width=240" alt="Flag of Mallorca (reference)"></td>
+  </tr>
+</table>
+
+<h2>3. In context, at caption size</h2>
+<p class="note">How a caption line would look with emoji and SVG flags mixed.</p>
+
+<div class="strip light caption-sample">
+  🇮🇪 Glendalough, Ireland<br>
+  <svg class="flag small" viewBox="0 0 750 500"><rect width="750" height="500" fill="#072357"/><path fill="#fff" d="M0 73.4 280.7 250 0 426.6V500h71.9L375 309.3 678.1 500H750v-73.4L469.3 250 750 73.4V0h-71.9L375 190.7 71.9 0H0v73.4z"/></svg> Teide, Tenerife<br>
+  <svg class="flag small" viewBox="0 0 750 500"><rect width="750" height="500" fill="#0f47af"/><path fill="#fcdd09" d="M0 0h750L0 500z"/></svg> Maspalomas, Gran Canaria<br>
+  <svg class="flag small" viewBox="0 0 750 500"><rect width="750" height="500" fill="#0f47af"/><path fill="#da121a" d="M0 0h750L0 500z"/></svg> Timanfaya, Lanzarote<br>
+  <svg class="flag small" viewBox="0 0 750 500"><rect width="750" height="500" fill="#fcdd09"/><rect y="55.6" width="750" height="55.6" fill="#da121a"/><rect y="166.7" width="750" height="55.6" fill="#da121a"/><rect y="277.8" width="750" height="55.6" fill="#da121a"/><rect y="388.9" width="750" height="55.6" fill="#da121a"/><rect width="250" height="500" fill="#40104c"/><g fill="#fff"><rect x="100" width="50" height="500"/><rect x="80" y="130" width="20" height="35"/><rect x="80" y="330" width="20" height="35"/><rect x="150" y="130" width="20" height="35"/><rect x="150" y="330" width="20" height="35"/></g></svg> Palma, Mallorca<br>
+  🇪🇸 Barcelona, Spain
+</div>
+
+<div class="strip dark caption-sample">
+  🇮🇪 Glendalough, Ireland<br>
+  <svg class="flag small" viewBox="0 0 750 500"><rect width="750" height="500" fill="#072357"/><path fill="#fff" d="M0 73.4 280.7 250 0 426.6V500h71.9L375 309.3 678.1 500H750v-73.4L469.3 250 750 73.4V0h-71.9L375 190.7 71.9 0H0v73.4z"/></svg> Teide, Tenerife<br>
+  <svg class="flag small" viewBox="0 0 750 500"><rect width="750" height="500" fill="#0f47af"/><path fill="#fcdd09" d="M0 0h750L0 500z"/></svg> Maspalomas, Gran Canaria<br>
+  <svg class="flag small" viewBox="0 0 750 500"><rect width="750" height="500" fill="#0f47af"/><path fill="#da121a" d="M0 0h750L0 500z"/></svg> Timanfaya, Lanzarote<br>
+  <svg class="flag small" viewBox="0 0 750 500"><rect width="750" height="500" fill="#fcdd09"/><rect y="55.6" width="750" height="55.6" fill="#da121a"/><rect y="166.7" width="750" height="55.6" fill="#da121a"/><rect y="277.8" width="750" height="55.6" fill="#da121a"/><rect y="388.9" width="750" height="55.6" fill="#da121a"/><rect width="250" height="500" fill="#40104c"/><g fill="#fff"><rect x="100" width="50" height="500"/><rect x="80" y="130" width="20" height="35"/><rect x="80" y="330" width="20" height="35"/><rect x="150" y="130" width="20" height="35"/><rect x="150" y="330" width="20" height="35"/></g></svg> Palma, Mallorca<br>
+  🇪🇸 Barcelona, Spain
+</div>
+
+</body>
+</html>
