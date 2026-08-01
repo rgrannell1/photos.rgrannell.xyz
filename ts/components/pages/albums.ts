@@ -1,11 +1,13 @@
 import m from "mithril";
+import { asUrn } from "@rgrannell1/tribbledb";
 import { AlbumBanner } from "../album/album-banner.ts";
+import { AlbumShareButton } from "../album/album-share-button.ts";
 import { AlbumStats } from "../album/album-stats.ts";
 import { YearRecap } from "../album/year-recap.ts";
 import type { Album, Services } from "../../types.ts";
 import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
 import { AlbumCard } from "../album/album-card.ts";
-import { setTitle } from "../../services/window.ts";
+import { setTitle, sharePhotoUrl } from "../../services/window.ts";
 import { broadcast } from "../../commons/events.ts";
 import { albumYear } from "../../services/albums.ts";
 import { setify } from "../../commons/sets.ts";
@@ -17,6 +19,7 @@ type AlbumsListAttrs = {
   services: Services;
   visible: boolean;
   selectedCountry: string | undefined;
+  selectedTrip: string | undefined;
 };
 
 function drawAlbum(
@@ -77,9 +80,10 @@ function AlbumsList() {
   return {
     view(vnode: m.Vnode<AlbumsListAttrs>) {
       const state = { year: 2005 };
-      const { albums, services, selectedCountry } = vnode.attrs;
+      const { albums, services, selectedCountry, selectedTrip } = vnode.attrs;
 
-      const showRecap = selectedCountry === undefined;
+      const showRecap = selectedCountry === undefined &&
+        selectedTrip === undefined;
 
       const $albumComponents: m.Children[] = [];
 
@@ -100,6 +104,7 @@ type AlbumsPageAttrs = {
   services: Services;
   visible: boolean;
   selectedCountry: string | undefined;
+  selectedTrip: string | undefined;
 };
 
 // px below the viewport top at which a year heading becomes the "current" year
@@ -203,11 +208,26 @@ export function AlbumsPage() {
       }
     },
     view(vnode: m.Vnode<AlbumsPageAttrs>) {
-      const { albums, services, visible, selectedCountry } = vnode.attrs;
+      const { albums, services, visible, selectedCountry, selectedTrip } =
+        vnode.attrs;
 
       const onSelectCountry = (slug: string | undefined) => {
         broadcast("navigate", { route: slug ? `/albums/${slug}` : "/albums" });
       };
+
+      const tripName = selectedTrip
+        ? services.readTripName(selectedTrip) ?? "Trip"
+        : undefined;
+
+      const $tripShare = selectedTrip
+        ? m("section.trip-share", [
+          m("h2.trip-title", tripName),
+          m(AlbumShareButton, {
+            url: sharePhotoUrl(`trip/${asUrn(selectedTrip).id}`),
+            name: tripName as string,
+          }),
+        ])
+        : null;
 
       const $md = m("section.album-metadata", [
         m(AlbumStats),
@@ -216,6 +236,7 @@ export function AlbumsPage() {
           selectedCountry,
           onSelect: onSelectCountry,
         }),
+        $tripShare,
       ]);
 
       // hardcoded CDN banner: the high-res `banner` rendition of photo:548d64a50a
@@ -236,7 +257,7 @@ export function AlbumsPage() {
           thumbnailDataUrl: bannerDataUrl,
         }),
         $md,
-        m(AlbumsList, { albums, services, visible, selectedCountry }),
+        m(AlbumsList, { albums, services, visible, selectedCountry, selectedTrip }),
       ]);
     },
   };

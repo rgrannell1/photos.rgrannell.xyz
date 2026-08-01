@@ -141,6 +141,23 @@ export function readTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
 }
 
 /*
+ * Read a trip's display name from its title triple, published by mirror.
+ */
+export function readTripName(tdb: TribbleDB, tripUrn: string): string | undefined {
+  const { type, id } = asUrn(tripUrn);
+  const namesCursor = tdb.search({
+    source: { type, id },
+    relation: KnownRelations.TITLE,
+  });
+
+  for (const [_, __, name] of namesCursor.triples()) {
+    return name as string;
+  }
+
+  return undefined;
+}
+
+/*
  * Read albums associated with a set of thing IDs
  */
 export function readAlbumsByThingIds(

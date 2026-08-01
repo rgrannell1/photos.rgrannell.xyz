@@ -39,6 +39,7 @@ export class KnownRelations {
   static MOSAIC_BANNER = "mosaicBanner";
   static CONTAINS_ALBUM = "containsAlbum";
   static TRIP = "trip";
+  static TITLE = "title";
   static FEATURES = "features";
   static PLACES_WITH_FEATURE = "placesWithFeature";
 }

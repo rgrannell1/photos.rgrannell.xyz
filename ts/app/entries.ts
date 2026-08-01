@@ -8,7 +8,7 @@ import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { setify } from "../commons/sets.ts";
-import { albumUrn, countryUrn, photoUrn, videoUrn } from "../models/urn.ts";
+import { albumUrn, countryUrn, photoUrn, tripUrn, videoUrn } from "../models/urn.ts";
 import { AlbumsPage } from "../components/pages/albums.ts";
 import { AboutPage } from "../components/pages/about.ts";
 import { VideosPage } from "../components/pages/videos.ts";
@@ -46,10 +46,16 @@ export const albumsEntry = pageEntry({
     const countrySlug = m.route.param("country");
     const selectedCountry = countrySlug ? countryUrn(countrySlug) : undefined;
 
-    const allAlbums = services.readAllAlbums();
-    const albums = selectedCountry
-      ? allAlbums.filter((album) => setify(album.country).has(selectedCountry))
-      : allAlbums;
+    const tripSlug = m.route.param("trip");
+    const selectedTrip = tripSlug ? tripUrn(tripSlug) : undefined;
+
+    let albums = services.readAllAlbums();
+    if (selectedCountry) {
+      albums = albums.filter((album) => setify(album.country).has(selectedCountry));
+    }
+    if (selectedTrip) {
+      albums = albums.filter((album) => album.trip === selectedTrip);
+    }
 
     return {
       attrs: {
@@ -57,6 +63,7 @@ export const albumsEntry = pageEntry({
         services,
         visible: state.sidebarVisible,
         selectedCountry,
+        selectedTrip,
       },
     };
   },

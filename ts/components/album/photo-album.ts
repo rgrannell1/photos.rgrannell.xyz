@@ -1,10 +1,23 @@
 import m from "mithril";
+import { asUrn } from "@rgrannell1/tribbledb";
 import { ImagePair } from "../media/photo.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../constants/layout.ts";
+import { block, broadcast, isModifiedClick } from "../../commons/events.ts";
 
 // use this to keep track of trips, to assign each a
 // colour distinct from the adjacent ones
 const TRIPS: string[] = [];
+
+function onTripClick(tripId: string, event: Event) {
+  // let modified/middle clicks fall through to the browser so the trip route
+  // opens in a new tab
+  if (isModifiedClick(event as MouseEvent)) {
+    return;
+  }
+
+  broadcast("navigate", { route: `/trip/${tripId}` });
+  block(event);
+}
 
 function TripTag() {
   return {
@@ -19,9 +32,15 @@ function TripTag() {
         TRIPS.push(trip);
       }
 
+      const tripId = asUrn(trip).id;
+
       // two colours supported
       const tripIndex = TRIPS.indexOf(trip);
-      return m("div.trip-tag .trip-color-" + (tripIndex % 2));
+      return m("a.trip-tag .trip-color-" + (tripIndex % 2), {
+        href: `#!/trip/${tripId}`,
+        title: "Show albums from this trip",
+        onclick: onTripClick.bind(null, tripId),
+      });
     },
   };
 }

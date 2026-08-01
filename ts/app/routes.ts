@@ -22,6 +22,7 @@ import {
 export const routes: Record<string, m.RouteResolver> = {
   "/albums": routeResolver(albumsEntry),
   "/albums/:country": routeResolver(albumsEntry),
+  "/trip/:trip": routeResolver(albumsEntry),
   "/about": routeResolver(aboutEntry),
   "/map": routeResolver(mapEntry),
   "/videos": routeResolver(videosEntry),

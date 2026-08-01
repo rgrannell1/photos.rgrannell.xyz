@@ -12,6 +12,7 @@ import {
   readThingsByAlbumId,
   readTransferPolylines,
   readTripAlbums,
+  readTripName,
   readYearRecap,
 } from "./albums.ts";
 import { readAllVideos, readVideosByThingIds } from "./videos.ts";
@@ -102,6 +103,7 @@ export const SERVICE_READERS = {
   readAlbumVideosByAlbumId,
   readThingsByAlbumId,
   readTripAlbums,
+  readTripName,
   readAllVideos,
   readAllPhotoUrns,
   readWildBirdChecklist,
