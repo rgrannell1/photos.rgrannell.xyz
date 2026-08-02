@@ -56,6 +56,13 @@
       window.stats = {{{ stats }}}
 
     </script>
+    <script type="importmap">
+      {
+        "imports": {
+          "leaflet": "/vendor/leaflet@1.9.4/leaflet-src.esm.min.js"
+        }
+      }
+    </script>
     <script type="module" src="/dist/js/app.{{ buildId }}.js"></script>
 
     <title>{{ siteHostname }}</title>

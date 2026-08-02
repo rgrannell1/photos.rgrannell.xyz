@@ -259,7 +259,7 @@ export function ThingPage() {
     view(vnode: m.Vnode<ThingPageAttrs>) {
       const { urn, things, services, visible } = vnode.attrs;
 
-      return m("div", {
+      return m("main", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
         isOlm(urn) ? m(HeartRain) : null,

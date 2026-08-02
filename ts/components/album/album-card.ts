@@ -38,6 +38,7 @@ export function AlbumCard() {
 
       const $album = m(PhotoAlbum, {
         trip,
+        label: album.name,
         href: albumRoute(album.id),
         thumbnailUrl: album.thumbnailUrl,
         thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),

@@ -62,7 +62,11 @@ export function AlbumBanner(): m.Component<AlbumBannerAttrs> {
         { "aria-label": alt },
         m(
           "div.album-banner-inner",
-          m(BannerImagePair, { thumbnailUrl: src, thumbnailDataUrl: thumbnailDataUrl ?? null }),
+          m(BannerImagePair, {
+            thumbnailUrl: src,
+            thumbnailDataUrl: thumbnailDataUrl ?? null,
+            alt,
+          }),
         ),
       );
     },

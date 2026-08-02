@@ -98,8 +98,8 @@ function ChecklistDetails() {
  */
 function ChecklistPhoto() {
   return {
-    view(vnode: m.Vnode<{ cover: Photo | undefined; href: string }>) {
-      const { cover, href } = vnode.attrs;
+    view(vnode: m.Vnode<{ cover: Photo | undefined; href: string; label: string }>) {
+      const { cover, href, label } = vnode.attrs;
 
       if (!cover) {
         return m("td.checklist-photo");
@@ -107,6 +107,7 @@ function ChecklistPhoto() {
 
       return m("td.checklist-photo", m(ImagePair, {
         href,
+        label,
         thumbnailUrl: cover.thumbnailUrl,
         thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),
         loading: "lazy",
@@ -162,7 +163,7 @@ function ChecklistRow() {
         m("td.checklist-number", {
           class: highlightedYear ? "checklist-number--highlighted" : undefined,
         }, `${position}`),
-        m(ChecklistPhoto, { cover, href }),
+        m(ChecklistPhoto, { cover, href, label: entry.name }),
         m("td.checklist-name", [
           entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
           m("a.checklist-name-link", { href }, entry.name),
@@ -396,7 +397,7 @@ export function ChecklistPage() {
       // The mammal section only shows in the Irish view; other views stay birds-only.
       const irishView = filter === "ireland";
 
-      return m("div", {
+      return m("main", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
         m("section.album-metadata", [

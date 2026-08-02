@@ -50,6 +50,7 @@ function drawThingAlbum(
 
   return [m(PhotoAlbum, {
     key: `thing-${id}`,
+    label: one(thing.name) ?? thingId,
     imageUrl: coverPhoto.fullImage,
     thumbnailUrl: coverPhoto.thumbnailUrl,
     thumbnailDataUrl: encodeBitmapDataURL(coverPhoto?.mosaicColours),
@@ -263,7 +264,7 @@ export function ListingPage() {
         );
       }
 
-      return m("div", {
+      return m("main", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
         m("section.album-metadata", $md),

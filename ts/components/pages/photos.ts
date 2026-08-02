@@ -38,7 +38,7 @@ export function PhotosPage() {
         m("p.photo-album-count", countText),
       ]);
 
-      return m("div", {
+      return m("main", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
         $md,

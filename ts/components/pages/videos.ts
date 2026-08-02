@@ -46,7 +46,7 @@ export function VideosPage() {
       const videoLengthText = countLabel(videos.length, "video");
 
       return m(
-        "div",
+        "main",
         {
           class: visible ? "page sidebar-visible" : "page",
         },

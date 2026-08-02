@@ -38,7 +38,7 @@ export function AboutPage() {
         BANNER_MOSAIC_DIMENSION,
       );
 
-      return m("div", {
+      return m("main", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
         m(AlbumBanner, {

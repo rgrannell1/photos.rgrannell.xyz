@@ -26,7 +26,7 @@ export function VideoPage() {
 
       const $videoInfo = m(MediaInfo, { media: video, services });
 
-      return m("section", [
+      return m("main", [
         m("h1", "Video"),
         m(Video, {
           video,

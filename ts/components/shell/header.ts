@@ -26,6 +26,9 @@ function HeaderBrandText() {
     view() {
       return m("a", {
         href: "#/",
+        // distinguishes this link from the sidebar "photos" link for
+        // assistive technology
+        "aria-label": "photos — home",
         onclick: navigate("/"),
       }, m("span.brand", BRAND_TEXT));
     },

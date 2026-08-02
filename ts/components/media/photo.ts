@@ -28,6 +28,7 @@ type ImageAttrs = {
   onclick: ((e: Event) => void) | undefined;
   width?: number | undefined;
   height?: number | undefined;
+  alt?: string | undefined;
 };
 
 /*
@@ -36,12 +37,13 @@ type ImageAttrs = {
 function Image() {
   return {
     view(vnode: m.Vnode<ImageAttrs>) {
-      const { thumbnailUrl, loading, onclick, width, height } = vnode.attrs;
+      const { thumbnailUrl, loading, onclick, width, height, alt } = vnode.attrs;
 
       return m("img.thumbnail-image", {
         onload: loadImage,
         src: thumbnailUrl,
         loading: loading,
+        alt: alt ?? "",
         onclick,
         ...(width !== undefined && { width }),
         ...(height !== undefined && { height }),
@@ -66,6 +68,7 @@ function PlaceholderImage() {
 
       return m("img.u-photo.thumbnail-image.thumbnail-placeholder", {
         src: thumbnailDataUrl,
+        alt: "",
         ...(width !== undefined && { width }),
         ...(height !== undefined && { height }),
       });
@@ -82,11 +85,14 @@ type ImagePairAttrs = {
   onclick: ((e: Event) => void) | undefined;
   width?: number;
   height?: number;
+  // accessible name for the wrapping link, since the images are decorative
+  label?: string;
 };
 
 type BannerImagePairAttrs = {
   thumbnailUrl: string;
   thumbnailDataUrl: string | null;
+  alt: string;
 };
 
 /*
@@ -97,7 +103,7 @@ type BannerImagePairAttrs = {
 export function BannerImagePair() {
   return {
     view(vnode: m.Vnode<BannerImagePairAttrs>) {
-      const { thumbnailUrl, thumbnailDataUrl } = vnode.attrs;
+      const { thumbnailUrl, thumbnailDataUrl, alt } = vnode.attrs;
 
       const $placeholder = thumbnailDataUrl
         ? m("img.banner-placeholder", {
@@ -110,6 +116,7 @@ export function BannerImagePair() {
         $placeholder,
         m("img.album-banner-image", {
           src: thumbnailUrl,
+          alt,
           loading: "eager",
           onload: loadImage,
         }),
@@ -138,6 +145,7 @@ export function ImagePair() {
         onclick,
         width,
         height,
+        label,
       } = vnode.attrs;
 
       // when wrapping in an href anchor the onclick lives on the anchor, so the
@@ -155,13 +163,18 @@ export function ImagePair() {
       if (imageUrl) {
         return m(
           "a",
-          { href: imageUrl, target: "_blank", rel: "external" },
+          {
+            href: imageUrl,
+            target: "_blank",
+            rel: "external",
+            "aria-label": label ?? "open full image",
+          },
           children,
         );
       }
 
       if (href) {
-        return m("a", { href, onclick }, children);
+        return m("a", { href, onclick, "aria-label": label }, children);
       }
 
       return m("div", children);

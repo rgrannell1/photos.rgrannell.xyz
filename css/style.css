@@ -6,7 +6,7 @@
 }
 
 :root {
-  --secondary-text-color: hsl(0, 0%, 60%);
+  --secondary-text-color: hsl(0, 0%, 44%);
   --font-colour: hsla(0, 0%, 0%, 0.8);
   --navbar-font-colour: hsl(0, 0%, 0%);
   --background-color: hsl(0, 0%, 96%);
@@ -743,7 +743,7 @@ button:disabled {
 }
 
 /* todo, the section is needed for the photos page */
-.app-container > section, .app-container > .page {
+.app-container > section, .app-container > main, .app-container > .page {
   grid-row: 1;
   grid-column: 2;
 }
@@ -777,7 +777,7 @@ button:disabled {
     margin-top: 0;
   }
 
-  .app-container > section, .app-container > .page {
+  .app-container > section, .app-container > main, .app-container > .page {
     grid-row: 1 / 3;
     grid-column: 2;
     margin-top: 0;
@@ -1234,4 +1234,12 @@ button:disabled {
     transform: translateY(105vh);
     opacity: 0.6;
   }
+}
+
+/* flag links need a large enough touch target, with spacing between them */
+.country-link-short {
+  display: inline-block;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 4px 6px;
 }

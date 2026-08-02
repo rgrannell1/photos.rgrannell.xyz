@@ -31,7 +31,7 @@ export function PhotoPage() {
       const $exif = m(ExifData, { photo, services });
       const $photoInfo = m(MediaInfo, { media: photo, services });
 
-      return m("section", { "data-testid": "photo-page" }, [
+      return m("main", { "data-testid": "photo-page" }, [
         m("h1", { "data-testid": "photo-heading" }, "Photo"),
         m(Photo, {
           photo,

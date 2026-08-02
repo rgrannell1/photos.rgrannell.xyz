@@ -38,6 +38,7 @@ function drawCategoryAlbum(
 
   return [m(PhotoAlbum, {
     key: `category-${category.type}`,
+    label: category.type,
     imageUrl: cover.fullImage,
     thumbnailUrl: cover.thumbnailUrl,
     thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),
@@ -62,7 +63,7 @@ export function ListingsPage() {
         drawCategoryAlbum(services, category, idx)
       );
 
-      return m("div", {
+      return m("main", {
         class: visible ? "page sidebar-visible" : "page",
       }, [
         m("section.album-metadata", [

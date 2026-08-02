@@ -48,6 +48,8 @@ function TripTag() {
 
 export type PhotoAlbumAttrs = {
   trip: string | undefined;
+  // accessible name for the cover-image link
+  label?: string;
   imageUrl?: string;
   href?: string;
   thumbnailUrl: string;
@@ -72,6 +74,7 @@ export function PhotoAlbum() {
         minDate,
         onclick,
         trip,
+        label,
       } = vnode.attrs;
 
       return m("div.photo-album", { "data-min-date": minDate }, [
@@ -83,6 +86,7 @@ export function PhotoAlbum() {
           onclick,
           width: PHOTO_WIDTH,
           height: PHOTO_HEIGHT,
+          ...(label !== undefined && { label }),
           ...(imageUrl !== undefined && { imageUrl }),
           ...(href !== undefined && { href }),
         }),

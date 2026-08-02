@@ -20,20 +20,6 @@ const TERRAIN_ATTRIBUTION =
   `&amp; <a href="https://stamen.com/">Stamen Design</a>, ` +
   `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`;
 
-const LEAFLET_CSS_URL = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-const LEAFLET_CSS_INTEGRITY = "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=";
-
-function injectLeafletCSS(): void {
-  if (document.querySelector("link[data-leaflet-css]")) return;
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.href = LEAFLET_CSS_URL;
-  link.integrity = LEAFLET_CSS_INTEGRITY;
-  link.crossOrigin = "";
-  link.setAttribute("data-leaflet-css", "");
-  document.head.appendChild(link);
-}
-
 function createLeafletMap(leaflet: LeafletLib, container: HTMLElement): LeafletMap {
   const leafletMap = leaflet.map(container, {
     center: [20, 0],
@@ -280,7 +266,6 @@ export function MapPage(): m.Component<MapPageAttrs> {
 
   return {
     oncreate(vnode) {
-      injectLeafletCSS();
       import("leaflet").then((leaflet) => initMap(leaflet, vnode));
     },
 

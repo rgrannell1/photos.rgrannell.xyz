@@ -130,7 +130,7 @@ export function AlbumPage() {
       });
 
       return m(
-        "div",
+        "main",
         {
           class: visible ? "page sidebar-visible" : "page",
         },

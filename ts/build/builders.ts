@@ -73,6 +73,9 @@ export async function buildTS() {
     treeShaking: true,
     sourcemap: true,
     minify: true,
+    // leaflet is only needed on the map page; the import map in index.html
+    // resolves it to the vendored ESM build at runtime
+    external: ["leaflet"],
     // bundle against the tribbledb source, matching the deno.json import map
     alias: {
       "@rgrannell1/tribbledb/v2": "../../tribbledb/src/v2/mod.ts",
