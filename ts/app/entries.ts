@@ -72,11 +72,11 @@ export const albumsEntry = pageEntry({
 /* */
 export const albumEntry = pageEntry({
   page: albumPageComponent,
+  onmatch(params) {
+    const id = params.id;
+    state.currentAlbum = typeof id === "string" ? albumUrn(id) : undefined;
+  },
   resolve() {
-    const id = m.route.param("id");
-    if (id) {
-      state.currentAlbum = albumUrn(id);
-    }
     if (!state.currentAlbum) {
       return "No album selected";
     }
@@ -164,25 +164,26 @@ export const photosEntry = pageEntry({
 /* */
 export const thingEntry = pageEntry({
   page: thingPageComponent,
+  onmatch(params) {
+    const pair = params.pair;
+    state.currentThing = typeof pair === "string" ? `urn:ró:${pair}` : undefined;
+  },
   resolve() {
     // needs pruned, fully-derived data
     if (!state.loaded) {
       return "";
     }
 
-    const pair = m.route.param("pair");
-    state.currentUrn = `urn:ró:${pair}`;
-
-    if (!state.currentUrn) {
+    if (!state.currentThing) {
       return "No thing selected";
     }
 
     let things: TripleObject[] = [];
-    const parsed = asUrn(state.currentUrn);
+    const parsed = asUrn(state.currentThing);
     if (parsed.id === "*") {
-      things = services.readNamedTypeThings(pair.split(":")[0]);
+      things = services.readNamedTypeThings(parsed.type);
     } else {
-      const thing = services.readThing(state.currentUrn);
+      const thing = services.readThing(state.currentThing);
       if (thing) {
         things = [thing];
       }
@@ -190,7 +191,7 @@ export const thingEntry = pageEntry({
 
     return {
       attrs: {
-        urn: state.currentUrn,
+        urn: state.currentThing,
         things,
         services,
         visible: state.sidebarVisible,
@@ -203,7 +204,8 @@ export const thingEntry = pageEntry({
 export const photoEntry = pageEntry({
   page: photoPageComponent,
   onmatch(params) {
-    state.currentPhoto = photoUrn(params.id as string);
+    const id = params.id;
+    state.currentPhoto = typeof id === "string" ? photoUrn(id) : undefined;
   },
   resolve() {
     if (!state.currentPhoto) {
@@ -225,14 +227,15 @@ export const photoEntry = pageEntry({
 export const videoEntry = pageEntry({
   page: videoPageComponent,
   onmatch(params) {
-    state.currentUrn = videoUrn(params.id as string);
+    const id = params.id;
+    state.currentVideo = typeof id === "string" ? videoUrn(id) : undefined;
   },
   resolve() {
-    if (!state.currentUrn) {
+    if (!state.currentVideo) {
       return "No video selected";
     }
 
-    const video = services.readVideo(state.currentUrn);
+    const video = services.readVideo(state.currentVideo);
     if (!video) {
       return "Video not found";
     }
@@ -247,7 +250,8 @@ export const videoEntry = pageEntry({
 export const listingEntry = pageEntry({
   page: listingPageComponent,
   onmatch(params) {
-    state.currentType = params.type as string;
+    const type = params.type;
+    state.currentType = typeof type === "string" ? type : undefined;
   },
   resolve() {
     // needs pruned, fully-derived data

@@ -120,7 +120,8 @@ export function initState(): State {
   return {
     currentAlbum: undefined,
     currentPhoto: undefined,
-    currentUrn: undefined,
+    currentVideo: undefined,
+    currentThing: undefined,
     currentType: undefined,
     data: tdb,
     loaded: false,

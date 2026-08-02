@@ -74,7 +74,8 @@ export type State = {
   currentAlbum: string | undefined;
   currentPhoto: string | undefined;
   currentType: string | undefined;
-  currentUrn: string | undefined;
+  currentVideo: string | undefined;
+  currentThing: string | undefined;
 };
 
 /*
