@@ -14,7 +14,7 @@ export type GeocodedPlaceWithCover = GeocodedPlace & {
   coverThumbnailUrl?: string | undefined;
 };
 
-function hasValidCoordinates(place: Place): place is GeocodedPlace {
+export function hasValidCoordinates(place: Place): place is GeocodedPlace {
   const latitude = place.latitude;
   const longitude = place.longitude;
 

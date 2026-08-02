@@ -99,7 +99,8 @@ export function addYear(tdb: TribbleDB) {
 
     const year = date.getUTCFullYear().toString();
 
-    return [[src, KnownRelations.YEAR, year]] as Triple[];
+    const yearTriple: Triple = [src, KnownRelations.YEAR, year];
+    return [yearTriple];
   });
 
   tdb.add(years);
@@ -189,7 +190,7 @@ export function expandCurie(curies: Record<string, string>, value: string) {
  */
 export function expandTripleCuries(
   triple: Triple,
-) {
+): Triple[] {
   const [src, rel, tgt] = triple;
 
   return [
@@ -283,7 +284,7 @@ export function deriveTriples(
     let nextStep: Triple[] = [];
 
     for (const triple of outputTriples) {
-      nextStep.push(...(fn(triple) as Triple[]));
+      nextStep.push(...fn(triple));
     }
 
     outputTriples = [...nextStep];

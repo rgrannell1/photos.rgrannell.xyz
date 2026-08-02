@@ -1,4 +1,4 @@
-const CACHE_NAME = "sw-cache-3c098cd996-6900e9ea";
+const CACHE_NAME = "sw-cache-3c098cd996-9bf028b9";
 const CACHEABLE_RESOURCES = [
   "/icons/android-chrome-192x192.png",
   "/icons/android-chrome-512x512.png",
@@ -6,8 +6,8 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-16x16.png",
   "/icons/favicon-32x32.png",
   "/favicon.ico",
-  "/dist/css/style.3c098cd996-6900e9ea.css",
-  "/dist/js/app.3c098cd996-6900e9ea.js",
+  "/dist/css/style.3c098cd996-9bf028b9.css",
+  "/dist/js/app.3c098cd996-9bf028b9.js",
   // /albums hero (photo:548d64a50a) — matches ts/components/pages/albums.ts.
   // update by hand if the photo is re-encoded
   "https://photos-cdn.rgrannell.xyz/d6cf0f7cc7.webp",

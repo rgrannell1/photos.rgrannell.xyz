@@ -7,29 +7,7 @@ import { readPhotos } from "./readers.ts";
 import { KnownRelations, KnownTypes } from "../constants/data.ts";
 import { readAlbums, readPlace, readTransfers, readVideos } from "./readers.ts";
 import { albumUrn } from "../models/urn.ts";
-
-const NULL_ISLAND_THRESHOLD = 1e-4;
-
-function hasValidCoordinates(
-  latitude: number | undefined,
-  longitude: number | undefined,
-): boolean {
-  if (
-    latitude === undefined ||
-    longitude === undefined ||
-    !Number.isFinite(latitude) ||
-    !Number.isFinite(longitude)
-  ) {
-    return false;
-  }
-  if (
-    Math.abs(latitude) < NULL_ISLAND_THRESHOLD &&
-    Math.abs(longitude) < NULL_ISLAND_THRESHOLD
-  ) {
-    return false;
-  }
-  return true;
-}
+import { hasValidCoordinates } from "./places.ts";
 
 /*
  * Get the album date
@@ -57,7 +35,7 @@ export function readAllAlbums(tdb: TribbleDB): Album[] {
     source: { type: KnownTypes.ALBUM },
   }).sources();
 
-  return (readAlbums(tdb, ids) as Album[])
+  return readAlbums(tdb, ids)
     .sort((album0: Album, album1: Album) => {
       return album1.minDate - album0.minDate;
     });
@@ -135,8 +113,8 @@ export function readTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
     target: { type, id },
   }).sources();
 
-  return (readAlbums(tdb, ids) as Album[]).sort(
-    (a: Album, b: Album) => a.minDate - b.minDate,
+  return readAlbums(tdb, ids).sort(
+    (albumA: Album, albumB: Album) => albumA.minDate - albumB.minDate,
   );
 }
 
@@ -145,16 +123,10 @@ export function readTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
  */
 export function readTripName(tdb: TribbleDB, tripUrn: string): string | undefined {
   const { type, id } = asUrn(tripUrn);
-  const namesCursor = tdb.search({
+  return tdb.search({
     source: { type, id },
     relation: KnownRelations.TITLE,
-  });
-
-  for (const [_, __, name] of namesCursor.triples()) {
-    return name as string;
-  }
-
-  return undefined;
+  }).firstTarget();
 }
 
 /*
@@ -205,21 +177,14 @@ export function readTransferPolylines(tdb: TribbleDB): TripPolyline[] {
     if (!sourcePlace || !destPlace) {
       continue;
     }
-    const srcLat = (sourcePlace as { latitude?: number }).latitude;
-    const srcLng = (sourcePlace as { longitude?: number }).longitude;
-    const destLat = (destPlace as { latitude?: number }).latitude;
-    const destLng = (destPlace as { longitude?: number }).longitude;
-    if (
-      !hasValidCoordinates(srcLat, srcLng) ||
-      !hasValidCoordinates(destLat, destLng)
-    ) {
+    if (!hasValidCoordinates(sourcePlace) || !hasValidCoordinates(destPlace)) {
       continue;
     }
     result.push({
       tripUrn: transfer.id,
       latLngs: [
-        [srcLat as number, srcLng as number],
-        [destLat as number, destLng as number],
+        [sourcePlace.latitude, sourcePlace.longitude],
+        [destPlace.latitude, destPlace.longitude],
       ],
       ...(transfer.mode != null && { mode: transfer.mode }),
     });

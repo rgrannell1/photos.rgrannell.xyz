@@ -64,7 +64,7 @@ export const PLURALS = new Map<string, string>([
 /*
  * Places have features, use these features to pick an emoji to represent the place
  */
-export const PLACE_FEATURES_TO_EMOJI = {
+export const PLACE_FEATURES_TO_EMOJI: Record<string, string> = {
   aquarium: "🐠",
   aquaduct: "🏛️",
   archaeological: "🏺",

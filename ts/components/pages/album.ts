@@ -21,7 +21,6 @@ import { AlbumsButton } from "../album/albums-button.ts";
 import { countLabel, preprocessDescription } from "../../commons/strings.ts";
 import { setify } from "../../commons/sets.ts";
 import { SMALL_DEVICE_WIDTH } from "../../constants/layout.ts";
-import { KnownRelations } from "../../constants/data.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TripPreviousAlbums } from "../album/trip-previous-albums.ts";
 
@@ -81,13 +80,9 @@ export function AlbumPage() {
         ? services.readPhoto(album.albumBanner)
         : null;
       const bannerSrc = bannerPhoto
-        ? (bannerPhoto as Record<string, string>)[
-          KnownRelations.MID_IMAGE_LOSSY_URL
-        ] ??
-          (bannerPhoto as Record<string, string>)[KnownRelations.THUMBNAIL_URL]
+        ? bannerPhoto.midImageLossyUrl ?? bannerPhoto.thumbnailUrl
         : null;
-      const bannerMosaic = (bannerPhoto as Record<string, string> | null)
-        ?.[KnownRelations.MOSAIC_BANNER] ?? null;
+      const bannerMosaic = bannerPhoto?.mosaicBanner ?? null;
       const thumbnailDataUrl = bannerMosaic
         ? encodeBitmapDataURL(bannerMosaic, 10, 10)
         : null;

@@ -3,6 +3,7 @@
  */
 
 import { asUrn } from "@rgrannell1/tribbledb";
+import { one } from "../commons/arrays.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { countryUrn } from "../models/urn.ts";
 import { KnownRelations, KnownTypes } from "../constants/data.ts";
@@ -156,7 +157,7 @@ export function collectUnphotographedNemesis(
     const speciesThing = tdb.search({
       source: { type: speciesType, id: speciesId },
     }).firstObject();
-    species.push({ speciesId, name: firstValue(speciesThing?.name) ?? speciesId });
+    species.push({ speciesId, name: one(speciesThing?.name) ?? speciesId });
   }
   return species;
 }
@@ -176,15 +177,6 @@ export type ChecklistEntry = {
   target: boolean;
 };
 
-/*
- * First value of a triple field, which TribbleDB may return as a scalar or array.
- */
-function firstValue(raw: unknown): string | undefined {
-  if (Array.isArray(raw)) {
-    return raw[0] as string | undefined;
-  }
-  return raw as string | undefined;
-}
 
 /*
  * Read the life-list for one species type, sorted chronologically by first sighting.
@@ -218,27 +210,27 @@ function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEn
       source: { type: speciesType, id: speciesId },
     }).firstObject();
 
-    const name = firstValue(speciesThing?.name) ?? speciesId;
+    const name = one(speciesThing?.name) ?? speciesId;
 
     const hasBirdwatchUrl = tdb.search({
       source: { type: speciesType, id: speciesId },
       relation: KnownRelations.BIRDWATCH_URL,
     }).triples().length > 0;
-    const isIrish = firstValue(speciesThing?.irish) === "true" || hasBirdwatchUrl;
+    const isIrish = one(speciesThing?.irish) === "true" || hasBirdwatchUrl;
 
     const isWild = wildSpeciesIds.has(speciesId);
 
     // scarce (data-derived): IRBC-rare status, or a low abundance band
-    const scarce = firstValue(speciesThing?.status) === "rare" ||
-      SCARCE_RARITY_BANDS.has(firstValue(speciesThing?.rarity) ?? "");
-    const nemesis = firstValue(speciesThing?.nemesis) === "true";
-    const target = firstValue(speciesThing?.target) === "true";
+    const scarce = one(speciesThing?.status) === "rare" ||
+      SCARCE_RARITY_BANDS.has(one(speciesThing?.rarity) ?? "");
+    const nemesis = one(speciesThing?.nemesis) === "true";
+    const target = one(speciesThing?.target) === "true";
 
     entries.push({
       speciesId,
       speciesType,
       name,
-      firstSeen: firstSeen as string,
+      firstSeen,
       isIrish,
       isWild,
       scarce,

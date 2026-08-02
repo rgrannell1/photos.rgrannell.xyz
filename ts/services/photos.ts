@@ -42,8 +42,9 @@ export function encodeBitmapDataURL(
   rows = 2,
 ): string {
   const cacheKey = `${cols}x${rows}:${colours}`;
-  if (COLOURS_CACHE.has(cacheKey)) {
-    return COLOURS_CACHE.get(cacheKey) as string;
+  const cached = COLOURS_CACHE.get(cacheKey);
+  if (cached !== undefined) {
+    return cached;
   }
 
   const coloursList = colours.split("#").filter(Boolean).map((colour: string) =>
@@ -67,8 +68,9 @@ export function encodeBitmapDataURL(
     }
   }
 
-  COLOURS_CACHE.set(cacheKey, canvas.toDataURL("image/png"));
-  return COLOURS_CACHE.get(cacheKey) as string;
+  const dataUrl = canvas.toDataURL("image/png");
+  COLOURS_CACHE.set(cacheKey, dataUrl);
+  return dataUrl;
 }
 
 /*
@@ -95,10 +97,10 @@ export function readAllPhotoUrns(tdb: TribbleDB): string[] {
 
   return photoObjects
     .sort((objA, objB) =>
-      parseInt(objB.createdAt as string) - parseInt(objA.createdAt as string)
+      parseInt(one(objB.createdAt) ?? "0") - parseInt(one(objA.createdAt) ?? "0")
     )
-    .map((obj) => one(obj.id)!)
-    .filter((urn): urn is string => Boolean(urn));
+    .map((obj) => one(obj.id))
+    .filter((urn): urn is string => urn !== undefined);
 }
 
 /*

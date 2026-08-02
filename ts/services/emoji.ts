@@ -26,15 +26,7 @@ export function placeEmoji(thing: Place | TripleObject): string {
   }
   const { id: featureId } = asUrn(feature);
 
-  if (
-    Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)
-  ) {
-    return PLACE_FEATURES_TO_EMOJI[
-      featureId as keyof typeof PLACE_FEATURES_TO_EMOJI
-    ];
-  }
-
-  return "📍";
+  return PLACE_FEATURES_TO_EMOJI[featureId] ?? "📍";
 }
 
 /*
@@ -43,15 +35,7 @@ export function placeEmoji(thing: Place | TripleObject): string {
 export function placeFeatureEmoji(featureUrn: string): string {
   const { id: featureId } = asUrn(featureUrn);
 
-  if (
-    Object.prototype.hasOwnProperty.call(PLACE_FEATURES_TO_EMOJI, featureId)
-  ) {
-    return PLACE_FEATURES_TO_EMOJI[
-      featureId as keyof typeof PLACE_FEATURES_TO_EMOJI
-    ];
-  }
-
-  return "📍";
+  return PLACE_FEATURES_TO_EMOJI[featureId] ?? "📍";
 }
 
 /*
