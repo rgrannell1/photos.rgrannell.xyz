@@ -43,7 +43,7 @@ export function AlbumCard() {
         thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),
         loading,
         minDate: album.minDate,
-        onclick: onAlbumClick.bind(null, album.id, album.name),
+        onclick: onAlbumClick.bind(null, album.id),
         child,
       });
 

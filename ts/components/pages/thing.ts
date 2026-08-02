@@ -22,9 +22,50 @@ type ThingPageAttrs = {
   visible: boolean;
 };
 
+/*
+ * Memoise a read keyed by the page URN. Reads are pure over loaded data, so
+ * recompute only when the URN changes, not on every batched redraw.
+ */
+function cachedByUrn<Value>(
+  compute: (things: TripleObject[], services: Services) => Value,
+) {
+  let lastUrn: string | null = null;
+  let value: Value | undefined;
+
+  return (attrs: ThingPageAttrs): Value => {
+    if (attrs.urn !== lastUrn) {
+      lastUrn = attrs.urn;
+      value = compute(attrs.things, attrs.services);
+    }
+    return value as Value;
+  };
+}
+
+function readSeenIn(things: TripleObject[], services: Services) {
+  return services.readSeenInCountries(setOf<string>("id", things));
+}
+
+function readAlbumEntries(
+  things: TripleObject[],
+  services: Services,
+): AlbumEntry[] {
+  const urns = setOf<string>("id", things);
+  return services.readAlbumsByThingIds(urns).map((album) => ({
+    album,
+    countries: services.readCountries(setify(album.country)),
+  }));
+}
+
+function readThingVideos(things: TripleObject[], services: Services) {
+  return services.readVideosByThingIds(setOf<string>("id", things));
+}
+
+function readThingPhotos(things: TripleObject[], services: Services) {
+  return services.readPhotosByThingIds(setOf<string>("id", things));
+}
+
 function ThingDetails() {
-  let seenInUrn: string | null = null;
-  let seenInCache: ReturnType<Services["readSeenInCountries"]> = [];
+  const seenInFor = cachedByUrn(readSeenIn);
 
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
@@ -83,12 +124,7 @@ function ThingDetails() {
       }
 
       if (BinomialTypes.has(asUrn(urn).type)) {
-        // pure over loaded data; compute once per URN, not per redraw
-        if (urn !== seenInUrn) {
-          seenInUrn = urn;
-          seenInCache = services.readSeenInCountries(setOf<string>("id", things));
-        }
-        const seenIn = seenInCache;
+        const seenIn = seenInFor(vnode.attrs);
 
         if (seenIn.length > 0) {
           metadata["Seen In"] = m(".seen-in-list", seenIn.map((country) =>
@@ -122,29 +158,11 @@ type AlbumEntry = {
 };
 
 function AlbumSection() {
-  let cachedUrn: string | null = null;
-  let cachedEntries: AlbumEntry[] = [];
-
-  // album and country reads are pure over loaded data; compute once per
-  // URN rather than on every redraw of the batched photo grid
-  function entriesFor(vnode: m.Vnode<ThingPageAttrs>): AlbumEntry[] {
-    const { things, services, urn } = vnode.attrs;
-
-    if (urn !== cachedUrn) {
-      cachedUrn = urn;
-      const urns = setOf<string>("id", things);
-      cachedEntries = services.readAlbumsByThingIds(new Set(urns))
-        .map((album) => ({
-          album,
-          countries: services.readCountries(setify(album.country)),
-        }));
-    }
-    return cachedEntries;
-  }
+  const entriesFor = cachedByUrn(readAlbumEntries);
 
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const $albums = entriesFor(vnode).map(({ album, countries }) =>
+      const $albums = entriesFor(vnode.attrs).map(({ album, countries }) =>
         m(AlbumCard, {
           album,
           countries,
@@ -170,19 +188,11 @@ function AlbumSection() {
 }
 
 function VideoSection() {
-  let cachedUrn: string | null = null;
-  let cachedVideos: ReturnType<Services["readVideosByThingIds"]> = [];
+  const videosFor = cachedByUrn(readThingVideos);
 
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const { things, services, urn } = vnode.attrs;
-
-      if (urn !== cachedUrn) {
-        cachedUrn = urn;
-        const urns = setOf<string>("id", things);
-        cachedVideos = services.readVideosByThingIds(new Set(urns));
-      }
-      const videos = cachedVideos;
+      const videos = videosFor(vnode.attrs);
 
       if (videos.length === 0) {
         return null;
@@ -212,23 +222,11 @@ function slicePhotos(photos: PhotoType[], limit: number): PhotoType[] {
 }
 
 function PhotoSection() {
-  let currentUrn = "";
-  let cachedPhotos: ReturnType<Services["readPhotosByThingIds"]> | null = null;
-
-  // reading and parsing every matching photo is expensive on high fan-out
-  // pages, so compute once per URN rather than on every batched redraw
-  function photosFor(vnode: m.Vnode<ThingPageAttrs>) {
-    if (vnode.attrs.urn !== currentUrn || cachedPhotos === null) {
-      currentUrn = vnode.attrs.urn;
-      const urns = setOf<string>("id", vnode.attrs.things);
-      cachedPhotos = vnode.attrs.services.readPhotosByThingIds(urns);
-    }
-    return cachedPhotos;
-  }
+  const photosFor = cachedByUrn(readThingPhotos);
 
   return {
     view(vnode: m.Vnode<ThingPageAttrs>) {
-      const photos = photosFor(vnode);
+      const photos = photosFor(vnode.attrs);
 
       if (photos.length === 0) {
         return null;

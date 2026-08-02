@@ -1,18 +1,16 @@
 import m from "mithril";
 import { parseUrn } from "@rgrannell1/tribbledb";
 
-import { block, broadcast } from "../../commons/events.ts";
+import { block } from "../../commons/events.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../constants/layout.ts";
 import { encodeBitmapDataURL } from "../../services/photos.ts";
 import type { Photo as PhotoType } from "../../types.ts";
 
 /*
- * Broadcast an event when a photo loads, and swap out the placeholder
+ * Swap out the placeholder when a photo loads
  */
-function loadImage(url: string, event: Event) {
-  broadcast("photo_loaded", { url });
-
+function loadImage(event: Event) {
   const $placeholder = (event.target as HTMLElement)?.parentNode
     ?.querySelector(
       ".thumbnail-placeholder",
@@ -42,7 +40,7 @@ function Image() {
       const { thumbnailUrl, loading, onclick, width, height } = vnode.attrs;
 
       return m("img.thumbnail-image", {
-        onload: loadImage.bind(null, thumbnailUrl),
+        onload: loadImage,
         src: thumbnailUrl,
         loading: loading,
         onclick,
@@ -114,7 +112,7 @@ export function BannerImagePair() {
         m("img.album-banner-image", {
           src: thumbnailUrl,
           loading: "eager",
-          onload: loadImage.bind(null, thumbnailUrl),
+          onload: loadImage,
         }),
       ]);
     },

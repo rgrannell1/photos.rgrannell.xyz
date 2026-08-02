@@ -3,14 +3,14 @@
  * state-updates and rerenders.
  */
 
-import type { ApplicationEvents } from "../types.ts";
+import type { ApplicationEventPayloads, ApplicationEvents } from "../types.ts";
 
 /*
  * Broadcast a custom application event to the document.
  */
-export function broadcast(
-  label: ApplicationEvents,
-  detail: CustomEvent["detail"],
+export function broadcast<Label extends ApplicationEvents>(
+  label: Label,
+  detail: ApplicationEventPayloads[Label],
 ) {
   console.info(`broadcasting event: ${label}`, detail);
 
@@ -24,11 +24,11 @@ export function broadcast(
 /*
  * Listen for custom application events.
  */
-export function listen(
-  label: ApplicationEvents,
-  callback: (event: Event) => void,
+export function listen<Label extends ApplicationEvents>(
+  label: Label,
+  callback: (event: CustomEvent<ApplicationEventPayloads[Label]>) => void,
 ) {
-  document.addEventListener(label, callback);
+  document.addEventListener(label, callback as EventListener);
 }
 
 /*

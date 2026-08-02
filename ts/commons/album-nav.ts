@@ -13,7 +13,7 @@ export function albumRoute(id: string): string {
   return `#!/album/${parsed.id}`;
 }
 
-export function onAlbumClick(id: string, title: string, event: Event) {
+export function onAlbumClick(id: string, event: Event) {
   // let modified/middle clicks fall through to the browser so the album route
   // opens in a new tab
   if (isModifiedClick(event as MouseEvent)) {
@@ -22,6 +22,6 @@ export function onAlbumClick(id: string, title: string, event: Event) {
 
   const parsed = asUrn(id);
 
-  broadcast("navigate", { route: `/album/${parsed.id}`, title });
+  broadcast("navigate", { route: `/album/${parsed.id}` });
   block(event);
 }

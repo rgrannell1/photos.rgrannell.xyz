@@ -19,11 +19,16 @@ import type {
   parseVideo,
 } from "./services/parsers.ts";
 
-export type ApplicationEvents =
-  | "click_burger_menu"
-  | "click_photo_metadata"
-  | "photo_loaded"
-  | "navigate";
+/*
+ * Application events and their payloads. broadcast and listen are typed
+ * against this map, so payloads cannot drift from their listeners.
+ */
+export type ApplicationEventPayloads = {
+  click_burger_menu: Record<string, never>;
+  navigate: { route: string };
+};
+
+export type ApplicationEvents = keyof ApplicationEventPayloads;
 
 export type EnvConfig = {
   photos_url: string;
