@@ -48,8 +48,9 @@ export async function buildExpandedTribbles() {
 export async function buildSW() {
   console.info("🌐 Rendering service-worker");
 
+  // served from the root so the worker's default scope covers every page
   await Deno.writeTextFile(
-    `dist/js/sw.${buildId}.js`,
+    "sw.js",
     render(swTemplateText, {
       prefetched: findPrefetchTargets(),
       homepageThumbnails: JSON.stringify(findHomepageThumbnails()),

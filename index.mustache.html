@@ -66,10 +66,10 @@
   <script async fetchpriority="low">
     // -- register a service-worker
     if('serviceWorker' in navigator) {
-      console.log('⚙️ loading service worker: /sw.{{ buildId }}.js')
+      console.log('⚙️ loading service worker: /sw.js')
 
-      navigator.serviceWorker.register('/dist/js/sw.{{ buildId }}.js').catch(err => {
-        console.error(`⚙️ failed service worker: /sw.{{ buildId }}.js ${err}`)
+      navigator.serviceWorker.register('/sw.js').catch(err => {
+        console.error(`⚙️ failed service worker: /sw.js ${err}`)
       });
 
       navigator.serviceWorker.ready.then(registration => {
@@ -77,7 +77,7 @@
           console.log('sending homepage thumbnails to service worker')
           registration.active?.postMessage({
             type: 'homepageThumbnails',
-            data: window.homepageThumbnails
+            thumbnails: window.homepageThumbnails
           });
         } else {
           console.log('window not updated')

@@ -1,4 +1,4 @@
-const CACHE_NAME = "sw-cache";
+const CACHE_NAME = "sw-cache-3c098cd996-c141f834";
 const CACHEABLE_RESOURCES = [
   "/icons/android-chrome-192x192.png",
   "/icons/android-chrome-512x512.png",
@@ -6,9 +6,8 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-16x16.png",
   "/icons/favicon-32x32.png",
   "/favicon.ico",
-  "/favicon-32x32.png",
-  "/dist/css/style.3c098cd996-b89e0701.css",
-  "/dist/js/app.3c098cd996-b89e0701.js",
+  "/dist/css/style.3c098cd996-c141f834.css",
+  "/dist/js/app.3c098cd996-c141f834.js",
   "https://photos-cdn.rgrannell.xyz/a4a694cea4.webp",
 ];
 
@@ -26,12 +25,38 @@ self.addEventListener("message", (event) => {
 
 // -- on install, cache every cacheable resource explicity listed.
 self.addEventListener("install", function (event) {
+  // activate immediately; waiting would delay the old-cache cleanup
+  self.skipWaiting();
+
+  // no-cors: the CDN sends no CORS headers, so cors-mode adds would reject.
+  // Each add is non-fatal: one missing resource must not fail the install.
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
       return Promise.all(
-        CACHEABLE_RESOURCES.map((resource) => cache.add(resource)),
+        CACHEABLE_RESOURCES.map((resource) =>
+          cache.add(new Request(resource, { mode: "no-cors" })).catch((err) => {
+            console.error(`failed to pre-cache ${resource}`, err);
+          })
+        ),
       );
     }),
+  );
+});
+
+// -- on activate, take over open tabs and delete caches from previous builds.
+// Deletion is safe mid-session: fetches fall back to the network on a miss.
+self.addEventListener("activate", function (event) {
+  event.waitUntil(
+    Promise.all([
+      self.clients.claim(),
+      caches.keys().then(function (names) {
+        return Promise.all(
+          names
+            .filter((name) => name !== CACHE_NAME)
+            .map((name) => caches.delete(name)),
+        );
+      }),
+    ]),
   );
 });
 
@@ -48,7 +73,7 @@ function isCacheable(url) {
    * and we don't cache index.html
    */
 
-  if (url.includes("js/app") || url.includes("js/sw")) {
+  if (url.includes("js/app")) {
     return true;
   }
 
