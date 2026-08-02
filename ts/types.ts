@@ -60,27 +60,41 @@ export type Stats = {
 export type Services = ReturnType<typeof loadServices>;
 
 /*
- * Application-wide state.
- *
- * TODO make this a sum-type,
- * since there's no need to have multiple current focuses at once in the type
+ * The route's focus: which entity the current page points at. Only one page
+ * is active at a time, so this is a discriminated union rather than a bag
+ * of optional fields.
+ */
+export type Focus =
+  | { page: "none" }
+  | { page: "album"; urn: string }
+  | { page: "photo"; urn: string }
+  | { page: "video"; urn: string }
+  | { page: "thing"; urn: string }
+  | { page: "listing"; type: string };
+
+/*
+ * Catalogue facts read before medialess pruning drops the unphotographed
+ * species from `data`. Consumed by the life-list page.
+ */
+export type CatalogueFacts = {
+  regularBirdSpecies: number;
+  irishMammalSpecies: number;
+  nemesisBirds: NemesisSpecies[];
+  nemesisMammals: NemesisSpecies[];
+};
+
+/*
+ * Application-wide state: the data layer, the pre-prune catalogue facts,
+ * the UI chrome, and the route focus.
  */
 export type State = {
   data: TribbleDB;
   services: Services;
   // false until the tribble stream and the final derivation pass complete
   loaded: boolean;
-  // Catalogue facts captured before medialess species are pruned from `data`.
-  regularBirdSpecies: number;
-  irishMammalSpecies: number;
-  unphotographedNemesis: NemesisSpecies[];
-  unphotographedNemesisMammals: NemesisSpecies[];
+  catalogue: CatalogueFacts;
   sidebarVisible: boolean;
-  currentAlbum: string | undefined;
-  currentPhoto: string | undefined;
-  currentType: string | undefined;
-  currentVideo: string | undefined;
-  currentThing: string | undefined;
+  focus: Focus;
 };
 
 /*

@@ -74,23 +74,24 @@ export const albumEntry = pageEntry({
   page: albumPageComponent,
   onmatch(params) {
     const id = params.id;
-    state.currentAlbum = typeof id === "string" ? albumUrn(id) : undefined;
+    state.focus = typeof id === "string"
+      ? { page: "album", urn: albumUrn(id) }
+      : { page: "none" };
   },
   resolve() {
-    if (!state.currentAlbum) {
+    const { focus } = state;
+    if (focus.page !== "album") {
       return "No album selected";
     }
 
-    const album = services.readAlbum(state.currentAlbum);
+    const album = services.readAlbum(focus.urn);
     if (!album) {
       return "Album not found";
     }
 
-    const photos = services.readAlbumPhotosByAlbumId(state.currentAlbum);
-    const videos = services.readAlbumVideosByAlbumId(state.currentAlbum);
-    const { subjects, locations } = services.readThingsByAlbumId(
-      state.currentAlbum,
-    );
+    const photos = services.readAlbumPhotosByAlbumId(focus.urn);
+    const videos = services.readAlbumVideosByAlbumId(focus.urn);
+    const { subjects, locations } = services.readThingsByAlbumId(focus.urn);
 
     const tripPreviousAlbums = album.trip
       ? services.readTripAlbums(album.trip)
@@ -166,7 +167,9 @@ export const thingEntry = pageEntry({
   page: thingPageComponent,
   onmatch(params) {
     const pair = params.pair;
-    state.currentThing = typeof pair === "string" ? thingUrn(pair) : undefined;
+    state.focus = typeof pair === "string"
+      ? { page: "thing", urn: thingUrn(pair) }
+      : { page: "none" };
   },
   resolve() {
     // needs pruned, fully-derived data
@@ -174,16 +177,17 @@ export const thingEntry = pageEntry({
       return "";
     }
 
-    if (!state.currentThing) {
+    const { focus } = state;
+    if (focus.page !== "thing") {
       return "No thing selected";
     }
 
     let things: TripleObject[] = [];
-    const parsed = asUrn(state.currentThing);
+    const parsed = asUrn(focus.urn);
     if (parsed.id === "*") {
       things = services.readNamedTypeThings(parsed.type);
     } else {
-      const thing = services.readThing(state.currentThing);
+      const thing = services.readThing(focus.urn);
       if (thing) {
         things = [thing];
       }
@@ -191,7 +195,7 @@ export const thingEntry = pageEntry({
 
     return {
       attrs: {
-        urn: state.currentThing,
+        urn: focus.urn,
         things,
         services,
         visible: state.sidebarVisible,
@@ -205,14 +209,17 @@ export const photoEntry = pageEntry({
   page: photoPageComponent,
   onmatch(params) {
     const id = params.id;
-    state.currentPhoto = typeof id === "string" ? photoUrn(id) : undefined;
+    state.focus = typeof id === "string"
+      ? { page: "photo", urn: photoUrn(id) }
+      : { page: "none" };
   },
   resolve() {
-    if (!state.currentPhoto) {
+    const { focus } = state;
+    if (focus.page !== "photo") {
       return "No photo selected";
     }
 
-    const photo = services.readPhoto(state.currentPhoto);
+    const photo = services.readPhoto(focus.urn);
     if (!photo) {
       return "Photo not found";
     }
@@ -228,14 +235,17 @@ export const videoEntry = pageEntry({
   page: videoPageComponent,
   onmatch(params) {
     const id = params.id;
-    state.currentVideo = typeof id === "string" ? videoUrn(id) : undefined;
+    state.focus = typeof id === "string"
+      ? { page: "video", urn: videoUrn(id) }
+      : { page: "none" };
   },
   resolve() {
-    if (!state.currentVideo) {
+    const { focus } = state;
+    if (focus.page !== "video") {
       return "No video selected";
     }
 
-    const video = services.readVideo(state.currentVideo);
+    const video = services.readVideo(focus.urn);
     if (!video) {
       return "Video not found";
     }
@@ -251,7 +261,9 @@ export const listingEntry = pageEntry({
   page: listingPageComponent,
   onmatch(params) {
     const type = params.type;
-    state.currentType = typeof type === "string" ? type : undefined;
+    state.focus = typeof type === "string"
+      ? { page: "listing", type }
+      : { page: "none" };
   },
   resolve() {
     // needs pruned, fully-derived data
@@ -259,16 +271,17 @@ export const listingEntry = pageEntry({
       return "";
     }
 
-    if (!state.currentType) {
+    const { focus } = state;
+    if (focus.page !== "listing") {
       return "No type selected";
     }
 
     const filter = m.route.param("filter") as string | undefined;
-    const things = services.readNamedTypeThings(state.currentType);
+    const things = services.readNamedTypeThings(focus.type);
 
     return {
       attrs: {
-        type: state.currentType,
+        type: focus.type,
         things,
         services,
         visible: state.sidebarVisible,
@@ -306,7 +319,7 @@ export const checklistEntry = pageEntry({
     const filter = (m.route.param("filter") as string | undefined) ?? "ireland";
     const entries = services.readWildBirdChecklist();
     const covers = services.readThingCovers("bird");
-    const regularCount = state.regularBirdSpecies;
+    const regularCount = state.catalogue.regularBirdSpecies;
     const mammalEntries = services.readWildMammalChecklist();
     const mammalCovers = services.readThingCovers("mammal");
 
@@ -315,11 +328,11 @@ export const checklistEntry = pageEntry({
         entries,
         covers,
         regularCount,
-        nemesisBirds: state.unphotographedNemesis,
+        nemesisBirds: state.catalogue.nemesisBirds,
         mammalEntries,
         mammalCovers,
-        irishMammalCount: state.irishMammalSpecies,
-        nemesisMammals: state.unphotographedNemesisMammals,
+        irishMammalCount: state.catalogue.irishMammalSpecies,
+        nemesisMammals: state.catalogue.nemesisMammals,
         services,
         visible: state.sidebarVisible,
         filter,

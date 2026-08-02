@@ -57,16 +57,12 @@ export async function completeLoad(
   runStreamPasses(tdb);
 
   // Read catalogue facts before pruning drops unphotographed species.
-  state.regularBirdSpecies = countRegularBirdSpecies(tdb);
-  state.irishMammalSpecies = countIrishMammalSpecies(tdb);
-  state.unphotographedNemesis = collectUnphotographedNemesis(
-    tdb,
-    KnownTypes.BIRD,
-  );
-  state.unphotographedNemesisMammals = collectUnphotographedNemesis(
-    tdb,
-    KnownTypes.MAMMAL,
-  );
+  state.catalogue = {
+    regularBirdSpecies: countRegularBirdSpecies(tdb),
+    irishMammalSpecies: countIrishMammalSpecies(tdb),
+    nemesisBirds: collectUnphotographedNemesis(tdb, KnownTypes.BIRD),
+    nemesisMammals: collectUnphotographedNemesis(tdb, KnownTypes.MAMMAL),
+  };
 
   runFinalPasses(tdb);
 
@@ -118,17 +114,15 @@ export function initState(): State {
   const tdb = getTribbleDB();
 
   return {
-    currentAlbum: undefined,
-    currentPhoto: undefined,
-    currentVideo: undefined,
-    currentThing: undefined,
-    currentType: undefined,
+    focus: { page: "none" },
     data: tdb,
     loaded: false,
-    regularBirdSpecies: 0,
-    irishMammalSpecies: 0,
-    unphotographedNemesis: [],
-    unphotographedNemesisMammals: [],
+    catalogue: {
+      regularBirdSpecies: 0,
+      irishMammalSpecies: 0,
+      nemesisBirds: [],
+      nemesisMammals: [],
+    },
     sidebarVisible: false,
     services: loadServices(tdb),
   };
