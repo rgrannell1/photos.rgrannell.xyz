@@ -10,7 +10,7 @@ import {
 import { readParsedThing, readParsedThings } from "./things.ts";
 import { one } from "../commons/arrays.ts";
 
-type Parser<T> = (tdb: TribbleDB, thing: TripleObject) => T | undefined;
+type Parser<Parsed> = (tdb: TribbleDB, thing: TripleObject) => Parsed | undefined;
 
 /*
  * Create a parser for a specific schema.
@@ -42,9 +42,9 @@ export function parseObject<
 /*
  * Create a parser that selects the appropriate parser based on the type of the object.
  */
-export function parseByType<T>(
-  typeParsers: Record<string, Parser<T>>,
-): Parser<T> {
+export function parseByType<Parsed>(
+  typeParsers: Record<string, Parser<Parsed>>,
+): Parser<Parsed> {
   return (tdb: TribbleDB, thing: TripleObject) => {
     const { type } = asUrn(one(thing.id)!);
 
@@ -60,7 +60,7 @@ export function parseByType<T>(
 /*
  * Create a one-item reader for a specific parser.
  */
-export function readOne<T>(parser: Parser<T>) {
+export function readOne<Parsed>(parser: Parser<Parsed>) {
   return (tdb: TribbleDB, id: string) => {
     return readParsedThing(parser, tdb, id);
   };
@@ -69,7 +69,7 @@ export function readOne<T>(parser: Parser<T>) {
 /*
  * Create a many-item reader for a specific parser.
  */
-export function readMany<T>(parser: Parser<T>) {
+export function readMany<Parsed>(parser: Parser<Parsed>) {
   if (typeof parser !== "function") {
     throw new Error("Parser must be a function");
   }
@@ -82,7 +82,7 @@ export function readMany<T>(parser: Parser<T>) {
 /*
  * Create both one-item and many-item readers for a specific parser.
  */
-export function readers<T>(parser: Parser<T>) {
+export function readers<Parsed>(parser: Parser<Parsed>) {
   return {
     one: readOne(parser),
     many: readMany(parser),

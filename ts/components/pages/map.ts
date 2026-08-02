@@ -1,15 +1,14 @@
 import m from "mithril";
 import type { Map as LeafletMap, LayerGroup, LatLngBounds, PolylineOptions } from "leaflet";
 import type { TripPolyline } from "../../services/albums.ts";
-import type { GeocodedPlace } from "../../services/places.ts";
+import type { GeocodedPlaceWithCover } from "../../services/places.ts";
 import { urnToUrl } from "../../models/urn.ts";
 
 type LeafletLib = typeof import("leaflet");
-type PlaceWithCover = GeocodedPlace & { coverThumbnailUrl?: string | undefined };
 
 type MapPageAttrs = {
   visible: boolean;
-  places: PlaceWithCover[];
+  places: GeocodedPlaceWithCover[];
   tripPolylines: TripPolyline[];
 };
 
@@ -35,15 +34,15 @@ function injectLeafletCSS(): void {
   document.head.appendChild(link);
 }
 
-function createLeafletMap(L: LeafletLib, container: HTMLElement): LeafletMap {
-  const leafletMap = L.map(container, {
+function createLeafletMap(leaflet: LeafletLib, container: HTMLElement): LeafletMap {
+  const leafletMap = leaflet.map(container, {
     center: [20, 0],
     zoom: 2,
     zoomControl: true,
     worldCopyJump: true,
   });
 
-  L.tileLayer(TERRAIN_TILES, {
+  leaflet.tileLayer(TERRAIN_TILES, {
     maxZoom: 20,
     attribution: TERRAIN_ATTRIBUTION,
   }).addTo(leafletMap);
@@ -52,14 +51,14 @@ function createLeafletMap(L: LeafletLib, container: HTMLElement): LeafletMap {
 }
 
 function ensureLeafletMap(
-  L: LeafletLib,
+  leaflet: LeafletLib,
   existingMap: LeafletMap | undefined,
   container: HTMLElement | undefined,
 ): LeafletMap | undefined {
   if (existingMap || !container) {
     return existingMap;
   }
-  return createLeafletMap(L, container);
+  return createLeafletMap(leaflet, container);
 }
 
 function destroyLeafletMap(
@@ -82,11 +81,10 @@ function invalidateMapSizeSoon(existingMap: LeafletMap | undefined) {
 const MARKER_BATCH_SIZE = 20;
 
 function addMarker(
-  L: LeafletLib,
-  leafletMap: LeafletMap,
+  leaflet: LeafletLib,
   markersLayer: LayerGroup,
   bounds: LatLngBounds,
-  place: PlaceWithCover,
+  place: GeocodedPlaceWithCover,
 ): void {
   const latitude = place.latitude;
   const longitude = place.longitude;
@@ -95,7 +93,7 @@ function addMarker(
     return;
   }
 
-  const marker = L.marker([latitude, longitude]);
+  const marker = leaflet.marker([latitude, longitude]);
   const href = urnToUrl(place.id);
   const popupLabel = place.name || "Unknown Place";
   const thumbnailImg = place.coverThumbnailUrl
@@ -132,11 +130,15 @@ function bezierPoint(
   start: [number, number],
   control: [number, number],
   end: [number, number],
-  t: number,
+  progress: number,
 ): [number, number] {
-  const u = 1 - t;
-  const lat = u * u * start[0] + 2 * u * t * control[0] + t * t * end[0];
-  const lng = u * u * start[1] + 2 * u * t * control[1] + t * t * end[1];
+  const inverse = 1 - progress;
+  const lat = inverse * inverse * start[0] +
+    2 * inverse * progress * control[0] +
+    progress * progress * end[0];
+  const lng = inverse * inverse * start[1] +
+    2 * inverse * progress * control[1] +
+    progress * progress * end[1];
   return [lat, lng];
 }
 
@@ -170,8 +172,8 @@ function arcLatLngs(
     midLng + bulge * perpLng,
   ];
   const out: [number, number][] = [start];
-  for (let s = 1; s < segmentsPerLeg; s++) {
-    out.push(bezierPoint(start, control, end, s / segmentsPerLeg));
+  for (let segmentIdx = 1; segmentIdx < segmentsPerLeg; segmentIdx++) {
+    out.push(bezierPoint(start, control, end, segmentIdx / segmentsPerLeg));
   }
   out.push(end);
   return out;
@@ -201,7 +203,7 @@ function smoothLatLngs(
 }
 
 function syncTripPolylines(
-  L: LeafletLib,
+  leaflet: LeafletLib,
   existingMap: LeafletMap | undefined,
   existingLayer: LayerGroup | undefined,
   tripPolylines: TripPolyline[],
@@ -210,12 +212,12 @@ function syncTripPolylines(
     return existingLayer;
   }
 
-  const linesLayer = existingLayer ?? L.layerGroup().addTo(existingMap);
+  const linesLayer = existingLayer ?? leaflet.layerGroup().addTo(existingMap);
   linesLayer.clearLayers();
 
   for (const { latLngs, mode } of tripPolylines) {
     const curved = smoothLatLngs(latLngs, SEGMENTS_PER_LEG);
-    L.polyline(curved, tripLineOptions(mode)).addTo(linesLayer);
+    leaflet.polyline(curved, tripLineOptions(mode)).addTo(linesLayer);
   }
 
   return linesLayer;
@@ -229,7 +231,7 @@ export function MapPage(): m.Component<MapPageAttrs> {
   let lastSidebarVisible: boolean | undefined;
   let markersLayer: LayerGroup | undefined;
   let tripLinesLayer: LayerGroup | undefined;
-  let lastPlaces: PlaceWithCover[] = [];
+  let lastPlaces: GeocodedPlaceWithCover[] = [];
   let lastTripPolylines: TripPolyline[] = [];
   let markerBatchIdx = 0;
   let markerBounds: LatLngBounds | undefined;
@@ -238,7 +240,7 @@ export function MapPage(): m.Component<MapPageAttrs> {
     if (!leafletLib || !leafletMap || !markersLayer || !markerBounds) return;
     const end = Math.min(markerBatchIdx + MARKER_BATCH_SIZE, lastPlaces.length);
     for (let idx = markerBatchIdx; idx < end; idx++) {
-      addMarker(leafletLib, leafletMap, markersLayer, markerBounds, lastPlaces[idx]);
+      addMarker(leafletLib, markersLayer, markerBounds, lastPlaces[idx]);
     }
     markerBatchIdx = end;
     if (markerBatchIdx < lastPlaces.length) {
@@ -248,7 +250,7 @@ export function MapPage(): m.Component<MapPageAttrs> {
     }
   }
 
-  function startPlaceMarkers(places: PlaceWithCover[]) {
+  function startPlaceMarkers(places: GeocodedPlaceWithCover[]) {
     if (!leafletLib || !markersLayer) return;
     markersLayer.clearLayers();
     lastPlaces = places;
@@ -257,16 +259,16 @@ export function MapPage(): m.Component<MapPageAttrs> {
     addMarkerBatch();
   }
 
-  function initMap(L: LeafletLib, vnode: m.VnodeDOM<MapPageAttrs>) {
-    leafletLib = L;
+  function initMap(leaflet: LeafletLib, vnode: m.VnodeDOM<MapPageAttrs>) {
+    leafletLib = leaflet;
     const root = vnode.dom as HTMLElement;
     mapContainer = root.querySelector(".leaflet-map") as HTMLElement | null ||
       undefined;
 
-    leafletMap = ensureLeafletMap(L, leafletMap, mapContainer);
-    markersLayer = L.layerGroup().addTo(leafletMap!);
+    leafletMap = ensureLeafletMap(leaflet, leafletMap, mapContainer);
+    markersLayer = leaflet.layerGroup().addTo(leafletMap!);
     tripLinesLayer = syncTripPolylines(
-      L,
+      leaflet,
       leafletMap,
       tripLinesLayer,
       vnode.attrs.tripPolylines,
@@ -279,7 +281,7 @@ export function MapPage(): m.Component<MapPageAttrs> {
   return {
     oncreate(vnode) {
       injectLeafletCSS();
-      import("leaflet").then((L) => initMap(L, vnode));
+      import("leaflet").then((leaflet) => initMap(leaflet, vnode));
     },
 
     onupdate(vnode) {

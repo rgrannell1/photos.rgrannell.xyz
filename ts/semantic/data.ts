@@ -3,7 +3,7 @@
  */
 
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import type { Triple } from "@rgrannell1/tribbledb";
+import type { TargetValidator, Triple } from "@rgrannell1/tribbledb";
 import { TribbleParser } from "@rgrannell1/tribbledb";
 
 /*
@@ -67,7 +67,7 @@ let tdb: TribbleDB | null = null;
  * The shared TribbleDB instance. Created empty so the app can mount and
  * bind services before the tribble stream fills it.
  */
-export function getTribbleDB(schema: Record<string, any> = {}): TribbleDB {
+export function getTribbleDB(schema: Record<string, TargetValidator> = {}): TribbleDB {
   if (!tdb) {
     tdb = new TribbleDB([], schema);
   }
@@ -82,8 +82,8 @@ export function getTribbleDB(schema: Record<string, any> = {}): TribbleDB {
  */
 export async function loadTriples(
   url: string,
-  schema: Record<string, any> = {},
-  perTriple: (triple: Triple) => Triple[] = (x) => [x],
+  schema: Record<string, TargetValidator> = {},
+  perTriple: (triple: Triple) => Triple[] = (triple) => [triple],
   onBatch?: () => void,
 ): Promise<TribbleDB> {
   const target = getTribbleDB(schema);

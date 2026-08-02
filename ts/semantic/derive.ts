@@ -34,11 +34,7 @@ const URN_ALIASES = new Map<string, string>();
 export function expandCdnUrls(triple: Triple): Triple[] {
   const [src, rel, tgt] = triple;
 
-  const isCDNRelation = Array.from(CDN_RELATIONS).some((candidate: string) => {
-    return rel === candidate;
-  });
-
-  if (!isCDNRelation) {
+  if (!CDN_RELATIONS.has(rel)) {
     return [triple];
   }
 
@@ -281,14 +277,13 @@ export function deriveTriples(
 
   let outputTriples: Triple[] = [triple];
   for (const fn of tripleProcessors) {
-    let nextStep: Triple[] = [];
+    const nextStep: Triple[] = [];
 
     for (const triple of outputTriples) {
       nextStep.push(...fn(triple));
     }
 
-    outputTriples = [...nextStep];
-    nextStep = [];
+    outputTriples = nextStep;
   }
 
   return outputTriples;
@@ -326,18 +321,21 @@ function baseUrn(value: unknown): string {
 }
 
 /*
- * Whether any photo or video references this entity. Counts references to every
- * query-string variant, so a bird photographed only in one context still counts.
+ * Base URNs of every entity a photo or video references, in one pass over the
+ * media triples. Query-string variants collapse to one base URN, so a bird
+ * photographed only in one context still counts.
  */
-function hasMediaReference(tdb: TribbleDB, urn: string): boolean {
-  const { type, id } = asUrn(urn);
-  const referencing = tdb.nodes({ type, id }).referencedBy();
+function collectMediaReferencedUrns(tdb: TribbleDB): Set<string> {
+  const referenced = new Set<string>();
 
-  if (referencing.filter({ type: KnownTypes.PHOTO }).count() > 0) {
-    return true;
+  for (const mediaType of [KnownTypes.PHOTO, KnownTypes.VIDEO]) {
+    const triples = tdb.search({ source: { type: mediaType } }).triples();
+    for (const [, , target] of triples) {
+      referenced.add(baseUrn(target));
+    }
   }
 
-  return referencing.filter({ type: KnownTypes.VIDEO }).count() > 0;
+  return referenced;
 }
 
 /*
@@ -345,13 +343,14 @@ function hasMediaReference(tdb: TribbleDB, urn: string): boolean {
  * references. Query-string variants collapse to one base URN.
  */
 function collectMedialessThings(tdb: TribbleDB): Set<string> {
+  const referenced = collectMediaReferencedUrns(tdb);
   const medialess = new Set<string>();
 
   for (const type of PrunableEntityTypes) {
     const entityUrns = tdb.search({ source: { type } }).sources();
 
     for (const urn of entityUrns) {
-      if (!hasMediaReference(tdb, urn)) {
+      if (!referenced.has(baseUrn(urn))) {
         medialess.add(baseUrn(urn));
       }
     }

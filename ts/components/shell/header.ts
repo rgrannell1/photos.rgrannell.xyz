@@ -1,8 +1,6 @@
 import m from "mithril";
 import { broadcast, navigate } from "../../commons/events.ts";
 
-type HeaderAttrs = {};
-
 /*
  * The sidebar menu
  */
@@ -37,14 +35,14 @@ function HeaderBrandText() {
 /* */
 export function Header() {
   return {
-    view(vnode: m.Vnode<HeaderAttrs>) {
+    view() {
       return m("nav.header", { role: "navigation" }, [
         m("ul", {
           style:
             "display: flex; align-items: baseline; padding-left: 0px !important;",
         }, [
-          m("li.header-item", {}, m(BurgerMenu())),
-          m("li.header-item", {}, m(HeaderBrandText())),
+          m("li.header-item", {}, m(BurgerMenu)),
+          m("li.header-item", {}, m(HeaderBrandText)),
         ]),
       ]);
     },

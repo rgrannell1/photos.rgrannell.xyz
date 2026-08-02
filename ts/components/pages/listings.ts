@@ -37,6 +37,7 @@ function drawCategoryAlbum(
   };
 
   return [m(PhotoAlbum, {
+    key: `category-${category.type}`,
     imageUrl: cover.fullImage,
     thumbnailUrl: cover.thumbnailUrl,
     thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),

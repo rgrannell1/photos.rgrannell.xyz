@@ -113,26 +113,18 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
   const locations = new Set<string>();
   const subjects = new Set<string>();
 
-  for (const photoId of photoIds) {
-    const pid = asUrn(photoId);
+  // one search for the whole photo set, not one per photo
+  const photoIdList = [...photoIds].map((photoUrn) => asUrn(photoUrn).id);
+  const triples = tdb.search({
+    source: { type: KnownTypes.PHOTO, id: photoIdList },
+    relation: [KnownRelations.LOCATION, KnownRelations.SUBJECT],
+  }).triples();
 
-    const obj = tdb.search({
-      source: { type: pid.type, id: pid.id },
-      relation: [KnownRelations.LOCATION, KnownRelations.SUBJECT],
-    }).firstObject(true);
-
-    if (!obj) {
-      continue;
-    }
-
-    const location = obj?.location ?? [];
-    const subject = obj?.subject ?? [];
-
-    for (const loc of location) {
-      locations.add(loc);
-    }
-    for (const subj of subject) {
-      subjects.add(subj);
+  for (const [, relation, target] of triples) {
+    if (relation === KnownRelations.LOCATION) {
+      locations.add(target);
+    } else {
+      subjects.add(target);
     }
   }
 

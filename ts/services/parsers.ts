@@ -23,17 +23,14 @@ import {
   AmphibianSchema,
   ArthropodSchema,
   BirdSchema,
-  CarSchema,
   FishSchema,
   MammalSchema,
   PlaneSchema,
   ReptileSchema,
-  TrainSchema,
 } from "../schemas/subject.ts";
 import { TransferSchema } from "../schemas/transfer.ts";
 import { StatsSchema } from "../schemas/stats.ts";
 import { safeParse } from "valibot";
-import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 
 export const parseFeature = parseObject(FeatureSchema, "feature");
 export const parseCountry = parseObject(PlaceSchema, "place");
@@ -46,8 +43,6 @@ export const parseAmphibian = parseObject(AmphibianSchema, "amphibian");
 export const parseArthropod = parseObject(ArthropodSchema, "arthropod");
 export const parseFish = parseObject(FishSchema, "fish");
 export const parsePlane = parseObject(PlaneSchema, "plane");
-export const parseTrain = parseObject(TrainSchema, "train");
-export const parseCar = parseObject(CarSchema, "car");
 export const parseVideo = parseObject(VideoSchema, "video");
 export const parsePlace = parseObject(PlaceSchema, "place");
 export const parseAlbum = parseObject(AlbumSchema, "album");

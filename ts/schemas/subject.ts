@@ -16,8 +16,6 @@ export const FishSchema = NamedThingSchema;
 export const AmphibianSchema = NamedThingSchema;
 export const ArthropodSchema = NamedThingSchema;
 export const PlaneSchema = NamedThingSchema;
-export const TrainSchema = NamedThingSchema;
-export const CarSchema = NamedThingSchema;
 
 // mammals always carry a name in the published data
 export const MammalSchema = v.object({

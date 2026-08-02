@@ -18,20 +18,10 @@ import {
 import { readAllVideos, readVideosByThingIds } from "./videos.ts";
 import {
   readAlbum,
-  readAmphibian,
   readCountries,
-  readCountry,
   readFeatures,
-  readFish,
-  readArthropod,
-  readLocation,
   readLocations,
-  readMammal,
   readPhoto,
-  readPhotos,
-  readPlace,
-  readReptile,
-  readUnesco,
   readUnescos,
   readVideo,
 } from "./readers.ts";
@@ -52,38 +42,23 @@ import {
 import {
   readNamedTypeThings,
   readThing,
-  readThings,
   toThingLinks,
 } from "../commons/things.ts";
-import { namesToUrns } from "./names.ts";
 import {
   readAllCountries,
-  readGeocodedPlaces,
   readGeocodedPlacesWithCovers,
 } from "./places.ts";
 
 export const SERVICE_READERS = {
   readThing,
   readAlbum,
-  readCountry,
-  readPlace,
   readPhoto,
-  readMammal,
-  readReptile,
-  readAmphibian,
-  readFish,
-  readArthropod,
   readVideo,
-  readLocation,
-  readUnesco,
   readLocations,
   readFeatures,
-  readPhotos,
   readUnescos,
-  readThings,
   readCountries,
   readAllCountries,
-  namesToUrns,
   readThingCover,
   readThingCovers,
   readCategoryCover,
@@ -93,7 +68,6 @@ export const SERVICE_READERS = {
   readYearRecap,
   readVideosByThingIds,
   toThingLinks,
-  readGeocodedPlaces,
   readGeocodedPlacesWithCovers,
   readTransferPolylines,
   readBirdStats,

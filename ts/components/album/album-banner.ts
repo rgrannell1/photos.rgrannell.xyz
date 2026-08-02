@@ -33,11 +33,11 @@ export function AlbumBanner(): m.Component<AlbumBannerAttrs> {
       if (!img) return;
 
       const update = () => {
-        const y = Math.min(
+        const offsetY = Math.min(
           window.scrollY * PARALLAX_RATE,
           PARALLAX_MAX_PX,
         );
-        img.style.transform = `translateY(${y}px)`;
+        img.style.transform = `translateY(${offsetY}px)`;
       };
 
       scrollListener = () => {

@@ -11,15 +11,18 @@ async function shareAlbum(
   url: string,
   name: string,
 ) {
+  state.sharing = true;
+
   try {
     await navigator.share({
       title: `${name} - ${window.location.hostname}`,
       url,
     });
-  } catch (error) {
-    console.error("Error sharing:", error);
+  } catch (err) {
+    console.error("Error sharing:", err);
   } finally {
     state.sharing = false;
+    m.redraw();
   }
 }
 

@@ -4,7 +4,6 @@ import { AlbumBanner } from "../album/album-banner.ts";
 import { AlbumShareButton } from "../album/album-share-button.ts";
 import { countryFlagLinks } from "../thing/place-links.ts";
 import { Video } from "../media/video.ts";
-import type { VideoAttrs } from "../media/video.ts";
 import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
 
 import type {
@@ -16,13 +15,13 @@ import type {
   Video as VideoType,
 } from "../../types.ts";
 import { Photo } from "../media/photo.ts";
-import type { PhotoAttrs } from "../media/photo.ts";
 import { AlbumsButton } from "../album/albums-button.ts";
 import { countLabel, preprocessDescription } from "../../commons/strings.ts";
 import { setify } from "../../commons/sets.ts";
 import { SMALL_DEVICE_WIDTH } from "../../constants/layout.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TripPreviousAlbums } from "../album/trip-previous-albums.ts";
+import { BANNER_MOSAIC_DIMENSION } from "../../constants/banners.ts";
 
 type AlbumAttrs = {
   album: Album;
@@ -84,7 +83,11 @@ export function AlbumPage() {
         : null;
       const bannerMosaic = bannerPhoto?.mosaicBanner ?? null;
       const thumbnailDataUrl = bannerMosaic
-        ? encodeBitmapDataURL(bannerMosaic, 10, 10)
+        ? encodeBitmapDataURL(
+          bannerMosaic,
+          BANNER_MOSAIC_DIMENSION,
+          BANNER_MOSAIC_DIMENSION,
+        )
         : null;
 
       const $banner = bannerSrc
@@ -110,17 +113,20 @@ export function AlbumPage() {
       ]);
 
       const $photosList = photos.map((photo, idx) => {
-        return m(
-          Photo,
-          {
-            photo,
-            loading: loadingMode(idx),
-            interactive: true,
-          } satisfies PhotoAttrs,
-        );
+        return m(Photo, {
+          key: `photo-${photo.id}`,
+          photo,
+          loading: loadingMode(idx),
+          interactive: true,
+        });
       });
       const $videosList = videos.map((video) => {
-        return m(Video, { video, preload: "auto", interactive: true } satisfies VideoAttrs);
+        return m(Video, {
+          key: `video-${video.id}`,
+          video,
+          preload: "auto",
+          interactive: true,
+        });
       });
 
       return m(

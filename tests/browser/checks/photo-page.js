@@ -3,7 +3,7 @@
 
 const { BASE_URL } = require("../helpers");
 
-async function firstPhotoId(page) {
+function firstPhotoId(page) {
   return page.evaluate(async () => {
     const env = await fetch("/manifest/env.json").then((res) => res.json());
     const triplesUrl = `/manifest/triples.${env.publication_id}.json`;

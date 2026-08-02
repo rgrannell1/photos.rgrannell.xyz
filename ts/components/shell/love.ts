@@ -4,7 +4,7 @@ const SPAWN_INTERVAL_MS = 150;
 const HEART_LIFETIME_MS = 5000;
 const HEARTS = ["❤️", "🩷", "🧡", "💛", "💚", "💙", "💜"];
 
-function randomItem<T>(items: T[]): T {
+function randomItem<Item>(items: Item[]): Item {
   return items[Math.floor(Math.random() * items.length)];
 }
 

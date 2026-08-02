@@ -6,43 +6,24 @@ import { readers } from "../commons/parser.ts";
 
 import {
   parseAlbum,
-  parseAmphibian,
-  parseArthropod,
   parseCountry,
   parseFeature,
-  parseFish,
   parseLocation,
-  parseMammal,
   parsePhoto,
   parsePlace,
-  parsePlane,
-  parseReptile,
   parseSubject,
   parseTransfer,
   parseUnesco,
   parseVideo,
 } from "./parsers.ts";
 
-export const { one: readCountry, many: readCountries } = readers(parseCountry);
+export const { many: readCountries } = readers(parseCountry);
 export const { one: readPlace, many: readPlaces } = readers(parsePlace);
-export const { one: readLocation, many: readLocations } = readers(
-  parseLocation,
-);
-export const { one: readUnesco, many: readUnescos } = readers(parseUnesco);
+export const { many: readLocations } = readers(parseLocation);
+export const { many: readUnescos } = readers(parseUnesco);
 export const { one: readAlbum, many: readAlbums } = readers(parseAlbum);
-export const { one: readTransfer, many: readTransfers } = readers(
-  parseTransfer,
-);
-export const { one: readMammal, many: readMammals } = readers(parseMammal);
-export const { one: readReptile, many: readReptiles } = readers(parseReptile);
-export const { one: readArthropod, many: readArthropods } = readers(parseArthropod);
-// Thank you, english.
-export const { one: readFish, many: readFishes } = readers(parseFish);
-export const { one: readPlane, many: readPlanes } = readers(parsePlane);
-export const { one: readSubject, many: readSubjects } = readers(parseSubject);
-export const { one: readAmphibian, many: readAmphibians } = readers(
-  parseAmphibian,
-);
+export const { many: readTransfers } = readers(parseTransfer);
+export const { many: readSubjects } = readers(parseSubject);
 export const { one: readVideo, many: readVideos } = readers(parseVideo);
 export const { one: readPhoto, many: readPhotos } = readers(parsePhoto);
-export const { one: readFeature, many: readFeatures } = readers(parseFeature);
+export const { many: readFeatures } = readers(parseFeature);

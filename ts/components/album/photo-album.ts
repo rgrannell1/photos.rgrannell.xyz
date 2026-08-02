@@ -4,9 +4,15 @@ import { ImagePair } from "../media/photo.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../constants/layout.ts";
 import { block, broadcast, isModifiedClick } from "../../commons/events.ts";
 
-// use this to keep track of trips, to assign each a
-// colour distinct from the adjacent ones
-const TRIPS: string[] = [];
+// stable two-colour assignment: hash the trip so its colour never changes
+// with render order or navigation history
+function tripColourIndex(trip: string): number {
+  let hash = 0;
+  for (let idx = 0; idx < trip.length; idx++) {
+    hash = (hash * 31 + trip.charCodeAt(idx)) | 0;
+  }
+  return Math.abs(hash) % 2;
+}
 
 function onTripClick(tripId: string, event: Event) {
   // let modified/middle clicks fall through to the browser so the trip route
@@ -28,15 +34,10 @@ function TripTag() {
         return null;
       }
 
-      if (!TRIPS.includes(trip)) {
-        TRIPS.push(trip);
-      }
-
       const tripId = asUrn(trip).id;
 
       // two colours supported
-      const tripIndex = TRIPS.indexOf(trip);
-      return m("a.trip-tag .trip-color-" + (tripIndex % 2), {
+      return m("a.trip-tag .trip-color-" + tripColourIndex(trip), {
         href: `#!/trip/${tripId}`,
         title: "Show albums from this trip",
         onclick: onTripClick.bind(null, tripId),

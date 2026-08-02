@@ -24,9 +24,8 @@ export function placeEmoji(thing: Place | TripleObject): string {
   if (!feature) {
     return "📍";
   }
-  const { id: featureId } = asUrn(feature);
 
-  return PLACE_FEATURES_TO_EMOJI[featureId] ?? "📍";
+  return placeFeatureEmoji(feature);
 }
 
 /*
@@ -80,17 +79,19 @@ export function thingEmoji(
 ): string {
   const { type } = asUrn(urn);
 
-  switch (type) {
-    case KnownTypes.PLACE:
-      // The URN type guarantees a place; the compiler cannot see that
-      return placeEmoji(thing as Place | TripleObject);
-    case KnownTypes.BIRD:
-      return birdEmoji();
-    case KnownTypes.CAMERA:
-      return cameraEmoji(thing);
-    case KnownTypes.PLACE_FEATURE:
-      return placeFeatureEmoji(urn);
-    default:
-      return "";
+  if (type === KnownTypes.PLACE) {
+    // The URN type guarantees a place; the compiler cannot see that
+    return placeEmoji(thing as Place | TripleObject);
   }
+  if (type === KnownTypes.BIRD) {
+    return birdEmoji();
+  }
+  if (type === KnownTypes.CAMERA) {
+    return cameraEmoji(thing);
+  }
+  if (type === KnownTypes.PLACE_FEATURE) {
+    return placeFeatureEmoji(urn);
+  }
+
+  return "";
 }

@@ -2,7 +2,6 @@ import m from "mithril";
 import { isSmallerThan } from "../../services/window.ts";
 import type { CountryLinkAttrs } from "../thing/place-links.ts";
 import { SMALL_DEVICE_WIDTH } from "../../constants/layout.ts";
-import type { Services } from "../../types.ts";
 
 export type PhotoAlbumMetadataAttrs = {
   title: string;
@@ -20,8 +19,6 @@ export function PhotoAlbumMetadata() {
     view(vnode: m.Vnode<PhotoAlbumMetadataAttrs>) {
       const {
         title,
-        minDate,
-        maxDate,
         count,
         countryLinks,
         dateRange,

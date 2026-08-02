@@ -9,7 +9,7 @@ export function AlbumsButton() {
     view() {
       return m(
         "a",
-        { href: "/albums", onclick: navigate(`/albums`) },
+        { href: "#/albums", onclick: navigate("/albums") },
         "[albums]",
       );
     },

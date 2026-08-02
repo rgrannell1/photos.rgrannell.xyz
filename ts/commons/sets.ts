@@ -3,7 +3,7 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 /*
  * Given a value, array of values, or undefined, return a set.
  */
-export function setify<T>(value: T | T[] | undefined): Set<T> {
+export function setify<Value>(value: Value | Value[] | undefined): Set<Value> {
   if (value === undefined) {
     return new Set();
   }
@@ -14,12 +14,12 @@ export function setify<T>(value: T | T[] | undefined): Set<T> {
 /*
  * Collect a set of property values from a list of triple objects.
  */
-export function setOf<T>(property: string, objects: TripleObject[]): Set<T> {
-  const result = new Set<T>();
+export function setOf<Value>(property: string, objects: TripleObject[]): Set<Value> {
+  const result = new Set<Value>();
 
   for (const obj of objects) {
     if (property in obj) {
-      const value = obj[property] as T | T[] | undefined;
+      const value = obj[property] as Value | Value[] | undefined;
       if (value === undefined) {
         continue;
       }

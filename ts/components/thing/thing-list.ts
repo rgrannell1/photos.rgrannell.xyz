@@ -42,7 +42,7 @@ const LIST_KINDS: Record<ThingListKind, DrawItems> = {
     return services.readUnescos(urns).map((unesco) => {
       const urn = one(unesco.id)!;
 
-      return m("li", m(UnescoLink, { urn, thing: unesco }));
+      return m("li", { key: `unesco-${urn}` }, m(UnescoLink, { urn, thing: unesco }));
     });
   },
 };

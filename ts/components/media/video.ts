@@ -1,11 +1,7 @@
 import m from "mithril";
-import { parseUrn } from "@rgrannell1/tribbledb";
 import type { Video } from "../../types.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
-
-function formatId(id: string): string {
-  return id.startsWith("urn:") ? parseUrn(id).id : id;
-}
+import { formatId } from "../../models/urn.ts";
 
 export type VideoAttrs = {
   preload: string;
@@ -63,7 +59,8 @@ export function Video() {
         ? m(MetadataIcon, { route: `/video/${id}`, colour: "white" })
         : null;
 
-      return m("div", { key: `video-${id}` }, [
+      // keys belong on the m(Video, ...) call site, not this internal root
+      return m("div", [
         m("div.photo", [
           $mdIcon,
           $video,

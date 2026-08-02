@@ -4,13 +4,13 @@
  */
 
 import m from "mithril";
+import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import type { Photo as PhotoType } from "../../types.ts";
 import { Photo } from "./photo.ts";
 import { loadingMode } from "../../services/photos.ts";
 import { createBatchRenderer } from "./batch-render.ts";
 
 // photos rendered per batch
-const PHOTO_BATCH_SIZE = 10;
 
 type PhotoGridAttrs = {
   // total photos available; batches are scheduled until all are rendered
@@ -23,7 +23,7 @@ type PhotoGridAttrs = {
 
 /* */
 export function PhotoGrid() {
-  const batch = createBatchRenderer(PHOTO_BATCH_SIZE);
+  const batch = createBatchRenderer(RENDER_BATCH_SIZE);
   let lastResetKey: string | undefined;
 
   return {

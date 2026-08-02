@@ -251,6 +251,7 @@ function ChecklistTable() {
           ...displayed.map(({ entry, position }) => {
             const parity = yearParity.get(firstSeenYear(entry.firstSeen));
             return m(ChecklistRow, {
+              key: `row-${entry.speciesType}-${entry.speciesId}`,
               entry,
               cover: covers.get(entry.speciesId),
               position,
@@ -261,7 +262,11 @@ function ChecklistTable() {
           // Unphotographed nemesis species ("yet to see") at the bottom, Irish view only
           ...(irishView
             ? nemesisSpecies.map((species) =>
-              m(ChecklistMysteryRow, { species, glyph: mysteryGlyph })
+              m(ChecklistMysteryRow, {
+                key: `mystery-${species.speciesId}`,
+                species,
+                glyph: mysteryGlyph,
+              })
             )
             : []),
         ]),

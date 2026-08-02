@@ -18,14 +18,6 @@ export const PlaceSchema = v.object({
   latitude: v.optional(v.pipe(v.string(), v.transform(Number))),
 });
 
-export const CountrySchema = v.object({
-  id: v.string(),
-  flag: v.optional(v.string()),
-  name: v.string(),
-  contains: v.optional(v.union([v.string(), v.array(v.string())])),
-  in: v.optional(v.union([v.string(), v.array(v.string())])),
-});
-
 export const UnescoSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),

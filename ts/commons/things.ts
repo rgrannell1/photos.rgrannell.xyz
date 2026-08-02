@@ -24,11 +24,11 @@ export function readThing(
 /*
  * Read and parse a thing by URN
  */
-export function readParsedThing<T>(
-  parser: (tdb: TribbleDB, thing: TripleObject) => T | undefined,
+export function readParsedThing<Parsed>(
+  parser: (tdb: TribbleDB, thing: TripleObject) => Parsed | undefined,
   tdb: TribbleDB,
   id: string,
-): T | undefined {
+): Parsed | undefined {
   const thing = readThing(tdb, id);
   if (!thing) {
     return undefined;
@@ -62,16 +62,16 @@ export function readThings(
 /*
  * Read an array of parsed things by URNs
  */
-export const readParsedThings = function <T>(
-  parser: (tdb: TribbleDB, thing: TripleObject) => T | undefined,
+export const readParsedThings = function <Parsed>(
+  parser: (tdb: TribbleDB, thing: TripleObject) => Parsed | undefined,
   tdb: TribbleDB,
   urns: Set<string>,
-): T[] {
+): Parsed[] {
   if (typeof parser !== "function") {
     throw new Error("Parser must be a function");
   }
 
-  const parsedThings: T[] = [];
+  const parsedThings: Parsed[] = [];
 
   for (const urn of urns) {
     const thing = readThing(tdb, urn);
@@ -91,7 +91,7 @@ export const readParsedThings = function <T>(
 /*
  * Read all things of a given type that have a name
  */
-export function readNamedTypeThings<T>(
+export function readNamedTypeThings<Parsed>(
   tdb: TribbleDB,
   type: string,
 ): TripleObject[] {
@@ -118,7 +118,7 @@ export function readNamedTypeThings<T>(
 export function toThingLinks(
   tdb: TribbleDB,
   urns: (string | undefined)[],
-): m.Vnode<ThingLinkAttrs, {}>[] {
+): m.Vnode<ThingLinkAttrs>[] {
   return urns.flatMap((urn) => {
     if (!urn) {
       return [];

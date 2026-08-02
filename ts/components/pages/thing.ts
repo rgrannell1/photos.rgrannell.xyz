@@ -84,43 +84,8 @@ function ThingDetails() {
         });
       }
 
-      if (things.length !== 1) {
-        return;
-      }
-
-      const [thing] = things;
-      // The non-wildcard case
-
-      if (thing.features) {
-        metadata["Place Type"] = m(ThingList, {
-          kind: "feature",
-          urns: setify(thing.features),
-          services,
-        });
-      }
-
-      if (thing.contains) {
-        metadata["Contains"] = m(ThingList, {
-          kind: "place",
-          services,
-          urns: setify(thing.contains),
-        });
-      }
-
-      if (thing.placesWithFeature) {
-        metadata["Places"] = m(ThingList, {
-          kind: "place",
-          services,
-          urns: setify(thing.placesWithFeature),
-        });
-      }
-
-      if (thing.unescoId) {
-        metadata["UNESCO"] = m(ThingList, {
-          kind: "unesco",
-          urns: new Set(arrayify(thing.unescoId)),
-          services,
-        });
+      if (things.length === 1) {
+        addSingleThingMetadata(metadata, vnode.attrs);
       }
 
       if (BinomialTypes.has(asUrn(urn).type)) {
@@ -135,8 +100,6 @@ function ThingDetails() {
 
       // TODO add first photographed
 
-      // convert the metadaTa to a table
-
       const $rows = Object.entries(metadata).map(([key, value]) => {
         return m("tr", [
           m("th.exif-heading", key),
@@ -150,6 +113,50 @@ function ThingDetails() {
       ]);
     },
   };
+}
+
+/*
+ * Metadata rows that only apply when the page shows a single thing,
+ * not a wildcard listing.
+ */
+function addSingleThingMetadata(
+  metadata: Record<string, m.Children>,
+  attrs: ThingPageAttrs,
+) {
+  const { things, services } = attrs;
+  const [thing] = things;
+
+  if (thing.features) {
+    metadata["Place Type"] = m(ThingList, {
+      kind: "feature",
+      urns: setify(thing.features),
+      services,
+    });
+  }
+
+  if (thing.contains) {
+    metadata["Contains"] = m(ThingList, {
+      kind: "place",
+      services,
+      urns: setify(thing.contains),
+    });
+  }
+
+  if (thing.placesWithFeature) {
+    metadata["Places"] = m(ThingList, {
+      kind: "place",
+      services,
+      urns: setify(thing.placesWithFeature),
+    });
+  }
+
+  if (thing.unescoId) {
+    metadata["UNESCO"] = m(ThingList, {
+      kind: "unesco",
+      urns: new Set(arrayify(thing.unescoId)),
+      services,
+    });
+  }
 }
 
 type AlbumEntry = {

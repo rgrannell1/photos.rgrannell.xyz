@@ -73,17 +73,7 @@ export function readAllCountries(tdb: TribbleDB): Country[] {
     relation: KnownRelations.FLAG,
   }).sources();
 
-  const countries = readCountries(tdb, ids);
-
-  const flagToName = new Map(
-    countries
-      .filter((country) => country.flag)
-      .map((country) => [country.flag!, country.name]),
-  );
-
-  return countries.sort((countryA, countryB) => {
-    const nameA = flagToName.get(countryA.flag ?? "") ?? countryA.name;
-    const nameB = flagToName.get(countryB.flag ?? "") ?? countryB.name;
-    return nameA.localeCompare(nameB);
+  return readCountries(tdb, ids).sort((countryA, countryB) => {
+    return countryA.name.localeCompare(countryB.name);
   });
 }

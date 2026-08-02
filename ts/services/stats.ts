@@ -212,10 +212,7 @@ function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEn
 
     const name = one(speciesThing?.name) ?? speciesId;
 
-    const hasBirdwatchUrl = tdb.search({
-      source: { type: speciesType, id: speciesId },
-      relation: KnownRelations.BIRDWATCH_URL,
-    }).triples().length > 0;
+    const hasBirdwatchUrl = one(speciesThing?.birdwatchUrl) !== undefined;
     const isIrish = one(speciesThing?.irish) === "true" || hasBirdwatchUrl;
 
     const isWild = wildSpeciesIds.has(speciesId);

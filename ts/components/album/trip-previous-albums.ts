@@ -20,8 +20,8 @@ export function TripPreviousAlbums() {
       }
 
       const parts: m.Child[] = ["...after travelling from "];
-      albums.forEach((prev, i) => {
-        if (i > 0) parts.push(", ");
+      albums.forEach((prev, idx) => {
+        if (idx > 0) parts.push(", ");
         const prevId = asUrn(prev.id).id;
         parts.push(
           m(m.route.Link, {

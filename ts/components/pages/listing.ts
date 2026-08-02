@@ -10,6 +10,7 @@ import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
 import { one } from "../../commons/arrays.ts";
 import { ThingCaption } from "../thing/thing-caption.ts";
 import { createBatchRenderer } from "../media/batch-render.ts";
+import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 
 /*
  * Derive an optional inline badge for the listing card title.
@@ -48,6 +49,7 @@ function drawThingAlbum(
   const { id: thingId, type } = asUrn(id);
 
   return [m(PhotoAlbum, {
+    key: `thing-${id}`,
     imageUrl: coverPhoto.fullImage,
     thumbnailUrl: coverPhoto.thumbnailUrl,
     thumbnailDataUrl: encodeBitmapDataURL(coverPhoto?.mosaicColours),
@@ -67,7 +69,6 @@ type AlbumsListAttrs = {
   listingType: string;
 };
 
-const BATCH_SIZE = 10;
 
 /*
  * Display the component albums incrementally to avoid blocking the DOM.
@@ -75,7 +76,7 @@ const BATCH_SIZE = 10;
  * via setTimeout so the browser can paint between each one.
  */
 function AlbumsList() {
-  const batch = createBatchRenderer(BATCH_SIZE);
+  const batch = createBatchRenderer(RENDER_BATCH_SIZE);
 
   return {
     onbeforeupdate(

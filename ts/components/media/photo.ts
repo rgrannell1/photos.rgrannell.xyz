@@ -1,7 +1,6 @@
 import m from "mithril";
-import { parseUrn } from "@rgrannell1/tribbledb";
-
 import { block } from "../../commons/events.ts";
+import { formatId } from "../../models/urn.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../constants/layout.ts";
 import { encodeBitmapDataURL } from "../../services/photos.ts";
@@ -168,11 +167,6 @@ export function ImagePair() {
       return m("div", children);
     },
   };
-}
-
-/* */
-function formatId(id: string): string {
-  return id.startsWith("urn:") ? parseUrn(id).id : id;
 }
 
 export type PhotoAttrs = {

@@ -1,8 +1,8 @@
 import m from "mithril";
 import type { Video as VideoType } from "../../types.ts";
 import { Video } from "../media/video.ts";
-import type { VideoAttrs } from "../media/video.ts";
 import { createBatchRenderer } from "../media/batch-render.ts";
+import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import { countLabel } from "../../commons/strings.ts";
 
 type VideosPageAttrs = {
@@ -10,10 +10,9 @@ type VideosPageAttrs = {
   visible: boolean;
 };
 
-const BATCH_SIZE = 10;
 
 function VideosList() {
-  const batch = createBatchRenderer(BATCH_SIZE);
+  const batch = createBatchRenderer(RENDER_BATCH_SIZE);
 
   return {
     oncreate(vnode: m.VnodeDOM<VideosPageAttrs>) {
@@ -27,7 +26,12 @@ function VideosList() {
       return m(
         "section.video-container",
         videos.slice(0, batch.count()).map((video) =>
-          m(Video, { video, preload: "auto", interactive: true } satisfies VideoAttrs)
+          m(Video, {
+            key: `video-${video.id}`,
+            video,
+            preload: "auto",
+            interactive: true,
+          })
         ),
       );
     },
