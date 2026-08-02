@@ -21,15 +21,11 @@ export function PhotoPage() {
 
       const shareUrl = sharePhotoUrl(`photo/${asUrn(photo.id).id}`);
 
-      // TODO this should be a ul
-      const $links = m("li.link-list", { "data-testid": "photo-links" }, [
-        m("a", { href: photo.fullImage, rel: "noreferrer" }, "[webp]"),
-        " ",
-        m("a", { href: photo.previewJpegUrl, rel: "noreferrer" }, "[jpeg]"),
-        " ",
-        m("a", { href: shareUrl, rel: "noreferrer" }, "[share]"),
-        " ",
-        m(AlbumButton, { id: photo.albumId }),
+      const $links = m("ul.link-list", { "data-testid": "photo-links" }, [
+        m("li", m("a", { href: photo.fullImage, rel: "noreferrer" }, "[webp]")),
+        m("li", m("a", { href: photo.previewJpegUrl, rel: "noreferrer" }, "[jpeg]")),
+        m("li", m("a", { href: shareUrl, rel: "noreferrer" }, "[share]")),
+        m("li", m(AlbumButton, { id: photo.albumId })),
       ]);
 
       const $exif = m(ExifData, { photo, services });

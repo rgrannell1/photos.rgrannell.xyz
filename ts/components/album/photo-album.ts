@@ -86,7 +86,6 @@ export function PhotoAlbum() {
           ...(imageUrl !== undefined && { imageUrl }),
           ...(href !== undefined && { href }),
         }),
-        // NODE this might be broken
         child,
       ]);
     },

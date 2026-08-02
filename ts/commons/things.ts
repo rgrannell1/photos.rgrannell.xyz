@@ -1,9 +1,6 @@
-import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { ThingLink } from "../components/thing/thing-link.ts";
-import type { ThingLinkAttrs } from "../components/thing/thing-link.ts";
 import { one } from "../commons/arrays.ts";
 
 /*
@@ -112,23 +109,4 @@ export function readNamedTypeThings<Parsed>(
 
       return first.localeCompare(second);
     });
-}
-
-// TODO: remove mithril, move to presenter folder!!
-export function toThingLinks(
-  tdb: TribbleDB,
-  urns: (string | undefined)[],
-): m.Vnode<ThingLinkAttrs>[] {
-  return urns.flatMap((urn) => {
-    if (!urn) {
-      return [];
-    }
-    const thing = readThing(tdb, urn);
-
-    if (!thing || !thing.name) {
-      return [];
-    }
-
-    return [m(ThingLink, { urn, thing })];
-  });
 }

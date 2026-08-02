@@ -13,6 +13,8 @@ import { albumYear } from "../../services/albums.ts";
 import { setify } from "../../commons/sets.ts";
 import { CountryFilter } from "../album/country-filter.ts";
 import { ALBUMS_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../../constants/banners.ts";
+import { createBatchRenderer } from "../media/batch-render.ts";
+import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];
@@ -110,7 +112,26 @@ function drawYearGroup(
  * Construct a list of albums
  */
 function AlbumsList() {
+  const batch = createBatchRenderer(RENDER_BATCH_SIZE);
+
   return {
+    oncreate(vnode: m.VnodeDOM<AlbumsListAttrs>) {
+      batch.schedule(vnode.attrs.albums.length);
+    },
+    onbeforeupdate(
+      vnode: m.Vnode<AlbumsListAttrs>,
+      old: m.VnodeDOM<AlbumsListAttrs>,
+    ) {
+      const filterChanged =
+        vnode.attrs.selectedCountry !== old.attrs.selectedCountry ||
+        vnode.attrs.selectedTrip !== old.attrs.selectedTrip;
+      if (filterChanged) {
+        batch.reset();
+      }
+    },
+    onupdate(vnode: m.VnodeDOM<AlbumsListAttrs>) {
+      batch.schedule(vnode.attrs.albums.length);
+    },
     view(vnode: m.Vnode<AlbumsListAttrs>) {
       const { albums, services, selectedCountry, selectedTrip } = vnode.attrs;
 
@@ -118,7 +139,7 @@ function AlbumsList() {
         selectedTrip === undefined;
 
       const groups = groupAlbumsByYear(
-        albums,
+        albums.slice(0, batch.count()),
         services,
         showRecap,
         new Date().getFullYear(),
@@ -127,7 +148,6 @@ function AlbumsList() {
       const $albumComponents: m.Children[] = [];
       let startIdx = 0;
 
-      // TODO this blocks render too long
       for (const group of groups) {
         $albumComponents.push(...drawYearGroup(group, services, startIdx));
         startIdx += group.albums.length;
@@ -185,7 +205,8 @@ const YEAR_SCROLL_MAX_PASSES = 20;
 /*
  * Keep the year heading at the top while album images above it load and grow
  * the layout — re-scroll until the required scroll position stops changing, or
- * we hit the pass cap. Bails if the heading is gone (navigation).
+ * we hit the pass cap. A missing heading retries within the same cap, since
+ * batched rendering may not have reached that year yet.
  */
 function settleYearScroll(
   year: string,
@@ -193,6 +214,10 @@ function settleYearScroll(
 ): void {
   const heading = document.getElementById(`year-${year}`);
   if (!heading) {
+    spy.passes += 1;
+    if (spy.passes < YEAR_SCROLL_MAX_PASSES) {
+      setTimeout(() => settleYearScroll(year, spy), 120);
+    }
     return;
   }
 

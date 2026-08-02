@@ -4,6 +4,7 @@
  */
 
 import m from "mithril";
+import { toThingLinks } from "../thing/thing-links.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { arrayify } from "../../commons/arrays.ts";
 import { KnownTypes } from "../../constants/data.ts";
@@ -39,7 +40,7 @@ export function MediaLocations() {
         ? allUrns.filter(isVisiblePlaceFeature)
         : allUrns.filter(isPlace);
 
-      const $links = services.toThingLinks(urns);
+      const $links = toThingLinks(services, urns);
       return m("td", $links.length > 0 ? $links : "—");
     },
   };

@@ -42,7 +42,6 @@ import {
 import {
   readNamedTypeThings,
   readThing,
-  toThingLinks,
 } from "../commons/things.ts";
 import {
   readAllCountries,
@@ -67,7 +66,6 @@ export const SERVICE_READERS = {
   readAlbumsByThingIds,
   readYearRecap,
   readVideosByThingIds,
-  toThingLinks,
   readGeocodedPlacesWithCovers,
   readTransferPolylines,
   readBirdStats,

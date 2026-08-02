@@ -1,4 +1,5 @@
 import m from "mithril";
+import { toThingLinks } from "../thing/thing-links.ts";
 import * as Dates from "../../services/dates.ts";
 import type { Photo as PhotoType, Services } from "../../types.ts";
 import { Heading } from "./heading.ts";
@@ -16,7 +17,7 @@ function CameraModel() {
     view(vnode: m.Vnode<ExifDataAttrs>) {
       const { photo, services } = vnode.attrs;
 
-      const $model = services.toThingLinks([photo.model]);
+      const $model = toThingLinks(services, [photo.model]);
       if ($model.length > 0) {
         return m("td", $model);
       }

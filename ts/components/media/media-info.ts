@@ -4,6 +4,7 @@
  */
 
 import m from "mithril";
+import { toThingLinks } from "../thing/thing-links.ts";
 import type { Services } from "../../types.ts";
 import { arrayify } from "../../commons/arrays.ts";
 import { preprocessDescription } from "../../commons/strings.ts";
@@ -49,7 +50,7 @@ function Rating() {
     view(vnode: m.Vnode<MediaComponentAttrs>) {
       const { media, services } = vnode.attrs;
 
-      const $rating = services.toThingLinks([media.rating]);
+      const $rating = toThingLinks(services, [media.rating]);
       return m("td", $rating.length > 0 ? $rating : "—");
     },
   };
@@ -61,7 +62,7 @@ function Style() {
     view(vnode: m.Vnode<MediaComponentAttrs>) {
       const { media, services } = vnode.attrs;
 
-      const $style = services.toThingLinks([media.style]);
+      const $style = toThingLinks(services, [media.style]);
       return m("td", $style.length > 0 ? $style : "—");
     },
   };
@@ -73,7 +74,7 @@ function Subject() {
     view(vnode: m.Vnode<MediaComponentAttrs>) {
       const { media, services } = vnode.attrs;
 
-      const $subject = services.toThingLinks(arrayify(media.subject));
+      const $subject = toThingLinks(services, arrayify(media.subject));
       return m("td", $subject.length > 0 ? $subject : "—");
     },
   };

@@ -98,8 +98,6 @@ function ThingDetails() {
         }
       }
 
-      // TODO add first photographed
-
       const $rows = Object.entries(metadata).map(([key, value]) => {
         return m("tr", [
           m("th.exif-heading", key),
