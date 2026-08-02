@@ -24,21 +24,23 @@ type PhotoGridAttrs = {
 /* */
 export function PhotoGrid() {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
-  let lastResetKey: string | undefined;
 
   return {
     oncreate(vnode: m.VnodeDOM<PhotoGridAttrs>) {
       batch.schedule(vnode.attrs.total);
     },
+    onbeforeupdate(
+      vnode: m.Vnode<PhotoGridAttrs>,
+      old: m.VnodeDOM<PhotoGridAttrs>,
+    ) {
+      if (vnode.attrs.resetKey !== old.attrs.resetKey) {
+        batch.reset();
+      }
+    },
     onupdate(vnode: m.VnodeDOM<PhotoGridAttrs>) {
       batch.schedule(vnode.attrs.total);
     },
     view(vnode: m.Vnode<PhotoGridAttrs>) {
-      if (vnode.attrs.resetKey !== lastResetKey) {
-        lastResetKey = vnode.attrs.resetKey;
-        batch.reset();
-      }
-
       const photos = vnode.attrs.getPhotos(batch.count());
 
       return m(

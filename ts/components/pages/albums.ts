@@ -22,55 +22,88 @@ type AlbumsListAttrs = {
   selectedTrip: string | undefined;
 };
 
-function drawAlbum(
-  state: { year: number },
-  album: Album,
-  idx: number,
+type YearGroup = {
+  year: number;
+  // year heading shown for past years only; the current year runs headerless
+  showHeading: boolean;
+  // markdown recap, only on the unfiltered album view with a heading
+  recap: string | undefined;
+  albums: Album[];
+};
+
+/*
+ * Pure transform: split a date-sorted album list into consecutive year runs,
+ * each annotated with its heading and recap.
+ */
+function groupAlbumsByYear(
+  albums: Album[],
   services: Services,
   showRecap: boolean,
-) {
-  const loading = loadingMode(idx);
+  currentYear: number,
+): YearGroup[] {
+  const groups: YearGroup[] = [];
 
-  const $albumComponents: m.Children[] = [];
+  for (const album of albums) {
+    const year = albumYear(album);
+    const lastGroup = groups[groups.length - 1];
 
-  // push year header if a new year
-  if (state.year !== albumYear(album)) {
-    state.year = albumYear(album);
+    if (lastGroup && lastGroup.year === year) {
+      lastGroup.albums.push(album);
+      continue;
+    }
 
-    if (state.year !== new Date().getFullYear()) {
-      const $h2 = m(
-        "h2.album-year-heading",
-        { key: `year-${state.year}`, id: `year-${state.year}` },
-        state.year.toString(),
+    const showHeading = year !== currentYear;
+    const recap = showHeading && showRecap
+      ? services.readYearRecap(year)
+      : undefined;
+    groups.push({ year, showHeading, recap, albums: [album] });
+  }
+
+  return groups;
+}
+
+/*
+ * Render one year group: optional heading and recap, then the album cards.
+ * startIdx is the album's position in the full list, for the loading mode.
+ */
+function drawYearGroup(
+  group: YearGroup,
+  services: Services,
+  startIdx: number,
+): m.Children[] {
+  const $components: m.Children[] = [];
+
+  if (group.showHeading) {
+    $components.push(m(
+      "h2.album-year-heading",
+      { key: `year-${group.year}`, id: `year-${group.year}` },
+      group.year.toString(),
+    ));
+
+    if (group.recap) {
+      $components.push(
+        m(YearRecap, { key: `year-recap-${group.year}`, markdown: group.recap }),
       );
-      $albumComponents.push($h2);
-
-      // only show the year recap on the unfiltered album view; hide it when
-      // filtering by country
-      const recap = showRecap ? services.readYearRecap(state.year) : null;
-      if (recap) {
-        $albumComponents.push(
-          m(YearRecap, { key: `year-recap-${state.year}`, markdown: recap }),
-        );
-      }
     }
   }
 
-  $albumComponents.push(
-    m(AlbumCard, {
-      key: `album-${album.id}`,
-      album,
-      countries: services.readCountries(setify(album.country)),
-      loading,
-      trip: album.trip,
-      containerAttrs: {
-        "data-testid": "album-row",
-        "data-album-title": album.name,
-      },
-    }),
-  );
+  for (const [albumIdx, album] of group.albums.entries()) {
+    $components.push(
+      m(AlbumCard, {
+        key: `album-${album.id}`,
+        album,
+        countries: services.readCountries(setify(album.country)),
+        loading: loadingMode(startIdx + albumIdx),
+        trip: album.trip,
+        containerAttrs: {
+          "data-testid": "album-row",
+          "data-album-title": album.name,
+        },
+      }),
+    );
+  }
 
-  return $albumComponents;
+  return $components;
 }
 
 /*
@@ -79,19 +112,25 @@ function drawAlbum(
 function AlbumsList() {
   return {
     view(vnode: m.Vnode<AlbumsListAttrs>) {
-      const state = { year: 2005 };
       const { albums, services, selectedCountry, selectedTrip } = vnode.attrs;
 
       const showRecap = selectedCountry === undefined &&
         selectedTrip === undefined;
 
+      const groups = groupAlbumsByYear(
+        albums,
+        services,
+        showRecap,
+        new Date().getFullYear(),
+      );
+
       const $albumComponents: m.Children[] = [];
+      let startIdx = 0;
 
       // TODO this blocks render too long
-      for (let idx = 0; idx < albums.length; idx++) {
-        $albumComponents.push(
-          ...drawAlbum(state, albums[idx], idx, services, showRecap),
-        );
+      for (const group of groups) {
+        $albumComponents.push(...drawYearGroup(group, services, startIdx));
+        startIdx += group.albums.length;
       }
 
       return m("section.album-container", $albumComponents);

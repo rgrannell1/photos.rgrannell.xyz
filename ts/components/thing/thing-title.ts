@@ -36,12 +36,18 @@ type ThingTitleAttrs = {
 };
 
 export function ThingTitle() {
+  // the document-title write is an effect, so it lives in lifecycle hooks,
+  // not in the pure view
+  const reflectTitle = (vnode: m.Vnode<ThingTitleAttrs>) => {
+    setTitle(computeTitle(vnode.attrs.urn, vnode.attrs.things));
+  };
+
   return {
+    oncreate: reflectTitle,
+    onupdate: reflectTitle,
     view(vnode: m.Vnode<ThingTitleAttrs>) {
       const { urn, things } = vnode.attrs;
       const title = computeTitle(urn, things);
-
-      setTitle(title);
 
       const parsed = parseUrn(urn);
       const [thing] = things;
