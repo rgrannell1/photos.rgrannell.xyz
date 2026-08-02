@@ -124,8 +124,43 @@ function isCacheable(url) {
   return false;
 }
 
+// every route serves index.html, so one cache entry covers all navigations
+const INDEX_CACHE_KEY = "/";
+
+/*
+ * Network-first navigation: online loads stay fresh (build id, inlined
+ * stats), and the last good copy boots the app offline. The copy's baked
+ * asset references match the cache: install pre-caches this build's assets,
+ * and old caches are only deleted when a new worker activates online.
+ */
+function serveNavigation(request) {
+  return fetch(request)
+    .then(function (networkResponse) {
+      if (!networkResponse.ok) {
+        return networkResponse;
+      }
+
+      const copy = networkResponse.clone();
+      return caches.open(CACHE_NAME).then(function (cache) {
+        return cache.put(INDEX_CACHE_KEY, copy);
+      }).then(function () {
+        return networkResponse;
+      });
+    })
+    .catch(function () {
+      return caches.match(INDEX_CACHE_KEY).then(function (cached) {
+        return cached ?? Response.error();
+      });
+    });
+}
+
 self.addEventListener("fetch", function (event) {
   const url = event.request.url;
+
+  if (event.request.mode === "navigate") {
+    event.respondWith(serveNavigation(event.request));
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then(function (response) {
@@ -147,6 +182,7 @@ self.addEventListener("fetch", function (event) {
           });
         }).catch((err) => {
           console.error(err);
+          return Response.error();
         });
     }),
   );
