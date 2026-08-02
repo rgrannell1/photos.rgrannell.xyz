@@ -103,9 +103,55 @@ export async function buildCSS() {
 }
 
 /*
+ * Combine the per-territory flag SVGs into one symbol sprite, so the client
+ * fetches one file and references tiles with <use>. The content hash in the
+ * filename busts the immutable /flags/* cache when a flag changes.
+ */
+export async function buildFlagSprite(): Promise<string> {
+  console.info("🌐 Rendering flag sprite");
+
+  const names: string[] = [];
+  for await (const entry of Deno.readDir("flags")) {
+    if (entry.name.endsWith(".svg") && !entry.name.startsWith("sprite.")) {
+      names.push(entry.name);
+    }
+  }
+  names.sort();
+
+  const symbols: string[] = [];
+  for (const name of names) {
+    const text = await Deno.readTextFile(`flags/${name}`);
+    const flagId = name.replace(/\.svg$/, "");
+    const match = text.match(/<svg[^>]*viewBox="([^"]+)"[^>]*>([\s\S]*)<\/svg>/);
+    if (!match) {
+      throw new Error(`no viewBox in flags/${name}`);
+    }
+    symbols.push(`<symbol id="${flagId}" viewBox="${match[1]}">${match[2]}</symbol>`);
+  }
+
+  const sprite = `<svg xmlns="http://www.w3.org/2000/svg">${symbols.join("")}</svg>`;
+
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(sprite),
+  );
+  const hash = Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, "0")).join("").slice(0, 8);
+
+  for await (const entry of Deno.readDir("flags")) {
+    if (entry.name.startsWith("sprite.")) {
+      await Deno.remove(`flags/${entry.name}`);
+    }
+  }
+
+  await Deno.writeTextFile(`flags/sprite.${hash}.svg`, sprite);
+  return `/flags/sprite.${hash}.svg`;
+}
+
+/*
  * Build HTML
  */
-export async function buildHTML() {
+export async function buildHTML(flagSprite: string) {
   console.info("🌐 Rendering index.html");
 
   const siteUrl = env.photos_url.replace("photos-cdn.", "photos.");
@@ -116,6 +162,7 @@ export async function buildHTML() {
     render(htmlTemplateText, {
       stats: statsText,
       env: envText,
+      flagSprite,
       prefetched: findPrefetchTargets(),
       homepageThumbnails: JSON.stringify(
         findHomepageThumbnails().map((url) => url.replace(/\.webp$/, "")),

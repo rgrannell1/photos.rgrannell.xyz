@@ -38,6 +38,8 @@ export type EnvConfig = {
 export type AppWindow = typeof window & {
   stats: Stats;
   envConfig: EnvConfig;
+  // hashed URL of the flag symbol sprite, baked in by the build
+  flagSprite: string;
 };
 
 /*

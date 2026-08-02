@@ -1,10 +1,11 @@
 /*
  * Flag icons for territories that lack a Unicode flag. Known places map to
- * SVG assets from the vexilla project; everything else falls back to the
- * emoji string from the triples.
+ * symbols in a single SVG sprite built from the vexilla assets; everything
+ * else falls back to the emoji string from the triples.
  */
 
 import m from "mithril";
+import type { AppWindow } from "../types.ts";
 
 // Place name to vexilla flag asset; see /flags
 const CUSTOM_FLAGS: Record<string, string> = {
@@ -50,30 +51,33 @@ const CUSTOM_FLAGS: Record<string, string> = {
   "Friesland": "nl-frisia",
   "Sápmi": "eu-sapmi",
   "Crete": "gr-crete",
-  "Mount Athos": "gr-mount-athos",
-  "Ionian Islands": "gr-ionian-islands",
   "United Kingdom": "gb",
 };
 
 /*
- * Find the custom flag asset path for a place name, if one exists
+ * Find the sprite symbol id for a place name, if one exists
  */
-export function customFlagSrc(name: string | undefined): string | undefined {
+export function customFlagAsset(name: string | undefined): string | undefined {
   if (name && Object.prototype.hasOwnProperty.call(CUSTOM_FLAGS, name)) {
-    return `/flags/${CUSTOM_FLAGS[name]}.svg`;
+    return CUSTOM_FLAGS[name];
   }
   return undefined;
 }
 
 /*
- * Warm every flag into the browser and service-worker cache without
+ * The build-hashed sprite URL, baked into index.html.
+ */
+function spriteUrl(): string {
+  return (window as AppWindow).flagSprite;
+}
+
+/*
+ * Warm the flag sprite into the browser and service-worker cache without
  * blocking boot. Runs in idle time; failures are ignored.
  */
 export function prefetchFlags(): void {
   const warm = () => {
-    for (const asset of Object.values(CUSTOM_FLAGS)) {
-      fetch(`/flags/${asset}.svg`, { priority: "low" }).catch(() => {});
-    }
+    fetch(spriteUrl(), { priority: "low" }).catch(() => {});
   };
 
   if ("requestIdleCallback" in window) {
@@ -89,16 +93,21 @@ export type FlagIconAttrs = {
 };
 
 /*
- * Render a place flag: a custom SVG for mapped names, else the emoji
+ * Render a place flag: a sprite tile for mapped names, else the emoji.
+ * The svg element is sized by CSS, so the layout never shifts on load.
  */
 export function FlagIcon() {
   return {
     view(vnode: m.Vnode<FlagIconAttrs>) {
       const { name, emoji } = vnode.attrs;
-      const src = customFlagSrc(name);
+      const asset = customFlagAsset(name);
 
-      if (src) {
-        return m("img.flag-icon", { src, alt: `${name} flag` });
+      if (asset) {
+        return m(
+          "svg.flag-icon",
+          { role: "img", "aria-label": `${name} flag` },
+          m("use", { href: `${spriteUrl()}#${asset}` }),
+        );
       }
 
       return emoji;

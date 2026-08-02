@@ -25,8 +25,8 @@ async function countriesOf(parent) {
   if (!el) return null;
 
   return (await el.evaluate((node) => {
-    const icons = [...node.querySelectorAll("img.flag-icon")]
-      .map((img) => img.getAttribute("alt") ?? "");
+    const icons = [...node.querySelectorAll("img.flag-icon, svg.flag-icon")]
+      .map((icon) => icon.getAttribute("alt") ?? icon.getAttribute("aria-label") ?? "");
     return [...icons, node.textContent ?? ""].join(" ");
   })).trim();
 }
