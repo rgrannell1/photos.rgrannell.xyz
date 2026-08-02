@@ -8,7 +8,11 @@ const CACHEABLE_RESOURCES = [
   "/favicon.ico",
   "/dist/css/style.3c098cd996-c141f834.css",
   "/dist/js/app.3c098cd996-c141f834.js",
-  "https://photos-cdn.rgrannell.xyz/a4a694cea4.webp",
+  // /albums hero (photo:548d64a50a) — matches ts/components/pages/albums.ts.
+  // update by hand if the photo is re-encoded
+  "https://photos-cdn.rgrannell.xyz/d6cf0f7cc7.webp",
+  // /about hero (photo:dd378e3a76) — matches ts/components/pages/about.ts
+  "https://photos-cdn.rgrannell.xyz/6744c802d1.webp",
 ];
 
 const HOMEPAGE_THUMBNAILS = new Set();
@@ -28,16 +32,20 @@ self.addEventListener("install", function (event) {
   // activate immediately; waiting would delay the old-cache cleanup
   self.skipWaiting();
 
-  // no-cors: the CDN sends no CORS headers, so cors-mode adds would reject.
-  // Each add is non-fatal: one missing resource must not fail the install.
+  // no-cors: the CDN sends no CORS headers. The responses are opaque, so
+  // cache.put is required — cache.add rejects opaque (status 0) responses.
+  // Each entry is non-fatal: one missing resource must not fail the install.
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
       return Promise.all(
-        CACHEABLE_RESOURCES.map((resource) =>
-          cache.add(new Request(resource, { mode: "no-cors" })).catch((err) => {
-            console.error(`failed to pre-cache ${resource}`, err);
-          })
-        ),
+        CACHEABLE_RESOURCES.map(function (resource) {
+          const request = new Request(resource, { mode: "no-cors" });
+          return fetch(request)
+            .then((response) => cache.put(request, response))
+            .catch((err) => {
+              console.error(`failed to pre-cache ${resource}`, err);
+            });
+        }),
       );
     }),
   );
