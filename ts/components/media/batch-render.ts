@@ -15,36 +15,57 @@ export type BatchRenderer = {
   reset: () => void;
 };
 
+type BatchState = {
+  // items rendered so far
+  rendered: number;
+  // whether the next batch is already queued
+  batchScheduled: boolean;
+  // items added per batch
+  batchSize: number;
+};
+
+function growBatch(batchState: BatchState, total: number): void {
+  batchState.rendered = Math.min(
+    batchState.rendered + batchState.batchSize,
+    total,
+  );
+  batchState.batchScheduled = false;
+  m.redraw();
+}
+
+function scheduleBatch(batchState: BatchState, total: number): void {
+  if (batchState.rendered >= total || batchState.batchScheduled) {
+    return;
+  }
+
+  batchState.batchScheduled = true;
+  setTimeout(growBatch.bind(null, batchState, total), 1);
+}
+
+function resetBatch(batchState: BatchState): void {
+  batchState.rendered = batchState.batchSize;
+  batchState.batchScheduled = false;
+}
+
+function countBatch(batchState: BatchState): number {
+  return batchState.rendered;
+}
+
 /*
  * Create renderer state for one incrementally-rendered list. Call `schedule`
  * from oncreate/onupdate with the list's total length, and slice the list to
  * `count()` in the view.
  */
 export function createBatchRenderer(batchSize: number): BatchRenderer {
-  let rendered = batchSize;
-  let batchScheduled = false;
+  const batchState: BatchState = {
+    rendered: batchSize,
+    batchScheduled: false,
+    batchSize,
+  };
 
-  function schedule(total: number) {
-    if (rendered >= total || batchScheduled) {
-      return;
-    }
-
-    batchScheduled = true;
-    setTimeout(() => {
-      rendered = Math.min(rendered + batchSize, total);
-      batchScheduled = false;
-      m.redraw();
-    }, 1);
-  }
-
-  function reset() {
-    rendered = batchSize;
-    batchScheduled = false;
-  }
-
-  function count() {
-    return rendered;
-  }
-
-  return { count, schedule, reset };
+  return {
+    count: countBatch.bind(null, batchState),
+    schedule: scheduleBatch.bind(null, batchState),
+    reset: resetBatch.bind(null, batchState),
+  };
 }

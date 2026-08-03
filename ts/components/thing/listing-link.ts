@@ -12,21 +12,21 @@ function onListingClick(type: string, event: Event) {
 
 type ListingLinkAttrs = { urn: string } | { type: string };
 
-export function ListingLink() {
-  return {
-    view(vnode: m.Vnode<ListingLinkAttrs>) {
-      let type = "";
-      if ("type" in vnode.attrs) {
-        type = vnode.attrs.type;
-      } else {
-        const parsed = asUrn(vnode.attrs.urn);
-        type = parsed.type;
-      }
+function viewListingLink(vnode: m.Vnode<ListingLinkAttrs>): m.Children {
+  let type = "";
+  if ("type" in vnode.attrs) {
+    type = vnode.attrs.type;
+  } else {
+    const parsed = asUrn(vnode.attrs.urn);
+    type = parsed.type;
+  }
 
-      return m("a", {
-        href: `#/listing/${type}`,
-        onclick: onListingClick.bind(null, type),
-      }, capitalise(type));
-    },
-  };
+  return m("a", {
+    href: `#/listing/${type}`,
+    onclick: onListingClick.bind(null, type),
+  }, capitalise(type));
+}
+
+export function ListingLink() {
+  return { view: viewListingLink };
 }

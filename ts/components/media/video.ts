@@ -9,63 +9,81 @@ export type VideoAttrs = {
   interactive?: boolean;
 };
 
-/* */
-export function Video() {
-  let controlsVisible = false;
+type VideoState = {
+  // native controls appear after the first click on the video
+  controlsVisible: boolean;
+};
 
-  function onInteract() {
-    controlsVisible = true;
-    m.redraw();
+function showControls(videoState: VideoState): void {
+  videoState.controlsVisible = true;
+  m.redraw();
+}
+
+function viewVideo(
+  videoState: VideoState,
+  vnode: m.Vnode<VideoAttrs>,
+): m.Children {
+  const {
+    preload,
+    video,
+    interactive = false,
+  } = vnode.attrs;
+
+  if (!video) {
+    return m("div", "No video");
   }
 
-  return {
-    view(vnode: m.Vnode<VideoAttrs>) {
-      const {
-        preload,
-        video,
-        interactive = false,
-      } = vnode.attrs;
+  const {
+    id: rawId,
+    posterUrl,
+    videoUrl480p,
+  } = video;
 
-      if (!video) {
-        return m("div", "No video");
-      }
+  const id = formatId(rawId);
+  const hasValidUrl = videoUrl480p && videoUrl480p.length > 0;
 
-      const {
-        id: rawId,
-        posterUrl,
-        videoUrl480p,
-      } = video;
+  if (!hasValidUrl) {
+    return m("div", "Video unavailable");
+  }
 
-      const id = formatId(rawId);
-      const hasValidUrl = videoUrl480p && videoUrl480p.length > 0;
+  const $source = m("source", {
+    src: videoUrl480p,
+    type: "video/mp4",
+  });
 
-      if (!hasValidUrl) {
-        return m("div", "Video unavailable");
-      }
+  const $video = m("video.thumbnail-video", {
+    controls: videoState.controlsVisible,
+    preload,
+    poster: posterUrl,
+    onclick: showControls.bind(null, videoState),
+  }, $source);
 
-      const $source = m("source", {
-        src: videoUrl480p,
-        type: "video/mp4",
-      });
+  const $mdIcon = interactive
+    ? m(MetadataIcon, { route: `/video/${id}`, colour: "white" })
+    : null;
 
-      const $video = m("video.thumbnail-video", {
-        controls: controlsVisible,
-        preload,
-        poster: posterUrl,
-        onclick: onInteract,
-      }, $source);
+  // keys belong on the m(Video, ...) call site, not this internal root
+  return m("div", [
+    m("div.photo", [
+      $mdIcon,
+      $video,
+    ]),
+  ]);
+}
 
-      const $mdIcon = interactive
-        ? m(MetadataIcon, { route: `/video/${id}`, colour: "white" })
-        : null;
+/* */
+export function Video() {
+  const videoState: VideoState = { controlsVisible: false };
 
-      // keys belong on the m(Video, ...) call site, not this internal root
-      return m("div", [
-        m("div.photo", [
-          $mdIcon,
-          $video,
-        ]),
-      ]);
-    },
-  };
+  return { view: viewVideo.bind(null, videoState) };
+}
+
+/* A keyed interactive video for video lists. */
+export function drawVideoItem(video: Video): m.Children {
+  return m(Video, {
+    key: `video-${video.id}`,
+    video,
+    preload: "auto",
+    interactive: true,
+  });
 }

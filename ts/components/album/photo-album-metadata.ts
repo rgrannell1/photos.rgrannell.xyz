@@ -13,32 +13,34 @@ export type PhotoAlbumMetadataAttrs = {
   shortDateRange: string;
 };
 
+function viewPhotoAlbumMetadata(
+  vnode: m.Vnode<PhotoAlbumMetadataAttrs>,
+): m.Children {
+  const {
+    title,
+    count,
+    countryLinks,
+    dateRange,
+    shortDateRange,
+  } = vnode.attrs;
+  const text = count === 1 ? "photo" : "photos";
+  const isSmall = isSmallerThan(SMALL_DEVICE_WIDTH);
+
+  const dateRangeText = isSmall ? shortDateRange : dateRange;
+
+  return m("div.photo-album-metadata", [
+    m("p.photo-album-title", { "data-testid": "album-title" }, title),
+    m("p.photo-album-date", [
+      m("time", { "data-testid": "album-date" }, dateRangeText),
+    ]),
+    m("div.photo-metadata-inline", [
+      m("p.photo-album-count", { "data-testid": "album-count" }, `${count} ${text}`),
+      m("p.photo-album-countries", { "data-testid": "album-countries" }, countryLinks),
+    ]),
+  ]);
+}
+
 /* */
 export function PhotoAlbumMetadata() {
-  return {
-    view(vnode: m.Vnode<PhotoAlbumMetadataAttrs>) {
-      const {
-        title,
-        count,
-        countryLinks,
-        dateRange,
-        shortDateRange,
-      } = vnode.attrs;
-      const text = count === 1 ? "photo" : "photos";
-      const isSmall = isSmallerThan(SMALL_DEVICE_WIDTH);
-
-      const dateRangeText = isSmall ? shortDateRange : dateRange;
-
-      return m("div.photo-album-metadata", [
-        m("p.photo-album-title", { "data-testid": "album-title" }, title),
-        m("p.photo-album-date", [
-          m("time", { "data-testid": "album-date" }, dateRangeText),
-        ]),
-        m("div.photo-metadata-inline", [
-          m("p.photo-album-count", { "data-testid": "album-count" }, `${count} ${text}`),
-          m("p.photo-album-countries", { "data-testid": "album-countries" }, countryLinks),
-        ]),
-      ]);
-    },
-  };
+  return { view: viewPhotoAlbumMetadata };
 }

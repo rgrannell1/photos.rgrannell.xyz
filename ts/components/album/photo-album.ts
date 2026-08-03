@@ -25,25 +25,25 @@ function onTripClick(tripId: string, event: Event) {
   block(event);
 }
 
+function viewTripTag(vnode: m.Vnode<{ trip: string | undefined }>): m.Children {
+  const { trip } = vnode.attrs;
+
+  if (!trip) {
+    return null;
+  }
+
+  const tripId = asUrn(trip).id;
+
+  // two colours supported
+  return m("a.trip-tag .trip-color-" + tripColourIndex(trip), {
+    href: `#!/trip/${tripId}`,
+    title: "Show albums from this trip",
+    onclick: onTripClick.bind(null, tripId),
+  });
+}
+
 function TripTag() {
-  return {
-    view(vnode: m.Vnode<{ trip: string | undefined }>) {
-      const { trip } = vnode.attrs;
-
-      if (!trip) {
-        return null;
-      }
-
-      const tripId = asUrn(trip).id;
-
-      // two colours supported
-      return m("a.trip-tag .trip-color-" + tripColourIndex(trip), {
-        href: `#!/trip/${tripId}`,
-        title: "Show albums from this trip",
-        onclick: onTripClick.bind(null, tripId),
-      });
-    },
-  };
+  return { view: viewTripTag };
 }
 
 export type PhotoAlbumAttrs = {
@@ -60,38 +60,38 @@ export type PhotoAlbumAttrs = {
   minDate?: number;
 };
 
+function viewPhotoAlbum(vnode: m.Vnode<PhotoAlbumAttrs>): m.Children {
+  const {
+    imageUrl,
+    href,
+    thumbnailUrl,
+    thumbnailDataUrl,
+    loading,
+    child,
+    minDate,
+    onclick,
+    trip,
+    label,
+  } = vnode.attrs;
+
+  return m("div.photo-album", { "data-min-date": minDate }, [
+    m(TripTag, { trip }),
+    m(ImagePair, {
+      thumbnailUrl,
+      thumbnailDataUrl,
+      loading,
+      onclick,
+      width: PHOTO_WIDTH,
+      height: PHOTO_HEIGHT,
+      ...(label !== undefined && { label }),
+      ...(imageUrl !== undefined && { imageUrl }),
+      ...(href !== undefined && { href }),
+    }),
+    child,
+  ]);
+}
+
 /* */
 export function PhotoAlbum() {
-  return {
-    view(vnode: m.Vnode<PhotoAlbumAttrs>) {
-      const {
-        imageUrl,
-        href,
-        thumbnailUrl,
-        thumbnailDataUrl,
-        loading,
-        child,
-        minDate,
-        onclick,
-        trip,
-        label,
-      } = vnode.attrs;
-
-      return m("div.photo-album", { "data-min-date": minDate }, [
-        m(TripTag, { trip }),
-        m(ImagePair, {
-          thumbnailUrl,
-          thumbnailDataUrl,
-          loading,
-          onclick,
-          width: PHOTO_WIDTH,
-          height: PHOTO_HEIGHT,
-          ...(label !== undefined && { label }),
-          ...(imageUrl !== undefined && { imageUrl }),
-          ...(href !== undefined && { href }),
-        }),
-        child,
-      ]);
-    },
-  };
+  return { view: viewPhotoAlbum };
 }

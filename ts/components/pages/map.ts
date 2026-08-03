@@ -57,11 +57,15 @@ function destroyLeafletMap(
   return undefined;
 }
 
+function invalidateNow(existingMap: LeafletMap): void {
+  existingMap.invalidateSize();
+}
+
 function invalidateMapSizeSoon(existingMap: LeafletMap | undefined) {
   if (!existingMap) {
     return;
   }
-  requestAnimationFrame(() => existingMap.invalidateSize());
+  requestAnimationFrame(invalidateNow.bind(null, existingMap));
 }
 
 const MARKER_BATCH_SIZE = 20;
@@ -209,114 +213,160 @@ function syncTripPolylines(
   return linesLayer;
 }
 
-/* */
-export function MapPage(): m.Component<MapPageAttrs> {
-  let leafletLib: LeafletLib | undefined;
-  let leafletMap: LeafletMap | undefined;
-  let mapContainer: HTMLElement | undefined;
-  let lastSidebarVisible: boolean | undefined;
-  let markersLayer: LayerGroup | undefined;
-  let tripLinesLayer: LayerGroup | undefined;
-  let lastPlaces: GeocodedPlaceWithCover[] = [];
-  let lastTripPolylines: TripPolyline[] = [];
-  let markerBatchIdx = 0;
-  let markerBounds: LatLngBounds | undefined;
+type MapState = {
+  leafletLib: LeafletLib | undefined;
+  leafletMap: LeafletMap | undefined;
+  mapContainer: HTMLElement | undefined;
+  lastSidebarVisible: boolean | undefined;
+  markersLayer: LayerGroup | undefined;
+  tripLinesLayer: LayerGroup | undefined;
+  lastPlaces: GeocodedPlaceWithCover[];
+  lastTripPolylines: TripPolyline[];
+  markerBatchIdx: number;
+  markerBounds: LatLngBounds | undefined;
+};
 
-  function addMarkerBatch() {
-    if (!leafletLib || !leafletMap || !markersLayer || !markerBounds) return;
-    const end = Math.min(markerBatchIdx + MARKER_BATCH_SIZE, lastPlaces.length);
-    for (let idx = markerBatchIdx; idx < end; idx++) {
-      addMarker(leafletLib, markersLayer, markerBounds, lastPlaces[idx]);
-    }
-    markerBatchIdx = end;
-    if (markerBatchIdx < lastPlaces.length) {
-      setTimeout(addMarkerBatch, 1);
-    } else if (markerBounds.isValid()) {
-      leafletMap.fitBounds(markerBounds, { padding: [20, 20], maxZoom: 8 });
-    }
+function addMarkerBatch(mapState: MapState): void {
+  const { leafletLib, leafletMap, markersLayer, markerBounds } = mapState;
+  if (!leafletLib || !leafletMap || !markersLayer || !markerBounds) return;
+
+  const end = Math.min(
+    mapState.markerBatchIdx + MARKER_BATCH_SIZE,
+    mapState.lastPlaces.length,
+  );
+  for (let idx = mapState.markerBatchIdx; idx < end; idx++) {
+    addMarker(leafletLib, markersLayer, markerBounds, mapState.lastPlaces[idx]);
   }
-
-  function startPlaceMarkers(places: GeocodedPlaceWithCover[]) {
-    if (!leafletLib || !markersLayer) return;
-    markersLayer.clearLayers();
-    lastPlaces = places;
-    markerBatchIdx = 0;
-    markerBounds = leafletLib.latLngBounds([]);
-    addMarkerBatch();
+  mapState.markerBatchIdx = end;
+  if (mapState.markerBatchIdx < mapState.lastPlaces.length) {
+    setTimeout(addMarkerBatch.bind(null, mapState), 1);
+  } else if (markerBounds.isValid()) {
+    leafletMap.fitBounds(markerBounds, { padding: [20, 20], maxZoom: 8 });
   }
+}
 
-  function initMap(leaflet: LeafletLib, vnode: m.VnodeDOM<MapPageAttrs>) {
-    leafletLib = leaflet;
-    const root = vnode.dom as HTMLElement;
-    mapContainer = root.querySelector(".leaflet-map") as HTMLElement | null ||
-      undefined;
+function startPlaceMarkers(
+  mapState: MapState,
+  places: GeocodedPlaceWithCover[],
+): void {
+  if (!mapState.leafletLib || !mapState.markersLayer) return;
+  mapState.markersLayer.clearLayers();
+  mapState.lastPlaces = places;
+  mapState.markerBatchIdx = 0;
+  mapState.markerBounds = mapState.leafletLib.latLngBounds([]);
+  addMarkerBatch(mapState);
+}
 
-    leafletMap = ensureLeafletMap(leaflet, leafletMap, mapContainer);
-    markersLayer = leaflet.layerGroup().addTo(leafletMap!);
-    tripLinesLayer = syncTripPolylines(
-      leaflet,
-      leafletMap,
-      tripLinesLayer,
+function initMap(
+  mapState: MapState,
+  vnode: m.VnodeDOM<MapPageAttrs>,
+  leaflet: LeafletLib,
+): void {
+  mapState.leafletLib = leaflet;
+  const root = vnode.dom as HTMLElement;
+  mapState.mapContainer =
+    root.querySelector(".leaflet-map") as HTMLElement | null ||
+    undefined;
+
+  mapState.leafletMap = ensureLeafletMap(
+    leaflet,
+    mapState.leafletMap,
+    mapState.mapContainer,
+  );
+  mapState.markersLayer = leaflet.layerGroup().addTo(mapState.leafletMap!);
+  mapState.tripLinesLayer = syncTripPolylines(
+    leaflet,
+    mapState.leafletMap,
+    mapState.tripLinesLayer,
+    vnode.attrs.tripPolylines,
+  );
+  mapState.lastTripPolylines = vnode.attrs.tripPolylines;
+  startPlaceMarkers(mapState, vnode.attrs.places);
+  invalidateMapSizeSoon(mapState.leafletMap);
+}
+
+function mountMapPage(
+  mapState: MapState,
+  vnode: m.VnodeDOM<MapPageAttrs>,
+): void {
+  import("leaflet").then(initMap.bind(null, mapState, vnode));
+}
+
+function updateMapPage(
+  mapState: MapState,
+  vnode: m.VnodeDOM<MapPageAttrs>,
+): void {
+  if (mapState.lastSidebarVisible !== vnode.attrs.visible) {
+    invalidateMapSizeSoon(mapState.leafletMap);
+  }
+  mapState.lastSidebarVisible = vnode.attrs.visible;
+
+  if (
+    mapState.leafletLib &&
+    vnode.attrs.tripPolylines !== mapState.lastTripPolylines
+  ) {
+    mapState.tripLinesLayer = syncTripPolylines(
+      mapState.leafletLib,
+      mapState.leafletMap,
+      mapState.tripLinesLayer,
       vnode.attrs.tripPolylines,
     );
-    lastTripPolylines = vnode.attrs.tripPolylines;
-    startPlaceMarkers(vnode.attrs.places);
-    invalidateMapSizeSoon(leafletMap);
+    mapState.lastTripPolylines = vnode.attrs.tripPolylines;
   }
 
+  if (vnode.attrs.places !== mapState.lastPlaces) {
+    startPlaceMarkers(mapState, vnode.attrs.places);
+  }
+}
+
+function unmountMapPage(mapState: MapState): void {
+  mapState.leafletMap = destroyLeafletMap(mapState.leafletMap);
+  mapState.mapContainer = undefined;
+  mapState.markersLayer = undefined;
+  mapState.tripLinesLayer = undefined;
+  mapState.lastPlaces = [];
+  mapState.lastTripPolylines = [];
+  mapState.leafletLib = undefined;
+}
+
+function viewMapPage(vnode: m.Vnode<MapPageAttrs>): m.Children {
+  const { visible: sidebarVisible } = vnode.attrs;
+
+  return m("div", {
+    class: sidebarVisible ? "page sidebar-visible" : "page",
+  }, [
+    m("section.photos-metadata", [
+      m("h1", "Map"),
+      m("p.photo-album-count", "Places I've visited"),
+    ]),
+    m("section.no-margin", [
+      m("div.leaflet-map", {
+        role: "application",
+        "aria-label": "Map",
+      }),
+    ]),
+  ]);
+}
+
+/* */
+export function MapPage(): m.Component<MapPageAttrs> {
+  const mapState: MapState = {
+    leafletLib: undefined,
+    leafletMap: undefined,
+    mapContainer: undefined,
+    lastSidebarVisible: undefined,
+    markersLayer: undefined,
+    tripLinesLayer: undefined,
+    lastPlaces: [],
+    lastTripPolylines: [],
+    markerBatchIdx: 0,
+    markerBounds: undefined,
+  };
+
   return {
-    oncreate(vnode) {
-      import("leaflet").then((leaflet) => initMap(leaflet, vnode));
-    },
-
-    onupdate(vnode) {
-      if (lastSidebarVisible !== vnode.attrs.visible) {
-        invalidateMapSizeSoon(leafletMap);
-      }
-      lastSidebarVisible = vnode.attrs.visible;
-
-      if (leafletLib && vnode.attrs.tripPolylines !== lastTripPolylines) {
-        tripLinesLayer = syncTripPolylines(
-          leafletLib,
-          leafletMap,
-          tripLinesLayer,
-          vnode.attrs.tripPolylines,
-        );
-        lastTripPolylines = vnode.attrs.tripPolylines;
-      }
-
-      if (vnode.attrs.places !== lastPlaces) {
-        startPlaceMarkers(vnode.attrs.places);
-      }
-    },
-
-    onremove() {
-      leafletMap = destroyLeafletMap(leafletMap);
-      mapContainer = undefined;
-      markersLayer = undefined;
-      tripLinesLayer = undefined;
-      lastPlaces = [];
-      lastTripPolylines = [];
-      leafletLib = undefined;
-    },
-
-    view(vnode) {
-      const { visible: sidebarVisible } = vnode.attrs;
-
-      return m("div", {
-        class: sidebarVisible ? "page sidebar-visible" : "page",
-      }, [
-        m("section.photos-metadata", [
-          m("h1", "Map"),
-          m("p.photo-album-count", "Places I've visited"),
-        ]),
-        m("section.no-margin", [
-          m("div.leaflet-map", {
-            role: "application",
-            "aria-label": "Map",
-          }),
-        ]),
-      ]);
-    },
+    oncreate: mountMapPage.bind(null, mapState),
+    onupdate: updateMapPage.bind(null, mapState),
+    onremove: unmountMapPage.bind(null, mapState),
+    view: viewMapPage,
   };
 }

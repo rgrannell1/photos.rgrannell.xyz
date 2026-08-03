@@ -31,25 +31,25 @@ type ImageAttrs = {
   alt?: string | undefined;
 };
 
+function viewImage(vnode: m.Vnode<ImageAttrs>): m.Children {
+  const { thumbnailUrl, loading, onclick, width, height, alt } = vnode.attrs;
+
+  return m("img.thumbnail-image", {
+    onload: loadImage,
+    src: thumbnailUrl,
+    loading: loading,
+    alt: alt ?? "",
+    onclick,
+    ...(width !== undefined && { width }),
+    ...(height !== undefined && { height }),
+  });
+}
+
 /*
  * The thumbnail image itself
  */
 function Image() {
-  return {
-    view(vnode: m.Vnode<ImageAttrs>) {
-      const { thumbnailUrl, loading, onclick, width, height, alt } = vnode.attrs;
-
-      return m("img.thumbnail-image", {
-        onload: loadImage,
-        src: thumbnailUrl,
-        loading: loading,
-        alt: alt ?? "",
-        onclick,
-        ...(width !== undefined && { width }),
-        ...(height !== undefined && { height }),
-      });
-    },
-  };
+  return { view: viewImage };
 }
 
 type PlaceholderImageAttrs = {
@@ -58,22 +58,24 @@ type PlaceholderImageAttrs = {
   height?: number | undefined;
 };
 
+function viewPlaceholderImage(
+  vnode: m.Vnode<PlaceholderImageAttrs>,
+): m.Children {
+  const { thumbnailDataUrl, width, height } = vnode.attrs;
+
+  return m("img.u-photo.thumbnail-image.thumbnail-placeholder", {
+    src: thumbnailDataUrl,
+    alt: "",
+    ...(width !== undefined && { width }),
+    ...(height !== undefined && { height }),
+  });
+}
+
 /*
  * The placeholder data URL
  */
 function PlaceholderImage() {
-  return {
-    view(vnode: m.Vnode<PlaceholderImageAttrs>) {
-      const { thumbnailDataUrl, width, height } = vnode.attrs;
-
-      return m("img.u-photo.thumbnail-image.thumbnail-placeholder", {
-        src: thumbnailDataUrl,
-        alt: "",
-        ...(width !== undefined && { width }),
-        ...(height !== undefined && { height }),
-      });
-    },
-  };
+  return { view: viewPlaceholderImage };
 }
 
 type ImagePairAttrs = {
@@ -95,35 +97,82 @@ type BannerImagePairAttrs = {
   alt: string;
 };
 
+function viewBannerImagePair(
+  vnode: m.Vnode<BannerImagePairAttrs>,
+): m.Children {
+  const { thumbnailUrl, thumbnailDataUrl, alt } = vnode.attrs;
+
+  const $placeholder = thumbnailDataUrl
+    ? m("img.banner-placeholder", {
+      src: thumbnailDataUrl,
+      alt: "",
+    })
+    : null;
+
+  return m("div", { style: "position:relative;width:100%;height:100%;" }, [
+    $placeholder,
+    m("img.album-banner-image", {
+      src: thumbnailUrl,
+      alt,
+      loading: "eager",
+      fetchpriority: "high",
+      onload: loadImage,
+    }),
+  ]);
+}
+
 /*
  * Variant of ImagePair for full-bleed banners. Uses .album-banner-image so existing
  * CSS and the parallax querySelector stay intact. Placeholder is inlined to fill the
  * container without requiring new CSS.
  */
 export function BannerImagePair() {
-  return {
-    view(vnode: m.Vnode<BannerImagePairAttrs>) {
-      const { thumbnailUrl, thumbnailDataUrl, alt } = vnode.attrs;
+  return { view: viewBannerImagePair };
+}
 
-      const $placeholder = thumbnailDataUrl
-        ? m("img.banner-placeholder", {
-          src: thumbnailDataUrl,
-          alt: "",
-        })
-        : null;
+function viewImagePair(vnode: m.Vnode<ImagePairAttrs>): m.Children {
+  const {
+    imageUrl,
+    href,
+    thumbnailUrl,
+    thumbnailDataUrl,
+    loading,
+    onclick,
+    width,
+    height,
+    label,
+  } = vnode.attrs;
 
-      return m("div", { style: "position:relative;width:100%;height:100%;" }, [
-        $placeholder,
-        m("img.album-banner-image", {
-          src: thumbnailUrl,
-          alt,
-          loading: "eager",
-          fetchpriority: "high",
-          onload: loadImage,
-        }),
-      ]);
-    },
-  };
+  // when wrapping in an href anchor the onclick lives on the anchor, so the
+  // inner image must not also fire it
+  const isHrefLink = Boolean(href) && !imageUrl;
+  const imageOnclick = isHrefLink ? undefined : onclick;
+
+  const children = [
+    thumbnailDataUrl
+      ? m(PlaceholderImage, { thumbnailDataUrl, width, height })
+      : null,
+    m(Image, { thumbnailUrl, loading, onclick: imageOnclick, width, height }),
+  ];
+
+  if (imageUrl) {
+    return m(
+      "a",
+      {
+        href: imageUrl,
+        target: "_blank",
+        rel: "external",
+        "aria-label": label ?? "open full image",
+      },
+      children,
+    );
+  }
+
+  if (href) {
+    return m("a", { href, onclick, "aria-label": label }, children);
+  }
+
+  return m("div", children);
 }
 
 /*
@@ -135,52 +184,7 @@ export function BannerImagePair() {
  * to the browser, so the target can be opened in a new tab.
  */
 export function ImagePair() {
-  return {
-    view(vnode: m.Vnode<ImagePairAttrs>) {
-      const {
-        imageUrl,
-        href,
-        thumbnailUrl,
-        thumbnailDataUrl,
-        loading,
-        onclick,
-        width,
-        height,
-        label,
-      } = vnode.attrs;
-
-      // when wrapping in an href anchor the onclick lives on the anchor, so the
-      // inner image must not also fire it
-      const isHrefLink = Boolean(href) && !imageUrl;
-      const imageOnclick = isHrefLink ? undefined : onclick;
-
-      const children = [
-        thumbnailDataUrl
-          ? m(PlaceholderImage, { thumbnailDataUrl, width, height })
-          : null,
-        m(Image, { thumbnailUrl, loading, onclick: imageOnclick, width, height }),
-      ];
-
-      if (imageUrl) {
-        return m(
-          "a",
-          {
-            href: imageUrl,
-            target: "_blank",
-            rel: "external",
-            "aria-label": label ?? "open full image",
-          },
-          children,
-        );
-      }
-
-      if (href) {
-        return m("a", { href, onclick, "aria-label": label }, children);
-      }
-
-      return m("div", children);
-    },
-  };
+  return { view: viewImagePair };
 }
 
 export type PhotoAttrs = {
@@ -189,53 +193,55 @@ export type PhotoAttrs = {
   interactive?: boolean;
 };
 
+function openFullImage(fullImage: string): void {
+  window.location.href = fullImage;
+}
+
+function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
+  const { photo, loading, interactive } = vnode.attrs;
+  const id = formatId(photo.id);
+  const {
+    fullImage,
+    thumbnailUrl,
+    mosaicColours,
+  } = photo;
+
+  // encode a grid of colours into a data URL
+  const thumbnailDataUrl = encodeBitmapDataURL(mosaicColours);
+
+  const $mdIcon = m(MetadataIcon, { route: `/photo/${id}`, colour: photo.contrastingGrey });
+  const $imagePair = m(ImagePair, {
+    imageUrl: photo.fullImage,
+    thumbnailUrl,
+    thumbnailDataUrl,
+    loading,
+    width: PHOTO_WIDTH,
+    height: PHOTO_HEIGHT,
+    onclick: openFullImage.bind(null, fullImage),
+  });
+
+  return m(
+    "div",
+    m("div.photo", {}, [
+      m(
+        "a",
+        { onclick: block },
+        interactive
+          ? [
+            $mdIcon,
+            $imagePair,
+          ]
+          : [$imagePair],
+      ),
+    ]),
+  );
+}
+
 /*
  * Represents a photo, with a metadata link and the fake-progressive-loading
  * features (https://rgrannell.xyz/replacing-google-photos) to make images appear blank for
  * less time.
  */
 export function Photo() {
-  return {
-    view(vnode: m.Vnode<PhotoAttrs>) {
-      const { photo, loading, interactive } = vnode.attrs;
-      const id = formatId(photo.id);
-      const {
-        fullImage,
-        thumbnailUrl,
-        mosaicColours,
-      } = photo;
-
-      // encode a grid of colours into a data URL
-      const thumbnailDataUrl = encodeBitmapDataURL(mosaicColours);
-
-      const $mdIcon = m(MetadataIcon, { route: `/photo/${id}`, colour: photo.contrastingGrey });
-      const $imagePair = m(ImagePair, {
-        imageUrl: photo.fullImage,
-        thumbnailUrl,
-        thumbnailDataUrl,
-        loading,
-        width: PHOTO_WIDTH,
-        height: PHOTO_HEIGHT,
-        onclick: () => {
-          window.location.href = fullImage;
-        },
-      });
-
-      return m(
-        "div",
-        m("div.photo", {}, [
-          m(
-            "a",
-            { onclick: block },
-            interactive
-              ? [
-                $mdIcon,
-                $imagePair,
-              ]
-              : [$imagePair],
-          ),
-        ]),
-      );
-    },
-  };
+  return { view: viewPhoto };
 }

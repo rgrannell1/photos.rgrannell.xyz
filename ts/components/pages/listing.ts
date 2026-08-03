@@ -9,7 +9,10 @@ import { PhotoAlbum } from "../album/photo-album.ts";
 import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
 import { one } from "../../commons/arrays.ts";
 import { ThingCaption } from "../thing/thing-caption.ts";
-import { createBatchRenderer } from "../media/batch-render.ts";
+import {
+  type BatchRenderer,
+  createBatchRenderer,
+} from "../media/batch-render.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 
 /*
@@ -31,10 +34,10 @@ function listingTitleExtra(
  */
 function drawThingAlbum(
   services: Services,
-  thing: TripleObject,
   listingType: string,
+  thing: TripleObject,
   idx: number,
-) {
+): m.Children[] {
   const id = one(thing.id);
 
   if (!id) {
@@ -70,6 +73,35 @@ type AlbumsListAttrs = {
   listingType: string;
 };
 
+function resetListingBatchOnTypeChange(
+  batch: BatchRenderer,
+  vnode: m.Vnode<AlbumsListAttrs>,
+  old: m.VnodeDOM<AlbumsListAttrs>,
+): void {
+  if (vnode.attrs.listingType !== old.attrs.listingType) {
+    batch.reset();
+  }
+}
+
+function scheduleListingBatch(
+  batch: BatchRenderer,
+  vnode: m.VnodeDOM<AlbumsListAttrs>,
+): void {
+  batch.schedule(vnode.attrs.things.length);
+}
+
+function viewAlbumsList(
+  batch: BatchRenderer,
+  vnode: m.Vnode<AlbumsListAttrs>,
+): m.Children {
+  const { services, things, listingType } = vnode.attrs;
+  return m(
+    "section.album-container",
+    { "data-testid": "listing-cards" },
+    things.slice(0, batch.count())
+      .flatMap(drawThingAlbum.bind(null, services, listingType)),
+  );
+}
 
 /*
  * Display the component albums incrementally to avoid blocking the DOM.
@@ -80,31 +112,37 @@ function AlbumsList() {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
 
   return {
-    onbeforeupdate(
-      vnode: m.Vnode<AlbumsListAttrs>,
-      old: m.VnodeDOM<AlbumsListAttrs>,
-    ) {
-      if (vnode.attrs.listingType !== old.attrs.listingType) {
-        batch.reset();
-      }
-    },
-    oncreate(vnode: m.VnodeDOM<AlbumsListAttrs>) {
-      batch.schedule(vnode.attrs.things.length);
-    },
-    onupdate(vnode: m.VnodeDOM<AlbumsListAttrs>) {
-      batch.schedule(vnode.attrs.things.length);
-    },
-    view(vnode: m.Vnode<AlbumsListAttrs>) {
-      const { services, things, listingType } = vnode.attrs;
-      return m(
-        "section.album-container",
-        { "data-testid": "listing-cards" },
-        things.slice(0, batch.count()).flatMap((thing, idx) =>
-          drawThingAlbum(services, thing, listingType, idx)
-        ),
-      );
-    },
+    onbeforeupdate: resetListingBatchOnTypeChange.bind(null, batch),
+    oncreate: scheduleListingBatch.bind(null, batch),
+    onupdate: scheduleListingBatch.bind(null, batch),
+    view: viewAlbumsList.bind(null, batch),
   };
+}
+
+type BirdListingDetailsAttrs = {
+  services: Services;
+  filter: string | undefined;
+  onToggleIreland: () => void;
+};
+
+function viewBirdListingDetails(
+  vnode: m.Vnode<BirdListingDetailsAttrs>,
+): m.Children {
+  const { services, filter, onToggleIreland } = vnode.attrs;
+  const { wildSpecies, totalSpecies, irishWildSpecies } = services
+    .readBirdStats();
+  const irelandActive = filter === "ireland";
+
+  return m(
+    "p.listing-details",
+    { "data-testid": "listing-details" },
+    m("span.listing-filter-flag", {
+      title: "Filter to Irish species",
+      class: irelandActive ? "listing-filter-flag--selected" : undefined,
+      onclick: onToggleIreland,
+    }, "🇮🇪"),
+    ` ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
+  );
 }
 
 /*
@@ -112,82 +150,67 @@ function AlbumsList() {
  * The Ireland flag is clickable to toggle filtering to Irish species only.
  */
 function BirdListingDetails() {
-  return {
-    view(
-      vnode: m.Vnode<
-        {
-          services: Services;
-          filter: string | undefined;
-          onToggleIreland: () => void;
-        }
-      >,
-    ) {
-      const { services, filter, onToggleIreland } = vnode.attrs;
-      const { wildSpecies, totalSpecies, irishWildSpecies } = services
-        .readBirdStats();
-      const irelandActive = filter === "ireland";
+  return { view: viewBirdListingDetails };
+}
 
-      return m(
-        "p.listing-details",
-        { "data-testid": "listing-details" },
-        m("span.listing-filter-flag", {
-          title: "Filter to Irish species",
-          class: irelandActive ? "listing-filter-flag--selected" : undefined,
-          onclick: onToggleIreland,
-        }, "🇮🇪"),
-        ` ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
-      );
-    },
-  };
+function viewMammalListingDetails(
+  vnode: m.Vnode<{ services: Services }>,
+): m.Children {
+  const { services } = vnode.attrs;
+  const { wildSpecies, totalSpecies, irishWildSpecies } = services
+    .readMammalStats();
+
+  return m(
+    "p.listing-details",
+    { "data-testid": "listing-details" },
+    `🇮🇪 ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
+  );
 }
 
 /*
  * Mammal-specific listing details: species counts broken down by wild/total and Irish wild
  */
 function MammalListingDetails() {
-  return {
-    view(vnode: m.Vnode<{ services: Services }>) {
-      const { services } = vnode.attrs;
-      const { wildSpecies, totalSpecies, irishWildSpecies } = services
-        .readMammalStats();
+  return { view: viewMammalListingDetails };
+}
 
-      return m(
-        "p.listing-details",
-        { "data-testid": "listing-details" },
-        `🇮🇪 ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
-      );
-    },
-  };
+type ListingDetailsAttrs = {
+  type: string;
+  services: Services;
+  filter: string | undefined;
+  onToggleIreland: () => void;
+};
+
+function viewListingDetails(
+  vnode: m.Vnode<ListingDetailsAttrs>,
+): m.Children {
+  const { type, services, filter, onToggleIreland } = vnode.attrs;
+
+  if (type === KnownTypes.BIRD) {
+    return m(BirdListingDetails, { services, filter, onToggleIreland });
+  }
+
+  if (type === KnownTypes.MAMMAL) {
+    return m(MammalListingDetails, { services });
+  }
+
+  return null;
 }
 
 /*
  * Display type-specific detail content beneath the listing title
  */
 function ListingDetails() {
-  return {
-    view(
-      vnode: m.Vnode<
-        {
-          type: string;
-          services: Services;
-          filter: string | undefined;
-          onToggleIreland: () => void;
-        }
-      >,
-    ) {
-      const { type, services, filter, onToggleIreland } = vnode.attrs;
+  return { view: viewListingDetails };
+}
 
-      if (type === KnownTypes.BIRD) {
-        return m(BirdListingDetails, { services, filter, onToggleIreland });
-      }
-
-      if (type === KnownTypes.MAMMAL) {
-        return m(MammalListingDetails, { services });
-      }
-
-      return null;
-    },
-  };
+function viewListingTitle(vnode: m.Vnode<{ type: string }>): m.Children {
+  const { type } = vnode.attrs;
+  return m(
+    "h1.albums-header",
+    { "data-testid": "listing-title", "data-listing-type": type },
+    `${capitalise(pluralise(type))}`,
+  );
 }
 
 /*
@@ -195,32 +218,23 @@ function ListingDetails() {
  * e.g "Countries"
  */
 function ListingTitle() {
-  return {
-    view(vnode: m.Vnode<{ type: string }>) {
-      const { type } = vnode.attrs;
-      return m(
-        "h1.albums-header",
-        { "data-testid": "listing-title", "data-listing-type": type },
-        `${capitalise(pluralise(type))}`,
-      );
-    },
-  };
+  return { view: viewListingTitle };
+}
+
+function viewListingThingsButton(vnode: m.Vnode<{ type: string }>): m.Children {
+  const { type } = vnode.attrs;
+  return m("a", {
+    href: `#/thing/${type}:*`,
+    onclick: navigate(`/thing/${type}:*`),
+    "data-testid": "listing-things-link",
+  }, `See all ${type} photos`);
 }
 
 /*
  * Link to the things page for this type (wildcard)
  */
 function ListingThingsButton() {
-  return {
-    view(vnode: m.Vnode<{ type: string }>) {
-      const { type } = vnode.attrs;
-      return m("a", {
-        href: `#/thing/${type}:*`,
-        onclick: navigate(`/thing/${type}:*`),
-        "data-testid": "listing-things-link",
-      }, `See all ${type} photos`);
-    },
-  };
+  return { view: viewListingThingsButton };
 }
 
 type ListingPageAttrs = {
@@ -231,45 +245,51 @@ type ListingPageAttrs = {
   filter: string | undefined;
 };
 
+function toggleIrelandFilter(type: string, filter: string | undefined): void {
+  const isActive = filter === "ireland";
+  broadcast("navigate", {
+    route: isActive ? `/listing/${type}` : `/listing/${type}/ireland`,
+  });
+}
+
+function hasBirdwatchUrl(thing: TripleObject): boolean {
+  return Boolean(thing.birdwatchUrl);
+}
+
+function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
+  const { type, things, services, visible, filter } = vnode.attrs;
+
+  const onToggleIreland = toggleIrelandFilter.bind(null, type, filter);
+
+  const displayThings = (type === KnownTypes.BIRD && filter === "ireland")
+    ? things.filter(hasBirdwatchUrl)
+    : things;
+
+  const $md = [
+    m(ListingTitle, { type }),
+    m(ListingDetails, { type, services, filter, onToggleIreland }),
+  ];
+
+  if (!NonListableTypes.has(type)) {
+    $md.push(
+      m("section.album-metadata", [
+        m(ListingThingsButton, { type }),
+      ]),
+    );
+  }
+
+  return m("main", {
+    class: visible ? "page sidebar-visible" : "page",
+  }, [
+    m("section.album-metadata", $md),
+    m(AlbumsList, { services, things: displayThings, listingType: type }),
+  ]);
+}
+
 /*
  * Render the listing page. It shows
  * each member of a category (e.g countries)
  */
 export function ListingPage() {
-  return {
-    view(vnode: m.Vnode<ListingPageAttrs>) {
-      const { type, things, services, visible, filter } = vnode.attrs;
-
-      const onToggleIreland = () => {
-        const isActive = filter === "ireland";
-        broadcast("navigate", {
-          route: isActive ? `/listing/${type}` : `/listing/${type}/ireland`,
-        });
-      };
-
-      const displayThings = (type === KnownTypes.BIRD && filter === "ireland")
-        ? things.filter((thing) => thing.birdwatchUrl)
-        : things;
-
-      const $md = [
-        m(ListingTitle, { type }),
-        m(ListingDetails, { type, services, filter, onToggleIreland }),
-      ];
-
-      if (!NonListableTypes.has(type)) {
-        $md.push(
-          m("section.album-metadata", [
-            m(ListingThingsButton, { type }),
-          ]),
-        );
-      }
-
-      return m("main", {
-        class: visible ? "page sidebar-visible" : "page",
-      }, [
-        m("section.album-metadata", $md),
-        m(AlbumsList, { services, things: displayThings, listingType: type }),
-      ]);
-    },
-  };
+  return { view: viewListingPage };
 }

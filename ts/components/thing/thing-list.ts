@@ -6,45 +6,59 @@
 
 import m from "mithril";
 import { one } from "../../commons/arrays.ts";
-import type { Services } from "../../types.ts";
+import type { Feature, Place, Services, Unesco } from "../../types.ts";
 import { FeatureLink, ThingLink, UnescoLink } from "./thing-link.ts";
 
 export type ThingListKind = "place" | "feature" | "unesco";
 
 type DrawItems = (services: Services, urns: Set<string>) => m.Children[];
 
+function comparePlaceNames(
+  loca: Place | Unesco,
+  locb: Place | Unesco,
+): number {
+  return (one(loca.name) ?? "").localeCompare(one(locb.name) ?? "");
+}
+
+function drawPlaceItem(location: Place | Unesco): m.Children {
+  const $link = m(ThingLink, {
+    urn: one(location.id)!,
+    thing: location,
+  });
+  return m("li", { key: `place-${location.id}` }, $link);
+}
+
+function drawPlaceItems(services: Services, urns: Set<string>): m.Children[] {
+  const locations = services.readLocations(urns).sort(comparePlaceNames);
+  return locations.map(drawPlaceItem);
+}
+
+function drawFeatureItem(feature: Feature): m.Children {
+  const id = one(feature.id)!;
+
+  return m("li", {
+    key: `feature-${id}`,
+  }, m(FeatureLink, { urn: id, thing: feature }));
+}
+
+function drawFeatureItems(services: Services, urns: Set<string>): m.Children[] {
+  return services.readFeatures(urns).map(drawFeatureItem);
+}
+
+function drawUnescoItem(unesco: Unesco): m.Children {
+  const urn = one(unesco.id)!;
+
+  return m("li", { key: `unesco-${urn}` }, m(UnescoLink, { urn, thing: unesco }));
+}
+
+function drawUnescoItems(services: Services, urns: Set<string>): m.Children[] {
+  return services.readUnescos(urns).map(drawUnescoItem);
+}
+
 const LIST_KINDS: Record<ThingListKind, DrawItems> = {
-  place: (services, urns) => {
-    const locations = services.readLocations(urns).sort(
-      (loca, locb) => {
-        return (one(loca.name) ?? "").localeCompare(one(locb.name) ?? "");
-      },
-    );
-
-    return locations.map((location) => {
-      const $link = m(ThingLink, {
-        urn: one(location.id)!,
-        thing: location,
-      });
-      return m("li", { key: `place-${location.id}` }, $link);
-    });
-  },
-  feature: (services, urns) => {
-    return services.readFeatures(urns).map((feature) => {
-      const id = one(feature.id)!;
-
-      return m("li", {
-        key: `feature-${id}`,
-      }, m(FeatureLink, { urn: id, thing: feature }));
-    });
-  },
-  unesco: (services, urns) => {
-    return services.readUnescos(urns).map((unesco) => {
-      const urn = one(unesco.id)!;
-
-      return m("li", { key: `unesco-${urn}` }, m(UnescoLink, { urn, thing: unesco }));
-    });
-  },
+  place: drawPlaceItems,
+  feature: drawFeatureItems,
+  unesco: drawUnescoItems,
 };
 
 type ThingListAttrs = {
@@ -53,13 +67,13 @@ type ThingListAttrs = {
   services: Services;
 };
 
-export function ThingList() {
-  return {
-    view(vnode: m.Vnode<ThingListAttrs>) {
-      const { kind, urns, services } = vnode.attrs;
-      const drawItems = LIST_KINDS[kind];
+function viewThingList(vnode: m.Vnode<ThingListAttrs>): m.Children {
+  const { kind, urns, services } = vnode.attrs;
+  const drawItems = LIST_KINDS[kind];
 
-      return m("ul", drawItems(services, urns));
-    },
-  };
+  return m("ul", drawItems(services, urns));
+}
+
+export function ThingList() {
+  return { view: viewThingList };
 }

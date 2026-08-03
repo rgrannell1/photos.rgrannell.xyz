@@ -29,19 +29,19 @@ type MediaLocationsAttrs = {
   mode: "geographic" | "feature";
 };
 
+function viewMediaLocations(vnode: m.Vnode<MediaLocationsAttrs>): m.Children {
+  const { location, services, mode } = vnode.attrs;
+
+  const allUrns = arrayify(location);
+  const urns = mode === "feature"
+    ? allUrns.filter(isVisiblePlaceFeature)
+    : allUrns.filter(isPlace);
+
+  const $links = toThingLinks(services, urns);
+  return m("td", $links.length > 0 ? $links : "—");
+}
+
 /* geographic = places/countries; feature = place_feature types (museum, city, etc.) */
 export function MediaLocations() {
-  return {
-    view(vnode: m.Vnode<MediaLocationsAttrs>) {
-      const { location, services, mode } = vnode.attrs;
-
-      const allUrns = arrayify(location);
-      const urns = mode === "feature"
-        ? allUrns.filter(isVisiblePlaceFeature)
-        : allUrns.filter(isPlace);
-
-      const $links = toThingLinks(services, urns);
-      return m("td", $links.length > 0 ? $links : "—");
-    },
-  };
+  return { view: viewMediaLocations };
 }

@@ -35,47 +35,49 @@ type ThingTitleAttrs = {
   things: TripleObject[];
 };
 
+// the document-title write is an effect, so it lives in lifecycle hooks,
+// not in the pure view
+function reflectThingTitle(vnode: m.Vnode<ThingTitleAttrs>): void {
+  setTitle(computeTitle(vnode.attrs.urn, vnode.attrs.things));
+}
+
+function viewThingTitle(vnode: m.Vnode<ThingTitleAttrs>): m.Children {
+  const { urn, things } = vnode.attrs;
+  const title = computeTitle(urn, things);
+
+  const parsed = parseUrn(urn);
+  const [thing] = things;
+  if (parsed.type === KnownTypes.PLACE && thing && one(thing.flag)) {
+    const name = one(thing.name) ?? parsed.id;
+    return m("h1", [
+      m(FlagIcon, { name, emoji: placeEmoji(thing) }),
+      ` ${name}`,
+    ]);
+  }
+
+  return m("h1", title);
+}
+
 export function ThingTitle() {
-  // the document-title write is an effect, so it lives in lifecycle hooks,
-  // not in the pure view
-  const reflectTitle = (vnode: m.Vnode<ThingTitleAttrs>) => {
-    setTitle(computeTitle(vnode.attrs.urn, vnode.attrs.things));
-  };
-
   return {
-    oncreate: reflectTitle,
-    onupdate: reflectTitle,
-    view(vnode: m.Vnode<ThingTitleAttrs>) {
-      const { urn, things } = vnode.attrs;
-      const title = computeTitle(urn, things);
-
-      const parsed = parseUrn(urn);
-      const [thing] = things;
-      if (parsed.type === KnownTypes.PLACE && thing && one(thing.flag)) {
-        const name = one(thing.name) ?? parsed.id;
-        return m("h1", [
-          m(FlagIcon, { name, emoji: placeEmoji(thing) }),
-          ` ${name}`,
-        ]);
-      }
-
-      return m("h1", title);
-    },
+    oncreate: reflectThingTitle,
+    onupdate: reflectThingTitle,
+    view: viewThingTitle,
   };
 }
 
-export function ThingSubtitle() {
-  return {
-    view(vnode: m.Vnode<{ urn: string }>) {
-      const parsed = asUrn(vnode.attrs.urn);
+function viewThingSubtitle(vnode: m.Vnode<{ urn: string }>): m.Children {
+  const parsed = asUrn(vnode.attrs.urn);
 
-      return BinomialTypes.has(parsed.type) && parsed.id !== "*"
-        ? m(
-          "span",
-          { class: `thing-binomial ${parsed.type}-binomial` },
-          binomial(parsed.id),
-        )
-        : m("span");
-    },
-  };
+  return BinomialTypes.has(parsed.type) && parsed.id !== "*"
+    ? m(
+      "span",
+      { class: `thing-binomial ${parsed.type}-binomial` },
+      binomial(parsed.id),
+    )
+    : m("span");
+}
+
+export function ThingSubtitle() {
+  return { view: viewThingSubtitle };
 }

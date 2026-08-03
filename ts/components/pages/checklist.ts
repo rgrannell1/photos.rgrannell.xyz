@@ -8,7 +8,6 @@ import type { ChecklistEntry, NemesisSpecies } from "../../services/stats.ts";
 // Side length in pixels of the per-species cover thumbnail in the life-list.
 const CHECKLIST_THUMB_PX = 144;
 
-
 /*
  * Parse a Unix timestamp string into a Date.
  * Handles both second-precision (10-digit) and millisecond-precision (13-digit) timestamps.
@@ -37,59 +36,91 @@ function firstSeenYear(timestamp: string): number {
   return parseFirstSeen(timestamp).getFullYear();
 }
 
+function isWild(entry: ChecklistEntry): boolean {
+  return entry.isWild;
+}
+
+function isIrishWild(entry: ChecklistEntry): boolean {
+  return entry.isIrish && entry.isWild;
+}
+
+type ChecklistDetailsAttrs = {
+  entries: ChecklistEntry[];
+  filter: string | undefined;
+  onSelect: (filter: string) => void;
+};
+
+function viewChecklistDetails(
+  vnode: m.Vnode<ChecklistDetailsAttrs>,
+): m.Children {
+  const { entries, filter, onSelect } = vnode.attrs;
+
+  const irishWildCount = entries.filter(isIrishWild).length;
+  const wildCount = entries.filter(isWild).length;
+  const totalCount = entries.length;
+
+  const displayCount = filter === "ireland"
+    ? irishWildCount
+    : filter === "all"
+    ? totalCount
+    : wildCount;
+
+  return m(
+    "p.listing-details",
+    m("span.listing-filter-flag", {
+      title: "Irish wild species",
+      class: filter === "ireland"
+        ? "listing-filter-flag--selected"
+        : undefined,
+      onclick: onSelect.bind(null, "ireland"),
+    }, "🇮🇪"),
+    " ",
+    m("span.listing-filter-flag", {
+      title: "All wild species",
+      class: filter === "wild" ? "listing-filter-flag--selected" : undefined,
+      onclick: onSelect.bind(null, "wild"),
+    }, "🗺️"),
+    " ",
+    m("span.listing-filter-flag", {
+      title: "All species including captive",
+      class: filter === "all" ? "listing-filter-flag--selected" : undefined,
+      onclick: onSelect.bind(null, "all"),
+    }, "all"),
+    ` · ${displayCount} species`,
+  );
+}
+
 /*
  * Details line above the checklist with three filter options:
  * Irish wild only, all wild, or all (including captive).
  */
 function ChecklistDetails() {
-  return {
-    view(
-      vnode: m.Vnode<
-        {
-          entries: ChecklistEntry[];
-          filter: string | undefined;
-          onSelect: (filter: string) => void;
-        }
-      >,
-    ) {
-      const { entries, filter, onSelect } = vnode.attrs;
+  return { view: viewChecklistDetails };
+}
 
-      const irishWildCount =
-        entries.filter((entry) => entry.isIrish && entry.isWild).length;
-      const wildCount = entries.filter((entry) => entry.isWild).length;
-      const totalCount = entries.length;
+type ChecklistPhotoAttrs = {
+  cover: Photo | undefined;
+  href: string;
+  label: string;
+};
 
-      const displayCount = filter === "ireland"
-        ? irishWildCount
-        : filter === "all"
-        ? totalCount
-        : wildCount;
+function viewChecklistPhoto(vnode: m.Vnode<ChecklistPhotoAttrs>): m.Children {
+  const { cover, href, label } = vnode.attrs;
 
-      return m(
-        "p.listing-details",
-        m("span.listing-filter-flag", {
-          title: "Irish wild species",
-          class: filter === "ireland"
-            ? "listing-filter-flag--selected"
-            : undefined,
-          onclick: () => onSelect("ireland"),
-        }, "🇮🇪"),
-        " ",
-        m("span.listing-filter-flag", {
-          title: "All wild species",
-          class: filter === "wild" ? "listing-filter-flag--selected" : undefined,
-          onclick: () => onSelect("wild"),
-        }, "🗺️"),
-        " ",
-        m("span.listing-filter-flag", {
-          title: "All species including captive",
-          class: filter === "all" ? "listing-filter-flag--selected" : undefined,
-          onclick: () => onSelect("all"),
-        }, "all"),
-        ` · ${displayCount} species`,
-      );
-    },
-  };
+  if (!cover) {
+    return m("td.checklist-photo");
+  }
+
+  return m("td.checklist-photo", m(ImagePair, {
+    href,
+    label,
+    thumbnailUrl: cover.thumbnailUrl,
+    thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),
+    loading: "lazy",
+    onclick: undefined,
+    width: CHECKLIST_THUMB_PX,
+    height: CHECKLIST_THUMB_PX,
+  }));
 }
 
 /*
@@ -97,26 +128,7 @@ function ChecklistDetails() {
  * species page. Renders an empty cell when a species has no cover photo.
  */
 function ChecklistPhoto() {
-  return {
-    view(vnode: m.Vnode<{ cover: Photo | undefined; href: string; label: string }>) {
-      const { cover, href, label } = vnode.attrs;
-
-      if (!cover) {
-        return m("td.checklist-photo");
-      }
-
-      return m("td.checklist-photo", m(ImagePair, {
-        href,
-        label,
-        thumbnailUrl: cover.thumbnailUrl,
-        thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),
-        loading: "lazy",
-        onclick: undefined,
-        width: CHECKLIST_THUMB_PX,
-        height: CHECKLIST_THUMB_PX,
-      }));
-    },
-  };
+  return { view: viewChecklistPhoto };
 }
 
 /*
@@ -140,39 +152,58 @@ function speciesTags(
   return tags;
 }
 
+type ChecklistRowAttrs = {
+  entry: ChecklistEntry;
+  cover: Photo | undefined;
+  position: number;
+  highlightedYear: boolean;
+  showScarce: boolean;
+};
+
+function viewChecklistRow(vnode: m.Vnode<ChecklistRowAttrs>): m.Children {
+  const { entry, cover, position, highlightedYear, showScarce } = vnode.attrs;
+  const href = `#/thing/${entry.speciesType}:${entry.speciesId}`;
+
+  return m("tr.checklist-row", [
+    m("td.checklist-number", {
+      class: highlightedYear ? "checklist-number--highlighted" : undefined,
+    }, `${position}`),
+    m(ChecklistPhoto, { cover, href, label: entry.name }),
+    m("td.checklist-name", [
+      entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
+      m("a.checklist-name-link", { href }, entry.name),
+      ...speciesTags(entry, showScarce),
+    ]),
+    m("td.checklist-first-seen", formatFirstSeen(entry.firstSeen)),
+  ]);
+}
+
 /*
  * A single row in the checklist table.
  */
 function ChecklistRow() {
-  return {
-    view(
-      vnode: m.Vnode<
-        {
-          entry: ChecklistEntry;
-          cover: Photo | undefined;
-          position: number;
-          highlightedYear: boolean;
-          showScarce: boolean;
-        }
-      >,
-    ) {
-      const { entry, cover, position, highlightedYear, showScarce } = vnode.attrs;
-      const href = `#/thing/${entry.speciesType}:${entry.speciesId}`;
+  return { view: viewChecklistRow };
+}
 
-      return m("tr.checklist-row", [
-        m("td.checklist-number", {
-          class: highlightedYear ? "checklist-number--highlighted" : undefined,
-        }, `${position}`),
-        m(ChecklistPhoto, { cover, href, label: entry.name }),
-        m("td.checklist-name", [
-          entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
-          m("a.checklist-name-link", { href }, entry.name),
-          ...speciesTags(entry, showScarce),
-        ]),
-        m("td.checklist-first-seen", formatFirstSeen(entry.firstSeen)),
-      ]);
-    },
-  };
+type ChecklistMysteryRowAttrs = {
+  species: NemesisSpecies;
+  glyph: string;
+};
+
+function viewChecklistMysteryRow(
+  vnode: m.Vnode<ChecklistMysteryRowAttrs>,
+): m.Children {
+  const { species, glyph } = vnode.attrs;
+
+  return m("tr.checklist-row.checklist-row--mystery", [
+    m("td.checklist-number"),
+    m("td.checklist-photo", m("div.mystery-bird", m("span.mystery-bird-glyph", glyph))),
+    m("td.checklist-name", [
+      m("span.checklist-mystery-name", species.name),
+      m("span.checklist-tag.checklist-tag--nemesis", "nemesis"),
+    ]),
+    m("td.checklist-first-seen.checklist-first-seen--pending", "yet to photograph"),
+  ]);
 }
 
 /*
@@ -180,100 +211,114 @@ function ChecklistRow() {
  * silhouette in place of a photo, with the name and a nemesis tag.
  */
 function ChecklistMysteryRow() {
-  return {
-    view(vnode: m.Vnode<{ species: NemesisSpecies; glyph: string }>) {
-      const { species, glyph } = vnode.attrs;
+  return { view: viewChecklistMysteryRow };
+}
 
-      return m("tr.checklist-row.checklist-row--mystery", [
-        m("td.checklist-number"),
-        m("td.checklist-photo", m("div.mystery-bird", m("span.mystery-bird-glyph", glyph))),
-        m("td.checklist-name", [
-          m("span.checklist-mystery-name", species.name),
-          m("span.checklist-tag.checklist-tag--nemesis", "nemesis"),
-        ]),
-        m("td.checklist-first-seen.checklist-first-seen--pending", "yet to photograph"),
-      ]);
-    },
-  };
+type ChecklistTableAttrs = {
+  entries: ChecklistEntry[];
+  covers: Map<string, Photo>;
+  nemesisSpecies: NemesisSpecies[];
+  mysteryGlyph: string;
+  filter: string | undefined;
+};
+
+type PositionedEntry = {
+  entry: ChecklistEntry;
+  position: number;
+};
+
+function toPositionedEntry(
+  entry: ChecklistEntry,
+  idx: number,
+): PositionedEntry {
+  return { entry, position: idx + 1 };
+}
+
+function positionedIsIrishWild(positioned: PositionedEntry): boolean {
+  return isIrishWild(positioned.entry);
+}
+
+function positionedIsWild(positioned: PositionedEntry): boolean {
+  return isWild(positioned.entry);
+}
+
+function drawChecklistRow(
+  covers: Map<string, Photo>,
+  yearParity: Map<number, number>,
+  irishView: boolean,
+  positioned: PositionedEntry,
+): m.Children {
+  const { entry, position } = positioned;
+  const parity = yearParity.get(firstSeenYear(entry.firstSeen));
+  return m(ChecklistRow, {
+    key: `row-${entry.speciesType}-${entry.speciesId}`,
+    entry,
+    cover: covers.get(entry.speciesId),
+    position,
+    highlightedYear: parity === 1,
+    showScarce: irishView,
+  });
+}
+
+function drawMysteryRow(
+  mysteryGlyph: string,
+  species: NemesisSpecies,
+): m.Children {
+  return m(ChecklistMysteryRow, {
+    key: `mystery-${species.speciesId}`,
+    species,
+    glyph: mysteryGlyph,
+  });
+}
+
+function viewChecklistTable(vnode: m.Vnode<ChecklistTableAttrs>): m.Children {
+  const { entries, covers, nemesisSpecies, mysteryGlyph, filter } = vnode.attrs;
+
+  // Scarce tags and "yet to see" birds are Irish-only; status tags always show.
+  const irishView = filter === "ireland";
+
+  // Assign position numbers from the full unfiltered list, then apply filter
+  const withPositions = entries.map(toPositionedEntry);
+  const displayed = filter === "ireland"
+    ? withPositions.filter(positionedIsIrishWild)
+    : filter === "all"
+    ? withPositions
+    : withPositions.filter(positionedIsWild);
+
+  // Alternate year bands between dimmed and highlighted position numbers,
+  // so it is easy to see which birds were first seen in which year
+  const yearParity = new Map<number, number>();
+  for (const { entry } of displayed) {
+    const year = firstSeenYear(entry.firstSeen);
+    if (!yearParity.has(year)) {
+      yearParity.set(year, yearParity.size % 2);
+    }
+  }
+
+  return m("table.checklist-table", [
+    m("thead", [
+      m("tr", [
+        m("th.checklist-number", "#"),
+        m("th.checklist-photo", ""),
+        m("th", "Name"),
+        m("th", "First seen"),
+      ]),
+    ]),
+    m("tbody", [
+      ...displayed.map(drawChecklistRow.bind(null, covers, yearParity, irishView)),
+      // Unphotographed nemesis species ("yet to see") at the bottom, Irish view only
+      ...(irishView
+        ? nemesisSpecies.map(drawMysteryRow.bind(null, mysteryGlyph))
+        : []),
+    ]),
+  ]);
 }
 
 /*
  * The checklist table itself.
  */
 function ChecklistTable() {
-  return {
-    view(
-      vnode: m.Vnode<
-        {
-          entries: ChecklistEntry[];
-          covers: Map<string, Photo>;
-          nemesisSpecies: NemesisSpecies[];
-          mysteryGlyph: string;
-          filter: string | undefined;
-        }
-      >,
-    ) {
-      const { entries, covers, nemesisSpecies, mysteryGlyph, filter } = vnode.attrs;
-
-      // Scarce tags and "yet to see" birds are Irish-only; status tags always show.
-      const irishView = filter === "ireland";
-
-      // Assign position numbers from the full unfiltered list, then apply filter
-      const withPositions = entries.map((entry, idx) => ({
-        entry,
-        position: idx + 1,
-      }));
-      const displayed = filter === "ireland"
-        ? withPositions.filter(({ entry }) => entry.isIrish && entry.isWild)
-        : filter === "all"
-        ? withPositions
-        : withPositions.filter(({ entry }) => entry.isWild);
-
-      // Alternate year bands between dimmed and highlighted position numbers,
-      // so it is easy to see which birds were first seen in which year
-      const yearParity = new Map<number, number>();
-      for (const { entry } of displayed) {
-        const year = firstSeenYear(entry.firstSeen);
-        if (!yearParity.has(year)) {
-          yearParity.set(year, yearParity.size % 2);
-        }
-      }
-
-      return m("table.checklist-table", [
-        m("thead", [
-          m("tr", [
-            m("th.checklist-number", "#"),
-            m("th.checklist-photo", ""),
-            m("th", "Name"),
-            m("th", "First seen"),
-          ]),
-        ]),
-        m("tbody", [
-          ...displayed.map(({ entry, position }) => {
-            const parity = yearParity.get(firstSeenYear(entry.firstSeen));
-            return m(ChecklistRow, {
-              key: `row-${entry.speciesType}-${entry.speciesId}`,
-              entry,
-              cover: covers.get(entry.speciesId),
-              position,
-              highlightedYear: parity === 1,
-              showScarce: irishView,
-            });
-          }),
-          // Unphotographed nemesis species ("yet to see") at the bottom, Irish view only
-          ...(irishView
-            ? nemesisSpecies.map((species) =>
-              m(ChecklistMysteryRow, {
-                key: `mystery-${species.speciesId}`,
-                species,
-                glyph: mysteryGlyph,
-              })
-            )
-            : []),
-        ]),
-      ]);
-    },
-  };
+  return { view: viewChecklistTable };
 }
 
 type ChecklistPageAttrs = {
@@ -298,7 +343,7 @@ function lifeListPreamble(
   entries: ChecklistEntry[],
   regularCount: number,
 ): string | null {
-  const irishWild = entries.filter((entry) => entry.isIrish && entry.isWild);
+  const irishWild = entries.filter(isIrishWild);
   if (irishWild.length === 0) {
     return null;
   }
@@ -318,7 +363,7 @@ function mammalPreamble(
   mammalEntries: ChecklistEntry[],
   irishMammalCount: number,
 ): string | null {
-  const irishWild = mammalEntries.filter((entry) => entry.isIrish && entry.isWild);
+  const irishWild = mammalEntries.filter(isIrishWild);
   if (irishWild.length === 0) {
     return null;
   }
@@ -327,43 +372,98 @@ function mammalPreamble(
     `the island has about ${irishMammalCount}.`;
 }
 
+type MammalSectionAttrs = {
+  mammalEntries: ChecklistEntry[];
+  mammalCovers: Map<string, Photo>;
+  irishMammalCount: number;
+  nemesisMammals: NemesisSpecies[];
+};
+
+function viewMammalSection(vnode: m.Vnode<MammalSectionAttrs>): m.Children {
+  const { mammalEntries, mammalCovers, irishMammalCount, nemesisMammals } =
+    vnode.attrs;
+
+  const preamble = mammalPreamble(mammalEntries, irishMammalCount);
+
+  return [
+    m("section.album-metadata", [
+      m("h2.albums-header", "Mammals"),
+    ]),
+    preamble ? m("p.photo-album-description", preamble) : null,
+    m("section.checklist-container", [
+      m(ChecklistTable, {
+        entries: mammalEntries,
+        covers: mammalCovers,
+        nemesisSpecies: nemesisMammals,
+        mysteryGlyph: "🐾",
+        filter: "ireland",
+      }),
+    ]),
+  ];
+}
+
 /*
  * The Irish mammal section, appended below the bird table in the Irish view.
  */
 function MammalSection() {
-  return {
-    view(
-      vnode: m.Vnode<
-        {
-          mammalEntries: ChecklistEntry[];
-          mammalCovers: Map<string, Photo>;
-          irishMammalCount: number;
-          nemesisMammals: NemesisSpecies[];
-        }
-      >,
-    ) {
-      const { mammalEntries, mammalCovers, irishMammalCount, nemesisMammals } =
-        vnode.attrs;
+  return { view: viewMammalSection };
+}
 
-      const preamble = mammalPreamble(mammalEntries, irishMammalCount);
+function selectLifeListFilter(newFilter: string): void {
+  broadcast("navigate", { route: `/life-list/${newFilter}` });
+}
 
-      return [
-        m("section.album-metadata", [
-          m("h2.albums-header", "Mammals"),
-        ]),
-        preamble ? m("p.photo-album-description", preamble) : null,
-        m("section.checklist-container", [
-          m(ChecklistTable, {
-            entries: mammalEntries,
-            covers: mammalCovers,
-            nemesisSpecies: nemesisMammals,
-            mysteryGlyph: "🐾",
-            filter: "ireland",
-          }),
-        ]),
-      ];
-    },
-  };
+function viewChecklistPage(vnode: m.Vnode<ChecklistPageAttrs>): m.Children {
+  const {
+    entries,
+    covers,
+    regularCount,
+    nemesisBirds,
+    mammalEntries,
+    mammalCovers,
+    irishMammalCount,
+    nemesisMammals,
+    visible,
+    filter,
+  } = vnode.attrs;
+
+  const preamble = lifeListPreamble(entries, regularCount);
+  const description = "I am not a very committed birder, but I do like " +
+    "photographing the different species I see. Here's my life list.";
+
+  // The mammal section only shows in the Irish view; other views stay birds-only.
+  const irishView = filter === "ireland";
+
+  return m("main", {
+    class: visible ? "page sidebar-visible" : "page",
+  }, [
+    m("section.album-metadata", [
+      m("h1.albums-header", "Life List"),
+      m(ChecklistDetails, { entries, filter, onSelect: selectLifeListFilter }),
+    ]),
+    preamble ? m("p.photo-album-description", preamble) : null,
+    m(
+      "p.photo-album-description",
+      description,
+    ),
+    m("section.checklist-container", [
+      m(ChecklistTable, {
+        entries,
+        covers,
+        nemesisSpecies: nemesisBirds,
+        mysteryGlyph: "🐦",
+        filter,
+      }),
+    ]),
+    irishView
+      ? m(MammalSection, {
+        mammalEntries,
+        mammalCovers,
+        irishMammalCount,
+        nemesisMammals,
+      })
+      : null,
+  ]);
 }
 
 /*
@@ -371,62 +471,5 @@ function MammalSection() {
  * in the Irish view. Only includes species seen in a wild context.
  */
 export function ChecklistPage() {
-  return {
-    view(vnode: m.Vnode<ChecklistPageAttrs>) {
-      const {
-        entries,
-        covers,
-        regularCount,
-        nemesisBirds,
-        mammalEntries,
-        mammalCovers,
-        irishMammalCount,
-        nemesisMammals,
-        visible,
-        filter,
-      } = vnode.attrs;
-
-      const onSelect = (newFilter: string) => {
-        broadcast("navigate", { route: `/life-list/${newFilter}` });
-      };
-
-      const preamble = lifeListPreamble(entries, regularCount);
-      const description = "I am not a very committed birder, but I do like " +
-        "photographing the different species I see. Here's my life list.";
-
-      // The mammal section only shows in the Irish view; other views stay birds-only.
-      const irishView = filter === "ireland";
-
-      return m("main", {
-        class: visible ? "page sidebar-visible" : "page",
-      }, [
-        m("section.album-metadata", [
-          m("h1.albums-header", "Life List"),
-          m(ChecklistDetails, { entries, filter, onSelect }),
-        ]),
-        preamble ? m("p.photo-album-description", preamble) : null,
-        m(
-          "p.photo-album-description",
-          description,
-        ),
-        m("section.checklist-container", [
-          m(ChecklistTable, {
-            entries,
-            covers,
-            nemesisSpecies: nemesisBirds,
-            mysteryGlyph: "🐦",
-            filter,
-          }),
-        ]),
-        irishView
-          ? m(MammalSection, {
-            mammalEntries,
-            mammalCovers,
-            irishMammalCount,
-            nemesisMammals,
-          })
-          : null,
-      ]);
-    },
-  };
+  return { view: viewChecklistPage };
 }

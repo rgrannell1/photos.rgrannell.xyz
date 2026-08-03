@@ -26,50 +26,50 @@ function resolveSidebarRoute(current: string): string {
   return current;
 }
 
+function viewSidebarItem(vnode: m.Vnode<SidebarItemAttrs>): m.Children {
+  const { name, route } = vnode.attrs;
+  const isActive = resolveSidebarRoute(m.route.get() ?? "") === route;
+
+  return m("li", {
+    class: isActive ? "sidebar-item sidebar-item--active" : "sidebar-item",
+    onclick: navigate(route),
+  }, name);
+}
+
 /*
  * Defines each item in the sidebar
  */
 function SidebarItem() {
-  return {
-    view(vnode: m.Vnode<SidebarItemAttrs>) {
-      const { name, route } = vnode.attrs;
-      const isActive = resolveSidebarRoute(m.route.get() ?? "") === route;
+  return { view: viewSidebarItem };
+}
 
-      return m("li", {
-        class: isActive ? "sidebar-item sidebar-item--active" : "sidebar-item",
-        onclick: navigate(route),
-      }, name);
-    },
-  };
+function sidebarClasses(visible: boolean): string {
+  const cls = ["photo-sidebar"];
+  if (visible) {
+    cls.push("sidebar-visible");
+  }
+  return cls.join(" ");
+}
+
+function viewSidebar(vnode: m.Vnode<SidebarAttrs>): m.Children {
+  return m("aside", { class: sidebarClasses(vnode.attrs.visible) }, [
+    m("nav", [
+      m("ul", [
+        m(SidebarItem, { name: "PHOTOS", route: "/photos" }),
+        m(SidebarItem, { name: "VIDEOS", route: "/videos" }),
+        m(SidebarItem, { name: "ALBUMS", route: "/albums" }),
+        m(SidebarItem, { name: "LISTINGS", route: "/listings" }),
+        m(SidebarItem, { name: "LIFE LIST", route: "/life-list" }),
+        m(SidebarItem, { name: "MAP", route: "/map" }),
+        m(SidebarItem, { name: "ABOUT", route: "/about" }),
+      ]),
+    ]),
+  ]);
 }
 
 /*
  * Defines the app sidebar
  */
 export function Sidebar() {
-  function classes(visible: boolean) {
-    const cls = ["photo-sidebar"];
-    if (visible) {
-      cls.push("sidebar-visible");
-    }
-    return cls.join(" ");
-  }
-
-  return {
-    view(vnode: m.Vnode<SidebarAttrs>) {
-      return m("aside", { class: classes(vnode.attrs.visible) }, [
-        m("nav", [
-          m("ul", [
-            m(SidebarItem, { name: "PHOTOS", route: "/photos" }),
-            m(SidebarItem, { name: "VIDEOS", route: "/videos" }),
-            m(SidebarItem, { name: "ALBUMS", route: "/albums" }),
-            m(SidebarItem, { name: "LISTINGS", route: "/listings" }),
-            m(SidebarItem, { name: "LIFE LIST", route: "/life-list" }),
-            m(SidebarItem, { name: "MAP", route: "/map" }),
-            m(SidebarItem, { name: "ABOUT", route: "/about" }),
-          ]),
-        ]),
-      ]);
-    },
-  };
+  return { view: viewSidebar };
 }

@@ -1,53 +1,53 @@
 import m from "mithril";
 import { broadcast, navigate } from "../../commons/events.ts";
 
+const BRAND_TEXT = "photos";
+
+function clickBurgerMenu(): void {
+  broadcast("click_burger_menu", {});
+}
+
+function viewBurgerMenu(): m.Children {
+  return m("a", { onclick: clickBurgerMenu }, m("span.burger", "Ξ"));
+}
+
 /*
  * The sidebar menu
  */
 function BurgerMenu() {
-  const onclick = (_: Event) => {
-    broadcast("click_burger_menu", {});
-  };
+  return { view: viewBurgerMenu };
+}
 
-  return {
-    view() {
-      return m("a", { onclick }, m("span.burger", "Ξ"));
-    },
-  };
+function viewHeaderBrandText(): m.Children {
+  return m("a", {
+    href: "#/",
+    // distinguishes this link from the sidebar "photos" link for
+    // assistive technology
+    "aria-label": "photos — home",
+    onclick: navigate("/"),
+  }, m("span.brand", BRAND_TEXT));
 }
 
 /*
  * The link to the homepage
  */
 function HeaderBrandText() {
-  const BRAND_TEXT = "photos";
+  return { view: viewHeaderBrandText };
+}
 
-  return {
-    view() {
-      return m("a", {
-        href: "#/",
-        // distinguishes this link from the sidebar "photos" link for
-        // assistive technology
-        "aria-label": "photos — home",
-        onclick: navigate("/"),
-      }, m("span.brand", BRAND_TEXT));
-    },
-  };
+function viewHeader(): m.Children {
+  return m("nav.header", { role: "navigation" }, [
+    m("ul", {
+      style:
+        "display: flex; align-items: baseline; padding-left: 0px !important;",
+    }, [
+      m("li.header-item", {}, m(BurgerMenu)),
+      m("li.header-item", {}, m(HeaderBrandText)),
+    ]),
+  ]);
 }
 
 /* */
 export function Header() {
-  return {
-    view() {
-      return m("nav.header", { role: "navigation" }, [
-        m("ul", {
-          style:
-            "display: flex; align-items: baseline; padding-left: 0px !important;",
-        }, [
-          m("li.header-item", {}, m(BurgerMenu)),
-          m("li.header-item", {}, m(HeaderBrandText)),
-        ]),
-      ]);
-    },
-  };
+  return { view: viewHeader };
 }

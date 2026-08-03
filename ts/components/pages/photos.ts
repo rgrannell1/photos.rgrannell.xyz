@@ -25,28 +25,28 @@ type PhotosPageAttrs = {
   visible: boolean;
 };
 
+function viewPhotosPage(vnode: m.Vnode<PhotosPageAttrs>): m.Children {
+  const { photoUrns, services, visible } = vnode.attrs;
+
+  const countText = countLabel(photoUrns.length, "photo");
+
+  const $md = m("section.photos-metadata", [
+    m("h1", "Photos"),
+    m("p.photo-album-count", countText),
+  ]);
+
+  return m("main", {
+    class: visible ? "page sidebar-visible" : "page",
+  }, [
+    $md,
+    m(PhotoGrid, {
+      total: photoUrns.length,
+      getPhotos: readPhotosByLimit.bind(null, services, photoUrns),
+    }),
+  ]);
+}
+
 /* */
 export function PhotosPage() {
-  return {
-    view(vnode: m.Vnode<PhotosPageAttrs>) {
-      const { photoUrns, services, visible } = vnode.attrs;
-
-      const countText = countLabel(photoUrns.length, "photo");
-
-      const $md = m("section.photos-metadata", [
-        m("h1", "Photos"),
-        m("p.photo-album-count", countText),
-      ]);
-
-      return m("main", {
-        class: visible ? "page sidebar-visible" : "page",
-      }, [
-        $md,
-        m(PhotoGrid, {
-          total: photoUrns.length,
-          getPhotos: readPhotosByLimit.bind(null, services, photoUrns),
-        }),
-      ]);
-    },
-  };
+  return { view: viewPhotosPage };
 }

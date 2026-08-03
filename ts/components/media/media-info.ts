@@ -26,99 +26,99 @@ type MediaComponentAttrs = {
   services: Services;
 };
 
+function viewDescription(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
+  const { media } = vnode.attrs;
+
+  const html = preprocessDescription(
+    media.description ?? media.summary ?? "",
+  );
+  if (html) {
+    return m("td", m.trust(html));
+  }
+
+  return m("td", "—");
+}
+
 /* */
 function Description() {
-  return {
-    view(vnode: m.Vnode<MediaComponentAttrs>) {
-      const { media } = vnode.attrs;
+  return { view: viewDescription };
+}
 
-      const html = preprocessDescription(
-        media.description ?? media.summary ?? "",
-      );
-      if (html) {
-        return m("td", m.trust(html));
-      }
+function viewRating(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
+  const { media, services } = vnode.attrs;
 
-      return m("td", "—");
-    },
-  };
+  const $rating = toThingLinks(services, [media.rating]);
+  return m("td", $rating.length > 0 ? $rating : "—");
 }
 
 /* */
 function Rating() {
-  return {
-    view(vnode: m.Vnode<MediaComponentAttrs>) {
-      const { media, services } = vnode.attrs;
+  return { view: viewRating };
+}
 
-      const $rating = toThingLinks(services, [media.rating]);
-      return m("td", $rating.length > 0 ? $rating : "—");
-    },
-  };
+function viewStyle(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
+  const { media, services } = vnode.attrs;
+
+  const $style = toThingLinks(services, [media.style]);
+  return m("td", $style.length > 0 ? $style : "—");
 }
 
 /* */
 function Style() {
-  return {
-    view(vnode: m.Vnode<MediaComponentAttrs>) {
-      const { media, services } = vnode.attrs;
+  return { view: viewStyle };
+}
 
-      const $style = toThingLinks(services, [media.style]);
-      return m("td", $style.length > 0 ? $style : "—");
-    },
-  };
+function viewSubject(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
+  const { media, services } = vnode.attrs;
+
+  const $subject = toThingLinks(services, arrayify(media.subject));
+  return m("td", $subject.length > 0 ? $subject : "—");
 }
 
 /* */
 function Subject() {
-  return {
-    view(vnode: m.Vnode<MediaComponentAttrs>) {
-      const { media, services } = vnode.attrs;
+  return { view: viewSubject };
+}
 
-      const $subject = toThingLinks(services, arrayify(media.subject));
-      return m("td", $subject.length > 0 ? $subject : "—");
-    },
-  };
+function viewMediaInfo(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
+  const { media, services } = vnode.attrs;
+
+  const infoItems = [];
+
+  if (media.description || media.summary) {
+    infoItems.push(m("tr", [
+      m(Heading, { text: "Description" }),
+      m(Description, { media, services }),
+    ]));
+  }
+
+  infoItems.push(
+    m("tr", [
+      m(Heading, { text: "Location" }),
+      m(MediaLocations, { location: media.location, services, mode: "geographic" }),
+    ]),
+    m("tr", [
+      m(Heading, { text: "Place Type" }),
+      m(MediaLocations, { location: media.location, services, mode: "feature" }),
+    ]),
+    m("tr", [
+      m(Heading, { text: "Rating" }),
+      m(Rating, { media, services }),
+    ]),
+    m("tr", [
+      m(Heading, { text: "Style" }),
+      m(Style, { media, services }),
+    ]),
+    m("tr", [
+      m(Heading, { text: "Subject" }),
+      m(Subject, { media, services }),
+    ]),
+  );
+
+  return m("table.metadata-table", infoItems);
 }
 
 /* */
 export function MediaInfo() {
-  return {
-    view(vnode: m.Vnode<MediaComponentAttrs>) {
-      const { media, services } = vnode.attrs;
-
-      const infoItems = [];
-
-      if (media.description || media.summary) {
-        infoItems.push(m("tr", [
-          m(Heading, { text: "Description" }),
-          m(Description, { media, services }),
-        ]));
-      }
-
-      infoItems.push(
-        m("tr", [
-          m(Heading, { text: "Location" }),
-          m(MediaLocations, { location: media.location, services, mode: "geographic" }),
-        ]),
-        m("tr", [
-          m(Heading, { text: "Place Type" }),
-          m(MediaLocations, { location: media.location, services, mode: "feature" }),
-        ]),
-        m("tr", [
-          m(Heading, { text: "Rating" }),
-          m(Rating, { media, services }),
-        ]),
-        m("tr", [
-          m(Heading, { text: "Style" }),
-          m(Style, { media, services }),
-        ]),
-        m("tr", [
-          m(Heading, { text: "Subject" }),
-          m(Subject, { media, services }),
-        ]),
-      );
-
-      return m("table.metadata-table", infoItems);
-    },
-  };
+  return { view: viewMediaInfo };
 }

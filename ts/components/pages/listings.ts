@@ -11,11 +11,15 @@ type CategoryDef = {
   route: string;
 };
 
-const CATEGORIES: CategoryDef[] = LISTED_TYPES.map(([type, label]) => ({
-  type,
-  label,
-  route: `/listing/${type}`,
-}));
+function toCategoryDef([type, label]: [string, string]): CategoryDef {
+  return {
+    type,
+    label,
+    route: `/listing/${type}`,
+  };
+}
+
+const CATEGORIES: CategoryDef[] = LISTED_TYPES.map(toCategoryDef);
 
 /*
  * Render a single category album card with its best-rated cover photo.
@@ -54,24 +58,22 @@ type ListingsPageAttrs = {
   services: Services;
 };
 
+function viewListingsPage(vnode: m.Vnode<ListingsPageAttrs>): m.Children {
+  const { visible, services } = vnode.attrs;
+
+  const $albums = CATEGORIES.flatMap(drawCategoryAlbum.bind(null, services));
+
+  return m("main", {
+    class: visible ? "page sidebar-visible" : "page",
+  }, [
+    m("section.album-metadata", [
+      m("h1.albums-header", { "data-testid": "listings-heading" }, "Listings"),
+      m("p", "Collections of all places and animals"),
+    ]),
+    m("section.album-container", { "data-testid": "listings-grid" }, $albums),
+  ]);
+}
+
 export function ListingsPage() {
-  return {
-    view(vnode: m.Vnode<ListingsPageAttrs>) {
-      const { visible, services } = vnode.attrs;
-
-      const $albums = CATEGORIES.flatMap((category, idx) =>
-        drawCategoryAlbum(services, category, idx)
-      );
-
-      return m("main", {
-        class: visible ? "page sidebar-visible" : "page",
-      }, [
-        m("section.album-metadata", [
-          m("h1.albums-header", { "data-testid": "listings-heading" }, "Listings"),
-          m("p", "Collections of all places and animals"),
-        ]),
-        m("section.album-container", { "data-testid": "listings-grid" }, $albums),
-      ]);
-    },
-  };
+  return { view: viewListingsPage };
 }

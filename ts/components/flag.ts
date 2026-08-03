@@ -71,19 +71,21 @@ function spriteUrl(): string {
   return (window as AppWindow).flagSprite;
 }
 
+function ignoreError(): void {}
+
+function warmFlagSprite(): void {
+  fetch(spriteUrl(), { priority: "low" }).catch(ignoreError);
+}
+
 /*
  * Warm the flag sprite into the browser and service-worker cache without
  * blocking boot. Runs in idle time; failures are ignored.
  */
 export function prefetchFlags(): void {
-  const warm = () => {
-    fetch(spriteUrl(), { priority: "low" }).catch(() => {});
-  };
-
   if ("requestIdleCallback" in window) {
-    requestIdleCallback(warm, { timeout: 4000 });
+    requestIdleCallback(warmFlagSprite, { timeout: 4000 });
   } else {
-    setTimeout(warm, 1000);
+    setTimeout(warmFlagSprite, 1000);
   }
 }
 
@@ -92,25 +94,25 @@ export type FlagIconAttrs = {
   emoji: string;
 };
 
+function viewFlagIcon(vnode: m.Vnode<FlagIconAttrs>): m.Children {
+  const { name, emoji } = vnode.attrs;
+  const asset = customFlagAsset(name);
+
+  if (asset) {
+    return m(
+      "svg.flag-icon",
+      { role: "img", "aria-label": `${name} flag` },
+      m("use", { href: `${spriteUrl()}#${asset}` }),
+    );
+  }
+
+  return emoji;
+}
+
 /*
  * Render a place flag: a sprite tile for mapped names, else the emoji.
  * The svg element is sized by CSS, so the layout never shifts on load.
  */
 export function FlagIcon() {
-  return {
-    view(vnode: m.Vnode<FlagIconAttrs>) {
-      const { name, emoji } = vnode.attrs;
-      const asset = customFlagAsset(name);
-
-      if (asset) {
-        return m(
-          "svg.flag-icon",
-          { role: "img", "aria-label": `${name} flag` },
-          m("use", { href: `${spriteUrl()}#${asset}` }),
-        );
-      }
-
-      return emoji;
-    },
-  };
+  return { view: viewFlagIcon };
 }

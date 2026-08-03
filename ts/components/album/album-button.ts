@@ -6,23 +6,23 @@ type AlbumButtonAttrs = {
   id: string;
 };
 
+function viewAlbumButton(vnode: m.Vnode<AlbumButtonAttrs>): m.Children {
+  const { id } = vnode.attrs;
+
+  // the hidden miscellaneous album has no album page to link to
+  if (id === MISCELLANEOUS_ALBUM_ID) {
+    return null;
+  }
+
+  return m("a", {
+    href: `#/album/${id}`,
+    onclick: navigate(`/album/${id}`),
+  }, "[album]");
+}
+
 /*
  * Links back to the last album page
  */
 export function AlbumButton() {
-  return {
-    view(vnode: m.Vnode<AlbumButtonAttrs>) {
-      const { id } = vnode.attrs;
-
-      // the hidden miscellaneous album has no album page to link to
-      if (id === MISCELLANEOUS_ALBUM_ID) {
-        return null;
-      }
-
-      return m("a", {
-        href: `#/album/${id}`,
-        onclick: navigate(`/album/${id}`),
-      }, "[album]");
-    },
-  };
+  return { view: viewAlbumButton };
 }

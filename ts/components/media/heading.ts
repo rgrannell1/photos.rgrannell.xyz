@@ -8,12 +8,12 @@ type HeadingAttrs = {
   text: string;
 };
 
+function viewHeading(vnode: m.Vnode<HeadingAttrs>): m.Children {
+  const { text } = vnode.attrs;
+  return m("th.exif-heading", text);
+}
+
 /* */
 export function Heading() {
-  return {
-    view(vnode: m.Vnode<HeadingAttrs>) {
-      const { text } = vnode.attrs;
-      return m("th.exif-heading", text);
-    },
-  };
+  return { view: viewHeading };
 }

@@ -31,24 +31,27 @@ function buttonText(state: { sharing: boolean }) {
   return state.sharing ? "[sharing...]" : "[share]";
 }
 
+function viewAlbumShareButton(
+  localState: { sharing: boolean },
+  vnode: m.Vnode<AlbumShareButtonAttrs>,
+): m.Children {
+  const { url, name } = vnode.attrs;
+
+  // without the share API (desktop), link straight to the sharephoto domain
+  if (!navigator.share) {
+    return m("a.photo-share-button", { href: url, rel: "noreferrer" }, "[share]");
+  }
+
+  return m("button.photo-share-button", {
+    onclick: shareAlbum.bind(null, localState, url, name),
+  }, buttonText(localState));
+}
+
 /* */
 export function AlbumShareButton() {
   const localState = {
     sharing: false,
   };
 
-  return {
-    view(vnode: m.Vnode<AlbumShareButtonAttrs>) {
-      const { url, name } = vnode.attrs;
-
-      // without the share API (desktop), link straight to the sharephoto domain
-      if (!navigator.share) {
-        return m("a.photo-share-button", { href: url, rel: "noreferrer" }, "[share]");
-      }
-
-      return m("button.photo-share-button", {
-        onclick: shareAlbum.bind(null, localState, url, name),
-      }, buttonText(localState));
-    },
-  };
+  return { view: viewAlbumShareButton.bind(null, localState) };
 }
