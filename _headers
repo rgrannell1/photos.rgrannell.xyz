@@ -40,6 +40,6 @@
 /vendor/*
   Cache-Control: public, max-age=31536000, immutable
 
-# not content-hashed: cache for a week only
+# fonts are immutable: a changed font must ship under a new filename
 /fonts/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=31536000, immutable
