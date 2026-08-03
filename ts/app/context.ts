@@ -1,15 +1,10 @@
 /*
  * Application context: the state and its services, shared by the shell,
- * listeners, and route entries. The app mounts immediately; the tribble
- * stream fills the database in the background with throttled redraws.
+ * listeners, and route entries. Pure construction only — the tribble load
+ * and other effects are started from the entry point (ts/index.ts).
  */
 
-import m from "mithril";
-import { completeLoad, initState } from "../state.ts";
+import { initState } from "../state.ts";
 
 export const state = initState();
 export const services = state.services;
-
-completeLoad(state, () => m.redraw()).catch((err) => {
-  console.error("tribble load failed", err);
-});
