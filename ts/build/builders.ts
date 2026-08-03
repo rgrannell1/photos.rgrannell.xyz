@@ -22,6 +22,9 @@ async function computeSourceHash(): Promise<string> {
     contents.push(await Deno.readTextFile(entry.path));
   }
   contents.push(await Deno.readTextFile("css/style.css"));
+  // the worker template must bust the cache too: a changed worker with an
+  // unchanged cache name keeps serving stale entries
+  contents.push(await Deno.readTextFile("sw.mustache.js"));
 
   const encoded = new TextEncoder().encode(contents.join(""));
   const hashBuffer = await crypto.subtle.digest("SHA-256", encoded);
