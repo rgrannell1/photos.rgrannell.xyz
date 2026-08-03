@@ -17,7 +17,10 @@ import {
   ALBUMS_BANNER_URL,
   BANNER_MOSAIC_DIMENSION,
 } from "../../constants/banners.ts";
-import { createBatchRenderer } from "../media/batch-render.ts";
+import {
+  type BatchRenderer,
+  createBatchRenderer,
+} from "../media/batch-render.ts";
 import { BEFORE_TIMES_FINAL_YEAR } from "../../constants/display.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 
@@ -117,6 +120,53 @@ function drawYearGroup(
   return $components;
 }
 
+function scheduleListBatch(
+  batch: BatchRenderer,
+  vnode: m.VnodeDOM<AlbumsListAttrs>,
+): void {
+  batch.schedule(vnode.attrs.albums.length);
+}
+
+function resetListBatchOnFilterChange(
+  batch: BatchRenderer,
+  vnode: m.Vnode<AlbumsListAttrs>,
+  old: m.VnodeDOM<AlbumsListAttrs>,
+): void {
+  const filterChanged =
+    vnode.attrs.selectedCountry !== old.attrs.selectedCountry ||
+    vnode.attrs.selectedTrip !== old.attrs.selectedTrip;
+  if (filterChanged) {
+    batch.reset();
+  }
+}
+
+function viewAlbumsList(
+  batch: BatchRenderer,
+  vnode: m.Vnode<AlbumsListAttrs>,
+): m.Children {
+  const { albums, services, selectedCountry, selectedTrip } = vnode.attrs;
+
+  const showRecap = selectedCountry === undefined &&
+    selectedTrip === undefined;
+
+  const groups = groupAlbumsByYear(
+    albums.slice(0, batch.count()),
+    services,
+    showRecap,
+    new Date().getFullYear(),
+  );
+
+  const $albumComponents: m.Children[] = [];
+  let startIdx = 0;
+
+  for (const group of groups) {
+    $albumComponents.push(...drawYearGroup(group, services, startIdx));
+    startIdx += group.albums.length;
+  }
+
+  return m("section.album-container", $albumComponents);
+}
+
 /*
  * Construct a list of albums
  */
@@ -124,46 +174,10 @@ function AlbumsList() {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
 
   return {
-    oncreate(vnode: m.VnodeDOM<AlbumsListAttrs>) {
-      batch.schedule(vnode.attrs.albums.length);
-    },
-    onbeforeupdate(
-      vnode: m.Vnode<AlbumsListAttrs>,
-      old: m.VnodeDOM<AlbumsListAttrs>,
-    ) {
-      const filterChanged =
-        vnode.attrs.selectedCountry !== old.attrs.selectedCountry ||
-        vnode.attrs.selectedTrip !== old.attrs.selectedTrip;
-      if (filterChanged) {
-        batch.reset();
-      }
-    },
-    onupdate(vnode: m.VnodeDOM<AlbumsListAttrs>) {
-      batch.schedule(vnode.attrs.albums.length);
-    },
-    view(vnode: m.Vnode<AlbumsListAttrs>) {
-      const { albums, services, selectedCountry, selectedTrip } = vnode.attrs;
-
-      const showRecap = selectedCountry === undefined &&
-        selectedTrip === undefined;
-
-      const groups = groupAlbumsByYear(
-        albums.slice(0, batch.count()),
-        services,
-        showRecap,
-        new Date().getFullYear(),
-      );
-
-      const $albumComponents: m.Children[] = [];
-      let startIdx = 0;
-
-      for (const group of groups) {
-        $albumComponents.push(...drawYearGroup(group, services, startIdx));
-        startIdx += group.albums.length;
-      }
-
-      return m("section.album-container", $albumComponents);
-    },
+    oncreate: scheduleListBatch.bind(null, batch),
+    onbeforeupdate: resetListBatchOnFilterChange.bind(null, batch),
+    onupdate: scheduleListBatch.bind(null, batch),
+    view: viewAlbumsList.bind(null, batch),
   };
 }
 
@@ -225,7 +239,7 @@ function settleYearScroll(
   if (!heading) {
     spy.passes += 1;
     if (spy.passes < YEAR_SCROLL_MAX_PASSES) {
-      setTimeout(() => settleYearScroll(year, spy), 120);
+      setTimeout(settleYearScroll.bind(null, year, spy), 120);
     }
     return;
   }
@@ -235,7 +249,7 @@ function settleYearScroll(
 
   if (window.scrollY !== spy.previousY && spy.passes < YEAR_SCROLL_MAX_PASSES) {
     spy.previousY = window.scrollY;
-    setTimeout(() => settleYearScroll(year, spy), 120);
+    setTimeout(settleYearScroll.bind(null, year, spy), 120);
   }
 }
 
@@ -244,92 +258,118 @@ function scrollToYear(year: string): void {
   settleYearScroll(year, { passes: 0, previousY: -1 });
 }
 
+type AlbumsPageState = {
+  // pending requestAnimationFrame id for scroll tracking, or null when idle
+  scrollFrame: number | null;
+  // year most recently written to the URL, to avoid redundant replaceState calls
+  reflectedYear: string | null;
+};
+
+/* Reflect the year at the top of the viewport into the URL, once per frame. */
+function reflectCurrentYear(pageState: AlbumsPageState): void {
+  pageState.scrollFrame = null;
+  const year = currentYearInView();
+  if (year && year !== pageState.reflectedYear) {
+    pageState.reflectedYear = year;
+    reflectYearInUrl(year);
+  }
+}
+
+function trackScroll(pageState: AlbumsPageState): void {
+  if (pageState.scrollFrame !== null) {
+    return;
+  }
+  pageState.scrollFrame = requestAnimationFrame(
+    reflectCurrentYear.bind(null, pageState),
+  );
+}
+
+function initAlbumsPage(): void {
+  setTitle("Albums - photos");
+}
+
+function mountAlbumsPage(onScroll: () => void): void {
+  const initialYear = m.route.param("year");
+  if (initialYear) {
+    requestAnimationFrame(scrollToYear.bind(null, initialYear));
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+}
+
+function unmountAlbumsPage(
+  pageState: AlbumsPageState,
+  onScroll: () => void,
+): void {
+  window.removeEventListener("scroll", onScroll);
+  if (pageState.scrollFrame !== null) {
+    cancelAnimationFrame(pageState.scrollFrame);
+  }
+}
+
+function selectCountry(slug: string | undefined): void {
+  broadcast("navigate", { route: slug ? `/albums/${slug}` : "/albums" });
+}
+
+function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
+  const { albums, services, visible, selectedCountry, selectedTrip } =
+    vnode.attrs;
+
+  const tripName = selectedTrip
+    ? services.readTripName(selectedTrip) ?? "Trip"
+    : undefined;
+
+  const $tripShare = selectedTrip
+    ? m("section.trip-share", [
+      m("h2.trip-title", tripName),
+      m(AlbumShareButton, {
+        url: sharePhotoUrl(`trip/${asUrn(selectedTrip).id}`),
+        name: tripName as string,
+      }),
+    ])
+    : null;
+
+  const $md = m("section.album-metadata", [
+    m(AlbumStats),
+    m(CountryFilter, {
+      services,
+      selectedCountry,
+      onSelect: selectCountry,
+    }),
+    $tripShare,
+  ]);
+
+  const bannerSrc = ALBUMS_BANNER_URL;
+  const bannerDataUrl = encodeBitmapDataURL(
+    ALBUMS_BANNER_MOSAIC,
+    BANNER_MOSAIC_DIMENSION,
+    BANNER_MOSAIC_DIMENSION,
+  );
+
+  return m("main", {
+    class: visible ? "page sidebar-visible" : "page",
+  }, [
+    m(AlbumBanner, {
+      src: bannerSrc,
+      alt: "Albums",
+      thumbnailDataUrl: bannerDataUrl,
+    }),
+    $md,
+    m(AlbumsList, { albums, services, visible, selectedCountry, selectedTrip }),
+  ]);
+}
+
 /* */
 export function AlbumsPage() {
-  let scrollFrame: number | null = null;
-  let reflectedYear: string | null = null;
-
-  const onScroll = () => {
-    if (scrollFrame !== null) {
-      return;
-    }
-    scrollFrame = requestAnimationFrame(() => {
-      scrollFrame = null;
-      const year = currentYearInView();
-      if (year && year !== reflectedYear) {
-        reflectedYear = year;
-        reflectYearInUrl(year);
-      }
-    });
+  const pageState: AlbumsPageState = {
+    scrollFrame: null,
+    reflectedYear: null,
   };
+  const onScroll = trackScroll.bind(null, pageState);
 
   return {
-    oninit() {
-      setTitle("Albums - photos");
-    },
-    oncreate() {
-      const initialYear = m.route.param("year");
-      if (initialYear) {
-        requestAnimationFrame(() => scrollToYear(initialYear));
-      }
-      window.addEventListener("scroll", onScroll, { passive: true });
-    },
-    onremove() {
-      window.removeEventListener("scroll", onScroll);
-      if (scrollFrame !== null) {
-        cancelAnimationFrame(scrollFrame);
-      }
-    },
-    view(vnode: m.Vnode<AlbumsPageAttrs>) {
-      const { albums, services, visible, selectedCountry, selectedTrip } =
-        vnode.attrs;
-
-      const onSelectCountry = (slug: string | undefined) => {
-        broadcast("navigate", { route: slug ? `/albums/${slug}` : "/albums" });
-      };
-
-      const tripName = selectedTrip
-        ? services.readTripName(selectedTrip) ?? "Trip"
-        : undefined;
-
-      const $tripShare = selectedTrip
-        ? m("section.trip-share", [
-          m("h2.trip-title", tripName),
-          m(AlbumShareButton, {
-            url: sharePhotoUrl(`trip/${asUrn(selectedTrip).id}`),
-            name: tripName as string,
-          }),
-        ])
-        : null;
-
-      const $md = m("section.album-metadata", [
-        m(AlbumStats),
-        m(CountryFilter, {
-          services,
-          selectedCountry,
-          onSelect: onSelectCountry,
-        }),
-        $tripShare,
-      ]);
-
-      const bannerSrc = ALBUMS_BANNER_URL;
-      const bannerDataUrl = encodeBitmapDataURL(
-        ALBUMS_BANNER_MOSAIC,
-        BANNER_MOSAIC_DIMENSION,
-        BANNER_MOSAIC_DIMENSION,
-      );
-
-      return m("main", {
-        class: visible ? "page sidebar-visible" : "page",
-      }, [
-        m(AlbumBanner, {
-          src: bannerSrc,
-          alt: "Albums",
-          thumbnailDataUrl: bannerDataUrl,
-        }),
-        $md,
-        m(AlbumsList, { albums, services, visible, selectedCountry, selectedTrip }),
-      ]);
-    },
+    oninit: initAlbumsPage,
+    oncreate: mountAlbumsPage.bind(null, onScroll),
+    onremove: unmountAlbumsPage.bind(null, pageState, onScroll),
+    view: viewAlbumsPage,
   };
 }
