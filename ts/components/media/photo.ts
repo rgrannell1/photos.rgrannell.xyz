@@ -118,6 +118,7 @@ export function BannerImagePair() {
           src: thumbnailUrl,
           alt,
           loading: "eager",
+          fetchpriority: "high",
           onload: loadImage,
         }),
       ]);

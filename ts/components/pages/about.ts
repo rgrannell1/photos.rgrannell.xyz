@@ -4,7 +4,11 @@ import { setTitle } from "../../services/window.ts";
 import { navigate } from "../../commons/events.ts";
 import { AlbumBanner } from "../album/album-banner.ts";
 import { encodeBitmapDataURL } from "../../services/photos.ts";
-import { ABOUT_BANNER_MOSAIC, BANNER_MOSAIC_DIMENSION } from "../../constants/banners.ts";
+import {
+  ABOUT_BANNER_MOSAIC,
+  ABOUT_BANNER_URL,
+  BANNER_MOSAIC_DIMENSION,
+} from "../../constants/banners.ts";
 
 type AboutPageAttrs = {
   visible: boolean;
@@ -31,7 +35,7 @@ export function AboutPage() {
         "(though hit-or-miss at other styles of photography). I built this website to " +
         "share the things";
 
-      const bannerSrc = "https://photos-cdn.rgrannell.xyz/6744c802d1.webp";
+      const bannerSrc = ABOUT_BANNER_URL;
       const bannerDataUrl = encodeBitmapDataURL(
         ABOUT_BANNER_MOSAIC,
         BANNER_MOSAIC_DIMENSION,

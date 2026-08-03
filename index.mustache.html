@@ -16,6 +16,7 @@
     <!-- Preloads -->
     <link rel="preload" href="/dist/js/app.{{ buildId }}.js" as="script" crossorigin>
     <link rel="preload" href="/manifest/tribbles.{{ publicationId }}.txt" as="fetch" crossorigin>
+    <link rel="preload" fetchpriority="high" href="{{{ albumsBanner }}}" as="image">
     <link rel="preload" href="/fonts/GolosText-Regular.woff2" as="font" type="font/woff2" crossorigin>
     {{#prefetched}}
     <link rel="preload" fetchpriority="high" href="{{{.}}}" as="image">

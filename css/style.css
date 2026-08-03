@@ -41,7 +41,9 @@
   font-family: "Golos Text";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/GolosText-Regular.woff2") format("woff2");
+  /* absolute path: must match the preload URL in index.html, or the font
+     downloads twice and chains behind the CSS */
+  src: url("/fonts/GolosText-Regular.woff2") format("woff2");
   font-display: swap;
 }
 

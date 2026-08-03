@@ -8,11 +8,9 @@ const CACHEABLE_RESOURCES = [
   "/favicon.ico",
   "/dist/css/style.{{ buildId }}.css",
   "/dist/js/app.{{ buildId }}.js",
-  // /albums hero (photo:548d64a50a) — matches ts/components/pages/albums.ts.
-  // update by hand if the photo is re-encoded
-  "https://photos-cdn.rgrannell.xyz/d6cf0f7cc7.webp",
-  // /about hero (photo:dd378e3a76) — matches ts/components/pages/about.ts
-  "https://photos-cdn.rgrannell.xyz/6744c802d1.webp",
+  // the two page-hero banners, from ts/constants/banners.ts
+  "{{{ albumsBanner }}}",
+  "{{{ aboutBanner }}}",
 ];
 
 const HOMEPAGE_THUMBNAILS = new Set();

@@ -12,6 +12,7 @@ import {
   tdb,
 } from "./loaders.ts";
 import { minify as cssoMinify } from "npm:csso";
+import { ABOUT_BANNER_URL, ALBUMS_BANNER_URL } from "../constants/banners.ts";
 import { TribbleStringifier } from "@rgrannell1/tribbledb";
 
 async function computeSourceHash(): Promise<string> {
@@ -55,6 +56,8 @@ export async function buildSW() {
       prefetched: findPrefetchTargets(),
       homepageThumbnails: JSON.stringify(findHomepageThumbnails()),
       buildId,
+      albumsBanner: ALBUMS_BANNER_URL,
+      aboutBanner: ABOUT_BANNER_URL,
     }),
   );
 }
@@ -169,6 +172,7 @@ export async function buildHTML(flagSprite: string) {
       ),
       cdnUrl: env.photos_url,
       buildId,
+      albumsBanner: ALBUMS_BANNER_URL,
       publicationId: env.publication_id,
       siteUrl,
       siteHostname,
