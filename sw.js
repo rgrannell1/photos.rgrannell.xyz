@@ -38,7 +38,15 @@ self.addEventListener("install", function (event) {
         CACHEABLE_RESOURCES.map(function (resource) {
           const request = new Request(resource, { mode: "no-cors" });
           return fetch(request)
-            .then((response) => cache.put(request, response))
+            .then(function (response) {
+              if (!isStorable(response)) {
+                console.error(
+                  `skipping pre-cache of ${resource}: status ${response.status}`,
+                );
+                return;
+              }
+              return cache.put(request, response);
+            })
             .catch((err) => {
               console.error(`failed to pre-cache ${resource}`, err);
             });
@@ -131,57 +139,85 @@ const INDEX_CACHE_KEY = "/";
  * asset references match the cache: install pre-caches this build's assets,
  * and old caches are only deleted when a new worker activates online.
  */
-function serveNavigation(request) {
-  return fetch(request)
-    .then(function (networkResponse) {
-      if (!networkResponse.ok) {
-        return networkResponse;
-      }
+/*
+ * Store a response copy without ever affecting the served response: cache
+ * write failures (quota, private browsing, partial responses) only log.
+ * The write runs under waitUntil so the worker is not torn down mid-put.
+ */
+function storeInCache(event, cacheKey, copy) {
+  const write = caches.open(CACHE_NAME)
+    .then(function (cache) {
+      return cache.put(cacheKey, copy);
+    })
+    .catch(function (err) {
+      console.error(`failed to cache ${event.request.url}`, err);
+    });
+  event.waitUntil(write);
+}
 
-      const copy = networkResponse.clone();
-      return caches.open(CACHE_NAME).then(function (cache) {
-        return cache.put(INDEX_CACHE_KEY, copy);
-      }).then(function () {
-        return networkResponse;
-      });
+/*
+ * Network-first navigation: online loads stay fresh (build id, inlined
+ * stats), and the last good copy boots the app offline. The copy's baked
+ * asset references match the cache: install pre-caches this build's assets,
+ * and old caches are only deleted when a new worker activates online.
+ */
+function serveNavigation(event) {
+  return fetch(event.request)
+    .then(function (networkResponse) {
+      if (networkResponse.ok) {
+        storeInCache(event, INDEX_CACHE_KEY, networkResponse.clone());
+      }
+      return networkResponse;
     })
     .catch(function () {
-      return caches.match(INDEX_CACHE_KEY).then(function (cached) {
-        return cached ?? Response.error();
+      return caches.match(INDEX_CACHE_KEY)
+        .catch(function () {
+          return undefined;
+        })
+        .then(function (cached) {
+          return cached ?? Response.error();
+        });
+    });
+}
+
+/*
+ * A response worth caching: ok, or opaque (status 0) from a no-cors CDN
+ * fetch. Error responses (e.g a 404 during a deploy) must not poison the
+ * cache for the whole build.
+ */
+function isStorable(networkResponse) {
+  return networkResponse.ok || networkResponse.type === "opaque";
+}
+
+/*
+ * Cache-first assets. Cache trouble must never block serving: a failed
+ * cache read falls through to the network, and a failed cache write still
+ * returns the fetched response.
+ */
+function serveAsset(event) {
+  return caches.match(event.request)
+    .catch(function () {
+      return undefined;
+    })
+    .then(function (cached) {
+      if (cached) {
+        return cached;
+      }
+
+      return fetch(event.request).then(function (networkResponse) {
+        if (isCacheable(event.request.url) && isStorable(networkResponse)) {
+          storeInCache(event, event.request, networkResponse.clone());
+        }
+        return networkResponse;
       });
     });
 }
 
 self.addEventListener("fetch", function (event) {
-  const url = event.request.url;
-
   if (event.request.mode === "navigate") {
-    event.respondWith(serveNavigation(event.request));
+    event.respondWith(serveNavigation(event));
     return;
   }
 
-  event.respondWith(
-    caches.match(event.request).then(function (response) {
-      if (response) {
-        return response;
-      }
-
-      return fetch(event.request)
-        .then(function (networkResponse) {
-          // -- just return the result directly
-          if (!isCacheable(url)) {
-            return networkResponse;
-          }
-
-          // -- cache thumbnails and artifacts
-          return caches.open(CACHE_NAME).then(function (cache) {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          });
-        }).catch((err) => {
-          console.error(err);
-          return Response.error();
-        });
-    }),
-  );
+  event.respondWith(serveAsset(event));
 });
