@@ -18,6 +18,7 @@ import {
   BANNER_MOSAIC_DIMENSION,
 } from "../../constants/banners.ts";
 import { createBatchRenderer } from "../media/batch-render.ts";
+import { BEFORE_TIMES_FINAL_YEAR } from "../../constants/display.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 
 type AlbumsListAttrs = {
@@ -82,7 +83,11 @@ function drawYearGroup(
   if (group.showHeading) {
     $components.push(m(
       "h2.album-year-heading",
-      { key: `year-${group.year}`, id: `year-${group.year}` },
+      {
+        key: `year-${group.year}`,
+        id: `year-${group.year}`,
+        class: group.year <= BEFORE_TIMES_FINAL_YEAR ? "before-times" : undefined,
+      },
       group.year.toString(),
     ));
 

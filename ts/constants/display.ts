@@ -5,6 +5,9 @@
 
 import { KnownTypes } from "./data.ts";
 
+// last year of the "before times": this and older year headings render dimmed
+export const BEFORE_TIMES_FINAL_YEAR = 2015;
+
 /*
  * Types browsable from the listings index, with their plural display labels.
  * The constants-drift test checks every subject type in the published data

@@ -448,6 +448,11 @@ button:disabled {
   margin-bottom: 0.1em;
 }
 
+/* the "before times": older years fade back */
+.album-year-heading.before-times {
+  color: var(--secondary-text-color);
+}
+
 /* optional per-year markdown recap, rendered under the year heading */
 .year-recap {
   grid-column: 1 / -1;
