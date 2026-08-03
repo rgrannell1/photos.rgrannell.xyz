@@ -75,10 +75,6 @@ a {
   cursor: pointer;
 }
 
-main a {
-  background-color: var(--link-background-color);
-}
-
 li {
   list-style: square;
 }
