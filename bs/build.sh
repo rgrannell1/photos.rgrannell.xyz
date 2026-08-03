@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
 set -e
 
-rm -f dist/css/*
 rm -f dist/js/*
 
 publication_id="$(jq -r .publication_id ./manifest/env.json)"

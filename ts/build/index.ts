@@ -10,14 +10,14 @@ import {
 
 console.log("Building");
 
-// the sprite name feeds the HTML template, so it builds first
+// the sprite name and minified css feed the HTML template, so they build first
 const flagSprite = await buildFlagSprite();
+const css = await buildCSS();
 
 await Promise.all([
   buildTS(),
   buildSW(),
-  buildCSS(),
-  buildHTML(flagSprite),
+  buildHTML(flagSprite, css),
   buildExpandedTribbles(),
 ]);
 

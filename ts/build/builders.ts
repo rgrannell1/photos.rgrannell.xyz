@@ -88,21 +88,18 @@ export async function buildTS() {
 }
 
 /*
- * Build CSS with esbuild
+ * Minify the CSS for inlining into index.html. Inline CSS removes the
+ * render-blocking stylesheet request; index.html is never cached, so the
+ * inlined copy can not go stale.
  */
-export async function buildCSS() {
+export async function buildCSS(): Promise<string> {
   console.info("🌐 Rendering css");
 
   const result = await esbuild.transform(
-    await Deno.readTextFile(`css/style.css`),
+    await Deno.readTextFile("css/style.css"),
     { loader: "css" },
   );
-  const minified = cssoMinify(result.code).css;
-
-  await Deno.writeTextFile(
-    `dist/css/style.${buildId}.css`,
-    minified,
-  );
+  return cssoMinify(result.code).css;
 }
 
 /*
@@ -154,7 +151,7 @@ export async function buildFlagSprite(): Promise<string> {
 /*
  * Build HTML
  */
-export async function buildHTML(flagSprite: string) {
+export async function buildHTML(flagSprite: string, css: string) {
   console.info("🌐 Rendering index.html");
 
   const siteUrl = env.photos_url.replace("photos-cdn.", "photos.");
@@ -166,6 +163,7 @@ export async function buildHTML(flagSprite: string) {
       stats: statsText,
       env: envText,
       flagSprite,
+      css,
       prefetched: findPrefetchTargets(),
       homepageThumbnails: JSON.stringify(
         findHomepageThumbnails().map((url) => url.replace(/\.webp$/, "")),

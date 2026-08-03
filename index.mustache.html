@@ -33,12 +33,12 @@
     <meta property="og:site_name" content="{{ siteHostname }}">
 
     <link rel="manifest" href="/site.webmanifest">
-    <link rel="shortcut icon" type="image/png" href="/icons/favicon-32x32.png"/ defer="" fetchpriorty="low">
+    <link rel="shortcut icon" type="image/png" href="/icons/favicon-32x32.png" fetchpriority="low">
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0056b3">
 
-    <link rel="stylesheet" href="/dist/css/style.{{ buildId }}.css" as="style">
+    <style>{{{ css }}}</style>
     <link
       rel="preload"
       href="/vendor/leaflet@1.9.4/leaflet.css"

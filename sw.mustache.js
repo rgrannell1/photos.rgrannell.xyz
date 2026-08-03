@@ -6,7 +6,6 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-16x16.png",
   "/icons/favicon-32x32.png",
   "/favicon.ico",
-  "/dist/css/style.{{ buildId }}.css",
   "/dist/js/app.{{ buildId }}.js",
   // the two page-hero banners, from ts/constants/banners.ts
   "{{{ albumsBanner }}}",
@@ -80,13 +79,6 @@ function isCacheable(url) {
    */
 
   if (url.includes("js/app")) {
-    return true;
-  }
-
-  /*
-   * We can cache CSS files, since they also have build-IDs
-   */
-  if (url.includes("css/style")) {
     return true;
   }
 

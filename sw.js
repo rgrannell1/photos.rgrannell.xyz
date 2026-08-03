@@ -1,4 +1,4 @@
-const CACHE_NAME = "sw-cache-3c098cd996-40538b9b";
+const CACHE_NAME = "sw-cache-3c098cd996-fd183513";
 const CACHEABLE_RESOURCES = [
   "/icons/android-chrome-192x192.png",
   "/icons/android-chrome-512x512.png",
@@ -6,8 +6,7 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-16x16.png",
   "/icons/favicon-32x32.png",
   "/favicon.ico",
-  "/dist/css/style.3c098cd996-40538b9b.css",
-  "/dist/js/app.3c098cd996-40538b9b.js",
+  "/dist/js/app.3c098cd996-fd183513.js",
   // the two page-hero banners, from ts/constants/banners.ts
   "https://photos-cdn.rgrannell.xyz/d6cf0f7cc7.webp",
   "https://photos-cdn.rgrannell.xyz/6744c802d1.webp",
@@ -80,13 +79,6 @@ function isCacheable(url) {
    */
 
   if (url.includes("js/app")) {
-    return true;
-  }
-
-  /*
-   * We can cache CSS files, since they also have build-IDs
-   */
-  if (url.includes("css/style")) {
     return true;
   }
 
