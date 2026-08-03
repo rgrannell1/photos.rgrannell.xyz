@@ -8,7 +8,7 @@ import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import type { Photo as PhotoType } from "../../types.ts";
 import { Photo } from "./photo.ts";
 import { loadingMode } from "../../services/photos.ts";
-import { type BatchRenderer, createBatchRenderer } from "./batch-render.ts";
+import { type BatchRenderer, createBatchRenderer } from "../../services/batch-render.ts";
 
 type PhotoGridAttrs = {
   // total photos available; batches are scheduled until all are rendered

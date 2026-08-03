@@ -5,7 +5,7 @@
  */
 
 import m from "mithril";
-import type { AppWindow } from "../types.ts";
+import { spriteUrl } from "../services/flags.ts";
 
 // Place name to vexilla flag asset; see /flags
 const CUSTOM_FLAGS: Record<string, string> = {
@@ -62,31 +62,6 @@ export function customFlagAsset(name: string | undefined): string | undefined {
     return CUSTOM_FLAGS[name];
   }
   return undefined;
-}
-
-/*
- * The build-hashed sprite URL, baked into index.html.
- */
-function spriteUrl(): string {
-  return (window as AppWindow).flagSprite;
-}
-
-function ignoreError(): void {}
-
-function warmFlagSprite(): void {
-  fetch(spriteUrl(), { priority: "low" }).catch(ignoreError);
-}
-
-/*
- * Warm the flag sprite into the browser and service-worker cache without
- * blocking boot. Runs in idle time; failures are ignored.
- */
-export function prefetchFlags(): void {
-  if ("requestIdleCallback" in window) {
-    requestIdleCallback(warmFlagSprite, { timeout: 4000 });
-  } else {
-    setTimeout(warmFlagSprite, 1000);
-  }
 }
 
 export type FlagIconAttrs = {

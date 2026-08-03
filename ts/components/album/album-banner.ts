@@ -1,9 +1,6 @@
 import m from "mithril";
 import { BannerImagePair } from "../media/photo.ts";
-import { supportsCSSScrollDrivenAnimations } from "../../services/feature-detection.ts";
-
-const PARALLAX_RATE = 0.15;
-const PARALLAX_MAX_PX = 80;
+import { mountParallax } from "../../services/parallax.ts";
 
 export type AlbumBannerAttrs = {
   src: string;
@@ -12,69 +9,21 @@ export type AlbumBannerAttrs = {
 };
 
 type BannerState = {
-  // pending requestAnimationFrame id for the JS parallax fallback, or null when idle
-  rafId: number | null;
-  // bound scroll handler, kept so onremove can unregister it
-  scrollListener: () => void;
+  // teardown for the parallax effect, set on mount
+  teardownParallax: (() => void) | null;
 };
-
-function noop(): void {}
-
-/* Offset the banner image against the scroll position. */
-function applyParallax(img: HTMLImageElement): void {
-  const offsetY = Math.min(
-    window.scrollY * PARALLAX_RATE,
-    PARALLAX_MAX_PX,
-  );
-  img.style.transform = `translateY(${offsetY}px)`;
-}
-
-function stepParallax(bannerState: BannerState, img: HTMLImageElement): void {
-  applyParallax(img);
-  bannerState.rafId = null;
-}
-
-function trackBannerScroll(
-  bannerState: BannerState,
-  img: HTMLImageElement,
-): void {
-  if (bannerState.rafId !== null) {
-    return;
-  }
-  bannerState.rafId = requestAnimationFrame(
-    stepParallax.bind(null, bannerState, img),
-  );
-}
 
 function mountAlbumBanner(
   bannerState: BannerState,
   vnode: m.Vnode<AlbumBannerAttrs>,
 ): void {
-  if (supportsCSSScrollDrivenAnimations()) {
-    console.log("[parallax] using CSS scroll-driven animations");
-    const section = (vnode as m.VnodeDOM<AlbumBannerAttrs>).dom as HTMLElement;
-    section.classList.add("parallax-css");
-    return;
-  }
-
-  console.log("[parallax] CSS scroll-driven animations unsupported, using JS fallback");
-
-  const section = (vnode as m.VnodeDOM<AlbumBannerAttrs>).dom;
-  const img = section.querySelector(
-    ".album-banner-image",
-  ) as HTMLImageElement | null;
-  if (!img) return;
-
-  bannerState.scrollListener = trackBannerScroll.bind(null, bannerState, img);
-  window.addEventListener("scroll", bannerState.scrollListener, {
-    passive: true,
-  });
-  applyParallax(img);
+  const section = (vnode as m.VnodeDOM<AlbumBannerAttrs>).dom as HTMLElement;
+  bannerState.teardownParallax = mountParallax(section);
 }
 
 function unmountAlbumBanner(bannerState: BannerState): void {
-  window.removeEventListener("scroll", bannerState.scrollListener);
-  if (bannerState.rafId !== null) cancelAnimationFrame(bannerState.rafId);
+  bannerState.teardownParallax?.();
+  bannerState.teardownParallax = null;
 }
 
 function viewAlbumBanner(vnode: m.Vnode<AlbumBannerAttrs>): m.Children {
@@ -95,8 +44,7 @@ function viewAlbumBanner(vnode: m.Vnode<AlbumBannerAttrs>): m.Children {
 
 export function AlbumBanner(): m.Component<AlbumBannerAttrs> {
   const bannerState: BannerState = {
-    rafId: null,
-    scrollListener: noop,
+    teardownParallax: null,
   };
 
   return {

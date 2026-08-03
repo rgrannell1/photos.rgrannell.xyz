@@ -4,7 +4,7 @@ import { drawVideoItem } from "../media/video.ts";
 import {
   type BatchRenderer,
   createBatchRenderer,
-} from "../media/batch-render.ts";
+} from "../../services/batch-render.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import { countLabel } from "../../commons/strings.ts";
 

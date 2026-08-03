@@ -8,7 +8,7 @@ import { bindGlobalListeners } from "./app/listeners.ts";
 import { routes } from "./app/routes.ts";
 import { state } from "./app/context.ts";
 import { completeLoad } from "./state.ts";
-import { prefetchFlags } from "./components/flag.ts";
+import { prefetchFlags } from "./services/flags.ts";
 
 bindGlobalListeners();
 

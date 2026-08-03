@@ -1,26 +1,12 @@
 import m from "mithril";
 import { block } from "../../commons/events.ts";
+import { hidePlaceholderOnLoad } from "../../services/images.ts";
+import { openUrl } from "../../services/window.ts";
 import { formatId } from "../../models/urn.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../constants/layout.ts";
 import { encodeBitmapDataURL } from "../../services/photos.ts";
 import type { Photo as PhotoType } from "../../types.ts";
-
-/*
- * Swap out the placeholder when a photo loads
- */
-function loadImage(event: Event) {
-  const $placeholder = (event.target as HTMLElement)?.parentNode
-    ?.querySelector(
-      ".thumbnail-placeholder",
-    ) as HTMLElement;
-
-  if (!$placeholder) {
-    return;
-  }
-
-  $placeholder.style.zIndex = "-1";
-}
 
 type ImageAttrs = {
   thumbnailUrl: string;
@@ -35,7 +21,7 @@ function viewImage(vnode: m.Vnode<ImageAttrs>): m.Children {
   const { thumbnailUrl, loading, onclick, width, height, alt } = vnode.attrs;
 
   return m("img.thumbnail-image", {
-    onload: loadImage,
+    onload: hidePlaceholderOnLoad,
     src: thumbnailUrl,
     loading: loading,
     alt: alt ?? "",
@@ -116,7 +102,7 @@ function viewBannerImagePair(
       alt,
       loading: "eager",
       fetchpriority: "high",
-      onload: loadImage,
+      onload: hidePlaceholderOnLoad,
     }),
   ]);
 }
@@ -193,9 +179,6 @@ export type PhotoAttrs = {
   interactive?: boolean;
 };
 
-function openFullImage(fullImage: string): void {
-  window.location.href = fullImage;
-}
 
 function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
   const { photo, loading, interactive } = vnode.attrs;
@@ -217,7 +200,7 @@ function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
     loading,
     width: PHOTO_WIDTH,
     height: PHOTO_HEIGHT,
-    onclick: openFullImage.bind(null, fullImage),
+    onclick: openUrl.bind(null, fullImage),
   });
 
   return m(

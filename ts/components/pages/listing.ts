@@ -12,7 +12,7 @@ import { ThingCaption } from "../thing/thing-caption.ts";
 import {
   type BatchRenderer,
   createBatchRenderer,
-} from "../media/batch-render.ts";
+} from "../../services/batch-render.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 
 /*

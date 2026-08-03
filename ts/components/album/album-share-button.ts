@@ -1,4 +1,5 @@
 import m from "mithril";
+import { canNativeShare, nativeShare } from "../../services/window.ts";
 
 type AlbumShareButtonAttrs = {
   url: string;
@@ -7,28 +8,17 @@ type AlbumShareButtonAttrs = {
 
 /* */
 async function shareAlbum(
-  state: { sharing: boolean },
+  localState: { sharing: boolean },
   url: string,
   name: string,
-) {
-  state.sharing = true;
-
-  try {
-    await navigator.share({
-      title: `${name} - ${window.location.hostname}`,
-      url,
-    });
-  } catch (err) {
-    console.error("Error sharing:", err);
-  } finally {
-    state.sharing = false;
-    m.redraw();
-  }
+): Promise<void> {
+  await nativeShare(localState, url, name);
+  m.redraw();
 }
 
 /* */
-function buttonText(state: { sharing: boolean }) {
-  return state.sharing ? "[sharing...]" : "[share]";
+function buttonText(localState: { sharing: boolean }) {
+  return localState.sharing ? "[sharing...]" : "[share]";
 }
 
 function viewAlbumShareButton(
@@ -38,7 +28,7 @@ function viewAlbumShareButton(
   const { url, name } = vnode.attrs;
 
   // without the share API (desktop), link straight to the sharephoto domain
-  if (!navigator.share) {
+  if (!canNativeShare()) {
     return m("a.photo-share-button", { href: url, rel: "noreferrer" }, "[share]");
   }
 

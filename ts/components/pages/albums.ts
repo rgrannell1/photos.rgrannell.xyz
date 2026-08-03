@@ -8,6 +8,7 @@ import type { Album, Services } from "../../types.ts";
 import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
 import { AlbumCard } from "../album/album-card.ts";
 import { setTitle, sharePhotoUrl } from "../../services/window.ts";
+import { mountYearScroll } from "../../services/year-scroll.ts";
 import { broadcast } from "../../commons/events.ts";
 import { albumYear } from "../../services/albums.ts";
 import { setify } from "../../commons/sets.ts";
@@ -20,7 +21,7 @@ import {
 import {
   type BatchRenderer,
   createBatchRenderer,
-} from "../media/batch-render.ts";
+} from "../../services/batch-render.ts";
 import { BEFORE_TIMES_FINAL_YEAR } from "../../constants/display.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 
@@ -189,121 +190,22 @@ type AlbumsPageAttrs = {
   selectedTrip: string | undefined;
 };
 
-// px below the viewport top at which a year heading becomes the "current" year
-const YEAR_SCROLL_OFFSET = 140;
-
-/*
- * The year whose heading currently sits at the top of the viewport, or null
- * (e.g. while the banner is still in view). Headings are in document order
- * (newest year first), so the last one above the offset wins.
- */
-function currentYearInView(): string | null {
-  const headings = Array.from(
-    document.querySelectorAll<HTMLElement>(".album-year-heading"),
-  );
-
-  let current: string | null = null;
-  for (const heading of headings) {
-    if (heading.getBoundingClientRect().top > YEAR_SCROLL_OFFSET) {
-      break;
-    }
-    current = heading.textContent?.trim() ?? null;
-  }
-  return current;
-}
-
-/*
- * Reflect the year in the URL as a `year` param without triggering a re-render.
- * replaceState (rather than m.route.set) keeps the router's route and the scroll
- * position intact while making the URL shareable/bookmarkable to a year.
- */
-function reflectYearInUrl(year: string): void {
-  const base = m.route.get().split("?")[0];
-  history.replaceState(history.state, "", `#!${base}?year=${year}`);
-}
-
-// max correction passes for a deep-link scroll while lazy images settle
-const YEAR_SCROLL_MAX_PASSES = 20;
-
-/*
- * Keep the year heading at the top while album images above it load and grow
- * the layout — re-scroll until the required scroll position stops changing, or
- * we hit the pass cap. A missing heading retries within the same cap, since
- * batched rendering may not have reached that year yet.
- */
-function settleYearScroll(
-  year: string,
-  spy: { passes: number; previousY: number },
-): void {
-  const heading = document.getElementById(`year-${year}`);
-  if (!heading) {
-    spy.passes += 1;
-    if (spy.passes < YEAR_SCROLL_MAX_PASSES) {
-      setTimeout(settleYearScroll.bind(null, year, spy), 120);
-    }
-    return;
-  }
-
-  heading.scrollIntoView();
-  spy.passes += 1;
-
-  if (window.scrollY !== spy.previousY && spy.passes < YEAR_SCROLL_MAX_PASSES) {
-    spy.previousY = window.scrollY;
-    setTimeout(settleYearScroll.bind(null, year, spy), 120);
-  }
-}
-
-/* Scroll a year's heading to the top, for an initial ?year= deep link. */
-function scrollToYear(year: string): void {
-  settleYearScroll(year, { passes: 0, previousY: -1 });
-}
-
 type AlbumsPageState = {
-  // pending requestAnimationFrame id for scroll tracking, or null when idle
-  scrollFrame: number | null;
-  // year most recently written to the URL, to avoid redundant replaceState calls
-  reflectedYear: string | null;
+  // teardown for the year-scroll tracker, set on mount
+  teardownYearScroll: (() => void) | null;
 };
-
-/* Reflect the year at the top of the viewport into the URL, once per frame. */
-function reflectCurrentYear(pageState: AlbumsPageState): void {
-  pageState.scrollFrame = null;
-  const year = currentYearInView();
-  if (year && year !== pageState.reflectedYear) {
-    pageState.reflectedYear = year;
-    reflectYearInUrl(year);
-  }
-}
-
-function trackScroll(pageState: AlbumsPageState): void {
-  if (pageState.scrollFrame !== null) {
-    return;
-  }
-  pageState.scrollFrame = requestAnimationFrame(
-    reflectCurrentYear.bind(null, pageState),
-  );
-}
 
 function initAlbumsPage(): void {
   setTitle("Albums - photos");
 }
 
-function mountAlbumsPage(onScroll: () => void): void {
-  const initialYear = m.route.param("year");
-  if (initialYear) {
-    requestAnimationFrame(scrollToYear.bind(null, initialYear));
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
+function mountAlbumsPage(pageState: AlbumsPageState): void {
+  pageState.teardownYearScroll = mountYearScroll(m.route.param("year"));
 }
 
-function unmountAlbumsPage(
-  pageState: AlbumsPageState,
-  onScroll: () => void,
-): void {
-  window.removeEventListener("scroll", onScroll);
-  if (pageState.scrollFrame !== null) {
-    cancelAnimationFrame(pageState.scrollFrame);
-  }
+function unmountAlbumsPage(pageState: AlbumsPageState): void {
+  pageState.teardownYearScroll?.();
+  pageState.teardownYearScroll = null;
 }
 
 function selectCountry(slug: string | undefined): void {
@@ -361,15 +263,13 @@ function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
 /* */
 export function AlbumsPage() {
   const pageState: AlbumsPageState = {
-    scrollFrame: null,
-    reflectedYear: null,
+    teardownYearScroll: null,
   };
-  const onScroll = trackScroll.bind(null, pageState);
 
   return {
     oninit: initAlbumsPage,
-    oncreate: mountAlbumsPage.bind(null, onScroll),
-    onremove: unmountAlbumsPage.bind(null, pageState, onScroll),
+    oncreate: mountAlbumsPage.bind(null, pageState),
+    onremove: unmountAlbumsPage.bind(null, pageState),
     view: viewAlbumsPage,
   };
 }
