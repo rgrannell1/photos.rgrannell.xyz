@@ -37,7 +37,7 @@ async function countriesOf(parent) {
 
 /** @type {AlbumExpectation[]} */
 const EXPECTED_ALBUMS = [
-  { title: "Wicklow", date: "9 May 2026", count: "17 photos", country: "Ireland flag" },
+  { title: "Wicklow", date: "9 May 2026", count: "18 photos", country: "Ireland flag" },
 ];
 
 /** @type {import('../types').BrowserCheck} */
