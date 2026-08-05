@@ -2,7 +2,7 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Video } from "../types.ts";
 import { readAlbum, readVideos } from "./readers.ts";
-import { albumUrn } from "../models/urn.ts";
+import { albumUrn } from "../commons/urn.ts";
 import { KnownTypes } from "../constants/data.ts";
 
 /*

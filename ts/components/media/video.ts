@@ -1,7 +1,7 @@
 import m from "mithril";
 import type { Video } from "../../types.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
-import { formatId } from "../../models/urn.ts";
+import { formatId } from "../../commons/urn.ts";
 
 export type VideoAttrs = {
   preload: string;

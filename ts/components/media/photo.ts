@@ -2,7 +2,7 @@ import m from "mithril";
 import { block } from "../../commons/events.ts";
 import { hidePlaceholderOnLoad } from "../../services/images.ts";
 import { openUrl } from "../../services/window.ts";
-import { formatId } from "../../models/urn.ts";
+import { formatId } from "../../commons/urn.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../constants/layout.ts";
 import { encodeBitmapDataURL } from "../../services/photos.ts";

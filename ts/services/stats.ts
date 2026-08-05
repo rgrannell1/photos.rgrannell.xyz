@@ -5,7 +5,7 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { countryUrn } from "../models/urn.ts";
+import { countryUrn } from "../commons/urn.ts";
 import { KnownRelations, KnownTypes } from "../constants/data.ts";
 
 export type SubjectStats = {

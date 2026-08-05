@@ -6,7 +6,7 @@ import { readThingsByPhotoIds } from "./photos.ts";
 import { readPhotos } from "./readers.ts";
 import { KnownRelations, KnownTypes } from "../constants/data.ts";
 import { readAlbums, readPlace, readTransfers, readVideos } from "./readers.ts";
-import { albumUrn } from "../models/urn.ts";
+import { albumUrn } from "../commons/urn.ts";
 import { hasValidCoordinates } from "./places.ts";
 
 /*

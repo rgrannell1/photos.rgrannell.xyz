@@ -8,7 +8,7 @@ import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { setify } from "../commons/sets.ts";
-import { albumUrn, countryUrn, photoUrn, thingUrn, tripUrn, videoUrn } from "../models/urn.ts";
+import { albumUrn, countryUrn, photoUrn, thingUrn, tripUrn, videoUrn } from "../commons/urn.ts";
 import { AlbumsPage } from "../components/pages/albums.ts";
 import { AboutPage } from "../components/pages/about.ts";
 import { VideosPage } from "../components/pages/videos.ts";

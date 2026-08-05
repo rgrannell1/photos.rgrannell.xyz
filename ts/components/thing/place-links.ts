@@ -1,5 +1,5 @@
 import m from "mithril";
-import { urnToUrl } from "../../models/urn.ts";
+import { urnToUrl } from "../../commons/urn.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { navigate } from "../../commons/events.ts";
 import { isACountry } from "../../types.ts";

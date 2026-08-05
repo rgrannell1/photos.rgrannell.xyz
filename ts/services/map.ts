@@ -12,7 +12,7 @@ import type {
 } from "leaflet";
 import type { TripPolyline } from "./albums.ts";
 import type { GeocodedPlaceWithCover } from "./places.ts";
-import { urnToUrl } from "../models/urn.ts";
+import { urnToUrl } from "../commons/urn.ts";
 
 type LeafletLib = typeof import("leaflet");
 
