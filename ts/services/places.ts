@@ -1,7 +1,10 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Country, Place } from "../types.ts";
 import { KnownRelations, KnownTypes } from "../constants/data.ts";
+import { one } from "../commons/arrays.ts";
+import { readThings } from "../commons/things.ts";
 import { readCountries, readPlaces } from "./readers.ts";
 import { readThingCovers } from "./photos.ts";
 
@@ -75,5 +78,21 @@ export function readAllCountries(tdb: TribbleDB): Country[] {
 
   return readCountries(tdb, ids).sort((countryA, countryB) => {
     return countryA.name.localeCompare(countryB.name);
+  });
+}
+
+/*
+ * Read countries as raw things for the country listing page.
+ */
+export function readAllCountryThings(tdb: TribbleDB): TripleObject[] {
+  const ids = new Set(tdb.search({
+    source: { type: KnownTypes.PLACE },
+    relation: KnownRelations.FLAG,
+  }).sources());
+
+  return readThings(tdb, ids).sort((countryA, countryB) => {
+    const firstName = one(countryA.name) ?? "";
+    const secondName = one(countryB.name) ?? "";
+    return firstName.localeCompare(secondName);
   });
 }

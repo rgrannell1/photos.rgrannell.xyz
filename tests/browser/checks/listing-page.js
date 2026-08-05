@@ -4,13 +4,14 @@
 const { BASE_URL } = require("../helpers");
 
 /**
- * @typedef {{ type: string, title: string }} ListingExpectation
+ * @typedef {{ type: string, title: string, hasDetails: boolean }} ListingExpectation
  */
 
 /** @type {ListingExpectation[]} */
 const EXPECTED_LISTINGS = [
-  { type: "bird",   title: "Birds"   },
-  { type: "mammal", title: "Mammals" },
+  { type: "bird", title: "Birds", hasDetails: true },
+  { type: "mammal", title: "Mammals", hasDetails: true },
+  { type: "country", title: "Countries", hasDetails: false },
 ];
 
 const trimmedText = (page, selector) =>
@@ -35,9 +36,11 @@ module.exports = {
       const cardCount = await page.$$eval(cardSelector, (els) => els.length);
       tst.ok(cardCount > 0, `listing/${expected.type} shows ${cardCount} cards`);
 
-      const detailsText = await trimmedText(page, "[data-testid='listing-details']");
-      const detailsMsg = `listing/${expected.type} has non-empty details`;
-      tst.ok(detailsText && detailsText.length > 0, detailsMsg);
+      if (expected.hasDetails) {
+        const detailsText = await trimmedText(page, "[data-testid='listing-details']");
+        const detailsMsg = `listing/${expected.type} has non-empty details`;
+        tst.ok(detailsText && detailsText.length > 0, detailsMsg);
+      }
     }
   },
 };

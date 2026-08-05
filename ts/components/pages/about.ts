@@ -57,10 +57,8 @@ function viewAboutPage(vnode: m.Vnode<AboutPageAttrs>): m.Children {
         m("a", {
           href: "/#/thing/rating:4",
           onclick: navigate(`/thing/rating:4`),
-        }, [
-          " I found beautiful in this world.",
-          " It's also, from one angle, a journal of the my life.",
-        ]),
+        }, " I found beautiful in this world."),
+        " It's also, from one angle, a journal of the my life.",
       ),
       m("h2", "Can I use the photos on this site?"),
       m(

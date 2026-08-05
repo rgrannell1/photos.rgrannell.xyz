@@ -21,6 +21,7 @@ import { ListingsPage } from "../components/pages/listings.ts";
 import { ChecklistPage } from "../components/pages/checklist.ts";
 import { ThingPage } from "../components/pages/thing.ts";
 import { MapPage } from "../components/pages/map.ts";
+import { COUNTRY_LISTING_TYPE } from "../constants/display.ts";
 import type { GeocodedPlaceWithCover } from "../services/places.ts";
 import type { TripPolyline } from "../services/albums.ts";
 import { services, state } from "./context.ts";
@@ -277,7 +278,9 @@ export const listingEntry = pageEntry({
     }
 
     const filter = m.route.param("filter") as string | undefined;
-    const things = services.readNamedTypeThings(focus.type);
+    const things = focus.type === COUNTRY_LISTING_TYPE
+      ? services.readAllCountryThings()
+      : services.readNamedTypeThings(focus.type);
 
     return {
       attrs: {

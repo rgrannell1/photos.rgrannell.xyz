@@ -46,6 +46,7 @@ import {
   readThing,
 } from "../commons/things.ts";
 import {
+  readAllCountryThings,
   readAllCountries,
   readGeocodedPlacesWithCovers,
 } from "./places.ts";
@@ -59,6 +60,7 @@ export const SERVICE_READERS = {
   readFeatures,
   readUnescos,
   readCountries,
+  readAllCountryThings,
   readAllCountries,
   readThingCover,
   readThingCovers,

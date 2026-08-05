@@ -1,7 +1,7 @@
 import m from "mithril";
 import { KnownTypes } from "../../constants/data.ts";
 import { NonListableTypes } from "../../constants/display.ts";
-import { capitalise } from "../../commons/strings.ts";
+import { capitalise, pluralise } from "../../commons/strings.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { broadcast, navigate } from "../../commons/events.ts";
 import type { Services } from "../../types.ts";
@@ -268,7 +268,7 @@ function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
     : things;
 
   const listing = services.readThing(`urn:ró:listing:${type}`);
-  const label = (one(listing?.name) as string) ?? capitalise(type);
+  const label = (one(listing?.name) as string) ?? capitalise(pluralise(type));
 
   const $md = [
     m(ListingTitle, { type, label }),

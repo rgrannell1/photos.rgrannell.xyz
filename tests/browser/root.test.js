@@ -13,6 +13,7 @@ const checks = [
   require("./checks/listings"),
   require("./checks/photo-page"),
   require("./checks/listing-page"),
+  require("./checks/about-page"),
 ];
 
 for (const check of checks) {

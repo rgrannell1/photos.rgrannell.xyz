@@ -8,6 +8,9 @@ import { KnownTypes } from "./data.ts";
 // last year of the "before times": this and older year headings render dimmed
 export const BEFORE_TIMES_FINAL_YEAR = 2015;
 
+// virtual listing type for places that carry a country flag
+export const COUNTRY_LISTING_TYPE = "country";
+
 /*
  * The listings index is data-driven: mirror publishes one
  * urn:ró:listing:<type> entity per subject type, and the site renders
@@ -22,6 +25,7 @@ export const NonListableTypes = new Set([
   KnownTypes.CAMERA,
   KnownTypes.PLACE,
   KnownTypes.PLACE_FEATURE,
+  COUNTRY_LISTING_TYPE,
 ]);
 
 /*
@@ -38,6 +42,7 @@ export const HiddenPlaceFeatures = new Set<string>([
  * A few words have irregular plurals; store them here.
  */
 export const PLURALS = new Map<string, string>([
+  [COUNTRY_LISTING_TYPE, "Countries"],
   ["place_feature", "Place Features"],
   ["spacecraft", "Spacecraft"],
 ]);
