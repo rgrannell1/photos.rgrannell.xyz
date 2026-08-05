@@ -12,6 +12,11 @@
 /sw.js
   Cache-Control: public, max-age=0, must-revalidate
 
+# build metadata must always describe the active deployment
+/version
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+
 # publication-id in the filename busts the cache on change
 /manifest/tribbles.*
   Cache-Control: public, max-age=31536000, immutable

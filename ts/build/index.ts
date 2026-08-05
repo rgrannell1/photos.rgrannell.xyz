@@ -6,6 +6,7 @@ import {
   buildHTML,
   buildSW,
   buildTS,
+  buildVersion,
 } from "./builders.ts";
 
 console.log("Building");
@@ -19,6 +20,7 @@ await Promise.all([
   buildSW(),
   buildHTML(flagSprite, css),
   buildExpandedTribbles(),
+  buildVersion(),
 ]);
 
 esbuild.stop();

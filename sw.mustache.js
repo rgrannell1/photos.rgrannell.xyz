@@ -214,6 +214,12 @@ function serveAsset(event) {
 }
 
 self.addEventListener("fetch", function (event) {
+  const requestUrl = new URL(event.request.url);
+  if (requestUrl.pathname === "/version") {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   if (event.request.mode === "navigate") {
     event.respondWith(serveNavigation(event));
     return;

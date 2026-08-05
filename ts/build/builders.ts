@@ -33,6 +33,14 @@ async function computeSourceHash(): Promise<string> {
 }
 
 const buildId = `${env.publication_id}-${await computeSourceHash()}`;
+const buildTime = new Date().toISOString();
+
+export async function buildVersion() {
+  console.info("🌐 Rendering version");
+
+  const metadata = JSON.stringify({ version: buildId, buildTime }, null, 2);
+  await Deno.writeTextFile("version", `${metadata}\n`);
+}
 
 export async function buildExpandedTribbles() {
   console.info("🌐 Rendering expanded tribbles");
