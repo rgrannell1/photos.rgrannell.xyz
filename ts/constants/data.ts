@@ -97,15 +97,6 @@ export const PrunableEntityTypes = new Set<string>([
   KnownTypes.BOAT,
 ]);
 
-// species types displayed with binomial names and "seen in" listings
-export const BinomialTypes = new Set([
-  KnownTypes.BIRD,
-  KnownTypes.MAMMAL,
-  KnownTypes.REPTILE,
-  KnownTypes.AMPHIBIAN,
-  KnownTypes.FISH,
-]);
-
 /*
  * These relations should all expand to CDN urls
  */

@@ -14,7 +14,7 @@ import { AlbumCard } from "../album/album-card.ts";
 import { PhotoGrid } from "../media/photo-grid.ts";
 import { ThingList } from "../thing/thing-list.ts";
 import { setify, setOf } from "../../commons/sets.ts";
-import { BinomialTypes, KnownRelations } from "../../constants/data.ts";
+import { KnownRelations } from "../../constants/data.ts";
 import { ListingLink } from "../thing/listing-link.ts";
 import { ThingUrls } from "../thing/thing-urls.ts";
 import { HeartRain } from "../shell/love.ts";
@@ -136,7 +136,7 @@ function viewThingDetails(
     addSingleThingMetadata(metadata, vnode.attrs);
   }
 
-  if (BinomialTypes.has(asUrn(urn).type)) {
+  if (services.isBinomialType(asUrn(urn).type)) {
     const seenIn = seenInFor(vnode.attrs);
 
     if (seenIn.length > 0) {
@@ -316,7 +316,10 @@ function viewThingPage(vnode: m.Vnode<ThingPageAttrs>): m.Children {
     isOlm(urn) ? m(HeartRain) : null,
     m("section.thing-page", [
       m(ThingTitle, { urn, things }),
-      m(ThingSubtitle, { urn }),
+      m(ThingSubtitle, {
+        urn,
+        isBinomial: services.isBinomialType(asUrn(urn).type),
+      }),
       m("br"),
       m(ThingUrls, { things }),
       m(ThingDetails, { urn, things, services, visible }),

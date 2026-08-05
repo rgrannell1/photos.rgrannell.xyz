@@ -2,6 +2,7 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
+import { KnownTypes } from "../constants/data.ts";
 
 /*
  * Read a thing as an undifferentiated TripleObject
@@ -109,4 +110,23 @@ export function readNamedTypeThings<Parsed>(
 
       return first.localeCompare(second);
     });
+}
+
+/*
+ * Read the listing entities mirror publishes, sorted by display name.
+ * Each carries the type's plural label as its name.
+ */
+export function readListings(tdb: TribbleDB): TripleObject[] {
+  return readNamedTypeThings(tdb, KnownTypes.LISTING);
+}
+
+/*
+ * Does this type's listing entity carry the binomial flag?
+ */
+export function isBinomialType(tdb: TribbleDB, type: string): boolean {
+  const listing = tdb.search({
+    source: { type: KnownTypes.LISTING, id: type },
+  }).firstObject();
+
+  return one(listing?.binomial) === "true";
 }

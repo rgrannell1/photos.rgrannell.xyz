@@ -40,6 +40,8 @@ import {
   readThingCovers,
 } from "./photos.ts";
 import {
+  isBinomialType,
+  readListings,
   readNamedTypeThings,
   readThing,
 } from "../commons/things.ts";
@@ -81,4 +83,6 @@ export const SERVICE_READERS = {
   readWildBirdChecklist,
   readWildMammalChecklist,
   readNamedTypeThings,
+  readListings,
+  isBinomialType,
 };

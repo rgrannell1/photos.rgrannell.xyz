@@ -1,7 +1,7 @@
 import m from "mithril";
 import { KnownTypes } from "../../constants/data.ts";
 import { NonListableTypes } from "../../constants/display.ts";
-import { capitalise, pluralise } from "../../commons/strings.ts";
+import { capitalise } from "../../commons/strings.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { broadcast, navigate } from "../../commons/events.ts";
 import type { Services } from "../../types.ts";
@@ -204,17 +204,19 @@ function ListingDetails() {
   return { view: viewListingDetails };
 }
 
-function viewListingTitle(vnode: m.Vnode<{ type: string }>): m.Children {
-  const { type } = vnode.attrs;
+function viewListingTitle(
+  vnode: m.Vnode<{ type: string; label: string }>,
+): m.Children {
+  const { type, label } = vnode.attrs;
   return m(
     "h1.albums-header",
     { "data-testid": "listing-title", "data-listing-type": type },
-    `${capitalise(pluralise(type))}`,
+    label,
   );
 }
 
 /*
- * Display a pluralised title for the listing page,
+ * Display the listing entity's plural label as the page title,
  * e.g "Countries"
  */
 function ListingTitle() {
@@ -265,8 +267,11 @@ function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
     ? things.filter(hasBirdwatchUrl)
     : things;
 
+  const listing = services.readThing(`urn:ró:listing:${type}`);
+  const label = (one(listing?.name) as string) ?? capitalise(type);
+
   const $md = [
-    m(ListingTitle, { type }),
+    m(ListingTitle, { type, label }),
     m(ListingDetails, { type, services, filter, onToggleIreland }),
   ];
 

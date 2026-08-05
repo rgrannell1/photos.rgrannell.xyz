@@ -6,7 +6,6 @@
  */
 
 import { KnownRelations, KnownTypes } from "../ts/constants/data.ts";
-import { LISTED_TYPES, UNLISTED_SUBJECT_TYPES } from "../ts/constants/display.ts";
 
 // relations added client-side by semantic/derive.ts, absent from the manifest
 const DERIVED_RELATIONS = new Set<string>([
@@ -63,7 +62,7 @@ async function loadPublishedVocabulary() {
   return { relations, types, subjectTypes };
 }
 
-const { relations, types, subjectTypes } = await loadPublishedVocabulary();
+const { relations, types } = await loadPublishedVocabulary();
 
 Deno.test("every KnownRelations value exists in the data or is derived", () => {
   const testCases = Object.entries(KnownRelations) as [string, string][];
@@ -92,18 +91,5 @@ Deno.test("every KnownTypes value exists in the data", () => {
   }
 });
 
-Deno.test("every subject type in the data is listed or deliberately unlisted", () => {
-  const listed = new Set(LISTED_TYPES.map(([typeName]) => typeName));
-
-  const unreachable = [...subjectTypes].filter((typeName) =>
-    !listed.has(typeName) && !UNLISTED_SUBJECT_TYPES.has(typeName)
-  );
-
-  if (unreachable.length > 0) {
-    throw new Error(
-      `subject types unreachable from the listings index: ${
-        JSON.stringify(unreachable)
-      }`,
-    );
-  }
-});
+// listing coverage is mirror's responsibility: its audit fails when a
+// subject type has no listing entity and no exclusion

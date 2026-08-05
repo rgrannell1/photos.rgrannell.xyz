@@ -1,9 +1,11 @@
+import { asUrn } from "@rgrannell1/tribbledb";
+import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
+import { one } from "../../commons/arrays.ts";
 import { navigate } from "../../commons/events.ts";
 import type { Services } from "../../types.ts";
 import { PhotoAlbum } from "../album/photo-album.ts";
 import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
-import { LISTED_TYPES } from "../../constants/display.ts";
 
 type CategoryDef = {
   type: string;
@@ -11,15 +13,15 @@ type CategoryDef = {
   route: string;
 };
 
-function toCategoryDef([type, label]: [string, string]): CategoryDef {
+function toCategoryDef(listing: TripleObject): CategoryDef {
+  const type = asUrn(listing.id as string).id;
+
   return {
     type,
-    label,
+    label: one(listing.name) as string,
     route: `/listing/${type}`,
   };
 }
-
-const CATEGORIES: CategoryDef[] = LISTED_TYPES.map(toCategoryDef);
 
 /*
  * Render a single category album card with its best-rated cover photo.
@@ -61,7 +63,8 @@ type ListingsPageAttrs = {
 function viewListingsPage(vnode: m.Vnode<ListingsPageAttrs>): m.Children {
   const { visible, services } = vnode.attrs;
 
-  const $albums = CATEGORIES.flatMap(drawCategoryAlbum.bind(null, services));
+  const categories = services.readListings().map(toCategoryDef);
+  const $albums = categories.flatMap(drawCategoryAlbum.bind(null, services));
 
   return m("main", {
     class: visible ? "page sidebar-visible" : "page",

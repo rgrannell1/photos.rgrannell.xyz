@@ -2,7 +2,7 @@ import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
 import { binomial, capitalise, pluralise } from "../../commons/strings.ts";
-import { BinomialTypes, KnownTypes } from "../../constants/data.ts";
+import { KnownTypes } from "../../constants/data.ts";
 import { one } from "../../commons/arrays.ts";
 import { placeEmoji } from "../../services/emoji.ts";
 import { FlagIcon } from "../flag.ts";
@@ -66,10 +66,12 @@ export function ThingTitle() {
   };
 }
 
-function viewThingSubtitle(vnode: m.Vnode<{ urn: string }>): m.Children {
+function viewThingSubtitle(
+  vnode: m.Vnode<{ urn: string; isBinomial: boolean }>,
+): m.Children {
   const parsed = asUrn(vnode.attrs.urn);
 
-  return BinomialTypes.has(parsed.type) && parsed.id !== "*"
+  return vnode.attrs.isBinomial && parsed.id !== "*"
     ? m(
       "span",
       { class: `thing-binomial ${parsed.type}-binomial` },

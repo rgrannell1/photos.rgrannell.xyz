@@ -9,32 +9,10 @@ import { KnownTypes } from "./data.ts";
 export const BEFORE_TIMES_FINAL_YEAR = 2015;
 
 /*
- * Types browsable from the listings index, with their plural display labels.
- * The constants-drift test checks every subject type in the published data
- * is either listed here or deliberately excluded below.
+ * The listings index is data-driven: mirror publishes one
+ * urn:ró:listing:<type> entity per subject type, and the site renders
+ * every listing entity it receives. No type registry lives here.
  */
-export const LISTED_TYPES: [string, string][] = [
-  [KnownTypes.PLACE, "Places"],
-  [KnownTypes.PLACE_FEATURE, "Place Features"],
-  [KnownTypes.BIRD, "Birds"],
-  [KnownTypes.MAMMAL, "Mammals"],
-  [KnownTypes.REPTILE, "Reptiles"],
-  [KnownTypes.AMPHIBIAN, "Amphibians"],
-  [KnownTypes.FISH, "Fish"],
-  [KnownTypes.ARTHROPOD, "Arthropods"],
-  [KnownTypes.CTENOPHORE, "Ctenophores"],
-  [KnownTypes.PLANE, "Planes"],
-  [KnownTypes.TRAIN, "Trains"],
-  [KnownTypes.CAR, "Cars"],
-  [KnownTypes.HELICOPTER, "Helicopters"],
-  [KnownTypes.BOAT, "Boats"],
-  [KnownTypes.SPACECRAFT, "Spacecraft"],
-];
-
-// subject types deliberately absent from the listings index
-export const UNLISTED_SUBJECT_TYPES = new Set<string>([
-  KnownTypes.PERSON,
-]);
 
 /*
  * It does make sense to say "show every place photo",
