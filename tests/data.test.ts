@@ -10,6 +10,7 @@ import {
   readAllAlbums,
 } from "../ts/services/albums.ts";
 import { readCountries } from "../ts/services/readers.ts";
+import { readMammalStats } from "../ts/services/stats.ts";
 import { readThingCover } from "../ts/services/photos.ts";
 import { readGeocodedPlacesWithCovers } from "../ts/services/places.ts";
 import { KnownRelations, KnownTypes } from "../ts/constants/data.ts";
@@ -34,6 +35,22 @@ Deno.test("All countries are named and have a flag", () => {
   if (unnamed.length > 0) {
     throw new Error(
       `countries missing name or flag: ${JSON.stringify(unnamed)}`,
+    );
+  }
+});
+
+Deno.test("Mammal stats find wild species seen in Ireland", () => {
+  // Ireland is a place entity with a numeric id, not urn:ró:place:ireland.
+  // The stat must resolve Ireland from the data, or it reports 0 forever.
+  const { irishWildSpecies, wildSpecies } = readMammalStats(tdb);
+
+  if (wildSpecies === 0) {
+    throw new Error("no wild mammal species found in the data");
+  }
+
+  if (irishWildSpecies === 0) {
+    throw new Error(
+      "no Irish wild mammal species found, despite Irish mammal photos",
     );
   }
 });

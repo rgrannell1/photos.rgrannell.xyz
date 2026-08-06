@@ -5,7 +5,6 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { countryUrn } from "../commons/urn.ts";
 import { KnownRelations, KnownTypes } from "../constants/data.ts";
 
 export type SubjectStats = {
@@ -50,7 +49,17 @@ export function readBirdStats(tdb: TribbleDB): SubjectStats {
   };
 }
 
-const IRELAND_URN = countryUrn("ireland");
+// Countries are place entities with numeric ids, so Ireland's URN must be
+// resolved from the data by name. There is no urn:ró:place:ireland.
+const IRELAND_NAME = "Ireland";
+
+function findIrelandUrn(tdb: TribbleDB): string | undefined {
+  return tdb.search({
+    source: { type: KnownTypes.PLACE },
+    relation: KnownRelations.NAME,
+    target: IRELAND_NAME,
+  }).firstSource();
+}
 
 /*
  * Count wild, total, and Irish wild mammal species seen across all photos.
@@ -82,11 +91,14 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
   }
 
   // Photos with an Ireland location (transitive, so includes places within Ireland)
+  const irelandUrn = findIrelandUrn(tdb);
   const irelandPhotoUrns = new Set(
-    tdb.search({
-      relation: KnownRelations.LOCATION,
-      target: IRELAND_URN,
-    }).sources(),
+    irelandUrn
+      ? tdb.search({
+        relation: KnownRelations.LOCATION,
+        target: irelandUrn,
+      }).sources()
+      : [],
   );
 
   // Wild mammal species seen in Ireland
