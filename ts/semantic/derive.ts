@@ -6,6 +6,7 @@
 import { asUrn, type Triple } from "@rgrannell1/tribbledb";
 import { type TribbleDB } from "@rgrannell1/tribbledb/v2";
 
+import { one } from "../commons/arrays.ts";
 import { humanise } from "../commons/strings.ts";
 import {
   CDN_RELATIONS,
@@ -14,7 +15,6 @@ import {
   ENDPOINT,
   KnownRelations,
   KnownTypes,
-  PrunableEntityTypes,
   RelationSymmetries,
 } from "../constants/data.ts";
 
@@ -239,23 +239,6 @@ export function buildLocationTrees(
   return treeState;
 }
 
-// This should be in mirror, but for testing...
-export const HARD_CODED_TRIPLES: Triple[] = [
-  ["urn:ró:rating:%E2%AD%90", KnownRelations.NAME, "⭐"],
-  ["urn:ró:rating:%E2%AD%90%E2%AD%90", KnownRelations.NAME, "⭐⭐"],
-  ["urn:ró:rating:%E2%AD%90%E2%AD%90%E2%AD%90", KnownRelations.NAME, "⭐⭐⭐"],
-  [
-    "urn:ró:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90",
-    KnownRelations.NAME,
-    "⭐⭐⭐⭐",
-  ],
-  [
-    "urn:ró:rating:%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90%E2%AD%90",
-    KnownRelations.NAME,
-    "⭐⭐⭐⭐⭐",
-  ],
-];
-
 /*
  * Compose all triple modifiers together.
  *
@@ -339,6 +322,32 @@ function collectMediaReferencedUrns(tdb: TribbleDB): Set<string> {
 }
 
 /*
+ * Browseable "thing" entity types — wildlife, vehicles, places — read from the
+ * browseable flag mirror publishes on each listing entity. Entities of these
+ * types with no media reference are pruned at load; infrastructure types
+ * (photo, video, album, camera, geoname, transfer, rating, trip) never carry
+ * the flag, so they are never pruned.
+ */
+export function browseableEntityTypes(tdb: TribbleDB): Set<string> {
+  const types = new Set<string>();
+  const listings = tdb.search({ source: { type: KnownTypes.LISTING } })
+    .objects();
+
+  for (const listing of listings) {
+    if (one(listing.browseable) !== "true") {
+      continue;
+    }
+
+    const listingUrn = one(listing.id);
+    if (typeof listingUrn === "string") {
+      types.add(asUrn(listingUrn).id);
+    }
+  }
+
+  return types;
+}
+
+/*
  * Collect the base URNs of browseable entities that no photo or video
  * references. Query-string variants collapse to one base URN.
  */
@@ -346,7 +355,7 @@ function collectMedialessThings(tdb: TribbleDB): Set<string> {
   const referenced = collectMediaReferencedUrns(tdb);
   const medialess = new Set<string>();
 
-  for (const type of PrunableEntityTypes) {
+  for (const type of browseableEntityTypes(tdb)) {
     const entityUrns = tdb.search({ source: { type } }).sources();
 
     for (const urn of entityUrns) {

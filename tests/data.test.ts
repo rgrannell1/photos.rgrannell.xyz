@@ -12,11 +12,8 @@ import {
 import { readCountries } from "../ts/services/readers.ts";
 import { readThingCover } from "../ts/services/photos.ts";
 import { readGeocodedPlacesWithCovers } from "../ts/services/places.ts";
-import {
-  KnownRelations,
-  KnownTypes,
-  PrunableEntityTypes,
-} from "../ts/constants/data.ts";
+import { KnownRelations, KnownTypes } from "../ts/constants/data.ts";
+import { browseableEntityTypes } from "../ts/semantic/derive.ts";
 
 const tdb = await loadTribbles();
 
@@ -66,7 +63,7 @@ Deno.test("Browseable entities all have media after pruning", () => {
   // anywhere in the app (map markers, listings, links, thing pages).
   const orphans: string[] = [];
 
-  for (const type of PrunableEntityTypes) {
+  for (const type of browseableEntityTypes(tdb)) {
     for (const urn of tdb.search({ source: { type } }).sources()) {
       const { type: entityType, id } = asUrn(urn);
       const referencing = tdb.nodes({ type: entityType, id }).referencedBy();

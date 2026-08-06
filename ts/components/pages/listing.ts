@@ -1,6 +1,5 @@
 import m from "mithril";
 import { KnownTypes } from "../../constants/data.ts";
-import { NonListableTypes } from "../../constants/display.ts";
 import { capitalise, pluralise } from "../../commons/strings.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { broadcast, navigate } from "../../commons/events.ts";
@@ -17,13 +16,13 @@ import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 
 /*
  * Derive an optional inline badge for the listing card title.
- * Irish birds (those with a birdwatch URL) get the Ireland flag.
+ * Irish birds (those with the irish marker) get the Ireland flag.
  */
 function listingTitleExtra(
   thing: TripleObject,
   listingType: string,
 ): string | undefined {
-  if (listingType === KnownTypes.BIRD && thing.birdwatchUrl) {
+  if (listingType === KnownTypes.BIRD && one(thing.irish) === "true") {
     return "🇮🇪";
   }
   return undefined;
@@ -254,8 +253,8 @@ function toggleIrelandFilter(type: string, filter: string | undefined): void {
   });
 }
 
-function hasBirdwatchUrl(thing: TripleObject): boolean {
-  return Boolean(thing.birdwatchUrl);
+function isIrishThing(thing: TripleObject): boolean {
+  return one(thing.irish) === "true";
 }
 
 function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
@@ -264,7 +263,7 @@ function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
   const onToggleIreland = toggleIrelandFilter.bind(null, type, filter);
 
   const displayThings = (type === KnownTypes.BIRD && filter === "ireland")
-    ? things.filter(hasBirdwatchUrl)
+    ? things.filter(isIrishThing)
     : things;
 
   const listing = services.readThing(`urn:ró:listing:${type}`);
@@ -275,7 +274,8 @@ function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
     m(ListingDetails, { type, services, filter, onToggleIreland }),
   ];
 
-  if (!NonListableTypes.has(type)) {
+  // the published listable flag gates the "see all <type> photos" link
+  if (one(listing?.listable) === "true") {
     $md.push(
       m("section.album-metadata", [
         m(ListingThingsButton, { type }),

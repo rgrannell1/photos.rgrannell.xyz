@@ -2,6 +2,7 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
+import { capitalise, pluralise } from "../commons/strings.ts";
 import { KnownTypes } from "../constants/data.ts";
 
 /*
@@ -118,6 +119,19 @@ export function readNamedTypeThings<Parsed>(
  */
 export function readListings(tdb: TribbleDB): TripleObject[] {
   return readNamedTypeThings(tdb, KnownTypes.LISTING);
+}
+
+/*
+ * The published plural label for a type's listing entity, or a naive
+ * capitalised plural when no listing entity exists.
+ */
+export function listingLabel(tdb: TribbleDB, type: string): string {
+  const listing = tdb.search({
+    source: { type: KnownTypes.LISTING, id: type },
+  }).firstObject();
+
+  const label = one(listing?.name);
+  return typeof label === "string" ? label : capitalise(pluralise(type));
 }
 
 /*

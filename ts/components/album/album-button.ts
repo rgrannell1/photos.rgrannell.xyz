@@ -1,16 +1,29 @@
 import m from "mithril";
+import { one } from "../../commons/arrays.ts";
 import { navigate } from "../../commons/events.ts";
-import { MISCELLANEOUS_ALBUM_ID } from "../../constants/data.ts";
+import { KnownTypes } from "../../constants/data.ts";
+import { getTribbleDB } from "../../semantic/data.ts";
 
 type AlbumButtonAttrs = {
   id: string;
 };
 
+/*
+ * Mirror publishes hidden "true" for albums with no album page (the
+ * miscellaneous album); never link to those.
+ */
+function isHiddenAlbum(id: string): boolean {
+  const album = getTribbleDB().search({
+    source: { type: KnownTypes.ALBUM, id },
+  }).firstObject();
+
+  return one(album?.hidden) === "true";
+}
+
 function viewAlbumButton(vnode: m.Vnode<AlbumButtonAttrs>): m.Children {
   const { id } = vnode.attrs;
 
-  // the hidden miscellaneous album has no album page to link to
-  if (id === MISCELLANEOUS_ALBUM_ID) {
+  if (isHiddenAlbum(id)) {
     return null;
   }
 

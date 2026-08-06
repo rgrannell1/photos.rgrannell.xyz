@@ -6,16 +6,24 @@
 import m from "mithril";
 import { toThingLinks } from "../thing/thing-links.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { arrayify } from "../../commons/arrays.ts";
+import { arrayify, one } from "../../commons/arrays.ts";
 import { KnownTypes } from "../../constants/data.ts";
-import { HiddenPlaceFeatures } from "../../constants/display.ts";
+import { getTribbleDB } from "../../semantic/data.ts";
 import type { Services } from "../../types.ts";
 
-/* a place feature worth showing as a "place type" — excludes overly-generic
-   ones (country, continent) that every photo trivially has */
+/* a place feature worth showing as a "place type" — excludes those published
+   with the generic flag (country, continent) that every photo trivially has */
 export function isVisiblePlaceFeature(urn: string): boolean {
   const { type, id } = asUrn(urn);
-  return type === KnownTypes.PLACE_FEATURE && !HiddenPlaceFeatures.has(id);
+  if (type !== KnownTypes.PLACE_FEATURE) {
+    return false;
+  }
+
+  const feature = getTribbleDB().search({
+    source: { type: KnownTypes.PLACE_FEATURE, id },
+  }).firstObject();
+
+  return one(feature?.generic) !== "true";
 }
 
 /* geographic locations exclude country/continent — only concrete places are shown */

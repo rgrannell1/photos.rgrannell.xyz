@@ -72,32 +72,6 @@ export class KnownTypes {
 }
 
 /*
- * Browseable "thing" entity types — wildlife, vehicles, places. Entities of
- * these types with no photo or video reference (directly or transitively) are
- * pruned at load, so they never surface anywhere in the app: no map markers,
- * listing cards, thing links, located-in chains, or thing pages. Infrastructure
- * types (photo, video, album, camera, geoname, transfer, rating, style, trip,
- * unesco) are never pruned.
- */
-export const PrunableEntityTypes = new Set<string>([
-  KnownTypes.PLACE,
-  KnownTypes.PLACE_FEATURE,
-  KnownTypes.BIRD,
-  KnownTypes.MAMMAL,
-  KnownTypes.REPTILE,
-  KnownTypes.AMPHIBIAN,
-  KnownTypes.FISH,
-  KnownTypes.ARTHROPOD,
-  KnownTypes.CTENOPHORE,
-  KnownTypes.PLANE,
-  KnownTypes.TRAIN,
-  KnownTypes.CAR,
-  KnownTypes.HELICOPTER,
-  KnownTypes.SPACECRAFT,
-  KnownTypes.BOAT,
-]);
-
-/*
  * These relations should all expand to CDN urls
  */
 export const CDN_RELATIONS = new Set([
@@ -138,27 +112,3 @@ export const CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
 // CDN base URL for expanding relative CDN paths in triples
 export const ENDPOINT = "https://photos-cdn.rgrannell.xyz";
 
-// Hidden album id; its photos publish but no album page exists, so never link to it
-export const MISCELLANEOUS_ALBUM_ID = "miscellaneous";
-
-/*
- * A list of cameras I've taken photos on
- */
-export const CAMERA_MODELS = new Set([
-  "dc-gh5",
-  "dc-gh6",
-  "dmc-fz72",
-  "dmc-g7",
-  "finepix-f70exr",
-  "xz-1",
-]);
-
-/*
- * A list of phones I've taken photos on
- */
-export const PHONE_MODELS = new Set([
-  "pixel-4a",
-  "pixel-7-pro",
-  "pixel-9a",
-  "sm-a520f",
-]);

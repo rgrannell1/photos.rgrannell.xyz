@@ -1,7 +1,7 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
-import { CAMERA_MODELS, KnownTypes, PHONE_MODELS } from "../constants/data.ts";
-import { PLACE_FEATURES_TO_EMOJI } from "../constants/display.ts";
+import { KnownTypes } from "../constants/data.ts";
+import { getTribbleDB } from "../semantic/data.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Country, Feature, Place, Thing, Unesco } from "../types.ts";
 
@@ -29,12 +29,17 @@ export function placeEmoji(thing: Place | TripleObject): string {
 }
 
 /*
- * Load an emoji relating to a place (e.g church emoji for religious sites)
+ * Read the emoji published on a place-feature entity (e.g church emoji for
+ * religious sites)
  */
 export function placeFeatureEmoji(featureUrn: string): string {
   const { id: featureId } = asUrn(featureUrn);
 
-  return PLACE_FEATURES_TO_EMOJI[featureId] ?? "📍";
+  const feature = getTribbleDB().search({
+    source: { type: KnownTypes.PLACE_FEATURE, id: featureId },
+  }).firstObject();
+
+  return one(feature?.emoji) ?? "📍";
 }
 
 /*
@@ -55,20 +60,12 @@ function birdEmoji(): string {
 }
 
 /*
- * Pick an emoji for the camera
- *
- * @param thing The thing to get the emoji for, based on id
+ * Pick an emoji for the camera, from its published device type
  */
 function cameraEmoji(thing: EmojiThing): string {
-  const { id } = asUrn(one(thing.id) ?? "");
-
-  if (CAMERA_MODELS.has(id)) {
-    return "📷";
-  } else if (PHONE_MODELS.has(id)) {
-    return "📱";
-  }
-
-  return "📷";
+  // cameras have no parsed schema; the device type is a raw triple field
+  const deviceType = one((thing as TripleObject).deviceType);
+  return deviceType === "phone" ? "📱" : "📷";
 }
 
 /* */

@@ -1,9 +1,11 @@
 import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
-import { binomial, capitalise, pluralise } from "../../commons/strings.ts";
+import { binomial } from "../../commons/strings.ts";
 import { KnownTypes } from "../../constants/data.ts";
 import { one } from "../../commons/arrays.ts";
+import { listingLabel } from "../../commons/things.ts";
+import { getTribbleDB } from "../../semantic/data.ts";
 import { placeEmoji } from "../../services/emoji.ts";
 import { FlagIcon } from "../flag.ts";
 import { setTitle } from "../../services/window.ts";
@@ -11,9 +13,9 @@ import { setTitle } from "../../services/window.ts";
 function computeTitle(urn: string, things: TripleObject[]): string {
   const parsed = parseUrn(urn);
 
-  // if type:*, fall back to pretty render of type information
+  // if type:*, fall back to the type's published listing label
   if (parsed.id === "*") {
-    return capitalise(pluralise(parsed.type));
+    return listingLabel(getTribbleDB(), parsed.type);
   }
 
   if (things.length === 0) {

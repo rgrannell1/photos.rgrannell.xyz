@@ -1,16 +1,14 @@
 /* String Utilities */
 
-import { PLURALS } from "../constants/display.ts";
-
 export function capitalise(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+/*
+ * Naive plural; type labels with irregular plurals come from the published
+ * listing entities, not from here.
+ */
 export function pluralise(str: string): string {
-  if (PLURALS.has(str)) {
-    return PLURALS.get(str)!;
-  }
-
   return str + "s";
 }
 

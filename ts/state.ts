@@ -6,7 +6,6 @@ import type { AppWindow, State } from "./types.ts";
 import { getTribbleDB, loadTriples } from "./semantic/data.ts";
 import {
   deriveTriples,
-  HARD_CODED_TRIPLES,
   runFinalPasses,
   runStreamPasses,
 } from "./semantic/derive.ts";
@@ -65,8 +64,6 @@ export async function completeLoad(
   };
 
   runFinalPasses(tdb);
-
-  tdb.add(HARD_CODED_TRIPLES);
 
   state.loaded = true;
   onProgress();

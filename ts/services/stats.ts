@@ -18,7 +18,7 @@ export type SubjectStats = {
  * Count wild, total, and Irish wild bird species seen across all photos.
  *
  * "Wild" means the subject URN has ?context=wild (or no context).
- * "Irish" means the base bird URN has a birdwatchUrl relation.
+ * "Irish" means the base bird URN carries the irish marker.
  */
 export function readBirdStats(tdb: TribbleDB): SubjectStats {
   const wildBirdSubjects = tdb.search({
@@ -40,7 +40,7 @@ export function readBirdStats(tdb: TribbleDB): SubjectStats {
 
   const irishWildSpecies = tdb
     .nodes({ type: KnownTypes.BIRD, id: [...wildBirdIds] })
-    .filter({ has: KnownRelations.BIRDWATCH_URL })
+    .filter({ has: KnownRelations.IRISH })
     .ids().size;
 
   return {
@@ -184,8 +184,7 @@ export type ChecklistEntry = {
  * Includes both wild and captive sightings. "First seen" is read directly
  * from the firstSeen triple relation on each species URN.
  * isWild is true if the species has been photographed in a wild context at least once.
- * isIrish comes from the wildlife catalogue's irish marker, with the BirdWatch
- * URL as a fallback for birds published before the marker existed.
+ * isIrish comes from the published irish marker.
  */
 function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEntry[] {
   const firstSeenTriples = tdb.search({
@@ -212,8 +211,7 @@ function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEn
 
     const name = one(speciesThing?.name) ?? speciesId;
 
-    const hasBirdwatchUrl = one(speciesThing?.birdwatchUrl) !== undefined;
-    const isIrish = one(speciesThing?.irish) === "true" || hasBirdwatchUrl;
+    const isIrish = one(speciesThing?.irish) === "true";
 
     const isWild = wildSpeciesIds.has(speciesId);
 
