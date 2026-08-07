@@ -11,7 +11,6 @@ import { humanise } from "../commons/strings.ts";
 import {
   CDN_RELATIONS,
   CURIE_REGEX,
-  CURIES,
   ENDPOINT,
   KnownRelations,
   KnownTypes,
@@ -154,6 +153,30 @@ export function addInverseRelations(tdb: TribbleDB) {
 const CURIE_CACHE = new Map<string, string>();
 
 /*
+ * Curie prefix → expansion URL, read from the in-band curie triples the
+ * publisher streams before any triple that uses them.
+ */
+const curieDefinitions: Record<string, string> = {};
+
+/*
+ * Record an in-band curie definition and drop it from the indexed triples.
+ * Non-curie triples pass through untouched.
+ */
+export function registerCurieDefinitions(triple: Triple): Triple[] {
+  const [src, rel, tgt] = triple;
+
+  if (rel !== KnownRelations.CURIE) {
+    return [triple];
+  }
+
+  if (typeof src === "string" && typeof tgt === "string") {
+    curieDefinitions[tgt] = src;
+  }
+
+  return [];
+}
+
+/*
  * Expand curie-formatted URLS into their full form.
  */
 export function expandCurie(curies: Record<string, string>, value: string) {
@@ -174,8 +197,12 @@ export function expandCurie(curies: Record<string, string>, value: string) {
   const prefix = match[1];
   const id = match[2];
 
-  const result = curies[prefix] ? `${curies[prefix]}${id}` : value;
+  // only cache expansions; an unknown prefix may gain a definition later
+  if (!curies[prefix]) {
+    return value;
+  }
 
+  const result = `${curies[prefix]}${id}`;
   CURIE_CACHE.set(value, result);
   return result;
 }
@@ -191,9 +218,9 @@ export function expandTripleCuries(
 
   return [
     [
-      expandCurie(CURIES, src),
+      expandCurie(curieDefinitions, src),
       rel,
-      expandCurie(CURIES, tgt),
+      expandCurie(curieDefinitions, tgt),
     ],
   ];
 }
@@ -252,6 +279,7 @@ export function deriveTriples(
   triple: Triple,
 ): Triple[] {
   const tripleProcessors = [
+    registerCurieDefinitions,
     expandUrns,
     expandTripleCuries,
     expandCdnUrls,

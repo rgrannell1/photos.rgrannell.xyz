@@ -42,6 +42,7 @@ export class KnownRelations {
   static TITLE = "title";
   static FEATURES = "features";
   static PLACES_WITH_FEATURE = "placesWithFeature";
+  static CURIE = "curie";
 }
 
 export class KnownTypes {
@@ -95,16 +96,6 @@ export const RelationSymmetries = [
   [KnownRelations.CONTAINS_ALBUM, KnownRelations.TRIP],
   [KnownRelations.FEATURES, KnownRelations.PLACES_WITH_FEATURE],
 ];
-
-/*
- * A list of shortened Curies passed to the UI, and how to expand them
- */
-export const CURIES = {
-  "i": "urn:ró:",
-  "birdwatch": "https://birdwatchireland.ie/birds/",
-  "photos": "https://photos-cdn.rgrannell.xyz/",
-  "wiki": "https://en.wikipedia.org/wiki/",
-};
 
 // Curies match this pattern
 export const CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
