@@ -17,7 +17,7 @@ const MOBILE_VIEWPORT = { width: 390, height: 844 };
 const CASES = [
   {
     route: "#!/life-list",
-    readySelector: ".checklist-table",
+    readySelector: ".checklist-grid",
     headingSelector: "h1.albums-header",
     captionSelector: null,
   },

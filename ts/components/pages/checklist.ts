@@ -4,9 +4,7 @@ import { ImagePair } from "../media/photo.ts";
 import { encodeBitmapDataURL } from "../../services/photos.ts";
 import type { Photo, Services } from "../../types.ts";
 import type { ChecklistEntry, NemesisSpecies } from "../../services/stats.ts";
-
-// Side length in pixels of the per-species cover thumbnail in the life-list.
-const CHECKLIST_THUMB_PX = 144;
+import { PHOTO_WIDTH } from "../../constants/layout.ts";
 
 /*
  * Parse a Unix timestamp string into a Date.
@@ -108,24 +106,24 @@ function viewChecklistPhoto(vnode: m.Vnode<ChecklistPhotoAttrs>): m.Children {
   const { cover, href, label } = vnode.attrs;
 
   if (!cover) {
-    return m("td.checklist-photo");
+    return m("div.checklist-card-empty");
   }
 
-  return m("td.checklist-photo", m(ImagePair, {
+  return m(ImagePair, {
     href,
     label,
     thumbnailUrl: cover.thumbnailUrl,
     thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),
     loading: "lazy",
     onclick: undefined,
-    width: CHECKLIST_THUMB_PX,
-    height: CHECKLIST_THUMB_PX,
-  }));
+    width: PHOTO_WIDTH,
+    height: PHOTO_WIDTH,
+  });
 }
 
 /*
- * The per-species cover thumbnail cell, with a blur-up placeholder. Links to the
- * species page. Renders an empty cell when a species has no cover photo.
+ * The per-species cover image, with a blur-up placeholder. Links to the
+ * species page. Renders an empty block when a species has no cover photo.
  */
 function ChecklistPhoto() {
   return { view: viewChecklistPhoto };
@@ -152,69 +150,69 @@ function speciesTags(
   return tags;
 }
 
-type ChecklistRowAttrs = {
+type ChecklistCardAttrs = {
   entry: ChecklistEntry;
   cover: Photo | undefined;
   position: number;
-  highlightedYear: boolean;
   showScarce: boolean;
 };
 
-function viewChecklistRow(vnode: m.Vnode<ChecklistRowAttrs>): m.Children {
-  const { entry, cover, position, highlightedYear, showScarce } = vnode.attrs;
+function viewChecklistCard(vnode: m.Vnode<ChecklistCardAttrs>): m.Children {
+  const { entry, cover, position, showScarce } = vnode.attrs;
   const href = `#/thing/${entry.speciesType}:${entry.speciesId}`;
 
-  return m("tr.checklist-row", [
-    m("td.checklist-number", {
-      class: highlightedYear ? "checklist-number--highlighted" : undefined,
-    }, `${position}`),
+  return m("div.checklist-card", [
+    m("span.checklist-card-badge", `#${position}`),
     m(ChecklistPhoto, { cover, href, label: entry.name }),
-    m("td.checklist-name", [
-      entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
-      m("a.checklist-name-link", { href }, entry.name),
-      ...speciesTags(entry, showScarce),
+    m("div.checklist-card-metadata", [
+      m("p.checklist-card-name", [
+        entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
+        m("a.checklist-name-link", { href }, entry.name),
+        ...speciesTags(entry, showScarce),
+      ]),
+      m("p.checklist-first-seen", formatFirstSeen(entry.firstSeen)),
     ]),
-    m("td.checklist-first-seen", formatFirstSeen(entry.firstSeen)),
   ]);
 }
 
 /*
- * A single row in the checklist table.
+ * A single species card in the life-list grid.
  */
-function ChecklistRow() {
-  return { view: viewChecklistRow };
+function ChecklistCard() {
+  return { view: viewChecklistCard };
 }
 
-type ChecklistMysteryRowAttrs = {
+type ChecklistMysteryCardAttrs = {
   species: NemesisSpecies;
   glyph: string;
 };
 
-function viewChecklistMysteryRow(
-  vnode: m.Vnode<ChecklistMysteryRowAttrs>,
+function viewChecklistMysteryCard(
+  vnode: m.Vnode<ChecklistMysteryCardAttrs>,
 ): m.Children {
   const { species, glyph } = vnode.attrs;
 
-  return m("tr.checklist-row.checklist-row--mystery", [
-    m("td.checklist-number"),
-    m("td.checklist-photo", m("div.mystery-bird", m("span.mystery-bird-glyph", glyph))),
-    m("td.checklist-name", [
-      m("span.checklist-mystery-name", species.name),
-      m("span.checklist-tag.checklist-tag--nemesis", "nemesis"),
+  return m("div.checklist-card.checklist-card--mystery", [
+    m("div.mystery-bird", m("span.mystery-bird-glyph", glyph)),
+    m("div.checklist-card-metadata", [
+      m("p.checklist-card-name", [
+        m("span.checklist-mystery-name", species.name),
+        m("span.checklist-tag.checklist-tag--nemesis", "nemesis"),
+      ]),
+      m("p.checklist-first-seen.checklist-first-seen--pending", "yet to photograph"),
     ]),
-    m("td.checklist-first-seen.checklist-first-seen--pending", "yet to photograph"),
   ]);
 }
 
 /*
- * A "yet to see" row for an unphotographed nemesis species: a Pokémon-style mystery
+ * A "yet to see" card for an unphotographed nemesis species: a Pokémon-style mystery
  * silhouette in place of a photo, with the name and a nemesis tag.
  */
-function ChecklistMysteryRow() {
-  return { view: viewChecklistMysteryRow };
+function ChecklistMysteryCard() {
+  return { view: viewChecklistMysteryCard };
 }
 
-type ChecklistTableAttrs = {
+type ChecklistGridAttrs = {
   entries: ChecklistEntry[];
   covers: Map<string, Photo>;
   nemesisSpecies: NemesisSpecies[];
@@ -242,36 +240,33 @@ function positionedIsWild(positioned: PositionedEntry): boolean {
   return isWild(positioned.entry);
 }
 
-function drawChecklistRow(
+function drawChecklistCard(
   covers: Map<string, Photo>,
-  yearParity: Map<number, number>,
   irishView: boolean,
   positioned: PositionedEntry,
 ): m.Children {
   const { entry, position } = positioned;
-  const parity = yearParity.get(firstSeenYear(entry.firstSeen));
-  return m(ChecklistRow, {
-    key: `row-${entry.speciesType}-${entry.speciesId}`,
+  return m(ChecklistCard, {
+    key: `card-${entry.speciesType}-${entry.speciesId}`,
     entry,
     cover: covers.get(entry.speciesId),
     position,
-    highlightedYear: parity === 1,
     showScarce: irishView,
   });
 }
 
-function drawMysteryRow(
+function drawMysteryCard(
   mysteryGlyph: string,
   species: NemesisSpecies,
 ): m.Children {
-  return m(ChecklistMysteryRow, {
+  return m(ChecklistMysteryCard, {
     key: `mystery-${species.speciesId}`,
     species,
     glyph: mysteryGlyph,
   });
 }
 
-function viewChecklistTable(vnode: m.Vnode<ChecklistTableAttrs>): m.Children {
+function viewChecklistGrid(vnode: m.Vnode<ChecklistGridAttrs>): m.Children {
   const { entries, covers, nemesisSpecies, mysteryGlyph, filter } = vnode.attrs;
 
   // Scarce tags and "yet to see" birds are Irish-only; status tags always show.
@@ -285,40 +280,20 @@ function viewChecklistTable(vnode: m.Vnode<ChecklistTableAttrs>): m.Children {
     ? withPositions
     : withPositions.filter(positionedIsWild);
 
-  // Alternate year bands between dimmed and highlighted position numbers,
-  // so it is easy to see which birds were first seen in which year
-  const yearParity = new Map<number, number>();
-  for (const { entry } of displayed) {
-    const year = firstSeenYear(entry.firstSeen);
-    if (!yearParity.has(year)) {
-      yearParity.set(year, yearParity.size % 2);
-    }
-  }
-
-  return m("table.checklist-table", [
-    m("thead", [
-      m("tr", [
-        m("th.checklist-number", "#"),
-        m("th.checklist-photo", ""),
-        m("th", "Name"),
-        m("th", "First seen"),
-      ]),
-    ]),
-    m("tbody", [
-      ...displayed.map(drawChecklistRow.bind(null, covers, yearParity, irishView)),
-      // Unphotographed nemesis species ("yet to see") at the bottom, Irish view only
-      ...(irishView
-        ? nemesisSpecies.map(drawMysteryRow.bind(null, mysteryGlyph))
-        : []),
-    ]),
+  return m("div.checklist-grid", [
+    ...displayed.map(drawChecklistCard.bind(null, covers, irishView)),
+    // Unphotographed nemesis species ("yet to see") at the bottom, Irish view only
+    ...(irishView
+      ? nemesisSpecies.map(drawMysteryCard.bind(null, mysteryGlyph))
+      : []),
   ]);
 }
 
 /*
- * The checklist table itself.
+ * The life-list card grid itself.
  */
-function ChecklistTable() {
-  return { view: viewChecklistTable };
+function ChecklistGrid() {
+  return { view: viewChecklistGrid };
 }
 
 type ChecklistPageAttrs = {
@@ -391,7 +366,7 @@ function viewMammalSection(vnode: m.Vnode<MammalSectionAttrs>): m.Children {
     ]),
     preamble ? m("p.photo-album-description", preamble) : null,
     m("section.checklist-container", [
-      m(ChecklistTable, {
+      m(ChecklistGrid, {
         entries: mammalEntries,
         covers: mammalCovers,
         nemesisSpecies: nemesisMammals,
@@ -447,7 +422,7 @@ function viewChecklistPage(vnode: m.Vnode<ChecklistPageAttrs>): m.Children {
       description,
     ),
     m("section.checklist-container", [
-      m(ChecklistTable, {
+      m(ChecklistGrid, {
         entries,
         covers,
         nemesisSpecies: nemesisBirds,

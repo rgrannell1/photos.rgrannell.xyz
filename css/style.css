@@ -1078,69 +1078,69 @@ button:disabled {
   margin-top: 20px;
 }
 
-.checklist-table {
-  border-collapse: collapse;
+/* card grid, matching the albums page layout */
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--photo-width)), 1fr));
+  gap: 10px;
+}
+
+.checklist-card {
+  position: relative;
   width: 100%;
-  max-width: 900px;
 }
 
-.checklist-table th {
-  text-align: left;
-  padding: 8px 12px;
-  border-bottom: 2px solid var(--border-color, #ccc);
-  font-weight: bold;
+/* the ImagePair anchor: block-level, and the positioning context for the
+   blur-up placeholder overlay */
+.checklist-card > a {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
 }
 
-.checklist-table td {
-  padding: 6px 12px;
-  border-bottom: 1px solid var(--border-color, #eee);
-  vertical-align: middle;
+.checklist-card .thumbnail-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
 }
 
-.checklist-table tr:last-child td {
-  border-bottom: none;
+/* grey square standing in for a species with no cover photo */
+.checklist-card-empty {
+  width: 100%;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #e9edf2, #d3dae4);
 }
 
-.checklist-number {
-  text-align: right;
+/* life-list position: a square black badge over the top-left corner */
+.checklist-card-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  min-width: 1.4em;
+  padding: 8px;
+  text-align: center;
+  color: white;
+  background-color: black;
   font-variant-numeric: tabular-nums;
-  color: var(--secondary-text-color);
-  width: 3em;
 }
 
-@media (max-width: 500px) {
-  .checklist-number {
-    display: none;
-  }
+.checklist-card-metadata {
+  padding-top: 6px;
+}
+
+.checklist-card-name {
+  margin: 0;
+  font-weight: 600;
 }
 
 .checklist-first-seen {
-  white-space: nowrap;
-}
-
-.checklist-photo {
-  width: 144px;
-  padding-right: 0;
-}
-
-.checklist-photo .thumbnail-image {
-  width: 144px;
-  height: 144px;
-  object-fit: cover;
-  border-radius: 4px;
-  display: block;
-}
-
-.checklist-photo .photo,
-.checklist-photo a {
-  position: relative;
-  display: block;
-  width: 144px;
-  height: 144px;
-}
-
-.checklist-number--highlighted {
-  color: var(--font-colour);
+  margin: 2px 0 0;
+  color: var(--secondary-text-color);
+  font-size: 0.9em;
 }
 
 .checklist-name-link {
@@ -1156,38 +1156,35 @@ button:disabled {
   margin-right: 2px;
 }
 
+/* square-cornered, brutalist status tags */
 .checklist-tag {
   display: inline-block;
   margin-left: 8px;
-  padding: 1px 7px;
-  border-radius: 10px;
+  padding: 3px 9px;
   font-size: 0.72em;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.03em;
   vertical-align: middle;
+  color: white;
 }
 
 .checklist-tag--scarce {
-  color: #8a5a00;
-  background: #fbe9c8;
+  background: #b26b00;
 }
 
 .checklist-tag--nemesis {
-  color: #7a1030;
-  background: #f7d2dd;
+  background: #c11c4f;
 }
 
 .checklist-tag--target {
-  color: #075d3a;
-  background: #cceedd;
+  background: #0c8a52;
 }
 
-/* Pokémon-style mystery silhouette for an unphotographed nemesis bird */
+/* Pokémon-style mystery silhouette for an unphotographed nemesis species */
 .mystery-bird {
-  width: 144px;
-  height: 144px;
-  border-radius: 4px;
+  width: 100%;
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1201,7 +1198,7 @@ button:disabled {
   filter: brightness(0) opacity(0.4);
 }
 
-.checklist-row--mystery .checklist-mystery-name {
+.checklist-card--mystery .checklist-mystery-name {
   color: var(--secondary-text-color);
 }
 
@@ -1210,38 +1207,47 @@ button:disabled {
   font-style: italic;
 }
 
-/* mobile: shrink photos and paddings and let dates wrap, so the table fits
-   the viewport without horizontal scroll. Must follow the base checklist
-   rules above: equal specificity, so source order decides */
+/* mobile: run the grid full-bleed and overlay metadata on the image foot,
+   albums-page style: white text on solid black chips */
 @media (max-width: 500px) {
   .checklist-container {
     margin: 0;
     margin-bottom: 40px;
   }
 
-  .checklist-table {
-    font-size: 0.9em;
+  .checklist-card-metadata {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    z-index: 1;
+    padding: 0;
   }
 
-  .checklist-table th, .checklist-table td {
-    padding: 6px 4px;
+  .checklist-card-name,
+  .checklist-first-seen {
+    display: inline-block;
+    padding: 2px 4px;
+    color: white;
+    background-color: black;
+  }
+
+  .checklist-card-name {
+    display: block;
+    margin-right: auto;
+    width: fit-content;
   }
 
   .checklist-first-seen {
-    white-space: normal;
+    margin-top: 2px;
   }
 
-  .checklist-photo,
-  .checklist-photo .photo,
-  .checklist-photo a,
-  .checklist-photo .thumbnail-image,
-  .mystery-bird {
-    width: 88px;
-    height: 88px;
+  .checklist-name-link {
+    color: white;
   }
 
-  .mystery-bird-glyph {
-    font-size: 52px;
+  .checklist-card--mystery .checklist-mystery-name {
+    color: white;
   }
 }
 
