@@ -14,6 +14,7 @@ const checks = [
   require("./checks/photo-page"),
   require("./checks/listing-page"),
   require("./checks/about-page"),
+  require("./checks/mobile-layout"),
 ];
 
 for (const check of checks) {

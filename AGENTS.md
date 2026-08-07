@@ -23,6 +23,14 @@
 - add CSS to the css file
 - `/home/rg/Code/mirror` is the photo processing workflow that publishes here. The triples which back the photo website are created here. It has photos.md, albums.md, things.toml that define most semantic information; some is derived in the python workflow
 
+## Verifying changes in a browser
+
+- The CSS is inlined into `index.html` at build time. A stale `index.html` means stale CSS.
+- Two caches serve stale pages after a rebuild: the service worker and the HTTP cache.
+- To see a fresh build, load with a cache-busting query before the hash route:
+  `http://localhost:3030/?bust=<n>#!/albums`. Change `<n>` on each rebuild.
+- Reloads and service-worker unregistration are not enough. Use the query.
+
 ## Architecture constraints
 
 - Pages and route entries must not import TribbleDB reader functions directly; all data access goes through `state.services`. Add any new reader to `loadServices` in `ts/state.ts` and call it via services. Pure helpers over already-read values (e.g `albumYear`, `encodeBitmapDataURL`, `loadingMode`) may be imported directly.
