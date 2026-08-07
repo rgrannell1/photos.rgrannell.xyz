@@ -785,6 +785,14 @@ button:disabled {
   }
 }
 
+/* pages without a hero banner get breathing room at the top; banner pages
+   bleed to the top edge */
+.app-container > section:not(:has(.album-banner)),
+.app-container > main:not(:has(.album-banner)),
+.app-container > .page:not(:has(.album-banner)) {
+  margin-top: 10px;
+}
+
 /*
  * ++++ ++++ ++++ ~~~~ Metadata Page ~~~~ ++++ ++++ ++++
  */

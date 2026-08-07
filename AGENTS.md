@@ -13,6 +13,7 @@
 
 ## CI
 
+- A push to main deploys to production. There is no separate deploy step. Treat `/ship` as a release.
 - CI checks out the repo and serves the committed `dist/` directly — no build step runs in CI
 - Any TypeScript change must be accompanied by a rebuilt `dist/` in the same commit, or CI tests will fail against stale assets
 
