@@ -1,4 +1,4 @@
-const CACHE_NAME = "sw-cache-08d7a2ac9c-18ecde7c";
+const CACHE_NAME = "sw-cache-442101150b-dd5c331c";
 const CACHEABLE_RESOURCES = [
   "/icons/android-chrome-192x192.png",
   "/icons/android-chrome-512x512.png",
@@ -6,7 +6,7 @@ const CACHEABLE_RESOURCES = [
   "/icons/favicon-16x16.png",
   "/icons/favicon-32x32.png",
   "/favicon.ico",
-  "/dist/js/app.08d7a2ac9c-18ecde7c.js",
+  "/dist/js/app.442101150b-dd5c331c.js",
   // the two page-hero banners, from ts/constants/banners.ts
   "https://photos-cdn.rgrannell.xyz/d6cf0f7cc7.webp",
   "https://photos-cdn.rgrannell.xyz/6744c802d1.webp",
