@@ -1,4 +1,5 @@
 import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
+import { TAXON_TYPES } from "../constants/data.ts";
 
 const URN_PREFIX = "urn:ró";
 
@@ -23,4 +24,12 @@ export function formatId(id: string): string {
 export function urnToUrl(urn: string) {
   const { type, id } = asUrn(urn);
   return `#/thing/${type}:${id}`;
+}
+
+/*
+ * Is this a taxon URN (genus, family, order)? Derived taxon subjects are
+ * excluded from subject displays, which show species only.
+ */
+export function isTaxonUrn(urn: string): boolean {
+  return TAXON_TYPES.has(asUrn(urn).type);
 }

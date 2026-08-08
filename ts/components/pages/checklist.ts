@@ -1,7 +1,7 @@
 import m from "mithril";
 import { broadcast } from "../../commons/events.ts";
 import { ImagePair } from "../media/photo.ts";
-import { encodeBitmapDataURL } from "../../services/photos.ts";
+import { thumbHashDataUrl } from "../../services/photos.ts";
 import type { Photo, Services } from "../../types.ts";
 import type { ChecklistEntry, NemesisSpecies } from "../../services/stats.ts";
 import { PHOTO_WIDTH } from "../../constants/layout.ts";
@@ -113,7 +113,7 @@ function viewChecklistPhoto(vnode: m.Vnode<ChecklistPhotoAttrs>): m.Children {
     href,
     label,
     thumbnailUrl: cover.thumbnailUrl,
-    thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),
+    thumbnailDataUrl: thumbHashDataUrl(cover.mosaicColours),
     loading: "lazy",
     onclick: undefined,
     width: PHOTO_WIDTH,

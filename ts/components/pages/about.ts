@@ -3,11 +3,10 @@ import m from "mithril";
 import { setTitle } from "../../services/window.ts";
 import { navigate } from "../../commons/events.ts";
 import { AlbumBanner } from "../album/album-banner.ts";
-import { encodeBitmapDataURL } from "../../services/photos.ts";
+import { thumbHashDataUrl } from "../../services/photos.ts";
 import {
   ABOUT_BANNER_MOSAIC,
   ABOUT_BANNER_URL,
-  BANNER_MOSAIC_DIMENSION,
 } from "../../constants/banners.ts";
 
 type AboutPageAttrs = {
@@ -34,11 +33,7 @@ function viewAboutPage(vnode: m.Vnode<AboutPageAttrs>): m.Children {
     "share the things";
 
   const bannerSrc = ABOUT_BANNER_URL;
-  const bannerDataUrl = encodeBitmapDataURL(
-    ABOUT_BANNER_MOSAIC,
-    BANNER_MOSAIC_DIMENSION,
-    BANNER_MOSAIC_DIMENSION,
-  );
+  const bannerDataUrl = thumbHashDataUrl(ABOUT_BANNER_MOSAIC);
 
   return m("main", {
     class: visible ? "page sidebar-visible" : "page",

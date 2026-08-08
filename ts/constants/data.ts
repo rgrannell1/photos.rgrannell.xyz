@@ -43,6 +43,9 @@ export class KnownRelations {
   static FEATURES = "features";
   static PLACES_WITH_FEATURE = "placesWithFeature";
   static CURIE = "curie";
+  static GENUS = "genus";
+  static FAMILY = "family";
+  static ORDER = "order";
 }
 
 export class KnownTypes {
@@ -70,7 +73,27 @@ export class KnownTypes {
   static YEAR = "year";
   static LISTING = "listing";
   static PERSON = "person";
+  static GENUS = "genus";
+  static FAMILY = "family";
+  static ORDER = "order";
 }
+
+/*
+ * Taxonomic ranks a species links to, with the label shown as the
+ * details-table row heading.
+ */
+export const TAXON_RANKS = [
+  { relation: KnownRelations.GENUS, label: "Genus" },
+  { relation: KnownRelations.FAMILY, label: "Family" },
+  { relation: KnownRelations.ORDER, label: "Order" },
+];
+
+// URN types that identify taxon entities
+export const TAXON_TYPES = new Set<string>([
+  KnownTypes.GENUS,
+  KnownTypes.FAMILY,
+  KnownTypes.ORDER,
+]);
 
 /*
  * These relations should all expand to CDN urls

@@ -5,11 +5,12 @@
  */
 
 import m from "mithril";
+import type { TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../../commons/arrays.ts";
 import type { Feature, Place, Services, Unesco } from "../../types.ts";
 import { FeatureLink, ThingLink, UnescoLink } from "./thing-link.ts";
 
-export type ThingListKind = "place" | "feature" | "unesco";
+export type ThingListKind = "place" | "feature" | "unesco" | "taxon";
 
 type DrawItems = (services: Services, urns: Set<string>) => m.Children[];
 
@@ -55,10 +56,21 @@ function drawUnescoItems(services: Services, urns: Set<string>): m.Children[] {
   return services.readUnescos(urns).map(drawUnescoItem);
 }
 
+function drawTaxonItem(taxon: TripleObject): m.Children {
+  const urn = one(taxon.id) as string;
+
+  return m("li", { key: `taxon-${urn}` }, m(ThingLink, { urn, thing: taxon }));
+}
+
+function drawTaxonItems(services: Services, urns: Set<string>): m.Children[] {
+  return services.readTaxons(urns).map(drawTaxonItem);
+}
+
 const LIST_KINDS: Record<ThingListKind, DrawItems> = {
   place: drawPlaceItems,
   feature: drawFeatureItems,
   unesco: drawUnescoItems,
+  taxon: drawTaxonItems,
 };
 
 type ThingListAttrs = {

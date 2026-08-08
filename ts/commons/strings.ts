@@ -26,6 +26,14 @@ export function binomial(binomial: string) {
   return capitalise(pretty);
 }
 
+/*
+ * Title-case a label: capitalise each word
+ * (e.g. "alligators and caimans" -> "Alligators And Caimans").
+ */
+export function titleCase(str: string): string {
+  return str.split(" ").map(capitalise).join(" ");
+}
+
 /**
  * Humanise an id for display (e.g. "train station" -> "Train station",
  * "national-park" -> "National park").

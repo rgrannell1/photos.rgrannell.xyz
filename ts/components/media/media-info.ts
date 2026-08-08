@@ -7,6 +7,7 @@ import m from "mithril";
 import { toThingLinks } from "../thing/thing-links.ts";
 import type { Services } from "../../types.ts";
 import { arrayify } from "../../commons/arrays.ts";
+import { isTaxonUrn } from "../../commons/urn.ts";
 import { preprocessDescription } from "../../commons/strings.ts";
 import { MediaLocations } from "./media-locations.ts";
 import { Heading } from "./heading.ts";
@@ -71,7 +72,11 @@ function Style() {
 function viewSubject(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   const { media, services } = vnode.attrs;
 
-  const $subject = toThingLinks(services, arrayify(media.subject));
+  // derived taxon subjects stay out of the subject row; species only
+  const subjects = arrayify(media.subject)
+    .filter((subject) => !isTaxonUrn(subject));
+
+  const $subject = toThingLinks(services, subjects);
   return m("td", $subject.length > 0 ? $subject : "—");
 }
 

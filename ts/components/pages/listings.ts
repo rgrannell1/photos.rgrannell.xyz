@@ -5,7 +5,7 @@ import { one } from "../../commons/arrays.ts";
 import { navigate } from "../../commons/events.ts";
 import type { Services } from "../../types.ts";
 import { PhotoAlbum } from "../album/photo-album.ts";
-import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
+import { thumbHashDataUrl, loadingMode } from "../../services/photos.ts";
 
 type CategoryDef = {
   type: string;
@@ -47,7 +47,7 @@ function drawCategoryAlbum(
     label: category.type,
     imageUrl: cover.fullImage,
     thumbnailUrl: cover.thumbnailUrl,
-    thumbnailDataUrl: encodeBitmapDataURL(cover.mosaicColours),
+    thumbnailDataUrl: thumbHashDataUrl(cover.mosaicColours),
     loading: loadingMode(idx),
     trip: undefined,
     child: m("p.album-title", labelAttrs, category.label),

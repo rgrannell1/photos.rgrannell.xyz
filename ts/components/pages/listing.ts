@@ -5,7 +5,7 @@ import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { broadcast, navigate } from "../../commons/events.ts";
 import type { Services } from "../../types.ts";
 import { PhotoAlbum } from "../album/photo-album.ts";
-import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
+import { thumbHashDataUrl, loadingMode } from "../../services/photos.ts";
 import { one } from "../../commons/arrays.ts";
 import { ThingCaption } from "../thing/thing-caption.ts";
 import {
@@ -55,7 +55,7 @@ function drawThingAlbum(
     label: one(thing.name) ?? thingId,
     imageUrl: coverPhoto.fullImage,
     thumbnailUrl: coverPhoto.thumbnailUrl,
-    thumbnailDataUrl: encodeBitmapDataURL(coverPhoto?.mosaicColours),
+    thumbnailDataUrl: thumbHashDataUrl(coverPhoto?.mosaicColours),
     loading: loadingMode(idx),
     trip: undefined,
     child: m(ThingCaption, {

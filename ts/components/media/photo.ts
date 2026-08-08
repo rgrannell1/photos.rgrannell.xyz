@@ -5,7 +5,7 @@ import { openUrl } from "../../services/window.ts";
 import { formatId } from "../../commons/urn.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../constants/layout.ts";
-import { encodeBitmapDataURL } from "../../services/photos.ts";
+import { thumbHashDataUrl } from "../../services/photos.ts";
 import type { Photo as PhotoType } from "../../types.ts";
 
 type ImageAttrs = {
@@ -189,8 +189,8 @@ function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
     mosaicColours,
   } = photo;
 
-  // encode a grid of colours into a data URL
-  const thumbnailDataUrl = encodeBitmapDataURL(mosaicColours);
+  // decode the ThumbHash placeholder into a data URL
+  const thumbnailDataUrl = thumbHashDataUrl(mosaicColours);
 
   const $mdIcon = m(MetadataIcon, { route: `/photo/${id}`, colour: photo.contrastingGrey });
   const $imagePair = m(ImagePair, {

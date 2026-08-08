@@ -5,7 +5,7 @@ import { AlbumShareButton } from "../album/album-share-button.ts";
 import { AlbumStats } from "../album/album-stats.ts";
 import { YearRecap } from "../album/year-recap.ts";
 import type { Album, Services } from "../../types.ts";
-import { encodeBitmapDataURL, loadingMode } from "../../services/photos.ts";
+import { thumbHashDataUrl, loadingMode } from "../../services/photos.ts";
 import { AlbumCard } from "../album/album-card.ts";
 import { setTitle, sharePhotoUrl } from "../../services/window.ts";
 import { mountYearScroll } from "../../services/year-scroll.ts";
@@ -16,7 +16,6 @@ import { CountryFilter } from "../album/country-filter.ts";
 import {
   ALBUMS_BANNER_MOSAIC,
   ALBUMS_BANNER_URL,
-  BANNER_MOSAIC_DIMENSION,
 } from "../../constants/banners.ts";
 import {
   type BatchRenderer,
@@ -241,11 +240,7 @@ function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
   ]);
 
   const bannerSrc = ALBUMS_BANNER_URL;
-  const bannerDataUrl = encodeBitmapDataURL(
-    ALBUMS_BANNER_MOSAIC,
-    BANNER_MOSAIC_DIMENSION,
-    BANNER_MOSAIC_DIMENSION,
-  );
+  const bannerDataUrl = thumbHashDataUrl(ALBUMS_BANNER_MOSAIC);
 
   return m("main", {
     class: visible ? "page sidebar-visible" : "page",

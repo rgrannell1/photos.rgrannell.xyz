@@ -1,10 +1,10 @@
 import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
-import { binomial } from "../../commons/strings.ts";
-import { KnownTypes } from "../../constants/data.ts";
+import { binomial, capitalise } from "../../commons/strings.ts";
+import { KnownTypes, TAXON_TYPES } from "../../constants/data.ts";
 import { one } from "../../commons/arrays.ts";
-import { listingLabel } from "../../commons/things.ts";
+import { listingLabel, taxonLabel } from "../../commons/things.ts";
 import { getTribbleDB } from "../../semantic/data.ts";
 import { placeEmoji } from "../../services/emoji.ts";
 import { FlagIcon } from "../flag.ts";
@@ -27,6 +27,10 @@ function computeTitle(urn: string, things: TripleObject[]): string {
 
   if (parsed.type === KnownTypes.PLACE) {
     return `${placeEmoji(thing)} ${name}`;
+  }
+
+  if (TAXON_TYPES.has(parsed.type)) {
+    return taxonLabel(thing);
   }
 
   return name;
@@ -72,6 +76,15 @@ function viewThingSubtitle(
   vnode: m.Vnode<{ urn: string; isBinomial: boolean }>,
 ): m.Children {
   const parsed = asUrn(vnode.attrs.urn);
+
+  // taxon pages show their rank (Genus, Family, Order) as the subtitle
+  if (TAXON_TYPES.has(parsed.type)) {
+    return m(
+      "span",
+      { class: `thing-binomial ${parsed.type}-binomial` },
+      capitalise(parsed.type),
+    );
+  }
 
   return vnode.attrs.isBinomial && parsed.id !== "*"
     ? m(

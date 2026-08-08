@@ -999,6 +999,10 @@ button:disabled {
 
 .thumbnail-placeholder {
   position: absolute;
+  /* the full-frame ThumbHash must fill the square tile exactly, cropped
+     to centre like the real thumbnail's rendition */
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
 }
 
 .thumbnail-image {

@@ -15,6 +15,7 @@ import {
   KnownRelations,
   KnownTypes,
   RelationSymmetries,
+  TAXON_RANKS,
 } from "../constants/data.ts";
 
 /*
@@ -324,6 +325,53 @@ export function addFeatureMediaLocations(tdb: TribbleDB) {
 }
 
 /*
+ * Species link to their genus, family, and order as taxon URNs, but media
+ * only references species. Copy each media subject and cover up to its taxa
+ * so taxon thing pages and listings work through the existing readers.
+ * Also give each taxon an id triple, so it reads as a full thing.
+ */
+export function addTaxonSubjects(tdb: TribbleDB) {
+  const taxaBySpecies = new Map<string, string[]>();
+  const taxonUrns = new Set<string>();
+
+  for (const rank of TAXON_RANKS) {
+    const rankTriples = tdb.search({ relation: rank.relation }).triples();
+
+    for (const [src, , tgt] of rankTriples) {
+      const species = baseUrn(src);
+      const taxa = taxaBySpecies.get(species) ?? [];
+      taxa.push(tgt);
+      taxaBySpecies.set(species, taxa);
+      taxonUrns.add(tgt);
+    }
+  }
+
+  const triples: Triple[] = [];
+  for (const taxonUrn of taxonUrns) {
+    triples.push([taxonUrn, "id", taxonUrn]);
+  }
+
+  const liftedRelations = [KnownRelations.SUBJECT, KnownRelations.COVER];
+
+  for (const mediaType of [KnownTypes.PHOTO, KnownTypes.VIDEO]) {
+    const mediaTriples = tdb.search({
+      source: { type: mediaType },
+      relation: liftedRelations,
+    }).triples();
+
+    for (const [src, relation, tgt] of mediaTriples) {
+      // subjects may carry qs variants (?context=wild); taxa hang off the base
+      const taxa = taxaBySpecies.get(baseUrn(tgt)) ?? [];
+      for (const taxonUrn of taxa) {
+        triples.push([src, relation, taxonUrn]);
+      }
+    }
+  }
+
+  tdb.add(triples);
+}
+
+/*
  * Strip any query-string variant (e.g. ?context=wild) from a URN, so all
  * variants of an entity collapse to one identity.
  */
@@ -494,9 +542,14 @@ const FINAL_PASSES: DerivationPass[] = [
     run: addTransitiveMediaLocations,
   },
   { name: "addFeatureMediaLocations", after: [], run: addFeatureMediaLocations },
+  { name: "addTaxonSubjects", after: [], run: addTaxonSubjects },
   {
     name: "pruneMedialessThings",
-    after: ["addTransitiveMediaLocations", "addFeatureMediaLocations"],
+    after: [
+      "addTransitiveMediaLocations",
+      "addFeatureMediaLocations",
+      "addTaxonSubjects",
+    ],
     run: pruneMedialessThings,
   },
 ];

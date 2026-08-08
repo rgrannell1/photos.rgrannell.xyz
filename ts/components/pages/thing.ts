@@ -2,7 +2,7 @@ import m from "mithril";
 import { ThingSubtitle, ThingTitle } from "../thing/thing-title.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { arrayify } from "../../commons/arrays.ts";
+import { arrayify, one } from "../../commons/arrays.ts";
 import type {
   Photo as PhotoType,
   Services,
@@ -14,10 +14,18 @@ import { AlbumCard } from "../album/album-card.ts";
 import { PhotoGrid } from "../media/photo-grid.ts";
 import { ThingList } from "../thing/thing-list.ts";
 import { setify, setOf } from "../../commons/sets.ts";
-import { KnownRelations } from "../../constants/data.ts";
+import {
+  KnownRelations,
+  TAXON_RANKS,
+  TAXON_TYPES,
+} from "../../constants/data.ts";
 import { ListingLink } from "../thing/listing-link.ts";
 import { ThingUrls } from "../thing/thing-urls.ts";
 import { HeartRain } from "../shell/love.ts";
+import { PhotoAlbum } from "../album/photo-album.ts";
+import { ThingCaption } from "../thing/thing-caption.ts";
+import { loadingMode, thumbHashDataUrl } from "../../services/photos.ts";
+import { navigate } from "../../commons/events.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -146,6 +154,10 @@ function viewThingDetails(
 
   const $rows = Object.entries(metadata).map(drawMetadataRow);
 
+  if ($rows.length === 0) {
+    return null;
+  }
+
   return m("div", [
     m("h3", "Details"),
     m("table.metadata-table", $rows),
@@ -199,6 +211,18 @@ function addSingleThingMetadata(
       urns: new Set(arrayify(thing.unescoId)),
       services,
     });
+  }
+
+  for (const rank of TAXON_RANKS) {
+    const taxa = thing[rank.relation];
+
+    if (taxa) {
+      metadata[rank.label] = m(ThingList, {
+        kind: "taxon",
+        urns: setify(taxa) as Set<string>,
+        services,
+      });
+    }
   }
 }
 
@@ -302,6 +326,81 @@ function PhotoSection() {
   return { view: viewPhotoSection.bind(null, photosFor) };
 }
 
+/*
+ * Member species of the page's taxon; empty for non-taxon things.
+ */
+function readMemberSpecies(
+  things: TripleObject[],
+  services: Services,
+): TripleObject[] {
+  const [thing] = things;
+  const urn = thing ? (one(thing.id) as string | undefined) : undefined;
+
+  if (!urn || !TAXON_TYPES.has(asUrn(urn).type)) {
+    return [];
+  }
+
+  return services.readTaxonMembers(urn);
+}
+
+function drawMemberCard(
+  services: Services,
+  member: TripleObject,
+  idx: number,
+): m.Children[] {
+  const id = one(member.id) as string | undefined;
+  if (!id) {
+    return [];
+  }
+
+  const cover = services.readThingCover(id);
+  if (!cover) {
+    return [];
+  }
+
+  const { type, id: thingId } = asUrn(id);
+
+  return [m(PhotoAlbum, {
+    key: `member-${id}`,
+    label: (one(member.name) ?? thingId) as string,
+    imageUrl: cover.fullImage,
+    thumbnailUrl: cover.thumbnailUrl,
+    thumbnailDataUrl: thumbHashDataUrl(cover.mosaicColours),
+    loading: loadingMode(idx),
+    trip: undefined,
+    child: m(ThingCaption, { thing: member, titleExtra: undefined }),
+    onclick: navigate(`/thing/${type}:${thingId}`),
+  })];
+}
+
+function viewSpeciesSection(
+  membersFor: CachedReader<TripleObject[]>,
+  vnode: m.Vnode<ThingPageAttrs>,
+): m.Children {
+  const members = membersFor(vnode.attrs);
+
+  if (members.length === 0) {
+    return null;
+  }
+
+  const $cards = members
+    .flatMap(drawMemberCard.bind(null, vnode.attrs.services));
+
+  return m("div", [
+    m("h3", "Species"),
+    m("section.album-container", $cards),
+  ]);
+}
+
+/*
+ * The species folder grid on taxon pages: one cover card per member species.
+ */
+function SpeciesSection() {
+  const membersFor = cachedByUrn(readMemberSpecies);
+
+  return { view: viewSpeciesSection.bind(null, membersFor) };
+}
+
 function isOlm(urn: string): boolean {
   const parsed = asUrn(urn);
   return parsed.type === "amphibian" && parsed.id === "proteus-anguinus";
@@ -323,6 +422,7 @@ function viewThingPage(vnode: m.Vnode<ThingPageAttrs>): m.Children {
       m("br"),
       m(ThingUrls, { things }),
       m(ThingDetails, { urn, things, services, visible }),
+      m(SpeciesSection, { urn, things, services, visible }),
       m(PhotoSection, { urn, things, services, visible }),
       m(VideoSection, { urn, things, services, visible }),
       m(AlbumSection, { urn, things, services, visible }),

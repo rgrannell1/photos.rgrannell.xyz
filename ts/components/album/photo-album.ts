@@ -53,7 +53,7 @@ export type PhotoAlbumAttrs = {
   imageUrl?: string;
   href?: string;
   thumbnailUrl: string;
-  thumbnailDataUrl: string;
+  thumbnailDataUrl: string | null;
   loading: "eager" | "lazy";
   child?: m.Children;
   onclick?: (e: Event) => void;

@@ -43,6 +43,8 @@ import {
   isBinomialType,
   readListings,
   readNamedTypeThings,
+  readTaxonMembers,
+  readTaxons,
   readThing,
 } from "../commons/things.ts";
 import {
@@ -86,5 +88,7 @@ export const SERVICE_READERS = {
   readWildMammalChecklist,
   readNamedTypeThings,
   readListings,
+  readTaxons,
+  readTaxonMembers,
   isBinomialType,
 };

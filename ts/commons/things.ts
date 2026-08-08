@@ -2,7 +2,7 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
-import { capitalise, pluralise } from "../commons/strings.ts";
+import { capitalise, pluralise, titleCase } from "../commons/strings.ts";
 import { KnownTypes } from "../constants/data.ts";
 
 /*
@@ -86,6 +86,53 @@ export const readParsedThings = function <Parsed>(
 
   return parsedThings;
 };
+
+/*
+ * The display label for a taxon: prefer the English common name, fall back
+ * to the Latin name, then the URN id. Always title-cased.
+ */
+export function taxonLabel(taxon: TripleObject): string {
+  const urn = one(taxon.id) as string | undefined;
+  const fallback = urn ? asUrn(urn).id.replace(/-/g, " ") : "";
+  const label = one(taxon.commonName) ?? one(taxon.name) ?? fallback;
+
+  return titleCase(String(label));
+}
+
+/*
+ * Read taxon things (genus, family, order) with title-cased display names.
+ */
+export function readTaxons(
+  tdb: TribbleDB,
+  urns: Set<string>,
+): TripleObject[] {
+  return readThings(tdb, urns).map((taxon) => {
+    return { ...taxon, name: taxonLabel(taxon) };
+  });
+}
+
+/*
+ * Read the member species of a taxon, sorted by display name. The rank
+ * relation shares its name with the taxon's URN type (genus, family, order).
+ */
+export function readTaxonMembers(
+  tdb: TribbleDB,
+  taxonUrn: string,
+): TripleObject[] {
+  const { type, id } = asUrn(taxonUrn);
+
+  const speciesUrns = tdb.search({
+    relation: type,
+    target: { type, id },
+  }).sources();
+
+  return readThings(tdb, new Set(speciesUrns)).sort((thinga, thingb) => {
+    const first = (one(thinga.name) ?? "") as string;
+    const second = (one(thingb.name) ?? "") as string;
+
+    return first.localeCompare(second);
+  });
+}
 
 /*
  * Read all things of a given type that have a name

@@ -3,7 +3,7 @@ import { isSmallerThan, setTitle, sharePhotoUrl } from "../../services/window.ts
 import { AlbumBanner } from "../album/album-banner.ts";
 import { AlbumShareButton } from "../album/album-share-button.ts";
 import { countryFlagLinks } from "../thing/place-links.ts";
-import { encodeBitmapDataURL } from "../../services/photos.ts";
+import { thumbHashDataUrl } from "../../services/photos.ts";
 
 import type {
   Album,
@@ -21,7 +21,6 @@ import { setify } from "../../commons/sets.ts";
 import { SMALL_DEVICE_WIDTH } from "../../constants/layout.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TripPreviousAlbums } from "../album/trip-previous-albums.ts";
-import { BANNER_MOSAIC_DIMENSION } from "../../constants/banners.ts";
 
 type AlbumAttrs = {
   album: Album;
@@ -79,14 +78,7 @@ function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
   const bannerSrc = bannerPhoto
     ? bannerPhoto.midImageLossyUrl ?? bannerPhoto.thumbnailUrl
     : null;
-  const bannerMosaic = bannerPhoto?.mosaicBanner ?? null;
-  const thumbnailDataUrl = bannerMosaic
-    ? encodeBitmapDataURL(
-      bannerMosaic,
-      BANNER_MOSAIC_DIMENSION,
-      BANNER_MOSAIC_DIMENSION,
-    )
-    : null;
+  const thumbnailDataUrl = thumbHashDataUrl(bannerPhoto?.mosaicBanner);
 
   const $banner = bannerSrc
     ? m(AlbumBanner, { src: bannerSrc, alt: name, thumbnailDataUrl })

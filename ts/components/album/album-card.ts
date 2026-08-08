@@ -7,7 +7,7 @@ import type { Album, Country } from "../../types.ts";
 import { PhotoAlbum } from "./photo-album.ts";
 import { PhotoAlbumMetadata } from "./photo-album-metadata.ts";
 import { countryFlagLinks } from "../thing/place-links.ts";
-import { encodeBitmapDataURL } from "../../services/photos.ts";
+import { thumbHashDataUrl } from "../../services/photos.ts";
 import { albumRoute, onAlbumClick } from "../../commons/album-nav.ts";
 
 type AlbumCardAttrs = {
@@ -38,7 +38,7 @@ function viewAlbumCard(vnode: m.Vnode<AlbumCardAttrs>): m.Children {
     label: album.name,
     href: albumRoute(album.id),
     thumbnailUrl: album.thumbnailUrl,
-    thumbnailDataUrl: encodeBitmapDataURL(album.mosaic),
+    thumbnailDataUrl: thumbHashDataUrl(album.mosaic),
     loading,
     minDate: album.minDate,
     onclick: onAlbumClick.bind(null, album.id),

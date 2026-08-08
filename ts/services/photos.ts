@@ -11,6 +11,8 @@ import {
   readSubjects,
 } from "./readers.ts";
 import { arrayify, one } from "../commons/arrays.ts";
+import { isTaxonUrn } from "../commons/urn.ts";
+import { thumbHashFromBase64, thumbHashToRGBA } from "../vendor/thumbhash.ts";
 
 /*
  * Determine whether a photo should be eagerly or lazily loaded
@@ -27,49 +29,48 @@ export function loadingMode(idx: number): "eager" | "lazy" {
   return idx > (maxImagesPerRow * maxRowsInFold) + 1 ? "lazy" : "eager";
 }
 
-const COLOURS_CACHE: Map<string, string> = new Map();
+const PLACEHOLDER_CACHE: Map<string, string> = new Map();
 
 /*
- * Convert a mosaic colour string into a bitmap data URL.
- * The string is a #-separated list of hex colours in row-major order.
- * cols and rows default to 2 for backward compatibility.
- *
- * This is extremely slow and blocking! 110ms
+ * Convert an unpadded-base64 ThumbHash string into a placeholder PNG data URL.
+ * Returns null for missing, legacy hex-mosaic, or malformed values: a bad
+ * placeholder must degrade to no placeholder, never break the page render.
  */
-export function encodeBitmapDataURL(
-  colours: string,
-  cols = 2,
-  rows = 2,
-): string {
-  const cacheKey = `${cols}x${rows}:${colours}`;
-  const cached = COLOURS_CACHE.get(cacheKey);
+export function thumbHashDataUrl(hash: string | null | undefined): string | null {
+  if (!hash || hash.startsWith("#")) {
+    return null;
+  }
+
+  const cached = PLACEHOLDER_CACHE.get(hash);
   if (cached !== undefined) {
     return cached;
   }
 
-  const coloursList = colours.split("#").filter(Boolean).map((colour: string) =>
-    `#${colour}`
-  );
+  let decoded;
+  try {
+    decoded = thumbHashToRGBA(thumbHashFromBase64(hash));
+  } catch {
+    return null;
+  }
+  const { width, height, rgba } = decoded;
+  if (!width || !height) {
+    return null;
+  }
+
   const canvas = document.createElement("canvas");
-  canvas.width = cols;
-  canvas.height = rows;
+  canvas.width = width;
+  canvas.height = height;
 
   const ctx = canvas.getContext("2d");
   if (!ctx) {
     throw new Error("context missing");
   }
 
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols; col++) {
-      const colour = coloursList[row * cols + col];
-      if (!colour) break;
-      ctx.fillStyle = colour;
-      ctx.fillRect(col, row, 1, 1);
-    }
-  }
+  const pixels = new ImageData(new Uint8ClampedArray(rgba), width, height);
+  ctx.putImageData(pixels, 0, 0);
 
   const dataUrl = canvas.toDataURL("image/png");
-  COLOURS_CACHE.set(cacheKey, dataUrl);
+  PLACEHOLDER_CACHE.set(hash, dataUrl);
   return dataUrl;
 }
 
@@ -123,7 +124,8 @@ export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
   for (const [, relation, target] of triples) {
     if (relation === KnownRelations.LOCATION) {
       locations.add(target);
-    } else {
+    } else if (!isTaxonUrn(target)) {
+      // derived taxon subjects stay out of subject lists; species only
       subjects.add(target);
     }
   }
