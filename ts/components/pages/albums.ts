@@ -1,7 +1,7 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { AlbumBanner } from "../album/album-banner.ts";
-import { AlbumShareButton } from "../album/album-share-button.ts";
+import { ShareButton } from "../share-button.ts";
 import { AlbumStats } from "../album/album-stats.ts";
 import { YearRecap } from "../album/year-recap.ts";
 import type { Album, Services } from "../../types.ts";
@@ -222,7 +222,7 @@ function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
   const $tripShare = selectedTrip
     ? m("section.trip-share", [
       m("h2.trip-title", tripName),
-      m(AlbumShareButton, {
+      m(ShareButton, {
         url: sharePhotoUrl(`trip/${asUrn(selectedTrip).id}`),
         name: tripName as string,
       }),

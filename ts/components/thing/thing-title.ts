@@ -1,7 +1,7 @@
 import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
-import { binomial, capitalise } from "../../commons/strings.ts";
+import { binomial } from "../../commons/strings.ts";
 import { KnownTypes, TAXON_TYPES } from "../../constants/data.ts";
 import { one } from "../../commons/arrays.ts";
 import { listingLabel, taxonLabel } from "../../commons/things.ts";
@@ -77,12 +77,13 @@ function viewThingSubtitle(
 ): m.Children {
   const parsed = asUrn(vnode.attrs.urn);
 
-  // taxon pages show their rank (Genus, Family, Order) as the subtitle
+  // taxon pages show their latin name as the subtitle, like species pages;
+  // taxon ids are the lowercase latin name
   if (TAXON_TYPES.has(parsed.type)) {
     return m(
       "span",
       { class: `thing-binomial ${parsed.type}-binomial` },
-      capitalise(parsed.type),
+      binomial(parsed.id),
     );
   }
 

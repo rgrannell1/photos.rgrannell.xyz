@@ -1,7 +1,7 @@
 import m from "mithril";
 import { isSmallerThan, setTitle, sharePhotoUrl } from "../../services/window.ts";
 import { AlbumBanner } from "../album/album-banner.ts";
-import { AlbumShareButton } from "../album/album-share-button.ts";
+import { ShareButton } from "../share-button.ts";
 import { countryFlagLinks } from "../thing/place-links.ts";
 import { thumbHashDataUrl } from "../../services/photos.ts";
 
@@ -96,7 +96,7 @@ function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
       m.trust(preprocessDescription(description ?? "") ?? ""),
     ),
     m("br"),
-    m(AlbumShareButton, { url, name }),
+    m(ShareButton, { url, name }),
     " ",
     m(AlbumsButton),
     " ",

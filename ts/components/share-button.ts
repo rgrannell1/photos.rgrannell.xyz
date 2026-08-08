@@ -1,13 +1,13 @@
 import m from "mithril";
-import { canNativeShare, nativeShare } from "../../services/window.ts";
+import { canNativeShare, nativeShare } from "../services/window.ts";
 
-type AlbumShareButtonAttrs = {
+type ShareButtonAttrs = {
   url: string;
   name: string;
 };
 
 /* */
-async function shareAlbum(
+async function share(
   localState: { sharing: boolean },
   url: string,
   name: string,
@@ -21,9 +21,9 @@ function buttonText(localState: { sharing: boolean }) {
   return localState.sharing ? "[sharing...]" : "[share]";
 }
 
-function viewAlbumShareButton(
+function viewShareButton(
   localState: { sharing: boolean },
-  vnode: m.Vnode<AlbumShareButtonAttrs>,
+  vnode: m.Vnode<ShareButtonAttrs>,
 ): m.Children {
   const { url, name } = vnode.attrs;
 
@@ -33,15 +33,18 @@ function viewAlbumShareButton(
   }
 
   return m("button.photo-share-button", {
-    onclick: shareAlbum.bind(null, localState, url, name),
+    onclick: share.bind(null, localState, url, name),
   }, buttonText(localState));
 }
 
-/* */
-export function AlbumShareButton() {
+/*
+ * The [share] control used by album, trip, and thing pages. Links to the
+ * sharephoto domain on desktop; opens the native share sheet on mobile.
+ */
+export function ShareButton() {
   const localState = {
     sharing: false,
   };
 
-  return { view: viewAlbumShareButton.bind(null, localState) };
+  return { view: viewShareButton.bind(null, localState) };
 }

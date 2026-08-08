@@ -26,6 +26,8 @@ import { PhotoAlbum } from "../album/photo-album.ts";
 import { ThingCaption } from "../thing/thing-caption.ts";
 import { loadingMode, thumbHashDataUrl } from "../../services/photos.ts";
 import { navigate } from "../../commons/events.ts";
+import { ShareButton } from "../share-button.ts";
+import { sharePhotoUrl } from "../../services/window.ts";
 
 type ThingPageAttrs = {
   urn: string;
@@ -401,6 +403,26 @@ function SpeciesSection() {
   return { view: viewSpeciesSection.bind(null, membersFor) };
 }
 
+/*
+ * The share control for a concrete thing page. Wildcard listings have no
+ * prebaked social card, so they get no share link.
+ */
+function drawShareButton(urn: string, things: TripleObject[]): m.Children {
+  const { type, id } = asUrn(urn);
+
+  if (id === "*") {
+    return null;
+  }
+
+  const [thing] = things;
+  const name = ((thing ? one(thing.name) : undefined) ?? id) as string;
+
+  return m(ShareButton, {
+    url: sharePhotoUrl(`thing/${type}:${id}`),
+    name,
+  });
+}
+
 function isOlm(urn: string): boolean {
   const parsed = asUrn(urn);
   return parsed.type === "amphibian" && parsed.id === "proteus-anguinus";
@@ -421,9 +443,10 @@ function viewThingPage(vnode: m.Vnode<ThingPageAttrs>): m.Children {
       }),
       m("br"),
       m(ThingUrls, { things }),
+      drawShareButton(urn, things),
       m(ThingDetails, { urn, things, services, visible }),
-      m(SpeciesSection, { urn, things, services, visible }),
       m(PhotoSection, { urn, things, services, visible }),
+      m(SpeciesSection, { urn, things, services, visible }),
       m(VideoSection, { urn, things, services, visible }),
       m(AlbumSection, { urn, things, services, visible }),
     ]),

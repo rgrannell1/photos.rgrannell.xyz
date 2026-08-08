@@ -915,6 +915,18 @@ button:disabled {
   border-left: 8px solid var(--tag-color-6);
 }
 
+.genus-link, .genus-binomial {
+  border-left: 8px solid var(--tag-color-5);
+}
+
+.family-link, .family-binomial {
+  border-left: 8px solid var(--tag-color-6);
+}
+
+.order-link, .order-binomial {
+  border-left: 8px solid var(--tag-color-4);
+}
+
 .place-link, .camera-link, .rating-link, .style-link, .country-link {
   border-left: 8px solid var(--tag-color-7);
 }
