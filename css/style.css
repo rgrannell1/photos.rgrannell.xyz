@@ -814,6 +814,12 @@ button:disabled {
   margin: 10px 0;
 }
 
+/* the global ul rule is !important with (0,1,2) specificity; match both */
+.metadata-table td ul {
+  margin: 0;
+  padding: 0 !important;
+}
+
 .metadata-table li {
   list-style: none;
 }
