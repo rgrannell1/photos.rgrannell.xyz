@@ -1,6 +1,6 @@
 /*
  * App entry point. Every top-level side effect happens here: event
- * bindings, the tribble stream load, the route mount, and prefetches.
+ * bindings, the tribble stream load, and the route mount.
  */
 
 import m from "mithril";
@@ -8,7 +8,6 @@ import { bindGlobalListeners } from "./app/listeners.ts";
 import { routes } from "./app/routes.ts";
 import { state } from "./app/context.ts";
 import { completeLoad } from "./state.ts";
-import { prefetchFlags } from "./services/flags.ts";
 
 bindGlobalListeners();
 
@@ -17,4 +16,3 @@ completeLoad(state, () => m.redraw()).catch((err) => {
 });
 
 m.route(document.body, "/albums", routes);
-prefetchFlags();

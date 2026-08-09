@@ -190,6 +190,7 @@ export async function buildHTML(flags: FlagManifest, css: string) {
       stats: statsText,
       env: envText,
       flags: JSON.stringify(flags),
+      flagSprite: flags.sprite,
       css,
       prefetched: findPrefetchTargets(),
       homepageThumbnails: JSON.stringify(

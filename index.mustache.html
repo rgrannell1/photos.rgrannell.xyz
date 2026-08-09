@@ -18,6 +18,7 @@
     <link rel="preload" href="/manifest/tribbles.{{ publicationId }}.txt" as="fetch" crossorigin>
     <link rel="preload" fetchpriority="high" href="{{{ albumsBanner }}}" as="image">
     <link rel="preload" href="/fonts/GolosText-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" fetchpriority="high" href="{{{ flagSprite }}}" as="image" type="image/avif">
     {{#prefetched}}
     <link rel="preload" fetchpriority="high" href="{{{.}}}" as="image">
     {{/prefetched}}

@@ -404,6 +404,9 @@ button:disabled {
   height: 1em;
   width: 1.35em;
   background-repeat: no-repeat;
+  /* neutral chip until the sprite or big flag paints; flag cells are opaque
+     and cover it */
+  background-color: rgba(127, 127, 127, 0.18);
   vertical-align: -0.15em;
   border-radius: 2px;
   /* keep white flag edges visible on the white page */

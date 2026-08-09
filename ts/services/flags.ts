@@ -1,6 +1,6 @@
 /*
- * Flag asset access: the build-baked manifest, and idle-time warming of the
- * emoji sprite into the browser and service-worker caches.
+ * Flag asset access: the build-baked manifest. The sprite itself is preloaded
+ * from index.html, so it lands before first paint.
  */
 
 import type { AppWindow, FlagManifest } from "../types.ts";
@@ -10,22 +10,4 @@ import type { AppWindow, FlagManifest } from "../types.ts";
  */
 export function flagManifest(): FlagManifest {
   return (window as AppWindow).flags;
-}
-
-function ignoreError(): void {}
-
-function warmFlagSprite(): void {
-  fetch(flagManifest().sprite, { priority: "low" }).catch(ignoreError);
-}
-
-/*
- * Warm the emoji sprite into the browser and service-worker cache without
- * blocking boot. Runs in idle time; failures are ignored.
- */
-export function prefetchFlags(): void {
-  if ("requestIdleCallback" in window) {
-    requestIdleCallback(warmFlagSprite, { timeout: 4000 });
-  } else {
-    setTimeout(warmFlagSprite, 1000);
-  }
 }
