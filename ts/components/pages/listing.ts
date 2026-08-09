@@ -13,6 +13,7 @@ import {
   createBatchRenderer,
 } from "../../services/batch-render.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
+import { FlagIcon } from "../flag.ts";
 
 /*
  * Derive an optional inline badge for the listing card title.
@@ -21,9 +22,9 @@ import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 function listingTitleExtra(
   thing: TripleObject,
   listingType: string,
-): string | undefined {
+): m.Children {
   if (listingType === KnownTypes.BIRD && one(thing.irish) === "true") {
-    return "🇮🇪";
+    return m(FlagIcon, { name: "Ireland" });
   }
   return undefined;
 }
@@ -139,7 +140,7 @@ function viewBirdListingDetails(
       title: "Filter to Irish species",
       class: irelandActive ? "listing-filter-flag--selected" : undefined,
       onclick: onToggleIreland,
-    }, "🇮🇪"),
+    }, m(FlagIcon, { name: "Ireland" })),
     ` ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
   );
 }
@@ -162,7 +163,8 @@ function viewMammalListingDetails(
   return m(
     "p.listing-details",
     { "data-testid": "listing-details" },
-    `🇮🇪 ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
+    m(FlagIcon, { name: "Ireland" }),
+    ` ${irishWildSpecies} species · 🗺️ ${totalSpecies} species, ${wildSpecies} wild`,
   );
 }
 

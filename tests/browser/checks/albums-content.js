@@ -16,7 +16,7 @@ async function textOf(parent, selector) {
 }
 
 /**
- * Extract country flags in a card: SVG flag icons by alt text, else emoji.
+ * Extract country flags in a card: flag icons by label, else emoji.
  * @param {import('playwright').ElementHandle} parent
  * @returns {Promise<string|null>}
  */
@@ -25,7 +25,7 @@ async function countriesOf(parent) {
   if (!el) return null;
 
   return (await el.evaluate((node) => {
-    const icons = [...node.querySelectorAll("img.flag-icon, svg.flag-icon")]
+    const icons = [...node.querySelectorAll(".flag-icon")]
       .map((icon) => icon.getAttribute("alt") ?? icon.getAttribute("aria-label") ?? "");
     return [...icons, node.textContent ?? ""].join(" ");
   })).trim();

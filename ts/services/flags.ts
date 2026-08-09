@@ -1,25 +1,25 @@
 /*
- * Flag sprite loading: the build-hashed sprite URL, and idle-time warming
- * of the sprite into the browser and service-worker caches.
+ * Flag asset access: the build-baked manifest, and idle-time warming of the
+ * emoji sprite into the browser and service-worker caches.
  */
 
-import type { AppWindow } from "../types.ts";
+import type { AppWindow, FlagManifest } from "../types.ts";
 
 /*
- * The build-hashed sprite URL, baked into index.html.
+ * The flag manifest baked into index.html by the build.
  */
-export function spriteUrl(): string {
-  return (window as AppWindow).flagSprite;
+export function flagManifest(): FlagManifest {
+  return (window as AppWindow).flags;
 }
 
 function ignoreError(): void {}
 
 function warmFlagSprite(): void {
-  fetch(spriteUrl(), { priority: "low" }).catch(ignoreError);
+  fetch(flagManifest().sprite, { priority: "low" }).catch(ignoreError);
 }
 
 /*
- * Warm the flag sprite into the browser and service-worker cache without
+ * Warm the emoji sprite into the browser and service-worker cache without
  * blocking boot. Runs in idle time; failures are ignored.
  */
 export function prefetchFlags(): void {

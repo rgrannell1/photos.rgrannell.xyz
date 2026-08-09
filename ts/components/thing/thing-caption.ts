@@ -3,13 +3,13 @@ import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../../commons/arrays.ts";
 import { KnownTypes, TAXON_TYPES } from "../../constants/data.ts";
 import { taxonLabel } from "../../commons/things.ts";
-import { placeEmoji, placeFeatureEmoji } from "../../services/emoji.ts";
+import { placeFeatureEmoji } from "../../services/emoji.ts";
 import { FlagIcon } from "../flag.ts";
 import { ThingUrls } from "./thing-urls.ts";
 
 type ThingCaptionAttrs = {
   thing: TripleObject;
-  titleExtra?: string | undefined;
+  titleExtra?: m.Children;
 };
 
 function viewThingCaption(vnode: m.Vnode<ThingCaptionAttrs>): m.Children {
@@ -22,7 +22,7 @@ function viewThingCaption(vnode: m.Vnode<ThingCaptionAttrs>): m.Children {
     ? taxonLabel(thing)
     : one(thing.name) as string | undefined;
   const title: m.Children = one(thing.flag)
-    ? [m(FlagIcon, { name, emoji: placeEmoji(thing) }), ` ${name}`]
+    ? [m(FlagIcon, { name }), ` ${name}`]
     : urnType === KnownTypes.PLACE_FEATURE && id
     ? `${placeFeatureEmoji(id)} ${name}`
     : name;

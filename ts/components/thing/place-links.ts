@@ -5,8 +5,8 @@ import { navigate } from "../../commons/events.ts";
 import { isACountry } from "../../types.ts";
 import type { Country, Place } from "../../types.ts";
 import { one } from "../../commons/arrays.ts";
-import { countryEmoji, placeEmoji } from "../../services/emoji.ts";
-import { FlagIcon } from "../flag.ts";
+import { placeEmoji } from "../../services/emoji.ts";
+import { customFlagAsset, FlagIcon } from "../flag.ts";
 
 export type CountryLinkAttrs = {
   country: Country;
@@ -43,7 +43,7 @@ function viewCountryLink(vnode: m.Vnode<CountryLinkAttrs>): m.Children {
     return m("p");
   }
 
-  const flag = m(FlagIcon, { name, emoji: countryEmoji(country) });
+  const flag = m(FlagIcon, { name });
 
   const parsed = asUrn(id);
   const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
@@ -71,7 +71,15 @@ function viewPlaceLink(
 ): m.Children {
   const { location } = vnode.attrs;
   const name = one(location.name);
-  const flag = m(FlagIcon, { name, emoji: placeEmoji(location) });
+
+  // flags render from vexilla assets only; unflagged places keep their
+  // feature emoji. A flagged place with no asset gets no icon
+  const hasFlag = Boolean(one(location.flag));
+  const flag: m.Children = customFlagAsset(name)
+    ? m(FlagIcon, { name })
+    : hasFlag
+    ? null
+    : placeEmoji(location);
 
   return m("a.place-link", {
     href: urnToUrl(location.id),

@@ -3,7 +3,7 @@ import { one } from "../commons/arrays.ts";
 import { KnownTypes } from "../constants/data.ts";
 import { getTribbleDB } from "../semantic/data.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type { Country, Feature, Place, Thing, Unesco } from "../types.ts";
+import type { Feature, Place, Thing, Unesco } from "../types.ts";
 
 // Anything an emoji can be looked up for: parsed things or raw triple objects
 type EmojiThing = Thing | Feature | Unesco | TripleObject;
@@ -40,16 +40,6 @@ export function placeFeatureEmoji(featureUrn: string): string {
   }).firstObject();
 
   return one(feature?.emoji) ?? "📍";
-}
-
-/*
- * Pick an flag based on the country definition
- *
- * @param thing The country thing
- */
-export function countryEmoji(thing: Country): string {
-  const flag = one(thing.flag);
-  return flag ?? ""; //?? "🏳️";
 }
 
 /*

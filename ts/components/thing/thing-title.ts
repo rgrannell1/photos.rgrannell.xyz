@@ -56,7 +56,7 @@ function viewThingTitle(vnode: m.Vnode<ThingTitleAttrs>): m.Children {
   if (parsed.type === KnownTypes.PLACE && thing && one(thing.flag)) {
     const name = one(thing.name) ?? parsed.id;
     return m("h1", [
-      m(FlagIcon, { name, emoji: placeEmoji(thing) }),
+      m(FlagIcon, { name, big: true }),
       ` ${name}`,
     ]);
   }

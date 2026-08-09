@@ -1,11 +1,11 @@
 /*
- * Flag icons for territories that lack a Unicode flag. Known places map to
- * symbols in a single SVG sprite built from the vexilla assets; everything
- * else falls back to the emoji string from the triples.
+ * Flag icons rendered from the vexilla assets: emoji-size flags crop one cell
+ * from the AVIF sprite, big flags load their own budgeted SVG. Vexilla is the
+ * only flag source; places it does not cover render no flag.
  */
 
 import m from "mithril";
-import { spriteUrl } from "../services/flags.ts";
+import { flagManifest } from "../services/flags.ts";
 
 // Place name to vexilla flag asset; see /flags
 const CUSTOM_FLAGS: Record<string, string> = {
@@ -55,7 +55,7 @@ const CUSTOM_FLAGS: Record<string, string> = {
 };
 
 /*
- * Find the sprite symbol id for a place name, if one exists
+ * Find the vexilla flag id for a place name, if one exists
  */
 export function customFlagAsset(name: string | undefined): string | undefined {
   if (name && Object.prototype.hasOwnProperty.call(CUSTOM_FLAGS, name)) {
@@ -64,29 +64,60 @@ export function customFlagAsset(name: string | undefined): string | undefined {
   return undefined;
 }
 
+/*
+ * Crop one sprite cell with percentage positioning, so the icon scales with
+ * the surrounding font size without knowing the pixel cell width.
+ */
+function spriteCellStyle(position: number): Record<string, string> {
+  const { sprite, count } = flagManifest();
+  const offsetX = count > 1 ? (position / (count - 1)) * 100 : 0;
+
+  return {
+    "background-image": `url(${sprite})`,
+    "background-size": "auto 100%",
+    "background-position": `${offsetX}% 0`,
+  };
+}
+
 export type FlagIconAttrs = {
   name: string | undefined;
-  emoji: string;
+  big?: boolean;
 };
 
 function viewFlagIcon(vnode: m.Vnode<FlagIconAttrs>): m.Children {
-  const { name, emoji } = vnode.attrs;
+  const { name, big } = vnode.attrs;
   const asset = customFlagAsset(name);
-
-  if (asset) {
-    return m(
-      "svg.flag-icon",
-      { role: "img", "aria-label": `${name} flag` },
-      m("use", { href: `${spriteUrl()}#${asset}` }),
-    );
+  if (!asset) {
+    return null;
   }
 
-  return emoji;
+  const manifest = flagManifest();
+  const label = `${name} flag`;
+
+  // big flags over the byte budget fall back to the sprite cell
+  if (big && manifest.big[asset]) {
+    return m("img.flag-icon", {
+      src: manifest.big[asset],
+      alt: label,
+      loading: "lazy",
+    });
+  }
+
+  const position = manifest.positions[asset];
+  if (position === undefined) {
+    return null;
+  }
+
+  return m("span.flag-icon", {
+    role: "img",
+    "aria-label": label,
+    style: spriteCellStyle(position),
+  });
 }
 
 /*
- * Render a place flag: a sprite tile for mapped names, else the emoji.
- * The svg element is sized by CSS, so the layout never shifts on load.
+ * Render a place flag from the vexilla assets, or nothing for unknown places.
+ * The element is sized by CSS, so the layout never shifts on load.
  */
 export function FlagIcon() {
   return { view: viewFlagIcon };

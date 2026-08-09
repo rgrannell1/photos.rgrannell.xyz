@@ -11,6 +11,7 @@ import { navigate } from "../../commons/events.ts";
 import { one } from "../../commons/arrays.ts";
 import { thingEmoji } from "../../services/emoji.ts";
 import { customFlagAsset, FlagIcon } from "../flag.ts";
+import { KnownTypes } from "../../constants/data.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Feature, Thing, Unesco } from "../../types.ts";
 
@@ -47,12 +48,18 @@ function viewThingLink(vnode: m.Vnode<ThingLinkAttrs>): m.Children {
     }
   }
 
-  const emoji = thingEmoji(urn, name, thing);
+  // flags render from vexilla assets only; other things keep their emoji.
+  // A flagged place with no vexilla asset gets no icon, never an emoji flag
+  const hasFlag = type === KnownTypes.PLACE &&
+    Boolean(one((thing as TripleObject).flag));
+  const icon: m.Children = customFlagAsset(name)
+    ? m(FlagIcon, { name })
+    : hasFlag
+    ? null
+    : thingEmoji(urn, name, thing) || null;
 
   // no icon means no separator, or the name sits one space off-column
-  const label = emoji || customFlagAsset(name)
-    ? [m(FlagIcon, { name, emoji }), `\t${name}`]
-    : name;
+  const label = icon ? [icon, `\t${name}`] : name;
 
   return drawThingLink("a", type, {
     href: urn,
@@ -75,10 +82,9 @@ function viewFeatureLink(vnode: m.Vnode<FeatureLinkAttrs>): m.Children {
   const { type, id } = asUrn(urn);
 
   const name = one(thing.name) ?? id;
-  const emoji = thingEmoji(urn, name, thing);
 
   return drawThingLink("p", type, {}, [
-    m(FlagIcon, { name, emoji }),
+    thingEmoji(urn, name, thing),
     `\t${name}`,
   ]);
 }

@@ -5,6 +5,7 @@ import { thumbHashDataUrl } from "../../services/photos.ts";
 import type { Photo, Services } from "../../types.ts";
 import type { ChecklistEntry, NemesisSpecies } from "../../services/stats.ts";
 import { PHOTO_WIDTH } from "../../constants/layout.ts";
+import { FlagIcon } from "../flag.ts";
 
 /*
  * Parse a Unix timestamp string into a Date.
@@ -71,7 +72,7 @@ function viewChecklistDetails(
         ? "listing-filter-flag--selected"
         : undefined,
       onclick: onSelect.bind(null, "ireland"),
-    }, "🇮🇪"),
+    }, m(FlagIcon, { name: "Ireland" })),
     " ",
     m("span.listing-filter-flag", {
       title: "All wild species",
@@ -166,7 +167,9 @@ function viewChecklistCard(vnode: m.Vnode<ChecklistCardAttrs>): m.Children {
     m(ChecklistPhoto, { cover, href, label: entry.name }),
     m("div.checklist-card-metadata", [
       m("p.checklist-card-name", [
-        entry.isIrish ? m("span.checklist-irish-flag", "🇮🇪 ") : null,
+        entry.isIrish
+          ? m("span.checklist-irish-flag", [m(FlagIcon, { name: "Ireland" }), " "])
+          : null,
         m("a.checklist-name-link", { href }, entry.name),
         ...speciesTags(entry, showScarce),
       ]),

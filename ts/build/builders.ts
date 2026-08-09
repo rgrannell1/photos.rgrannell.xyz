@@ -113,56 +113,72 @@ export async function buildCSS(): Promise<string> {
   return cssoMinify(result.code).css;
 }
 
-/*
- * Combine the per-territory flag SVGs into one symbol sprite, so the client
- * fetches one file and references tiles with <use>. The content hash in the
- * filename busts the immutable /flags/* cache when a flag changes.
- */
-export async function buildFlagSprite(): Promise<string> {
-  console.info("🌐 Rendering flag sprite");
+export type FlagManifest = {
+  sprite: string;
+  cellWidth: number;
+  cellHeight: number;
+  count: number;
+  positions: Record<string, number>;
+  big: Record<string, string>;
+};
 
-  const names: string[] = [];
-  for await (const entry of Deno.readDir("flags")) {
-    if (entry.name.endsWith(".svg") && !entry.name.startsWith("sprite.")) {
-      names.push(entry.name);
-    }
-  }
-  names.sort();
-
-  const symbols: string[] = [];
-  for (const name of names) {
-    const text = await Deno.readTextFile(`flags/${name}`);
-    const flagId = name.replace(/\.svg$/, "");
-    const match = text.match(/<svg[^>]*viewBox="([^"]+)"[^>]*>([\s\S]*)<\/svg>/);
-    if (!match) {
-      throw new Error(`no viewBox in flags/${name}`);
-    }
-    symbols.push(`<symbol id="${flagId}" viewBox="${match[1]}">${match[2]}</symbol>`);
-  }
-
-  const sprite = `<svg xmlns="http://www.w3.org/2000/svg">${symbols.join("")}</svg>`;
-
-  const digest = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(sprite),
-  );
-  const hash = Array.from(new Uint8Array(digest))
+async function hashBytes(bytes: Uint8Array<ArrayBuffer>): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest))
     .map((byte) => byte.toString(16).padStart(2, "0")).join("").slice(0, 8);
+}
 
+/*
+ * Publish the vendored vexilla assets under content-hashed names: the AVIF
+ * emoji sprite, and one budgeted SVG per big flag. The hash in the filename
+ * busts the immutable /flags/* cache when a flag changes.
+ */
+export async function buildFlagAssets(): Promise<FlagManifest> {
+  console.info("🌐 Rendering flag assets");
+
+  // wipe previous hashed outputs so changed flags leave no stale files
   for await (const entry of Deno.readDir("flags")) {
-    if (entry.name.startsWith("sprite.")) {
+    if (entry.isFile && entry.name.startsWith("sprite.")) {
       await Deno.remove(`flags/${entry.name}`);
     }
   }
+  await Deno.remove("flags/big", { recursive: true }).catch(() => {});
+  await Deno.mkdir("flags/big", { recursive: true });
 
-  await Deno.writeTextFile(`flags/sprite.${hash}.svg`, sprite);
-  return `/flags/sprite.${hash}.svg`;
+  const spriteBytes = await Deno.readFile("flags/vendor/sprite.avif");
+  const spriteHash = await hashBytes(spriteBytes);
+  await Deno.writeFile(`flags/sprite.${spriteHash}.avif`, spriteBytes);
+
+  const spriteMeta = JSON.parse(
+    await Deno.readTextFile("flags/vendor/sprite.json"),
+  );
+
+  const big: Record<string, string> = {};
+  for await (const entry of Deno.readDir("flags/vendor/big")) {
+    if (!entry.name.endsWith(".svg")) {
+      continue;
+    }
+    const flagId = entry.name.replace(/\.svg$/, "");
+    const bytes = await Deno.readFile(`flags/vendor/big/${entry.name}`);
+    const hash = await hashBytes(bytes);
+    await Deno.writeFile(`flags/big/${flagId}.${hash}.svg`, bytes);
+    big[flagId] = `/flags/big/${flagId}.${hash}.svg`;
+  }
+
+  return {
+    sprite: `/flags/sprite.${spriteHash}.avif`,
+    cellWidth: spriteMeta.cellWidth,
+    cellHeight: spriteMeta.cellHeight,
+    count: Object.keys(spriteMeta.positions).length,
+    positions: spriteMeta.positions,
+    big,
+  };
 }
 
 /*
  * Build HTML
  */
-export async function buildHTML(flagSprite: string, css: string) {
+export async function buildHTML(flags: FlagManifest, css: string) {
   console.info("🌐 Rendering index.html");
 
   const siteUrl = env.photos_url.replace("photos-cdn.", "photos.");
@@ -173,7 +189,7 @@ export async function buildHTML(flagSprite: string, css: string) {
     render(htmlTemplateText, {
       stats: statsText,
       env: envText,
-      flagSprite,
+      flags: JSON.stringify(flags),
       css,
       prefetched: findPrefetchTargets(),
       homepageThumbnails: JSON.stringify(

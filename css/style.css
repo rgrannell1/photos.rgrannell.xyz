@@ -396,13 +396,19 @@ button:disabled {
   opacity: 0.5;
 }
 
-/* SVG flags for territories with no Unicode flag; sized to sit like emoji */
+/* Vexilla flags, sized to sit like emoji: spans crop a cell from the AVIF
+   sprite, imgs hold the big per-flag SVG. Every flag stretches to the same
+   1.35:1 box */
 .flag-icon {
+  display: inline-block;
   height: 1em;
   width: 1.35em;
-  object-fit: contain;
+  background-repeat: no-repeat;
   vertical-align: -0.15em;
   border-radius: 2px;
+  /* keep white flag edges visible on the white page */
+  outline: 1px solid rgba(127, 127, 127, 0.25);
+  outline-offset: -1px;
 }
 
 .country-filter-flag--selected,

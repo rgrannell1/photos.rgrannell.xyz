@@ -35,11 +35,23 @@ export type EnvConfig = {
   publication_id: string;
 };
 
+/*
+ * Flag assets baked in by the build: the hashed AVIF emoji sprite with its
+ * cell layout, and a hashed SVG per big flag within the byte budget.
+ */
+export type FlagManifest = {
+  sprite: string;
+  cellWidth: number;
+  cellHeight: number;
+  count: number;
+  positions: Record<string, number>;
+  big: Record<string, string>;
+};
+
 export type AppWindow = typeof window & {
   stats: Stats;
   envConfig: EnvConfig;
-  // hashed URL of the flag symbol sprite, baked in by the build
-  flagSprite: string;
+  flags: FlagManifest;
 };
 
 /*

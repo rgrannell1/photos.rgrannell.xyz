@@ -1,7 +1,6 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { Country, Services } from "../../types.ts";
-import { countryEmoji } from "../../services/emoji.ts";
 import { FlagIcon } from "../flag.ts";
 
 type CountryFilterAttrs = {
@@ -23,7 +22,7 @@ function drawCountryFlag(
     title: country.name,
     class: isSelected ? "country-filter-flag--selected" : undefined,
     onclick: onSelect.bind(null, isSelected ? undefined : slug),
-  }, m(FlagIcon, { name: country.name, emoji: countryEmoji(country) }));
+  }, m(FlagIcon, { name: country.name }));
 }
 
 function viewCountryFilter(vnode: m.Vnode<CountryFilterAttrs>): m.Children {
