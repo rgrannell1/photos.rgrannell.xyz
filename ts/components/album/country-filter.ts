@@ -1,13 +1,16 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { Country, Services } from "../../types.ts";
-import { FlagIcon } from "../flag.ts";
+import { customFlagAsset, FlagIcon } from "../flag.ts";
 
 type CountryFilterAttrs = {
   services: Services;
   selectedCountry: string | undefined;
   onSelect: (slug: string | undefined) => void;
 };
+
+// A nation and the sub-territories photographed within it
+type FlagGroup = Country[];
 
 function drawCountryFlag(
   selectedCountry: string | undefined,
@@ -25,18 +28,109 @@ function drawCountryFlag(
   }, m(FlagIcon, { name: country.name }));
 }
 
+/*
+ * The vexilla nation a place belongs to. Sub-territory ids carry their nation
+ * as a prefix, so es-galicia and es both group under es.
+ */
+function flagNation(country: Country): string | undefined {
+  const asset = customFlagAsset(country.name);
+  return asset ? asset.split("-")[0] : undefined;
+}
+
+function isNationFlag(country: Country): boolean {
+  const asset = customFlagAsset(country.name);
+  return asset !== undefined && !asset.includes("-");
+}
+
+/*
+ * Bucket countries by their vexilla nation. Places vexilla does not cover
+ * render no flag, so they are dropped here.
+ */
+function groupByNation(countries: Country[]): FlagGroup[] {
+  const groups = new Map<string, FlagGroup>();
+
+  for (const country of countries) {
+    const nation = flagNation(country);
+    if (!nation) {
+      continue;
+    }
+    const group = groups.get(nation) ?? [];
+    group.push(country);
+    groups.set(nation, group);
+  }
+
+  return Array.from(groups.values());
+}
+
+/*
+ * Nation flag first, then its sub-territories in the order they arrived
+ */
+function compareWithinGroup(left: Country, right: Country): number {
+  if (isNationFlag(left) === isNationFlag(right)) {
+    return 0;
+  }
+  return isNationFlag(left) ? -1 : 1;
+}
+
+// Longest group first, so the richest nation leads
+function compareGroupLength(left: FlagGroup, right: FlagGroup): number {
+  return right.length - left.length;
+}
+
+function hasSubterritories(group: FlagGroup): boolean {
+  return group.length > 1;
+}
+
+function lacksSubterritories(group: FlagGroup): boolean {
+  return group.length === 1;
+}
+
+function drawSeparator(): m.Children {
+  return m("span.country-filter-separator", { key: "separator" }, "·");
+}
+
+/*
+ * Lay the flags out as a run of lone nations, then one run per nation that
+ * has sub-territories, each run separated by a dot.
+ */
+function drawFlagRuns(
+  selectedCountry: string | undefined,
+  onSelect: (slug: string | undefined) => void,
+  groups: FlagGroup[],
+): m.Children[] {
+  const drawFlag = drawCountryFlag.bind(null, selectedCountry, onSelect);
+  const lone = groups.filter(lacksSubterritories).flat();
+  const nations = groups.filter(hasSubterritories).sort(compareGroupLength);
+
+  const runs: FlagGroup[] = lone.length > 0 ? [lone] : [];
+
+  for (const group of nations) {
+    runs.push(group.slice().sort(compareWithinGroup));
+  }
+
+  // the separator lives inside the run it precedes, so it never dangles at
+  // the end of a wrapped line. Every child carries a key, as Mithril needs
+  return runs.map((run, index) => {
+    const children = run.map(drawFlag);
+    if (index > 0) {
+      children.unshift(drawSeparator());
+    }
+    return m("span.country-filter-run", { key: `run-${index}` }, children);
+  });
+}
+
 function viewCountryFilter(vnode: m.Vnode<CountryFilterAttrs>): m.Children {
   const { services, selectedCountry, onSelect } = vnode.attrs;
-  const countries = services.readAllCountries();
+  const groups = groupByNation(services.readAllCountries());
 
   return m(
     "p.country-filter",
-    countries.map(drawCountryFlag.bind(null, selectedCountry, onSelect)),
+    drawFlagRuns(selectedCountry, onSelect, groups),
   );
 }
 
 /*
- * Render all distinct country flags from the triples.
+ * Render all distinct country flags from the triples, grouped by nation.
  * Clicking a flag calls onSelect with the country slug; clicking the active flag deselects.
  */
 export function CountryFilter() {

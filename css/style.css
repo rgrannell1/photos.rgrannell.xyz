@@ -383,11 +383,26 @@ button:disabled {
   word-spacing: normal;
 }
 
+/* flags read as runs: lone nations first, then one run per nation that has
+   sub-territories. A run wraps internally but never merges with its neighbour */
 .country-filter {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 2em);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 0.4em;
   padding-right: 4em;
+}
+
+.country-filter-run {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.country-filter-separator {
+  color: var(--secondary-text-color);
+  user-select: none;
 }
 
 .country-filter-flag {
