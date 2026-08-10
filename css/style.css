@@ -405,6 +405,24 @@ button:disabled {
   user-select: none;
 }
 
+/* on mobile the dot goes; each run takes its own row, spaced apart */
+@media (max-width: 500px) {
+  .country-filter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1em;
+  }
+
+  /* a run that wraps stays tighter than the space between runs */
+  .country-filter-run {
+    row-gap: 0.3em;
+  }
+
+  .country-filter-separator {
+    display: none;
+  }
+}
+
 .country-filter-flag {
   font-size: 1.4em;
   cursor: pointer;
