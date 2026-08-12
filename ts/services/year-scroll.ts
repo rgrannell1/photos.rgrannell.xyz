@@ -24,7 +24,7 @@ type YearScrollState = {
  */
 function currentYearInView(): string | null {
   const headings = Array.from(
-    document.querySelectorAll<HTMLElement>(".album-year-heading"),
+    document.querySelectorAll<HTMLElement>(".album-container .year-heading"),
   );
 
   let current: string | null = null;

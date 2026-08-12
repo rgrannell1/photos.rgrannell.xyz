@@ -42,6 +42,7 @@ function viewPhotosPage(vnode: m.Vnode<PhotosPageAttrs>): m.Children {
     m(PhotoGrid, {
       total: photoUrns.length,
       getPhotos: readPhotosByLimit.bind(null, services, photoUrns),
+      groupByYear: true,
     }),
   ]);
 }

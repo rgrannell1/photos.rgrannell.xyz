@@ -479,9 +479,10 @@ button:disabled {
   margin-bottom: 25px;
 }
 
-.album-year-heading {
-  /* span the whole row so each year's albums start on a fresh line.
-     grid-column for the grid layout; flex-basis is the flexbox fallback. */
+.year-heading {
+  /* span the whole row so each year starts on a fresh line, in the album,
+     photo and video grids. grid-column for grid; flex-basis is the flexbox
+     fallback. */
   grid-column: 1 / -1;
   flex-basis: 100%;
   font-size: 3.5em;
@@ -491,7 +492,7 @@ button:disabled {
 }
 
 /* the "before times": older years fade back */
-.album-year-heading.before-times {
+.year-heading.before-times {
   color: var(--secondary-text-color);
 }
 
@@ -562,7 +563,7 @@ button:disabled {
     font-size: 2em;
   }
 
-  .album-year-heading {
+  .year-heading {
     font-size: 2em;
   }
 
@@ -618,7 +619,9 @@ button:disabled {
   }
 
   /* give year headings left breathing room since the container now spans the full viewport */
-  .album-container > h2.album-year-heading {
+  .album-container > h2.year-heading,
+  .photo-container > h2.year-heading,
+  .video-container > h2.year-heading {
     padding-left: 1rem;
   }
 

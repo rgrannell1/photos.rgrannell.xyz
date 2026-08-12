@@ -1,17 +1,46 @@
 import m from "mithril";
-import type { Video as VideoType } from "../../types.ts";
 import { drawVideoItem } from "../media/video.ts";
+import {
+  type DatedVideo,
+  groupVideosByYear,
+  type VideoYearGroup,
+} from "../../services/videos.ts";
 import {
   type BatchRenderer,
   createBatchRenderer,
 } from "../../services/batch-render.ts";
+import { BEFORE_TIMES_FINAL_YEAR } from "../../constants/display.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import { countLabel } from "../../commons/strings.ts";
 
 type VideosPageAttrs = {
-  videos: VideoType[];
+  videos: DatedVideo[];
   visible: boolean;
 };
+
+/*
+ * Render one year run: an optional heading, then its video tiles.
+ */
+function drawYearGroup(group: VideoYearGroup): m.Children[] {
+  const $components: m.Children[] = [];
+
+  if (group.showHeading) {
+    $components.push(m(
+      "h2.year-heading",
+      {
+        key: `year-${group.year}`,
+        class: group.year <= BEFORE_TIMES_FINAL_YEAR ? "before-times" : undefined,
+      },
+      group.year.toString(),
+    ));
+  }
+
+  for (const video of group.videos) {
+    $components.push(drawVideoItem(video));
+  }
+
+  return $components;
+}
 
 function scheduleVideosBatch(
   batch: BatchRenderer,
@@ -25,10 +54,18 @@ function viewVideosList(
   vnode: m.Vnode<VideosPageAttrs>,
 ): m.Children {
   const { videos } = vnode.attrs;
-  return m(
-    "section.video-container",
-    videos.slice(0, batch.count()).map(drawVideoItem),
+
+  const groups = groupVideosByYear(
+    videos.slice(0, batch.count()),
+    new Date().getFullYear(),
   );
+
+  const $videoComponents: m.Children[] = [];
+  for (const group of groups) {
+    $videoComponents.push(...drawYearGroup(group));
+  }
+
+  return m("section.video-container", $videoComponents);
 }
 
 function VideosList() {

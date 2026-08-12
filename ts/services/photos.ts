@@ -29,6 +29,48 @@ export function loadingMode(idx: number): "eager" | "lazy" {
   return idx > (maxImagesPerRow * maxRowsInFold) + 1 ? "lazy" : "eager";
 }
 
+/*
+ * The year a photo was taken. createdAt holds epoch milliseconds as a string.
+ * Returns NaN when the value is missing or unparseable.
+ */
+export function photoYear(photo: Photo): number {
+  return new Date(parseInt(photo.createdAt)).getFullYear();
+}
+
+// a run of consecutive photos from one year, with its heading state
+export type PhotoYearGroup = {
+  year: number;
+  // the current year runs headerless, matching the albums page
+  showHeading: boolean;
+  photos: Photo[];
+};
+
+/*
+ * Pure transform: split a date-sorted photo list into consecutive year runs.
+ * Photos with no usable date join the run above them rather than starting one.
+ */
+export function groupPhotosByYear(
+  photos: Photo[],
+  currentYear: number,
+): PhotoYearGroup[] {
+  const groups: PhotoYearGroup[] = [];
+
+  for (const photo of photos) {
+    const year = photoYear(photo);
+    const lastGroup = groups[groups.length - 1];
+
+    if (lastGroup && (lastGroup.year === year || !Number.isFinite(year))) {
+      lastGroup.photos.push(photo);
+      continue;
+    }
+
+    const showHeading = Number.isFinite(year) && year !== currentYear;
+    groups.push({ year, showHeading, photos: [photo] });
+  }
+
+  return groups;
+}
+
 const PLACEHOLDER_CACHE: Map<string, string> = new Map();
 
 /*

@@ -85,7 +85,7 @@ function drawYearGroup(
 
   if (group.showHeading) {
     $components.push(m(
-      "h2.album-year-heading",
+      "h2.year-heading",
       {
         key: `year-${group.year}`,
         id: `year-${group.year}`,
