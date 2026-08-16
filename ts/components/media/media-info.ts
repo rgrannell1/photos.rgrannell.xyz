@@ -7,7 +7,7 @@ import m from "mithril";
 import { toThingLinks } from "../thing/thing-links.ts";
 import type { Services } from "../../types.ts";
 import { arrayify } from "../../commons/arrays.ts";
-import { isTaxonUrn } from "../../commons/urn.ts";
+import { isTaxonUrn, subjectQualifier } from "../../commons/urn.ts";
 import { preprocessDescription } from "../../commons/strings.ts";
 import { MediaLocations } from "./media-locations.ts";
 import { Heading } from "./heading.ts";
@@ -69,6 +69,24 @@ function Style() {
   return { view: viewStyle };
 }
 
+/*
+ * One subject, with its context chip alongside when the subject was not seen
+ * in the wild.
+ */
+function drawSubject(services: Services, urn: string): m.Children[] {
+  const $links = toThingLinks(services, [urn]);
+  if ($links.length === 0) {
+    return [];
+  }
+
+  const qualifier = subjectQualifier(urn);
+  const $qualifier = qualifier
+    ? m("span.subject-qualifier", qualifier)
+    : null;
+
+  return [m(".subject-entry", [$links, $qualifier])];
+}
+
 function viewSubject(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   const { media, services } = vnode.attrs;
 
@@ -76,7 +94,7 @@ function viewSubject(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   const subjects = arrayify(media.subject)
     .filter((subject) => !isTaxonUrn(subject));
 
-  const $subject = toThingLinks(services, subjects);
+  const $subject = subjects.flatMap(drawSubject.bind(null, services));
   return m("td", $subject.length > 0 ? $subject : "—");
 }
 

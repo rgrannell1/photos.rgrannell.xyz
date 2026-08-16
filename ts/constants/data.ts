@@ -96,6 +96,21 @@ export const TAXON_TYPES = new Set<string>([
 ]);
 
 /*
+ * Display labels for the ?context= qualifier on a subject URN. Mirror writes
+ * both "captive" and "captivity" for the same idea, so both map to one label.
+ * A context with no entry here shows uppercased as it is written.
+ */
+export const SUBJECT_QUALIFIER_LABELS: Record<string, string> = {
+  captive: "captive",
+  captivity: "captive",
+  museum: "museum",
+  unsure: "unsure",
+};
+
+// contexts that need no qualifier chip; wild is how a subject reads by default
+export const UNQUALIFIED_SUBJECT_CONTEXTS = new Set(["wild"]);
+
+/*
  * These relations should all expand to CDN urls
  */
 export const CDN_RELATIONS = new Set([

@@ -933,6 +933,26 @@ button:disabled {
   margin-left: 0;
 }
 
+/* a subject and its context chip share a line; thing links are block-level */
+.subject-entry {
+  display: flex;
+  align-items: center;
+}
+
+/* outlined chip marking a subject not seen in the wild, e.g CAPTIVE. Outlined
+   rather than filled, so it reads as a note on the subject, not a tag of its own */
+.subject-qualifier {
+  margin-left: 8px;
+  padding: 2px 7px;
+  border: 1px solid var(--marker-color);
+  border-radius: 3px;
+  font-size: 0.66em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--secondary-text-color);
+}
+
 .link-list {
   list-style: none;
   display: flex;

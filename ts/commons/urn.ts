@@ -1,5 +1,9 @@
 import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
-import { TAXON_TYPES } from "../constants/data.ts";
+import {
+  SUBJECT_QUALIFIER_LABELS,
+  TAXON_TYPES,
+  UNQUALIFIED_SUBJECT_CONTEXTS,
+} from "../constants/data.ts";
 
 const URN_PREFIX = "urn:ró";
 
@@ -32,4 +36,30 @@ export function urnToUrl(urn: string) {
  */
 export function isTaxonUrn(urn: string): boolean {
   return TAXON_TYPES.has(asUrn(urn).type);
+}
+
+/*
+ * The ?context= value of a URN, e.g "captive" from
+ * "urn:ró:bird:inca-tern?context=captive".
+ */
+export function urnContext(urn: string): string | undefined {
+  const [, query] = urn.split("?");
+  if (!query) {
+    return undefined;
+  }
+
+  return new URLSearchParams(query).get("context") ?? undefined;
+}
+
+/*
+ * The chip label for a subject URN, e.g "captive". Wild subjects and subjects
+ * with no context get none, so only the unusual case is marked.
+ */
+export function subjectQualifier(urn: string): string | undefined {
+  const context = urnContext(urn);
+  if (!context || UNQUALIFIED_SUBJECT_CONTEXTS.has(context)) {
+    return undefined;
+  }
+
+  return SUBJECT_QUALIFIER_LABELS[context] ?? context;
 }
