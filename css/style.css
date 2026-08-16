@@ -925,8 +925,12 @@ button:disabled {
   text-align: left;
 }
 
+/* the flag starts flush with the taxon colour bars, so every value in the
+   metadata table shares one left edge */
 .seen-in-list .country-link {
   border-left: none;
+  padding-left: 0;
+  margin-left: 0;
 }
 
 .link-list {
@@ -960,7 +964,10 @@ button:disabled {
 .camera-link,
 .rating-link,
 .style-link,
-.insect-link {
+.insect-link,
+.genus-link,
+.family-link,
+.order-link {
   color: var(--font-colour);
   font-weight: bolder;
   padding: 4px 9px;
