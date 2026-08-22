@@ -109,7 +109,8 @@ function drawFlagRuns(
   }
 
   // the separator lives inside the run it precedes, so it never dangles at
-  // the end of a wrapped line. Every child carries a key, as Mithril needs
+  // the end of a wrapped line. Mithril needs a key on every sibling when any
+  // sibling has one, so each child carries a key.
   return runs.map((run, index) => {
     const children = run.map(drawFlag);
     if (index > 0) {

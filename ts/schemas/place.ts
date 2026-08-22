@@ -1,6 +1,5 @@
 /*
- * Valibot schemas for geographic entities: places, countries, UNESCO sites,
- * and place features.
+ * Valibot schemas for geographic entities: places, countries, UNESCO sites, and features.
  */
 
 import * as v from "valibot";

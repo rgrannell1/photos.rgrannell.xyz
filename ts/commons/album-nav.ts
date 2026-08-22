@@ -1,7 +1,4 @@
-/*
- * Navigation to an album's page, shared by the album grids that render album
- * cards (the albums listing and the thing page).
- */
+// Album page navigation, used by album grid cards.
 
 import { asUrn } from "@rgrannell1/tribbledb";
 import { block, broadcast, isModifiedClick } from "./events.ts";

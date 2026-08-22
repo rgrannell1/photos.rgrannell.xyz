@@ -117,7 +117,6 @@ function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
   );
 }
 
-/* */
 export function AlbumPage() {
   return {
     oninit: initAlbumPage,

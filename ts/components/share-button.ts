@@ -6,7 +6,6 @@ type ShareButtonAttrs = {
   name: string;
 };
 
-/* */
 async function share(
   localState: { sharing: boolean },
   url: string,
@@ -16,7 +15,6 @@ async function share(
   m.redraw();
 }
 
-/* */
 function buttonText(localState: { sharing: boolean }) {
   return localState.sharing ? "[sharing...]" : "[share]";
 }

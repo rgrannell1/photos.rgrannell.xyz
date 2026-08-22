@@ -47,7 +47,6 @@ function viewPhotosPage(vnode: m.Vnode<PhotosPageAttrs>): m.Children {
   ]);
 }
 
-/* */
 export function PhotosPage() {
   return { view: viewPhotosPage };
 }

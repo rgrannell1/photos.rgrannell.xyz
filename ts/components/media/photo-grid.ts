@@ -109,7 +109,6 @@ function viewPhotoGrid(
   return m("section.photo-container", $photos);
 }
 
-/* */
 export function PhotoGrid() {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
 

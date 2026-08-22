@@ -1,26 +1,18 @@
-/*
- * Incremental list rendering. The first batch renders synchronously;
- * subsequent batches are scheduled via setTimeout so the browser can paint
- * between each one.
- */
+/* Incremental list rendering. The first batch is synchronous. Later batches run
+ * via setTimeout so the browser can paint between them. */
 
 import m from "mithril";
 
 export type BatchRenderer = {
-  // number of items currently rendered
   count: () => number;
-  // schedule the next batch, if more items remain
   schedule: (total: number) => void;
-  // restart from the first batch (e.g when the underlying list changes)
+  // Restart when the underlying list changes.
   reset: () => void;
 };
 
 type BatchState = {
-  // items rendered so far
   rendered: number;
-  // whether the next batch is already queued
   batchScheduled: boolean;
-  // items added per batch
   batchSize: number;
 };
 
@@ -51,11 +43,7 @@ function countBatch(batchState: BatchState): number {
   return batchState.rendered;
 }
 
-/*
- * Create renderer state for one incrementally-rendered list. Call `schedule`
- * from oncreate/onupdate with the list's total length, and slice the list to
- * `count()` in the view.
- */
+/* Call `schedule` from oncreate/onupdate with the list total, slice to `count()` in the view. */
 export function createBatchRenderer(batchSize: number): BatchRenderer {
   const batchState: BatchState = {
     rendered: batchSize,

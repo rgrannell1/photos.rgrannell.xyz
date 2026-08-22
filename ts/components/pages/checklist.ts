@@ -17,9 +17,6 @@ function parseFirstSeen(timestamp: string): Date {
   return numeric > 9_999_999_999 ? new Date(numeric) : new Date(numeric * 1000);
 }
 
-/*
- * Format a Unix timestamp string into a human-readable date.
- */
 function formatFirstSeen(timestamp: string): string {
   return parseFirstSeen(timestamp).toLocaleDateString("en-GB", {
     year: "numeric",
@@ -28,9 +25,6 @@ function formatFirstSeen(timestamp: string): string {
   });
 }
 
-/*
- * The calendar year a bird was first seen in.
- */
 function firstSeenYear(timestamp: string): number {
   return parseFirstSeen(timestamp).getFullYear();
 }
@@ -178,9 +172,6 @@ function viewChecklistCard(vnode: m.Vnode<ChecklistCardAttrs>): m.Children {
   ]);
 }
 
-/*
- * A single species card in the life-list grid.
- */
 function ChecklistCard() {
   return { view: viewChecklistCard };
 }
@@ -292,9 +283,6 @@ function viewChecklistGrid(vnode: m.Vnode<ChecklistGridAttrs>): m.Children {
   ]);
 }
 
-/*
- * The life-list card grid itself.
- */
 function ChecklistGrid() {
   return { view: viewChecklistGrid };
 }

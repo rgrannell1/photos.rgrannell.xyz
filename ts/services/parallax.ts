@@ -1,8 +1,4 @@
-/*
- * Banner parallax: CSS scroll-driven animations when the browser supports
- * them, otherwise a JS scroll listener that offsets the banner image. All
- * DOM measurement and mutation for this behaviour lives here.
- */
+/* Banner parallax: CSS scroll-driven animations with JS fallback. */
 
 import { supportsCSSScrollDrivenAnimations } from "./feature-detection.ts";
 import { PARALLAX_MAX_PX, PARALLAX_RATE } from "../constants/layout.ts";
@@ -14,7 +10,6 @@ type ParallaxState = {
 
 function noop(): void {}
 
-/* Offset the banner image against the scroll position. */
 function applyParallax(img: HTMLImageElement): void {
   const offsetY = Math.min(
     window.scrollY * PARALLAX_RATE,
@@ -53,10 +48,7 @@ function unmountParallax(
   }
 }
 
-/*
- * Enable parallax on a banner section. Returns a teardown, which is a no-op
- * for the CSS path since the effect lives entirely in the stylesheet.
- */
+/* CSS path teardown is a no-op. The effect lives in the stylesheet. */
 export function mountParallax(section: HTMLElement): () => void {
   if (supportsCSSScrollDrivenAnimations()) {
     console.log("[parallax] using CSS scroll-driven animations");

@@ -40,7 +40,6 @@ function viewDescription(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   return m("td", "—");
 }
 
-/* */
 function Description() {
   return { view: viewDescription };
 }
@@ -52,7 +51,6 @@ function viewRating(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   return m("td", $rating.length > 0 ? $rating : "—");
 }
 
-/* */
 function Rating() {
   return { view: viewRating };
 }
@@ -64,7 +62,6 @@ function viewStyle(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   return m("td", $style.length > 0 ? $style : "—");
 }
 
-/* */
 function Style() {
   return { view: viewStyle };
 }
@@ -98,7 +95,6 @@ function viewSubject(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   return m("td", $subject.length > 0 ? $subject : "—");
 }
 
-/* */
 function Subject() {
   return { view: viewSubject };
 }
@@ -141,7 +137,6 @@ function viewMediaInfo(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   return m("table.metadata-table", infoItems);
 }
 
-/* */
 export function MediaInfo() {
   return { view: viewMediaInfo };
 }

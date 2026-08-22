@@ -4,7 +4,7 @@
 
 import * as v from "valibot";
 
-// the shared shape of most photo subjects: species, vehicles, and so on
+// Shared shape for photo subjects like species and vehicles.
 export const NamedThingSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
@@ -17,7 +17,7 @@ export const AmphibianSchema = NamedThingSchema;
 export const ArthropodSchema = NamedThingSchema;
 export const PlaneSchema = NamedThingSchema;
 
-// mammals always carry a name in the published data
+// Mammals always have a name in published data.
 export const MammalSchema = v.object({
   id: v.string(),
   name: v.string(),

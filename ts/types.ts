@@ -70,7 +70,6 @@ export type Stats = {
   unesco_sites: number;
 };
 
-/* */
 export type Services = ReturnType<typeof loadServices>;
 
 /*
@@ -111,10 +110,7 @@ export type State = {
   focus: Focus;
 };
 
-/*
- * TribbleDB is untyped; it provides triples not objects. So we'll parse triples onto
- * these data-structures.
- */
+// TribbleDB is untyped and provides triples, not objects. These structures type the parsed triples.
 
 export type Album = NonNullable<ReturnType<typeof parseAlbum>>;
 

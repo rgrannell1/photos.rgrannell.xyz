@@ -11,7 +11,7 @@ import {
 
 console.log("Building");
 
-// the flag manifest and minified css feed the HTML template, so they build first
+// The flag manifest and minified CSS feed the HTML template, so build them first.
 const flags = await buildFlagAssets();
 const css = await buildCSS();
 

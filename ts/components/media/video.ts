@@ -71,7 +71,6 @@ function viewVideo(
   ]);
 }
 
-/* */
 export function Video() {
   const videoState: VideoState = { controlsVisible: false };
 

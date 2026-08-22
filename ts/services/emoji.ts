@@ -8,11 +8,6 @@ import type { Feature, Place, Thing, Unesco } from "../types.ts";
 // Anything an emoji can be looked up for: parsed things or raw triple objects
 type EmojiThing = Thing | Feature | Unesco | TripleObject;
 
-/*
- * Pick an emoji based on the place feature
- *
- * @param thing The place
- */
 export function placeEmoji(thing: Place | TripleObject): string {
   // Country-places have a flag; prefer that over a feature emoji
   const flag = one(thing.flag);
@@ -28,10 +23,7 @@ export function placeEmoji(thing: Place | TripleObject): string {
   return placeFeatureEmoji(feature);
 }
 
-/*
- * Read the emoji published on a place-feature entity (e.g church emoji for
- * religious sites)
- */
+/* Emoji published on place-feature entity (e.g. church emoji for religious sites). */
 export function placeFeatureEmoji(featureUrn: string): string {
   const { id: featureId } = asUrn(featureUrn);
 
@@ -42,23 +34,16 @@ export function placeFeatureEmoji(featureUrn: string): string {
   return one(feature?.emoji) ?? "📍";
 }
 
-/*
- * Pick a bird emoji
- */
 function birdEmoji(): string {
   return "🐤";
 }
 
-/*
- * Pick an emoji for the camera, from its published device type
- */
 function cameraEmoji(thing: EmojiThing): string {
   // cameras have no parsed schema; the device type is a raw triple field
   const deviceType = one((thing as TripleObject).deviceType);
   return deviceType === "phone" ? "📱" : "📷";
 }
 
-/* */
 export function thingEmoji(
   urn: string,
   _: string,

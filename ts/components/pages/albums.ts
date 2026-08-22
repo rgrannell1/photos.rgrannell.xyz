@@ -167,9 +167,6 @@ function viewAlbumsList(
   return m("section.album-container", $albumComponents);
 }
 
-/*
- * Construct a list of albums
- */
 function AlbumsList() {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
 
@@ -255,7 +252,6 @@ function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
   ]);
 }
 
-/* */
 export function AlbumsPage() {
   const pageState: AlbumsPageState = {
     teardownYearScroll: null,

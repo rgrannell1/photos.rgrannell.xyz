@@ -33,9 +33,6 @@ function viewAlbumButton(vnode: m.Vnode<AlbumButtonAttrs>): m.Children {
   }, "[album]");
 }
 
-/*
- * Links back to the last album page
- */
 export function AlbumButton() {
   return { view: viewAlbumButton };
 }

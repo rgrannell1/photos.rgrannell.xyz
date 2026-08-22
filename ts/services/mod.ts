@@ -1,8 +1,4 @@
-/*
- * The service registry: every reader exposed to pages, unbound. Each takes
- * the TribbleDB as its first argument; state.ts binds them all to the loaded
- * instance.
- */
+/* Service registry: every reader unbound. state.ts binds them to TribbleDB. */
 
 import {
   readAlbumPhotosByAlbumId,

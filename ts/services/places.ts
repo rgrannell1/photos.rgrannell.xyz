@@ -37,9 +37,6 @@ export function hasValidCoordinates(place: Place): place is GeocodedPlace {
   return true;
 }
 
-/*
- * Read all places that have non-null, finite latitude/longitude.
- */
 export function readGeocodedPlaces(tdb: TribbleDB): GeocodedPlace[] {
   const placeUrns = new Set<string>(
     tdb.search({
@@ -52,10 +49,7 @@ export function readGeocodedPlaces(tdb: TribbleDB): GeocodedPlace[] {
   return places.filter(hasValidCoordinates);
 }
 
-/*
- * Read all geocoded places, each joined with its cover photo thumbnail.
- * The covers come from one bulk search rather than a per-place lookup.
- */
+/* Bulk search for covers. One lookup replaces a lookup per place. */
 export function readGeocodedPlacesWithCovers(
   tdb: TribbleDB,
 ): GeocodedPlaceWithCover[] {
@@ -67,9 +61,6 @@ export function readGeocodedPlacesWithCovers(
   });
 }
 
-/*
- * Read all countries from the TribbleDB, sorted by name
- */
 export function readAllCountries(tdb: TribbleDB): Country[] {
   const ids = tdb.search({
     source: { type: KnownTypes.PLACE },
@@ -81,9 +72,7 @@ export function readAllCountries(tdb: TribbleDB): Country[] {
   });
 }
 
-/*
- * Read countries as raw things for the country listing page.
- */
+/* For the country listing page. */
 export function readAllCountryThings(tdb: TribbleDB): TripleObject[] {
   const ids = new Set(tdb.search({
     source: { type: KnownTypes.PLACE },

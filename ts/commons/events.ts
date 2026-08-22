@@ -1,13 +1,7 @@
-/*
- * Handle state-updates in response to events by delegating to other services. Handles
- * state-updates and rerenders.
- */
+// Application event handling and navigation.
 
 import type { ApplicationEventPayloads, ApplicationEvents } from "../types.ts";
 
-/*
- * Broadcast a custom application event to the document.
- */
 export function broadcast<Label extends ApplicationEvents>(
   label: Label,
   detail: ApplicationEventPayloads[Label],
@@ -21,9 +15,6 @@ export function broadcast<Label extends ApplicationEvents>(
   );
 }
 
-/*
- * Listen for custom application events.
- */
 export function listen<Label extends ApplicationEvents>(
   label: Label,
   callback: (event: CustomEvent<ApplicationEventPayloads[Label]>) => void,
@@ -31,11 +22,6 @@ export function listen<Label extends ApplicationEvents>(
   document.addEventListener(label, callback as EventListener);
 }
 
-/*
- * Prevent default action for an event.
- *
- * @param event The event to block.
- */
 export function block(event: Event) {
   event?.preventDefault();
 }
@@ -50,11 +36,6 @@ export function isModifiedClick(event: MouseEvent): boolean {
     event.button !== 0;
 }
 
-/*
- * Broadcast a navigation event and block the default action.
- *
- * @param route The route to navigate to.
- */
 export function navigate(route: string) {
   return (event: Event) => {
     broadcast("navigate", { route });

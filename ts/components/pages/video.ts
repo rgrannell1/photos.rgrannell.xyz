@@ -42,7 +42,6 @@ function viewVideoPage(vnode: m.Vnode<VideoPageAttrs>): m.Children {
   ]);
 }
 
-/* */
 export function VideoPage() {
   return { view: viewVideoPage };
 }

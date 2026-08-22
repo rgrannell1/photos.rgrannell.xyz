@@ -1,6 +1,4 @@
-/*
- * Wildlife statistics and the bird life-list, derived from subject triples.
- */
+/* Wildlife statistics and bird life-list from subject triples. */
 
 import { asUrn } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
@@ -13,12 +11,7 @@ export type SubjectStats = {
   irishWildSpecies: number;
 };
 
-/*
- * Count wild, total, and Irish wild bird species seen across all photos.
- *
- * "Wild" means the subject URN has ?context=wild (or no context).
- * "Irish" means the base bird URN carries the irish marker.
- */
+/* Wild = ?context=wild. Irish = irish marker. */
 export function readBirdStats(tdb: TribbleDB): SubjectStats {
   const wildBirdSubjects = tdb.search({
     relation: KnownRelations.SUBJECT,
@@ -61,12 +54,7 @@ function findIrelandUrn(tdb: TribbleDB): string | undefined {
   }).firstSource();
 }
 
-/*
- * Count wild, total, and Irish wild mammal species seen across all photos.
- *
- * "Wild" means the subject URN has ?context=wild (or no context).
- * "Irish" means the photo also has a location relation to Ireland (transitive).
- */
+/* Wild = ?context=wild. Irish = location relation to Ireland (transitive). */
 export function readMammalStats(tdb: TribbleDB): SubjectStats {
   const wildMammalTriples = tdb.search({
     relation: KnownRelations.SUBJECT,
@@ -90,7 +78,7 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
     mammalSet.add(mammalId);
   }
 
-  // Photos with an Ireland location (transitive, so includes places within Ireland)
+  // Photos with Ireland location (transitive).
   const irelandUrn = findIrelandUrn(tdb);
   const irelandPhotoUrns = new Set(
     irelandUrn
@@ -101,7 +89,6 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
       : [],
   );
 
-  // Wild mammal species seen in Ireland
   const irishWildMammalIds = new Set<string>();
   for (const [photoUrn, mammalIds] of wildPhotoToMammals) {
     if (irelandPhotoUrns.has(photoUrn)) {
@@ -125,11 +112,7 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
   };
 }
 
-/*
- * Count bird species Ireland regularly records, from the wildlife.llm.toml
- * status="regular" relation. Must be read before medialess-species pruning,
- * which drops the unphotographed catalogue entries. Returns 0 if absent.
- */
+/* Must read before medialess-species pruning. */
 export function countRegularBirdSpecies(tdb: TribbleDB): number {
   return tdb.search({
     relation: KnownRelations.STATUS,
@@ -142,10 +125,7 @@ export type NemesisSpecies = {
   name: string;
 };
 
-/*
- * Nemesis species (things.toml nemesis="true") of one type not yet photographed —
- * the "yet to see" targets. Must be read before medialess-species pruning drops them.
- */
+/* Must read before medialess-species pruning. */
 export function collectUnphotographedNemesis(
   tdb: TribbleDB,
   speciesType: string,
@@ -190,14 +170,7 @@ export type ChecklistEntry = {
 };
 
 
-/*
- * Read the life-list for one species type, sorted chronologically by first sighting.
- *
- * Includes both wild and captive sightings. "First seen" is read directly
- * from the firstSeen triple relation on each species URN.
- * isWild is true if the species has been photographed in a wild context at least once.
- * isIrish comes from the published irish marker.
- */
+/* Sorted chronologically by first sighting. Includes wild and captive sightings. */
 function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEntry[] {
   const firstSeenTriples = tdb.search({
     source: { type: speciesType },
@@ -246,7 +219,6 @@ function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEn
     });
   }
 
-  // Sort chronologically — earliest first-sighting first
   entries.sort((entryA, entryB) =>
     parseInt(entryA.firstSeen) - parseInt(entryB.firstSeen)
   );
@@ -254,25 +226,15 @@ function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEn
   return entries;
 }
 
-/*
- * Read the bird life-list.
- */
 export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
   return readWildlifeChecklist(tdb, KnownTypes.BIRD);
 }
 
-/*
- * Read the mammal life-list.
- */
 export function readWildMammalChecklist(tdb: TribbleDB): ChecklistEntry[] {
   return readWildlifeChecklist(tdb, KnownTypes.MAMMAL);
 }
 
-/*
- * Count mammal species in the Irish wildlife catalogue, via the irish marker
- * triple. Must be read before medialess-species pruning drops the
- * unphotographed catalogue entries. Returns 0 if absent.
- */
+/* Must read before medialess-species pruning. */
 export function countIrishMammalSpecies(tdb: TribbleDB): number {
   return tdb.search({
     source: { type: KnownTypes.MAMMAL },

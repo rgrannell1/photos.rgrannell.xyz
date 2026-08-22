@@ -82,7 +82,6 @@ function viewAboutPage(vnode: m.Vnode<AboutPageAttrs>): m.Children {
   ]);
 }
 
-/* */
 export function AboutPage() {
   return {
     oninit: initAboutPage,

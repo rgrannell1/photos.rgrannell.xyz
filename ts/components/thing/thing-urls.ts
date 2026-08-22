@@ -49,9 +49,6 @@ function viewThingUrls(
   return m("ul.link-list", $links);
 }
 
-/*
- * Links to external sites about the thing
- */
 export function ThingUrls() {
   return { view: viewThingUrls };
 }

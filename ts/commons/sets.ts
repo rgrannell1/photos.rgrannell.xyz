@@ -1,8 +1,5 @@
 import type { TripleObject } from "@rgrannell1/tribbledb";
 
-/*
- * Given a value, array of values, or undefined, return a set.
- */
 export function setify<Value>(value: Value | Value[] | undefined): Set<Value> {
   if (value === undefined) {
     return new Set();
@@ -11,9 +8,6 @@ export function setify<Value>(value: Value | Value[] | undefined): Set<Value> {
   return new Set(Array.isArray(value) ? value : [value]);
 }
 
-/*
- * Collect a set of property values from a list of triple objects.
- */
 export function setOf<Value>(property: string, objects: TripleObject[]): Set<Value> {
   const result = new Set<Value>();
 

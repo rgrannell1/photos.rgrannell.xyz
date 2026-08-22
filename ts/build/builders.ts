@@ -22,8 +22,7 @@ async function computeSourceHash(): Promise<string> {
     contents.push(await Deno.readTextFile(entry.path));
   }
   contents.push(await Deno.readTextFile("css/style.css"));
-  // the worker template must bust the cache too: a changed worker with an
-  // unchanged cache name keeps serving stale entries
+  // The worker template must bust cache too. An unchanged name serves stale entries.
   contents.push(await Deno.readTextFile("sw.mustache.js"));
 
   const encoded = new TextEncoder().encode(contents.join(""));
@@ -73,9 +72,6 @@ export async function buildSW() {
   );
 }
 
-/*
- * Build Typescript with esbuild
- */
 export async function buildTS() {
   console.info("🌐 Rendering app");
 
@@ -87,8 +83,7 @@ export async function buildTS() {
     treeShaking: true,
     sourcemap: true,
     minify: true,
-    // leaflet is only needed on the map page; the import map in index.html
-    // resolves it to the vendored ESM build at runtime
+    // Leaflet loads only on the map page. The import map in index.html resolves it.
     external: ["leaflet"],
     // bundle against the tribbledb source, matching the deno.json import map
     alias: {
@@ -99,9 +94,7 @@ export async function buildTS() {
 }
 
 /*
- * Minify the CSS for inlining into index.html. Inline CSS removes the
- * render-blocking stylesheet request; index.html is never cached, so the
- * inlined copy can not go stale.
+ * Minify CSS for inlining. Inline CSS removes a render-blocking request and cannot go stale.
  */
 export async function buildCSS(): Promise<string> {
   console.info("🌐 Rendering css");
@@ -129,14 +122,12 @@ async function hashBytes(bytes: Uint8Array<ArrayBuffer>): Promise<string> {
 }
 
 /*
- * Publish the vendored vexilla assets under content-hashed names: the AVIF
- * emoji sprite, and one budgeted SVG per big flag. The hash in the filename
- * busts the immutable /flags/* cache when a flag changes.
+ * Publish vexilla assets with content-hashed names. Hash busts immutable /flags/* cache on changes.
  */
 export async function buildFlagAssets(): Promise<FlagManifest> {
   console.info("🌐 Rendering flag assets");
 
-  // wipe previous hashed outputs so changed flags leave no stale files
+  // Wipe previous hashed outputs to avoid stale files.
   for await (const entry of Deno.readDir("flags")) {
     if (entry.isFile && entry.name.startsWith("sprite.")) {
       await Deno.remove(`flags/${entry.name}`);
@@ -175,9 +166,6 @@ export async function buildFlagAssets(): Promise<FlagManifest> {
   };
 }
 
-/*
- * Build HTML
- */
 export async function buildHTML(flags: FlagManifest, css: string) {
   console.info("🌐 Rendering index.html");
 

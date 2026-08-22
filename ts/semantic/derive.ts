@@ -232,7 +232,6 @@ export function expandTripleCuries(
 export function buildLocationTrees(
   tdb: TribbleDB,
 ) {
-  // This is a bit unpleasant
   const treeState = {
     nodes: new Map<string, {
       id: string;
@@ -269,12 +268,6 @@ export function buildLocationTrees(
 
 /*
  * Compose all triple modifiers together.
- *
- * This is a bottleneck
- * - takes roughly 100ms to run as of Nov 25 tribbledb v0.16
- * - takes 70ms after v0.18 Nov 25 and moving some derivations to non-linear scan adds
- *
- * @param triple The input triple to modify.
  */
 export function deriveTriples(
   triple: Triple,
@@ -587,7 +580,6 @@ export function addNestedLocations(tdb: TribbleDB) {
 
     const node = treeState.nodes.get(urn);
 
-    // Probably not possible
     if (!node) {
       throw new Error(`no node in location tree for ${urn}`);
     }
@@ -598,10 +590,9 @@ export function addNestedLocations(tdb: TribbleDB) {
     }
 
     if (node.parents.size === 0) {
-      // in this case, we have a path A :IN B :IN C :IN D
-      // return [A, B], [A, C], [A, D], [B, C], ..., [C, D]
-      // which should be the set of transitive in relations.
-      // For good measure, throw in the `contains` inverse relation
+      // path A :IN B :IN C :IN D generates transitive relations:
+      // [A, B], [A, C], [A, D], [B, C], ..., [C, D]
+      // plus their inverse contains relations
       const totalPath = [...path, urn];
 
       for (let idx = 0; idx < totalPath.length - 1; idx++) {

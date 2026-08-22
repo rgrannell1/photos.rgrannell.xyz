@@ -18,7 +18,7 @@ export const AlbumSchema = v.object({
   country: v.optional(v.union([v.string(), v.array(v.string())])),
   description: v.optional(v.string()),
 
-  // 200ms to compute on the client, so now it's precomputed
+  // Precomputed. Calculating on the client takes 200ms.
   dateRange: v.string(),
   shortDateRange: v.string(),
   albumBanner: v.optional(v.string()),

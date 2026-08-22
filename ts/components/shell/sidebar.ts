@@ -36,9 +36,6 @@ function viewSidebarItem(vnode: m.Vnode<SidebarItemAttrs>): m.Children {
   }, name);
 }
 
-/*
- * Defines each item in the sidebar
- */
 function SidebarItem() {
   return { view: viewSidebarItem };
 }
@@ -67,9 +64,6 @@ function viewSidebar(vnode: m.Vnode<SidebarAttrs>): m.Children {
   ]);
 }
 
-/*
- * Defines the app sidebar
- */
 export function Sidebar() {
   return { view: viewSidebar };
 }

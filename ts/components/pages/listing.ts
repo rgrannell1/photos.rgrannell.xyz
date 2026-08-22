@@ -29,9 +29,6 @@ function listingTitleExtra(
   return undefined;
 }
 
-/*
- * Draw an album for a single thing
- */
 function drawThingAlbum(
   services: Services,
   listingType: string,
@@ -198,9 +195,6 @@ function viewListingDetails(
   return null;
 }
 
-/*
- * Display type-specific detail content beneath the listing title
- */
 function ListingDetails() {
   return { view: viewListingDetails };
 }

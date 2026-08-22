@@ -5,24 +5,14 @@ import { readAlbum, readVideos } from "./readers.ts";
 import { albumUrn } from "../commons/urn.ts";
 import { KnownTypes } from "../constants/data.ts";
 
-/*
- * A video annotated with the year of its album, for year grouping.
- */
 export type DatedVideo = Video & { year: number };
 
-/*
- * Map each video's album id to that album's start date.
- */
 function readAlbumMinDates(tdb: TribbleDB, videos: Video[]): Map<string, number> {
   return new Map(
     videos.map((video) => [video.albumId, readAlbum(tdb, albumUrn(video.albumId))?.minDate ?? 0])
   );
 }
 
-/*
- * Annotate videos with their album's year, sorted by album start date,
- * newest album first.
- */
 function sortByAlbumDate(tdb: TribbleDB, videos: Video[]): DatedVideo[] {
   const albumMinDate = readAlbumMinDates(tdb, videos);
 
@@ -36,7 +26,7 @@ function sortByAlbumDate(tdb: TribbleDB, videos: Video[]): DatedVideo[] {
   );
 }
 
-// a run of consecutive videos from one year, with its heading state
+// Consecutive videos from one year.
 export type VideoYearGroup = {
   year: number;
   // the current year runs headerless, matching the albums page
@@ -44,9 +34,6 @@ export type VideoYearGroup = {
   videos: DatedVideo[];
 };
 
-/*
- * Pure transform: split a date-sorted video list into consecutive year runs.
- */
 export function groupVideosByYear(
   videos: DatedVideo[],
   currentYear: number,
@@ -68,13 +55,6 @@ export function groupVideosByYear(
   return groups;
 }
 
-/*
- * Read and parse all videos, sorted chronologically by album date (oldest first).
- *
- * @param tdb The TribbleDB instance
- *
- * @return The parsed videos
- */
 export function readAllVideos(tdb: TribbleDB): DatedVideo[] {
   const videoUrns = tdb.search({
     source: { type: KnownTypes.VIDEO },
@@ -83,9 +63,6 @@ export function readAllVideos(tdb: TribbleDB): DatedVideo[] {
   return sortByAlbumDate(tdb, readVideos(tdb, videoUrns));
 }
 
-/*
- * Read videos associated with a set of thing URNs (subjects or locations).
- */
 export function readVideosByThingIds(
   tdb: TribbleDB,
   thingUrns: Set<string>,

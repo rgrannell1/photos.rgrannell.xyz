@@ -29,9 +29,6 @@ function viewAlbumStats(stats: ReturnType<typeof parseStats>): m.Children {
   ]);
 }
 
-/*
- * Show statistics and links for the album pages
- */
 export function AlbumStats() {
   const stats = parseStats((window as AppWindow).stats);
 

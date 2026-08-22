@@ -1,14 +1,9 @@
 /*
- * The data-layer vocabulary: relations and types the app queries against the
- * TribbleDB, plus curie expansion and triple-derivation config. The
- * constants-drift test checks this vocabulary against the published triples.
+ * Data-layer vocabulary: relations, types, and curie config. Checked by constants-drift test.
  */
 
 /*
- * Relations queried by name against the TribbleDB. Parsed-object fields are
- * governed by the Valibot schemas instead; only searched relations live here.
- * The constants-drift test checks each value exists in the published data or
- * in its derived-relations allowlist.
+ * Relations queried by name (not parsed-object fields). Checked against published data.
  */
 export class KnownRelations {
   static ALBUM_ID = "albumId";
@@ -79,8 +74,7 @@ export class KnownTypes {
 }
 
 /*
- * Taxonomic ranks a species links to, with the label shown as the
- * details-table row heading.
+ * Taxonomic ranks shown as details-table row headings.
  */
 export const TAXON_RANKS = [
   { relation: KnownRelations.GENUS, label: "Genus" },
@@ -88,7 +82,7 @@ export const TAXON_RANKS = [
   { relation: KnownRelations.ORDER, label: "Order" },
 ];
 
-// URN types that identify taxon entities
+// URN types for taxon entities.
 export const TAXON_TYPES = new Set<string>([
   KnownTypes.GENUS,
   KnownTypes.FAMILY,
@@ -96,9 +90,7 @@ export const TAXON_TYPES = new Set<string>([
 ]);
 
 /*
- * Display labels for the ?context= qualifier on a subject URN. Mirror writes
- * both "captive" and "captivity" for the same idea, so both map to one label.
- * A context with no entry here shows uppercased as it is written.
+ * Display labels for subject URI context qualifiers. Mirror uses multiple terms for same idea.
  */
 export const SUBJECT_QUALIFIER_LABELS: Record<string, string> = {
   captive: "captive",
@@ -107,11 +99,11 @@ export const SUBJECT_QUALIFIER_LABELS: Record<string, string> = {
   unsure: "unsure",
 };
 
-// contexts that need no qualifier chip; wild is how a subject reads by default
+// Contexts that need no qualifier chip. Wild is the default.
 export const UNQUALIFIED_SUBJECT_CONTEXTS = new Set(["wild"]);
 
 /*
- * These relations should all expand to CDN urls
+ * Relations that expand to CDN URLs.
  */
 export const CDN_RELATIONS = new Set([
   KnownRelations.THUMBNAIL_URL,
@@ -126,8 +118,7 @@ export const CDN_RELATIONS = new Set([
 ]);
 
 /*
- * Some relationships have inverses; store this data here
- * (though it could be passed in band in the Tribble file in future)
+ * Relationships with inverses. These could move to the Tribble file later.
  */
 export const RelationSymmetries = [
   [KnownRelations.IN, KnownRelations.CONTAINS],
@@ -138,6 +129,6 @@ export const RelationSymmetries = [
 // Curies match this pattern
 export const CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
 
-// CDN base URL for expanding relative CDN paths in triples
+// CDN base URL for expanding relative paths in triples.
 export const ENDPOINT = "https://photos-cdn.rgrannell.xyz";
 

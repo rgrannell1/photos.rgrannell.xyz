@@ -12,7 +12,6 @@ export const photoUrn = (id: string) => `${URN_PREFIX}:photo:${id}`;
 export const videoUrn = (id: string) => `${URN_PREFIX}:video:${id}`;
 export const countryUrn = (id: string) => `${URN_PREFIX}:place:${id}`;
 export const tripUrn = (id: string) => `${URN_PREFIX}:trip:${id}`;
-// a thing page pair, e.g "bird:robin", as a full URN
 export const thingUrn = (pair: string) => `${URN_PREFIX}:${pair}`;
 
 /*
@@ -22,26 +21,16 @@ export function formatId(id: string): string {
   return id.startsWith("urn:") ? parseUrn(id).id : id;
 }
 
-/*
- * Convert a URN into a URL for the thing page.
- */
 export function urnToUrl(urn: string) {
   const { type, id } = asUrn(urn);
   return `#/thing/${type}:${id}`;
 }
 
-/*
- * Is this a taxon URN (genus, family, order)? Derived taxon subjects are
- * excluded from subject displays, which show species only.
- */
+// Taxon subjects are excluded from species-only displays.
 export function isTaxonUrn(urn: string): boolean {
   return TAXON_TYPES.has(asUrn(urn).type);
 }
 
-/*
- * The ?context= value of a URN, e.g "captive" from
- * "urn:ró:bird:inca-tern?context=captive".
- */
 export function urnContext(urn: string): string | undefined {
   const [, query] = urn.split("?");
   if (!query) {
@@ -51,10 +40,7 @@ export function urnContext(urn: string): string | undefined {
   return new URLSearchParams(query).get("context") ?? undefined;
 }
 
-/*
- * The chip label for a subject URN, e.g "captive". Wild subjects and subjects
- * with no context get none, so only the unusual case is marked.
- */
+// Only mark unusual contexts. Wild and unqualified subjects carry no label.
 export function subjectQualifier(urn: string): string | undefined {
   const context = urnContext(urn);
   if (!context || UNQUALIFIED_SUBJECT_CONTEXTS.has(context)) {

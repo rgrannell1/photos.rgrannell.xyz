@@ -297,7 +297,6 @@ function VideoSection() {
   return { view: viewVideoSection.bind(null, videosFor) };
 }
 
-/* */
 function slicePhotos(photos: PhotoType[], limit: number): PhotoType[] {
   return photos.slice(0, limit);
 }

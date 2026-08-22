@@ -1,7 +1,4 @@
-/*
- * DOM effects for progressive image loading: the mosaic placeholder drops
- * behind the real image once it paints.
- */
+/* Progressive image loading: placeholder drops behind real image on paint. */
 
 export function hidePlaceholderOnLoad(event: Event): void {
   const $placeholder = (event.target as HTMLElement)?.parentNode

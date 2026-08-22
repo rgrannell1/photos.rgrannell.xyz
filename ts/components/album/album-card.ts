@@ -48,7 +48,6 @@ function viewAlbumCard(vnode: m.Vnode<AlbumCardAttrs>): m.Children {
   return m("div", containerAttrs ?? {}, [$album, $md]);
 }
 
-/* */
 export function AlbumCard() {
   return { view: viewAlbumCard };
 }

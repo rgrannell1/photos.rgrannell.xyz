@@ -48,9 +48,6 @@ export const parsePlace = parseObject(PlaceSchema, "place");
 export const parseAlbum = parseObject(AlbumSchema, "album");
 export const parseTransfer = parseObject(TransferSchema, "transfer");
 
-/*
- * Parse known subject types
- */
 export const parseSubject = parseByType<
   Bird | Mammal | Reptile | Amphibian | Arthropod | Fish
 >({
@@ -62,17 +59,11 @@ export const parseSubject = parseByType<
   [KnownTypes.FISH]: parseFish,
 });
 
-/*
- * Parse on object identified by a location relation
- */
 export const parseLocation = parseByType<Place | Unesco>({
   [KnownTypes.PLACE]: parsePlace,
   [KnownTypes.UNESCO]: parseUnesco,
 });
 
-/*
- * Parse stats object
- */
 export function parseStats(stats: unknown): Stats | undefined {
   return safeParse(StatsSchema, stats).success ? (stats as Stats) : undefined;
 }

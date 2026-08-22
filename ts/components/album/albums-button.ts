@@ -9,9 +9,6 @@ function viewAlbumsButton(): m.Children {
   );
 }
 
-/*
- * Links back to the albums page
- */
 export function AlbumsButton() {
   return { view: viewAlbumsButton };
 }

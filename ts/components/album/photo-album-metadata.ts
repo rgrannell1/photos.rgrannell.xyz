@@ -40,7 +40,6 @@ function viewPhotoAlbumMetadata(
   ]);
 }
 
-/* */
 export function PhotoAlbumMetadata() {
   return { view: viewPhotoAlbumMetadata };
 }

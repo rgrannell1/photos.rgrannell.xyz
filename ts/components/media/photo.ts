@@ -31,9 +31,6 @@ function viewImage(vnode: m.Vnode<ImageAttrs>): m.Children {
   });
 }
 
-/*
- * The thumbnail image itself
- */
 function Image() {
   return { view: viewImage };
 }
@@ -57,9 +54,6 @@ function viewPlaceholderImage(
   });
 }
 
-/*
- * The placeholder data URL
- */
 function PlaceholderImage() {
   return { view: viewPlaceholderImage };
 }
@@ -162,12 +156,9 @@ function viewImagePair(vnode: m.Vnode<ImagePairAttrs>): m.Children {
 }
 
 /*
- * The underlying pair of images. One is the actual thumbnail, which
- * takes time to load. The other will be a grid data URL that instantly loads.
- * If imageUrl is provided the pair is wrapped in a new-tab link to that image.
- * If href is provided instead, the pair is wrapped in a same-tab link (e.g. an
- * album route) whose onclick drives SPA navigation but leaves modified clicks
- * to the browser, so the target can be opened in a new tab.
+ * Pair of thumbnail and data-URL placeholder images. With imageUrl, wraps in a
+ * new-tab link to the image. With href, wraps in a same-tab link (e.g. album route)
+ * where onclick drives SPA navigation but leaves modified clicks to the browser.
  */
 export function ImagePair() {
   return { view: viewImagePair };
@@ -221,9 +212,7 @@ function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
 }
 
 /*
- * Represents a photo, with a metadata link and the fake-progressive-loading
- * features (https://rgrannell.xyz/replacing-google-photos) to make images appear blank for
- * less time.
+ * Renders a photo with metadata link and progressive-loading placeholder.
  */
 export function Photo() {
   return { view: viewPhoto };

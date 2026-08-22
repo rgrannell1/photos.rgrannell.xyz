@@ -9,7 +9,6 @@ export type AlbumBannerAttrs = {
 };
 
 type BannerState = {
-  // teardown for the parallax effect, set on mount
   teardownParallax: (() => void) | null;
 };
 

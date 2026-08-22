@@ -1,6 +1,4 @@
-/*
- * The parser-to-reader registry: one/many readers for each parsed entity type.
- */
+/* Parser-to-reader registry. */
 
 import { readers } from "../commons/parser.ts";
 

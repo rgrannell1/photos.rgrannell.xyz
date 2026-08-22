@@ -61,7 +61,6 @@ function viewMapPage(vnode: m.Vnode<MapPageAttrs>): m.Children {
   ]);
 }
 
-/* */
 export function MapPage(): m.Component<MapPageAttrs> {
   const pageState: MapPageState = {
     handle: null,

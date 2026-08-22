@@ -1,7 +1,4 @@
-/*
- * Heart-rain effect for the olm page: spawn falling heart elements into a
- * container on an interval. All DOM creation for this effect lives here.
- */
+/* Heart-rain effect for the olm page. Spawns falling hearts on an interval. */
 
 // ms between heart spawns
 const SPAWN_INTERVAL_MS = 150;
@@ -15,7 +12,6 @@ function randomItem<Item>(items: Item[]): Item {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-// good enough lol
 function spawnHeart(container: HTMLElement): void {
   const heart = document.createElement("div");
   heart.className = "heart-rain-heart";
@@ -32,7 +28,7 @@ function stopHeartRain(intervalId: number): void {
   clearInterval(intervalId);
 }
 
-/* Start spawning hearts into the container. Returns a teardown. */
+/* Returns a teardown function. */
 export function mountHeartRain(container: HTMLElement): () => void {
   const intervalId = setInterval(
     spawnHeart.bind(null, container),

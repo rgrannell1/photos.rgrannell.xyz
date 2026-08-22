@@ -1,5 +1,5 @@
 /*
- * The route table: each path wrapped in the shared shell.
+ * Route table. Each path is wrapped in the shared shell.
  */
 
 import type m from "mithril";

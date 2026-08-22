@@ -1,7 +1,4 @@
-/*
- * Given a value, array of values, or undefined, return an array.
- * This is often required when dealing with relations that may have multiple values.
- */
+// Handle relations that may be single-valued, multi-valued, or absent.
 export function arrayify<Value>(value: Value | Value[] | undefined): Value[] {
   if (value === undefined) {
     return [];
@@ -10,11 +7,14 @@ export function arrayify<Value>(value: Value | Value[] | undefined): Value[] {
   return Array.isArray(value) ? value : [value];
 }
 
-/*
- * Return the first value, or undefined. Often needed in cases where
- * a triple object theoretically could have multiple or missing values (e.g name)
- * but won't in practice.
- */
-export function one<Value>(value: Value | Value[] | undefined): Value | undefined {
-  return Array.isArray(value) ? value[0] : value;
+// Distributes over unions, so `string | string[]` collapses to `string`.
+type ElementOf<Value> = Value extends readonly (infer Element)[] ? Element
+  : Value;
+
+// Triple objects may hold multi-valued properties but often carry only one value.
+export function one<Value>(
+  value: Value | undefined,
+): ElementOf<Value> | undefined {
+  const first = Array.isArray(value) ? value[0] : value;
+  return first as ElementOf<Value> | undefined;
 }

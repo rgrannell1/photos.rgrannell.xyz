@@ -34,7 +34,6 @@ function viewTripTag(vnode: m.Vnode<{ trip: string | undefined }>): m.Children {
 
   const tripId = asUrn(trip).id;
 
-  // two colours supported
   return m("a.trip-tag .trip-color-" + tripColourIndex(trip), {
     href: `#!/trip/${tripId}`,
     title: "Show albums from this trip",
@@ -91,7 +90,6 @@ function viewPhotoAlbum(vnode: m.Vnode<PhotoAlbumAttrs>): m.Children {
   ]);
 }
 
-/* */
 export function PhotoAlbum() {
   return { view: viewPhotoAlbum };
 }

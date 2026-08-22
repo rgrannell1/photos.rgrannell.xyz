@@ -67,7 +67,6 @@ function viewThingLink(vnode: m.Vnode<ThingLinkAttrs>): m.Children {
   }, label);
 }
 
-/* */
 export function ThingLink() {
   return { view: viewThingLink };
 }
@@ -117,7 +116,6 @@ function viewUnescoLink(vnode: m.Vnode<UnescoLinkAttrs>): m.Children {
   }, name);
 }
 
-/* */
 export function UnescoLink() {
   return { view: viewUnescoLink };
 }

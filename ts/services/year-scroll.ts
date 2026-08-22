@@ -1,8 +1,4 @@
-/*
- * Year-scroll tracking for the albums page: reflect the year at the top of
- * the viewport into the URL, and scroll to a year heading on a deep link.
- * All DOM measurement and mutation for this behaviour lives here.
- */
+/* Year-scroll tracking: reflect viewport year to URL and scroll on deep link. */
 
 import m from "mithril";
 import {
@@ -17,11 +13,7 @@ type YearScrollState = {
   reflectedYear: string | null;
 };
 
-/*
- * The year whose heading currently sits at the top of the viewport, or null
- * (e.g. while the banner is still in view). Headings are in document order
- * (newest year first), so the last one above the offset wins.
- */
+/* Newest year first. Last heading above offset wins. Null if banner in view. */
 function currentYearInView(): string | null {
   const headings = Array.from(
     document.querySelectorAll<HTMLElement>(".album-container .year-heading"),
@@ -37,17 +29,12 @@ function currentYearInView(): string | null {
   return current;
 }
 
-/*
- * Reflect the year in the URL as a `year` param without triggering a re-render.
- * replaceState (rather than m.route.set) keeps the router's route and the scroll
- * position intact while making the URL shareable/bookmarkable to a year.
- */
+/* Use replaceState to keep scroll position while making URL shareable. */
 function reflectYearInUrl(year: string): void {
   const base = m.route.get().split("?")[0];
   history.replaceState(history.state, "", `#!${base}?year=${year}`);
 }
 
-/* Reflect the year at the top of the viewport into the URL, once per frame. */
 function reflectCurrentYear(scrollState: YearScrollState): void {
   scrollState.scrollFrame = null;
   const year = currentYearInView();
@@ -66,12 +53,7 @@ function trackScroll(scrollState: YearScrollState): void {
   );
 }
 
-/*
- * Keep the year heading at the top while album images above it load and grow
- * the layout — re-scroll until the required scroll position stops changing, or
- * we hit the pass cap. A missing heading retries within the same cap, since
- * batched rendering may not have reached that year yet.
- */
+/* Retry while scroll position changes or pass cap not reached. */
 function settleYearScroll(
   year: string,
   spy: { passes: number; previousY: number },
@@ -94,7 +76,6 @@ function settleYearScroll(
   }
 }
 
-/* Scroll a year's heading to the top, for an initial ?year= deep link. */
 function scrollToYear(year: string): void {
   settleYearScroll(year, { passes: 0, previousY: -1 });
 }
@@ -109,10 +90,7 @@ function unmountYearScroll(
   }
 }
 
-/*
- * Start tracking scroll position against year headings. Scrolls to
- * initialYear first when given (a ?year= deep link). Returns a teardown.
- */
+/* Scrolls to initialYear on ?year= deep link. Returns teardown. */
 export function mountYearScroll(
   initialYear: string | undefined,
 ): () => void {

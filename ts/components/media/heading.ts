@@ -13,7 +13,6 @@ function viewHeading(vnode: m.Vnode<HeadingAttrs>): m.Children {
   return m("th.exif-heading", text);
 }
 
-/* */
 export function Heading() {
   return { view: viewHeading };
 }

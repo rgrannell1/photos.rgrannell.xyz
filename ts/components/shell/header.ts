@@ -11,9 +11,6 @@ function viewBurgerMenu(): m.Children {
   return m("a", { onclick: clickBurgerMenu }, m("span.burger", "Ξ"));
 }
 
-/*
- * The sidebar menu
- */
 function BurgerMenu() {
   return { view: viewBurgerMenu };
 }
@@ -28,9 +25,6 @@ function viewHeaderBrandText(): m.Children {
   }, m("span.brand", BRAND_TEXT));
 }
 
-/*
- * The link to the homepage
- */
 function HeaderBrandText() {
   return { view: viewHeaderBrandText };
 }
@@ -47,7 +41,6 @@ function viewHeader(): m.Children {
   ]);
 }
 
-/* */
 export function Header() {
   return { view: viewHeader };
 }

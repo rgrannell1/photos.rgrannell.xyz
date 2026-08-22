@@ -1,6 +1,5 @@
 /*
- * Global UI event wiring: navigation and the burger menu. Bound once from
- * the entry point.
+ * Global UI event wiring. Bound once from entry point.
  */
 
 import m from "mithril";

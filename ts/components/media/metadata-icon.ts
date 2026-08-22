@@ -23,7 +23,6 @@ function viewInfoSVG(vnode: m.Vnode<{ colour: string }>): m.Children {
   ]);
 }
 
-/* */
 function InfoSVG() {
   return { view: viewInfoSVG };
 }
@@ -45,7 +44,6 @@ function viewMetadataIcon(vnode: m.Vnode<MetadataIconAttrs>): m.Children {
   }, m(InfoSVG, { colour }));
 }
 
-/* */
 export function MetadataIcon() {
   return { view: viewMetadataIcon };
 }

@@ -95,7 +95,6 @@ function viewVideosPage(vnode: m.Vnode<VideosPageAttrs>): m.Children {
   );
 }
 
-/* */
 export function VideosPage() {
   return { view: viewVideosPage };
 }

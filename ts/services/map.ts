@@ -1,8 +1,4 @@
-/*
- * Leaflet map management for the map page: tile layer, batched place
- * markers, and curved trip polylines. Leaflet loads lazily on mount. All
- * map DOM interaction lives here; the page component only holds a handle.
- */
+/* Leaflet map: tile layer, place markers, trip polylines. Lazy-loads on mount. */
 
 import type {
   LatLngBounds,
@@ -136,11 +132,7 @@ function bezierPoint(
   return [lat, lng];
 }
 
-/*
- * Arc between two points that bulges "up" (north): control point is offset
- * perpendicular to the segment, on the north side, by a fraction of the
- * segment length so short lines get a gentle circular-style bend.
- */
+/* Arc bulges north. Control point offset perpendicular to segment. */
 function arcLatLngs(
   start: [number, number],
   end: [number, number],
@@ -330,7 +322,6 @@ function unmountMap(mapState: MapState): void {
 }
 
 export type MapHandle = {
-  // apply new attrs: sidebar visibility, places, and trip polylines
   update: (
     visible: boolean,
     places: GeocodedPlaceWithCover[],
@@ -339,10 +330,7 @@ export type MapHandle = {
   teardown: () => void;
 };
 
-/*
- * Mount a Leaflet map inside root's .leaflet-map container. Leaflet loads
- * lazily; updates before it arrives are dropped, matching mount-time attrs.
- */
+/* Lazy-loads Leaflet. Pre-load updates are dropped. */
 export function mountMap(
   root: HTMLElement,
   places: GeocodedPlaceWithCover[],

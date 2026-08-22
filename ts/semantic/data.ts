@@ -6,11 +6,7 @@ import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TargetValidator, Triple } from "@rgrannell1/tribbledb";
 import { TribbleParser } from "@rgrannell1/tribbledb";
 
-/*
- * Stream triples from a URL
- *
- * @param url The URL to fetch triples from
- */
+/* Stream triples from a URL */
 export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
   const parser = new TribbleParser();
   const res = await fetch(url);
@@ -47,7 +43,6 @@ export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
     }
   }
 
-  // parse any remaining line in buffer
   if (buffer.length > 0) {
     const triple = parser.parse(buffer);
     if (triple !== undefined) {
@@ -55,7 +50,6 @@ export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
     }
   }
 
-  // and yield any leftover triples
   if (tripleBuffer.length > 0) {
     yield [...tripleBuffer];
   }

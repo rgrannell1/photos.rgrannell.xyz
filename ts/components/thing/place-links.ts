@@ -106,9 +106,6 @@ function viewLocationLink(
   return m(PlaceLink, { location, mode });
 }
 
-/*
- * Create a link to a country / place
- */
 export function LocationLink() {
   return { view: viewLocationLink };
 }

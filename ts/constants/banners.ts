@@ -1,17 +1,14 @@
 /*
- * Hardcoded page-hero banner placeholders.
+ * Hardcoded page-hero banner placeholders and blur-up ThumbHash strings.
  *
- * ThumbHash strings (matching mirror's `thumbnail_mosaic` / `mosaic_banner`
- * roles) used as the blur-up pre-render behind the two hardcoded page-hero
- * banners. Album-page banners read their hash from the published triples;
- * these heroes are not album banners, so their hash is inlined here. Update
- * by hand if the source photo is re-encoded.
+ * Album banners read their ThumbHash from the published triples. These two
+ * heroes are not album banners, so their hashes are inlined here by hand.
  */
 
-// the high-res `banner` renditions behind the two page heroes. Update by
-// hand if the source photo is re-encoded. Consumed by the components, the
-// index.html preload, and the service-worker pre-cache.
+// High-res banner rendition. Update if the source photo is re-encoded.
 export const ALBUMS_BANNER_URL = "https://photos-cdn.rgrannell.xyz/d6cf0f7cc7.webp";
+
+// High-res banner rendition. Update if the source photo is re-encoded.
 export const ABOUT_BANNER_URL = "https://photos-cdn.rgrannell.xyz/6744c802d1.webp";
 
 // /albums hero — photo:548d64a50a (mirror: 2022/Cranes/Published/79_535.JPG)

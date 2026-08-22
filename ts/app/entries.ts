@@ -1,7 +1,6 @@
 /*
- * The route entries: one PageEntry per page, reading params and services to
- * build each page's attrs. Page components stay module-level singletons,
- * created once, so mount semantics are unchanged.
+ * Route entries and page singletons. Each page has one entry, created once to
+ * preserve mount semantics.
  */
 
 import m from "mithril";
@@ -70,7 +69,6 @@ export const albumsEntry = pageEntry({
   },
 });
 
-/* */
 export const albumEntry = pageEntry({
   page: albumPageComponent,
   onmatch(params) {
@@ -117,7 +115,6 @@ export const albumEntry = pageEntry({
   },
 });
 
-/* */
 export const aboutEntry = pageEntry({
   page: aboutPageComponent,
   resolve() {
@@ -128,7 +125,6 @@ export const aboutEntry = pageEntry({
   },
 });
 
-/* */
 export const videosEntry = pageEntry({
   page: videosPageComponent,
   resolve() {
@@ -141,12 +137,9 @@ export const videosEntry = pageEntry({
   },
 });
 
-// Sort URNs by date without parsing each photo — parsing is deferred to
-// render batches. Loaded per navigation in onmatch, not per redraw. While
-// the stream is still loading, each redraw re-reads so new photos appear.
+// Photo URNs loaded per navigation, not redraw. Re-read until stream completes.
 let photoUrns: string[] = [];
 
-/* */
 export const photosEntry = pageEntry({
   page: photosPageComponent,
   onmatch() {
@@ -163,7 +156,6 @@ export const photosEntry = pageEntry({
   },
 });
 
-/* */
 export const thingEntry = pageEntry({
   page: thingPageComponent,
   onmatch(params) {
@@ -173,7 +165,7 @@ export const thingEntry = pageEntry({
       : { page: "none" };
   },
   resolve() {
-    // needs pruned, fully-derived data
+    // Requires fully-derived, pruned data.
     if (!state.loaded) {
       return "";
     }
@@ -205,7 +197,6 @@ export const thingEntry = pageEntry({
   },
 });
 
-/* */
 export const photoEntry = pageEntry({
   page: photoPageComponent,
   onmatch(params) {
@@ -231,7 +222,6 @@ export const photoEntry = pageEntry({
   },
 });
 
-/* */
 export const videoEntry = pageEntry({
   page: videoPageComponent,
   onmatch(params) {
@@ -257,7 +247,6 @@ export const videoEntry = pageEntry({
   },
 });
 
-/* */
 export const listingEntry = pageEntry({
   page: listingPageComponent,
   onmatch(params) {
@@ -267,7 +256,7 @@ export const listingEntry = pageEntry({
       : { page: "none" };
   },
   resolve() {
-    // needs pruned, fully-derived data
+    // Requires fully-derived, pruned data.
     if (!state.loaded) {
       return "";
     }
@@ -294,11 +283,10 @@ export const listingEntry = pageEntry({
   },
 });
 
-/* */
 export const listingsEntry = pageEntry({
   page: listingsPageComponent,
   resolve() {
-    // needs pruned, fully-derived data
+    // Requires fully-derived, pruned data.
     if (!state.loaded) {
       return "";
     }
@@ -309,16 +297,14 @@ export const listingsEntry = pageEntry({
   },
 });
 
-/* */
 export const checklistEntry = pageEntry({
   page: checklistPageComponent,
   resolve() {
-    // needs the pre-prune catalogue stats from the final pass
+    // Requires pre-pruned catalogue stats.
     if (!state.loaded) {
       return "";
     }
 
-    // The life-list defaults to the Irish view when no filter is in the URL.
     const filter = (m.route.param("filter") as string | undefined) ?? "ireland";
     const entries = services.readWildBirdChecklist();
     const covers = services.readThingCovers("bird");
@@ -344,8 +330,7 @@ export const checklistEntry = pageEntry({
   },
 });
 
-// map data is loaded per navigation in onmatch, not per redraw. If the page
-// is visited before the stream completes, resolve backfills once loaded.
+// Map data loaded per navigation, backfilled on resolve if needed.
 let placesForMap: GeocodedPlaceWithCover[] = [];
 let tripPolylines: TripPolyline[] = [];
 let mapDataRead = false;
@@ -356,7 +341,6 @@ function readMapData() {
   mapDataRead = true;
 }
 
-/* */
 export const mapEntry = pageEntry({
   page: mapPageComponent,
   onmatch() {
@@ -365,7 +349,7 @@ export const mapEntry = pageEntry({
     }
   },
   resolve() {
-    // needs pruned, fully-derived data
+    // Requires fully-derived, pruned data.
     if (!state.loaded) {
       return "";
     }

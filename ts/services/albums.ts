@@ -9,17 +9,11 @@ import { readAlbums, readPlace, readTransfers, readVideos } from "./readers.ts";
 import { albumUrn } from "../commons/urn.ts";
 import { hasValidCoordinates } from "./places.ts";
 
-/*
- * Get the album date
- */
 export function albumYear(album: Album): number {
   return new Date(album.minDate).getFullYear();
 }
 
-/*
- * Read the optional markdown recap for a year, published by mirror as
- * `urn:ró:year:<YYYY>  recap  <markdown>`. Returns undefined when none exists.
- */
+/* Published by mirror as urn:ró:year:<YYYY>  recap  <markdown>. */
 export function readYearRecap(tdb: TribbleDB, year: number): string | undefined {
   return tdb.search({
     source: { type: KnownTypes.YEAR, id: String(year) },
@@ -27,9 +21,6 @@ export function readYearRecap(tdb: TribbleDB, year: number): string | undefined 
   }).firstTarget();
 }
 
-/*
- * Read albums from the TribbleDB
- */
 export function readAllAlbums(tdb: TribbleDB): Album[] {
   const ids = tdb.search({
     source: { type: KnownTypes.ALBUM },
@@ -41,12 +32,6 @@ export function readAllAlbums(tdb: TribbleDB): Album[] {
     });
 }
 
-/*
- * Get the photo IDs associated with an album ID
- *
- * @param tdb TribbleDB instance
- * @param id Album URN
- */
 export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
   return tdb.search({
     source: { type: KnownTypes.PHOTO },
@@ -55,22 +40,10 @@ export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
   }).sources();
 }
 
-/*
- * Read photos associated with an album
- *
- * @param tdb TribbleDB instance
- * @param id Album URN
- */
 export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
   return readPhotos(tdb, readAlbumPhotoIds(tdb, id));
 }
 
-/*
- * Read videos associated with an album
- *
- * @param tdb TribbleDB instance
- * @param id Album URN
- */
 export function readAlbumVideoIds(tdb: TribbleDB, id: string): Set<string> {
   return tdb.search({
     source: { type: KnownTypes.VIDEO },
@@ -79,32 +52,16 @@ export function readAlbumVideoIds(tdb: TribbleDB, id: string): Set<string> {
   }).sources();
 }
 
-/*
- * Read videos associated with an album
- *
- * @param tdb TribbleDB instance
- * @param id Album URN
- */
 export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
   return readVideos(tdb, readAlbumVideoIds(tdb, id));
 }
 
-/*
- * Photos in an album are associated with places (`location` relation) and
- * with subjects (`subject` relation). This function enumerates information on all of the
- * things in an album via the relation
- *
- * (x) -> [:subject|:location] -> (:photo) - [:albumId] -> (id:album)
- */
+/* Via relation: (x) -> [:subject|:location] -> (:photo) - [:albumId] -> (id:album) */
 export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
   return readThingsByPhotoIds(tdb, readAlbumPhotoIds(tdb, id));
 }
 
-/*
- * Read all albums in a trip, sorted by minDate ascending (chronological order).
- * Use this to show "previous hops" on an album page (albums in the same trip
- * with an earlier minDate).
- */
+/* Shows earlier albums (previous hops) in the same trip. */
 export function readTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
   const { type, id } = asUrn(tripUrn);
   const ids = tdb.search({
@@ -118,9 +75,7 @@ export function readTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
   );
 }
 
-/*
- * Read a trip's display name from its title triple, published by mirror.
- */
+/* Published by mirror. */
 export function readTripName(tdb: TribbleDB, tripUrn: string): string | undefined {
   const { type, id } = asUrn(tripUrn);
   return tdb.search({
@@ -129,9 +84,6 @@ export function readTripName(tdb: TribbleDB, tripUrn: string): string | undefine
   }).firstTarget();
 }
 
-/*
- * Read albums associated with a set of thing IDs
- */
 export function readAlbumsByThingIds(
   tdb: TribbleDB,
   thingsUrns: Set<string>,
@@ -159,11 +111,7 @@ export type TripPolyline = {
   mode?: string;
 };
 
-/*
- * Read all transfer entities (source + destination place URNs), resolve each
- * to lat/long. Return one polyline per transfer for drawing on the map (skip
- * null island).
- */
+/* Returns one polyline per transfer for map drawing, skipping null island. */
 export function readTransferPolylines(tdb: TribbleDB): TripPolyline[] {
   const transferUrns = new Set(
     tdb.search({ source: { type: KnownTypes.TRANSFER } }).sources(),

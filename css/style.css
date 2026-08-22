@@ -568,6 +568,9 @@ button:disabled {
     top: 0;
     left: 0;
     width: 100%;
+    /* width: 100% plus the .header right padding overflows the viewport
+       under content-box sizing */
+    box-sizing: border-box;
     z-index: 10;
     background: transparent;
   }

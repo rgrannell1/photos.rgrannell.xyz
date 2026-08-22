@@ -1,7 +1,4 @@
-/*
- * App entry point. Every top-level side effect happens here: event
- * bindings, the tribble stream load, and the route mount.
- */
+// App entry point for event bindings, tribble stream load, and routing.
 
 import m from "mithril";
 import { bindGlobalListeners } from "./app/listeners.ts";
