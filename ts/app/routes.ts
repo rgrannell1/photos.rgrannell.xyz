@@ -17,7 +17,7 @@ import {
   thingEntry,
   videoEntry,
   videosEntry,
-} from "./entries.ts";
+} from "./entries/mod.ts";
 
 export const routes: Record<string, m.RouteResolver> = {
   "/albums": routeResolver(albumsEntry),

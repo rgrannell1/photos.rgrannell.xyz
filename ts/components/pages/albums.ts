@@ -4,14 +4,13 @@ import { AlbumBanner } from "../album/album-banner.ts";
 import { ShareButton } from "../share-button.ts";
 import { AlbumStats } from "../album/album-stats.ts";
 import { YearRecap } from "../album/year-recap.ts";
-import type { Album, Services } from "../../types.ts";
+import type { Album, Country } from "../../types.ts";
 import { thumbHashDataUrl, loadingMode } from "../../services/photos.ts";
 import { AlbumCard } from "../album/album-card.ts";
 import { setTitle, sharePhotoUrl } from "../../services/window.ts";
 import { mountYearScroll } from "../../services/year-scroll.ts";
 import { broadcast } from "../../commons/events.ts";
 import { albumYear } from "../../services/albums.ts";
-import { setify } from "../../commons/sets.ts";
 import { CountryFilter } from "../album/country-filter.ts";
 import {
   ALBUMS_BANNER_MOSAIC,
@@ -26,7 +25,8 @@ import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];
-  services: Services;
+  readAlbumCountries: (album: Album) => Country[];
+  readYearRecap: (year: number) => string | undefined;
   visible: boolean;
   selectedCountry: string | undefined;
   selectedTrip: string | undefined;
@@ -46,7 +46,7 @@ type YearGroup = {
  */
 function groupAlbumsByYear(
   albums: Album[],
-  services: Services,
+  readYearRecap: (year: number) => string | undefined,
   showRecap: boolean,
   currentYear: number,
 ): YearGroup[] {
@@ -63,7 +63,7 @@ function groupAlbumsByYear(
 
     const showHeading = year !== currentYear;
     const recap = showHeading && showRecap
-      ? services.readYearRecap(year)
+      ? readYearRecap(year)
       : undefined;
     groups.push({ year, showHeading, recap, albums: [album] });
   }
@@ -76,7 +76,7 @@ function groupAlbumsByYear(
  */
 function drawYearGroup(
   group: YearGroup,
-  services: Services,
+  readAlbumCountries: (album: Album) => Country[],
   startIdx: number,
 ): m.Children[] {
   const $components: m.Children[] = [];
@@ -104,7 +104,7 @@ function drawYearGroup(
       m(AlbumCard, {
         key: `album-${album.id}`,
         album,
-        countries: services.readCountries(setify(album.country)),
+        countries: readAlbumCountries(album),
         loading: loadingMode(startIdx + albumIdx),
         trip: album.trip,
         containerAttrs: {
@@ -142,14 +142,15 @@ function viewAlbumsList(
   batch: BatchRenderer,
   vnode: m.Vnode<AlbumsListAttrs>,
 ): m.Children {
-  const { albums, services, selectedCountry, selectedTrip } = vnode.attrs;
+  const { albums, readAlbumCountries, readYearRecap, selectedCountry, selectedTrip } =
+    vnode.attrs;
 
   const showRecap = selectedCountry === undefined &&
     selectedTrip === undefined;
 
   const groups = groupAlbumsByYear(
     albums.slice(0, batch.count()),
-    services,
+    readYearRecap,
     showRecap,
     new Date().getFullYear(),
   );
@@ -158,7 +159,7 @@ function viewAlbumsList(
   let startIdx = 0;
 
   for (const group of groups) {
-    $albumComponents.push(...drawYearGroup(group, services, startIdx));
+    $albumComponents.push(...drawYearGroup(group, readAlbumCountries, startIdx));
     startIdx += group.albums.length;
   }
 
@@ -178,7 +179,10 @@ function AlbumsList() {
 
 type AlbumsPageAttrs = {
   albums: Album[];
-  services: Services;
+  countries: Country[];
+  readAlbumCountries: (album: Album) => Country[];
+  readYearRecap: (year: number) => string | undefined;
+  tripName: string | undefined;
   visible: boolean;
   selectedCountry: string | undefined;
   selectedTrip: string | undefined;
@@ -207,12 +211,17 @@ function selectCountry(slug: string | undefined): void {
 }
 
 function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
-  const { albums, services, visible, selectedCountry, selectedTrip } =
+  const {
+    albums,
+    countries,
+    readAlbumCountries,
+    readYearRecap,
+    tripName,
+    visible,
+    selectedCountry,
+    selectedTrip,
+  } =
     vnode.attrs;
-
-  const tripName = selectedTrip
-    ? services.readTripName(selectedTrip) ?? "Trip"
-    : undefined;
 
   const $tripShare = selectedTrip
     ? m("section.trip-share", [
@@ -227,7 +236,7 @@ function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
   const $md = m("section.album-metadata", [
     m(AlbumStats),
     m(CountryFilter, {
-      services,
+      countries,
       selectedCountry,
       onSelect: selectCountry,
     }),
@@ -246,7 +255,14 @@ function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
       thumbnailDataUrl: bannerDataUrl,
     }),
     $md,
-    m(AlbumsList, { albums, services, visible, selectedCountry, selectedTrip }),
+    m(AlbumsList, {
+      albums,
+      readAlbumCountries,
+      readYearRecap,
+      visible,
+      selectedCountry,
+      selectedTrip,
+    }),
   ]);
 }
 

@@ -1,9 +1,6 @@
-import { asUrn } from "@rgrannell1/tribbledb";
-import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
-import { one } from "../../commons/arrays.ts";
 import { navigate } from "../../commons/events.ts";
-import type { Services } from "../../types.ts";
+import type { Photo } from "../../types.ts";
 import { PhotoAlbum } from "../album/photo-album.ts";
 import { thumbHashDataUrl, loadingMode } from "../../services/photos.ts";
 
@@ -11,30 +8,17 @@ type CategoryDef = {
   type: string;
   label: string;
   route: string;
+  cover: Photo;
 };
-
-function toCategoryDef(listing: TripleObject): CategoryDef {
-  const type = asUrn(listing.id as string).id;
-
-  return {
-    type,
-    label: one(listing.name) as string,
-    route: `/listing/${type}`,
-  };
-}
 
 /*
  * Returns an empty array when the category has no cover photo.
  */
 function drawCategoryAlbum(
-  services: Services,
   category: CategoryDef,
   idx: number,
 ): m.Children[] {
-  const cover = services.readCategoryCover(category.type);
-  if (!cover) {
-    return [];
-  }
+  const { cover } = category;
 
   const labelAttrs = {
     "data-testid": "listing-card-label",
@@ -56,14 +40,12 @@ function drawCategoryAlbum(
 
 type ListingsPageAttrs = {
   visible: boolean;
-  services: Services;
+  categories: CategoryDef[];
 };
 
 function viewListingsPage(vnode: m.Vnode<ListingsPageAttrs>): m.Children {
-  const { visible, services } = vnode.attrs;
-
-  const categories = services.readListings().map(toCategoryDef);
-  const $albums = categories.flatMap(drawCategoryAlbum.bind(null, services));
+  const { visible, categories } = vnode.attrs;
+  const $albums = categories.flatMap(drawCategoryAlbum);
 
   return m("main", {
     class: visible ? "page sidebar-visible" : "page",

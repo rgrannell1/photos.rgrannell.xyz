@@ -1,18 +1,20 @@
 import m from "mithril";
-import { toThingLinks } from "../thing/thing-links.ts";
+import { toThingLinks, type ReadThing } from "../thing/thing-links.ts";
+import type { ReadThingEmoji } from "../thing/thing-link.ts";
 import * as Dates from "../../services/dates.ts";
-import type { Photo as PhotoType, Services } from "../../types.ts";
+import type { Photo as PhotoType } from "../../types.ts";
 import { Heading } from "./heading.ts";
 
 type ExifDataAttrs = {
   photo: PhotoType;
-  services: Services;
+  readThing: ReadThing;
+  readEmoji: ReadThingEmoji;
 };
 
 function viewCameraModel(vnode: m.Vnode<ExifDataAttrs>): m.Children {
-  const { photo, services } = vnode.attrs;
+  const { photo, readThing, readEmoji } = vnode.attrs;
 
-  const $model = toThingLinks(services, [photo.model]);
+  const $model = toThingLinks(readThing, readEmoji, [photo.model]);
   if ($model.length > 0) {
     return m("td", $model);
   }
@@ -96,7 +98,7 @@ function Aperture() {
 }
 
 function viewExifData(vnode: m.Vnode<ExifDataAttrs>): m.Children {
-  const { photo, services } = vnode.attrs;
+  const { photo, readThing, readEmoji } = vnode.attrs;
 
   const $dateTime = m("tr", [
     m(Heading, { text: "Date-Time" }),
@@ -105,27 +107,27 @@ function viewExifData(vnode: m.Vnode<ExifDataAttrs>): m.Children {
 
   const $model = m("tr", [
     m(Heading, { text: "Camera Model" }),
-    m(CameraModel, { photo, services }),
+    m(CameraModel, { photo, readThing, readEmoji }),
   ]);
 
   const $dimensions = m("tr", [
     m(Heading, { text: "Dimensions" }),
-    m(ExifDimensions, { photo, services }),
+    m(ExifDimensions, { photo, readThing, readEmoji }),
   ]);
 
   const $focalLength = m("tr", [
     m(Heading, { text: "Focal Length" }),
-    m(FocalLength, { photo, services }),
+    m(FocalLength, { photo, readThing, readEmoji }),
   ]);
 
   const $shutterSpeed = m("tr", [
     m(Heading, { text: "Shutter Speed" }),
-    m(ShutterSpeed, { photo, services }),
+    m(ShutterSpeed, { photo, readThing, readEmoji }),
   ]);
 
   const $aperture = m("tr", [
     m(Heading, { text: "Aperture" }),
-    m(Aperture, { photo, services }),
+    m(Aperture, { photo, readThing, readEmoji }),
   ]);
 
   const $iso = m("tr", [

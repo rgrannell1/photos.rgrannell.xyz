@@ -3,7 +3,7 @@ import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../../commons/arrays.ts";
 import { KnownTypes, TAXON_TYPES } from "../../constants/data.ts";
 import { taxonLabel } from "../../commons/things.ts";
-import { placeFeatureEmoji } from "../../services/emoji.ts";
+import { featureEmoji } from "../../services/emoji.ts";
 import { FlagIcon } from "../flag.ts";
 import { ThingUrls } from "./thing-urls.ts";
 
@@ -24,7 +24,7 @@ function viewThingCaption(vnode: m.Vnode<ThingCaptionAttrs>): m.Children {
   const title: m.Children = one(thing.flag)
     ? [m(FlagIcon, { name }), ` ${name}`]
     : urnType === KnownTypes.PLACE_FEATURE && id
-    ? `${placeFeatureEmoji(id)} ${name}`
+    ? `${featureEmoji(thing)} ${name}`
     : name;
 
   const titleContent = titleExtra ? [title, " ", titleExtra] : title;

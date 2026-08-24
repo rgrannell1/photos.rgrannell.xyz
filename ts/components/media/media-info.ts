@@ -1,8 +1,8 @@
 /* The shared metadata table for photos and videos. */
 
 import m from "mithril";
-import { toThingLinks } from "../thing/thing-links.ts";
-import type { Services } from "../../types.ts";
+import { toThingLinks, type ReadThing } from "../thing/thing-links.ts";
+import type { ReadThingEmoji } from "../thing/thing-link.ts";
 import { arrayify } from "../../commons/arrays.ts";
 import { isTaxonUrn, subjectQualifier } from "../../commons/urn.ts";
 import { preprocessDescription } from "../../commons/strings.ts";
@@ -21,7 +21,8 @@ type Media = {
 
 type MediaComponentAttrs = {
   media: Media;
-  services: Services;
+  readThing: ReadThing;
+  readEmoji: ReadThingEmoji;
 };
 
 function viewDescription(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
@@ -42,9 +43,9 @@ function Description() {
 }
 
 function viewRating(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
-  const { media, services } = vnode.attrs;
+  const { media, readThing, readEmoji } = vnode.attrs;
 
-  const $rating = toThingLinks(services, [media.rating]);
+  const $rating = toThingLinks(readThing, readEmoji, [media.rating]);
   return m("td", $rating.length > 0 ? $rating : "—");
 }
 
@@ -53,9 +54,9 @@ function Rating() {
 }
 
 function viewStyle(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
-  const { media, services } = vnode.attrs;
+  const { media, readThing, readEmoji } = vnode.attrs;
 
-  const $style = toThingLinks(services, [media.style]);
+  const $style = toThingLinks(readThing, readEmoji, [media.style]);
   return m("td", $style.length > 0 ? $style : "—");
 }
 
@@ -64,8 +65,12 @@ function Style() {
 }
 
 /* One subject, with a qualifier chip when it was not seen in the wild. */
-function drawSubject(services: Services, urn: string): m.Children[] {
-  const $links = toThingLinks(services, [urn]);
+function drawSubject(
+  readThing: ReadThing,
+  readEmoji: ReadThingEmoji,
+  urn: string,
+): m.Children[] {
+  const $links = toThingLinks(readThing, readEmoji, [urn]);
   if ($links.length === 0) {
     return [];
   }
@@ -79,13 +84,13 @@ function drawSubject(services: Services, urn: string): m.Children[] {
 }
 
 function viewSubject(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
-  const { media, services } = vnode.attrs;
+  const { media, readThing, readEmoji } = vnode.attrs;
 
   // derived taxon subjects stay out of the subject row
   const subjects = arrayify(media.subject)
     .filter((subject) => !isTaxonUrn(subject));
 
-  const $subject = subjects.flatMap(drawSubject.bind(null, services));
+  const $subject = subjects.flatMap(drawSubject.bind(null, readThing, readEmoji));
   return m("td", $subject.length > 0 ? $subject : "—");
 }
 
@@ -94,37 +99,47 @@ function Subject() {
 }
 
 function viewMediaInfo(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
-  const { media, services } = vnode.attrs;
+  const { media, readThing, readEmoji } = vnode.attrs;
 
   const infoItems = [];
 
   if (media.description || media.summary) {
     infoItems.push(m("tr", [
       m(Heading, { text: "Description" }),
-      m(Description, { media, services }),
+      m(Description, { media, readThing, readEmoji }),
     ]));
   }
 
   infoItems.push(
     m("tr", [
       m(Heading, { text: "Location" }),
-      m(MediaLocations, { location: media.location, services, mode: "geographic" }),
+      m(MediaLocations, {
+        location: media.location,
+        readThing,
+        readEmoji,
+        mode: "geographic",
+      }),
     ]),
     m("tr", [
       m(Heading, { text: "Place Type" }),
-      m(MediaLocations, { location: media.location, services, mode: "feature" }),
+      m(MediaLocations, {
+        location: media.location,
+        readThing,
+        readEmoji,
+        mode: "feature",
+      }),
     ]),
     m("tr", [
       m(Heading, { text: "Rating" }),
-      m(Rating, { media, services }),
+      m(Rating, { media, readThing, readEmoji }),
     ]),
     m("tr", [
       m(Heading, { text: "Style" }),
-      m(Style, { media, services }),
+      m(Style, { media, readThing, readEmoji }),
     ]),
     m("tr", [
       m(Heading, { text: "Subject" }),
-      m(Subject, { media, services }),
+      m(Subject, { media, readThing, readEmoji }),
     ]),
   );
 

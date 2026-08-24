@@ -1,9 +1,8 @@
 import m from "mithril";
 import { KnownTypes } from "../../constants/data.ts";
-import { capitalise, pluralise } from "../../commons/strings.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { broadcast, navigate } from "../../commons/events.ts";
-import type { Services } from "../../types.ts";
+import type { Photo } from "../../types.ts";
 import { PhotoAlbum } from "../album/photo-album.ts";
 import { thumbHashDataUrl, loadingMode } from "../../services/photos.ts";
 import { one } from "../../commons/arrays.ts";
@@ -14,6 +13,7 @@ import {
 } from "../../services/batch-render.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import { FlagIcon } from "../flag.ts";
+import type { SubjectStats } from "../../services/stats.ts";
 
 /*
  * Inline badge for the listing card title. Irish birds get the Ireland flag.
@@ -28,8 +28,10 @@ function listingTitleExtra(
   return undefined;
 }
 
+type ReadThingCover = (urn: string) => Photo | undefined;
+
 function drawThingAlbum(
-  services: Services,
+  readThingCover: ReadThingCover,
   listingType: string,
   thing: TripleObject,
   idx: number,
@@ -40,7 +42,7 @@ function drawThingAlbum(
     return [];
   }
 
-  const coverPhoto = services.readThingCover(id);
+  const coverPhoto = readThingCover(id);
   if (!coverPhoto) {
     return [];
   }
@@ -64,7 +66,7 @@ function drawThingAlbum(
 }
 
 type AlbumsListAttrs = {
-  services: Services;
+  readThingCover: ReadThingCover;
   things: TripleObject[];
   listingType: string;
 };
@@ -90,12 +92,12 @@ function viewAlbumsList(
   batch: BatchRenderer,
   vnode: m.Vnode<AlbumsListAttrs>,
 ): m.Children {
-  const { services, things, listingType } = vnode.attrs;
+  const { readThingCover, things, listingType } = vnode.attrs;
   return m(
     "section.album-container",
     { "data-testid": "listing-cards" },
     things.slice(0, batch.count())
-      .flatMap(drawThingAlbum.bind(null, services, listingType)),
+      .flatMap(drawThingAlbum.bind(null, readThingCover, listingType)),
   );
 }
 
@@ -114,7 +116,7 @@ function AlbumsList() {
 }
 
 type BirdListingDetailsAttrs = {
-  services: Services;
+  stats: SubjectStats;
   filter: string | undefined;
   onToggleIreland: () => void;
 };
@@ -122,9 +124,8 @@ type BirdListingDetailsAttrs = {
 function viewBirdListingDetails(
   vnode: m.Vnode<BirdListingDetailsAttrs>,
 ): m.Children {
-  const { services, filter, onToggleIreland } = vnode.attrs;
-  const { wildSpecies, totalSpecies, irishWildSpecies } = services
-    .readBirdStats();
+  const { stats, filter, onToggleIreland } = vnode.attrs;
+  const { wildSpecies, totalSpecies, irishWildSpecies } = stats;
   const irelandActive = filter === "ireland";
 
   return m(
@@ -147,11 +148,9 @@ function BirdListingDetails() {
 }
 
 function viewMammalListingDetails(
-  vnode: m.Vnode<{ services: Services }>,
+  vnode: m.Vnode<{ stats: SubjectStats }>,
 ): m.Children {
-  const { services } = vnode.attrs;
-  const { wildSpecies, totalSpecies, irishWildSpecies } = services
-    .readMammalStats();
+  const { wildSpecies, totalSpecies, irishWildSpecies } = vnode.attrs.stats;
 
   return m(
     "p.listing-details",
@@ -170,7 +169,7 @@ function MammalListingDetails() {
 
 type ListingDetailsAttrs = {
   type: string;
-  services: Services;
+  stats: SubjectStats | undefined;
   filter: string | undefined;
   onToggleIreland: () => void;
 };
@@ -178,14 +177,14 @@ type ListingDetailsAttrs = {
 function viewListingDetails(
   vnode: m.Vnode<ListingDetailsAttrs>,
 ): m.Children {
-  const { type, services, filter, onToggleIreland } = vnode.attrs;
+  const { type, stats, filter, onToggleIreland } = vnode.attrs;
 
-  if (type === KnownTypes.BIRD) {
-    return m(BirdListingDetails, { services, filter, onToggleIreland });
+  if (type === KnownTypes.BIRD && stats) {
+    return m(BirdListingDetails, { stats, filter, onToggleIreland });
   }
 
-  if (type === KnownTypes.MAMMAL) {
-    return m(MammalListingDetails, { services });
+  if (type === KnownTypes.MAMMAL && stats) {
+    return m(MammalListingDetails, { stats });
   }
 
   return null;
@@ -232,7 +231,10 @@ function ListingThingsButton() {
 type ListingPageAttrs = {
   type: string;
   things: TripleObject[];
-  services: Services;
+  label: string;
+  isListable: boolean;
+  stats: SubjectStats | undefined;
+  readThingCover: ReadThingCover;
   visible: boolean;
   filter: string | undefined;
 };
@@ -249,7 +251,8 @@ function isIrishThing(thing: TripleObject): boolean {
 }
 
 function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
-  const { type, things, services, visible, filter } = vnode.attrs;
+  const attrs = vnode.attrs;
+  const { type, things, label, isListable, stats, visible, filter } = attrs;
 
   const onToggleIreland = toggleIrelandFilter.bind(null, type, filter);
 
@@ -257,16 +260,13 @@ function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
     ? things.filter(isIrishThing)
     : things;
 
-  const listing = services.readThing(`urn:ró:listing:${type}`);
-  const label = (one(listing?.name) as string) ?? capitalise(pluralise(type));
-
   const $md = [
     m(ListingTitle, { type, label }),
-    m(ListingDetails, { type, services, filter, onToggleIreland }),
+    m(ListingDetails, { type, stats, filter, onToggleIreland }),
   ];
 
   // the published listable flag gates the "see all <type> photos" link
-  if (one(listing?.listable) === "true") {
+  if (isListable) {
     $md.push(
       m("section.album-metadata", [
         m(ListingThingsButton, { type }),
@@ -278,7 +278,11 @@ function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
     class: visible ? "page sidebar-visible" : "page",
   }, [
     m("section.album-metadata", $md),
-    m(AlbumsList, { services, things: displayThings, listingType: type }),
+    m(AlbumsList, {
+      readThingCover: attrs.readThingCover,
+      things: displayThings,
+      listingType: type,
+    }),
   ]);
 }
 

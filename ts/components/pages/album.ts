@@ -7,15 +7,14 @@ import { thumbHashDataUrl } from "../../services/photos.ts";
 
 import type {
   Album,
+  Country,
   Photo as PhotoType,
-  Services,
   Video as VideoType,
 } from "../../types.ts";
 import { drawGridPhoto } from "../media/photo-grid.ts";
 import { drawVideoItem } from "../media/video.ts";
 import { AlbumsButton } from "../album/albums-button.ts";
 import { countLabel, preprocessDescription } from "../../commons/strings.ts";
-import { setify } from "../../commons/sets.ts";
 import { SMALL_DEVICE_WIDTH } from "../../constants/layout.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TripPreviousAlbums } from "../album/trip-previous-albums.ts";
@@ -24,7 +23,8 @@ type AlbumAttrs = {
   album: Album;
   photos: PhotoType[];
   videos: VideoType[];
-  services: Services;
+  countries: Country[];
+  bannerPhoto: PhotoType | undefined;
   visible: boolean;
   tripPreviousAlbums: Album[];
 };
@@ -38,7 +38,8 @@ function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
     album,
     photos,
     videos,
-    services,
+    countries,
+    bannerPhoto,
     visible,
     tripPreviousAlbums,
   } = vnode.attrs;
@@ -47,7 +48,6 @@ function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
     name,
     photosCount,
     description,
-    country,
     dateRange,
     shortDateRange,
   } = album;
@@ -60,15 +60,12 @@ function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
 
   const $countryLinks = countryFlagLinks(
     album.id,
-    services.readCountries(setify(country)),
+    countries,
   );
 
   const { id } = asUrn(album.id);
   const url = sharePhotoUrl(`album/${id}`);
 
-  const bannerPhoto = album.albumBanner
-    ? services.readPhoto(album.albumBanner)
-    : null;
   const bannerSrc = bannerPhoto
     ? bannerPhoto.midImageLossyUrl ?? bannerPhoto.thumbnailUrl
     : null;

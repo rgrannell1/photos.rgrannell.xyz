@@ -1,0 +1,45 @@
+/* Resolve the map route and retain its completed map model. */
+
+import { MapPage } from "../../components/pages/map.ts";
+import type { TripPolyline } from "../../services/albums.ts";
+import type { GeocodedPlaceWithCover } from "../../services/places.ts";
+import { services, state } from "../context.ts";
+import { pageEntry } from "../shell.ts";
+
+const mapPageComponent = MapPage();
+
+let placesForMap: GeocodedPlaceWithCover[] = [];
+let tripPolylines: TripPolyline[] = [];
+let mapDataRead = false;
+
+function readMapData() {
+  placesForMap = services.readGeocodedPlacesWithCovers();
+  tripPolylines = services.readTransferPolylines();
+  mapDataRead = true;
+}
+
+export const mapEntry = pageEntry({
+  page: mapPageComponent,
+  onmatch() {
+    if (state.loaded) {
+      readMapData();
+    }
+  },
+  resolve() {
+    if (!state.loaded) {
+      return "";
+    }
+
+    if (!mapDataRead) {
+      readMapData();
+    }
+
+    return {
+      attrs: {
+        visible: state.sidebarVisible,
+        places: placesForMap,
+        tripPolylines,
+      },
+    };
+  },
+});

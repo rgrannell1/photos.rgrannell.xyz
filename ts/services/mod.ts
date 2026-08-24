@@ -1,6 +1,7 @@
 /* Service registry: every reader unbound. state.ts binds them to TribbleDB. */
 
 import {
+  isAlbumHidden,
   readAlbumPhotosByAlbumId,
   readAlbumsByThingIds,
   readAlbumVideosByAlbumId,
@@ -36,6 +37,7 @@ import {
 } from "./photos.ts";
 import {
   isBinomialType,
+  listingLabel,
   readListings,
   readNamedTypeThings,
   readTaxonMembers,
@@ -47,8 +49,12 @@ import {
   readAllCountries,
   readGeocodedPlacesWithCovers,
 } from "./places.ts";
+import { readThingEmoji } from "./emoji.ts";
 
 export const SERVICE_READERS = {
+  isAlbumHidden,
+  readThingEmoji,
+  readListingLabel: listingLabel,
   readThing,
   readAlbum,
   readPhoto,

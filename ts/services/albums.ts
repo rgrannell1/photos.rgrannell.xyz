@@ -7,9 +7,18 @@ import { KnownRelations, KnownTypes } from "../constants/data.ts";
 import { readAlbums, readPlace, readTransfers, readVideos } from "./readers.ts";
 import { albumUrn } from "../commons/urn.ts";
 import { hasValidCoordinates } from "./places.ts";
+import { one } from "../commons/arrays.ts";
 
 export function albumYear(album: Album): number {
   return new Date(album.minDate).getFullYear();
+}
+
+export function isAlbumHidden(tdb: TribbleDB, id: string): boolean {
+  const album = tdb.search({
+    source: { type: KnownTypes.ALBUM, id },
+  }).firstObject();
+
+  return one(album?.hidden) === "true";
 }
 
 /* Published by mirror as urn:ró:year:<YYYY>  recap  <markdown>. */

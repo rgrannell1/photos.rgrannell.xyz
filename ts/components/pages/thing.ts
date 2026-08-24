@@ -4,15 +4,16 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { arrayify, one } from "../../commons/arrays.ts";
 import type {
+  Album,
+  Country,
   Photo as PhotoType,
-  Services,
   Video as VideoType,
 } from "../../types.ts";
 import { CountryLink } from "../thing/place-links.ts";
 import { Video } from "../media/video.ts";
 import { AlbumCard } from "../album/album-card.ts";
 import { PhotoGrid } from "../media/photo-grid.ts";
-import { ThingList } from "../thing/thing-list.ts";
+import { ThingList, type ReadThingList } from "../thing/thing-list.ts";
 import { setify, setOf } from "../../commons/sets.ts";
 import {
   KnownRelations,
@@ -28,18 +29,29 @@ import { loadingMode, thumbHashDataUrl } from "../../services/photos.ts";
 import { navigate } from "../../commons/events.ts";
 import { ShareButton } from "../share-button.ts";
 import { sharePhotoUrl } from "../../services/window.ts";
+import type { ReadThingEmoji } from "../thing/thing-link.ts";
 
 type ThingPageAttrs = {
   urn: string;
   things: TripleObject[];
-  services: Services;
+  listingTitle: string | undefined;
+  titleEmoji: string;
+  isBinomial: boolean;
+  readSeenInCountries: (urns: Set<string>) => Country[];
+  readAlbumEntries: (urns: Set<string>) => AlbumEntry[];
+  readVideos: (urns: Set<string>) => VideoType[];
+  readPhotos: (urns: Set<string>) => PhotoType[];
+  readThingList: ReadThingList;
+  readThingEmoji: ReadThingEmoji;
+  readTaxonMembers: (urn: string) => TripleObject[];
+  readThingCover: (urn: string) => PhotoType | undefined;
   visible: boolean;
 };
 
 type UrnCache<Value> = {
   lastUrn: string | null;
   value: Value | undefined;
-  compute: (things: TripleObject[], services: Services) => Value;
+  compute: (attrs: ThingPageAttrs) => Value;
 };
 
 type CachedReader<Value> = (attrs: ThingPageAttrs) => Value;
@@ -50,7 +62,7 @@ function readCached<Value>(
 ): Value {
   if (attrs.urn !== cache.lastUrn) {
     cache.lastUrn = attrs.urn;
-    cache.value = cache.compute(attrs.things, attrs.services);
+    cache.value = cache.compute(attrs);
   }
   return cache.value as Value;
 }
@@ -60,7 +72,7 @@ function readCached<Value>(
  * they must not run on every batched redraw.
  */
 function cachedByUrn<Value>(
-  compute: (things: TripleObject[], services: Services) => Value,
+  compute: (attrs: ThingPageAttrs) => Value,
 ): CachedReader<Value> {
   const cache: UrnCache<Value> = {
     lastUrn: null,
@@ -70,41 +82,27 @@ function cachedByUrn<Value>(
   return readCached.bind(null, cache) as CachedReader<Value>;
 }
 
-function readSeenIn(things: TripleObject[], services: Services) {
-  return services.readSeenInCountries(setOf<string>("id", things));
+function readSeenIn(attrs: ThingPageAttrs): Country[] {
+  return attrs.readSeenInCountries(setOf<string>("id", attrs.things));
 }
 
 type SeenInCountry = ReturnType<typeof readSeenIn>[number];
 
 type AlbumEntry = {
-  album: ReturnType<Services["readAlbumsByThingIds"]>[number];
-  countries: ReturnType<Services["readCountries"]>;
+  album: Album;
+  countries: Country[];
 };
 
-function toAlbumEntry(
-  services: Services,
-  album: ReturnType<Services["readAlbumsByThingIds"]>[number],
-): AlbumEntry {
-  return {
-    album,
-    countries: services.readCountries(setify(album.country)),
-  };
+function readAlbumEntries(attrs: ThingPageAttrs): AlbumEntry[] {
+  return attrs.readAlbumEntries(setOf<string>("id", attrs.things));
 }
 
-function readAlbumEntries(
-  things: TripleObject[],
-  services: Services,
-): AlbumEntry[] {
-  const urns = setOf<string>("id", things);
-  return services.readAlbumsByThingIds(urns).map(toAlbumEntry.bind(null, services));
+function readThingVideos(attrs: ThingPageAttrs): VideoType[] {
+  return attrs.readVideos(setOf<string>("id", attrs.things));
 }
 
-function readThingVideos(things: TripleObject[], services: Services) {
-  return services.readVideosByThingIds(setOf<string>("id", things));
-}
-
-function readThingPhotos(things: TripleObject[], services: Services) {
-  return services.readPhotosByThingIds(setOf<string>("id", things));
+function readThingPhotos(attrs: ThingPageAttrs): PhotoType[] {
+  return attrs.readPhotos(setOf<string>("id", attrs.things));
 }
 
 function drawSeenInCountry(country: SeenInCountry): m.Children {
@@ -127,7 +125,7 @@ function viewThingDetails(
   vnode: m.Vnode<ThingPageAttrs>,
 ): m.Children {
   const metadata: Record<string, m.Children> = {};
-  const { urn, things, services } = vnode.attrs;
+  const { urn, things, readThingList, readThingEmoji } = vnode.attrs;
 
   metadata.Classification = m(ListingLink, { urn });
 
@@ -136,7 +134,8 @@ function viewThingDetails(
   if (locatedIn.size > 0) {
     metadata["Located In"] = m(ThingList, {
       kind: "place",
-      services,
+      readItems: readThingList,
+      readEmoji: readThingEmoji,
       urns: locatedIn,
     });
   }
@@ -145,7 +144,7 @@ function viewThingDetails(
     addSingleThingMetadata(metadata, vnode.attrs);
   }
 
-  if (services.isBinomialType(asUrn(urn).type)) {
+  if (vnode.attrs.isBinomial) {
     const seenIn = seenInFor(vnode.attrs);
 
     if (seenIn.length > 0) {
@@ -176,21 +175,23 @@ function addSingleThingMetadata(
   metadata: Record<string, m.Children>,
   attrs: ThingPageAttrs,
 ) {
-  const { things, services } = attrs;
+  const { things, readThingList, readThingEmoji } = attrs;
   const [thing] = things;
 
   if (thing.features) {
     metadata["Place Type"] = m(ThingList, {
       kind: "feature",
       urns: setify(thing.features),
-      services,
+      readItems: readThingList,
+      readEmoji: readThingEmoji,
     });
   }
 
   if (thing.contains) {
     metadata["Contains"] = m(ThingList, {
       kind: "place",
-      services,
+      readItems: readThingList,
+      readEmoji: readThingEmoji,
       urns: setify(thing.contains),
     });
   }
@@ -198,7 +199,8 @@ function addSingleThingMetadata(
   if (thing.placesWithFeature) {
     metadata["Places"] = m(ThingList, {
       kind: "place",
-      services,
+      readItems: readThingList,
+      readEmoji: readThingEmoji,
       urns: setify(thing.placesWithFeature),
     });
   }
@@ -207,7 +209,8 @@ function addSingleThingMetadata(
     metadata["UNESCO"] = m(ThingList, {
       kind: "unesco",
       urns: new Set(arrayify(thing.unescoId)),
-      services,
+      readItems: readThingList,
+      readEmoji: readThingEmoji,
     });
   }
 
@@ -218,7 +221,8 @@ function addSingleThingMetadata(
       metadata[rank.label] = m(ThingList, {
         kind: "taxon",
         urns: setify(taxa) as Set<string>,
-        services,
+        readItems: readThingList,
+        readEmoji: readThingEmoji,
       });
     }
   }
@@ -325,21 +329,20 @@ function PhotoSection() {
 
 /* Member species of the page's taxon. Empty for non-taxon things. */
 function readMemberSpecies(
-  things: TripleObject[],
-  services: Services,
+  attrs: ThingPageAttrs,
 ): TripleObject[] {
-  const [thing] = things;
+  const [thing] = attrs.things;
   const urn = thing ? (one(thing.id) as string | undefined) : undefined;
 
   if (!urn || !TAXON_TYPES.has(asUrn(urn).type)) {
     return [];
   }
 
-  return services.readTaxonMembers(urn);
+  return attrs.readTaxonMembers(urn);
 }
 
 function drawMemberCard(
-  services: Services,
+  readThingCover: (urn: string) => PhotoType | undefined,
   member: TripleObject,
   idx: number,
 ): m.Children[] {
@@ -348,7 +351,7 @@ function drawMemberCard(
     return [];
   }
 
-  const cover = services.readThingCover(id);
+  const cover = readThingCover(id);
   if (!cover) {
     return [];
   }
@@ -379,7 +382,7 @@ function viewSpeciesSection(
   }
 
   const $cards = members
-    .flatMap(drawMemberCard.bind(null, vnode.attrs.services));
+    .flatMap(drawMemberCard.bind(null, vnode.attrs.readThingCover));
 
   return m("div", [
     m("h3", "Species"),
@@ -416,26 +419,32 @@ function isOlm(urn: string): boolean {
 }
 
 function viewThingPage(vnode: m.Vnode<ThingPageAttrs>): m.Children {
-  const { urn, things, services, visible } = vnode.attrs;
+  const { urn, things, listingTitle, isBinomial, visible } = vnode.attrs;
+  const sectionAttrs = vnode.attrs;
 
   return m("main", {
     class: visible ? "page sidebar-visible" : "page",
   }, [
     isOlm(urn) ? m(HeartRain) : null,
     m("section.thing-page", [
-      m(ThingTitle, { urn, things }),
+      m(ThingTitle, {
+        urn,
+        things,
+        listingTitle,
+        emoji: vnode.attrs.titleEmoji,
+      }),
       m(ThingSubtitle, {
         urn,
-        isBinomial: services.isBinomialType(asUrn(urn).type),
+        isBinomial,
       }),
       m("br"),
       m(ThingUrls, { things }),
-      m(ThingDetails, { urn, things, services, visible }),
+      m(ThingDetails, sectionAttrs),
       drawShareButton(urn, things),
-      m(PhotoSection, { urn, things, services, visible }),
-      m(SpeciesSection, { urn, things, services, visible }),
-      m(VideoSection, { urn, things, services, visible }),
-      m(AlbumSection, { urn, things, services, visible }),
+      m(PhotoSection, sectionAttrs),
+      m(SpeciesSection, sectionAttrs),
+      m(VideoSection, sectionAttrs),
+      m(AlbumSection, sectionAttrs),
     ]),
   ]);
 }

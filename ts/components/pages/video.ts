@@ -1,27 +1,31 @@
 import m from "mithril";
 import { Video } from "../media/video.ts";
-import type { Video as VideoType, Services } from "../../types.ts";
+import type { Video as VideoType } from "../../types.ts";
 import { AlbumButton } from "../album/album-button.ts";
 import { MediaInfo } from "../media/media-info.ts";
+import type { ReadThing } from "../thing/thing-links.ts";
+import type { ReadThingEmoji } from "../thing/thing-link.ts";
 
 type VideoPageAttrs = {
   video: VideoType;
-  services: Services;
+  albumHidden: boolean;
+  readThing: ReadThing;
+  readEmoji: ReadThingEmoji;
   visible: boolean;
 };
 
 function viewVideoPage(vnode: m.Vnode<VideoPageAttrs>): m.Children {
-  const { video, services, visible } = vnode.attrs;
+  const { video, albumHidden, readThing, readEmoji, visible } = vnode.attrs;
 
   const $links = m("ul.link-list", [
     m("li", m("a", { href: video.videoUrlUnscaled }, "[L]")),
     m("li", m("a", { href: video.videoUrl1080p }, "[M]")),
     m("li", m("a", { href: video.videoUrl720p }, "[S]")),
     m("li", m("a", { href: video.videoUrl480p }, "[XS]")),
-    m("li", m(AlbumButton, { id: video.albumId })),
+    m("li", m(AlbumButton, { id: video.albumId, hidden: albumHidden })),
   ]);
 
-  const $videoInfo = m(MediaInfo, { media: video, services });
+  const $videoInfo = m(MediaInfo, { media: video, readThing, readEmoji });
 
   return m("main", [
     m("h1", "Video"),

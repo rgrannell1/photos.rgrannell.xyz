@@ -8,6 +8,7 @@ export const PlaceSchema = v.object({
   id: v.string(),
   name: v.string(),
   flag: v.optional(v.string()),
+  emoji: v.optional(v.string()),
   features: v.optional(v.union([v.string(), v.array(v.string())])),
   in: v.optional(v.union([v.string(), v.array(v.string())])),
   shortName: v.optional(v.string()),
@@ -27,5 +28,6 @@ export const UnescoSchema = v.object({
 export const FeatureSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),
+  emoji: v.optional(v.string()),
   placesWithFeature: v.optional(v.union([v.string(), v.array(v.string())])),
 });

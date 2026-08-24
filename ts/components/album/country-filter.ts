@@ -1,10 +1,10 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
-import type { Country, Services } from "../../types.ts";
+import type { Country } from "../../types.ts";
 import { customFlagAsset, FlagIcon } from "../flag.ts";
 
 type CountryFilterAttrs = {
-  services: Services;
+  countries: Country[];
   selectedCountry: string | undefined;
   onSelect: (slug: string | undefined) => void;
 };
@@ -120,8 +120,8 @@ function drawFlagRuns(
 }
 
 function viewCountryFilter(vnode: m.Vnode<CountryFilterAttrs>): m.Children {
-  const { services, selectedCountry, onSelect } = vnode.attrs;
-  const groups = groupByNation(services.readAllCountries());
+  const { countries, selectedCountry, onSelect } = vnode.attrs;
+  const groups = groupByNation(countries);
 
   return m(
     "p.country-filter",

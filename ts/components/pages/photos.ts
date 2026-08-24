@@ -1,34 +1,18 @@
 import m from "mithril";
-import type { Photo as PhotoType, Services } from "../../types.ts";
+import type { Photo as PhotoType } from "../../types.ts";
 import { PhotoGrid } from "../media/photo-grid.ts";
 import { countLabel } from "../../commons/strings.ts";
 
-/* Read the first `limit` photos by URN, skipping unparseable entries. */
-function readPhotosByLimit(
-  services: Services,
-  photoUrns: string[],
-  limit: number,
-): PhotoType[] {
-  const photos: PhotoType[] = [];
-  for (const urn of photoUrns.slice(0, limit)) {
-    const photo = services.readPhoto(urn);
-    if (photo) {
-      photos.push(photo);
-    }
-  }
-  return photos;
-}
-
 type PhotosPageAttrs = {
-  photoUrns: string[];
-  services: Services;
+  total: number;
+  getPhotos: (limit: number) => PhotoType[];
   visible: boolean;
 };
 
 function viewPhotosPage(vnode: m.Vnode<PhotosPageAttrs>): m.Children {
-  const { photoUrns, services, visible } = vnode.attrs;
+  const { total, getPhotos, visible } = vnode.attrs;
 
-  const countText = countLabel(photoUrns.length, "photo");
+  const countText = countLabel(total, "photo");
 
   const $md = m("section.photos-metadata", [
     m("h1", "Photos"),
@@ -40,8 +24,8 @@ function viewPhotosPage(vnode: m.Vnode<PhotosPageAttrs>): m.Children {
   }, [
     $md,
     m(PhotoGrid, {
-      total: photoUrns.length,
-      getPhotos: readPhotosByLimit.bind(null, services, photoUrns),
+      total,
+      getPhotos,
       groupByYear: true,
     }),
   ]);

@@ -13,6 +13,13 @@ import { customFlagAsset, FlagIcon } from "../flag.ts";
 import { KnownTypes } from "../../constants/data.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Feature, Thing, Unesco } from "../../types.ts";
+import type { EmojiThing } from "../../services/emoji.ts";
+
+export type ReadThingEmoji = (
+  urn: string,
+  name: string,
+  thing: EmojiThing,
+) => string;
 
 /* The class list is a CSS contract, so it is built in exactly one place. */
 function drawThingLink(
@@ -30,10 +37,11 @@ function drawThingLink(
 export type ThingLinkAttrs = {
   urn: string;
   thing: Thing | Unesco | TripleObject;
+  readEmoji: ReadThingEmoji;
 };
 
 function viewThingLink(vnode: m.Vnode<ThingLinkAttrs>): m.Children {
-  const { urn, thing } = vnode.attrs;
+  const { urn, thing, readEmoji } = vnode.attrs;
   const { type, id } = asUrn(urn);
 
   let name = id;
@@ -52,7 +60,7 @@ function viewThingLink(vnode: m.Vnode<ThingLinkAttrs>): m.Children {
     ? m(FlagIcon, { name })
     : hasFlag
     ? null
-    : thingEmoji(urn, name, thing) || null;
+    : readEmoji(urn, name, thing) || null;
 
   // no icon means no separator, or the name sits one space off-column
   const label = icon ? [icon, `\t${name}`] : name;

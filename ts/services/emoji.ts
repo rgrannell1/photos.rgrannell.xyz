@@ -1,12 +1,35 @@
 import { asUrn } from "@rgrannell1/tribbledb";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { one } from "../commons/arrays.ts";
 import { KnownTypes } from "../constants/data.ts";
-import { getTribbleDB } from "../semantic/data.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Feature, Place, Thing, Unesco } from "../types.ts";
 
 // Anything an emoji can be looked up for: parsed things or raw triple objects
-type EmojiThing = Thing | Feature | Unesco | TripleObject;
+export type EmojiThing = Thing | Feature | Unesco | TripleObject;
+
+const emojiCache = new WeakMap<TribbleDB, Map<string, string>>();
+
+function readFeatureEmoji(tdb: TribbleDB, featureUrn: string): string {
+  let cache = emojiCache.get(tdb);
+  if (!cache) {
+    cache = new Map();
+    emojiCache.set(tdb, cache);
+  }
+
+  const cached = cache.get(featureUrn);
+  if (cached) {
+    return cached;
+  }
+
+  const { id } = asUrn(featureUrn);
+  const feature = tdb.search({
+    source: { type: KnownTypes.PLACE_FEATURE, id },
+  }).firstObject();
+  const emoji = one(feature?.emoji) ?? "📍";
+  cache.set(featureUrn, emoji);
+  return emoji;
+}
 
 export function placeEmoji(thing: Place | TripleObject): string {
   // Country-places have a flag; prefer that over a feature emoji
@@ -15,23 +38,11 @@ export function placeEmoji(thing: Place | TripleObject): string {
     return flag;
   }
 
-  const feature = one(thing.features);
-  if (!feature) {
-    return "📍";
-  }
-
-  return placeFeatureEmoji(feature);
+  return one(thing.emoji) ?? "📍";
 }
 
-/* Emoji published on place-feature entity (e.g. church emoji for religious sites). */
-export function placeFeatureEmoji(featureUrn: string): string {
-  const { id: featureId } = asUrn(featureUrn);
-
-  const feature = getTribbleDB().search({
-    source: { type: KnownTypes.PLACE_FEATURE, id: featureId },
-  }).firstObject();
-
-  return one(feature?.emoji) ?? "📍";
+export function featureEmoji(feature: EmojiThing): string {
+  return one((feature as TripleObject).emoji) ?? "📍";
 }
 
 function birdEmoji(): string {
@@ -62,8 +73,28 @@ export function thingEmoji(
     return cameraEmoji(thing);
   }
   if (type === KnownTypes.PLACE_FEATURE) {
-    return placeFeatureEmoji(urn);
+    return featureEmoji(thing);
   }
 
   return "";
+}
+
+export function readThingEmoji(
+  tdb: TribbleDB,
+  urn: string,
+  name: string,
+  thing: EmojiThing,
+): string {
+  if (asUrn(urn).type !== KnownTypes.PLACE) {
+    return thingEmoji(urn, name, thing);
+  }
+
+  const place = thing as Place | TripleObject;
+  const flag = one(place.flag);
+  if (flag) {
+    return flag;
+  }
+
+  const feature = one(place.features);
+  return feature ? readFeatureEmoji(tdb, feature) : "📍";
 }

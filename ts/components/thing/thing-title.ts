@@ -4,18 +4,21 @@ import m from "mithril";
 import { binomial } from "../../commons/strings.ts";
 import { KnownTypes, TAXON_TYPES } from "../../constants/data.ts";
 import { one } from "../../commons/arrays.ts";
-import { listingLabel, taxonLabel } from "../../commons/things.ts";
-import { getTribbleDB } from "../../semantic/data.ts";
-import { placeEmoji } from "../../services/emoji.ts";
+import { taxonLabel } from "../../commons/things.ts";
 import { FlagIcon } from "../flag.ts";
 import { setTitle } from "../../services/window.ts";
 
-function computeTitle(urn: string, things: TripleObject[]): string {
+function computeTitle(
+  listingTitle: string | undefined,
+  urn: string,
+  things: TripleObject[],
+  emoji: string,
+): string {
   const parsed = parseUrn(urn);
 
   // if type:*, fall back to the type's published listing label
   if (parsed.id === "*") {
-    return listingLabel(getTribbleDB(), parsed.type);
+    return listingTitle ?? parsed.type;
   }
 
   if (things.length === 0) {
@@ -26,7 +29,7 @@ function computeTitle(urn: string, things: TripleObject[]): string {
   const name = one(thing.name) ?? parsed.id;
 
   if (parsed.type === KnownTypes.PLACE) {
-    return `${placeEmoji(thing)} ${name}`;
+    return `${emoji} ${name}`;
   }
 
   if (TAXON_TYPES.has(parsed.type)) {
@@ -39,17 +42,20 @@ function computeTitle(urn: string, things: TripleObject[]): string {
 type ThingTitleAttrs = {
   urn: string;
   things: TripleObject[];
+  listingTitle: string | undefined;
+  emoji: string;
 };
 
 // the document-title write is an effect, so it lives in lifecycle hooks,
 // not in the pure view
 function reflectThingTitle(vnode: m.Vnode<ThingTitleAttrs>): void {
-  setTitle(computeTitle(vnode.attrs.urn, vnode.attrs.things));
+  const { listingTitle, urn, things, emoji } = vnode.attrs;
+  setTitle(computeTitle(listingTitle, urn, things, emoji));
 }
 
 function viewThingTitle(vnode: m.Vnode<ThingTitleAttrs>): m.Children {
-  const { urn, things } = vnode.attrs;
-  const title = computeTitle(urn, things);
+  const { urn, things, listingTitle, emoji } = vnode.attrs;
+  const title = computeTitle(listingTitle, urn, things, emoji);
 
   const parsed = parseUrn(urn);
   const [thing] = things;

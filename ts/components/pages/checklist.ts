@@ -2,7 +2,7 @@ import m from "mithril";
 import { broadcast } from "../../commons/events.ts";
 import { ImagePair } from "../media/photo.ts";
 import { thumbHashDataUrl } from "../../services/photos.ts";
-import type { Photo, Services } from "../../types.ts";
+import type { Photo } from "../../types.ts";
 import type { ChecklistEntry, NemesisSpecies } from "../../services/stats.ts";
 import { PHOTO_WIDTH } from "../../constants/layout.ts";
 import { FlagIcon } from "../flag.ts";
@@ -294,7 +294,6 @@ type ChecklistPageAttrs = {
   mammalCovers: Map<string, Photo>;
   irishMammalCount: number;
   nemesisMammals: NemesisSpecies[];
-  services: Services;
   visible: boolean;
   filter: string | undefined;
 };
