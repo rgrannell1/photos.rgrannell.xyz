@@ -56,7 +56,7 @@ function drawThingAlbum(
     label: one(thing.name) ?? thingId,
     imageUrl: coverPhoto.fullImage,
     thumbnailUrl: coverPhoto.thumbnailUrl,
-    thumbnailDataUrl: thumbHashDataUrl(coverPhoto?.mosaicColours),
+    thumbnailDataUrl: thumbHashDataUrl(coverPhoto.mosaicColours),
     loading: loadingMode(idx),
     trip: undefined,
     child: m(ThingCaption, {

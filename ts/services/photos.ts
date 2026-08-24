@@ -10,6 +10,7 @@ import {
 } from "./readers.ts";
 import { arrayify, one } from "../commons/arrays.ts";
 import { thumbHashFromBase64, thumbHashToRGBA } from "../vendor/thumbhash.ts";
+import { parsePhoto } from "./parsers.ts";
 
 export function loadingMode(idx: number): "eager" | "lazy" {
   const viewportWidth = globalThis.innerWidth;
@@ -173,14 +174,13 @@ export function readThingCover(
   thingUrn: string,
 ): Photo | undefined {
   const { type, id } = asUrn(thingUrn);
+  const [photoUrn] = tdb.nodes({ type, id })
+    .referencedBy(KnownRelations.COVER)
+    .filter({ type: KnownTypes.PHOTO })
+    .urns();
+  const photo = photoUrn ? tdb.readThing(photoUrn) : undefined;
 
-  const source = tdb.search({
-    source: { type: KnownTypes.PHOTO },
-    relation: KnownRelations.COVER,
-    target: { type, id },
-  }).firstSource();
-
-  return source ? readPhoto(tdb, source) : undefined;
+  return photo ? parsePhoto(tdb, photo) : undefined;
 }
 
 export function readSeenInCountries(
