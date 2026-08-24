@@ -419,13 +419,13 @@ button:disabled {
   word-spacing: normal;
 }
 
-/* flags read as runs: lone nations first, then one run per nation that has
-   sub-territories. A run wraps internally but never merges with its neighbour */
+/* each nation run uses its own row */
 .country-filter {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4em;
+  align-items: flex-start;
+  gap: 1em;
   padding-right: 4em;
 }
 
@@ -434,29 +434,11 @@ button:disabled {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.4em;
+  row-gap: 0.3em;
 }
 
 .country-filter-separator {
-  color: var(--secondary-text-color);
-  user-select: none;
-}
-
-/* on mobile the dot goes; each run takes its own row, spaced apart */
-@media (max-width: 500px) {
-  .country-filter {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1em;
-  }
-
-  /* a run that wraps stays tighter than the space between runs */
-  .country-filter-run {
-    row-gap: 0.3em;
-  }
-
-  .country-filter-separator {
-    display: none;
-  }
+  display: none;
 }
 
 .country-filter-flag {
