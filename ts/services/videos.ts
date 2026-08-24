@@ -67,20 +67,16 @@ export function readVideosByThingIds(
   tdb: TribbleDB,
   thingUrns: Set<string>,
 ): DatedVideo[] {
-  const videoIds = new Set<string>();
-
+  let things = tdb.nodes([]);
   for (const thingUrn of thingUrns) {
     const { type, id } = asUrn(thingUrn);
-
-    const results = tdb.search({
-      source: { type: KnownTypes.VIDEO },
-      target: { type, id },
-    }).sources();
-
-    for (const result of results) {
-      videoIds.add(result);
-    }
+    things = things.union(tdb.nodes({ type, id }));
   }
+
+  const videoIds = things
+    .referencedBy()
+    .filter({ type: KnownTypes.VIDEO })
+    .urns();
 
   return sortByAlbumDate(tdb, readVideos(tdb, videoIds));
 }

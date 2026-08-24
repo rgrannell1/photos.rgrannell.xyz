@@ -14,19 +14,21 @@ export function albumYear(album: Album): number {
 }
 
 export function isAlbumHidden(tdb: TribbleDB, id: string): boolean {
-  const album = tdb.search({
-    source: { type: KnownTypes.ALBUM, id },
-  }).firstObject();
+  const album = tdb.nodes({ id })
+    .filter({ type: KnownTypes.ALBUM })
+    .objects()[0];
 
   return one(album?.hidden) === "true";
 }
 
 /* Published by mirror as urn:ró:year:<YYYY>  recap  <markdown>. */
 export function readYearRecap(tdb: TribbleDB, year: number): string | undefined {
-  return tdb.search({
-    source: { type: KnownTypes.YEAR, id: String(year) },
-    relation: KnownRelations.RECAP,
-  }).firstTarget();
+  const yearNode = tdb.nodes({
+    type: KnownTypes.YEAR,
+    id: String(year),
+  }).objects()[0];
+
+  return one(yearNode?.[KnownRelations.RECAP]);
 }
 
 export function readAllAlbums(tdb: TribbleDB): Album[] {
@@ -41,11 +43,9 @@ export function readAllAlbums(tdb: TribbleDB): Album[] {
 }
 
 export function readAlbumPhotoIds(tdb: TribbleDB, id: string): Set<string> {
-  return tdb.search({
-    source: { type: KnownTypes.PHOTO },
-    relation: KnownRelations.ALBUM_ID,
-    target: { id: asUrn(id).id },
-  }).sources();
+  return tdb.nodes({ id: asUrn(id).id })
+    .referencedBy(KnownRelations.ALBUM_ID, { where: { type: KnownTypes.PHOTO } })
+    .urns();
 }
 
 export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
@@ -53,11 +53,9 @@ export function readAlbumPhotosByAlbumId(tdb: TribbleDB, id: string): Photo[] {
 }
 
 export function readAlbumVideoIds(tdb: TribbleDB, id: string): Set<string> {
-  return tdb.search({
-    source: { type: KnownTypes.VIDEO },
-    relation: KnownRelations.ALBUM_ID,
-    target: { id: asUrn(id).id },
-  }).sources();
+  return tdb.nodes({ id: asUrn(id).id })
+    .referencedBy(KnownRelations.ALBUM_ID, { where: { type: KnownTypes.VIDEO } })
+    .urns();
 }
 
 export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
@@ -67,11 +65,9 @@ export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
 /* Shows earlier albums (previous hops) in the same trip. */
 export function readTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
   const { type, id } = asUrn(tripUrn);
-  const ids = tdb.search({
-    source: { type: KnownTypes.ALBUM },
-    relation: KnownRelations.TRIP,
-    target: { type, id },
-  }).sources();
+  const ids = tdb.nodes({ type, id })
+    .referencedBy(KnownRelations.TRIP, { where: { type: KnownTypes.ALBUM } })
+    .urns();
 
   return readAlbums(tdb, ids).sort(
     (albumA: Album, albumB: Album) => albumA.minDate - albumB.minDate,
@@ -81,10 +77,9 @@ export function readTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
 /* Published by mirror. */
 export function readTripName(tdb: TribbleDB, tripUrn: string): string | undefined {
   const { type, id } = asUrn(tripUrn);
-  return tdb.search({
-    source: { type, id },
-    relation: KnownRelations.TITLE,
-  }).firstTarget();
+  const trip = tdb.nodes({ type, id }).objects()[0];
+
+  return one(trip?.[KnownRelations.TITLE]);
 }
 
 export function readAlbumsByThingIds(

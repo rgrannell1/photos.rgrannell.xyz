@@ -5,15 +5,38 @@ import { one } from "../commons/arrays.ts";
 import { capitalise, pluralise, titleCase } from "../commons/strings.ts";
 import { KnownTypes } from "../constants/data.ts";
 
+function normaliseThingId(thing: TripleObject): TripleObject {
+  const thingIds = thing.id;
+  if (!Array.isArray(thingIds)) {
+    return thing;
+  }
+
+  const uniqueIds = [...new Set(thingIds)];
+  const thingId = uniqueIds.length === 1 ? uniqueIds[0] : uniqueIds;
+  return { ...thing, id: thingId };
+}
+
 export function readThing(
   tdb: TribbleDB,
   urn: string,
 ): TripleObject | undefined {
-  const { id, type } = asUrn(urn);
+  const { id, qs, type } = asUrn(urn);
 
-  return tdb.search({
-    source: { id, type },
-  }).firstObject();
+  if (Object.keys(qs).length === 0) {
+    const thing = tdb.readThing(urn);
+    if (thing) {
+      return normaliseThingId(thing);
+    }
+  }
+
+  for (const matchingUrn of tdb.nodes({ id, type }).urns()) {
+    const thing = tdb.readThing(matchingUrn);
+    if (thing) {
+      return normaliseThingId(thing);
+    }
+  }
+
+  return undefined;
 }
 
 export function readParsedThing<Parsed>(
@@ -138,18 +161,14 @@ export function readListings(tdb: TribbleDB): TripleObject[] {
 
 // Published plural label for a type. Falls back to a naive plural.
 export function listingLabel(tdb: TribbleDB, type: string): string {
-  const listing = tdb.search({
-    source: { type: KnownTypes.LISTING, id: type },
-  }).firstObject();
+  const listing = readThing(tdb, `urn:ró:${KnownTypes.LISTING}:${type}`);
 
   const label = one(listing?.name);
   return typeof label === "string" ? label : capitalise(pluralise(type));
 }
 
 export function isBinomialType(tdb: TribbleDB, type: string): boolean {
-  const listing = tdb.search({
-    source: { type: KnownTypes.LISTING, id: type },
-  }).firstObject();
+  const listing = readThing(tdb, `urn:ró:${KnownTypes.LISTING}:${type}`);
 
   return one(listing?.binomial) === "true";
 }
