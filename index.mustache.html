@@ -73,28 +73,36 @@
 
   <body></body>
 
-  <script async fetchpriority="low">
-    // -- register a service-worker
-    if('serviceWorker' in navigator) {
+  <script>
+    function reportServiceWorkerError(err) {
+      console.error(`⚙️ failed service worker: /sw.js ${err}`)
+    }
+
+    function sendHomepageThumbnails(registration) {
+      if (!window.homepageThumbnails) {
+        console.log('window not updated')
+        return
+      }
+
+      console.log('sending homepage thumbnails to service worker')
+      registration.active?.postMessage({
+        type: 'homepageThumbnails',
+        thumbnails: window.homepageThumbnails
+      })
+    }
+
+    function registerServiceWorker() {
+      // -- register a service-worker after critical page resources load
       console.log('⚙️ loading service worker: /sw.js')
 
-      navigator.serviceWorker.register('/sw.js').catch(err => {
-        console.error(`⚙️ failed service worker: /sw.js ${err}`)
-      });
+      navigator.serviceWorker.register('/sw.js').catch(reportServiceWorkerError)
+      navigator.serviceWorker.ready
+        .then(sendHomepageThumbnails)
+        .catch(reportServiceWorkerError)
+    }
 
-      navigator.serviceWorker.ready.then(registration => {
-        if (window.homepageThumbnails) {
-          console.log('sending homepage thumbnails to service worker')
-          registration.active?.postMessage({
-            type: 'homepageThumbnails',
-            thumbnails: window.homepageThumbnails
-          });
-        } else {
-          console.log('window not updated')
-        }
-      }).catch(err => {
-        console.error(`⚙️ failed to send homepage thumbnails to service worker: ${err}`)
-      });
+    if('serviceWorker' in navigator) {
+      window.addEventListener('load', registerServiceWorker, { once: true })
     } else {
       console.error('⚙️ service worker not supported: /sw.{{ buildId }}.js')
     }

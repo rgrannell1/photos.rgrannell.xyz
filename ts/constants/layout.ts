@@ -7,6 +7,9 @@ export const SMALL_DEVICE_WIDTH = 500;
 export const PHOTO_WIDTH = 400;
 export const PHOTO_HEIGHT = 400;
 
+// Album thumbnails preloaded for the first visible desktop row.
+export const HOMEPAGE_PRELOAD_COUNT = 4;
+
 // Items rendered per animation-frame batch in media and listing grids.
 export const RENDER_BATCH_SIZE = 10;
 

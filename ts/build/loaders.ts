@@ -2,6 +2,7 @@ import * as path from "jsr:@std/path";
 import { deriveTriples, postIndexing } from "../semantic/derive.ts";
 import { loadTriples } from "../semantic/data.ts";
 import { readAllAlbums } from "../services/albums.ts";
+import { HOMEPAGE_PRELOAD_COUNT } from "../constants/layout.ts";
 
 async function findFile(
   prefix: string,
@@ -65,7 +66,7 @@ export const env = JSON.parse(envText);
 
 export function findPrefetchTargets() {
   const albums = readAllAlbums(tdb);
-  return albums.slice(0, 12).map((album) => album.thumbnailUrl);
+  return albums.slice(0, HOMEPAGE_PRELOAD_COUNT).map((album) => album.thumbnailUrl);
 }
 
 export function findHomepageThumbnails() {
