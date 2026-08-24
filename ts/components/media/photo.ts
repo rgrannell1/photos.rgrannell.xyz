@@ -168,6 +168,18 @@ export type PhotoAttrs = {
   interactive?: boolean;
 };
 
+export function hasPhotoChanged(attrs: PhotoAttrs, oldAttrs: PhotoAttrs): boolean {
+  return attrs.photo !== oldAttrs.photo ||
+    attrs.loading !== oldAttrs.loading ||
+    attrs.interactive !== oldAttrs.interactive;
+}
+
+function shouldUpdatePhoto(
+  vnode: m.Vnode<PhotoAttrs>,
+  old: m.VnodeDOM<PhotoAttrs>,
+): boolean {
+  return hasPhotoChanged(vnode.attrs, old.attrs);
+}
 
 function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
   const { photo, loading, interactive } = vnode.attrs;
@@ -209,5 +221,5 @@ function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
 }
 
 export function Photo() {
-  return { view: viewPhoto };
+  return { onbeforeupdate: shouldUpdatePhoto, view: viewPhoto };
 }
