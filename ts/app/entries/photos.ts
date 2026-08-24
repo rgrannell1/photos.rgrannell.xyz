@@ -7,22 +7,20 @@ import { PhotosPage } from "../../components/pages/photos.ts";
 import type { Photo } from "../../types.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
+import { readPrefix } from "../../commons/cache.ts";
 
 const photoPageComponent = PhotoPage();
 const photosPageComponent = PhotosPage();
 
 // Photo URNs loaded per navigation, not redraw. Re-read until stream completes.
 let photoUrns: string[] = [];
+const photoCache = new Map<string, Photo | undefined>();
 
 function readPhotosByLimit(limit: number): Photo[] {
-  const photos: Photo[] = [];
-  for (const urn of photoUrns.slice(0, limit)) {
-    const photo = services.readPhoto(urn);
-    if (photo) {
-      photos.push(photo);
-    }
-  }
-  return photos;
+  const cache = state.loaded
+    ? photoCache
+    : new Map<string, Photo | undefined>();
+  return readPrefix(photoUrns, limit, cache, services.readPhoto);
 }
 
 export const photosEntry = pageEntry({

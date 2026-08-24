@@ -12,6 +12,7 @@ const checks = [
   require("./checks/album-page"),
   require("./checks/listings"),
   require("./checks/photo-page"),
+  require("./checks/thing-page"),
   require("./checks/listing-page"),
   require("./checks/about-page"),
   require("./checks/mobile-layout"),

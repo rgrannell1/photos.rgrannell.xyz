@@ -14,6 +14,7 @@ import {
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import { FlagIcon } from "../flag.ts";
 import type { SubjectStats } from "../../services/stats.ts";
+import { readThrough } from "../../commons/cache.ts";
 
 /*
  * Inline badge for the listing card title. Irish birds get the Ireland flag.
@@ -31,6 +32,7 @@ function listingTitleExtra(
 type ReadThingCover = (urn: string) => Photo | undefined;
 
 function drawThingAlbum(
+  coverCache: Map<string, Photo | undefined>,
   readThingCover: ReadThingCover,
   listingType: string,
   thing: TripleObject,
@@ -42,7 +44,7 @@ function drawThingAlbum(
     return [];
   }
 
-  const coverPhoto = readThingCover(id);
+  const coverPhoto = readThrough(coverCache, readThingCover, id);
   if (!coverPhoto) {
     return [];
   }
@@ -90,6 +92,7 @@ function scheduleListingBatch(
 
 function viewAlbumsList(
   batch: BatchRenderer,
+  coverCache: Map<string, Photo | undefined>,
   vnode: m.Vnode<AlbumsListAttrs>,
 ): m.Children {
   const { readThingCover, things, listingType } = vnode.attrs;
@@ -97,7 +100,7 @@ function viewAlbumsList(
     "section.album-container",
     { "data-testid": "listing-cards" },
     things.slice(0, batch.count())
-      .flatMap(drawThingAlbum.bind(null, readThingCover, listingType)),
+      .flatMap(drawThingAlbum.bind(null, coverCache, readThingCover, listingType)),
   );
 }
 
@@ -106,12 +109,13 @@ function viewAlbumsList(
  */
 function AlbumsList() {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
+  const coverCache = new Map<string, Photo | undefined>();
 
   return {
     onbeforeupdate: resetListingBatchOnTypeChange.bind(null, batch),
     oncreate: scheduleListingBatch.bind(null, batch),
     onupdate: scheduleListingBatch.bind(null, batch),
-    view: viewAlbumsList.bind(null, batch),
+    view: viewAlbumsList.bind(null, batch, coverCache),
   };
 }
 
