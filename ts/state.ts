@@ -22,10 +22,9 @@ import { KnownTypes } from "./constants/data.ts";
 const REDRAW_INTERVAL_MS = 100;
 
 /*
- * Stream the tribbles file into the shared TribbleDB. onProgress fires at
- * most once per REDRAW_INTERVAL_MS during the stream; cheap derivations
- * re-run before each call so partial renders see derived triples too.
- * The heavy joins, the prune, and the catalogue stats run once at the end.
+ * Stream the tribbles file into the shared TribbleDB. Cheap derivations re-run
+ * during the stream, so partial renders see derived triples. The heavy joins,
+ * the prune, and the catalogue stats run once at the end.
  */
 export async function completeLoad(
   state: State,
@@ -80,8 +79,7 @@ type BoundReader<Reader> = Reader extends
 type BoundReaders<Readers> = { [Name in keyof Readers]: BoundReader<Readers[Name]> };
 
 /*
- * Bind every reader in a record to one TribbleDB instance, preserving each
- * reader's remaining signature.
+ * Bind every reader in a record to one TribbleDB instance.
  */
 function bindReaders<Readers extends Record<string, TdbReader>>(
   tdb: TribbleDB,
@@ -96,22 +94,25 @@ function bindReaders<Readers extends Record<string, TdbReader>>(
   return bound as BoundReaders<Readers>;
 }
 
-/*
- * Commonly used services that depend on state
- */
 export function loadServices(tdb: TribbleDB) {
   return bindReaders(tdb, SERVICE_READERS);
 }
 
+export function hideSidebar(state: State): void {
+  state.sidebarVisible = false;
+}
+
+export function toggleSidebar(state: State): void {
+  state.sidebarVisible = !state.sidebarVisible;
+}
+
 /*
- * Build the initial application state around the empty shared TribbleDB.
- * completeLoad fills the database and the catalogue facts in the background.
+ * Build the initial state. completeLoad fills the database and catalogue later.
  */
 export function initState(): State {
   const tdb = getTribbleDB();
 
   return {
-    focus: { page: "none" },
     data: tdb,
     loaded: false,
     catalogue: {

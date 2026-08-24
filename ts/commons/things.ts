@@ -71,10 +71,7 @@ export const readParsedThings = function <Parsed>(
   return parsedThings;
 };
 
-/*
- * The display label for a taxon: prefer the English common name, fall back
- * to the Latin name, then the URN id. Always title-cased.
- */
+// Label preference: common name, then Latin name, then URN id.
 export function taxonLabel(taxon: TripleObject): string {
   const urn = one(taxon.id);
   const fallback = urn ? asUrn(urn).id.replace(/-/g, " ") : "";
@@ -139,10 +136,7 @@ export function readListings(tdb: TribbleDB): TripleObject[] {
   return readNamedTypeThings(tdb, KnownTypes.LISTING);
 }
 
-/*
- * The published plural label for a type's listing entity, or a naive
- * capitalised plural when no listing entity exists.
- */
+// Published plural label for a type. Falls back to a naive plural.
 export function listingLabel(tdb: TribbleDB, type: string): string {
   const listing = tdb.search({
     source: { type: KnownTypes.LISTING, id: type },

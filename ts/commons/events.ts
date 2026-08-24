@@ -26,11 +26,7 @@ export function block(event: Event) {
   event?.preventDefault();
 }
 
-/*
- * True when a click carries a modifier key or is not a plain left-click, i.e.
- * the user is asking the browser to open the link in a new tab/window. Such
- * clicks should be left to the browser rather than intercepted for SPA routing.
- */
+// True when a click asks the browser for a new tab. Routing must not intercept it.
 export function isModifiedClick(event: MouseEvent): boolean {
   return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
     event.button !== 0;

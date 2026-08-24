@@ -2,7 +2,6 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Album } from "../types.ts";
 import type { Photo, Video } from "../types.ts";
-import { readThingsByPhotoIds } from "./photos.ts";
 import { readPhotos } from "./readers.ts";
 import { KnownRelations, KnownTypes } from "../constants/data.ts";
 import { readAlbums, readPlace, readTransfers, readVideos } from "./readers.ts";
@@ -54,11 +53,6 @@ export function readAlbumVideoIds(tdb: TribbleDB, id: string): Set<string> {
 
 export function readAlbumVideosByAlbumId(tdb: TribbleDB, id: string): Video[] {
   return readVideos(tdb, readAlbumVideoIds(tdb, id));
-}
-
-/* Via relation: (x) -> [:subject|:location] -> (:photo) - [:albumId] -> (id:album) */
-export function readThingsByAlbumId(tdb: TribbleDB, id: string) {
-  return readThingsByPhotoIds(tdb, readAlbumPhotoIds(tdb, id));
 }
 
 /* Shows earlier albums (previous hops) in the same trip. */

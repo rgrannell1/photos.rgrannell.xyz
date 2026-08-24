@@ -1,12 +1,6 @@
 import { KnownTypes } from "../constants/data.ts";
 import type {
-  Amphibian,
-  Arthropod,
-  Bird,
-  Fish,
-  Mammal,
   Place,
-  Reptile,
   Stats,
   Unesco,
 } from "../types.ts";
@@ -47,17 +41,6 @@ export const parseVideo = parseObject(VideoSchema, "video");
 export const parsePlace = parseObject(PlaceSchema, "place");
 export const parseAlbum = parseObject(AlbumSchema, "album");
 export const parseTransfer = parseObject(TransferSchema, "transfer");
-
-export const parseSubject = parseByType<
-  Bird | Mammal | Reptile | Amphibian | Arthropod | Fish
->({
-  [KnownTypes.BIRD]: parseBird,
-  [KnownTypes.MAMMAL]: parseMammal,
-  [KnownTypes.REPTILE]: parseReptile,
-  [KnownTypes.AMPHIBIAN]: parseAmphibian,
-  [KnownTypes.ARTHROPOD]: parseArthropod,
-  [KnownTypes.FISH]: parseFish,
-});
 
 export const parseLocation = parseByType<Place | Unesco>({
   [KnownTypes.PLACE]: parsePlace,

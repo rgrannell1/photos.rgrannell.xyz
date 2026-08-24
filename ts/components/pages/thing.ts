@@ -37,7 +37,6 @@ type ThingPageAttrs = {
 };
 
 type UrnCache<Value> = {
-  // URN the cached value was computed for
   lastUrn: string | null;
   value: Value | undefined;
   compute: (things: TripleObject[], services: Services) => Value;
@@ -57,8 +56,8 @@ function readCached<Value>(
 }
 
 /*
- * Memoise a read keyed by the page URN. Reads are pure over loaded data, so
- * recompute only when the URN changes, not on every batched redraw.
+ * Memoise a read against the page URN. Reads are pure over loaded data, so
+ * they must not run on every batched redraw.
  */
 function cachedByUrn<Value>(
   compute: (things: TripleObject[], services: Services) => Value,
@@ -172,10 +171,7 @@ function ThingDetails() {
   return { view: viewThingDetails.bind(null, seenInFor) };
 }
 
-/*
- * Metadata rows that only apply when the page shows a single thing,
- * not a wildcard listing.
- */
+/* Metadata rows for a single thing, not a wildcard listing. */
 function addSingleThingMetadata(
   metadata: Record<string, m.Children>,
   attrs: ThingPageAttrs,
@@ -327,9 +323,7 @@ function PhotoSection() {
   return { view: viewPhotoSection.bind(null, photosFor) };
 }
 
-/*
- * Member species of the page's taxon; empty for non-taxon things.
- */
+/* Member species of the page's taxon. Empty for non-taxon things. */
 function readMemberSpecies(
   things: TripleObject[],
   services: Services,
@@ -393,19 +387,13 @@ function viewSpeciesSection(
   ]);
 }
 
-/*
- * The species folder grid on taxon pages: one cover card per member species.
- */
 function SpeciesSection() {
   const membersFor = cachedByUrn(readMemberSpecies);
 
   return { view: viewSpeciesSection.bind(null, membersFor) };
 }
 
-/*
- * The share control for a concrete thing page. Wildcard listings have no
- * prebaked social card, so they get no share link.
- */
+/* Wildcard listings have no prebaked social card, so they get no share link. */
 function drawShareButton(urn: string, things: TripleObject[]): m.Children {
   const { type, id } = asUrn(urn);
 

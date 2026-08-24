@@ -4,8 +4,7 @@ import { ImagePair } from "../media/photo.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../constants/layout.ts";
 import { block, broadcast, isModifiedClick } from "../../commons/events.ts";
 
-// stable two-colour assignment: hash the trip so its colour never changes
-// with render order or navigation history
+// hash the trip so its colour never changes with render order or history
 function tripColourIndex(trip: string): number {
   let hash = 0;
   for (let idx = 0; idx < trip.length; idx++) {

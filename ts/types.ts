@@ -20,8 +20,8 @@ import type {
 } from "./services/parsers.ts";
 
 /*
- * Application events and their payloads. broadcast and listen are typed
- * against this map, so payloads cannot drift from their listeners.
+ * broadcast and listen type against this map, so payloads cannot drift from
+ * their listeners.
  */
 export type ApplicationEventPayloads = {
   click_burger_menu: Record<string, never>;
@@ -36,8 +36,8 @@ export type EnvConfig = {
 };
 
 /*
- * Flag assets baked in by the build: the hashed AVIF emoji sprite with its
- * cell layout, and a hashed SVG per big flag within the byte budget.
+ * Flag assets baked in by the build: a hashed AVIF sprite, and a hashed SVG
+ * per big flag.
  */
 export type FlagManifest = {
   sprite: string;
@@ -73,21 +73,8 @@ export type Stats = {
 export type Services = ReturnType<typeof loadServices>;
 
 /*
- * The route's focus: which entity the current page points at. Only one page
- * is active at a time, so this is a discriminated union rather than a bag
- * of optional fields.
- */
-export type Focus =
-  | { page: "none" }
-  | { page: "album"; urn: string }
-  | { page: "photo"; urn: string }
-  | { page: "video"; urn: string }
-  | { page: "thing"; urn: string }
-  | { page: "listing"; type: string };
-
-/*
- * Catalogue facts read before medialess pruning drops the unphotographed
- * species from `data`. Consumed by the life-list page.
+ * Read before medialess pruning drops unphotographed species from `data`.
+ * Used by the life-list page.
  */
 export type CatalogueFacts = {
   regularBirdSpecies: number;
@@ -97,8 +84,7 @@ export type CatalogueFacts = {
 };
 
 /*
- * Application-wide state: the data layer, the pre-prune catalogue facts,
- * the UI chrome, and the route focus.
+ * Application-wide state.
  */
 export type State = {
   data: TribbleDB;
@@ -107,7 +93,6 @@ export type State = {
   loaded: boolean;
   catalogue: CatalogueFacts;
   sidebarVisible: boolean;
-  focus: Focus;
 };
 
 // TribbleDB is untyped and provides triples, not objects. These structures type the parsed triples.

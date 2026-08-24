@@ -32,12 +32,10 @@ const MANIFEST_DIR = path.resolve("./manifest");
 export const [
   envFile,
   statsFile,
-  triplesFile,
   tribblesFile,
 ] = await Promise.all([
   findFile("env", MANIFEST_DIR),
   findFile("stats", MANIFEST_DIR),
-  findFile("triples", MANIFEST_DIR),
   findFileUrl("tribbles", MANIFEST_DIR),
 ]);
 
@@ -53,20 +51,17 @@ export async function loadTribbles() {
 export const tdb = await loadTribbles();
 export const [
   envText,
-  triplesText,
   statsText,
   htmlTemplateText,
   swTemplateText,
 ] = await Promise.all([
   Deno.readTextFile(envFile!),
-  Deno.readTextFile(triplesFile!),
   Deno.readTextFile(statsFile!),
   Deno.readTextFile("index.mustache.html"),
   Deno.readTextFile("sw.mustache.js"),
 ]);
 
 export const env = JSON.parse(envText);
-export const stats = JSON.parse(statsText);
 
 export function findPrefetchTargets() {
   const albums = readAllAlbums(tdb);

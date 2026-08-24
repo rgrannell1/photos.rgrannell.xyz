@@ -34,7 +34,7 @@ type AlbumsListAttrs = {
 
 type YearGroup = {
   year: number;
-  // year heading shown for past years only; the current year runs headerless
+  // year heading shows for past years only. The current year runs headerless
   showHeading: boolean;
   // markdown recap, only on the unfiltered album view with a heading
   recap: string | undefined;
@@ -42,8 +42,7 @@ type YearGroup = {
 };
 
 /*
- * Pure transform: split a date-sorted album list into consecutive year runs,
- * each annotated with its heading and recap.
+ * Split a date-sorted album list into consecutive year runs.
  */
 function groupAlbumsByYear(
   albums: Album[],
@@ -73,8 +72,7 @@ function groupAlbumsByYear(
 }
 
 /*
- * Render one year group: optional heading and recap, then the album cards.
- * startIdx is the album's position in the full list, for the loading mode.
+ * startIdx is the group's position in the full album list, for the loading mode.
  */
 function drawYearGroup(
   group: YearGroup,

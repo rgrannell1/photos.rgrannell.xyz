@@ -10,11 +10,7 @@ type SidebarAttrs = {
   visible: boolean;
 };
 
-/*
- * Map the current route to the sidebar entry it belongs under, so singular
- * detail routes (/album/:id, /photo/:id, /listing/:type) still light up their
- * section in the sidebar.
- */
+/* Map a detail route (/album/:id, /photo/:id) to the sidebar entry it sits under. */
 function resolveSidebarRoute(current: string): string {
   if (current.startsWith("/album")) return "/albums";
   if (current.startsWith("/photo")) return "/photos";

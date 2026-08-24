@@ -77,8 +77,7 @@ function viewThingSubtitle(
 ): m.Children {
   const parsed = asUrn(vnode.attrs.urn);
 
-  // taxon pages show their latin name as the subtitle, like species pages;
-  // taxon ids are the lowercase latin name
+  // taxon ids are the lowercase latin name, shown as the subtitle
   if (TAXON_TYPES.has(parsed.type)) {
     return m(
       "span",

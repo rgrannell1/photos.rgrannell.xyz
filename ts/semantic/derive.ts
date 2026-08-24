@@ -1,6 +1,5 @@
 /*
- * We want to limit how much we send to the server,
- * so some triples are modified or derived client-side
+ * Triples derived client-side, to limit how much data we publish.
  */
 
 import { asUrn, type Triple } from "@rgrannell1/tribbledb";
@@ -19,12 +18,8 @@ import {
 } from "../constants/data.ts";
 
 /*
- * Canonical URN for each known alias. Any triple whose source or target
- * matches an alias key is rewritten to use the canonical form, ensuring
- * duplicate entities are merged before indexing.
- *
- * Deliberately empty at present: past aliases (e.g country:usa) were fixed
- * upstream in mirror. Kept as an extension point for future data slips.
+ * Canonical URN for each known alias, so duplicate entities merge before
+ * indexing. Empty at present: past aliases were fixed upstream in mirror.
  */
 const URN_ALIASES = new Map<string, string>();
 
@@ -46,8 +41,7 @@ export function expandCdnUrls(triple: Triple): Triple[] {
 }
 
 /*
- * Rewrite aliased URNs to their canonical form so duplicate entities are
- * merged before indexing. E.g. country:usa → country:united-states-of-america.
+ * Rewrite aliased URNs, e.g. country:usa → country:united-states-of-america.
  */
 export function canonicaliseUrns(triple: Triple): Triple[] {
   if (URN_ALIASES.size === 0) {
@@ -131,9 +125,7 @@ export function addPlaceFeatureSubjects(tdb: TribbleDB) {
 }
 
 /*
- * Reverse relationships
- *
- * some relations imply other; X parent-of Y implies Y child-of X
+ * Add inverse relations. X parent-of Y implies Y child-of X.
  */
 export function addInverseRelations(tdb: TribbleDB) {
   const triples: Triple[] = [];
@@ -161,7 +153,6 @@ const curieDefinitions: Record<string, string> = {};
 
 /*
  * Record an in-band curie definition and drop it from the indexed triples.
- * Non-curie triples pass through untouched.
  */
 export function registerCurieDefinitions(triple: Triple): Triple[] {
   const [src, rel, tgt] = triple;
@@ -198,7 +189,7 @@ export function expandCurie(curies: Record<string, string>, value: string) {
   const prefix = match[1];
   const id = match[2];
 
-  // only cache expansions; an unknown prefix may gain a definition later
+  // only cache expansions. An unknown prefix may gain a definition later
   if (!curies[prefix]) {
     return value;
   }
@@ -209,8 +200,7 @@ export function expandCurie(curies: Record<string, string>, value: string) {
 }
 
 /*
- * Some URNs are sent in CURIE format to compact them; expand
- * e.g [wiki:olm] => https://en.wikipedia.org/wiki/olm
+ * Expand compacted CURIE URNs, e.g wiki:olm => https://en.wikipedia.org/wiki/olm
  */
 export function expandTripleCuries(
   triple: Triple,
@@ -318,10 +308,9 @@ export function addFeatureMediaLocations(tdb: TribbleDB) {
 }
 
 /*
- * Species link to their genus, family, and order as taxon URNs, but media
- * only references species. Copy each media subject and cover up to its taxa
- * so taxon thing pages and listings work through the existing readers.
- * Also give each taxon an id triple, so it reads as a full thing.
+ * Media references species only. Copy each media subject and cover up to the
+ * species taxa, so taxon pages work through the existing readers. Each taxon
+ * also gains an id triple.
  */
 export function addTaxonSubjects(tdb: TribbleDB) {
   const taxaBySpecies = new Map<string, string[]>();
@@ -373,9 +362,8 @@ function baseUrn(value: unknown): string {
 }
 
 /*
- * Base URNs of every entity a photo or video references, in one pass over the
- * media triples. Query-string variants collapse to one base URN, so a bird
- * photographed only in one context still counts.
+ * Base URNs of every entity a photo or video references. Variants collapse, so
+ * a bird photographed in one context only still counts.
  */
 function collectMediaReferencedUrns(tdb: TribbleDB): Set<string> {
   const referenced = new Set<string>();
@@ -391,11 +379,9 @@ function collectMediaReferencedUrns(tdb: TribbleDB): Set<string> {
 }
 
 /*
- * Browseable "thing" entity types — wildlife, vehicles, places — read from the
- * browseable flag mirror publishes on each listing entity. Entities of these
- * types with no media reference are pruned at load; infrastructure types
- * (photo, video, album, camera, geoname, transfer, rating, trip) never carry
- * the flag, so they are never pruned.
+ * Entity types mirror flags as browseable: wildlife, vehicles, places. These
+ * are pruned at load when no media references them. Infrastructure types never
+ * carry the flag, so pruning never touches them.
  */
 export function browseableEntityTypes(tdb: TribbleDB): Set<string> {
   const types = new Set<string>();
@@ -417,8 +403,7 @@ export function browseableEntityTypes(tdb: TribbleDB): Set<string> {
 }
 
 /*
- * Collect the base URNs of browseable entities that no photo or video
- * references. Query-string variants collapse to one base URN.
+ * Base URNs of browseable entities that no photo or video references.
  */
 function collectMedialessThings(tdb: TribbleDB): Set<string> {
   const referenced = collectMediaReferencedUrns(tdb);
@@ -438,12 +423,9 @@ function collectMedialessThings(tdb: TribbleDB): Set<string> {
 }
 
 /*
- * Remove browseable entities (wildlife, vehicles, places) that no photo or video
- * references — directly or transitively. Must run after the transitive and
- * feature media-location derivations, so ancestor places and features of
- * photographed places are correctly retained. Every triple mentioning a pruned
- * entity, as source or target, is deleted, so no surviving entity can link to a
- * removed one.
+ * Remove browseable entities that no photo or video references, and every
+ * triple mentioning them. Must run after the transitive and feature
+ * media-location passes, so ancestor places and features are retained.
  */
 export function pruneMedialessThings(tdb: TribbleDB) {
   const medialess = collectMedialessThings(tdb);
@@ -463,8 +445,7 @@ export function pruneMedialessThings(tdb: TribbleDB) {
 }
 
 /*
- * A named derivation pass over the TribbleDB, with explicit dependencies on
- * other passes. Ordering constraints live here as data, not prose comments.
+ * A derivation pass and the passes it must run after.
  */
 type DerivationPass = {
   name: string;
@@ -473,8 +454,8 @@ type DerivationPass = {
 };
 
 /*
- * Order passes so each runs after everything it depends on. Stable with
- * respect to declaration order; throws on unknown or cyclic dependencies.
+ * Order passes so each runs after its dependencies. Stable with respect to
+ * declaration order. Throws on unknown or cyclic dependencies.
  */
 export function orderPasses(passes: DerivationPass[]): DerivationPass[] {
   const passNames = new Set(passes.map((pass) => pass.name));
@@ -512,9 +493,8 @@ export function orderPasses(passes: DerivationPass[]): DerivationPass[] {
 }
 
 /*
- * Cheap idempotent derivations, safe to re-run while the tribble stream is
- * still loading. TribbleDB adds deduplicate, so repeat runs are no-ops for
- * triples already derived.
+ * Idempotent derivations, safe to re-run while the stream loads. TribbleDB
+ * deduplicates adds, so a repeat run is a no-op.
  */
 const STREAM_PASSES: DerivationPass[] = [
   { name: "addYear", after: [], run: addYear },
@@ -523,9 +503,8 @@ const STREAM_PASSES: DerivationPass[] = [
 ];
 
 /*
- * Whole-dataset derivations: transitive joins and the prune. Run once, after
- * the stream completes and after a final stream-pass run, so the joins see
- * complete inverse relations.
+ * Whole-dataset derivations. Run once after the stream ends and after a final
+ * stream-pass run, so the joins see complete inverse relations.
  */
 const FINAL_PASSES: DerivationPass[] = [
   { name: "addNestedLocations", after: [], run: addNestedLocations },
@@ -559,16 +538,14 @@ export function runFinalPasses(tdb: TribbleDB) {
   }
 }
 
-/* Run every derivation pass; used by the build and benchmarks. */
+/* Run every derivation pass. Used by the build and benchmarks. */
 export function postIndexing(tdb: TribbleDB) {
   runStreamPasses(tdb);
   runFinalPasses(tdb);
 }
 
 /*
- * During the initial flatmap processing of the ingested triples,
- * we built up a tree describing which places are contained in which others.
- * Construct the transitive relations in this function.
+ * Build transitive `in` and `contains` relations from the location tree.
  */
 export function addNestedLocations(tdb: TribbleDB) {
   const treeState = buildLocationTrees(tdb);
@@ -619,8 +596,7 @@ export function addNestedLocations(tdb: TribbleDB) {
 
   const triples: Triple[] = [];
 
-  // Recurse up from all leaves A :IN B, and
-  // return all transitive location relations
+  // recurse up from each leaf
   for (const nodeId of treeState.nodes.keys()) {
     if (treeState.branchIds.has(nodeId)) {
       continue;
@@ -633,9 +609,8 @@ export function addNestedLocations(tdb: TribbleDB) {
 }
 
 /*
- * For every item of the given source type with a direct location, walk up the
- * transitive `in` hierarchy (pre-computed by addNestedLocations) and emit a
- * location triple for every ancestor. Must run after addNestedLocations.
+ * Emit a location triple for every ancestor of an item's place. Must run after
+ * addNestedLocations.
  */
 function addTransitiveLocationsForType(tdb: TribbleDB, sourceType: string) {
   const pairs = tdb.paths({ type: sourceType })

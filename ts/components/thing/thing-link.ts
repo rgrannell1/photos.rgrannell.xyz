@@ -1,7 +1,6 @@
 /*
- * The thing-link family: links to thing pages, place features, and UNESCO
- * sites. All emit the same `thing-link <type>-link` class contract, varying
- * only in tag, attributes, and label.
+ * Links to thing pages, place features, and UNESCO sites. All emit the same
+ * `thing-link <type>-link` class contract.
  */
 
 import m from "mithril";
@@ -15,10 +14,7 @@ import { KnownTypes } from "../../constants/data.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Feature, Thing, Unesco } from "../../types.ts";
 
-/*
- * Shared rendering for the family: the class list is the CSS contract, so it
- * is built in exactly one place.
- */
+/* The class list is a CSS contract, so it is built in exactly one place. */
 function drawThingLink(
   tag: string,
   type: string,
@@ -89,10 +85,8 @@ function viewFeatureLink(vnode: m.Vnode<FeatureLinkAttrs>): m.Children {
 }
 
 /*
- * Ideally, we'll extend the `thing` system to support more complex queries, which would
- * be needed here. The query would be "show all photos / videos" where the place has
- * feature X, which is more complex than the current system of "show all photos / videos"
- * where the place is Y.
+ * Not a link. A feature page needs the query "photos where the place has
+ * feature X", which the thing system cannot express yet.
  */
 export function FeatureLink() {
   return { view: viewFeatureLink };

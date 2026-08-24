@@ -10,7 +10,7 @@ type MapPageAttrs = {
 };
 
 type MapPageState = {
-  // handle for the mounted Leaflet map, set on mount
+  // the mounted Leaflet map
   handle: MapHandle | null;
 };
 

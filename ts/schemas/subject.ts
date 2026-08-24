@@ -4,7 +4,6 @@
 
 import * as v from "valibot";
 
-// Shared shape for photo subjects like species and vehicles.
 export const NamedThingSchema = v.object({
   id: v.string(),
   name: v.optional(v.string()),

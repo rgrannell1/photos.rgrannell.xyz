@@ -102,9 +102,8 @@ function viewBannerImagePair(
 }
 
 /*
- * Variant of ImagePair for full-bleed banners. Uses .album-banner-image so existing
- * CSS and the parallax querySelector stay intact. Placeholder is inlined to fill the
- * container without requiring new CSS.
+ * Full-bleed banner variant of ImagePair. The parallax code selects on
+ * .album-banner-image, so that class must stay.
  */
 export function BannerImagePair() {
   return { view: viewBannerImagePair };
@@ -156,9 +155,8 @@ function viewImagePair(vnode: m.Vnode<ImagePairAttrs>): m.Children {
 }
 
 /*
- * Pair of thumbnail and data-URL placeholder images. With imageUrl, wraps in a
- * new-tab link to the image. With href, wraps in a same-tab link (e.g. album route)
- * where onclick drives SPA navigation but leaves modified clicks to the browser.
+ * A thumbnail paired with its placeholder. imageUrl opens the image in a new
+ * tab. href navigates in-app, leaving modified clicks to the browser.
  */
 export function ImagePair() {
   return { view: viewImagePair };
@@ -180,7 +178,6 @@ function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
     mosaicColours,
   } = photo;
 
-  // decode the ThumbHash placeholder into a data URL
   const thumbnailDataUrl = thumbHashDataUrl(mosaicColours);
 
   const $mdIcon = m(MetadataIcon, { route: `/photo/${id}`, colour: photo.contrastingGrey });
@@ -211,9 +208,6 @@ function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
   );
 }
 
-/*
- * Renders a photo with metadata link and progressive-loading placeholder.
- */
 export function Photo() {
   return { view: viewPhoto };
 }

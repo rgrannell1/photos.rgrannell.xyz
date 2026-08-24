@@ -113,9 +113,7 @@ function tripLineOptions(mode: string | undefined): PolylineOptions {
 const SEGMENTS_PER_LEG = 16;
 const BULGE_FACTOR = 0.25;
 
-/*
- * Quadratic Bezier point: B(t) = (1-t)²A + 2(1-t)tC + t²B.
- */
+/* Quadratic Bezier point: B(t) = (1-t)²A + 2(1-t)tC + t²B. */
 function bezierPoint(
   start: [number, number],
   control: [number, number],

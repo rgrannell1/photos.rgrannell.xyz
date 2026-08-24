@@ -1,7 +1,6 @@
 /*
- * Lists of thing links (places, place features, UNESCO sites) rendered as a
- * <ul>. One config-driven component; each kind keeps its own read function,
- * link component, ordering, and key behaviour.
+ * Lists of thing links rendered as a <ul>. Each kind keeps its own read
+ * function, link component, ordering, and key behaviour.
  */
 
 import m from "mithril";

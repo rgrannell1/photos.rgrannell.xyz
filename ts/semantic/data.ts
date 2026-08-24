@@ -6,7 +6,6 @@ import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TargetValidator, Triple } from "@rgrannell1/tribbledb";
 import { TribbleParser } from "@rgrannell1/tribbledb";
 
-/* Stream triples from a URL */
 export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
   const parser = new TribbleParser();
   const res = await fetch(url);
@@ -18,8 +17,7 @@ export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
   const reader = res.body.pipeThrough(decoder).getReader();
   let buffer = "";
 
-  // rather than yield 20k times, yield a few larger batches...
-  // experimentally, 500 items seems about right
+  // batch the yields; 20k single yields is too slow. 500 measured about right
   const tripleBuffer: Triple[] = [];
 
   while (true) {
@@ -58,8 +56,7 @@ export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
 let tdb: TribbleDB | null = null;
 
 /*
- * The shared TribbleDB instance. Created empty so the app can mount and
- * bind services before the tribble stream fills it.
+ * Shared TribbleDB. Starts empty so the app can mount before the stream fills it.
  */
 export function getTribbleDB(schema: Record<string, TargetValidator> = {}): TribbleDB {
   if (!tdb) {
@@ -70,9 +67,8 @@ export function getTribbleDB(schema: Record<string, TargetValidator> = {}): Trib
 }
 
 /*
- * Load triples from a URL into the shared TribbleDB. Batches stream in;
- * onBatch fires after each batch lands, so the caller can derive and redraw
- * while the load is in flight.
+ * Load triples from a URL into the shared TribbleDB. onBatch fires after each
+ * batch, so the caller can derive and redraw during the load.
  */
 export async function loadTriples(
   url: string,

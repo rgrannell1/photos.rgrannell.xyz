@@ -1,7 +1,4 @@
-/*
- * The shared metadata table for photos and videos: description, location,
- * place type, rating, style, and subject rows.
- */
+/* The shared metadata table for photos and videos. */
 
 import m from "mithril";
 import { toThingLinks } from "../thing/thing-links.ts";
@@ -66,10 +63,7 @@ function Style() {
   return { view: viewStyle };
 }
 
-/*
- * One subject, with its context chip alongside when the subject was not seen
- * in the wild.
- */
+/* One subject, with a qualifier chip when it was not seen in the wild. */
 function drawSubject(services: Services, urn: string): m.Children[] {
   const $links = toThingLinks(services, [urn]);
   if ($links.length === 0) {
@@ -87,7 +81,7 @@ function drawSubject(services: Services, urn: string): m.Children[] {
 function viewSubject(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   const { media, services } = vnode.attrs;
 
-  // derived taxon subjects stay out of the subject row; species only
+  // derived taxon subjects stay out of the subject row
   const subjects = arrayify(media.subject)
     .filter((subject) => !isTaxonUrn(subject));
 

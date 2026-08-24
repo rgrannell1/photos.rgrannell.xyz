@@ -16,8 +16,7 @@ import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import { FlagIcon } from "../flag.ts";
 
 /*
- * Derive an optional inline badge for the listing card title.
- * Irish birds (those with the irish marker) get the Ireland flag.
+ * Inline badge for the listing card title. Irish birds get the Ireland flag.
  */
 function listingTitleExtra(
   thing: TripleObject,
@@ -101,9 +100,7 @@ function viewAlbumsList(
 }
 
 /*
- * Display the component albums incrementally to avoid blocking the DOM.
- * The first batch renders synchronously; subsequent batches are scheduled
- * via setTimeout so the browser can paint between each one.
+ * Render the albums in batches, so the browser can paint between each one.
  */
 function AlbumsList() {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
@@ -143,8 +140,7 @@ function viewBirdListingDetails(
 }
 
 /*
- * Bird-specific listing details: species counts broken down by wild/total and Irish wild.
- * The Ireland flag is clickable to toggle filtering to Irish species only.
+ * Bird species counts. Clicking the Ireland flag filters to Irish species.
  */
 function BirdListingDetails() {
   return { view: viewBirdListingDetails };
@@ -166,7 +162,7 @@ function viewMammalListingDetails(
 }
 
 /*
- * Mammal-specific listing details: species counts broken down by wild/total and Irish wild
+ * Mammal species counts, by wild, total, and Irish wild.
  */
 function MammalListingDetails() {
   return { view: viewMammalListingDetails };
@@ -211,8 +207,7 @@ function viewListingTitle(
 }
 
 /*
- * Display the listing entity's plural label as the page title,
- * e.g "Countries"
+ * The listing's plural label as the page title, e.g "Countries"
  */
 function ListingTitle() {
   return { view: viewListingTitle };
@@ -288,8 +283,7 @@ function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
 }
 
 /*
- * Render the listing page. It shows
- * each member of a category (e.g countries)
+ * Each member of a category, e.g countries.
  */
 export function ListingPage() {
   return { view: viewListingPage };

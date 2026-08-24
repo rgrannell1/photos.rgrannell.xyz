@@ -77,8 +77,7 @@ export function Video() {
   return { view: viewVideo.bind(null, videoState) };
 }
 
-/* A keyed interactive video for video lists. Preload is "none" so lists
-   fetch only the poster, not megabytes of video data per item. */
+/* Preload is "none" so lists fetch only the poster, not the video data. */
 export function drawVideoItem(video: Video): m.Children {
   return m(Video, {
     key: `video-${video.id}`,

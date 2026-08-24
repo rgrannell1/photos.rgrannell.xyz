@@ -9,8 +9,8 @@ type AlbumButtonAttrs = {
 };
 
 /*
- * Mirror publishes hidden "true" for albums with no album page (the
- * miscellaneous album); never link to those.
+ * Mirror publishes hidden "true" for albums with no album page, such as the
+ * miscellaneous album. Never link to those.
  */
 function isHiddenAlbum(id: string): boolean {
   const album = getTribbleDB().search({

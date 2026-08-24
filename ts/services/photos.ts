@@ -2,16 +2,13 @@ import { PHOTO_WIDTH } from "../constants/layout.ts";
 import { KnownRelations, KnownTypes } from "../constants/data.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import type { Country, Location, Photo, Subject } from "../types.ts";
+import type { Country, Photo } from "../types.ts";
 import {
   readCountries,
-  readLocations,
   readPhoto,
   readPhotos,
-  readSubjects,
 } from "./readers.ts";
 import { arrayify, one } from "../commons/arrays.ts";
-import { isTaxonUrn } from "../commons/urn.ts";
 import { thumbHashFromBase64, thumbHashToRGBA } from "../vendor/thumbhash.ts";
 
 export function loadingMode(idx: number): "eager" | "lazy" {
@@ -63,7 +60,7 @@ export function groupPhotosByYear(
 
 const PLACEHOLDER_CACHE: Map<string, string> = new Map();
 
-/* ThumbHash → placeholder PNG. Null for missing/legacy/malformed (degrades gracefully). */
+/* ThumbHash to placeholder PNG. Null for missing, legacy, or malformed hashes. */
 export function thumbHashDataUrl(hash: string | null | undefined): string | null {
   if (!hash || hash.startsWith("#")) {
     return null;
@@ -124,35 +121,6 @@ export function readAllPhotoUrns(tdb: TribbleDB): string[] {
     )
     .map((obj) => one(obj.id))
     .filter((urn): urn is string => urn !== undefined);
-}
-
-export function readThingsByPhotoIds(tdb: TribbleDB, photoIds: Set<string>): {
-  locations: Location[];
-  subjects: Subject[];
-} {
-  const locations = new Set<string>();
-  const subjects = new Set<string>();
-
-  // one search for the whole photo set, not one per photo
-  const photoIdList = [...photoIds].map((photoUrn) => asUrn(photoUrn).id);
-  const triples = tdb.search({
-    source: { type: KnownTypes.PHOTO, id: photoIdList },
-    relation: [KnownRelations.LOCATION, KnownRelations.SUBJECT],
-  }).triples();
-
-  for (const [, relation, target] of triples) {
-    if (relation === KnownRelations.LOCATION) {
-      locations.add(target);
-    } else if (!isTaxonUrn(target)) {
-      // derived taxon subjects stay out of subject lists; species only
-      subjects.add(target);
-    }
-  }
-
-  return {
-    subjects: readSubjects(tdb, subjects),
-    locations: readLocations(tdb, locations),
-  };
 }
 
 export function readPhotosByThingIds(

@@ -18,9 +18,6 @@ type VideosPageAttrs = {
   visible: boolean;
 };
 
-/*
- * Render one year run: an optional heading, then its video tiles.
- */
 function drawYearGroup(group: VideoYearGroup): m.Children[] {
   const $components: m.Children[] = [];
 

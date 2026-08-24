@@ -1,13 +1,11 @@
 /*
- * Flag icons rendered from the vexilla assets: emoji-size flags crop one cell
- * from the AVIF sprite, big flags load their own budgeted SVG. Vexilla is the
- * only flag source; places it does not cover render no flag.
+ * Flag icons from the vexilla assets. Places vexilla does not cover show no flag.
  */
 
 import m from "mithril";
 import { flagManifest } from "../services/flags.ts";
 
-// Place name to vexilla flag asset; see /flags
+// Place name to vexilla flag asset. See /flags
 const CUSTOM_FLAGS: Record<string, string> = {
   "Tenerife": "es-tenerife",
   "Gran Canaria": "es-gran-canaria",
@@ -68,8 +66,8 @@ export function customFlagAsset(name: string | undefined): string | undefined {
 }
 
 /*
- * Crop one sprite cell with percentage positioning, so the icon scales with
- * the surrounding font size without knowing the pixel cell width.
+ * Percentage positioning scales the icon with the font size, without a known
+ * pixel cell width.
  */
 function spriteCellStyle(position: number): Record<string, string> {
   const { sprite, count } = flagManifest();
@@ -119,8 +117,7 @@ function viewFlagIcon(vnode: m.Vnode<FlagIconAttrs>): m.Children {
 }
 
 /*
- * Render a place flag from the vexilla assets, or nothing for unknown places.
- * The element is sized by CSS, so the layout never shifts on load.
+ * CSS sizes the element, so the layout never shifts on load.
  */
 export function FlagIcon() {
   return { view: viewFlagIcon };

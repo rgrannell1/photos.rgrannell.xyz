@@ -1,7 +1,4 @@
-/*
- * A batched photo grid: renders photos in increments so the browser can
- * paint between batches.
- */
+/* A photo grid rendered in batches, so the browser can paint between them. */
 
 import m from "mithril";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
@@ -16,9 +13,9 @@ import {
 import { type BatchRenderer, createBatchRenderer } from "../../services/batch-render.ts";
 
 type PhotoGridAttrs = {
-  // total photos available; batches are scheduled until all are rendered
+  // total available, not the number rendered so far
   total: number;
-  // read the first `limit` photos; called each redraw as batches grow
+  // reads the first `limit` photos, called on each redraw
   getPhotos: (limit: number) => PhotoType[];
   // restart from the first batch when this changes (e.g a new thing URN)
   resetKey?: string;
@@ -43,7 +40,6 @@ function resetGridBatchOnKeyChange(
   }
 }
 
-/* A keyed interactive photo for photo grids, loading-mode set by position. */
 export function drawGridPhoto(photo: PhotoType, idx: number): m.Children {
   return m(Photo, {
     key: `photo-${photo.id}`,
@@ -53,10 +49,7 @@ export function drawGridPhoto(photo: PhotoType, idx: number): m.Children {
   });
 }
 
-/*
- * Render one year run: an optional heading, then its photos. startIdx is the
- * first photo's position in the full list, for the loading mode.
- */
+/* startIdx is the first photo's position in the full list, used for the loading mode. */
 function drawYearGroup(
   group: PhotoYearGroup,
   startIdx: number,

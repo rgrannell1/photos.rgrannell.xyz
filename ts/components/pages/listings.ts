@@ -24,8 +24,7 @@ function toCategoryDef(listing: TripleObject): CategoryDef {
 }
 
 /*
- * Render a single category album card with its best-rated cover photo.
- * Returns an empty array if no cover photo is available for the category.
+ * Returns an empty array when the category has no cover photo.
  */
 function drawCategoryAlbum(
   services: Services,

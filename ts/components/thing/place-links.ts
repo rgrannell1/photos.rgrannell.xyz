@@ -24,10 +24,7 @@ function drawCountryFlagLink(
   });
 }
 
-/*
- * Flag links for an album's countries, keyed by album and country so Mithril
- * can diff them. Used wherever an album card shows its countries.
- */
+/* Keyed by album and country so Mithril can diff them. */
 export function countryFlagLinks(
   albumId: string,
   countries: Country[],
@@ -59,9 +56,6 @@ function viewCountryLink(vnode: m.Vnode<CountryLinkAttrs>): m.Children {
   );
 }
 
-/*
- * Construct a link to a country. Reuse existing emoji lookup logic
- */
 export function CountryLink() {
   return { view: viewCountryLink };
 }
@@ -87,9 +81,6 @@ function viewPlaceLink(
   }, [flag, ` ${name || "Unknown Place"}`]);
 }
 
-/*
- * Create a link to a place. Reuse existing emoji lookup logic
- */
 export function PlaceLink() {
   return { view: viewPlaceLink };
 }

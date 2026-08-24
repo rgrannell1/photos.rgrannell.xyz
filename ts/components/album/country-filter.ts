@@ -29,8 +29,8 @@ function drawCountryFlag(
 }
 
 /*
- * The vexilla nation a place belongs to. Sub-territory ids carry their nation
- * as a prefix, so es-galicia and es both group under es.
+ * Sub-territory ids carry their nation as a prefix, so es-galicia and es both
+ * group under es.
  */
 function flagNation(country: Country): string | undefined {
   const asset = customFlagAsset(country.name);
@@ -43,8 +43,7 @@ function isNationFlag(country: Country): boolean {
 }
 
 /*
- * Bucket countries by their vexilla nation. Places vexilla does not cover
- * render no flag, so they are dropped here.
+ * Places vexilla does not cover show no flag, so they are dropped here.
  */
 function groupByNation(countries: Country[]): FlagGroup[] {
   const groups = new Map<string, FlagGroup>();
@@ -90,8 +89,8 @@ function drawSeparator(): m.Children {
 }
 
 /*
- * Lay the flags out as a run of lone nations, then one run per nation that
- * has sub-territories, each run separated by a dot.
+ * One run of lone nations, then one run per nation with sub-territories.
+ * A dot separates the runs.
  */
 function drawFlagRuns(
   selectedCountry: string | undefined,
@@ -110,7 +109,7 @@ function drawFlagRuns(
 
   // the separator lives inside the run it precedes, so it never dangles at
   // the end of a wrapped line. Mithril needs a key on every sibling when any
-  // sibling has one, so each child carries a key.
+  // sibling has one.
   return runs.map((run, index) => {
     const children = run.map(drawFlag);
     if (index > 0) {
@@ -131,8 +130,7 @@ function viewCountryFilter(vnode: m.Vnode<CountryFilterAttrs>): m.Children {
 }
 
 /*
- * Render all distinct country flags from the triples, grouped by nation.
- * Clicking a flag calls onSelect with the country slug; clicking the active flag deselects.
+ * Country flags grouped by nation. Clicking the active flag deselects it.
  */
 export function CountryFilter() {
   return { view: viewCountryFilter };

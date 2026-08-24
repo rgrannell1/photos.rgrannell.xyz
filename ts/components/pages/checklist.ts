@@ -8,12 +8,11 @@ import { PHOTO_WIDTH } from "../../constants/layout.ts";
 import { FlagIcon } from "../flag.ts";
 
 /*
- * Parse a Unix timestamp string into a Date.
- * Handles both second-precision (10-digit) and millisecond-precision (13-digit) timestamps.
+ * Parse a Unix timestamp, in either seconds or milliseconds.
  */
 function parseFirstSeen(timestamp: string): Date {
   const numeric = parseInt(timestamp);
-  // Heuristic: timestamps under 10^10 are in seconds, larger are in milliseconds
+  // timestamps under 10^10 are in seconds, larger are in milliseconds
   return numeric > 9_999_999_999 ? new Date(numeric) : new Date(numeric * 1000);
 }
 
@@ -84,8 +83,8 @@ function viewChecklistDetails(
 }
 
 /*
- * Details line above the checklist with three filter options:
- * Irish wild only, all wild, or all (including captive).
+ * Details line above the checklist. Filters to Irish wild, all wild, or all
+ * species including captive ones.
  */
 function ChecklistDetails() {
   return { view: viewChecklistDetails };
@@ -117,16 +116,16 @@ function viewChecklistPhoto(vnode: m.Vnode<ChecklistPhotoAttrs>): m.Children {
 }
 
 /*
- * The per-species cover image, with a blur-up placeholder. Links to the
- * species page. Renders an empty block when a species has no cover photo.
+ * The per-species cover image. Renders an empty block when a species has no
+ * cover photo.
  */
 function ChecklistPhoto() {
   return { view: viewChecklistPhoto };
 }
 
 /*
- * Inline status tags shown after a species name.
- * Target and nemesis always show; scarce only in the Irish view.
+ * Inline status tags after a species name. Target and nemesis always show.
+ * Scarce shows in the Irish view only.
  */
 function speciesTags(
   entry: { scarce: boolean; nemesis: boolean; target: boolean },
@@ -199,8 +198,8 @@ function viewChecklistMysteryCard(
 }
 
 /*
- * A "yet to see" card for an unphotographed nemesis species: a Pokémon-style mystery
- * silhouette in place of a photo, with the name and a nemesis tag.
+ * A "yet to see" card for an unphotographed nemesis species. A mystery
+ * silhouette stands in for the photo.
  */
 function ChecklistMysteryCard() {
   return { view: viewChecklistMysteryCard };
@@ -263,10 +262,10 @@ function drawMysteryCard(
 function viewChecklistGrid(vnode: m.Vnode<ChecklistGridAttrs>): m.Children {
   const { entries, covers, nemesisSpecies, mysteryGlyph, filter } = vnode.attrs;
 
-  // Scarce tags and "yet to see" birds are Irish-only; status tags always show.
+  // scarce tags and "yet to see" birds show in the Irish view only
   const irishView = filter === "ireland";
 
-  // Assign position numbers from the full unfiltered list, then apply filter
+  // position numbers come from the full unfiltered list
   const withPositions = entries.map(toPositionedEntry);
   const displayed = filter === "ireland"
     ? withPositions.filter(positionedIsIrishWild)
@@ -276,7 +275,6 @@ function viewChecklistGrid(vnode: m.Vnode<ChecklistGridAttrs>): m.Children {
 
   return m("div.checklist-grid", [
     ...displayed.map(drawChecklistCard.bind(null, covers, irishView)),
-    // Unphotographed nemesis species ("yet to see") at the bottom, Irish view only
     ...(irishView
       ? nemesisSpecies.map(drawMysteryCard.bind(null, mysteryGlyph))
       : []),
@@ -302,8 +300,7 @@ type ChecklistPageAttrs = {
 };
 
 /*
- * A one-line intro: how many wild species photographed in Ireland, since when,
- * and roughly how many Ireland regularly records. Null until there is a sighting.
+ * Bird intro line. Null until there is an Irish wild sighting.
  */
 function lifeListPreamble(
   entries: ChecklistEntry[],
@@ -322,8 +319,7 @@ function lifeListPreamble(
 }
 
 /*
- * A one-line intro for the mammal section: how many wild mammal species
- * photographed in Ireland, and roughly how many the island has.
+ * Mammal intro line. Null until there is an Irish wild sighting.
  */
 function mammalPreamble(
   mammalEntries: ChecklistEntry[],
@@ -369,7 +365,7 @@ function viewMammalSection(vnode: m.Vnode<MammalSectionAttrs>): m.Children {
 }
 
 /*
- * The Irish mammal section, appended below the bird table in the Irish view.
+ * The Irish mammal section, below the bird table in the Irish view.
  */
 function MammalSection() {
   return { view: viewMammalSection };
@@ -397,7 +393,7 @@ function viewChecklistPage(vnode: m.Vnode<ChecklistPageAttrs>): m.Children {
   const description = "I am not a very committed birder, but I do like " +
     "photographing the different species I see. Here's my life list.";
 
-  // The mammal section only shows in the Irish view; other views stay birds-only.
+  // the mammal section shows in the Irish view only. Other views stay birds-only
   const irishView = filter === "ireland";
 
   return m("main", {
@@ -433,8 +429,7 @@ function viewChecklistPage(vnode: m.Vnode<ChecklistPageAttrs>): m.Children {
 }
 
 /*
- * Render the life-list checklist page: birds, with Irish mammals appended
- * in the Irish view. Only includes species seen in a wild context.
+ * The life-list page. Birds first, then Irish mammals in the Irish view.
  */
 export function ChecklistPage() {
   return { view: viewChecklistPage };

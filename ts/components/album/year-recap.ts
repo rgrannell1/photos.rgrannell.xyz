@@ -11,9 +11,8 @@ function viewYearRecap(vnode: m.Vnode<YearRecapAttrs>): m.Children {
 }
 
 /*
- * Render a year's recap, authored as markdown and published by mirror. The
- * content is first-party (Róisín's own prose), so trusting the rendered HTML is
- * safe here.
+ * The recap markdown is first-party prose published by mirror, so trusting
+ * the rendered HTML is safe.
  */
 export function YearRecap() {
   return { view: viewYearRecap };

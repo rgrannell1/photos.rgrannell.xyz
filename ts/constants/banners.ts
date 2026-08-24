@@ -1,8 +1,6 @@
 /*
- * Hardcoded page-hero banner placeholders and blur-up ThumbHash strings.
- *
- * Album banners read their ThumbHash from the published triples. These two
- * heroes are not album banners, so their hashes are inlined here by hand.
+ * Page-hero banner URLs and blur-up ThumbHash strings.
+ * These heroes are not albums, so their hashes are inlined by hand.
  */
 
 // High-res banner rendition. Update if the source photo is re-encoded.

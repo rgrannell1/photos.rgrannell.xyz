@@ -35,10 +35,7 @@ function viewShareButton(
   }, buttonText(localState));
 }
 
-/*
- * The [share] control used by album, trip, and thing pages. Links to the
- * sharephoto domain on desktop; opens the native share sheet on mobile.
- */
+/* The [share] control used by album, trip, and thing pages. */
 export function ShareButton() {
   const localState = {
     sharing: false,

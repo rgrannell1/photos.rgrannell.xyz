@@ -7,10 +7,8 @@ import { thumbHashDataUrl } from "../../services/photos.ts";
 
 import type {
   Album,
-  Location,
   Photo as PhotoType,
   Services,
-  Thing,
   Video as VideoType,
 } from "../../types.ts";
 import { drawGridPhoto } from "../media/photo-grid.ts";
@@ -24,10 +22,6 @@ import { TripPreviousAlbums } from "../album/trip-previous-albums.ts";
 
 type AlbumAttrs = {
   album: Album;
-  subjects: Thing[];
-  locations: Location[];
-  // country URNs; resolved to Country objects via services.readCountries
-  country: string | string[];
   photos: PhotoType[];
   videos: VideoType[];
   services: Services;

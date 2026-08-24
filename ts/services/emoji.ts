@@ -52,7 +52,7 @@ export function thingEmoji(
   const { type } = asUrn(urn);
 
   if (type === KnownTypes.PLACE) {
-    // The URN type guarantees a place; the compiler cannot see that
+    // the URN type guarantees a place, but the compiler cannot see that
     return placeEmoji(thing as Place | TripleObject);
   }
   if (type === KnownTypes.BIRD) {

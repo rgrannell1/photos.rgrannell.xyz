@@ -1,4 +1,4 @@
-// App entry point for event bindings, tribble stream load, and routing.
+// App entry point.
 
 import m from "mithril";
 import { bindGlobalListeners } from "./app/listeners.ts";

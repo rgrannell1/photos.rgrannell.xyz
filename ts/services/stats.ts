@@ -42,8 +42,7 @@ export function readBirdStats(tdb: TribbleDB): SubjectStats {
   };
 }
 
-// Countries are place entities with numeric ids, so Ireland's URN must be
-// resolved from the data by name. There is no urn:ró:place:ireland.
+// Countries are place entities with numeric ids. There is no urn:ró:place:ireland.
 const IRELAND_NAME = "Ireland";
 
 function findIrelandUrn(tdb: TribbleDB): string | undefined {
@@ -66,7 +65,6 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
     target: { type: KnownTypes.MAMMAL },
   }).triples();
 
-  // Build photo -> [mammal ids] map for wild subjects
   const wildPhotoToMammals = new Map<string, Set<string>>();
   for (const [photoUrn, , targetUrn] of wildMammalTriples) {
     const mammalId = asUrn(targetUrn).id;

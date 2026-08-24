@@ -1,6 +1,5 @@
 /*
- * Route entries and page singletons. Each page has one entry, created once to
- * preserve mount semantics.
+ * Route entries. Each page component is made once, to preserve mount semantics.
  */
 
 import m from "mithril";
@@ -39,7 +38,6 @@ const checklistPageComponent = ChecklistPage();
 const thingPageComponent = ThingPage();
 const mapPageComponent = MapPage();
 
-/* */
 export const albumsEntry = pageEntry({
   page: albumsPageComponent,
   resolve() {
@@ -71,26 +69,20 @@ export const albumsEntry = pageEntry({
 
 export const albumEntry = pageEntry({
   page: albumPageComponent,
-  onmatch(params) {
-    const id = params.id;
-    state.focus = typeof id === "string"
-      ? { page: "album", urn: albumUrn(id) }
-      : { page: "none" };
-  },
   resolve() {
-    const { focus } = state;
-    if (focus.page !== "album") {
+    const id = m.route.param("id");
+    if (typeof id !== "string") {
       return "No album selected";
     }
+    const urn = albumUrn(id);
 
-    const album = services.readAlbum(focus.urn);
+    const album = services.readAlbum(urn);
     if (!album) {
       return "Album not found";
     }
 
-    const photos = services.readAlbumPhotosByAlbumId(focus.urn);
-    const videos = services.readAlbumVideosByAlbumId(focus.urn);
-    const { subjects, locations } = services.readThingsByAlbumId(focus.urn);
+    const photos = services.readAlbumPhotosByAlbumId(urn);
+    const videos = services.readAlbumVideosByAlbumId(urn);
 
     const tripPreviousAlbums = album.trip
       ? services.readTripAlbums(album.trip)
@@ -102,9 +94,6 @@ export const albumEntry = pageEntry({
       appClass: album.albumBanner ? "album-page" : undefined,
       attrs: {
         album,
-        subjects,
-        country: album.country || [],
-        locations,
         photos,
         videos,
         services,
@@ -158,29 +147,24 @@ export const photosEntry = pageEntry({
 
 export const thingEntry = pageEntry({
   page: thingPageComponent,
-  onmatch(params) {
-    const pair = params.pair;
-    state.focus = typeof pair === "string"
-      ? { page: "thing", urn: thingUrn(pair) }
-      : { page: "none" };
-  },
   resolve() {
     // Requires fully-derived, pruned data.
     if (!state.loaded) {
       return "";
     }
 
-    const { focus } = state;
-    if (focus.page !== "thing") {
+    const pair = m.route.param("pair");
+    if (typeof pair !== "string") {
       return "No thing selected";
     }
+    const urn = thingUrn(pair);
 
     let things: TripleObject[] = [];
-    const parsed = asUrn(focus.urn);
+    const parsed = asUrn(urn);
     if (parsed.id === "*") {
       things = services.readNamedTypeThings(parsed.type);
     } else {
-      const thing = services.readThing(focus.urn);
+      const thing = services.readThing(urn);
       if (thing) {
         things = [thing];
       }
@@ -188,7 +172,7 @@ export const thingEntry = pageEntry({
 
     return {
       attrs: {
-        urn: focus.urn,
+        urn,
         things,
         services,
         visible: state.sidebarVisible,
@@ -199,19 +183,13 @@ export const thingEntry = pageEntry({
 
 export const photoEntry = pageEntry({
   page: photoPageComponent,
-  onmatch(params) {
-    const id = params.id;
-    state.focus = typeof id === "string"
-      ? { page: "photo", urn: photoUrn(id) }
-      : { page: "none" };
-  },
   resolve() {
-    const { focus } = state;
-    if (focus.page !== "photo") {
+    const id = m.route.param("id");
+    if (typeof id !== "string") {
       return "No photo selected";
     }
 
-    const photo = services.readPhoto(focus.urn);
+    const photo = services.readPhoto(photoUrn(id));
     if (!photo) {
       return "Photo not found";
     }
@@ -224,19 +202,13 @@ export const photoEntry = pageEntry({
 
 export const videoEntry = pageEntry({
   page: videoPageComponent,
-  onmatch(params) {
-    const id = params.id;
-    state.focus = typeof id === "string"
-      ? { page: "video", urn: videoUrn(id) }
-      : { page: "none" };
-  },
   resolve() {
-    const { focus } = state;
-    if (focus.page !== "video") {
+    const id = m.route.param("id");
+    if (typeof id !== "string") {
       return "No video selected";
     }
 
-    const video = services.readVideo(focus.urn);
+    const video = services.readVideo(videoUrn(id));
     if (!video) {
       return "Video not found";
     }
@@ -249,31 +221,25 @@ export const videoEntry = pageEntry({
 
 export const listingEntry = pageEntry({
   page: listingPageComponent,
-  onmatch(params) {
-    const type = params.type;
-    state.focus = typeof type === "string"
-      ? { page: "listing", type }
-      : { page: "none" };
-  },
   resolve() {
     // Requires fully-derived, pruned data.
     if (!state.loaded) {
       return "";
     }
 
-    const { focus } = state;
-    if (focus.page !== "listing") {
+    const type = m.route.param("type");
+    if (typeof type !== "string") {
       return "No type selected";
     }
 
     const filter = m.route.param("filter") as string | undefined;
-    const things = focus.type === COUNTRY_LISTING_TYPE
+    const things = type === COUNTRY_LISTING_TYPE
       ? services.readAllCountryThings()
-      : services.readNamedTypeThings(focus.type);
+      : services.readNamedTypeThings(type);
 
     return {
       attrs: {
-        type: focus.type,
+        type,
         things,
         services,
         visible: state.sidebarVisible,

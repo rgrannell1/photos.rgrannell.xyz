@@ -1,0 +1,9 @@
+%%dipper:meta:filepath:ts/app/shell.ts%%
+%%dipper:meta:hash:93e74e9a80348b48384c1379d82c1642e5c4292330da744fa0c2541baddc83c6%%
+          // The generic attrs satisfy the page's attrs by construction, but
+%%dipper:mark:1:55%% ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          // m()'s overloads cannot see through the type parameter
+%%dipper:mark:1:56%% ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+%%dipper:group:1:55-56%%
+shit comment

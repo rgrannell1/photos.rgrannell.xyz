@@ -1,7 +1,4 @@
-/*
- * Shared location rendering for photos and videos, split into geographic
- * (places/countries) and feature (place_feature: museum, city, etc.) modes.
- */
+/* Location rendering for photos and videos, in geographic or feature mode. */
 
 import m from "mithril";
 import { toThingLinks } from "../thing/thing-links.ts";
@@ -11,8 +8,8 @@ import { KnownTypes } from "../../constants/data.ts";
 import { getTribbleDB } from "../../semantic/data.ts";
 import type { Services } from "../../types.ts";
 
-/* a place feature worth showing as a "place type" — excludes those published
-   with the generic flag (country, continent) that every photo trivially has */
+/* A place feature worth showing as a "place type". Features published as
+   generic (country, continent) apply to every photo, so they are excluded. */
 export function isVisiblePlaceFeature(urn: string): boolean {
   const { type, id } = asUrn(urn);
   if (type !== KnownTypes.PLACE_FEATURE) {
@@ -49,7 +46,6 @@ function viewMediaLocations(vnode: m.Vnode<MediaLocationsAttrs>): m.Children {
   return m("td", $links.length > 0 ? $links : "—");
 }
 
-/* geographic = places/countries; feature = place_feature types (museum, city, etc.) */
 export function MediaLocations() {
   return { view: viewMediaLocations };
 }

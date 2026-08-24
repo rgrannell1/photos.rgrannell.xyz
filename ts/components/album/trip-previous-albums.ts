@@ -31,10 +31,7 @@ function viewTripPreviousAlbums(
   return m("p.photo-album-trip-previous", parts);
 }
 
-/**
- * Renders "after travelling from [album], [album], ..." with links to each album.
- * Shown on album pages when the album is part of a trip and has earlier stops.
- */
+/** Shown on album pages when the album is part of a trip and has earlier stops. */
 export function TripPreviousAlbums() {
   return { view: viewTripPreviousAlbums };
 }

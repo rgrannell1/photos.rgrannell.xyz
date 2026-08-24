@@ -10,9 +10,6 @@ import { state } from "./context.ts";
 const headerComponent = Header();
 const sidebarComponent = Sidebar();
 
-/*
- * Resolved page render with page attrs and optional shell root class.
- */
 type ResolvedPage<PageAttrs> = {
   attrs: PageAttrs;
   appClass?: string | undefined;
@@ -27,15 +24,15 @@ export type PageEntry<PageAttrs> = {
 };
 
 /*
- * Type helper: infers attrs type from page component for type checking.
+ * Identity helper. It infers the attrs type from the page component.
  */
 export function pageEntry<PageAttrs>(entry: PageEntry<PageAttrs>): PageEntry<PageAttrs> {
   return entry;
 }
 
 /*
- * Wrap a PageEntry in the shared shell. A RouteResolver render keeps header and
- * sidebar mounted across navigation.
+ * Wrap a page in the shell. A RouteResolver render keeps the header and sidebar
+ * mounted across navigation.
  */
 export function routeResolver<PageAttrs>(entry: PageEntry<PageAttrs>): m.RouteResolver {
   return {
