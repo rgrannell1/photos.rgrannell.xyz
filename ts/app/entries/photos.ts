@@ -4,7 +4,7 @@ import m from "mithril";
 import { photoUrn } from "../../commons/urn.ts";
 import { PhotoPage } from "../../components/pages/photo.ts";
 import { PhotosPage } from "../../components/pages/photos.ts";
-import type { Photo } from "../../types.ts";
+import type { Photo } from "../../types/domain.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
 import { readPrefix } from "../../commons/cache.ts";

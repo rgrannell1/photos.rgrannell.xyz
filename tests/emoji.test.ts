@@ -1,7 +1,7 @@
 /* Lazy emoji reader tests. */
 
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { readThingEmoji } from "../ts/services/emoji.ts";
+import { readThingEmoji } from "../ts/services/data/emoji.ts";
 
 const PLACE = "urn:ró:place:test-place";
 const FEATURE = "urn:ró:place_feature:test-feature";

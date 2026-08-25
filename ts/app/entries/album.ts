@@ -4,10 +4,11 @@ import m from "mithril";
 import { setify } from "../../commons/sets.ts";
 import { albumUrn } from "../../commons/urn.ts";
 import { AlbumPage } from "../../components/pages/album.ts";
-import type { Album, Country, Photo, Video } from "../../types.ts";
+import type { Album, Country, Photo, Video } from "../../types/domain.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
 import { fromNullable, isNone, type Maybe, NONE } from "../../commons/maybe.ts";
+import type { Result } from "../../commons/result.ts";
 
 const albumPageComponent = AlbumPage();
 
@@ -21,15 +22,15 @@ type AlbumPageModel = {
 };
 
 let cachedId: Maybe<string> = NONE;
-let cachedModel: Maybe<AlbumPageModel | string> = NONE;
+let cachedModel: Maybe<Result<AlbumPageModel, string>> = NONE;
 let cachedAfterLoad = false;
 
-function readAlbumPageModel(id: string): AlbumPageModel | string {
+function readAlbumPageModel(id: string): Result<AlbumPageModel, string> {
   const urn = albumUrn(id);
 
   const album = services.readAlbum(urn);
   if (isNone(album)) {
-    return "Album not found";
+    return { ok: false, error: "Album not found" };
   }
 
   const tripPreviousAlbums = album.trip
@@ -39,12 +40,15 @@ function readAlbumPageModel(id: string): AlbumPageModel | string {
     : [];
 
   return {
-    album,
-    photos: services.readAlbumPhotosByAlbumId(urn),
-    videos: services.readAlbumVideosByAlbumId(urn),
-    countries: services.readCountries(setify(fromNullable(album.country))),
-    bannerPhoto: album.albumBanner ? services.readPhoto(album.albumBanner) : NONE,
-    tripPreviousAlbums,
+    ok: true,
+    value: {
+      album,
+      photos: services.readAlbumPhotosByAlbumId(urn),
+      videos: services.readAlbumVideosByAlbumId(urn),
+      countries: services.readCountries(setify(fromNullable(album.country))),
+      bannerPhoto: album.albumBanner ? services.readPhoto(album.albumBanner) : NONE,
+      tripPreviousAlbums,
+    },
   };
 }
 
@@ -63,17 +67,18 @@ export const albumEntry = pageEntry({
       cachedAfterLoad = state.loaded;
     }
 
-    if (typeof cachedModel === "string") {
-      return cachedModel;
-    }
     if (isNone(cachedModel)) {
       return "Album not found";
     }
+    if (!cachedModel.ok) {
+      return cachedModel.error;
+    }
+    const model = cachedModel.value;
 
     return {
-      appClass: cachedModel.album.albumBanner ? "album-page" : undefined,
+      appClass: model.album.albumBanner ? "album-page" : undefined,
       attrs: {
-        ...cachedModel,
+        ...model,
         visible: state.sidebarVisible,
       },
     };

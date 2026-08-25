@@ -3,8 +3,8 @@
 import m from "mithril";
 import { toThingLinks, type ReadThing } from "../thing/thing-links.ts";
 import type { ReadThingEmoji } from "../thing/thing-link.ts";
-import * as Dates from "../../services/dates.ts";
-import type { Photo as PhotoType } from "../../types.ts";
+import * as Dates from "../../commons/dates.ts";
+import type { Photo as PhotoType } from "../../types/domain.ts";
 import { MetadataRow } from "./metadata-row.ts";
 import {
   formatAperture,

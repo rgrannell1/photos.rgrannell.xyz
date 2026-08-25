@@ -1,5 +1,5 @@
 import m from "mithril";
-import { isSmallerThan } from "../../services/window.ts";
+import { isSmallerThan } from "../../services/browser/window.ts";
 import type { CountryLinkAttrs } from "../thing/country-link.ts";
 import { SMALL_DEVICE_WIDTH } from "../../constants/layout.ts";
 

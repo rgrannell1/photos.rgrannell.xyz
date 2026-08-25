@@ -7,7 +7,7 @@ import {
   AlbumsPage,
   type AlbumsPageAttrs,
 } from "../../components/pages/albums.ts";
-import type { Album, Country } from "../../types.ts";
+import type { Album, Country } from "../../types/domain.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
 import {

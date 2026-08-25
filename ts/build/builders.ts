@@ -14,6 +14,7 @@ import {
 import { minify as cssoMinify } from "npm:csso";
 import { ABOUT_BANNER_URL, ALBUMS_BANNER_URL } from "../constants/banners.ts";
 import { TribbleStringifier } from "@rgrannell1/tribbledb";
+import type { FlagManifest } from "../types/browser.ts";
 
 async function computeSourceHash(): Promise<string> {
   const contents: string[] = [];
@@ -105,15 +106,6 @@ export async function buildCSS(): Promise<string> {
   );
   return cssoMinify(result.code).css;
 }
-
-export type FlagManifest = {
-  sprite: string;
-  cellWidth: number;
-  cellHeight: number;
-  count: number;
-  positions: Record<string, number>;
-  big: Record<string, string>;
-};
 
 async function hashBytes(bytes: Uint8Array<ArrayBuffer>): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-256", bytes);

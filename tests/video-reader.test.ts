@@ -4,9 +4,9 @@ import { asUrn, type Triple } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { albumUrn } from "../ts/commons/urn.ts";
 import { KnownTypes } from "../ts/constants/data.ts";
-import { readAlbum, readVideos } from "../ts/services/readers.ts";
-import { readVideosByThingIds } from "../ts/services/videos.ts";
-import type { Video } from "../ts/types.ts";
+import { readAlbum, readVideos } from "../ts/services/data/readers.ts";
+import { readVideosByThingIds } from "../ts/services/data/videos.ts";
+import type { Video } from "../ts/types/domain.ts";
 import { isNone } from "../ts/commons/maybe.ts";
 
 const ALBUM = "urn:ró:album:test";

@@ -2,8 +2,8 @@
  * Unit tests for the year grouping used by the photos grid.
  */
 
-import type { Photo } from "../ts/types.ts";
-import { groupPhotosByYear } from "../ts/services/photos.ts";
+import type { Photo } from "../ts/types/domain.ts";
+import { groupPhotosByYear } from "../ts/domain/photos.ts";
 
 function assertEquals(actual: unknown, expected: unknown) {
   const actualJson = JSON.stringify(actual);

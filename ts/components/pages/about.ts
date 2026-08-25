@@ -1,9 +1,9 @@
 import m from "mithril";
 
-import { setTitle } from "../../services/window.ts";
-import { navigate } from "../../commons/events.ts";
+import { setTitle } from "../../services/browser/window.ts";
+import { navigate } from "../../app/events.ts";
 import { AlbumBanner } from "../album/album-banner.ts";
-import { thumbHashDataUrl } from "../../services/photos.ts";
+import { thumbHashDataUrl } from "../../services/rendering/photos.ts";
 import {
   ABOUT_BANNER_MOSAIC,
   ABOUT_BANNER_URL,

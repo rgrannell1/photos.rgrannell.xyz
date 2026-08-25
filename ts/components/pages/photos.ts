@@ -1,5 +1,5 @@
 import m from "mithril";
-import type { Photo as PhotoType } from "../../types.ts";
+import type { Photo as PhotoType } from "../../types/domain.ts";
 import { PhotoGrid } from "../media/photo-grid.ts";
 import { countLabel } from "../../commons/strings.ts";
 

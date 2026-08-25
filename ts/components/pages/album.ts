@@ -1,16 +1,16 @@
 import m from "mithril";
-import { isSmallerThan, setTitle, sharePhotoUrl } from "../../services/window.ts";
+import { isSmallerThan, setTitle, sharePhotoUrl } from "../../services/browser/window.ts";
 import { AlbumBanner } from "../album/album-banner.ts";
 import { ShareButton } from "../share-button.ts";
 import { countryFlagLinks } from "../thing/country-link.ts";
-import { thumbHashDataUrl } from "../../services/photos.ts";
+import { thumbHashDataUrl } from "../../services/rendering/photos.ts";
 
 import type {
   Album,
   Country,
   Photo as PhotoType,
   Video as VideoType,
-} from "../../types.ts";
+} from "../../types/domain.ts";
 import { drawGridPhoto } from "../media/photo-grid.ts";
 import { drawVideoItem } from "../media/video.ts";
 import { AlbumsButton } from "../album/albums-button.ts";

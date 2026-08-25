@@ -1,5 +1,5 @@
 import m from "mithril";
-import { Component } from "../../commons/component.ts";
+import { Component } from "../component.ts";
 
 type ExternalLinkAttrs = {
   href: string;

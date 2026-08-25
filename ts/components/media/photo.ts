@@ -1,13 +1,13 @@
 /* Render one interactive photo and its metadata link. */
 
 import m from "mithril";
-import { block } from "../../commons/events.ts";
-import { openUrl } from "../../services/window.ts";
+import { block } from "../../app/events.ts";
+import { openUrl } from "../../services/browser/window.ts";
 import { formatId } from "../../commons/urn.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../constants/layout.ts";
-import { thumbHashDataUrl } from "../../services/photos.ts";
-import type { Photo as PhotoType } from "../../types.ts";
+import { thumbHashDataUrl } from "../../services/rendering/photos.ts";
+import type { Photo as PhotoType } from "../../types/domain.ts";
 import { ImagePair } from "./image-pair.ts";
 
 export type PhotoAttrs = {

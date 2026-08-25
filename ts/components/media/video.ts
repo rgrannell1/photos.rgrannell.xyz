@@ -1,5 +1,5 @@
 import m from "mithril";
-import type { Video } from "../../types.ts";
+import type { Video } from "../../types/domain.ts";
 import { MetadataIcon } from "./metadata-icon.ts";
 import { formatId } from "../../commons/urn.ts";
 

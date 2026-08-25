@@ -1,0 +1,81 @@
+import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
+import { type TribbleDB } from "@rgrannell1/tribbledb/v2";
+import { logParseWarning } from "./logger.ts";
+import {
+  type BaseIssue,
+  type BaseSchema,
+  type InferOutput,
+  safeParse,
+} from "valibot";
+import { readParsedThing, readParsedThings } from "./things.ts";
+import { one } from "../../commons/arrays.ts";
+import { isNone, type Maybe, NONE } from "../../commons/maybe.ts";
+
+type Parser<Parsed> = (tdb: TribbleDB, thing: TripleObject) => Maybe<Parsed>;
+
+export function parseObject<
+  TSchema extends BaseSchema<unknown, Record<string, unknown>, BaseIssue<unknown>>,
+  TType extends string,
+>(
+  schema: TSchema,
+  type: TType,
+): (
+  _: TribbleDB,
+  object: TripleObject,
+) => Maybe<InferOutput<TSchema> & { type: TType }> {
+  return (_: TribbleDB, object: TripleObject) => {
+    const result = safeParse(schema, object);
+
+    if (!result.success) {
+      logParseWarning(result.issues);
+      return NONE;
+    }
+
+    return { ...result.output, type } as InferOutput<TSchema> & {
+      type: TType;
+    };
+  };
+}
+
+export function parseByType<Parsed>(
+  typeParsers: Record<string, Parser<Parsed>>,
+): Parser<Parsed> {
+  return (tdb: TribbleDB, thing: TripleObject) => {
+    const id = one(thing.id);
+    if (isNone(id)) {
+      return NONE;
+    }
+
+    const { type } = asUrn(id);
+
+    const parser = typeParsers[type] ?? typeParsers["default"];
+    if (!parser) {
+      return NONE;
+    }
+
+    return parser(tdb, thing);
+  };
+}
+
+export function readOne<Parsed>(parser: Parser<Parsed>) {
+  return (tdb: TribbleDB, id: string) => {
+    return readParsedThing(parser, tdb, id);
+  };
+}
+
+export function readMany<Parsed>(parser: Parser<Parsed>) {
+  if (typeof parser !== "function") {
+    throw new Error("Parser must be a function");
+  }
+
+  return (tdb: TribbleDB, urns: Set<string>) => {
+    return readParsedThings(parser, tdb, urns);
+  };
+}
+
+export function readers<Parsed>(parser: Parser<Parsed>) {
+  return {
+    one: readOne(parser),
+    many: readMany(parser),
+  };
+}

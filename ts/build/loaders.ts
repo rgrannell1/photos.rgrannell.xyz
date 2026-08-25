@@ -1,7 +1,7 @@
 import * as path from "jsr:@std/path";
 import { deriveTriples, postIndexing } from "../semantic/derive.ts";
 import { loadTriples } from "../semantic/data.ts";
-import { readAllAlbums } from "../services/albums.ts";
+import { readAllAlbums } from "../services/data/albums.ts";
 import { HOMEPAGE_PRELOAD_COUNT } from "../constants/layout.ts";
 import { isNone, type Maybe, NONE } from "../commons/maybe.ts";
 

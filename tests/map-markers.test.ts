@@ -1,7 +1,7 @@
 /* Characterise the place popup markup used by Leaflet markers. */
 
-import type { GeocodedPlaceWithCover } from "../ts/services/places.ts";
-import { placePopupHtml } from "../ts/services/map-markers.ts";
+import type { GeocodedPlaceWithCover } from "../ts/domain/places.ts";
+import { placePopupHtml } from "../ts/services/map/map-markers.ts";
 
 function assertEquals(actual: unknown, expected: unknown): void {
   if (actual !== expected) {

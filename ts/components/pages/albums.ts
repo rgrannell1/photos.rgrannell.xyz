@@ -4,12 +4,12 @@ import { AlbumBanner } from "../album/album-banner.ts";
 import { ShareButton } from "../share-button.ts";
 import { AlbumStats } from "../album/album-stats.ts";
 import { AlbumYearGroup } from "../album/year-group.ts";
-import type { Album, Country } from "../../types.ts";
-import { thumbHashDataUrl } from "../../services/photos.ts";
-import { setTitle, sharePhotoUrl } from "../../services/window.ts";
-import { mountYearScroll } from "../../services/year-scroll.ts";
-import { broadcast } from "../../commons/events.ts";
-import { albumYear } from "../../services/albums.ts";
+import type { Album, Country } from "../../types/domain.ts";
+import { thumbHashDataUrl } from "../../services/rendering/photos.ts";
+import { setTitle, sharePhotoUrl } from "../../services/browser/window.ts";
+import { mountYearScroll } from "../../services/rendering/year-scroll.ts";
+import { broadcast } from "../../app/events.ts";
+import { albumYear } from "../../domain/albums.ts";
 import { CountryFilter } from "../album/country-filter.ts";
 import {
   ALBUMS_BANNER_MOSAIC,
@@ -18,7 +18,7 @@ import {
 import {
   type BatchRenderer,
   createBatchRenderer,
-} from "../../services/batch-render.ts";
+} from "../../services/rendering/batch-render.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import {
   fromNullable,

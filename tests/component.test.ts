@@ -1,7 +1,7 @@
 /* Mithril component factory tests. */
 
 import m from "mithril";
-import { Component } from "../ts/commons/component.ts";
+import { Component } from "../ts/components/component.ts";
 
 Deno.test("Component keeps hooks and creates fresh instances", () => {
   const oninit = () => undefined;

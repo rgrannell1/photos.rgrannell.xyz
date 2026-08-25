@@ -1,19 +1,19 @@
 import m from "mithril";
 import { KnownTypes } from "../../constants/data.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { broadcast, navigate } from "../../commons/events.ts";
-import type { Photo } from "../../types.ts";
+import { broadcast, navigate } from "../../app/events.ts";
+import type { Photo } from "../../types/domain.ts";
 import { PhotoAlbum } from "../album/photo-album.ts";
-import { thumbHashDataUrl, loadingMode } from "../../services/photos.ts";
+import { thumbHashDataUrl, loadingMode } from "../../services/rendering/photos.ts";
 import { one } from "../../commons/arrays.ts";
 import { ThingCaption } from "../thing/thing-caption.ts";
 import {
   type BatchRenderer,
   createBatchRenderer,
-} from "../../services/batch-render.ts";
+} from "../../services/rendering/batch-render.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import { FlagIcon } from "../flag.ts";
-import type { SubjectStats } from "../../services/stats.ts";
+import type { SubjectStats } from "../../domain/stats.ts";
 import { readThrough } from "../../commons/cache.ts";
 import {
   isNone,

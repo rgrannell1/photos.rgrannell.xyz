@@ -1,6 +1,6 @@
 import m from "mithril";
 import { Video } from "../media/video.ts";
-import type { Video as VideoType } from "../../types.ts";
+import type { Video as VideoType } from "../../types/domain.ts";
 import { AlbumButton } from "../album/album-button.ts";
 import { MediaInfo } from "../media/media-info.ts";
 import type { ReadThing } from "../thing/thing-links.ts";

@@ -3,12 +3,12 @@
  */
 
 import m from "mithril";
-import type { Album, Country } from "../../types.ts";
+import type { Album, Country } from "../../types/domain.ts";
 import { PhotoAlbum } from "./photo-album.ts";
 import { PhotoAlbumMetadata } from "./photo-album-metadata.ts";
 import { countryFlagLinks } from "../thing/country-link.ts";
-import { thumbHashDataUrl } from "../../services/photos.ts";
-import { albumRoute, onAlbumClick } from "../../commons/album-nav.ts";
+import { thumbHashDataUrl } from "../../services/rendering/photos.ts";
+import { albumRoute, onAlbumClick } from "../../app/album-nav.ts";
 import type { Maybe } from "../../commons/maybe.ts";
 
 type AlbumCardAttrs = {

@@ -3,7 +3,7 @@
  */
 
 import m from "mithril";
-import { listen } from "../commons/events.ts";
+import { listen } from "./events.ts";
 import { hideSidebar, toggleSidebar } from "../state.ts";
 import { state } from "./context.ts";
 

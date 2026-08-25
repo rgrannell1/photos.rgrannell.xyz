@@ -1,7 +1,7 @@
 import m from "mithril";
-import type { TripPolyline } from "../../services/albums.ts";
-import type { GeocodedPlaceWithCover } from "../../services/places.ts";
-import { type MapHandle, mountMap } from "../../services/map.ts";
+import type { TripPolyline } from "../../domain/map.ts";
+import type { GeocodedPlaceWithCover } from "../../domain/places.ts";
+import { type MapHandle, mountMap } from "../../services/map/map.ts";
 import { isSome, type Maybe, NONE } from "../../commons/maybe.ts";
 
 type MapPageAttrs = {

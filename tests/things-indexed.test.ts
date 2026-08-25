@@ -9,7 +9,7 @@ import {
   isBinomialType,
   listingLabel,
   readThing,
-} from "../ts/commons/things.ts";
+} from "../ts/services/data/things.ts";
 
 const BIRD = "urn:ró:bird:robin";
 const BIRD_VARIANT = `${BIRD}?sex=male`;

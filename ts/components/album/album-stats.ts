@@ -1,12 +1,12 @@
 import m from "mithril";
-import type { AppWindow } from "../../types.ts";
-import { parseStats } from "../../services/parsers.ts";
-import { isNone } from "../../commons/maybe.ts";
+import type { AppWindow } from "../../types/browser.ts";
+import { parseStats } from "../../services/browser/stats.ts";
 
-function viewAlbumStats(stats: ReturnType<typeof parseStats>): m.Children {
-  if (isNone(stats)) {
+function viewAlbumStats(result: ReturnType<typeof parseStats>): m.Children {
+  if (!result.ok) {
     return m("p");
   }
+  const stats = result.value;
 
   return m("p.photo-stats", [
     `${stats.photos} `,

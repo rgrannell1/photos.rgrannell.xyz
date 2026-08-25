@@ -1,10 +1,10 @@
 /* One year of albums: a heading, an optional recap, then album cards. */
 
 import m from "mithril";
-import type { Album, Country } from "../../types.ts";
+import type { Album, Country } from "../../types/domain.ts";
 import { YearRecap } from "./year-recap.ts";
 import { AlbumCard } from "./album-card.ts";
-import { loadingMode } from "../../services/photos.ts";
+import { loadingMode } from "../../services/rendering/photos.ts";
 import { BEFORE_TIMES_FINAL_YEAR } from "../../constants/display.ts";
 import { ALBUM_YEAR_HEADING_ID_PREFIX } from "../../constants/selectors.ts";
 import { fromNullable, isSome, type Maybe } from "../../commons/maybe.ts";

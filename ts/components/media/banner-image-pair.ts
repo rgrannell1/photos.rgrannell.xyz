@@ -1,7 +1,7 @@
 /* Render a full-bleed banner image above its placeholder. */
 
 import m from "mithril";
-import { hidePlaceholderOnLoad } from "../../services/images.ts";
+import { hidePlaceholderOnLoad } from "../../services/browser/images.ts";
 import { isSome, type Maybe } from "../../commons/maybe.ts";
 
 export type BannerImagePairAttrs = {

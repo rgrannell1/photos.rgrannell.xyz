@@ -3,14 +3,11 @@
 import m from "mithril";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import { BEFORE_TIMES_FINAL_YEAR } from "../../constants/display.ts";
-import type { Photo as PhotoType } from "../../types.ts";
+import type { Photo as PhotoType } from "../../types/domain.ts";
 import { Photo } from "./photo.ts";
-import {
-  groupPhotosByYear,
-  loadingMode,
-  type PhotoYearGroup,
-} from "../../services/photos.ts";
-import { type BatchRenderer, createBatchRenderer } from "../../services/batch-render.ts";
+import { groupPhotosByYear, type PhotoYearGroup } from "../../domain/photos.ts";
+import { loadingMode } from "../../services/rendering/photos.ts";
+import { type BatchRenderer, createBatchRenderer } from "../../services/rendering/batch-render.ts";
 
 type PhotoGridAttrs = {
   // total available, not the number rendered so far

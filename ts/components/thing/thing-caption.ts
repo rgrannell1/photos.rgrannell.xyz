@@ -2,8 +2,8 @@ import m from "mithril";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../../commons/arrays.ts";
 import { KnownTypes, TAXON_TYPES } from "../../constants/data.ts";
-import { taxonLabel } from "../../commons/things.ts";
-import { featureEmoji } from "../../services/emoji.ts";
+import { featureEmoji } from "../../domain/emoji.ts";
+import { taxonLabel } from "../../domain/things.ts";
 import { FlagIcon } from "../flag.ts";
 import { ThingUrls } from "./thing-urls.ts";
 import {

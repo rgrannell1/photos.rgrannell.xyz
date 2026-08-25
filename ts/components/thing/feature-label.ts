@@ -3,9 +3,9 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { one } from "../../commons/arrays.ts";
-import { Component } from "../../commons/component.ts";
-import { thingEmoji } from "../../services/emoji.ts";
-import type { Feature } from "../../types.ts";
+import { Component } from "../component.ts";
+import { thingEmoji } from "../../domain/emoji.ts";
+import type { Feature } from "../../types/domain.ts";
 import { drawThingLink } from "./thing-link-layout.ts";
 import { fromNullable, withDefault } from "../../commons/maybe.ts";
 

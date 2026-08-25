@@ -3,7 +3,7 @@
  */
 
 import m from "mithril";
-import { flagManifest } from "../services/flags.ts";
+import { flagManifest } from "../services/browser/flags.ts";
 import { isNone, type Maybe, NONE } from "../commons/maybe.ts";
 
 // Place name to vexilla flag asset. See /flags

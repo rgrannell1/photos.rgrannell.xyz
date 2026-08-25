@@ -1,5 +1,5 @@
 import m from "mithril";
-import { canNativeShare, nativeShare } from "../services/window.ts";
+import { canNativeShare, nativeShare } from "../services/browser/window.ts";
 
 type ShareButtonAttrs = {
   url: string;

@@ -18,8 +18,8 @@ import {
 import { ListingsPage } from "../../components/pages/listings.ts";
 import { KnownTypes } from "../../constants/data.ts";
 import { COUNTRY_LISTING_TYPE } from "../../constants/display.ts";
-import type { SubjectStats } from "../../services/stats.ts";
-import type { Photo } from "../../types.ts";
+import type { SubjectStats } from "../../domain/stats.ts";
+import type { Photo } from "../../types/domain.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
 

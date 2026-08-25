@@ -1,7 +1,7 @@
 /* Photo component redraw boundary tests. */
 
 import { hasPhotoChanged, type PhotoAttrs } from "../ts/components/media/photo.ts";
-import type { Photo } from "../ts/types.ts";
+import type { Photo } from "../ts/types/domain.ts";
 
 const photo = {} as Photo;
 const base: PhotoAttrs = { photo, loading: "lazy", interactive: true };

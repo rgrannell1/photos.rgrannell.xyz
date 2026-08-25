@@ -2,15 +2,15 @@
 
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { navigate } from "../../commons/events.ts";
+import { navigate } from "../../app/events.ts";
 
 import { one } from "../../commons/arrays.ts";
 import { customFlagAsset, FlagIcon } from "../flag.ts";
 import { isSome } from "../../commons/maybe.ts";
 import { KnownTypes } from "../../constants/data.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type { Thing, Unesco } from "../../types.ts";
-import type { EmojiThing } from "../../services/emoji.ts";
+import type { Thing, Unesco } from "../../types/domain.ts";
+import type { EmojiThing } from "../../domain/emoji.ts";
 import { drawThingLink } from "./thing-link-layout.ts";
 
 export type ReadThingEmoji = (

@@ -1,6 +1,6 @@
 import m from "mithril";
 import { HEART_RAIN_OVERLAY_SELECTOR } from "../../constants/selectors.ts";
-import { mountHeartRain } from "../../services/heart-rain.ts";
+import { mountHeartRain } from "../../services/rendering/heart-rain.ts";
 import { isSome, type Maybe, NONE } from "../../commons/maybe.ts";
 
 type HeartRainState = {

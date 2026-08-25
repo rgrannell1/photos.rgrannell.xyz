@@ -16,7 +16,7 @@ import type {
   ThingListItem,
   ThingListKind,
 } from "../../components/thing/thing-list.ts";
-import type { Album, Country } from "../../types.ts";
+import type { Album, Country } from "../../types/domain.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
 

@@ -2,7 +2,7 @@
 
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { Component } from "../../commons/component.ts";
+import { Component } from "../component.ts";
 import { binomial } from "../../commons/strings.ts";
 import { TAXON_TYPES } from "../../constants/data.ts";
 

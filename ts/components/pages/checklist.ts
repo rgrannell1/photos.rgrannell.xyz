@@ -1,9 +1,9 @@
 import m from "mithril";
-import { broadcast } from "../../commons/events.ts";
+import { broadcast } from "../../app/events.ts";
 import { ImagePair } from "../media/image-pair.ts";
-import { thumbHashDataUrl } from "../../services/photos.ts";
-import type { Photo } from "../../types.ts";
-import type { ChecklistEntry, NemesisSpecies } from "../../services/stats.ts";
+import { thumbHashDataUrl } from "../../services/rendering/photos.ts";
+import type { Photo } from "../../types/domain.ts";
+import type { ChecklistEntry, NemesisSpecies } from "../../domain/stats.ts";
 import { PHOTO_WIDTH } from "../../constants/layout.ts";
 import { FlagIcon } from "../flag.ts";
 import {

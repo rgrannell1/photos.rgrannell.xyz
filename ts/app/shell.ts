@@ -6,6 +6,8 @@ import m from "mithril";
 import { Header } from "../components/shell/header.ts";
 import { Sidebar } from "../components/shell/sidebar.ts";
 import { state } from "./context.ts";
+import { isNone, type Maybe, NONE } from "../commons/maybe.ts";
+import type { Result } from "../commons/result.ts";
 
 const headerComponent = Header();
 const sidebarComponent = Sidebar();
@@ -15,7 +17,7 @@ type ResolvedPage<PageAttrs> = {
   appClass?: string;
 };
 
-export type PageEntry<PageAttrs> = {
+type PageDefinition<PageAttrs> = {
   page: m.Component<PageAttrs>;
   // Called once per navigation for param reads and per-visit loads.
   onmatch?: (params: m.Params) => void;
@@ -23,11 +25,40 @@ export type PageEntry<PageAttrs> = {
   resolve: () => ResolvedPage<NoInfer<PageAttrs>> | string;
 };
 
+type PageResolution<PageAttrs> = Maybe<
+  Result<ResolvedPage<NoInfer<PageAttrs>>, string>
+>;
+
+type PageResolver<PageAttrs> = () => PageResolution<PageAttrs>;
+
+export type PageEntry<PageAttrs> = Omit<PageDefinition<PageAttrs>, "resolve"> & {
+  resolve: PageResolver<PageAttrs>;
+};
+
+function resolvePageDefinition<PageAttrs>(
+  definition: PageDefinition<PageAttrs>,
+): PageResolution<PageAttrs> {
+  const resolved = definition.resolve();
+  if (resolved === "") {
+    return NONE;
+  }
+  if (typeof resolved === "string") {
+    return { ok: false, error: resolved };
+  }
+  return { ok: true, value: resolved };
+}
+
 /*
- * Identity helper. It infers the attrs type from the page component.
+ * Normalise loading, error, and ready page states.
  */
-export function pageEntry<PageAttrs>(entry: PageEntry<PageAttrs>): PageEntry<PageAttrs> {
-  return entry;
+export function pageEntry<PageAttrs>(
+  definition: PageDefinition<PageAttrs>,
+): PageEntry<PageAttrs> {
+  const resolve = (resolvePageDefinition<PageAttrs>).bind(null, definition);
+  return {
+    ...definition,
+    resolve,
+  };
 }
 
 /*
@@ -40,11 +71,15 @@ export function routeResolver<PageAttrs>(entry: PageEntry<PageAttrs>): m.RouteRe
       entry.onmatch?.(params);
     },
     render() {
-      const resolved = entry.resolve();
+      const result = entry.resolve();
 
-      if (typeof resolved === "string") {
-        return m("p", resolved);
+      if (isNone(result)) {
+        return m("p");
       }
+      if (!result.ok) {
+        return m("p", result.error);
+      }
+      const resolved = result.value;
 
       return m("div.photos-app", { class: resolved.appClass }, [
         m(headerComponent),

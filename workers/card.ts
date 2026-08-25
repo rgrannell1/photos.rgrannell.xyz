@@ -7,6 +7,7 @@ import {
   NONE,
   withDefault,
 } from "../ts/commons/maybe.ts";
+import type { Result } from "../ts/commons/result.ts";
 
 /*
  * Social-card redirect worker
@@ -26,7 +27,7 @@ interface SocialCard {
 async function getSocialCard(
   db: D1Database,
   path: string,
-): Promise<Maybe<SocialCard>> {
+): Promise<Result<Maybe<SocialCard>, unknown>> {
   try {
     console.log(`[DB] Querying social_cards for path: ${path}`);
     const result = await db.prepare(
@@ -37,10 +38,10 @@ async function getSocialCard(
       `[DB] Query result:`,
       result ? `Found card for ${result.path}` : "No card found",
     );
-    return fromNullable(result);
-  } catch (error) {
-    console.error(`[DB] Error querying social_cards:`, error);
-    return NONE;
+    return { ok: true, value: fromNullable(result) };
+  } catch (err) {
+    console.error(`[DB] Error querying social_cards:`, err);
+    return { ok: false, error: err };
   }
 }
 
@@ -86,7 +87,14 @@ export default {
     const path = extractPathFromUrl(request.url);
     console.log(`[Worker] Extracted path: ${path}`);
 
-    const card = await getSocialCard(env.PHOTO_CARDS, path);
+    const cardResult = await getSocialCard(env.PHOTO_CARDS, path);
+    if (!cardResult.ok) {
+      return new Response(null, {
+        status: 503,
+        headers: { "Cache-Control": "no-store" },
+      });
+    }
+    const card = cardResult.value;
     console.log(
       `[Worker] Database lookup result:`,
       isSome(card) ? "Card found" : "No card found",

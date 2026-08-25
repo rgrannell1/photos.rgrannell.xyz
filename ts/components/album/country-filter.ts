@@ -1,6 +1,6 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
-import type { Country } from "../../types.ts";
+import type { Country } from "../../types/domain.ts";
 import { customFlagAsset, FlagIcon } from "../flag.ts";
 import { isNone, isSome, type Maybe, NONE } from "../../commons/maybe.ts";
 

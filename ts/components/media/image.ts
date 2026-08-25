@@ -1,7 +1,7 @@
 /* Render a photo thumbnail. */
 
 import m from "mithril";
-import { hidePlaceholderOnLoad } from "../../services/images.ts";
+import { hidePlaceholderOnLoad } from "../../services/browser/images.ts";
 
 export type ImageAttrs = {
   thumbnailUrl: string;

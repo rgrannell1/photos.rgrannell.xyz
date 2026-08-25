@@ -5,9 +5,9 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
 import { KnownTypes, TAXON_TYPES } from "../../constants/data.ts";
 import { one } from "../../commons/arrays.ts";
-import { taxonLabel } from "../../commons/things.ts";
+import { taxonLabel } from "../../domain/things.ts";
 import { FlagIcon } from "../flag.ts";
-import { setTitle } from "../../services/window.ts";
+import { setTitle } from "../../services/browser/window.ts";
 import { isSome, type Maybe, withDefault } from "../../commons/maybe.ts";
 
 function computeTitle(

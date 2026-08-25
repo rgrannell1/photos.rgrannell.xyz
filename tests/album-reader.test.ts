@@ -10,7 +10,7 @@ import {
   readTripAlbums,
   readTripName,
   readYearRecap,
-} from "../ts/services/albums.ts";
+} from "../ts/services/data/albums.ts";
 import { KnownRelations, KnownTypes } from "../ts/constants/data.ts";
 import { NONE } from "../ts/commons/maybe.ts";
 

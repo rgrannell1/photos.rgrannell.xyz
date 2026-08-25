@@ -6,7 +6,7 @@
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Triple } from "@rgrannell1/tribbledb";
 import { addTaxonSubjects } from "../ts/semantic/derive.ts";
-import { readTaxonMembers, readTaxons } from "../ts/commons/things.ts";
+import { readTaxonMembers, readTaxons } from "../ts/services/data/things.ts";
 import { tdb as realTdb } from "../ts/build/loaders.ts";
 import { KnownRelations, TAXON_RANKS } from "../ts/constants/data.ts";
 import { one } from "../ts/commons/arrays.ts";

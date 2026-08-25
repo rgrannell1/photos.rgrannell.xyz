@@ -4,11 +4,11 @@ import {
   type DatedVideo,
   groupVideosByYear,
   type VideoYearGroup,
-} from "../../services/videos.ts";
+} from "../../domain/videos.ts";
 import {
   type BatchRenderer,
   createBatchRenderer,
-} from "../../services/batch-render.ts";
+} from "../../services/rendering/batch-render.ts";
 import { BEFORE_TIMES_FINAL_YEAR } from "../../constants/display.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import { countLabel } from "../../commons/strings.ts";

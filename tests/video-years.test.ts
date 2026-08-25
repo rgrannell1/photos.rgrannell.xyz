@@ -2,7 +2,7 @@
  * Unit tests for the year grouping used by the videos page.
  */
 
-import { type DatedVideo, groupVideosByYear } from "../ts/services/videos.ts";
+import { type DatedVideo, groupVideosByYear } from "../ts/domain/videos.ts";
 
 function assertEquals(actual: unknown, expected: unknown) {
   const actualJson = JSON.stringify(actual);

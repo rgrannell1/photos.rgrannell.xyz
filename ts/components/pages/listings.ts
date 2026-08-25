@@ -1,8 +1,8 @@
 import m from "mithril";
-import { navigate } from "../../commons/events.ts";
-import type { Photo } from "../../types.ts";
+import { navigate } from "../../app/events.ts";
+import type { Photo } from "../../types/domain.ts";
 import { PhotoAlbum } from "../album/photo-album.ts";
-import { thumbHashDataUrl, loadingMode } from "../../services/photos.ts";
+import { thumbHashDataUrl, loadingMode } from "../../services/rendering/photos.ts";
 import { NONE } from "../../commons/maybe.ts";
 
 type CategoryDef = {

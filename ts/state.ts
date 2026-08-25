@@ -2,7 +2,7 @@
  * Loads the triple store and binds the service registry to it.
  */
 
-import type { AppWindow, State } from "./types.ts";
+import type { AppWindow } from "./types/browser.ts";
 import { getTribbleDB, loadTriples } from "./semantic/data.ts";
 import {
   deriveTriples,
@@ -10,16 +10,34 @@ import {
   runStreamPasses,
 } from "./semantic/derive.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { SERVICE_READERS } from "./services/mod.ts";
+import { SERVICE_READERS } from "./services/data/mod.ts";
 import {
   collectUnphotographedNemesis,
   countIrishMammalSpecies,
   countRegularBirdSpecies,
-} from "./services/stats.ts";
+} from "./services/data/stats.ts";
 import { KnownTypes } from "./constants/data.ts";
+import type { NemesisSpecies } from "./domain/stats.ts";
 
 // minimum time between redraws while the tribble stream loads
 const REDRAW_INTERVAL_MS = 100;
+
+export type Services = ReturnType<typeof loadServices>;
+
+export type CatalogueFacts = {
+  regularBirdSpecies: number;
+  irishMammalSpecies: number;
+  nemesisBirds: NemesisSpecies[];
+  nemesisMammals: NemesisSpecies[];
+};
+
+export type State = {
+  data: TribbleDB;
+  services: Services;
+  loaded: boolean;
+  catalogue: CatalogueFacts;
+  sidebarVisible: boolean;
+};
 
 /*
  * Stream the tribbles file into the shared TribbleDB. Cheap derivations re-run

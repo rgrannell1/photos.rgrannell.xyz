@@ -1,4 +1,3 @@
-import type { TripleObject } from "@rgrannell1/tribbledb";
 import { fromNullable, type Maybe, NONE } from "./maybe.ts";
 
 export function setify<Value>(value: Maybe<Value | Value[]>): Set<Value> {
@@ -9,7 +8,10 @@ export function setify<Value>(value: Maybe<Value | Value[]>): Set<Value> {
   return new Set(Array.isArray(value) ? value : [value]);
 }
 
-export function setOf<Value>(property: string, objects: TripleObject[]): Set<Value> {
+export function setOf<Value>(
+  property: string,
+  objects: Record<string, unknown>[],
+): Set<Value> {
   const result = new Set<Value>();
 
   for (const obj of objects) {

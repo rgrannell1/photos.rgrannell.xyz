@@ -2,7 +2,7 @@
 
 import m from "mithril";
 import { BannerImagePair } from "../media/banner-image-pair.ts";
-import { supportsCSSScrollDrivenAnimations } from "../../services/feature-detection.ts";
+import { supportsCSSScrollDrivenAnimations } from "../../services/browser/feature-detection.ts";
 import { PARALLAX_MAX_PX, PARALLAX_RATE } from "../../constants/layout.ts";
 import {
   ALBUM_BANNER_IMAGE_SELECTOR,

@@ -1,6 +1,6 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
-import type { Album } from "../../types.ts";
+import type { Album } from "../../types/domain.ts";
 
 export type TripPreviousAlbumsAttrs = {
   albums: Album[];

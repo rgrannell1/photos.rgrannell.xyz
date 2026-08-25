@@ -6,7 +6,7 @@
 import m from "mithril";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../../commons/arrays.ts";
-import type { Feature, Place, Unesco } from "../../types.ts";
+import type { Feature, Place, Unesco } from "../../types/domain.ts";
 import { FeatureLabel } from "./feature-label.ts";
 import { ThingLink } from "./thing-link.ts";
 import { UnescoLink } from "./unesco-link.ts";
