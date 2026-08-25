@@ -1,7 +1,0 @@
-%%dipper:meta:filepath:ts/components/album/album-button.ts%%
-%%dipper:meta:hash:d4b3e9f4210dbee9f09ed943db3f25a407052a60c69156856a6edf2b10a0e1f6%%
-import m from "mithril";
-%%dipper:mark:1:1%% ^^^^^^^^^^^^^^^^^^^^^^^^
-
-%%dipper:group:1:1%%
-
