@@ -62,15 +62,13 @@ export function canonicaliseUrns(triple: Triple): Triple[] {
  */
 export function expandUrns(triple: Triple): Triple[] {
   const [src, rel, tgt] = triple;
+  const hasShortSourceUrn = typeof src === "string" && src.startsWith("::");
+  const hasShortTargetUrn = typeof tgt === "string" && tgt.startsWith("::");
 
   return [[
-    typeof src === "string" && src.startsWith("::")
-      ? `urn:ró:${src.slice(2)}`
-      : src,
+    hasShortSourceUrn ? `urn:ró:${src.slice(2)}` : src,
     rel,
-    typeof tgt === "string" && tgt.startsWith("::")
-      ? `urn:ró:${tgt.slice(2)}`
-      : tgt,
+    hasShortTargetUrn ? `urn:ró:${tgt.slice(2)}` : tgt,
   ]];
 }
 
@@ -161,7 +159,8 @@ export function registerCurieDefinitions(triple: Triple): Triple[] {
     return [triple];
   }
 
-  if (typeof src === "string" && typeof tgt === "string") {
+  const hasStringDefinition = typeof src === "string" && typeof tgt === "string";
+  if (hasStringDefinition) {
     curieDefinitions[tgt] = src;
   }
 
@@ -177,7 +176,8 @@ export function expandCurie(curies: Record<string, string>, value: string) {
     return cached;
   }
 
-  if (typeof value !== "string" || !CURIE_REGEX.test(value)) {
+  const hasCurieSyntax = typeof value === "string" && CURIE_REGEX.test(value);
+  if (!hasCurieSyntax) {
     return value;
   }
   const match = value.match(CURIE_REGEX);
@@ -436,7 +436,10 @@ export function pruneMedialessThings(tdb: TribbleDB) {
   const staleTriples: Triple[] = [];
   for (const triple of tdb.triples()) {
     const [src, , tgt] = triple;
-    if (medialess.has(baseUrn(src)) || medialess.has(baseUrn(tgt))) {
+    const sourceIsMedialess = medialess.has(baseUrn(src));
+    const targetIsMedialess = medialess.has(baseUrn(tgt));
+    const mentionsMedialessThing = sourceIsMedialess || targetIsMedialess;
+    if (mentionsMedialessThing) {
       staleTriples.push(triple);
     }
   }

@@ -5,6 +5,7 @@
  */
 
 import { subjectQualifier, urnContext } from "../ts/commons/urn.ts";
+import { NONE } from "../ts/commons/maybe.ts";
 
 function assertEquals(actual: unknown, expected: unknown) {
   const actualJson = JSON.stringify(actual);
@@ -24,12 +25,12 @@ const CONTEXT_CASES = [
   {
     name: "has no context without a query string",
     urn: "urn:ró:bird:inca-tern",
-    expected: undefined,
+    expected: NONE,
   },
   {
     name: "has no context when the query string omits it",
     urn: "urn:ró:bird:inca-tern?flag=ie",
-    expected: undefined,
+    expected: NONE,
   },
 ];
 
@@ -58,12 +59,12 @@ const QUALIFIER_CASES = [
   {
     name: "leaves a wild subject unmarked",
     urn: "urn:ró:bird:common-guillemot?context=wild",
-    expected: undefined,
+    expected: NONE,
   },
   {
     name: "leaves a subject with no context unmarked",
     urn: "urn:ró:bird:common-guillemot",
-    expected: undefined,
+    expected: NONE,
   },
   {
     name: "shows an unknown context as it is written",

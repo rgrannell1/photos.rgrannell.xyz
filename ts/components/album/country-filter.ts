@@ -2,19 +2,20 @@ import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { Country } from "../../types.ts";
 import { customFlagAsset, FlagIcon } from "../flag.ts";
+import { isNone, isSome, type Maybe, NONE } from "../../commons/maybe.ts";
 
 type CountryFilterAttrs = {
   countries: Country[];
-  selectedCountry: string | undefined;
-  onSelect: (slug: string | undefined) => void;
+  selectedCountry: Maybe<string>;
+  onSelect: (slug: Maybe<string>) => void;
 };
 
 // A nation and the sub-territories photographed within it
 type FlagGroup = Country[];
 
 function drawCountryFlag(
-  selectedCountry: string | undefined,
-  onSelect: (slug: string | undefined) => void,
+  selectedCountry: Maybe<string>,
+  onSelect: (slug: Maybe<string>) => void,
   country: Country,
 ): m.Children {
   const isSelected = selectedCountry === country.id;
@@ -24,7 +25,7 @@ function drawCountryFlag(
     key: country.id,
     title: country.name,
     class: isSelected ? "country-filter-flag--selected" : undefined,
-    onclick: onSelect.bind(null, isSelected ? undefined : slug),
+    onclick: onSelect.bind(null, isSelected ? NONE : slug),
   }, m(FlagIcon, { name: country.name }));
 }
 
@@ -32,14 +33,14 @@ function drawCountryFlag(
  * Sub-territory ids carry their nation as a prefix, so es-galicia and es both
  * group under es.
  */
-function flagNation(country: Country): string | undefined {
+function flagNation(country: Country): Maybe<string> {
   const asset = customFlagAsset(country.name);
-  return asset ? asset.split("-")[0] : undefined;
+  return isNone(asset) ? asset : asset.split("-")[0];
 }
 
 function isNationFlag(country: Country): boolean {
   const asset = customFlagAsset(country.name);
-  return asset !== undefined && !asset.includes("-");
+  return isSome(asset) && !asset.includes("-");
 }
 
 /*
@@ -50,7 +51,7 @@ function groupByNation(countries: Country[]): FlagGroup[] {
 
   for (const country of countries) {
     const nation = flagNation(country);
-    if (!nation) {
+    if (isNone(nation)) {
       continue;
     }
     const group = groups.get(nation) ?? [];
@@ -93,8 +94,8 @@ function drawSeparator(): m.Children {
  * A dot separates the runs.
  */
 function drawFlagRuns(
-  selectedCountry: string | undefined,
-  onSelect: (slug: string | undefined) => void,
+  selectedCountry: Maybe<string>,
+  onSelect: (slug: Maybe<string>) => void,
   groups: FlagGroup[],
 ): m.Children[] {
   const drawFlag = drawCountryFlag.bind(null, selectedCountry, onSelect);

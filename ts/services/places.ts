@@ -7,6 +7,7 @@ import { one } from "../commons/arrays.ts";
 import { readThings } from "../commons/things.ts";
 import { readCountries, readPlaces } from "./readers.ts";
 import { readThingCovers } from "./photos.ts";
+import { withDefault } from "../commons/maybe.ts";
 
 export type GeocodedPlace = Place & {
   latitude: number;
@@ -14,23 +15,27 @@ export type GeocodedPlace = Place & {
 };
 
 export type GeocodedPlaceWithCover = GeocodedPlace & {
-  coverThumbnailUrl?: string | undefined;
+  coverThumbnailUrl?: string;
 };
 
 export function hasValidCoordinates(place: Place): place is GeocodedPlace {
   const latitude = place.latitude;
   const longitude = place.longitude;
+  const hasMissingCoordinates = latitude === undefined || longitude === undefined;
 
-  if (latitude === undefined || longitude === undefined) {
+  if (hasMissingCoordinates) {
     return false;
   }
 
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+  const hasInvalidCoordinates = !Number.isFinite(latitude) ||
+    !Number.isFinite(longitude);
+  if (hasInvalidCoordinates) {
     return false;
   }
 
   // Filter out "Null Island" and near-null coordinates
-  if (Math.abs(latitude) < 1e-4 && Math.abs(longitude) < 1e-4) {
+  const isNearNullIsland = Math.abs(latitude) < 1e-4 && Math.abs(longitude) < 1e-4;
+  if (isNearNullIsland) {
     return false;
   }
 
@@ -80,8 +85,8 @@ export function readAllCountryThings(tdb: TribbleDB): TripleObject[] {
   }).sources());
 
   return readThings(tdb, ids).sort((countryA, countryB) => {
-    const firstName = one(countryA.name) ?? "";
-    const secondName = one(countryB.name) ?? "";
+    const firstName = withDefault(one(countryA.name), "");
+    const secondName = withDefault(one(countryB.name), "");
     return firstName.localeCompare(secondName);
   });
 }

@@ -1,7 +1,8 @@
 import type { TripleObject } from "@rgrannell1/tribbledb";
+import { fromNullable, type Maybe, NONE } from "./maybe.ts";
 
-export function setify<Value>(value: Value | Value[] | undefined): Set<Value> {
-  if (value === undefined) {
+export function setify<Value>(value: Maybe<Value | Value[]>): Set<Value> {
+  if (value === NONE) {
     return new Set();
   }
 
@@ -13,8 +14,8 @@ export function setOf<Value>(property: string, objects: TripleObject[]): Set<Val
 
   for (const obj of objects) {
     if (property in obj) {
-      const value = obj[property] as Value | Value[] | undefined;
-      if (value === undefined) {
+      const value = fromNullable(obj[property] as Value | Value[] | undefined);
+      if (value === NONE) {
         continue;
       }
 

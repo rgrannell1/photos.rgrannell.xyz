@@ -1,5 +1,7 @@
 /* Heart-rain effect for the olm page. Spawns falling hearts on an interval. */
 
+import { HEART_RAIN_HEART_CLASS } from "../constants/selectors.ts";
+
 // ms between heart spawns
 const SPAWN_INTERVAL_MS = 150;
 
@@ -14,7 +16,7 @@ function randomItem<Item>(items: Item[]): Item {
 
 function spawnHeart(container: HTMLElement): void {
   const heart = document.createElement("div");
-  heart.className = "heart-rain-heart";
+  heart.className = HEART_RAIN_HEART_CLASS;
   heart.textContent = randomItem(HEARTS);
   heart.style.left = `${Math.random() * 100}vw`;
   heart.style.fontSize = `${Math.random() * 20 + 10}px`;

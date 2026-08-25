@@ -9,8 +9,9 @@ import {
 } from "valibot";
 import { readParsedThing, readParsedThings } from "./things.ts";
 import { one } from "../commons/arrays.ts";
+import { isNone, type Maybe, NONE } from "./maybe.ts";
 
-type Parser<Parsed> = (tdb: TribbleDB, thing: TripleObject) => Parsed | undefined;
+type Parser<Parsed> = (tdb: TribbleDB, thing: TripleObject) => Maybe<Parsed>;
 
 export function parseObject<
   TSchema extends BaseSchema<unknown, Record<string, unknown>, BaseIssue<unknown>>,
@@ -21,13 +22,13 @@ export function parseObject<
 ): (
   _: TribbleDB,
   object: TripleObject,
-) => (InferOutput<TSchema> & { type: TType }) | undefined {
+) => Maybe<InferOutput<TSchema> & { type: TType }> {
   return (_: TribbleDB, object: TripleObject) => {
     const result = safeParse(schema, object);
 
     if (!result.success) {
       logParseWarning(result.issues);
-      return;
+      return NONE;
     }
 
     return { ...result.output, type } as InferOutput<TSchema> & {
@@ -40,11 +41,16 @@ export function parseByType<Parsed>(
   typeParsers: Record<string, Parser<Parsed>>,
 ): Parser<Parsed> {
   return (tdb: TribbleDB, thing: TripleObject) => {
-    const { type } = asUrn(one(thing.id)!);
+    const id = one(thing.id);
+    if (isNone(id)) {
+      return NONE;
+    }
+
+    const { type } = asUrn(id);
 
     const parser = typeParsers[type] ?? typeParsers["default"];
     if (!parser) {
-      return undefined;
+      return NONE;
     }
 
     return parser(tdb, thing);

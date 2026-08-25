@@ -7,20 +7,22 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 import { ThingLink } from "./thing-link.ts";
 import type { ThingLinkAttrs } from "./thing-link.ts";
 import type { ReadThingEmoji } from "./thing-link.ts";
+import { isNone, type Maybe } from "../../commons/maybe.ts";
 
-export type ReadThing = (urn: string) => TripleObject | undefined;
+export type ReadThing = (urn: string) => Maybe<TripleObject>;
 
 function toThingLink(
   readThing: ReadThing,
   readEmoji: ReadThingEmoji,
-  urn: string | undefined,
+  urn: Maybe<string>,
 ): m.Vnode<ThingLinkAttrs>[] {
-  if (!urn) {
+  if (isNone(urn)) {
     return [];
   }
 
   const thing = readThing(urn);
-  if (!thing || !thing.name) {
+  const lacksNamedThing = isNone(thing) || !thing.name;
+  if (lacksNamedThing) {
     return [];
   }
 
@@ -30,7 +32,7 @@ function toThingLink(
 export function toThingLinks(
   readThing: ReadThing,
   readEmoji: ReadThingEmoji,
-  urns: (string | undefined)[],
+  urns: Maybe<string>[],
 ): m.Vnode<ThingLinkAttrs>[] {
   return urns.flatMap(toThingLink.bind(null, readThing, readEmoji));
 }

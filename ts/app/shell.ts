@@ -12,7 +12,7 @@ const sidebarComponent = Sidebar();
 
 type ResolvedPage<PageAttrs> = {
   attrs: PageAttrs;
-  appClass?: string | undefined;
+  appClass?: string;
 };
 
 export type PageEntry<PageAttrs> = {

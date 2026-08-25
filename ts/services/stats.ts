@@ -4,6 +4,12 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { KnownRelations, KnownTypes } from "../constants/data.ts";
+import {
+  fromNullable,
+  isSome,
+  type Maybe,
+  withDefault,
+} from "../commons/maybe.ts";
 
 export type SubjectStats = {
   wildSpecies: number;
@@ -45,12 +51,13 @@ export function readBirdStats(tdb: TribbleDB): SubjectStats {
 // Countries are place entities with numeric ids. There is no urn:ró:place:ireland.
 const IRELAND_NAME = "Ireland";
 
-function findIrelandUrn(tdb: TribbleDB): string | undefined {
-  return tdb.search({
+function findIrelandUrn(tdb: TribbleDB): Maybe<string> {
+  const urn = tdb.search({
     source: { type: KnownTypes.PLACE },
     relation: KnownRelations.NAME,
     target: IRELAND_NAME,
   }).firstSource();
+  return fromNullable(urn);
 }
 
 /* Wild = ?context=wild. Irish = location relation to Ireland (transitive). */
@@ -79,7 +86,7 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
   // Photos with Ireland location (transitive).
   const irelandUrn = findIrelandUrn(tdb);
   const irelandPhotoUrns = new Set(
-    irelandUrn
+    isSome(irelandUrn)
       ? tdb.search({
         relation: KnownRelations.LOCATION,
         target: irelandUrn,
@@ -147,7 +154,10 @@ export function collectUnphotographedNemesis(
     const speciesThing = tdb.search({
       source: { type: speciesType, id: speciesId },
     }).firstObject();
-    species.push({ speciesId, name: one(speciesThing?.name) ?? speciesId });
+    species.push({
+      speciesId,
+      name: withDefault(one(fromNullable(speciesThing?.name)), speciesId),
+    });
   }
   return species;
 }
@@ -192,17 +202,19 @@ function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEn
       source: { type: speciesType, id: speciesId },
     }).firstObject();
 
-    const name = one(speciesThing?.name) ?? speciesId;
+    const name = withDefault(one(fromNullable(speciesThing?.name)), speciesId);
 
-    const isIrish = one(speciesThing?.irish) === "true";
+    const isIrish = one(fromNullable(speciesThing?.irish)) === "true";
 
     const isWild = wildSpeciesIds.has(speciesId);
 
     // scarce (data-derived): IRBC-rare status, or a low abundance band
-    const scarce = one(speciesThing?.status) === "rare" ||
-      SCARCE_RARITY_BANDS.has(one(speciesThing?.rarity) ?? "");
-    const nemesis = one(speciesThing?.nemesis) === "true";
-    const target = one(speciesThing?.target) === "true";
+    const isScarce = one(fromNullable(speciesThing?.status)) === "rare" ||
+      SCARCE_RARITY_BANDS.has(
+        withDefault(one(fromNullable(speciesThing?.rarity)), ""),
+      );
+    const nemesis = one(fromNullable(speciesThing?.nemesis)) === "true";
+    const target = one(fromNullable(speciesThing?.target)) === "true";
 
     entries.push({
       speciesId,
@@ -211,7 +223,7 @@ function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEn
       firstSeen,
       isIrish,
       isWild,
-      scarce,
+      scarce: isScarce,
       nemesis,
       target,
     });

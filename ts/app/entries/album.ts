@@ -7,6 +7,7 @@ import { AlbumPage } from "../../components/pages/album.ts";
 import type { Album, Country, Photo, Video } from "../../types.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
+import { fromNullable, isNone, type Maybe, NONE } from "../../commons/maybe.ts";
 
 const albumPageComponent = AlbumPage();
 
@@ -15,19 +16,19 @@ type AlbumPageModel = {
   photos: Photo[];
   videos: Video[];
   countries: Country[];
-  bannerPhoto: Photo | undefined;
+  bannerPhoto: Maybe<Photo>;
   tripPreviousAlbums: Album[];
 };
 
-let cachedId: string | null = null;
-let cachedModel: AlbumPageModel | string | null = null;
+let cachedId: Maybe<string> = NONE;
+let cachedModel: Maybe<AlbumPageModel | string> = NONE;
 let cachedAfterLoad = false;
 
 function readAlbumPageModel(id: string): AlbumPageModel | string {
   const urn = albumUrn(id);
 
   const album = services.readAlbum(urn);
-  if (!album) {
+  if (isNone(album)) {
     return "Album not found";
   }
 
@@ -41,8 +42,8 @@ function readAlbumPageModel(id: string): AlbumPageModel | string {
     album,
     photos: services.readAlbumPhotosByAlbumId(urn),
     videos: services.readAlbumVideosByAlbumId(urn),
-    countries: services.readCountries(setify(album.country)),
-    bannerPhoto: album.albumBanner ? services.readPhoto(album.albumBanner) : undefined,
+    countries: services.readCountries(setify(fromNullable(album.country))),
+    bannerPhoto: album.albumBanner ? services.readPhoto(album.albumBanner) : NONE,
     tripPreviousAlbums,
   };
 }
@@ -55,7 +56,8 @@ export const albumEntry = pageEntry({
       return "No album selected";
     }
 
-    if (id !== cachedId || !state.loaded || !cachedAfterLoad) {
+    const shouldRefreshCache = id !== cachedId || !state.loaded || !cachedAfterLoad;
+    if (shouldRefreshCache) {
       cachedId = id;
       cachedModel = readAlbumPageModel(id);
       cachedAfterLoad = state.loaded;
@@ -64,7 +66,7 @@ export const albumEntry = pageEntry({
     if (typeof cachedModel === "string") {
       return cachedModel;
     }
-    if (!cachedModel) {
+    if (isNone(cachedModel)) {
       return "Album not found";
     }
 

@@ -1,8 +1,9 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { ImagePair } from "../media/photo.ts";
+import { ImagePair } from "../media/image-pair.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../constants/layout.ts";
 import { block, broadcast, isModifiedClick } from "../../commons/events.ts";
+import { isNone, type Maybe } from "../../commons/maybe.ts";
 
 // hash the trip so its colour never changes with render order or history
 function tripColourIndex(trip: string): number {
@@ -24,10 +25,10 @@ function onTripClick(tripId: string, event: Event) {
   block(event);
 }
 
-function viewTripTag(vnode: m.Vnode<{ trip: string | undefined }>): m.Children {
+function viewTripTag(vnode: m.Vnode<{ trip: Maybe<string> }>): m.Children {
   const { trip } = vnode.attrs;
 
-  if (!trip) {
+  if (isNone(trip)) {
     return null;
   }
 
@@ -45,13 +46,13 @@ function TripTag() {
 }
 
 export type PhotoAlbumAttrs = {
-  trip: string | undefined;
+  trip: Maybe<string>;
   // accessible name for the cover-image link
   label?: string;
   imageUrl?: string;
   href?: string;
   thumbnailUrl: string;
-  thumbnailDataUrl: string | null;
+  thumbnailDataUrl: Maybe<string>;
   loading: "eager" | "lazy";
   child?: m.Children;
   onclick?: (e: Event) => void;

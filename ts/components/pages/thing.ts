@@ -1,5 +1,6 @@
 import m from "mithril";
-import { ThingSubtitle, ThingTitle } from "../thing/thing-title.ts";
+import { ThingSubtitle } from "../thing/thing-subtitle.ts";
+import { ThingTitle } from "../thing/thing-title.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { arrayify, one } from "../../commons/arrays.ts";
@@ -9,7 +10,7 @@ import type {
   Photo as PhotoType,
   Video as VideoType,
 } from "../../types.ts";
-import { CountryLink } from "../thing/place-links.ts";
+import { CountryLink } from "../thing/country-link.ts";
 import { Video } from "../media/video.ts";
 import { AlbumCard } from "../album/album-card.ts";
 import { PhotoGrid } from "../media/photo-grid.ts";
@@ -30,11 +31,19 @@ import { navigate } from "../../commons/events.ts";
 import { ShareButton } from "../share-button.ts";
 import { sharePhotoUrl } from "../../services/window.ts";
 import type { ReadThingEmoji } from "../thing/thing-link.ts";
+import {
+  isNone,
+  isSome,
+  type Maybe,
+  NONE,
+  some,
+  withDefault,
+} from "../../commons/maybe.ts";
 
-type ThingPageAttrs = {
+export type ThingPageAttrs = {
   urn: string;
   things: TripleObject[];
-  listingTitle: string | undefined;
+  listingTitle: Maybe<string>;
   titleEmoji: string;
   isBinomial: boolean;
   readSeenInCountries: (urns: Set<string>) => Country[];
@@ -44,39 +53,44 @@ type ThingPageAttrs = {
   readThingList: ReadThingList;
   readThingEmoji: ReadThingEmoji;
   readTaxonMembers: (urn: string) => TripleObject[];
-  readThingCover: (urn: string) => PhotoType | undefined;
+  readThingCover: (urn: string) => Maybe<PhotoType>;
   visible: boolean;
 };
 
-type UrnCache<Value> = {
-  lastUrn: string | null;
-  value: Value | undefined;
+type UrnCache<Value extends object> = {
+  lastUrn: Maybe<string>;
+  value: Maybe<Value>;
   compute: (attrs: ThingPageAttrs) => Value;
 };
 
-type CachedReader<Value> = (attrs: ThingPageAttrs) => Value;
+type CachedReader<Value extends object> = (attrs: ThingPageAttrs) => Value;
 
-function readCached<Value>(
+function readCached<Value extends object>(
   cache: UrnCache<Value>,
   attrs: ThingPageAttrs,
 ): Value {
-  if (attrs.urn !== cache.lastUrn) {
-    cache.lastUrn = attrs.urn;
-    cache.value = cache.compute(attrs);
+  const cachedValue = cache.value;
+  const hasCachedValue = attrs.urn === cache.lastUrn && isSome(cachedValue);
+  if (hasCachedValue) {
+    return cachedValue;
   }
-  return cache.value as Value;
+
+  cache.lastUrn = attrs.urn;
+  const value = cache.compute(attrs);
+  cache.value = some(value);
+  return value;
 }
 
 /*
  * Memoise a read against the page URN. Reads are pure over loaded data, so
  * they must not run on every batched redraw.
  */
-function cachedByUrn<Value>(
+function cachedByUrn<Value extends object>(
   compute: (attrs: ThingPageAttrs) => Value,
 ): CachedReader<Value> {
   const cache: UrnCache<Value> = {
-    lastUrn: null,
-    value: undefined,
+    lastUrn: NONE,
+    value: NONE,
     compute,
   };
   return readCached.bind(null, cache) as CachedReader<Value>;
@@ -233,7 +247,7 @@ function drawThingAlbumCard(entry: AlbumEntry): m.Children {
     album: entry.album,
     countries: entry.countries,
     loading: "lazy",
-    trip: undefined,
+    trip: NONE,
     child: m("p"),
   });
 }
@@ -332,9 +346,10 @@ function readMemberSpecies(
   attrs: ThingPageAttrs,
 ): TripleObject[] {
   const [thing] = attrs.things;
-  const urn = thing ? (one(thing.id) as string | undefined) : undefined;
+  const urn = thing ? one(thing.id) : NONE;
+  const isTaxon = isSome(urn) && TAXON_TYPES.has(asUrn(urn).type);
 
-  if (!urn || !TAXON_TYPES.has(asUrn(urn).type)) {
+  if (!isTaxon) {
     return [];
   }
 
@@ -342,17 +357,17 @@ function readMemberSpecies(
 }
 
 function drawMemberCard(
-  readThingCover: (urn: string) => PhotoType | undefined,
+  readThingCover: (urn: string) => Maybe<PhotoType>,
   member: TripleObject,
   idx: number,
 ): m.Children[] {
-  const id = one(member.id) as string | undefined;
-  if (!id) {
+  const id = one(member.id);
+  if (isNone(id)) {
     return [];
   }
 
   const cover = readThingCover(id);
-  if (!cover) {
+  if (isNone(cover)) {
     return [];
   }
 
@@ -360,13 +375,13 @@ function drawMemberCard(
 
   return [m(PhotoAlbum, {
     key: `member-${id}`,
-    label: (one(member.name) ?? thingId) as string,
+    label: withDefault(one(member.name), thingId),
     imageUrl: cover.fullImage,
     thumbnailUrl: cover.thumbnailUrl,
     thumbnailDataUrl: thumbHashDataUrl(cover.mosaicColours),
     loading: loadingMode(idx),
-    trip: undefined,
-    child: m(ThingCaption, { thing: member, titleExtra: undefined }),
+    trip: NONE,
+    child: m(ThingCaption, { thing: member }),
     onclick: navigate(`/thing/${type}:${thingId}`),
   })];
 }
@@ -405,7 +420,7 @@ function drawShareButton(urn: string, things: TripleObject[]): m.Children {
   }
 
   const [thing] = things;
-  const name = ((thing ? one(thing.name) : undefined) ?? id) as string;
+  const name = withDefault(thing ? one(thing.name) : NONE, id);
 
   return m(ShareButton, {
     url: sharePhotoUrl(`thing/${type}:${id}`),

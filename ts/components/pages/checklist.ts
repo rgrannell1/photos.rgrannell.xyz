@@ -1,11 +1,18 @@
 import m from "mithril";
 import { broadcast } from "../../commons/events.ts";
-import { ImagePair } from "../media/photo.ts";
+import { ImagePair } from "../media/image-pair.ts";
 import { thumbHashDataUrl } from "../../services/photos.ts";
 import type { Photo } from "../../types.ts";
 import type { ChecklistEntry, NemesisSpecies } from "../../services/stats.ts";
 import { PHOTO_WIDTH } from "../../constants/layout.ts";
 import { FlagIcon } from "../flag.ts";
+import {
+  fromNullable,
+  isNone,
+  isSome,
+  type Maybe,
+  NONE,
+} from "../../commons/maybe.ts";
 
 /*
  * Parse a Unix timestamp, in either seconds or milliseconds.
@@ -38,7 +45,7 @@ function isIrishWild(entry: ChecklistEntry): boolean {
 
 type ChecklistDetailsAttrs = {
   entries: ChecklistEntry[];
-  filter: string | undefined;
+  filter: string;
   onSelect: (filter: string) => void;
 };
 
@@ -91,7 +98,7 @@ function ChecklistDetails() {
 }
 
 type ChecklistPhotoAttrs = {
-  cover: Photo | undefined;
+  cover: Maybe<Photo>;
   href: string;
   label: string;
 };
@@ -99,7 +106,7 @@ type ChecklistPhotoAttrs = {
 function viewChecklistPhoto(vnode: m.Vnode<ChecklistPhotoAttrs>): m.Children {
   const { cover, href, label } = vnode.attrs;
 
-  if (!cover) {
+  if (isNone(cover)) {
     return m("div.checklist-card-empty");
   }
 
@@ -138,7 +145,8 @@ function speciesTags(
   if (entry.target) {
     tags.push(m("span.checklist-tag.checklist-tag--target", "target"));
   }
-  if (showScarce && entry.scarce) {
+  const showsScarceTag = showScarce && entry.scarce;
+  if (showsScarceTag) {
     tags.push(m("span.checklist-tag.checklist-tag--scarce", "scarce"));
   }
   return tags;
@@ -146,7 +154,7 @@ function speciesTags(
 
 type ChecklistCardAttrs = {
   entry: ChecklistEntry;
-  cover: Photo | undefined;
+  cover: Maybe<Photo>;
   position: number;
   showScarce: boolean;
 };
@@ -210,7 +218,7 @@ type ChecklistGridAttrs = {
   covers: Map<string, Photo>;
   nemesisSpecies: NemesisSpecies[];
   mysteryGlyph: string;
-  filter: string | undefined;
+  filter: string;
 };
 
 type PositionedEntry = {
@@ -242,7 +250,7 @@ function drawChecklistCard(
   return m(ChecklistCard, {
     key: `card-${entry.speciesType}-${entry.speciesId}`,
     entry,
-    cover: covers.get(entry.speciesId),
+    cover: fromNullable(covers.get(entry.speciesId)),
     position,
     showScarce: irishView,
   });
@@ -295,7 +303,7 @@ type ChecklistPageAttrs = {
   irishMammalCount: number;
   nemesisMammals: NemesisSpecies[];
   visible: boolean;
-  filter: string | undefined;
+  filter: string;
 };
 
 /*
@@ -304,10 +312,10 @@ type ChecklistPageAttrs = {
 function lifeListPreamble(
   entries: ChecklistEntry[],
   regularCount: number,
-): string | null {
+): Maybe<string> {
   const irishWild = entries.filter(isIrishWild);
   if (irishWild.length === 0) {
-    return null;
+    return NONE;
   }
 
   // entries are sorted earliest-first, so the first Irish entry is the earliest
@@ -323,10 +331,10 @@ function lifeListPreamble(
 function mammalPreamble(
   mammalEntries: ChecklistEntry[],
   irishMammalCount: number,
-): string | null {
+): Maybe<string> {
   const irishWild = mammalEntries.filter(isIrishWild);
   if (irishWild.length === 0) {
-    return null;
+    return NONE;
   }
 
   return `I've photographed ${irishWild.length} wild Irish mammal species; ` +
@@ -350,7 +358,7 @@ function viewMammalSection(vnode: m.Vnode<MammalSectionAttrs>): m.Children {
     m("section.album-metadata", [
       m("h2.albums-header", "Mammals"),
     ]),
-    preamble ? m("p.photo-album-description", preamble) : null,
+    isSome(preamble) ? m("p.photo-album-description", preamble) : null,
     m("section.checklist-container", [
       m(ChecklistGrid, {
         entries: mammalEntries,
@@ -402,7 +410,7 @@ function viewChecklistPage(vnode: m.Vnode<ChecklistPageAttrs>): m.Children {
       m("h1.albums-header", "Life List"),
       m(ChecklistDetails, { entries, filter, onSelect: selectLifeListFilter }),
     ]),
-    preamble ? m("p.photo-album-description", preamble) : null,
+    isSome(preamble) ? m("p.photo-album-description", preamble) : null,
     m(
       "p.photo-album-description",
       description,

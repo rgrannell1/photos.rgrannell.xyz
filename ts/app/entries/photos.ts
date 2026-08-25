@@ -8,19 +8,24 @@ import type { Photo } from "../../types.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
 import { readPrefix } from "../../commons/cache.ts";
+import { isNone, type Maybe } from "../../commons/maybe.ts";
 
 const photoPageComponent = PhotoPage();
 const photosPageComponent = PhotosPage();
 
 // Photo URNs loaded per navigation, not redraw. Re-read until stream completes.
 let photoUrns: string[] = [];
-const photoCache = new Map<string, Photo | undefined>();
+const photoCache = new Map<string, Maybe<Photo>>();
+
+function readPhotoMaybe(urn: string): Maybe<Photo> {
+  return services.readPhoto(urn);
+}
 
 function readPhotosByLimit(limit: number): Photo[] {
   const cache = state.loaded
     ? photoCache
-    : new Map<string, Photo | undefined>();
-  return readPrefix(photoUrns, limit, cache, services.readPhoto);
+    : new Map<string, Maybe<Photo>>();
+  return readPrefix(photoUrns, limit, cache, readPhotoMaybe);
 }
 
 export const photosEntry = pageEntry({
@@ -52,7 +57,7 @@ export const photoEntry = pageEntry({
     }
 
     const photo = services.readPhoto(photoUrn(id));
-    if (!photo) {
+    if (isNone(photo)) {
       return "Photo not found";
     }
 

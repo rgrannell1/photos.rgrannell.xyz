@@ -4,6 +4,7 @@ import {
   TAXON_TYPES,
   UNQUALIFIED_SUBJECT_CONTEXTS,
 } from "../constants/data.ts";
+import { fromNullable, isNone, type Maybe, NONE } from "./maybe.ts";
 
 const URN_PREFIX = "urn:ró";
 
@@ -31,20 +32,22 @@ export function isTaxonUrn(urn: string): boolean {
   return TAXON_TYPES.has(asUrn(urn).type);
 }
 
-export function urnContext(urn: string): string | undefined {
+export function urnContext(urn: string): Maybe<string> {
   const [, query] = urn.split("?");
   if (!query) {
-    return undefined;
+    return NONE;
   }
 
-  return new URLSearchParams(query).get("context") ?? undefined;
+  return fromNullable(new URLSearchParams(query).get("context"));
 }
 
 // Only mark unusual contexts. Wild and unqualified subjects carry no label.
-export function subjectQualifier(urn: string): string | undefined {
+export function subjectQualifier(urn: string): Maybe<string> {
   const context = urnContext(urn);
-  if (!context || UNQUALIFIED_SUBJECT_CONTEXTS.has(context)) {
-    return undefined;
+  const isUnqualifiedContext = isNone(context) ||
+    UNQUALIFIED_SUBJECT_CONTEXTS.has(context);
+  if (isUnqualifiedContext) {
+    return NONE;
   }
 
   return SUBJECT_QUALIFIER_LABELS[context] ?? context;

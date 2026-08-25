@@ -3,6 +3,7 @@ import { navigate } from "../../commons/events.ts";
 import type { Photo } from "../../types.ts";
 import { PhotoAlbum } from "../album/photo-album.ts";
 import { thumbHashDataUrl, loadingMode } from "../../services/photos.ts";
+import { NONE } from "../../commons/maybe.ts";
 
 type CategoryDef = {
   type: string;
@@ -32,7 +33,7 @@ function drawCategoryAlbum(
     thumbnailUrl: cover.thumbnailUrl,
     thumbnailDataUrl: thumbHashDataUrl(cover.mosaicColours),
     loading: loadingMode(idx),
-    trip: undefined,
+    trip: NONE,
     child: m("p.album-title", labelAttrs, category.label),
     onclick: navigate(category.route),
   })];

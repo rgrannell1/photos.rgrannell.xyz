@@ -1,7 +1,13 @@
 import m from "mithril";
+import { Component } from "../../commons/component.ts";
+
+type ExternalLinkAttrs = {
+  href: string;
+  text: string;
+};
 
 function viewExternalLink(
-  vnode: m.Vnode<{ href: string; text: string }>,
+  vnode: m.Vnode<ExternalLinkAttrs>,
 ): m.Children {
   const { href, text } = vnode.attrs;
   return m("a", {
@@ -11,6 +17,6 @@ function viewExternalLink(
   }, text);
 }
 
-export function ExternalLink() {
-  return { view: viewExternalLink };
-}
+export const ExternalLink = Component<ExternalLinkAttrs>({
+  view: viewExternalLink,
+});

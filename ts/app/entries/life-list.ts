@@ -4,6 +4,13 @@ import m from "mithril";
 import { ChecklistPage } from "../../components/pages/checklist.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
+import {
+  fromNullable,
+  isNone,
+  type Maybe,
+  NONE,
+  withDefault,
+} from "../../commons/maybe.ts";
 
 const checklistPageComponent = ChecklistPage();
 
@@ -20,7 +27,7 @@ function readLifeListModel() {
   };
 }
 
-let cachedModel: ReturnType<typeof readLifeListModel> | null = null;
+let cachedModel: Maybe<ReturnType<typeof readLifeListModel>> = NONE;
 
 export const checklistEntry = pageEntry({
   page: checklistPageComponent,
@@ -29,8 +36,11 @@ export const checklistEntry = pageEntry({
       return "";
     }
 
-    cachedModel ??= readLifeListModel();
-    const filter = (m.route.param("filter") as string | undefined) ?? "ireland";
+    if (isNone(cachedModel)) {
+      cachedModel = readLifeListModel();
+    }
+    const routeFilter = fromNullable<string>(m.route.param("filter"));
+    const filter = withDefault(routeFilter, "ireland");
 
     return {
       attrs: {

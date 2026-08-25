@@ -2,7 +2,7 @@ import m from "mithril";
 import { isSmallerThan, setTitle, sharePhotoUrl } from "../../services/window.ts";
 import { AlbumBanner } from "../album/album-banner.ts";
 import { ShareButton } from "../share-button.ts";
-import { countryFlagLinks } from "../thing/place-links.ts";
+import { countryFlagLinks } from "../thing/country-link.ts";
 import { thumbHashDataUrl } from "../../services/photos.ts";
 
 import type {
@@ -18,13 +18,19 @@ import { countLabel, preprocessDescription } from "../../commons/strings.ts";
 import { SMALL_DEVICE_WIDTH } from "../../constants/layout.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TripPreviousAlbums } from "../album/trip-previous-albums.ts";
+import {
+  fromNullable,
+  isNone,
+  type Maybe,
+  NONE,
+} from "../../commons/maybe.ts";
 
 type AlbumAttrs = {
   album: Album;
   photos: PhotoType[];
   videos: VideoType[];
   countries: Country[];
-  bannerPhoto: PhotoType | undefined;
+  bannerPhoto: Maybe<PhotoType>;
   visible: boolean;
   tripPreviousAlbums: Album[];
 };
@@ -33,17 +39,34 @@ function initAlbumPage(): void {
   setTitle("Album - photos");
 }
 
-function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
-  const {
-    album,
-    photos,
-    videos,
-    countries,
-    bannerPhoto,
-    visible,
-    tripPreviousAlbums,
-  } = vnode.attrs;
+function drawAlbumBanner(
+  album: Album,
+  bannerPhoto: Maybe<PhotoType>,
+): m.Children {
+  const bannerSrc = !isNone(bannerPhoto)
+    ? bannerPhoto.midImageLossyUrl ?? bannerPhoto.thumbnailUrl
+    : null;
+  const mosaic = isNone(bannerPhoto)
+    ? NONE
+    : fromNullable(bannerPhoto.mosaicBanner);
+  const thumbnailDataUrl = thumbHashDataUrl(mosaic);
 
+  if (!bannerSrc) {
+    return null;
+  }
+
+  return m(AlbumBanner, {
+    src: bannerSrc,
+    alt: album.name,
+    thumbnailDataUrl,
+  });
+}
+
+function drawAlbumMetadata(
+  album: Album,
+  countries: Country[],
+  tripPreviousAlbums: Album[],
+): m.Children {
   const {
     name,
     photosCount,
@@ -66,16 +89,7 @@ function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
   const { id } = asUrn(album.id);
   const url = sharePhotoUrl(`album/${id}`);
 
-  const bannerSrc = bannerPhoto
-    ? bannerPhoto.midImageLossyUrl ?? bannerPhoto.thumbnailUrl
-    : null;
-  const thumbnailDataUrl = thumbHashDataUrl(bannerPhoto?.mosaicBanner);
-
-  const $banner = bannerSrc
-    ? m(AlbumBanner, { src: bannerSrc, alt: name, thumbnailDataUrl })
-    : null;
-
-  const $albumMetadata = m("section.photos-metadata", [
+  return m("section.photos-metadata", [
     m("h1", { "data-testid": "album-heading" }, name),
     m("p.photo-album-date", { "data-testid": "album-date" }, m("time", dateRangeText)),
     m("p.photo-album-count", { "data-testid": "album-count" }, photoCountMessage),
@@ -92,6 +106,18 @@ function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
     m(AlbumsButton),
     " ",
   ]);
+}
+
+function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
+  const {
+    album,
+    photos,
+    videos,
+    countries,
+    bannerPhoto,
+    visible,
+    tripPreviousAlbums,
+  } = vnode.attrs;
 
   const $photosList = photos.map(drawGridPhoto);
   const $videosList = videos.map(drawVideoItem);
@@ -101,8 +127,8 @@ function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
     {
       class: visible ? "page sidebar-visible" : "page",
     },
-    $banner,
-    $albumMetadata,
+    drawAlbumBanner(album, bannerPhoto),
+    drawAlbumMetadata(album, countries, tripPreviousAlbums),
     m("section.photo-container", { "data-testid": "album-photo-grid" }, $photosList),
     m("section.video-container", $videosList),
   );

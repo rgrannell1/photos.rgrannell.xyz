@@ -3,10 +3,9 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import { AlbumBanner } from "../album/album-banner.ts";
 import { ShareButton } from "../share-button.ts";
 import { AlbumStats } from "../album/album-stats.ts";
-import { YearRecap } from "../album/year-recap.ts";
+import { AlbumYearGroup } from "../album/year-group.ts";
 import type { Album, Country } from "../../types.ts";
-import { thumbHashDataUrl, loadingMode } from "../../services/photos.ts";
-import { AlbumCard } from "../album/album-card.ts";
+import { thumbHashDataUrl } from "../../services/photos.ts";
 import { setTitle, sharePhotoUrl } from "../../services/window.ts";
 import { mountYearScroll } from "../../services/year-scroll.ts";
 import { broadcast } from "../../commons/events.ts";
@@ -20,16 +19,23 @@ import {
   type BatchRenderer,
   createBatchRenderer,
 } from "../../services/batch-render.ts";
-import { BEFORE_TIMES_FINAL_YEAR } from "../../constants/display.ts";
 import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
+import {
+  fromNullable,
+  isNone,
+  isSome,
+  type Maybe,
+  NONE,
+  withDefault,
+} from "../../commons/maybe.ts";
 
 type AlbumsListAttrs = {
   albums: Album[];
   readAlbumCountries: (album: Album) => Country[];
-  readYearRecap: (year: number) => string | undefined;
+  readYearRecap: (year: number) => Maybe<string>;
   visible: boolean;
-  selectedCountry: string | undefined;
-  selectedTrip: string | undefined;
+  selectedCountry: Maybe<string>;
+  selectedTrip: Maybe<string>;
 };
 
 type YearGroup = {
@@ -37,7 +43,7 @@ type YearGroup = {
   // year heading shows for past years only. The current year runs headerless
   showHeading: boolean;
   // markdown recap, only on the unfiltered album view with a heading
-  recap: string | undefined;
+  recap: Maybe<string>;
   albums: Album[];
 };
 
@@ -46,7 +52,7 @@ type YearGroup = {
  */
 function groupAlbumsByYear(
   albums: Album[],
-  readYearRecap: (year: number) => string | undefined,
+  readYearRecap: (year: number) => Maybe<string>,
   showRecap: boolean,
   currentYear: number,
 ): YearGroup[] {
@@ -55,67 +61,22 @@ function groupAlbumsByYear(
   for (const album of albums) {
     const year = albumYear(album);
     const lastGroup = groups[groups.length - 1];
+    const continuesYearGroup = lastGroup?.year === year;
 
-    if (lastGroup && lastGroup.year === year) {
+    if (continuesYearGroup) {
       lastGroup.albums.push(album);
       continue;
     }
 
     const showHeading = year !== currentYear;
-    const recap = showHeading && showRecap
+    const showsRecap = showHeading && showRecap;
+    const recap = showsRecap
       ? readYearRecap(year)
-      : undefined;
+      : NONE;
     groups.push({ year, showHeading, recap, albums: [album] });
   }
 
   return groups;
-}
-
-/*
- * startIdx is the group's position in the full album list, for the loading mode.
- */
-function drawYearGroup(
-  group: YearGroup,
-  readAlbumCountries: (album: Album) => Country[],
-  startIdx: number,
-): m.Children[] {
-  const $components: m.Children[] = [];
-
-  if (group.showHeading) {
-    $components.push(m(
-      "h2.year-heading",
-      {
-        key: `year-${group.year}`,
-        id: `year-${group.year}`,
-        class: group.year <= BEFORE_TIMES_FINAL_YEAR ? "before-times" : undefined,
-      },
-      group.year.toString(),
-    ));
-
-    if (group.recap) {
-      $components.push(
-        m(YearRecap, { key: `year-recap-${group.year}`, markdown: group.recap }),
-      );
-    }
-  }
-
-  for (const [albumIdx, album] of group.albums.entries()) {
-    $components.push(
-      m(AlbumCard, {
-        key: `album-${album.id}`,
-        album,
-        countries: readAlbumCountries(album),
-        loading: loadingMode(startIdx + albumIdx),
-        trip: album.trip,
-        containerAttrs: {
-          "data-testid": "album-row",
-          "data-album-title": album.name,
-        },
-      }),
-    );
-  }
-
-  return $components;
 }
 
 function scheduleListBatch(
@@ -145,8 +106,7 @@ function viewAlbumsList(
   const { albums, readAlbumCountries, readYearRecap, selectedCountry, selectedTrip } =
     vnode.attrs;
 
-  const showRecap = selectedCountry === undefined &&
-    selectedTrip === undefined;
+  const showRecap = isNone(selectedCountry) && isNone(selectedTrip);
 
   const groups = groupAlbumsByYear(
     albums.slice(0, batch.count()),
@@ -159,7 +119,12 @@ function viewAlbumsList(
   let startIdx = 0;
 
   for (const group of groups) {
-    $albumComponents.push(...drawYearGroup(group, readAlbumCountries, startIdx));
+    $albumComponents.push(m(AlbumYearGroup, {
+      key: `year-group-${group.year}`,
+      ...group,
+      readAlbumCountries,
+      startIdx,
+    }));
     startIdx += group.albums.length;
   }
 
@@ -177,20 +142,20 @@ function AlbumsList() {
   };
 }
 
-type AlbumsPageAttrs = {
+export type AlbumsPageAttrs = {
   albums: Album[];
   countries: Country[];
   readAlbumCountries: (album: Album) => Country[];
-  readYearRecap: (year: number) => string | undefined;
-  tripName: string | undefined;
+  readYearRecap: (year: number) => Maybe<string>;
+  tripName: Maybe<string>;
   visible: boolean;
-  selectedCountry: string | undefined;
-  selectedTrip: string | undefined;
+  selectedCountry: Maybe<string>;
+  selectedTrip: Maybe<string>;
 };
 
 type AlbumsPageState = {
   // teardown for the year-scroll tracker, set on mount
-  teardownYearScroll: (() => void) | null;
+  teardownYearScroll: Maybe<() => void>;
 };
 
 function initAlbumsPage(): void {
@@ -198,16 +163,21 @@ function initAlbumsPage(): void {
 }
 
 function mountAlbumsPage(pageState: AlbumsPageState): void {
-  pageState.teardownYearScroll = mountYearScroll(m.route.param("year"));
+  pageState.teardownYearScroll = mountYearScroll(
+    fromNullable(m.route.param("year")),
+  );
 }
 
 function unmountAlbumsPage(pageState: AlbumsPageState): void {
-  pageState.teardownYearScroll?.();
-  pageState.teardownYearScroll = null;
+  if (isSome(pageState.teardownYearScroll)) {
+    pageState.teardownYearScroll();
+  }
+  pageState.teardownYearScroll = NONE;
 }
 
-function selectCountry(slug: string | undefined): void {
-  broadcast("navigate", { route: slug ? `/albums/${slug}` : "/albums" });
+function selectCountry(slug: Maybe<string>): void {
+  const route = isSome(slug) ? `/albums/${slug}` : "/albums";
+  broadcast("navigate", { route });
 }
 
 function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
@@ -223,12 +193,13 @@ function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
   } =
     vnode.attrs;
 
-  const $tripShare = selectedTrip
+  const tripLabel = withDefault(tripName, "Trip");
+  const $tripShare = isSome(selectedTrip)
     ? m("section.trip-share", [
-      m("h2.trip-title", tripName),
+      m("h2.trip-title", tripLabel),
       m(ShareButton, {
         url: sharePhotoUrl(`trip/${asUrn(selectedTrip).id}`),
-        name: tripName as string,
+        name: tripLabel,
       }),
     ])
     : null;
@@ -268,7 +239,7 @@ function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
 
 export function AlbumsPage() {
   const pageState: AlbumsPageState = {
-    teardownYearScroll: null,
+    teardownYearScroll: NONE,
   };
 
   return {

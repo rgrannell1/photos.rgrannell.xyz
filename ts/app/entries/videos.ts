@@ -6,6 +6,7 @@ import { VideoPage } from "../../components/pages/video.ts";
 import { VideosPage } from "../../components/pages/videos.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
+import { isNone } from "../../commons/maybe.ts";
 
 const videoPageComponent = VideoPage();
 const videosPageComponent = VideosPage();
@@ -20,7 +21,8 @@ export const videosEntry = pageEntry({
     cachedAfterLoad = state.loaded;
   },
   resolve() {
-    if (!state.loaded || !cachedAfterLoad) {
+    const shouldRefreshCache = !state.loaded || !cachedAfterLoad;
+    if (shouldRefreshCache) {
       videos = services.readAllVideos();
       cachedAfterLoad = state.loaded;
     }
@@ -40,7 +42,7 @@ export const videoEntry = pageEntry({
     }
 
     const video = services.readVideo(videoUrn(id));
-    if (!video) {
+    if (isNone(video)) {
       return "Video not found";
     }
 

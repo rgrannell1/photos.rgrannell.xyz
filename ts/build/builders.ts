@@ -129,7 +129,8 @@ export async function buildFlagAssets(): Promise<FlagManifest> {
 
   // Wipe previous hashed outputs to avoid stale files.
   for await (const entry of Deno.readDir("flags")) {
-    if (entry.isFile && entry.name.startsWith("sprite.")) {
+    const isGeneratedSprite = entry.isFile && entry.name.startsWith("sprite.");
+    if (isGeneratedSprite) {
       await Deno.remove(`flags/${entry.name}`);
     }
   }

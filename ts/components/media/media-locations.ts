@@ -6,6 +6,7 @@ import type { ReadThingEmoji } from "../thing/thing-link.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { arrayify, one } from "../../commons/arrays.ts";
 import { KnownTypes } from "../../constants/data.ts";
+import { isNone, type Maybe } from "../../commons/maybe.ts";
 
 /* A place feature worth showing as a "place type". Features published as
    generic (country, continent) apply to every photo, so they are excluded. */
@@ -17,7 +18,7 @@ export function isVisiblePlaceFeature(readThing: ReadThing, urn: string): boolea
 
   const feature = readThing(urn);
 
-  return one(feature?.generic) !== "true";
+  return isNone(feature) || one(feature.generic) !== "true";
 }
 
 /* geographic locations exclude country/continent — only concrete places are shown */
@@ -26,7 +27,7 @@ export function isPlace(urn: string): boolean {
 }
 
 type MediaLocationsAttrs = {
-  location: string | string[] | undefined;
+  location: Maybe<string | string[]>;
   readThing: ReadThing;
   readEmoji: ReadThingEmoji;
   mode: "geographic" | "feature";
@@ -35,7 +36,7 @@ type MediaLocationsAttrs = {
 function viewMediaLocations(vnode: m.Vnode<MediaLocationsAttrs>): m.Children {
   const { location, readThing, readEmoji, mode } = vnode.attrs;
 
-  const allUrns = arrayify(location);
+  const allUrns = isNone(location) ? [] : arrayify(location);
   const urns = mode === "feature"
     ? allUrns.filter(isVisiblePlaceFeature.bind(null, readThing))
     : allUrns.filter(isPlace);

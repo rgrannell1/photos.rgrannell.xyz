@@ -1,5 +1,13 @@
 /// <reference types="@cloudflare/workers-types" />
 
+import {
+  fromNullable,
+  isSome,
+  type Maybe,
+  NONE,
+  withDefault,
+} from "../ts/commons/maybe.ts";
+
 /*
  * Social-card redirect worker
  */
@@ -18,7 +26,7 @@ interface SocialCard {
 async function getSocialCard(
   db: D1Database,
   path: string,
-): Promise<SocialCard | null> {
+): Promise<Maybe<SocialCard>> {
   try {
     console.log(`[DB] Querying social_cards for path: ${path}`);
     const result = await db.prepare(
@@ -29,10 +37,10 @@ async function getSocialCard(
       `[DB] Query result:`,
       result ? `Found card for ${result.path}` : "No card found",
     );
-    return result || null;
+    return fromNullable(result);
   } catch (error) {
     console.error(`[DB] Error querying social_cards:`, error);
-    return null;
+    return NONE;
   }
 }
 
@@ -49,9 +57,9 @@ function extractPathFromUrl(url: string): string {
   }
 }
 
-function getPageTitle(card: SocialCard | null, request: Request): string {
+function getPageTitle(card: Maybe<SocialCard>, request: Request): string {
   const host = new URL(request.url).hostname.replace(/^sharephoto\./, "photos.");
-  return card?.title || host;
+  return isSome(card) && card.title ? card.title : host;
 }
 
 function getPageUrl(request: Request): string {
@@ -63,8 +71,8 @@ function getPageUrl(request: Request): string {
   return `https://${host}/#!${pathname}`;
 }
 
-function getImageUrl(card: SocialCard | null): string | undefined {
-  return card?.image_url;
+function getImageUrl(card: Maybe<SocialCard>): Maybe<string> {
+  return isSome(card) ? fromNullable(card.image_url) : NONE;
 }
 
 export default {
@@ -81,12 +89,12 @@ export default {
     const card = await getSocialCard(env.PHOTO_CARDS, path);
     console.log(
       `[Worker] Database lookup result:`,
-      card ? "Card found" : "No card found",
+      isSome(card) ? "Card found" : "No card found",
     );
 
     const title = getPageTitle(card, request);
     const pageUrl = getPageUrl(request);
-    const imageUrl = getImageUrl(card);
+    const imageUrl = withDefault(getImageUrl(card), "");
 
     const view = {
       title,
@@ -109,7 +117,9 @@ export default {
 
   <!-- Social Cards -->
   <meta property="og:title" content="${title}">
-  <meta property="og:description" content="${card?.description ?? ""}">
+  <meta property="og:description" content="${
+      isSome(card) ? card.description ?? "" : ""
+    }">
   <meta property="og:url" content="${pageUrl}">
   <meta property="og:image" content="${imageUrl}">
   <meta property="og:type" content="website">

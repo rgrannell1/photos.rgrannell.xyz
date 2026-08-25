@@ -1,15 +1,17 @@
-import { asUrn, parseUrn } from "@rgrannell1/tribbledb";
+/* Render and reflect a thing page title. */
+
+import { parseUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
-import { binomial } from "../../commons/strings.ts";
 import { KnownTypes, TAXON_TYPES } from "../../constants/data.ts";
 import { one } from "../../commons/arrays.ts";
 import { taxonLabel } from "../../commons/things.ts";
 import { FlagIcon } from "../flag.ts";
 import { setTitle } from "../../services/window.ts";
+import { isSome, type Maybe, withDefault } from "../../commons/maybe.ts";
 
 function computeTitle(
-  listingTitle: string | undefined,
+  listingTitle: Maybe<string>,
   urn: string,
   things: TripleObject[],
   emoji: string,
@@ -18,7 +20,7 @@ function computeTitle(
 
   // if type:*, fall back to the type's published listing label
   if (parsed.id === "*") {
-    return listingTitle ?? parsed.type;
+    return withDefault(listingTitle, parsed.type);
   }
 
   if (things.length === 0) {
@@ -26,7 +28,7 @@ function computeTitle(
   }
 
   const [thing] = things;
-  const name = one(thing.name) ?? parsed.id;
+  const name = withDefault(one(thing.name), parsed.id);
 
   if (parsed.type === KnownTypes.PLACE) {
     return `${emoji} ${name}`;
@@ -42,7 +44,7 @@ function computeTitle(
 type ThingTitleAttrs = {
   urn: string;
   things: TripleObject[];
-  listingTitle: string | undefined;
+  listingTitle: Maybe<string>;
   emoji: string;
 };
 
@@ -59,8 +61,10 @@ function viewThingTitle(vnode: m.Vnode<ThingTitleAttrs>): m.Children {
 
   const parsed = parseUrn(urn);
   const [thing] = things;
-  if (parsed.type === KnownTypes.PLACE && thing && one(thing.flag)) {
-    const name = one(thing.name) ?? parsed.id;
+  const hasThingFlag = thing !== undefined && isSome(one(thing.flag));
+  const showsPlaceFlag = parsed.type === KnownTypes.PLACE && hasThingFlag;
+  if (showsPlaceFlag) {
+    const name = withDefault(one(thing.name), parsed.id);
     return m("h1", [
       m(FlagIcon, { name, big: true }),
       ` ${name}`,
@@ -76,31 +80,4 @@ export function ThingTitle() {
     onupdate: reflectThingTitle,
     view: viewThingTitle,
   };
-}
-
-function viewThingSubtitle(
-  vnode: m.Vnode<{ urn: string; isBinomial: boolean }>,
-): m.Children {
-  const parsed = asUrn(vnode.attrs.urn);
-
-  // taxon ids are the lowercase latin name, shown as the subtitle
-  if (TAXON_TYPES.has(parsed.type)) {
-    return m(
-      "span",
-      { class: `thing-binomial ${parsed.type}-binomial` },
-      binomial(parsed.id),
-    );
-  }
-
-  return vnode.attrs.isBinomial && parsed.id !== "*"
-    ? m(
-      "span",
-      { class: `thing-binomial ${parsed.type}-binomial` },
-      binomial(parsed.id),
-    )
-    : m("span");
-}
-
-export function ThingSubtitle() {
-  return { view: viewThingSubtitle };
 }

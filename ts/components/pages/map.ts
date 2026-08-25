@@ -2,6 +2,7 @@ import m from "mithril";
 import type { TripPolyline } from "../../services/albums.ts";
 import type { GeocodedPlaceWithCover } from "../../services/places.ts";
 import { type MapHandle, mountMap } from "../../services/map.ts";
+import { isSome, type Maybe, NONE } from "../../commons/maybe.ts";
 
 type MapPageAttrs = {
   visible: boolean;
@@ -11,7 +12,7 @@ type MapPageAttrs = {
 
 type MapPageState = {
   // the mounted Leaflet map
-  handle: MapHandle | null;
+  handle: Maybe<MapHandle>;
 };
 
 function mountMapPage(
@@ -30,16 +31,20 @@ function updateMapPage(
   pageState: MapPageState,
   vnode: m.VnodeDOM<MapPageAttrs>,
 ): void {
-  pageState.handle?.update(
-    vnode.attrs.visible,
-    vnode.attrs.places,
-    vnode.attrs.tripPolylines,
-  );
+  if (isSome(pageState.handle)) {
+    pageState.handle.update(
+      vnode.attrs.visible,
+      vnode.attrs.places,
+      vnode.attrs.tripPolylines,
+    );
+  }
 }
 
 function unmountMapPage(pageState: MapPageState): void {
-  pageState.handle?.teardown();
-  pageState.handle = null;
+  if (isSome(pageState.handle)) {
+    pageState.handle.teardown();
+  }
+  pageState.handle = NONE;
 }
 
 function viewMapPage(vnode: m.Vnode<MapPageAttrs>): m.Children {
@@ -63,7 +68,7 @@ function viewMapPage(vnode: m.Vnode<MapPageAttrs>): m.Children {
 
 export function MapPage(): m.Component<MapPageAttrs> {
   const pageState: MapPageState = {
-    handle: null,
+    handle: NONE,
   };
 
   return {

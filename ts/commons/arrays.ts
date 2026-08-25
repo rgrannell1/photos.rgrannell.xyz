@@ -1,20 +1,18 @@
 // Handle relations that may be single-valued, multi-valued, or absent.
-export function arrayify<Value>(value: Value | Value[] | undefined): Value[] {
-  if (value === undefined) {
+import { type Maybe, NONE } from "./maybe.ts";
+
+export function arrayify<Value>(value: Maybe<Value | Value[]>): Value[] {
+  if (value === NONE) {
     return [];
   }
 
   return Array.isArray(value) ? value : [value];
 }
 
-// Distributes over unions, so `string | string[]` collapses to `string`.
-type ElementOf<Value> = Value extends readonly (infer Element)[] ? Element
-  : Value;
-
 // Triple objects may hold multi-valued properties but often carry only one value.
 export function one<Value>(
-  value: Value | undefined,
-): ElementOf<Value> | undefined {
+  value: Maybe<Value | Value[]>,
+): Maybe<Value> {
   const first = Array.isArray(value) ? value[0] : value;
-  return first as ElementOf<Value> | undefined;
+  return first === undefined ? NONE : first as Exclude<Value, undefined>;
 }

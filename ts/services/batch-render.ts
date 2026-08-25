@@ -26,7 +26,9 @@ function growBatch(batchState: BatchState, total: number): void {
 }
 
 function scheduleBatch(batchState: BatchState, total: number): void {
-  if (batchState.rendered >= total || batchState.batchScheduled) {
+  const hasRenderedAll = batchState.rendered >= total;
+  const cannotScheduleBatch = hasRenderedAll || batchState.batchScheduled;
+  if (cannotScheduleBatch) {
     return;
   }
 

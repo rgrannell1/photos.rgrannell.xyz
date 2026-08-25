@@ -15,6 +15,13 @@ import { RENDER_BATCH_SIZE } from "../../constants/layout.ts";
 import { FlagIcon } from "../flag.ts";
 import type { SubjectStats } from "../../services/stats.ts";
 import { readThrough } from "../../commons/cache.ts";
+import {
+  isNone,
+  isSome,
+  type Maybe,
+  NONE,
+  withDefault,
+} from "../../commons/maybe.ts";
 
 /*
  * Inline badge for the listing card title. Irish birds get the Ireland flag.
@@ -23,16 +30,18 @@ function listingTitleExtra(
   thing: TripleObject,
   listingType: string,
 ): m.Children {
-  if (listingType === KnownTypes.BIRD && one(thing.irish) === "true") {
+  const showsIrishFlag = listingType === KnownTypes.BIRD &&
+    one(thing.irish) === "true";
+  if (showsIrishFlag) {
     return m(FlagIcon, { name: "Ireland" });
   }
   return undefined;
 }
 
-type ReadThingCover = (urn: string) => Photo | undefined;
+type ReadThingCover = (urn: string) => Maybe<Photo>;
 
 function drawThingAlbum(
-  coverCache: Map<string, Photo | undefined>,
+  coverCache: Map<string, Maybe<Photo>>,
   readThingCover: ReadThingCover,
   listingType: string,
   thing: TripleObject,
@@ -40,12 +49,12 @@ function drawThingAlbum(
 ): m.Children[] {
   const id = one(thing.id);
 
-  if (!id) {
+  if (isNone(id)) {
     return [];
   }
 
   const coverPhoto = readThrough(coverCache, readThingCover, id);
-  if (!coverPhoto) {
+  if (isNone(coverPhoto)) {
     return [];
   }
 
@@ -53,12 +62,12 @@ function drawThingAlbum(
 
   return [m(PhotoAlbum, {
     key: `thing-${id}`,
-    label: one(thing.name) ?? thingId,
+    label: withDefault(one(thing.name), thingId),
     imageUrl: coverPhoto.fullImage,
     thumbnailUrl: coverPhoto.thumbnailUrl,
     thumbnailDataUrl: thumbHashDataUrl(coverPhoto.mosaicColours),
     loading: loadingMode(idx),
-    trip: undefined,
+    trip: NONE,
     child: m(ThingCaption, {
       thing,
       titleExtra: listingTitleExtra(thing, listingType),
@@ -92,7 +101,7 @@ function scheduleListingBatch(
 
 function viewAlbumsList(
   batch: BatchRenderer,
-  coverCache: Map<string, Photo | undefined>,
+  coverCache: Map<string, Maybe<Photo>>,
   vnode: m.Vnode<AlbumsListAttrs>,
 ): m.Children {
   const { readThingCover, things, listingType } = vnode.attrs;
@@ -109,7 +118,7 @@ function viewAlbumsList(
  */
 function AlbumsList() {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
-  const coverCache = new Map<string, Photo | undefined>();
+  const coverCache = new Map<string, Maybe<Photo>>();
 
   return {
     onbeforeupdate: resetListingBatchOnTypeChange.bind(null, batch),
@@ -121,7 +130,7 @@ function AlbumsList() {
 
 type BirdListingDetailsAttrs = {
   stats: SubjectStats;
-  filter: string | undefined;
+  filter: Maybe<string>;
   onToggleIreland: () => void;
 };
 
@@ -173,8 +182,8 @@ function MammalListingDetails() {
 
 type ListingDetailsAttrs = {
   type: string;
-  stats: SubjectStats | undefined;
-  filter: string | undefined;
+  stats: Maybe<SubjectStats>;
+  filter: Maybe<string>;
   onToggleIreland: () => void;
 };
 
@@ -182,12 +191,14 @@ function viewListingDetails(
   vnode: m.Vnode<ListingDetailsAttrs>,
 ): m.Children {
   const { type, stats, filter, onToggleIreland } = vnode.attrs;
+  const showsBirdDetails = type === KnownTypes.BIRD && isSome(stats);
+  const showsMammalDetails = type === KnownTypes.MAMMAL && isSome(stats);
 
-  if (type === KnownTypes.BIRD && stats) {
+  if (showsBirdDetails) {
     return m(BirdListingDetails, { stats, filter, onToggleIreland });
   }
 
-  if (type === KnownTypes.MAMMAL && stats) {
+  if (showsMammalDetails) {
     return m(MammalListingDetails, { stats });
   }
 
@@ -232,18 +243,18 @@ function ListingThingsButton() {
   return { view: viewListingThingsButton };
 }
 
-type ListingPageAttrs = {
+export type ListingPageAttrs = {
   type: string;
   things: TripleObject[];
   label: string;
   isListable: boolean;
-  stats: SubjectStats | undefined;
+  stats: Maybe<SubjectStats>;
   readThingCover: ReadThingCover;
   visible: boolean;
-  filter: string | undefined;
+  filter: Maybe<string>;
 };
 
-function toggleIrelandFilter(type: string, filter: string | undefined): void {
+function toggleIrelandFilter(type: string, filter: Maybe<string>): void {
   const isActive = filter === "ireland";
   broadcast("navigate", {
     route: isActive ? `/listing/${type}` : `/listing/${type}/ireland`,
@@ -260,7 +271,8 @@ function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
 
   const onToggleIreland = toggleIrelandFilter.bind(null, type, filter);
 
-  const displayThings = (type === KnownTypes.BIRD && filter === "ireland")
+  const showsIrishBirds = type === KnownTypes.BIRD && filter === "ireland";
+  const displayThings = showsIrishBirds
     ? things.filter(isIrishThing)
     : things;
 

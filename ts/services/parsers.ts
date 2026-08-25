@@ -25,6 +25,7 @@ import {
 import { TransferSchema } from "../schemas/transfer.ts";
 import { StatsSchema } from "../schemas/stats.ts";
 import { safeParse } from "valibot";
+import { type Maybe, NONE } from "../commons/maybe.ts";
 
 export const parseFeature = parseObject(FeatureSchema, "feature");
 export const parseCountry = parseObject(PlaceSchema, "place");
@@ -47,6 +48,6 @@ export const parseLocation = parseByType<Place | Unesco>({
   [KnownTypes.UNESCO]: parseUnesco,
 });
 
-export function parseStats(stats: unknown): Stats | undefined {
-  return safeParse(StatsSchema, stats).success ? (stats as Stats) : undefined;
+export function parseStats(stats: unknown): Maybe<Stats> {
+  return safeParse(StatsSchema, stats).success ? (stats as Stats) : NONE;
 }

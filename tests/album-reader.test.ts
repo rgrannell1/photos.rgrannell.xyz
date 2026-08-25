@@ -12,6 +12,7 @@ import {
   readYearRecap,
 } from "../ts/services/albums.ts";
 import { KnownRelations, KnownTypes } from "../ts/constants/data.ts";
+import { NONE } from "../ts/commons/maybe.ts";
 
 const ALBUM = "urn:ró:album:test";
 const TRIP = "urn:ró:trip:test";
@@ -70,11 +71,14 @@ Deno.test("album point and relation readers match legacy search", () => {
   if (isAlbumHidden(tdb, "test") !== (hidden === "true")) {
     throw new Error("hidden value differs from legacy search");
   }
-  if (readYearRecap(tdb, 2025) !== recap || readYearRecap(tdb, 2024) !== undefined) {
+  if (readYearRecap(tdb, 2025) !== recap || readYearRecap(tdb, 2024) !== NONE) {
     throw new Error("recap value differs from legacy search");
   }
   if (readTripName(tdb, TRIP) !== title) {
     throw new Error("trip title differs from legacy search");
+  }
+  if (readTripName(tdb, "urn:ró:trip:missing") !== NONE) {
+    throw new Error("missing trip title differs from legacy search");
   }
   if (JSON.stringify([...readAlbumPhotoIds(tdb, ALBUM)]) !==
     JSON.stringify([...legacyMediaIds(tdb, KnownTypes.PHOTO)])) {

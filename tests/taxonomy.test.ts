@@ -132,7 +132,7 @@ for (const testCase of TAXON_NAME_CASES) {
 
     const label = one(taxon?.name);
     if (label !== testCase.expected) {
-      throw new Error(`expected "${testCase.expected}", got "${label}"`);
+      throw new Error(`expected "${testCase.expected}", got "${String(label)}"`);
     }
   });
 }

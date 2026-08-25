@@ -8,6 +8,7 @@ import { readAlbums, readPlace, readTransfers, readVideos } from "./readers.ts";
 import { albumUrn } from "../commons/urn.ts";
 import { hasValidCoordinates } from "./places.ts";
 import { one } from "../commons/arrays.ts";
+import { fromNullable, isNone, type Maybe } from "../commons/maybe.ts";
 
 export function albumYear(album: Album): number {
   return new Date(album.minDate).getFullYear();
@@ -22,13 +23,13 @@ export function isAlbumHidden(tdb: TribbleDB, id: string): boolean {
 }
 
 /* Published by mirror as urn:ró:year:<YYYY>  recap  <markdown>. */
-export function readYearRecap(tdb: TribbleDB, year: number): string | undefined {
+export function readYearRecap(tdb: TribbleDB, year: number): Maybe<string> {
   const yearNode = tdb.nodes({
     type: KnownTypes.YEAR,
     id: String(year),
   }).objects()[0];
 
-  return one(yearNode?.[KnownRelations.RECAP]);
+  return fromNullable(one(yearNode?.[KnownRelations.RECAP]));
 }
 
 export function readAllAlbums(tdb: TribbleDB): Album[] {
@@ -75,11 +76,11 @@ export function readTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
 }
 
 /* Published by mirror. */
-export function readTripName(tdb: TribbleDB, tripUrn: string): string | undefined {
+export function readTripName(tdb: TribbleDB, tripUrn: string): Maybe<string> {
   const { type, id } = asUrn(tripUrn);
   const trip = tdb.nodes({ type, id }).objects()[0];
 
-  return one(trip?.[KnownRelations.TITLE]);
+  return fromNullable(one(trip?.[KnownRelations.TITLE]));
 }
 
 export function readAlbumsByThingIds(
@@ -120,10 +121,13 @@ export function readTransferPolylines(tdb: TribbleDB): TripPolyline[] {
   for (const transfer of transfers) {
     const sourcePlace = readPlace(tdb, transfer.source);
     const destPlace = readPlace(tdb, transfer.destination);
-    if (!sourcePlace || !destPlace) {
+    const hasBothEndpoints = !isNone(sourcePlace) && !isNone(destPlace);
+    if (!hasBothEndpoints) {
       continue;
     }
-    if (!hasValidCoordinates(sourcePlace) || !hasValidCoordinates(destPlace)) {
+    const hasInvalidEndpoint = !hasValidCoordinates(sourcePlace) ||
+      !hasValidCoordinates(destPlace);
+    if (hasInvalidEndpoint) {
       continue;
     }
     result.push({

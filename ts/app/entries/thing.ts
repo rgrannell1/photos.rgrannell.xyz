@@ -1,10 +1,17 @@
 /* Resolve thing routes and retain their completed base model. */
 
 import m from "mithril";
+import {
+  fromNullable,
+  isNone,
+  type Maybe,
+  NONE,
+  some,
+} from "../../commons/maybe.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { thingUrn } from "../../commons/urn.ts";
 import { setify } from "../../commons/sets.ts";
-import { ThingPage } from "../../components/pages/thing.ts";
+import { ThingPage, type ThingPageAttrs } from "../../components/pages/thing.ts";
 import type {
   ThingListItem,
   ThingListKind,
@@ -15,9 +22,9 @@ import { pageEntry } from "../shell.ts";
 
 const thingPageComponent = ThingPage();
 
-let cachedUrn: string | null = null;
+let cachedUrn: Maybe<string> = NONE;
 let cachedThings: TripleObject[] = [];
-let cachedListingTitle: string | undefined;
+let cachedListingTitle: Maybe<string> = NONE;
 let cachedIsBinomial = false;
 let cachedTitleEmoji = "";
 
@@ -26,7 +33,7 @@ type AlbumEntry = { album: Album; countries: Country[] };
 function toAlbumEntry(album: Album): AlbumEntry {
   return {
     album,
-    countries: services.readCountries(setify(album.country)),
+    countries: services.readCountries(setify(fromNullable(album.country))),
   };
 }
 
@@ -54,7 +61,7 @@ function readThings(urn: string): TripleObject[] {
   }
 
   const thing = services.readThing(urn);
-  return thing ? [thing] : [];
+  return isNone(thing) ? [] : [thing];
 }
 
 export const thingEntry = pageEntry({
@@ -75,8 +82,8 @@ export const thingEntry = pageEntry({
       cachedUrn = urn;
       cachedThings = readThings(urn);
       cachedListingTitle = parsed.id === "*"
-        ? services.readListingLabel(parsed.type)
-        : undefined;
+        ? some(services.readListingLabel(parsed.type))
+        : NONE;
       cachedIsBinomial = services.isBinomialType(parsed.type);
       const [thing] = cachedThings;
       cachedTitleEmoji = thing
@@ -84,23 +91,22 @@ export const thingEntry = pageEntry({
         : "";
     }
 
-    return {
-      attrs: {
-        urn,
-        things: cachedThings,
-        listingTitle: cachedListingTitle,
-        isBinomial: cachedIsBinomial,
-        titleEmoji: cachedTitleEmoji,
-        readSeenInCountries: services.readSeenInCountries,
-        readAlbumEntries,
-        readVideos: services.readVideosByThingIds,
-        readPhotos: services.readPhotosByThingIds,
-        readThingList,
-        readThingEmoji: services.readThingEmoji,
-        readTaxonMembers: services.readTaxonMembers,
-        readThingCover: services.readThingCover,
-        visible: state.sidebarVisible,
-      },
+    const attrs: ThingPageAttrs = {
+      urn,
+      things: cachedThings,
+      listingTitle: cachedListingTitle,
+      isBinomial: cachedIsBinomial,
+      titleEmoji: cachedTitleEmoji,
+      readSeenInCountries: services.readSeenInCountries,
+      readAlbumEntries,
+      readVideos: services.readVideosByThingIds,
+      readPhotos: services.readPhotosByThingIds,
+      readThingList,
+      readThingEmoji: services.readThingEmoji,
+      readTaxonMembers: services.readTaxonMembers,
+      readThingCover: services.readThingCover,
+      visible: state.sidebarVisible,
     };
+    return { attrs };
   },
 });

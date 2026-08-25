@@ -4,6 +4,7 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../commons/arrays.ts";
 import { capitalise, pluralise, titleCase } from "../commons/strings.ts";
 import { KnownTypes } from "../constants/data.ts";
+import { isNone, type Maybe, NONE, withDefault } from "./maybe.ts";
 
 function normaliseThingId(thing: TripleObject): TripleObject {
   const thingIds = thing.id;
@@ -19,34 +20,34 @@ function normaliseThingId(thing: TripleObject): TripleObject {
 export function readThing(
   tdb: TribbleDB,
   urn: string,
-): TripleObject | undefined {
+): Maybe<TripleObject> {
   const { id, qs, type } = asUrn(urn);
 
   if (Object.keys(qs).length === 0) {
     const thing = tdb.readThing(urn);
-    if (thing) {
+    if (thing !== undefined) {
       return normaliseThingId(thing);
     }
   }
 
   for (const matchingUrn of tdb.nodes({ id, type }).urns()) {
     const thing = tdb.readThing(matchingUrn);
-    if (thing) {
+    if (thing !== undefined) {
       return normaliseThingId(thing);
     }
   }
 
-  return undefined;
+  return NONE;
 }
 
 export function readParsedThing<Parsed>(
-  parser: (tdb: TribbleDB, thing: TripleObject) => Parsed | undefined,
+  parser: (tdb: TribbleDB, thing: TripleObject) => Maybe<Parsed>,
   tdb: TribbleDB,
   id: string,
-): Parsed | undefined {
+): Maybe<Parsed> {
   const thing = readThing(tdb, id);
-  if (!thing) {
-    return undefined;
+  if (isNone(thing)) {
+    return NONE;
   }
 
   return parser(tdb, thing);
@@ -60,7 +61,7 @@ export function readThings(
 
   for (const urn of urns) {
     const thing = readThing(tdb, urn);
-    if (thing) {
+    if (!isNone(thing)) {
       things.push(thing);
     }
   }
@@ -69,7 +70,7 @@ export function readThings(
 }
 
 export const readParsedThings = function <Parsed>(
-  parser: (tdb: TribbleDB, thing: TripleObject) => Parsed | undefined,
+  parser: (tdb: TribbleDB, thing: TripleObject) => Maybe<Parsed>,
   tdb: TribbleDB,
   urns: Set<string>,
 ): Parsed[] {
@@ -81,12 +82,12 @@ export const readParsedThings = function <Parsed>(
 
   for (const urn of urns) {
     const thing = readThing(tdb, urn);
-    if (!thing) {
+    if (isNone(thing)) {
       continue;
     }
 
     const parsed = parser(tdb, thing);
-    if (parsed) {
+    if (!isNone(parsed)) {
       parsedThings.push(parsed);
     }
   }
@@ -97,8 +98,9 @@ export const readParsedThings = function <Parsed>(
 // Label preference: common name, then Latin name, then URN id.
 export function taxonLabel(taxon: TripleObject): string {
   const urn = one(taxon.id);
-  const fallback = urn ? asUrn(urn).id.replace(/-/g, " ") : "";
-  const label = one(taxon.commonName) ?? one(taxon.name) ?? fallback;
+  const fallback = isNone(urn) ? "" : asUrn(urn).id.replace(/-/g, " ");
+  const name = withDefault(one(taxon.name), fallback);
+  const label = withDefault(one(taxon.commonName), name);
 
   return titleCase(String(label));
 }
@@ -125,8 +127,8 @@ export function readTaxonMembers(
   }).sources();
 
   return readThings(tdb, new Set(speciesUrns)).sort((thinga, thingb) => {
-    const first = one(thinga.name) ?? "";
-    const second = one(thingb.name) ?? "";
+    const first = withDefault(one(thinga.name), "");
+    const second = withDefault(one(thingb.name), "");
 
     return first.localeCompare(second);
   });
@@ -148,8 +150,8 @@ export function readNamedTypeThings<Parsed>(
       const firstName = thinga.name;
       const secondName = thingb.name;
 
-      const first = one(firstName) ?? "";
-      const second = one(secondName) ?? "";
+      const first = withDefault(one(firstName), "");
+      const second = withDefault(one(secondName), "");
 
       return first.localeCompare(second);
     });
@@ -163,12 +165,12 @@ export function readListings(tdb: TribbleDB): TripleObject[] {
 export function listingLabel(tdb: TribbleDB, type: string): string {
   const listing = readThing(tdb, `urn:ró:${KnownTypes.LISTING}:${type}`);
 
-  const label = one(listing?.name);
+  const label = isNone(listing) ? NONE : one(listing.name);
   return typeof label === "string" ? label : capitalise(pluralise(type));
 }
 
 export function isBinomialType(tdb: TribbleDB, type: string): boolean {
   const listing = readThing(tdb, `urn:ró:${KnownTypes.LISTING}:${type}`);
 
-  return one(listing?.binomial) === "true";
+  return !isNone(listing) && one(listing.binomial) === "true";
 }

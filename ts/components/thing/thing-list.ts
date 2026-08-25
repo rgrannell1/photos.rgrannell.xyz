@@ -7,8 +7,11 @@ import m from "mithril";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../../commons/arrays.ts";
 import type { Feature, Place, Unesco } from "../../types.ts";
-import { FeatureLink, ThingLink, UnescoLink } from "./thing-link.ts";
+import { FeatureLabel } from "./feature-label.ts";
+import { ThingLink } from "./thing-link.ts";
+import { UnescoLink } from "./unesco-link.ts";
 import type { ReadThingEmoji } from "./thing-link.ts";
+import { fromNullable, isNone, withDefault } from "../../commons/maybe.ts";
 
 export type ThingListKind = "place" | "feature" | "unesco" | "taxon";
 
@@ -16,15 +19,22 @@ function comparePlaceNames(
   loca: ThingListItem,
   locb: ThingListItem,
 ): number {
-  return (one(loca.name) ?? "").localeCompare(one(locb.name) ?? "");
+  const first = withDefault(one(fromNullable(loca.name)), "");
+  const second = withDefault(one(fromNullable(locb.name)), "");
+  return first.localeCompare(second);
 }
 
 function drawPlaceItem(
   readEmoji: ReadThingEmoji,
   location: Place | Unesco,
 ): m.Children {
+  const urn = one(location.id);
+  if (isNone(urn)) {
+    return null;
+  }
+
   const $link = m(ThingLink, {
-    urn: one(location.id)!,
+    urn,
     thing: location,
     readEmoji,
   });
@@ -32,15 +42,21 @@ function drawPlaceItem(
 }
 
 function drawFeatureItem(feature: Feature): m.Children {
-  const id = one(feature.id)!;
+  const id = one(feature.id);
+  if (isNone(id)) {
+    return null;
+  }
 
   return m("li", {
     key: `feature-${id}`,
-  }, m(FeatureLink, { urn: id, thing: feature }));
+  }, m(FeatureLabel, { urn: id, thing: feature }));
 }
 
 function drawUnescoItem(unesco: Unesco): m.Children {
-  const urn = one(unesco.id)!;
+  const urn = one(unesco.id);
+  if (isNone(urn)) {
+    return null;
+  }
 
   return m("li", { key: `unesco-${urn}` }, m(UnescoLink, { urn, thing: unesco }));
 }
@@ -49,7 +65,10 @@ function drawTaxonItem(
   readEmoji: ReadThingEmoji,
   taxon: TripleObject,
 ): m.Children {
-  const urn = one(taxon.id) as string;
+  const urn = one(taxon.id);
+  if (isNone(urn)) {
+    return null;
+  }
 
   return m("li", { key: `taxon-${urn}` }, m(ThingLink, {
     urn,

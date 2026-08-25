@@ -1,5 +1,5 @@
 import m from "mithril";
-import { navigate } from "../../commons/events.ts";
+import { albumRoute, onAlbumClick } from "../../commons/album-nav.ts";
 
 type AlbumButtonAttrs = {
   id: string;
@@ -14,8 +14,8 @@ function viewAlbumButton(vnode: m.Vnode<AlbumButtonAttrs>): m.Children {
   }
 
   return m("a", {
-    href: `#/album/${id}`,
-    onclick: navigate(`/album/${id}`),
+    href: albumRoute(id),
+    onclick: onAlbumClick.bind(null, id),
   }, "[album]");
 }
 

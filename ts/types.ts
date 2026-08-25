@@ -18,6 +18,7 @@ import type {
   parseUnesco,
   parseVideo,
 } from "./services/parsers.ts";
+import type { Present } from "./commons/maybe.ts";
 
 /*
  * broadcast and listen type against this map, so payloads cannot drift from
@@ -97,35 +98,35 @@ export type State = {
 
 // TribbleDB is untyped and provides triples, not objects. These structures type the parsed triples.
 
-export type Album = NonNullable<ReturnType<typeof parseAlbum>>;
+export type Album = Present<ReturnType<typeof parseAlbum>>;
 
-export type Transfer = NonNullable<ReturnType<typeof parseTransfer>>;
+export type Transfer = Present<ReturnType<typeof parseTransfer>>;
 
-export type Photo = NonNullable<ReturnType<typeof parsePhoto>>;
+export type Photo = Present<ReturnType<typeof parsePhoto>>;
 
-export type Video = NonNullable<ReturnType<typeof parseVideo>>;
+export type Video = Present<ReturnType<typeof parseVideo>>;
 
-export type Place = NonNullable<ReturnType<typeof parsePlace>>;
+export type Place = Present<ReturnType<typeof parsePlace>>;
 
-export type Country = NonNullable<ReturnType<typeof parseCountry>>;
+export type Country = Present<ReturnType<typeof parseCountry>>;
 
-export type Unesco = NonNullable<ReturnType<typeof parseUnesco>>;
+export type Unesco = Present<ReturnType<typeof parseUnesco>>;
 
-export type Bird = NonNullable<ReturnType<typeof parseBird>>;
+export type Bird = Present<ReturnType<typeof parseBird>>;
 
-export type Mammal = NonNullable<ReturnType<typeof parseMammal>>;
+export type Mammal = Present<ReturnType<typeof parseMammal>>;
 
-export type Reptile = NonNullable<ReturnType<typeof parseReptile>>;
+export type Reptile = Present<ReturnType<typeof parseReptile>>;
 
-export type Amphibian = NonNullable<ReturnType<typeof parseAmphibian>>;
+export type Amphibian = Present<ReturnType<typeof parseAmphibian>>;
 
-export type Arthropod = NonNullable<ReturnType<typeof parseArthropod>>;
+export type Arthropod = Present<ReturnType<typeof parseArthropod>>;
 
-export type Fish = NonNullable<ReturnType<typeof parseFish>>;
+export type Fish = Present<ReturnType<typeof parseFish>>;
 
-export type Plane = NonNullable<ReturnType<typeof parsePlane>>;
+export type Plane = Present<ReturnType<typeof parsePlane>>;
 
-export type Feature = NonNullable<ReturnType<typeof parseFeature>>;
+export type Feature = Present<ReturnType<typeof parseFeature>>;
 
 export type Subject =
   | Bird

@@ -3,30 +3,36 @@ import { deriveTriples, postIndexing } from "../semantic/derive.ts";
 import { loadTriples } from "../semantic/data.ts";
 import { readAllAlbums } from "../services/albums.ts";
 import { HOMEPAGE_PRELOAD_COUNT } from "../constants/layout.ts";
+import { isNone, type Maybe, NONE } from "../commons/maybe.ts";
 
 async function findFile(
   prefix: string,
   dpath: string,
-): Promise<string | undefined> {
+): Promise<Maybe<string>> {
   for await (const dirEntry of Deno.readDir(dpath)) {
     if (dirEntry.name.startsWith(`${prefix}.`)) {
       return path.join(dpath, dirEntry.name);
     }
   }
 
-  return undefined;
+  return NONE;
 }
 
 async function findFileUrl(
   prefix: string,
   dpath: string,
-): Promise<string | undefined> {
+): Promise<Maybe<string>> {
   const filePath = await findFile(prefix, dpath);
-  if (filePath) {
+  if (!isNone(filePath)) {
     return (new URL(`file://${filePath}`)).href;
   }
 
-  return undefined;
+  return NONE;
+}
+
+function requireFile(filePath: Maybe<string>, label: string): string {
+  if (isNone(filePath)) throw new Error(`No ${label} file found`);
+  return filePath;
 }
 
 const MANIFEST_DIR = path.resolve("./manifest");
@@ -41,7 +47,7 @@ export const [
 ]);
 
 export async function loadTribbles() {
-  if (!tribblesFile) {
+  if (isNone(tribblesFile)) {
     throw new Error("No tribbles file found");
   }
   const tdb = await loadTriples(tribblesFile, {}, deriveTriples);
@@ -56,8 +62,8 @@ export const [
   htmlTemplateText,
   swTemplateText,
 ] = await Promise.all([
-  Deno.readTextFile(envFile!),
-  Deno.readTextFile(statsFile!),
+  Deno.readTextFile(requireFile(envFile, "environment")),
+  Deno.readTextFile(requireFile(statsFile, "stats")),
   Deno.readTextFile("index.mustache.html"),
   Deno.readTextFile("sw.mustache.js"),
 ]);

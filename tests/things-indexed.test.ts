@@ -4,6 +4,7 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import type { Triple, TripleObject } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { one } from "../ts/commons/arrays.ts";
+import { fromNullable } from "../ts/commons/maybe.ts";
 import {
   isBinomialType,
   listingLabel,
@@ -53,15 +54,15 @@ Deno.test("readThing matches legacy point reads, including qs variants", () => {
     const expected = readLegacyThing(tdb, urn);
     blockSearch(tdb);
 
-    assertEqual(readThing(tdb, urn), expected);
+    assertEqual(readThing(tdb, urn), fromNullable(expected));
   }
 });
 
 Deno.test("listing metadata matches legacy point reads", () => {
   const tdb = new TribbleDB(TRIPLES);
   const listing = readLegacyThing(tdb, LISTING);
-  const expectedLabel = one(listing?.name);
-  const expectedBinomial = one(listing?.binomial) === "true";
+  const expectedLabel = one(fromNullable(listing?.name));
+  const expectedBinomial = one(fromNullable(listing?.binomial)) === "true";
   blockSearch(tdb);
 
   assertEqual(listingLabel(tdb, "bird"), expectedLabel);

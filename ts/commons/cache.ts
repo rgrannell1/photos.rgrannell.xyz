@@ -1,5 +1,7 @@
 /* Small cache helpers for lazy data readers. */
 
+import { isSome, type Maybe } from "./maybe.ts";
+
 export type Reader<Key, Value> = (key: Key) => Value;
 
 export function readThrough<Key, Value>(
@@ -19,14 +21,14 @@ export function readThrough<Key, Value>(
 export function readPrefix<Key, Value>(
   keys: Key[],
   limit: number,
-  cache: Map<Key, Value | undefined>,
-  reader: Reader<Key, Value | undefined>,
+  cache: Map<Key, Maybe<Value>>,
+  reader: Reader<Key, Maybe<Value>>,
 ): Value[] {
   const values: Value[] = [];
 
   for (const key of keys.slice(0, limit)) {
     const value = readThrough(cache, reader, key);
-    if (value !== undefined) {
+    if (isSome(value)) {
       values.push(value);
     }
   }

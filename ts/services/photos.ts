@@ -11,6 +11,14 @@ import {
 import { arrayify, one } from "../commons/arrays.ts";
 import { thumbHashFromBase64, thumbHashToRGBA } from "../vendor/thumbhash.ts";
 import { parsePhoto } from "./parsers.ts";
+import {
+  fromNullable,
+  isNone,
+  isSome,
+  type Maybe,
+  NONE,
+  withDefault,
+} from "../commons/maybe.ts";
 
 export function loadingMode(idx: number): "eager" | "lazy" {
   const viewportWidth = globalThis.innerWidth;
@@ -46,8 +54,11 @@ export function groupPhotosByYear(
   for (const photo of photos) {
     const year = photoYear(photo);
     const lastGroup = groups[groups.length - 1];
+    const isUndated = !Number.isFinite(year);
+    const matchesLastYear = lastGroup?.year === year;
+    const continuesYearGroup = lastGroup !== undefined && (matchesLastYear || isUndated);
 
-    if (lastGroup && (lastGroup.year === year || !Number.isFinite(year))) {
+    if (continuesYearGroup) {
       lastGroup.photos.push(photo);
       continue;
     }
@@ -61,10 +72,11 @@ export function groupPhotosByYear(
 
 const PLACEHOLDER_CACHE: Map<string, string> = new Map();
 
-/* ThumbHash to placeholder PNG. Null for missing, legacy, or malformed hashes. */
-export function thumbHashDataUrl(hash: string | null | undefined): string | null {
-  if (!hash || hash.startsWith("#")) {
-    return null;
+/* ThumbHash to placeholder PNG. NONE for missing, legacy, or malformed hashes. */
+export function thumbHashDataUrl(hash: Maybe<string>): Maybe<string> {
+  const isUnsupportedHash = isNone(hash) || !hash || hash.startsWith("#");
+  if (isUnsupportedHash) {
+    return NONE;
   }
 
   const cached = PLACEHOLDER_CACHE.get(hash);
@@ -76,11 +88,12 @@ export function thumbHashDataUrl(hash: string | null | undefined): string | null
   try {
     decoded = thumbHashToRGBA(thumbHashFromBase64(hash));
   } catch {
-    return null;
+    return NONE;
   }
   const { width, height, rgba } = decoded;
-  if (!width || !height) {
-    return null;
+  const hasEmptyBitmap = !width || !height;
+  if (hasEmptyBitmap) {
+    return NONE;
   }
 
   const canvas = document.createElement("canvas");
@@ -118,10 +131,11 @@ export function readAllPhotoUrns(tdb: TribbleDB): string[] {
 
   return photoObjects
     .sort((objA, objB) =>
-      parseInt(one(objB.createdAt) ?? "0") - parseInt(one(objA.createdAt) ?? "0")
+      parseInt(withDefault(one(objB.createdAt), "0")) -
+      parseInt(withDefault(one(objA.createdAt), "0"))
     )
     .map((obj) => one(obj.id))
-    .filter((urn): urn is string => urn !== undefined);
+    .filter(isSome);
 }
 
 export function readPhotosByThingIds(
@@ -161,7 +175,7 @@ export function readThingCovers(tdb: TribbleDB, type: string): Map<string, Photo
       continue;
     }
     const photo = readPhoto(tdb, source);
-    if (photo) {
+    if (!isNone(photo)) {
       covers.set(id, photo);
     }
   }
@@ -172,15 +186,22 @@ export function readThingCovers(tdb: TribbleDB, type: string): Map<string, Photo
 export function readThingCover(
   tdb: TribbleDB,
   thingUrn: string,
-): Photo | undefined {
+): Maybe<Photo> {
   const { type, id } = asUrn(thingUrn);
   const [photoUrn] = tdb.nodes({ type, id })
     .referencedBy(KnownRelations.COVER)
     .filter({ type: KnownTypes.PHOTO })
     .urns();
-  const photo = photoUrn ? tdb.readThing(photoUrn) : undefined;
+  if (photoUrn === undefined) {
+    return NONE;
+  }
 
-  return photo ? parsePhoto(tdb, photo) : undefined;
+  const photo = tdb.readThing(photoUrn);
+  if (photo === undefined) {
+    return NONE;
+  }
+
+  return parsePhoto(tdb, photo);
 }
 
 export function readSeenInCountries(
@@ -191,7 +212,7 @@ export function readSeenInCountries(
   const countryUrnSet = new Set<string>();
 
   for (const photo of photos) {
-    for (const countryUrn of arrayify(photo.country)) {
+    for (const countryUrn of arrayify(fromNullable(photo.country))) {
       countryUrnSet.add(countryUrn);
     }
   }
@@ -205,7 +226,7 @@ export function readSeenInCountries(
 export function readCategoryCover(
   tdb: TribbleDB,
   type: string,
-): Photo | undefined {
+): Maybe<Photo> {
   const source = tdb.search({
     source: { type: KnownTypes.PHOTO },
     relation: KnownRelations.COVER,
@@ -216,5 +237,5 @@ export function readCategoryCover(
     target: { type },
   }).firstSource();
 
-  return source ? readPhoto(tdb, source) : undefined;
+  return source === undefined ? NONE : readPhoto(tdb, source);
 }

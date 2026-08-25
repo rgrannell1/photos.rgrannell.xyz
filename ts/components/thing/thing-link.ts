@@ -1,38 +1,23 @@
-/*
- * Links to thing pages, place features, and UNESCO sites. All emit the same
- * `thing-link <type>-link` class contract.
- */
+/* Link named things to their internal pages. */
 
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { navigate } from "../../commons/events.ts";
 
 import { one } from "../../commons/arrays.ts";
-import { thingEmoji } from "../../services/emoji.ts";
 import { customFlagAsset, FlagIcon } from "../flag.ts";
+import { isSome } from "../../commons/maybe.ts";
 import { KnownTypes } from "../../constants/data.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import type { Feature, Thing, Unesco } from "../../types.ts";
+import type { Thing, Unesco } from "../../types.ts";
 import type { EmojiThing } from "../../services/emoji.ts";
+import { drawThingLink } from "./thing-link-layout.ts";
 
 export type ReadThingEmoji = (
   urn: string,
   name: string,
   thing: EmojiThing,
 ) => string;
-
-/* The class list is a CSS contract, so it is built in exactly one place. */
-function drawThingLink(
-  tag: string,
-  type: string,
-  attrs: Record<string, unknown>,
-  label: m.Children,
-) {
-  return m(tag, {
-    ...attrs,
-    class: ["thing-link", `${type}-link`].join(" "),
-  }, label);
-}
 
 export type ThingLinkAttrs = {
   urn: string;
@@ -47,7 +32,7 @@ function viewThingLink(vnode: m.Vnode<ThingLinkAttrs>): m.Children {
   let name = id;
   if (Object.prototype.hasOwnProperty.call(thing, "name")) {
     const candidate = one((thing as { name: string | string[] }).name);
-    if (candidate) {
+    if (isSome(candidate)) {
       name = candidate;
     }
   }
@@ -55,8 +40,8 @@ function viewThingLink(vnode: m.Vnode<ThingLinkAttrs>): m.Children {
   // flags render from vexilla assets only; other things keep their emoji.
   // A flagged place with no vexilla asset gets no icon, never an emoji flag
   const hasFlag = type === KnownTypes.PLACE &&
-    Boolean(one((thing as TripleObject).flag));
-  const icon: m.Children = customFlagAsset(name)
+    isSome(one((thing as TripleObject).flag));
+  const icon: m.Children = isSome(customFlagAsset(name))
     ? m(FlagIcon, { name })
     : hasFlag
     ? null
@@ -73,51 +58,4 @@ function viewThingLink(vnode: m.Vnode<ThingLinkAttrs>): m.Children {
 
 export function ThingLink() {
   return { view: viewThingLink };
-}
-
-export type FeatureLinkAttrs = {
-  urn: string;
-  thing: Feature;
-};
-
-function viewFeatureLink(vnode: m.Vnode<FeatureLinkAttrs>): m.Children {
-  const { urn, thing } = vnode.attrs;
-  const { type, id } = asUrn(urn);
-
-  const name = one(thing.name) ?? id;
-
-  return drawThingLink("p", type, {}, [
-    thingEmoji(urn, name, thing),
-    `\t${name}`,
-  ]);
-}
-
-/*
- * Not a link. A feature page needs the query "photos where the place has
- * feature X", which the thing system cannot express yet.
- */
-export function FeatureLink() {
-  return { view: viewFeatureLink };
-}
-
-export type UnescoLinkAttrs = {
-  urn: string;
-  thing: Unesco;
-};
-
-function viewUnescoLink(vnode: m.Vnode<UnescoLinkAttrs>): m.Children {
-  const { urn, thing } = vnode.attrs;
-  const { type, id } = asUrn(urn);
-
-  const name = one(thing.name) ?? id;
-
-  return drawThingLink("a", type, {
-    href: `https://whc.unesco.org/en/list/${id}`,
-    target: "_blank",
-    rel: "noopener noreferrer",
-  }, name);
-}
-
-export function UnescoLink() {
-  return { view: viewUnescoLink };
 }

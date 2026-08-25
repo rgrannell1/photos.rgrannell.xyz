@@ -4,33 +4,38 @@ import type {
   LatLngBounds,
   LayerGroup,
   Map as LeafletMap,
-  PolylineOptions,
 } from "leaflet";
 import type { TripPolyline } from "./albums.ts";
 import type { GeocodedPlaceWithCover } from "./places.ts";
-import { urnToUrl } from "../commons/urn.ts";
+import { curveTripLine, tripLineOptions } from "./map-lines.ts";
+import { addPlaceMarker } from "./map-markers.ts";
+import { LEAFLET_MAP_SELECTOR } from "../constants/selectors.ts";
+import {
+  MAP_BOUNDS_MAX_ZOOM,
+  MAP_BOUNDS_PADDING_PX,
+  MAP_INITIAL_CENTRE,
+  MAP_INITIAL_ZOOM,
+  MAP_MARKER_BATCH_DELAY_MS,
+  MAP_MARKER_BATCH_SIZE,
+  MAP_TILE_ATTRIBUTION,
+  MAP_TILE_MAX_ZOOM,
+  MAP_TILE_URL,
+} from "../constants/map.ts";
+import { fromNullable, isNone, isSome, type Maybe, NONE, some } from "../commons/maybe.ts";
 
 type LeafletLib = typeof import("leaflet");
 
-const TERRAIN_TILES =
-  "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png";
-
-const TERRAIN_ATTRIBUTION =
-  `Map tiles by <a href="https://stadiamaps.com/">Stadia Maps</a> ` +
-  `&amp; <a href="https://stamen.com/">Stamen Design</a>, ` +
-  `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`;
-
 function createLeafletMap(leaflet: LeafletLib, container: HTMLElement): LeafletMap {
   const leafletMap = leaflet.map(container, {
-    center: [20, 0],
-    zoom: 2,
+    center: MAP_INITIAL_CENTRE,
+    zoom: MAP_INITIAL_ZOOM,
     zoomControl: true,
     worldCopyJump: true,
   });
 
-  leaflet.tileLayer(TERRAIN_TILES, {
-    maxZoom: 20,
-    attribution: TERRAIN_ATTRIBUTION,
+  leaflet.tileLayer(MAP_TILE_URL, {
+    maxZoom: MAP_TILE_MAX_ZOOM,
+    attribution: MAP_TILE_ATTRIBUTION,
   }).addTo(leafletMap);
 
   return leafletMap;
@@ -38,204 +43,104 @@ function createLeafletMap(leaflet: LeafletLib, container: HTMLElement): LeafletM
 
 function ensureLeafletMap(
   leaflet: LeafletLib,
-  existingMap: LeafletMap | undefined,
-  container: HTMLElement | undefined,
-): LeafletMap | undefined {
-  if (existingMap || !container) {
+  existingMap: Maybe<LeafletMap>,
+  container: Maybe<HTMLElement>,
+): Maybe<LeafletMap> {
+  if (isSome(existingMap) || isNone(container)) {
     return existingMap;
   }
-  return createLeafletMap(leaflet, container);
+  return some(createLeafletMap(leaflet, container));
 }
 
 function destroyLeafletMap(
-  existingMap: LeafletMap | undefined,
-): LeafletMap | undefined {
-  if (!existingMap) {
+  existingMap: Maybe<LeafletMap>,
+): Maybe<LeafletMap> {
+  if (isNone(existingMap)) {
     return existingMap;
   }
   existingMap.remove();
-  return undefined;
+  return NONE;
 }
 
 function invalidateNow(existingMap: LeafletMap): void {
   existingMap.invalidateSize();
 }
 
-function invalidateMapSizeSoon(existingMap: LeafletMap | undefined) {
-  if (!existingMap) {
+function invalidateMapSizeSoon(existingMap: Maybe<LeafletMap>) {
+  if (isNone(existingMap)) {
     return;
   }
   requestAnimationFrame(invalidateNow.bind(null, existingMap));
 }
 
-const MARKER_BATCH_SIZE = 20;
-
-function addMarker(
-  leaflet: LeafletLib,
-  markersLayer: LayerGroup,
-  bounds: LatLngBounds,
-  place: GeocodedPlaceWithCover,
-): void {
-  const latitude = place.latitude;
-  const longitude = place.longitude;
-
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-    return;
-  }
-
-  const marker = leaflet.marker([latitude, longitude]);
-  const href = urnToUrl(place.id);
-  const popupLabel = place.name || "Unknown Place";
-  const thumbnailImg = place.coverThumbnailUrl
-    ? `<img src="${place.coverThumbnailUrl}" alt="" ` +
-      `class="leaflet-popup-thumbnail" loading="lazy" />`
-    : "";
-  const imagePart = thumbnailImg ? `${thumbnailImg}<br />` : "";
-  marker.bindPopup(imagePart + `<a href="${href}">${popupLabel}</a>`);
-  marker.addTo(markersLayer);
-  bounds.extend([latitude, longitude]);
-}
-
-const TRIP_LINE_DEFAULT = "#2563eb";
-const TRIP_LINE_CAR_TRAIN = "#60a5fa";
-
-function tripLineOptions(mode: string | undefined): PolylineOptions {
-  const color = mode === "car" || mode === "train"
-    ? TRIP_LINE_CAR_TRAIN
-    : TRIP_LINE_DEFAULT;
-  return {
-    color,
-    weight: 3,
-    opacity: 0.7,
-  };
-}
-
-const SEGMENTS_PER_LEG = 16;
-const BULGE_FACTOR = 0.25;
-
-/* Quadratic Bezier point: B(t) = (1-t)²A + 2(1-t)tC + t²B. */
-function bezierPoint(
-  start: [number, number],
-  control: [number, number],
-  end: [number, number],
-  progress: number,
-): [number, number] {
-  const inverse = 1 - progress;
-  const lat = inverse * inverse * start[0] +
-    2 * inverse * progress * control[0] +
-    progress * progress * end[0];
-  const lng = inverse * inverse * start[1] +
-    2 * inverse * progress * control[1] +
-    progress * progress * end[1];
-  return [lat, lng];
-}
-
-/* Arc bulges north. Control point offset perpendicular to segment. */
-function arcLatLngs(
-  start: [number, number],
-  end: [number, number],
-  segmentsPerLeg: number,
-): [number, number][] {
-  const dlat = end[0] - start[0];
-  const dlng = end[1] - start[1];
-  const len = Math.sqrt(dlat * dlat + dlng * dlng) || 1e-6;
-  let perpLat = dlng;
-  let perpLng = -dlat;
-  if (perpLat < 0) {
-    perpLat = -dlng;
-    perpLng = dlat;
-  }
-  const perpLen = Math.sqrt(perpLat * perpLat + perpLng * perpLng) || 1e-6;
-  perpLat /= perpLen;
-  perpLng /= perpLen;
-  const bulge = BULGE_FACTOR * len;
-  const midLat = (start[0] + end[0]) / 2;
-  const midLng = (start[1] + end[1]) / 2;
-  const control: [number, number] = [
-    midLat + bulge * perpLat,
-    midLng + bulge * perpLng,
-  ];
-  const out: [number, number][] = [start];
-  for (let segmentIdx = 1; segmentIdx < segmentsPerLeg; segmentIdx++) {
-    out.push(bezierPoint(start, control, end, segmentIdx / segmentsPerLeg));
-  }
-  out.push(end);
-  return out;
-}
-
-function smoothLatLngs(
-  latLngs: [number, number][],
-  segmentsPerLeg: number,
-): [number, number][] {
-  if (latLngs.length < 2) {
-    return latLngs;
-  }
-  const out: [number, number][] = [];
-  for (let idx = 0; idx < latLngs.length - 1; idx++) {
-    const leg = arcLatLngs(
-      latLngs[idx],
-      latLngs[idx + 1],
-      segmentsPerLeg,
-    );
-    if (idx === 0) {
-      out.push(...leg);
-    } else {
-      out.push(...leg.slice(1));
-    }
-  }
-  return out;
-}
-
 function syncTripPolylines(
   leaflet: LeafletLib,
-  existingMap: LeafletMap | undefined,
-  existingLayer: LayerGroup | undefined,
+  existingMap: Maybe<LeafletMap>,
+  existingLayer: Maybe<LayerGroup>,
   tripPolylines: TripPolyline[],
-): LayerGroup | undefined {
-  if (!existingMap) {
+): Maybe<LayerGroup> {
+  if (isNone(existingMap)) {
     return existingLayer;
   }
 
-  const linesLayer = existingLayer ?? leaflet.layerGroup().addTo(existingMap);
+  const linesLayer = isSome(existingLayer)
+    ? existingLayer
+    : leaflet.layerGroup().addTo(existingMap);
   linesLayer.clearLayers();
 
   for (const { latLngs, mode } of tripPolylines) {
-    const curved = smoothLatLngs(latLngs, SEGMENTS_PER_LEG);
-    leaflet.polyline(curved, tripLineOptions(mode)).addTo(linesLayer);
+    const curved = curveTripLine(latLngs);
+    leaflet.polyline(curved, tripLineOptions(fromNullable(mode))).addTo(linesLayer);
   }
 
-  return linesLayer;
+  return some(linesLayer);
 }
 
 type MapState = {
-  leafletLib: LeafletLib | undefined;
-  leafletMap: LeafletMap | undefined;
-  mapContainer: HTMLElement | undefined;
-  lastSidebarVisible: boolean | undefined;
-  markersLayer: LayerGroup | undefined;
-  tripLinesLayer: LayerGroup | undefined;
+  leafletLib: Maybe<LeafletLib>;
+  leafletMap: Maybe<LeafletMap>;
+  mapContainer: Maybe<HTMLElement>;
+  lastSidebarVisible: Maybe<boolean>;
+  markersLayer: Maybe<LayerGroup>;
+  tripLinesLayer: Maybe<LayerGroup>;
   lastPlaces: GeocodedPlaceWithCover[];
   lastTripPolylines: TripPolyline[];
   markerBatchIdx: number;
-  markerBounds: LatLngBounds | undefined;
+  markerBounds: Maybe<LatLngBounds>;
 };
 
 function addMarkerBatch(mapState: MapState): void {
   const { leafletLib, leafletMap, markersLayer, markerBounds } = mapState;
-  if (!leafletLib || !leafletMap || !markersLayer || !markerBounds) return;
+  const lacksMarkerState = isNone(leafletLib) ||
+    isNone(leafletMap) ||
+    isNone(markersLayer) ||
+    isNone(markerBounds);
+  if (lacksMarkerState) return;
 
   const end = Math.min(
-    mapState.markerBatchIdx + MARKER_BATCH_SIZE,
+    mapState.markerBatchIdx + MAP_MARKER_BATCH_SIZE,
     mapState.lastPlaces.length,
   );
   for (let idx = mapState.markerBatchIdx; idx < end; idx++) {
-    addMarker(leafletLib, markersLayer, markerBounds, mapState.lastPlaces[idx]);
+    addPlaceMarker(
+      leafletLib,
+      markersLayer,
+      markerBounds,
+      mapState.lastPlaces[idx],
+    );
   }
   mapState.markerBatchIdx = end;
   if (mapState.markerBatchIdx < mapState.lastPlaces.length) {
-    setTimeout(addMarkerBatch.bind(null, mapState), 1);
+    setTimeout(addMarkerBatch.bind(null, mapState), MAP_MARKER_BATCH_DELAY_MS);
   } else if (markerBounds.isValid()) {
-    leafletMap.fitBounds(markerBounds, { padding: [20, 20], maxZoom: 8 });
+    const padding: [number, number] = [
+      MAP_BOUNDS_PADDING_PX,
+      MAP_BOUNDS_PADDING_PX,
+    ];
+    leafletMap.fitBounds(markerBounds, {
+      padding,
+      maxZoom: MAP_BOUNDS_MAX_ZOOM,
+    });
   }
 }
 
@@ -243,11 +148,12 @@ function startPlaceMarkers(
   mapState: MapState,
   places: GeocodedPlaceWithCover[],
 ): void {
-  if (!mapState.leafletLib || !mapState.markersLayer) return;
-  mapState.markersLayer.clearLayers();
+  const { leafletLib, markersLayer } = mapState;
+  if (isNone(leafletLib) || isNone(markersLayer)) return;
+  markersLayer.clearLayers();
   mapState.lastPlaces = places;
   mapState.markerBatchIdx = 0;
-  mapState.markerBounds = mapState.leafletLib.latLngBounds([]);
+  mapState.markerBounds = some(leafletLib.latLngBounds([]));
   addMarkerBatch(mapState);
 }
 
@@ -259,16 +165,18 @@ function initMap(
   leaflet: LeafletLib,
 ): void {
   mapState.leafletLib = leaflet;
-  mapState.mapContainer =
-    root.querySelector(".leaflet-map") as HTMLElement | null ||
-    undefined;
+  const container = root.querySelector(LEAFLET_MAP_SELECTOR) as HTMLElement | null;
+  mapState.mapContainer = fromNullable(container);
 
   mapState.leafletMap = ensureLeafletMap(
     leaflet,
     mapState.leafletMap,
     mapState.mapContainer,
   );
-  mapState.markersLayer = leaflet.layerGroup().addTo(mapState.leafletMap!);
+  if (isNone(mapState.leafletMap)) {
+    return;
+  }
+  mapState.markersLayer = some(leaflet.layerGroup().addTo(mapState.leafletMap));
   mapState.tripLinesLayer = syncTripPolylines(
     leaflet,
     mapState.leafletMap,
@@ -291,12 +199,12 @@ function updateMap(
   }
   mapState.lastSidebarVisible = visible;
 
-  if (
-    mapState.leafletLib &&
-    tripPolylines !== mapState.lastTripPolylines
-  ) {
+  const leafletLib = mapState.leafletLib;
+  const tripLinesChanged = tripPolylines !== mapState.lastTripPolylines;
+  const canSyncTripLines = isSome(leafletLib) && tripLinesChanged;
+  if (canSyncTripLines) {
     mapState.tripLinesLayer = syncTripPolylines(
-      mapState.leafletLib,
+      leafletLib,
       mapState.leafletMap,
       mapState.tripLinesLayer,
       tripPolylines,
@@ -311,12 +219,12 @@ function updateMap(
 
 function unmountMap(mapState: MapState): void {
   mapState.leafletMap = destroyLeafletMap(mapState.leafletMap);
-  mapState.mapContainer = undefined;
-  mapState.markersLayer = undefined;
-  mapState.tripLinesLayer = undefined;
+  mapState.mapContainer = NONE;
+  mapState.markersLayer = NONE;
+  mapState.tripLinesLayer = NONE;
   mapState.lastPlaces = [];
   mapState.lastTripPolylines = [];
-  mapState.leafletLib = undefined;
+  mapState.leafletLib = NONE;
 }
 
 export type MapHandle = {
@@ -335,16 +243,16 @@ export function mountMap(
   tripPolylines: TripPolyline[],
 ): MapHandle {
   const mapState: MapState = {
-    leafletLib: undefined,
-    leafletMap: undefined,
-    mapContainer: undefined,
-    lastSidebarVisible: undefined,
-    markersLayer: undefined,
-    tripLinesLayer: undefined,
+    leafletLib: NONE,
+    leafletMap: NONE,
+    mapContainer: NONE,
+    lastSidebarVisible: NONE,
+    markersLayer: NONE,
+    tripLinesLayer: NONE,
     lastPlaces: [],
     lastTripPolylines: [],
     markerBatchIdx: 0,
-    markerBounds: undefined,
+    markerBounds: NONE,
   };
 
   import("leaflet").then(

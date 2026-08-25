@@ -1,9 +1,10 @@
 import m from "mithril";
 import type { AppWindow } from "../../types.ts";
 import { parseStats } from "../../services/parsers.ts";
+import { isNone } from "../../commons/maybe.ts";
 
 function viewAlbumStats(stats: ReturnType<typeof parseStats>): m.Children {
-  if (!stats) {
+  if (isNone(stats)) {
     return m("p");
   }
 

@@ -4,12 +4,16 @@ import type { Video } from "../types.ts";
 import { readAlbum, readVideos } from "./readers.ts";
 import { albumUrn } from "../commons/urn.ts";
 import { KnownTypes } from "../constants/data.ts";
+import { isNone } from "../commons/maybe.ts";
 
 export type DatedVideo = Video & { year: number };
 
 function readAlbumMinDates(tdb: TribbleDB, videos: Video[]): Map<string, number> {
   return new Map(
-    videos.map((video) => [video.albumId, readAlbum(tdb, albumUrn(video.albumId))?.minDate ?? 0])
+    videos.map((video) => {
+      const album = readAlbum(tdb, albumUrn(video.albumId));
+      return [video.albumId, isNone(album) ? 0 : album.minDate];
+    }),
   );
 }
 
@@ -42,8 +46,9 @@ export function groupVideosByYear(
 
   for (const video of videos) {
     const lastGroup = groups[groups.length - 1];
+    const continuesYearGroup = lastGroup?.year === video.year;
 
-    if (lastGroup && lastGroup.year === video.year) {
+    if (continuesYearGroup) {
       lastGroup.videos.push(video);
       continue;
     }

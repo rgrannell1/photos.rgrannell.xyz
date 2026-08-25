@@ -2,6 +2,7 @@ import m from "mithril";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../../commons/arrays.ts";
 import { ExternalLink } from "./external-link.ts";
+import { isSome } from "../../commons/maybe.ts";
 
 function viewThingUrls(
   vnode: m.Vnode<{ things: TripleObject[] }>,
@@ -16,14 +17,14 @@ function viewThingUrls(
   const $links = [];
 
   const wikipedia = one(thing.wikipedia);
-  if (wikipedia) {
+  if (isSome(wikipedia)) {
     $links.push(
       m("li", m(ExternalLink, { href: wikipedia, text: "[wikipedia]" })),
     );
   }
 
   const birdwatch = one(thing.birdwatchUrl);
-  if (birdwatch) {
+  if (isSome(birdwatch)) {
     $links.push(
       m("li", m(ExternalLink, { href: birdwatch, text: "[birdwatch]" })),
     );
@@ -32,8 +33,10 @@ function viewThingUrls(
   const lat = one(thing.latitude);
   const lng = one(thing.longitude);
   const isNullIsland = lat === "0" && lng === "0";
+  const hasCoordinates = isSome(lat) && isSome(lng);
+  const showsMapLink = hasCoordinates && !isNullIsland;
 
-  if (lat !== undefined && lng !== undefined && !isNullIsland) {
+  if (showsMapLink) {
     const mapsHref = `https://www.google.com/maps?q=${
       encodeURIComponent(lat)
     },${encodeURIComponent(lng)}`;

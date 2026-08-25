@@ -1,10 +1,20 @@
 /* Resolve listing routes after the derived catalogue is ready. */
 
 import m from "mithril";
+import {
+  fromNullable,
+  isNone,
+  type Maybe,
+  NONE,
+  withDefault,
+} from "../../commons/maybe.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../../commons/arrays.ts";
 import { capitalise, pluralise } from "../../commons/strings.ts";
-import { ListingPage } from "../../components/pages/listing.ts";
+import {
+  ListingPage,
+  type ListingPageAttrs,
+} from "../../components/pages/listing.ts";
 import { ListingsPage } from "../../components/pages/listings.ts";
 import { KnownTypes } from "../../constants/data.ts";
 import { COUNTRY_LISTING_TYPE } from "../../constants/display.ts";
@@ -20,7 +30,7 @@ type ListingModel = {
   things: TripleObject[];
   label: string;
   isListable: boolean;
-  stats: SubjectStats | undefined;
+  stats: Maybe<SubjectStats>;
 };
 
 const listingModels = new Map<string, ListingModel>();
@@ -32,20 +42,25 @@ type CategoryModel = {
   cover: Photo;
 };
 
-let categoryModels: CategoryModel[] | null = null;
+let categoryModels: Maybe<CategoryModel[]> = NONE;
 
 function readCategoryModels(): CategoryModel[] {
   return services.readListings().flatMap((listing) => {
-    const type = asUrn(listing.id as string).id;
+    const id = one(listing.id);
+    if (isNone(id)) {
+      return [];
+    }
+
+    const type = asUrn(id).id;
     const cover = services.readCategoryCover(type);
-    return cover
-      ? [{
+    return isNone(cover)
+      ? []
+      : [{
         type,
-        label: one(listing.name) as string,
+        label: withDefault(one(listing.name), type),
         route: `/listing/${type}`,
         cover,
-      }]
-      : [];
+      }];
   });
 }
 
@@ -58,12 +73,14 @@ function readListingModel(type: string): ListingModel {
     ? services.readBirdStats()
     : type === KnownTypes.MAMMAL
     ? services.readMammalStats()
-    : undefined;
+    : NONE;
 
   return {
     things,
-    label: (one(listing?.name) as string) ?? capitalise(pluralise(type)),
-    isListable: one(listing?.listable) === "true",
+    label: isNone(listing)
+      ? capitalise(pluralise(type))
+      : withDefault(one(listing.name), capitalise(pluralise(type))),
+    isListable: !isNone(listing) && one(listing.listable) === "true",
     stats,
   };
 }
@@ -80,19 +97,18 @@ export const listingEntry = pageEntry({
       return "No type selected";
     }
 
-    const filter = m.route.param("filter") as string | undefined;
+    const filter = fromNullable<string>(m.route.param("filter"));
     const model = listingModels.get(type) ?? readListingModel(type);
     listingModels.set(type, model);
 
-    return {
-      attrs: {
-        type,
-        ...model,
-        readThingCover: services.readThingCover,
-        visible: state.sidebarVisible,
-        filter,
-      },
+    const attrs: ListingPageAttrs = {
+      type,
+      ...model,
+      readThingCover: services.readThingCover,
+      visible: state.sidebarVisible,
+      filter,
     };
+    return { attrs };
   },
 });
 
@@ -103,7 +119,9 @@ export const listingsEntry = pageEntry({
       return "";
     }
 
-    categoryModels ??= readCategoryModels();
+    if (isNone(categoryModels)) {
+      categoryModels = readCategoryModels();
+    }
     return {
       attrs: { visible: state.sidebarVisible, categories: categoryModels },
     };

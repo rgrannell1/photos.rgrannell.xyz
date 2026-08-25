@@ -15,6 +15,7 @@ import { readThingCover } from "../ts/services/photos.ts";
 import { readGeocodedPlacesWithCovers } from "../ts/services/places.ts";
 import { KnownRelations, KnownTypes } from "../ts/constants/data.ts";
 import { browseableEntityTypes } from "../ts/semantic/derive.ts";
+import { isNone } from "../ts/commons/maybe.ts";
 
 const tdb = await loadTribbles();
 
@@ -107,7 +108,8 @@ Deno.test("Bulk place covers match per-place cover lookups", () => {
   const mismatches: string[] = [];
 
   for (const place of readGeocodedPlacesWithCovers(tdb)) {
-    const expected = readThingCover(tdb, place.id)?.thumbnailUrl;
+    const cover = readThingCover(tdb, place.id);
+    const expected = isNone(cover) ? undefined : cover.thumbnailUrl;
 
     if (place.coverThumbnailUrl !== expected) {
       mismatches.push(

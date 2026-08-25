@@ -4,6 +4,7 @@
 
 import m from "mithril";
 import { flagManifest } from "../services/flags.ts";
+import { isNone, type Maybe, NONE } from "../commons/maybe.ts";
 
 // Place name to vexilla flag asset. See /flags
 const CUSTOM_FLAGS: Record<string, string> = {
@@ -12,7 +13,6 @@ const CUSTOM_FLAGS: Record<string, string> = {
   "Lanzarote": "es-lanzarote",
   "Mallorca": "es-mallorca",
   "Denmark": "dk",
-  "Christiania": "dk-christiania",
   "Freetown Christiania": "dk-christiania",
   "England": "gb-england",
   "France": "fr",
@@ -30,39 +30,19 @@ const CUSTOM_FLAGS: Record<string, string> = {
   "The Netherlands": "nl",
   "United States of America": "us",
   "Wales": "gb-wales",
-  "Fuerteventura": "es-fuerteventura",
-  "La Palma": "es-la-palma",
-  "La Gomera": "es-la-gomera",
-  "El Hierro": "es-el-hierro",
-  "Balearic Islands": "es-balears",
-  "Menorca": "es-menorca",
-  "Ibiza": "es-eivissa",
-  "Catalonia": "es-catalonia",
-  "Basque Country": "es-basque",
-  "Galicia": "es-galicia",
-  "Azores": "pt-azores",
-  "Madeira": "pt-madeira",
-  "Brittany": "fr-brittany",
-  "Sicily": "it-sicily",
-  "Sardinia": "it-sardinia",
-  "Cornwall": "gb-cornwall",
-  "Shetland": "gb-shetland",
-  "Orkney": "gb-orkney",
-  "Flanders": "be-flanders",
-  "Friesland": "nl-frisia",
-  "Sápmi": "eu-sapmi",
-  "Crete": "gr-crete",
   "United Kingdom": "gb",
 };
 
 /*
  * Find the vexilla flag id for a place name, if one exists
  */
-export function customFlagAsset(name: string | undefined): string | undefined {
-  if (name && Object.prototype.hasOwnProperty.call(CUSTOM_FLAGS, name)) {
+export function customFlagAsset(name: Maybe<string>): Maybe<string> {
+  const hasCustomFlag = !isNone(name) &&
+    Object.prototype.hasOwnProperty.call(CUSTOM_FLAGS, name);
+  if (hasCustomFlag) {
     return CUSTOM_FLAGS[name];
   }
-  return undefined;
+  return NONE;
 }
 
 /*
@@ -81,24 +61,26 @@ function spriteCellStyle(position: number): Record<string, string> {
 }
 
 export type FlagIconAttrs = {
-  name: string | undefined;
+  name: Maybe<string>;
   big?: boolean;
 };
 
 function viewFlagIcon(vnode: m.Vnode<FlagIconAttrs>): m.Children {
   const { name, big } = vnode.attrs;
   const asset = customFlagAsset(name);
-  if (!asset) {
+  if (isNone(name) || isNone(asset)) {
     return null;
   }
 
   const manifest = flagManifest();
   const label = `${name} flag`;
+  const largeAsset = manifest.big[asset];
+  const hasLargeFlagAsset = big === true && largeAsset !== undefined;
 
   // big flags over the byte budget fall back to the sprite cell
-  if (big && manifest.big[asset]) {
+  if (hasLargeFlagAsset) {
     return m("img.flag-icon", {
-      src: manifest.big[asset],
+      src: largeAsset,
       alt: label,
       loading: "lazy",
     });

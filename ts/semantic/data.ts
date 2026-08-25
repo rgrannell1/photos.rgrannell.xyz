@@ -5,6 +5,7 @@
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TargetValidator, Triple } from "@rgrannell1/tribbledb";
 import { TribbleParser } from "@rgrannell1/tribbledb";
+import { isNone, type Maybe, NONE } from "../commons/maybe.ts";
 
 export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
   const parser = new TribbleParser();
@@ -53,13 +54,13 @@ export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
   }
 }
 
-let tdb: TribbleDB | null = null;
+let tdb: Maybe<TribbleDB> = NONE;
 
 /*
  * Shared TribbleDB. Starts empty so the app can mount before the stream fills it.
  */
 export function getTribbleDB(schema: Record<string, TargetValidator> = {}): TribbleDB {
-  if (!tdb) {
+  if (isNone(tdb)) {
     tdb = new TribbleDB([], schema);
   }
 

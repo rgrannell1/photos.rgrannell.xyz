@@ -7,6 +7,7 @@ import { KnownTypes } from "../ts/constants/data.ts";
 import { readAlbum, readVideos } from "../ts/services/readers.ts";
 import { readVideosByThingIds } from "../ts/services/videos.ts";
 import type { Video } from "../ts/types.ts";
+import { isNone } from "../ts/commons/maybe.ts";
 
 const ALBUM = "urn:ró:album:test";
 const BIRD = "urn:ró:bird:robin";
@@ -29,11 +30,16 @@ const TRIPLES: Triple[] = [
   [SECOND_VIDEO, "subject", BIRD],
 ];
 
+function readAlbumMinDate(tdb: TribbleDB, albumId: string): number {
+  const album = readAlbum(tdb, albumUrn(albumId));
+  return isNone(album) ? 0 : album.minDate;
+}
+
 function sortLegacyVideos(tdb: TribbleDB, videos: Video[]) {
   const dates = new Map(
     videos.map((video) => [
       video.albumId,
-      readAlbum(tdb, albumUrn(video.albumId))?.minDate ?? 0,
+      readAlbumMinDate(tdb, video.albumId),
     ]),
   );
 

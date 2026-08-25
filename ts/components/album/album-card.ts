@@ -6,15 +6,16 @@ import m from "mithril";
 import type { Album, Country } from "../../types.ts";
 import { PhotoAlbum } from "./photo-album.ts";
 import { PhotoAlbumMetadata } from "./photo-album-metadata.ts";
-import { countryFlagLinks } from "../thing/place-links.ts";
+import { countryFlagLinks } from "../thing/country-link.ts";
 import { thumbHashDataUrl } from "../../services/photos.ts";
 import { albumRoute, onAlbumClick } from "../../commons/album-nav.ts";
+import type { Maybe } from "../../commons/maybe.ts";
 
 type AlbumCardAttrs = {
   album: Album;
   countries: Country[];
   loading: "eager" | "lazy";
-  trip: string | undefined;
+  trip: Maybe<string>;
   child?: m.Children;
   containerAttrs?: m.Attributes;
 };
