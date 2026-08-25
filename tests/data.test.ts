@@ -14,7 +14,7 @@ import { readMammalStats } from "../ts/services/data/stats.ts";
 import { readThingCover } from "../ts/services/data/photos.ts";
 import { readGeocodedPlacesWithCovers } from "../ts/services/data/places.ts";
 import { KnownRelations, KnownTypes } from "../ts/constants/data.ts";
-import { browseableEntityTypes } from "../ts/semantic/derive.ts";
+import { browseableEntityTypes } from "../ts/semantic/derive/mod.ts";
 import { isNone } from "../ts/commons/maybe.ts";
 
 const tdb = await loadTribbles();

@@ -1,5 +1,5 @@
 import * as path from "jsr:@std/path";
-import { deriveTriples, postIndexing } from "../semantic/derive.ts";
+import { createTripleDeriver, postIndexing } from "../semantic/derive/mod.ts";
 import { loadTriples } from "../semantic/data.ts";
 import { readAllAlbums } from "../services/data/albums.ts";
 import { HOMEPAGE_PRELOAD_COUNT } from "../constants/layout.ts";
@@ -50,7 +50,7 @@ export async function loadTribbles() {
   if (isNone(tribblesFile)) {
     throw new Error("No tribbles file found");
   }
-  const tdb = await loadTriples(tribblesFile, {}, deriveTriples);
+  const tdb = await loadTriples(tribblesFile, {}, createTripleDeriver());
   postIndexing(tdb);
   return tdb;
 }

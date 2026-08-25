@@ -5,10 +5,10 @@
 import type { AppWindow } from "./types/browser.ts";
 import { getTribbleDB, loadTriples } from "./semantic/data.ts";
 import {
-  deriveTriples,
+  createTripleDeriver,
   runFinalPasses,
   runStreamPasses,
-} from "./semantic/derive.ts";
+} from "./semantic/derive/mod.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { SERVICE_READERS } from "./services/data/mod.ts";
 import {
@@ -49,6 +49,7 @@ export async function completeLoad(
   onProgress: () => void,
 ): Promise<void> {
   const tdb = state.data;
+  const deriveTriples = createTripleDeriver();
   let lastProgress = 0;
 
   const onBatch = () => {

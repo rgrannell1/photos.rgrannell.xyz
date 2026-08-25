@@ -2,7 +2,7 @@
 
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { navigate } from "../../app/events.ts";
+import { navigate } from "../../services/browser/events.ts";
 
 import { one } from "../../commons/arrays.ts";
 import { customFlagAsset, FlagIcon } from "../flag.ts";

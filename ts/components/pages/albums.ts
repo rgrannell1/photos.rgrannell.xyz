@@ -8,7 +8,7 @@ import type { Album, Country } from "../../types/domain.ts";
 import { thumbHashDataUrl } from "../../services/rendering/photos.ts";
 import { setTitle, sharePhotoUrl } from "../../services/browser/window.ts";
 import { mountYearScroll } from "../../services/rendering/year-scroll.ts";
-import { broadcast } from "../../app/events.ts";
+import { broadcast } from "../../services/browser/events.ts";
 import { albumYear } from "../../domain/albums.ts";
 import { CountryFilter } from "../album/country-filter.ts";
 import {

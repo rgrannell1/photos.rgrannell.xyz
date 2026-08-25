@@ -27,7 +27,7 @@ import { HeartRain } from "../shell/love.ts";
 import { PhotoAlbum } from "../album/photo-album.ts";
 import { ThingCaption } from "../thing/thing-caption.ts";
 import { loadingMode, thumbHashDataUrl } from "../../services/rendering/photos.ts";
-import { navigate } from "../../app/events.ts";
+import { navigate } from "../../services/browser/events.ts";
 import { ShareButton } from "../share-button.ts";
 import { sharePhotoUrl } from "../../services/browser/window.ts";
 import type { ReadThingEmoji } from "../thing/thing-link.ts";

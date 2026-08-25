@@ -2,7 +2,7 @@
  * Unit regression tests for the derivation-pass ordering.
  */
 
-import { orderPasses } from "../ts/semantic/derive.ts";
+import { orderPasses } from "../ts/semantic/derive/mod.ts";
 
 function assertEquals(actual: unknown, expected: unknown) {
   const actualJson = JSON.stringify(actual);

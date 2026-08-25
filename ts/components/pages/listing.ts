@@ -1,7 +1,7 @@
 import m from "mithril";
 import { KnownTypes } from "../../constants/data.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { broadcast, navigate } from "../../app/events.ts";
+import { broadcast, navigate } from "../../services/browser/events.ts";
 import type { Photo } from "../../types/domain.ts";
 import { PhotoAlbum } from "../album/photo-album.ts";
 import { thumbHashDataUrl, loadingMode } from "../../services/rendering/photos.ts";

@@ -1,5 +1,5 @@
 import m from "mithril";
-import { navigate } from "../../app/events.ts";
+import { navigate } from "../../services/browser/events.ts";
 
 function viewAlbumsButton(): m.Children {
   return m(

@@ -1,5 +1,5 @@
 import m from "mithril";
-import { navigate } from "../../app/events.ts";
+import { navigate } from "../../services/browser/events.ts";
 import type { Photo } from "../../types/domain.ts";
 import { PhotoAlbum } from "../album/photo-album.ts";
 import { thumbHashDataUrl, loadingMode } from "../../services/rendering/photos.ts";

@@ -7,7 +7,7 @@
 
 import { KnownRelations, KnownTypes } from "../ts/constants/data.ts";
 
-// relations added client-side by semantic/derive.ts, absent from the manifest
+// relations added client-side by semantic/derive/, absent from the manifest
 const DERIVED_RELATIONS = new Set<string>([
   KnownRelations.YEAR,
   KnownRelations.CONTAINS,

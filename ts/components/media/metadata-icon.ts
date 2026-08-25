@@ -1,5 +1,5 @@
 import m from "mithril";
-import { broadcast } from "../../app/events.ts";
+import { broadcast } from "../../services/browser/events.ts";
 
 // The circled "i" glyph.
 const INFO_GLYPH_PATH = "m10 20c-5.523 0-10-4.477-10-10s4.477-10 10-10 10 4.477 10 10" +

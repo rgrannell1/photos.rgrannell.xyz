@@ -3,7 +3,7 @@
  * register into the expansion map, and drop from the indexed triples.
  */
 
-import { deriveTriples } from "../ts/semantic/derive.ts";
+import { createTripleDeriver } from "../ts/semantic/derive/mod.ts";
 import type { Triple } from "@rgrannell1/tribbledb";
 
 function assertEquals(actual: unknown, expected: unknown) {
@@ -44,6 +44,8 @@ const EXPANSION_CASES: { name: string; input: Triple; expected: Triple[] }[] = [
 ];
 
 Deno.test("deriveTriples expands curies from in-band definitions", () => {
+  const deriveTriples = createTripleDeriver();
+
   for (const definition of DEFINITIONS) {
     assertEquals(deriveTriples(definition), []);
   }
@@ -51,4 +53,16 @@ Deno.test("deriveTriples expands curies from in-band definitions", () => {
   for (const testCase of EXPANSION_CASES) {
     assertEquals(deriveTriples(testCase.input), testCase.expected);
   }
+});
+
+Deno.test("separate triple derivers isolate curie definitions", () => {
+  const input: Triple = ["[cache:item]", "name", "example"];
+  const firstDeriver = createTripleDeriver();
+  const secondDeriver = createTripleDeriver();
+
+  firstDeriver(["urn:first:", "curie", "cache"]);
+  assertEquals(firstDeriver(input), [["urn:first:item", "name", "example"]]);
+
+  secondDeriver(["urn:second:", "curie", "cache"]);
+  assertEquals(secondDeriver(input), [["urn:second:item", "name", "example"]]);
 });

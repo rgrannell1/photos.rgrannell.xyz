@@ -1,7 +1,7 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import m from "mithril";
 import { capitalise } from "../../commons/strings.ts";
-import { block, broadcast } from "../../app/events.ts";
+import { block, broadcast } from "../../services/browser/events.ts";
 
 function onListingClick(type: string, event: Event) {
   broadcast("navigate", {

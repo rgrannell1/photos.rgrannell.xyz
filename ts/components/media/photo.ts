@@ -1,7 +1,7 @@
 /* Render one interactive photo and its metadata link. */
 
 import m from "mithril";
-import { block } from "../../app/events.ts";
+import { block } from "../../services/browser/events.ts";
 import { openUrl } from "../../services/browser/window.ts";
 import { formatId } from "../../commons/urn.ts";
 import { MetadataIcon } from "./metadata-icon.ts";

@@ -1,7 +1,7 @@
 import m from "mithril";
 
 import { setTitle } from "../../services/browser/window.ts";
-import { navigate } from "../../app/events.ts";
+import { navigate } from "../../services/browser/events.ts";
 import { AlbumBanner } from "../album/album-banner.ts";
 import { thumbHashDataUrl } from "../../services/rendering/photos.ts";
 import {

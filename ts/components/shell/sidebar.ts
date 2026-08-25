@@ -1,5 +1,5 @@
 import m from "mithril";
-import { navigate } from "../../app/events.ts";
+import { navigate } from "../../services/browser/events.ts";
 
 type SidebarItemAttrs = {
   name: string;

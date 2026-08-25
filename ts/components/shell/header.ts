@@ -1,5 +1,5 @@
 import m from "mithril";
-import { broadcast, navigate } from "../../app/events.ts";
+import { broadcast, navigate } from "../../services/browser/events.ts";
 
 const BRAND_TEXT = "photos";
 

@@ -1,5 +1,5 @@
 import m from "mithril";
-import { broadcast } from "../../app/events.ts";
+import { broadcast } from "../../services/browser/events.ts";
 import { ImagePair } from "../media/image-pair.ts";
 import { thumbHashDataUrl } from "../../services/rendering/photos.ts";
 import type { Photo } from "../../types/domain.ts";

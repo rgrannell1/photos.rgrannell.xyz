@@ -1,5 +1,8 @@
 import m from "mithril";
-import { albumRoute, onAlbumClick } from "../../app/album-nav.ts";
+import {
+  albumRoute,
+  onAlbumClick,
+} from "../../services/browser/album-navigation.ts";
 
 type AlbumButtonAttrs = {
   id: string;

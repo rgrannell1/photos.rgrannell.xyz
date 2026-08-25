@@ -8,7 +8,10 @@ import { PhotoAlbum } from "./photo-album.ts";
 import { PhotoAlbumMetadata } from "./photo-album-metadata.ts";
 import { countryFlagLinks } from "../thing/country-link.ts";
 import { thumbHashDataUrl } from "../../services/rendering/photos.ts";
-import { albumRoute, onAlbumClick } from "../../app/album-nav.ts";
+import {
+  albumRoute,
+  onAlbumClick,
+} from "../../services/browser/album-navigation.ts";
 import type { Maybe } from "../../commons/maybe.ts";
 
 type AlbumCardAttrs = {
