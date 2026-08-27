@@ -10,7 +10,10 @@ import {
   readAllAlbums,
 } from "../ts/services/data/albums.ts";
 import { readCountries } from "../ts/services/data/readers.ts";
-import { readMammalStats } from "../ts/services/data/stats.ts";
+import {
+  readMammalStats,
+  readWildBirdChecklist,
+} from "../ts/services/data/stats.ts";
 import { readThingCover } from "../ts/services/data/photos.ts";
 import { readGeocodedPlacesWithCovers } from "../ts/services/data/places.ts";
 import { KnownRelations, KnownTypes } from "../ts/constants/data.ts";
@@ -53,6 +56,15 @@ Deno.test("Mammal stats find wild species seen in Ireland", () => {
     throw new Error(
       "no Irish wild mammal species found, despite Irish mammal photos",
     );
+  }
+});
+
+Deno.test("Wildlife checklist entries retain derived labels", () => {
+  const entries = readWildBirdChecklist(tdb);
+  const kingfisher = entries.find((entry) => entry.name === "Kingfisher");
+
+  if (!kingfisher?.isWild || !kingfisher.isIrish) {
+    throw new Error("Kingfisher checklist labels are incomplete");
   }
 });
 

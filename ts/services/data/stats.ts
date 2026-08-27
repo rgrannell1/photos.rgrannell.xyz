@@ -162,12 +162,7 @@ function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEn
     relation: KnownRelations.FIRST_SEEN,
   }).triples();
 
-  const wildSpeciesIds = new Set(
-    tdb.search({
-      relation: KnownRelations.SUBJECT,
-      target: { type: speciesType, qs: { context: "wild" } },
-    }).triples().map(([, , speciesUrn]) => asUrn(speciesUrn).id),
-  );
+  const wildSpeciesIds = readWildSpeciesIds(tdb, speciesType);
 
   const entries: ChecklistEntry[] = [];
 
@@ -175,35 +170,9 @@ function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEn
     const speciesId = asUrn(speciesUrn).id;
     if (speciesId === "unknown") continue;
 
-    const speciesThing = tdb.search({
-      source: { type: speciesType, id: speciesId },
-    }).firstObject();
-
-    const name = withDefault(one(fromNullable(speciesThing?.name)), speciesId);
-
-    const isIrish = one(fromNullable(speciesThing?.irish)) === "true";
-
-    const isWild = wildSpeciesIds.has(speciesId);
-
-    // scarce (data-derived): IRBC-rare status, or a low abundance band
-    const isScarce = one(fromNullable(speciesThing?.status)) === "rare" ||
-      SCARCE_RARITY_BANDS.has(
-        withDefault(one(fromNullable(speciesThing?.rarity)), ""),
-      );
-    const nemesis = one(fromNullable(speciesThing?.nemesis)) === "true";
-    const target = one(fromNullable(speciesThing?.target)) === "true";
-
-    entries.push({
-      speciesId,
-      speciesType,
-      name,
-      firstSeen,
-      isIrish,
-      isWild,
-      scarce: isScarce,
-      nemesis,
-      target,
-    });
+    entries.push(
+      readChecklistEntry(tdb, speciesType, speciesId, firstSeen, wildSpeciesIds),
+    );
   }
 
   entries.sort((entryA, entryB) =>
@@ -211,6 +180,43 @@ function readWildlifeChecklist(tdb: TribbleDB, speciesType: string): ChecklistEn
   );
 
   return entries;
+}
+
+function readWildSpeciesIds(tdb: TribbleDB, speciesType: string): Set<string> {
+  return new Set(
+    tdb.search({
+      relation: KnownRelations.SUBJECT,
+      target: { type: speciesType, qs: { context: "wild" } },
+    }).triples().map(([, , speciesUrn]) => asUrn(speciesUrn).id),
+  );
+}
+
+function readChecklistEntry(
+  tdb: TribbleDB,
+  speciesType: string,
+  speciesId: string,
+  firstSeen: string,
+  wildSpeciesIds: Set<string>,
+): ChecklistEntry {
+  const speciesThing = tdb.search({
+    source: { type: speciesType, id: speciesId },
+  }).firstObject();
+  const name = withDefault(one(fromNullable(speciesThing?.name)), speciesId);
+  // Scarce means IRBC-rare status or a low abundance band.
+  const isScarce = one(fromNullable(speciesThing?.status)) === "rare" ||
+    SCARCE_RARITY_BANDS.has(withDefault(one(fromNullable(speciesThing?.rarity)), ""));
+
+  return {
+    speciesId,
+    speciesType,
+    name,
+    firstSeen,
+    isIrish: one(fromNullable(speciesThing?.irish)) === "true",
+    isWild: wildSpeciesIds.has(speciesId),
+    scarce: isScarce,
+    nemesis: one(fromNullable(speciesThing?.nemesis)) === "true",
+    target: one(fromNullable(speciesThing?.target)) === "true",
+  };
 }
 
 export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
