@@ -24,6 +24,12 @@ interface SocialCard {
   image_url: string;
 }
 
+interface SocialCardView {
+  title: string;
+  pageUrl: string;
+  imageUrl: string;
+}
+
 async function getSocialCard(
   db: D1Database,
   path: string,
@@ -76,6 +82,71 @@ function getImageUrl(card: Maybe<SocialCard>): Maybe<string> {
   return isSome(card) ? fromNullable(card.image_url) : NONE;
 }
 
+function readSocialCardView(
+  card: Maybe<SocialCard>,
+  request: Request,
+): SocialCardView {
+  return {
+    title: getPageTitle(card, request),
+    pageUrl: getPageUrl(request),
+    imageUrl: withDefault(getImageUrl(card), ""),
+  };
+}
+
+function renderSocialMetadata(view: SocialCardView, description: string): string {
+  return `  <!-- Social Cards -->
+  <meta property="og:title" content="${view.title}">
+  <meta property="og:description" content="${description}">
+  <meta property="og:url" content="${view.pageUrl}">
+  <meta property="og:image" content="${view.imageUrl}">
+  <meta property="og:type" content="website">`;
+}
+
+function renderSocialCardHtml(
+  view: SocialCardView,
+  card: Maybe<SocialCard>,
+): string {
+  const description = isSome(card) ? card.description ?? "" : "";
+  const socialMetadata = renderSocialMetadata(view, description);
+  // yes this is insecure, but Copilot was annoying me
+  // will patch soon
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta name="robots" content="noindex">
+  <meta name="googlebot" content="noindex">
+  <meta charset="utf-8">
+  <meta name="application-name" content="${new URL(view.pageUrl).hostname}">
+  <title>${view.title}</title>
+
+${socialMetadata}
+
+  <!-- No card for X, because fuck that guy. -->
+  <meta http-equiv="refresh" content="0; url=${view.pageUrl}">
+</head>
+<body></body>
+</html>`;
+}
+
+function createSocialCardResponse(
+  view: SocialCardView,
+  card: Maybe<SocialCard>,
+): Response {
+  return new Response(renderSocialCardHtml(view, card), {
+    headers: {
+      "Content-Type": "text/html;charset=UTF-8",
+      "Cache-Control": "public, max-age=1200",
+    },
+  });
+}
+
+function createUnavailableResponse(): Response {
+  return new Response(null, {
+    status: 503,
+    headers: { "Cache-Control": "no-store" },
+  });
+}
+
 export default {
   async fetch(
     request: Request,
@@ -89,10 +160,7 @@ export default {
 
     const cardResult = await getSocialCard(env.PHOTO_CARDS, path);
     if (!cardResult.ok) {
-      return new Response(null, {
-        status: 503,
-        headers: { "Cache-Control": "no-store" },
-      });
+      return createUnavailableResponse();
     }
     const card = cardResult.value;
     console.log(
@@ -100,51 +168,9 @@ export default {
       isSome(card) ? "Card found" : "No card found",
     );
 
-    const title = getPageTitle(card, request);
-    const pageUrl = getPageUrl(request);
-    const imageUrl = withDefault(getImageUrl(card), "");
-
-    const view = {
-      title,
-      pageUrl,
-      imageUrl,
-    };
-
+    const view = readSocialCardView(card, request);
     console.log(`[Worker] Response view:`, view);
-
-    // yes this is insecure, but Copilot was annoying me
-    // will patch soon
-    const htmlTemplate = `<!DOCTYPE html>
-<html>
-<head>
-  <meta name="robots" content="noindex">
-  <meta name="googlebot" content="noindex">
-  <meta charset="utf-8">
-  <meta name="application-name" content="${new URL(pageUrl).hostname}">
-  <title>${title}</title>
-
-  <!-- Social Cards -->
-  <meta property="og:title" content="${title}">
-  <meta property="og:description" content="${
-      isSome(card) ? card.description ?? "" : ""
-    }">
-  <meta property="og:url" content="${pageUrl}">
-  <meta property="og:image" content="${imageUrl}">
-  <meta property="og:type" content="website">
-
-  <!-- No card for X, because fuck that guy. -->
-  <meta http-equiv="refresh" content="0; url=${pageUrl}">
-</head>
-<body></body>
-</html>`;
-
-    const response = new Response(htmlTemplate, {
-      headers: {
-        "Content-Type": "text/html;charset=UTF-8",
-        "Cache-Control": "public, max-age=1200",
-      },
-    });
-
+    const response = createSocialCardResponse(view, card);
     console.log(`[Worker] Returning response with status: ${response.status}`);
     return response;
   },

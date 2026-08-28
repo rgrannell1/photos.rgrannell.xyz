@@ -18,7 +18,7 @@ export type ImagePairAttrs = {
   label?: string;
 };
 
-function viewImagePair(vnode: m.Vnode<ImagePairAttrs>): m.Children {
+function drawImageChildren(attrs: ImagePairAttrs): m.Children[] {
   const {
     imageUrl,
     href,
@@ -28,19 +28,23 @@ function viewImagePair(vnode: m.Vnode<ImagePairAttrs>): m.Children {
     onclick,
     width,
     height,
-    label,
-  } = vnode.attrs;
+  } = attrs;
 
   // When an anchor wraps the image, only the anchor handles its click.
   const isHrefLink = Boolean(href) && !imageUrl;
   const imageOnclick = isHrefLink ? undefined : onclick;
 
-  const children = [
+  return [
     isSome(thumbnailDataUrl)
       ? m(PlaceholderImage, { thumbnailDataUrl, width, height })
       : null,
     m(Image, { thumbnailUrl, loading, onclick: imageOnclick, width, height }),
   ];
+}
+
+function viewImagePair(vnode: m.Vnode<ImagePairAttrs>): m.Children {
+  const { imageUrl, href, onclick, label } = vnode.attrs;
+  const children = drawImageChildren(vnode.attrs);
 
   if (imageUrl) {
     return m("a", {

@@ -113,30 +113,43 @@ async function hashBytes(bytes: Uint8Array<ArrayBuffer>): Promise<string> {
     .map((byte) => byte.toString(16).padStart(2, "0")).join("").slice(0, 8);
 }
 
-/*
- * Publish vexilla assets with content-hashed names. Hash busts immutable /flags/* cache on changes.
- */
-export async function buildFlagAssets(): Promise<FlagManifest> {
-  console.info("🌐 Rendering flag assets");
+type SpriteMetadata = {
+  cellWidth: number;
+  cellHeight: number;
+  positions: Record<string, number>;
+};
 
-  // Wipe previous hashed outputs to avoid stale files.
+type PublishedSprite = {
+  hash: string;
+  metadata: SpriteMetadata;
+};
+
+function ignoreMissingFlagAssets(): void {
+  return;
+}
+
+async function clearFlagAssets(): Promise<void> {
   for await (const entry of Deno.readDir("flags")) {
     const isGeneratedSprite = entry.isFile && entry.name.startsWith("sprite.");
     if (isGeneratedSprite) {
       await Deno.remove(`flags/${entry.name}`);
     }
   }
-  await Deno.remove("flags/big", { recursive: true }).catch(() => {});
+  await Deno.remove("flags/big", { recursive: true }).catch(ignoreMissingFlagAssets);
   await Deno.mkdir("flags/big", { recursive: true });
+}
 
-  const spriteBytes = await Deno.readFile("flags/vendor/sprite.avif");
-  const spriteHash = await hashBytes(spriteBytes);
-  await Deno.writeFile(`flags/sprite.${spriteHash}.avif`, spriteBytes);
-
-  const spriteMeta = JSON.parse(
+async function publishFlagSprite(): Promise<PublishedSprite> {
+  const bytes = await Deno.readFile("flags/vendor/sprite.avif");
+  const hash = await hashBytes(bytes);
+  await Deno.writeFile(`flags/sprite.${hash}.avif`, bytes);
+  const metadata = JSON.parse(
     await Deno.readTextFile("flags/vendor/sprite.json"),
   );
+  return { hash, metadata };
+}
 
+async function publishBigFlags(): Promise<Record<string, string>> {
   const big: Record<string, string> = {};
   for await (const entry of Deno.readDir("flags/vendor/big")) {
     if (!entry.name.endsWith(".svg")) {
@@ -148,13 +161,24 @@ export async function buildFlagAssets(): Promise<FlagManifest> {
     await Deno.writeFile(`flags/big/${flagId}.${hash}.svg`, bytes);
     big[flagId] = `/flags/big/${flagId}.${hash}.svg`;
   }
+  return big;
+}
 
+/*
+ * Publish vexilla assets with content-hashed names. Hash busts immutable /flags/* cache on changes.
+ */
+export async function buildFlagAssets(): Promise<FlagManifest> {
+  console.info("🌐 Rendering flag assets");
+  // Wipe previous hashed outputs to avoid stale files.
+  await clearFlagAssets();
+  const sprite = await publishFlagSprite();
+  const big = await publishBigFlags();
   return {
-    sprite: `/flags/sprite.${spriteHash}.avif`,
-    cellWidth: spriteMeta.cellWidth,
-    cellHeight: spriteMeta.cellHeight,
-    count: Object.keys(spriteMeta.positions).length,
-    positions: spriteMeta.positions,
+    sprite: `/flags/sprite.${sprite.hash}.avif`,
+    cellWidth: sprite.metadata.cellWidth,
+    cellHeight: sprite.metadata.cellHeight,
+    count: Object.keys(sprite.metadata.positions).length,
+    positions: sprite.metadata.positions,
     big,
   };
 }

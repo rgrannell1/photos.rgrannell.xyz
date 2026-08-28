@@ -9,10 +9,14 @@ import {
 } from "../../constants/data.ts";
 import { baseUrn } from "./urns.ts";
 
-export function addTaxonSubjects(tdb: TribbleDB): void {
+type TaxonIndex = {
+  taxaBySpecies: Map<string, string[]>;
+  taxonUrns: Set<string>;
+};
+
+function readTaxonIndex(tdb: TribbleDB): TaxonIndex {
   const taxaBySpecies = new Map<string, string[]>();
   const taxonUrns = new Set<string>();
-
   for (const rank of TAXON_RANKS) {
     const rankTriples = tdb.search({ relation: rank.relation }).triples();
     for (const [src, , tgt] of rankTriples) {
@@ -23,12 +27,22 @@ export function addTaxonSubjects(tdb: TribbleDB): void {
       taxonUrns.add(tgt);
     }
   }
+  return { taxaBySpecies, taxonUrns };
+}
 
+function seedTaxonTriples(taxonUrns: Set<string>): Triple[] {
   const triples: Triple[] = [];
   for (const taxonUrn of taxonUrns) {
     triples.push([taxonUrn, "id", taxonUrn]);
   }
+  return triples;
+}
 
+function addLiftedRelations(
+  tdb: TribbleDB,
+  taxaBySpecies: Map<string, string[]>,
+  triples: Triple[],
+): void {
   const liftedRelations = [KnownRelations.SUBJECT, KnownRelations.COVER];
   for (const mediaType of [KnownTypes.PHOTO, KnownTypes.VIDEO]) {
     const mediaTriples = tdb.search({
@@ -43,6 +57,11 @@ export function addTaxonSubjects(tdb: TribbleDB): void {
       }
     }
   }
+}
 
+export function addTaxonSubjects(tdb: TribbleDB): void {
+  const { taxaBySpecies, taxonUrns } = readTaxonIndex(tdb);
+  const triples = seedTaxonTriples(taxonUrns);
+  addLiftedRelations(tdb, taxaBySpecies, triples);
   tdb.add(triples);
 }

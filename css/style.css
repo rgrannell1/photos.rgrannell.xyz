@@ -653,6 +653,10 @@ button:disabled {
     column-gap: 0;
   }
 
+  .photo-container + .video-container {
+    margin-top: 10px;
+  }
+
   /* each Photo() renders an outer div wrapper — make it fill the row */
   .photo-container > div {
     width: 100%;

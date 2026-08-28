@@ -99,36 +99,37 @@ function resetListBatchOnFilterChange(
   }
 }
 
+function readVisibleAlbumGroups(
+  batch: BatchRenderer,
+  attrs: AlbumsListAttrs,
+): YearGroup[] {
+  const showRecap = isNone(attrs.selectedCountry) && isNone(attrs.selectedTrip);
+  return groupAlbumsByYear(
+    attrs.albums.slice(0, batch.count()),
+    attrs.readYearRecap,
+    showRecap,
+    new Date().getFullYear(),
+  );
+}
+
 function viewAlbumsList(
   batch: BatchRenderer,
   vnode: m.Vnode<AlbumsListAttrs>,
 ): m.Children {
-  const { albums, readAlbumCountries, readYearRecap, selectedCountry, selectedTrip } =
-    vnode.attrs;
-
-  const showRecap = isNone(selectedCountry) && isNone(selectedTrip);
-
-  const groups = groupAlbumsByYear(
-    albums.slice(0, batch.count()),
-    readYearRecap,
-    showRecap,
-    new Date().getFullYear(),
-  );
-
-  const $albumComponents: m.Children[] = [];
+  const groups = readVisibleAlbumGroups(batch, vnode.attrs);
+  const albumComponents: m.Children[] = [];
   let startIdx = 0;
-
   for (const group of groups) {
-    $albumComponents.push(m(AlbumYearGroup, {
+    const yearGroup = m(AlbumYearGroup, {
       key: `year-group-${group.year}`,
       ...group,
-      readAlbumCountries,
+      readAlbumCountries: vnode.attrs.readAlbumCountries,
       startIdx,
-    }));
+    });
+    albumComponents.push(yearGroup);
     startIdx += group.albums.length;
   }
-
-  return m("section.album-container", $albumComponents);
+  return m("section.album-container", albumComponents);
 }
 
 function AlbumsList() {
@@ -180,59 +181,51 @@ function selectCountry(slug: Maybe<string>): void {
   broadcast("navigate", { route });
 }
 
-function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
-  const {
-    albums,
-    countries,
-    readAlbumCountries,
-    readYearRecap,
-    tripName,
-    visible,
-    selectedCountry,
-    selectedTrip,
-  } =
-    vnode.attrs;
+function drawTripShare(attrs: AlbumsPageAttrs): m.Children {
+  if (isNone(attrs.selectedTrip)) {
+    return null;
+  }
+  const tripLabel = withDefault(attrs.tripName, "Trip");
+  return m("section.trip-share", [
+    m("h2.trip-title", tripLabel),
+    m(ShareButton, {
+      url: sharePhotoUrl(`trip/${asUrn(attrs.selectedTrip).id}`),
+      name: tripLabel,
+    }),
+  ]);
+}
 
-  const tripLabel = withDefault(tripName, "Trip");
-  const $tripShare = isSome(selectedTrip)
-    ? m("section.trip-share", [
-      m("h2.trip-title", tripLabel),
-      m(ShareButton, {
-        url: sharePhotoUrl(`trip/${asUrn(selectedTrip).id}`),
-        name: tripLabel,
-      }),
-    ])
-    : null;
-
-  const $md = m("section.album-metadata", [
+function drawAlbumsMetadata(attrs: AlbumsPageAttrs): m.Children {
+  return m("section.album-metadata", [
     m(AlbumStats),
     m(CountryFilter, {
-      countries,
-      selectedCountry,
+      countries: attrs.countries,
+      selectedCountry: attrs.selectedCountry,
       onSelect: selectCountry,
     }),
-    $tripShare,
+    drawTripShare(attrs),
   ]);
+}
 
-  const bannerSrc = ALBUMS_BANNER_URL;
-  const bannerDataUrl = thumbHashDataUrl(ALBUMS_BANNER_MOSAIC);
+function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
+  const { attrs } = vnode;
 
   return m("main", {
-    class: visible ? "page sidebar-visible" : "page",
+    class: attrs.visible ? "page sidebar-visible" : "page",
   }, [
     m(AlbumBanner, {
-      src: bannerSrc,
+      src: ALBUMS_BANNER_URL,
       alt: "Albums",
-      thumbnailDataUrl: bannerDataUrl,
+      thumbnailDataUrl: thumbHashDataUrl(ALBUMS_BANNER_MOSAIC),
     }),
-    $md,
+    drawAlbumsMetadata(attrs),
     m(AlbumsList, {
-      albums,
-      readAlbumCountries,
-      readYearRecap,
-      visible,
-      selectedCountry,
-      selectedTrip,
+      albums: attrs.albums,
+      readAlbumCountries: attrs.readAlbumCountries,
+      readYearRecap: attrs.readYearRecap,
+      visible: attrs.visible,
+      selectedCountry: attrs.selectedCountry,
+      selectedTrip: attrs.selectedTrip,
     }),
   ]);
 }

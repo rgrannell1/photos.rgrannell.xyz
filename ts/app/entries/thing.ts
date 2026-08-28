@@ -64,49 +64,54 @@ function readThings(urn: string): TripleObject[] {
   return isNone(thing) ? [] : [thing];
 }
 
+function refreshThingCache(urn: string): void {
+  if (urn === cachedUrn) {
+    return;
+  }
+  const parsed = asUrn(urn);
+  cachedUrn = urn;
+  cachedThings = readThings(urn);
+  cachedListingTitle = parsed.id === "*"
+    ? some(services.readListingLabel(parsed.type))
+    : NONE;
+  cachedIsBinomial = services.isBinomialType(parsed.type);
+  const [thing] = cachedThings;
+  cachedTitleEmoji = thing ? services.readThingEmoji(urn, "", thing) : "";
+}
+
+function readThingPageAttrs(urn: string): ThingPageAttrs {
+  return {
+    urn,
+    things: cachedThings,
+    listingTitle: cachedListingTitle,
+    isBinomial: cachedIsBinomial,
+    titleEmoji: cachedTitleEmoji,
+    readSeenInCountries: services.readSeenInCountries,
+    readAlbumEntries,
+    readVideos: services.readVideosByThingIds,
+    readPhotos: services.readPhotosByThingIds,
+    readThingList,
+    readThingEmoji: services.readThingEmoji,
+    readTaxonMembers: services.readTaxonMembers,
+    readThingCover: services.readThingCover,
+    visible: state.sidebarVisible,
+  };
+}
+
+function resolveThingPage() {
+  if (!state.loaded) {
+    return "";
+  }
+  const pair = m.route.param("pair");
+  if (typeof pair !== "string") {
+    return "No thing selected";
+  }
+  const urn = thingUrn(pair);
+  refreshThingCache(urn);
+  return { attrs: readThingPageAttrs(urn) };
+}
+
 export const thingEntry = pageEntry({
   page: thingPageComponent,
-  resolve() {
-    if (!state.loaded) {
-      return "";
-    }
-
-    const pair = m.route.param("pair");
-    if (typeof pair !== "string") {
-      return "No thing selected";
-    }
-    const urn = thingUrn(pair);
-
-    if (urn !== cachedUrn) {
-      const parsed = asUrn(urn);
-      cachedUrn = urn;
-      cachedThings = readThings(urn);
-      cachedListingTitle = parsed.id === "*"
-        ? some(services.readListingLabel(parsed.type))
-        : NONE;
-      cachedIsBinomial = services.isBinomialType(parsed.type);
-      const [thing] = cachedThings;
-      cachedTitleEmoji = thing
-        ? services.readThingEmoji(urn, "", thing)
-        : "";
-    }
-
-    const attrs: ThingPageAttrs = {
-      urn,
-      things: cachedThings,
-      listingTitle: cachedListingTitle,
-      isBinomial: cachedIsBinomial,
-      titleEmoji: cachedTitleEmoji,
-      readSeenInCountries: services.readSeenInCountries,
-      readAlbumEntries,
-      readVideos: services.readVideosByThingIds,
-      readPhotos: services.readPhotosByThingIds,
-      readThingList,
-      readThingEmoji: services.readThingEmoji,
-      readTaxonMembers: services.readTaxonMembers,
-      readThingCover: services.readThingCover,
-      visible: state.sidebarVisible,
-    };
-    return { attrs };
-  },
+  resolve: resolveThingPage,
 });

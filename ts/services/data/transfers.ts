@@ -6,6 +6,29 @@ import { isNone } from "../../commons/maybe.ts";
 import { hasValidCoordinates } from "./places.ts";
 import { readPlace, readTransfers } from "./readers.ts";
 import type { TripPolyline } from "../../domain/map.ts";
+import type { Transfer } from "../../types/domain.ts";
+
+function readTransferPolyline(
+  tdb: TribbleDB,
+  transfer: Transfer,
+): TripPolyline | null {
+  const sourcePlace = readPlace(tdb, transfer.source);
+  const destinationPlace = readPlace(tdb, transfer.destination);
+  if (isNone(sourcePlace) || isNone(destinationPlace)) {
+    return null;
+  }
+  if (!hasValidCoordinates(sourcePlace) || !hasValidCoordinates(destinationPlace)) {
+    return null;
+  }
+  return {
+    tripUrn: transfer.id,
+    latLngs: [
+      [sourcePlace.latitude, sourcePlace.longitude],
+      [destinationPlace.latitude, destinationPlace.longitude],
+    ],
+    ...(transfer.mode != null && { mode: transfer.mode }),
+  };
+}
 
 export function readTransferPolylines(tdb: TribbleDB): TripPolyline[] {
   const transferUrns = new Set(
@@ -15,25 +38,10 @@ export function readTransferPolylines(tdb: TribbleDB): TripPolyline[] {
   const result: TripPolyline[] = [];
 
   for (const transfer of transfers) {
-    const sourcePlace = readPlace(tdb, transfer.source);
-    const destinationPlace = readPlace(tdb, transfer.destination);
-    const hasBothEndpoints = !isNone(sourcePlace) && !isNone(destinationPlace);
-    if (!hasBothEndpoints) {
-      continue;
+    const polyline = readTransferPolyline(tdb, transfer);
+    if (polyline !== null) {
+      result.push(polyline);
     }
-    const hasInvalidEndpoint = !hasValidCoordinates(sourcePlace) ||
-      !hasValidCoordinates(destinationPlace);
-    if (hasInvalidEndpoint) {
-      continue;
-    }
-    result.push({
-      tripUrn: transfer.id,
-      latLngs: [
-        [sourcePlace.latitude, sourcePlace.longitude],
-        [destinationPlace.latitude, destinationPlace.longitude],
-      ],
-      ...(transfer.mode != null && { mode: transfer.mode }),
-    });
   }
 
   return result;

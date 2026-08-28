@@ -42,10 +42,9 @@ function CameraModel() {
   return { view: viewCameraModel };
 }
 
-function viewExifData(vnode: m.Vnode<ExifDataAttrs>): m.Children {
-  const { photo, readThing, readEmoji } = vnode.attrs;
-
-  return m("table.metadata-table", [
+function drawCameraRows(attrs: ExifDataAttrs): m.Children[] {
+  const { photo, readThing, readEmoji } = attrs;
+  return [
     m(
       MetadataRow,
       { label: "Date-Time" },
@@ -61,6 +60,11 @@ function viewExifData(vnode: m.Vnode<ExifDataAttrs>): m.Children {
       { label: "Dimensions" },
       formatDimensions(fromNullable(photo.width), fromNullable(photo.height)),
     ),
+  ];
+}
+
+function drawExposureRows(photo: PhotoType): m.Children[] {
+  return [
     m(
       MetadataRow,
       { label: "Focal Length" },
@@ -77,7 +81,15 @@ function viewExifData(vnode: m.Vnode<ExifDataAttrs>): m.Children {
       { label: "ISO" },
       withDefault(fromNullable(photo.iso), UNKNOWN_EXIF_VALUE),
     ),
-  ]);
+  ];
+}
+
+function viewExifData(vnode: m.Vnode<ExifDataAttrs>): m.Children {
+  const rows = [
+    ...drawCameraRows(vnode.attrs),
+    ...drawExposureRows(vnode.attrs.photo),
+  ];
+  return m("table.metadata-table", rows);
 }
 
 export function ExifData() {

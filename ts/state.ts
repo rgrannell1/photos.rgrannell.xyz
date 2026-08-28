@@ -39,6 +39,31 @@ export type State = {
   sidebarVisible: boolean;
 };
 
+type LoadProgress = {
+  tdb: TribbleDB;
+  onProgress: () => void;
+  lastProgress: number;
+};
+
+function reportLoadProgress(progress: LoadProgress): void {
+  const now = performance.now();
+  if (now - progress.lastProgress < REDRAW_INTERVAL_MS) {
+    return;
+  }
+  progress.lastProgress = now;
+  runStreamPasses(progress.tdb);
+  progress.onProgress();
+}
+
+function readCatalogueFacts(tdb: TribbleDB): CatalogueFacts {
+  return {
+    regularBirdSpecies: countRegularBirdSpecies(tdb),
+    irishMammalSpecies: countIrishMammalSpecies(tdb),
+    nemesisBirds: collectUnphotographedNemesis(tdb, KnownTypes.BIRD),
+    nemesisMammals: collectUnphotographedNemesis(tdb, KnownTypes.MAMMAL),
+  };
+}
+
 /*
  * Stream the tribbles file into the shared TribbleDB. Cheap derivations re-run
  * during the stream, so partial renders see derived triples. The heavy joins,
@@ -50,36 +75,20 @@ export async function completeLoad(
 ): Promise<void> {
   const tdb = state.data;
   const deriveTriples = createTripleDeriver();
-  let lastProgress = 0;
-
-  const onBatch = () => {
-    const now = performance.now();
-    if (now - lastProgress < REDRAW_INTERVAL_MS) {
-      return;
-    }
-    lastProgress = now;
-
-    runStreamPasses(tdb);
-    onProgress();
-  };
+  const progress = { tdb, onProgress, lastProgress: 0 };
 
   await loadTriples(
     `/manifest/tribbles.${(window as AppWindow).envConfig.publication_id}.txt`,
     {},
     deriveTriples,
-    onBatch,
+    reportLoadProgress.bind(null, progress),
   );
 
   // a final stream-pass run, so the joins below see complete inverses
   runStreamPasses(tdb);
 
   // Read catalogue facts before pruning drops unphotographed species.
-  state.catalogue = {
-    regularBirdSpecies: countRegularBirdSpecies(tdb),
-    irishMammalSpecies: countIrishMammalSpecies(tdb),
-    nemesisBirds: collectUnphotographedNemesis(tdb, KnownTypes.BIRD),
-    nemesisMammals: collectUnphotographedNemesis(tdb, KnownTypes.MAMMAL),
-  };
+  state.catalogue = readCatalogueFacts(tdb);
 
   runFinalPasses(tdb);
 

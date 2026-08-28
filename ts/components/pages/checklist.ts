@@ -49,44 +49,90 @@ type ChecklistDetailsAttrs = {
   onSelect: (filter: string) => void;
 };
 
+type FilterControl = {
+  current: string;
+  value: string;
+  title: string;
+  label: m.Children;
+  onSelect: (filter: string) => void;
+};
+
+type FilterDefinition = {
+  value: string;
+  title: string;
+  label: string;
+  flag?: string;
+};
+
+type FilterDrawOptions = {
+  filter: string;
+  onSelect: (filter: string) => void;
+};
+
+const FILTER_DEFINITIONS: FilterDefinition[] = [
+  {
+    value: "ireland",
+    title: "Irish wild species",
+    label: "",
+    flag: "Ireland",
+  },
+  { value: "wild", title: "All wild species", label: "🗺️" },
+  { value: "all", title: "All species including captive", label: "all" },
+];
+
+function drawFilterControl(control: FilterControl): m.Children {
+  const selectedClass = control.current === control.value
+    ? "listing-filter-flag--selected"
+    : undefined;
+  return m("span.listing-filter-flag", {
+    title: control.title,
+    class: selectedClass,
+    onclick: control.onSelect.bind(null, control.value),
+  }, control.label);
+}
+
+function drawFilterDefinition(
+  options: FilterDrawOptions,
+  definition: FilterDefinition,
+  idx: number,
+): m.Children[] {
+  const label = definition.flag
+    ? m(FlagIcon, { name: definition.flag })
+    : definition.label;
+  const control = drawFilterControl({
+    ...definition,
+    current: options.filter,
+    label,
+    onSelect: options.onSelect,
+  });
+  return idx === 0 ? [control] : [" ", control];
+}
+
+function readChecklistDisplayCount(
+  entries: ChecklistEntry[],
+  filter: string,
+): number {
+  if (filter === "ireland") {
+    return entries.filter(isIrishWild).length;
+  }
+  if (filter === "all") {
+    return entries.length;
+  }
+  return entries.filter(isWild).length;
+}
+
 function viewChecklistDetails(
   vnode: m.Vnode<ChecklistDetailsAttrs>,
 ): m.Children {
   const { entries, filter, onSelect } = vnode.attrs;
-
-  const irishWildCount = entries.filter(isIrishWild).length;
-  const wildCount = entries.filter(isWild).length;
-  const totalCount = entries.length;
-
-  const displayCount = filter === "ireland"
-    ? irishWildCount
-    : filter === "all"
-    ? totalCount
-    : wildCount;
-
-  return m(
-    "p.listing-details",
-    m("span.listing-filter-flag", {
-      title: "Irish wild species",
-      class: filter === "ireland"
-        ? "listing-filter-flag--selected"
-        : undefined,
-      onclick: onSelect.bind(null, "ireland"),
-    }, m(FlagIcon, { name: "Ireland" })),
-    " ",
-    m("span.listing-filter-flag", {
-      title: "All wild species",
-      class: filter === "wild" ? "listing-filter-flag--selected" : undefined,
-      onclick: onSelect.bind(null, "wild"),
-    }, "🗺️"),
-    " ",
-    m("span.listing-filter-flag", {
-      title: "All species including captive",
-      class: filter === "all" ? "listing-filter-flag--selected" : undefined,
-      onclick: onSelect.bind(null, "all"),
-    }, "all"),
-    ` · ${displayCount} species`,
+  const controls = FILTER_DEFINITIONS.flatMap(
+    drawFilterDefinition.bind(null, { filter, onSelect }),
   );
+  const displayCount = readChecklistDisplayCount(entries, filter);
+  return m("p.listing-details", [
+    ...controls,
+    ` · ${displayCount} species`,
+  ]);
 }
 
 /*
@@ -382,56 +428,45 @@ function selectLifeListFilter(newFilter: string): void {
   broadcast("navigate", { route: `/life-list/${newFilter}` });
 }
 
-function viewChecklistPage(vnode: m.Vnode<ChecklistPageAttrs>): m.Children {
-  const {
-    entries,
-    covers,
-    regularCount,
-    nemesisBirds,
-    mammalEntries,
-    mammalCovers,
-    irishMammalCount,
-    nemesisMammals,
-    visible,
-    filter,
-  } = vnode.attrs;
-
+function drawBirdSection(attrs: ChecklistPageAttrs): m.Children[] {
+  const { entries, covers, regularCount, nemesisBirds, filter } = attrs;
   const preamble = lifeListPreamble(entries, regularCount);
   const description = "I am not a very committed birder, but I do like " +
     "photographing the different species I see. Here's my life list.";
 
-  // the mammal section shows in the Irish view only. Other views stay birds-only
-  const irishView = filter === "ireland";
-
-  return m("main", {
-    class: visible ? "page sidebar-visible" : "page",
-  }, [
+  return [
     m("section.album-metadata", [
       m("h1.albums-header", "Life List"),
       m(ChecklistDetails, { entries, filter, onSelect: selectLifeListFilter }),
     ]),
     isSome(preamble) ? m("p.photo-album-description", preamble) : null,
-    m(
-      "p.photo-album-description",
-      description,
-    ),
-    m("section.checklist-container", [
-      m(ChecklistGrid, {
-        entries,
-        covers,
-        nemesisSpecies: nemesisBirds,
-        mysteryGlyph: "🐦",
-        filter,
-      }),
-    ]),
-    irishView
-      ? m(MammalSection, {
-        mammalEntries,
-        mammalCovers,
-        irishMammalCount,
-        nemesisMammals,
-      })
-      : null,
+    m("p.photo-album-description", description),
+    m("section.checklist-container", m(ChecklistGrid, {
+      entries,
+      covers,
+      nemesisSpecies: nemesisBirds,
+      mysteryGlyph: "🐦",
+      filter,
+    })),
+  ];
+}
+
+function viewChecklistPage(vnode: m.Vnode<ChecklistPageAttrs>): m.Children {
+  const { attrs } = vnode;
+  // the mammal section shows in the Irish view only. Other views stay birds-only
+  const mammalSection = attrs.filter === "ireland"
+    ? m(MammalSection, {
+      mammalEntries: attrs.mammalEntries,
+      mammalCovers: attrs.mammalCovers,
+      irishMammalCount: attrs.irishMammalCount,
+      nemesisMammals: attrs.nemesisMammals,
+    })
+    : null;
+  return m("main", {
+    class: attrs.visible ? "page sidebar-visible" : "page",
+  }, [
+    ...drawBirdSection(attrs),
+    mammalSection,
   ]);
 }
 

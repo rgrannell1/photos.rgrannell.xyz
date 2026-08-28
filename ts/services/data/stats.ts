@@ -55,49 +55,61 @@ function findIrelandUrn(tdb: TribbleDB): Maybe<string> {
   return fromNullable(urn);
 }
 
-/* Wild = ?context=wild. Irish = location relation to Ireland (transitive). */
-export function readMammalStats(tdb: TribbleDB): SubjectStats {
-  const wildMammalTriples = tdb.search({
+function readWildMammalTriples(tdb: TribbleDB) {
+  return tdb.search({
     relation: KnownRelations.SUBJECT,
     target: { type: KnownTypes.MAMMAL, qs: { context: "wild" } },
   }).triples();
+}
 
+function groupWildMammalsByPhoto(
+  triples: ReturnType<typeof readWildMammalTriples>,
+): Map<string, Set<string>> {
+  const grouped = new Map<string, Set<string>>();
+  for (const [photoUrn, , targetUrn] of triples) {
+    const mammalIds = grouped.get(photoUrn) ?? new Set<string>();
+    mammalIds.add(asUrn(targetUrn).id);
+    grouped.set(photoUrn, mammalIds);
+  }
+  return grouped;
+}
+
+function readIrelandPhotoUrns(tdb: TribbleDB): Set<string> {
+  const irelandUrn = findIrelandUrn(tdb);
+  if (!isSome(irelandUrn)) {
+    return new Set();
+  }
+  return new Set(tdb.search({
+    relation: KnownRelations.LOCATION,
+    target: irelandUrn,
+  }).sources());
+}
+
+function readIrishWildMammalIds(
+  tdb: TribbleDB,
+  triples: ReturnType<typeof readWildMammalTriples>,
+): Set<string> {
+  const photoMammals = groupWildMammalsByPhoto(triples);
+  const irelandPhotos = readIrelandPhotoUrns(tdb);
+  const mammalIds = new Set<string>();
+  for (const [photoUrn, photoMammalIds] of photoMammals) {
+    if (!irelandPhotos.has(photoUrn)) {
+      continue;
+    }
+    for (const mammalId of photoMammalIds) {
+      mammalIds.add(mammalId);
+    }
+  }
+  return mammalIds;
+}
+
+/* Wild = ?context=wild. Irish = location relation to Ireland (transitive). */
+export function readMammalStats(tdb: TribbleDB): SubjectStats {
+  const wildMammalTriples = readWildMammalTriples(tdb);
   const allMammalSubjects = tdb.search({
     relation: KnownRelations.SUBJECT,
     target: { type: KnownTypes.MAMMAL },
   }).triples();
-
-  const wildPhotoToMammals = new Map<string, Set<string>>();
-  for (const [photoUrn, , targetUrn] of wildMammalTriples) {
-    const mammalId = asUrn(targetUrn).id;
-    let mammalSet = wildPhotoToMammals.get(photoUrn);
-    if (!mammalSet) {
-      mammalSet = new Set();
-      wildPhotoToMammals.set(photoUrn, mammalSet);
-    }
-    mammalSet.add(mammalId);
-  }
-
-  // Photos with Ireland location (transitive).
-  const irelandUrn = findIrelandUrn(tdb);
-  const irelandPhotoUrns = new Set(
-    isSome(irelandUrn)
-      ? tdb.search({
-        relation: KnownRelations.LOCATION,
-        target: irelandUrn,
-      }).sources()
-      : [],
-  );
-
-  const irishWildMammalIds = new Set<string>();
-  for (const [photoUrn, mammalIds] of wildPhotoToMammals) {
-    if (irelandPhotoUrns.has(photoUrn)) {
-      for (const mammalId of mammalIds) {
-        irishWildMammalIds.add(mammalId);
-      }
-    }
-  }
-
   const wildMammalIds = new Set(
     wildMammalTriples.map(([, , targetUrn]) => asUrn(targetUrn).id),
   );
@@ -108,7 +120,7 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
   return {
     wildSpecies: wildMammalIds.size,
     totalSpecies: allMammalIds.size,
-    irishWildSpecies: irishWildMammalIds.size,
+    irishWildSpecies: readIrishWildMammalIds(tdb, wildMammalTriples).size,
   };
 }
 

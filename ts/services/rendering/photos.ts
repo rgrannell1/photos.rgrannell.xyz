@@ -5,6 +5,7 @@ import { isNone, type Maybe, NONE } from "../../commons/maybe.ts";
 import { thumbHashFromBase64, thumbHashToRGBA } from "../../vendor/thumbhash.ts";
 
 const PLACEHOLDER_CACHE: Map<string, string> = new Map();
+type DecodedThumbHash = ReturnType<typeof thumbHashToRGBA>;
 
 export function loadingMode(idx: number): "eager" | "lazy" {
   const viewportWidth = globalThis.innerWidth;
@@ -13,6 +14,28 @@ export function loadingMode(idx: number): "eager" | "lazy" {
   const maxRowsInFold = Math.floor(viewportHeight / PHOTO_WIDTH);
 
   return idx > (maxImagesPerRow * maxRowsInFold) + 1 ? "lazy" : "eager";
+}
+
+function decodeThumbHash(hash: string): Maybe<DecodedThumbHash> {
+  try {
+    return thumbHashToRGBA(thumbHashFromBase64(hash));
+  } catch {
+    return NONE;
+  }
+}
+
+function renderThumbHash(decoded: DecodedThumbHash): string {
+  const { width, height, rgba } = decoded;
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d");
+  if (!context) {
+    throw new Error("context missing");
+  }
+  const pixels = new ImageData(new Uint8ClampedArray(rgba), width, height);
+  context.putImageData(pixels, 0, 0);
+  return canvas.toDataURL("image/png");
 }
 
 /* ThumbHash to placeholder PNG. NONE for missing, legacy, or malformed hashes. */
@@ -27,30 +50,11 @@ export function thumbHashDataUrl(hash: Maybe<string>): Maybe<string> {
     return cached;
   }
 
-  let decoded;
-  try {
-    decoded = thumbHashToRGBA(thumbHashFromBase64(hash));
-  } catch {
+  const decoded = decodeThumbHash(hash);
+  if (isNone(decoded) || !decoded.width || !decoded.height) {
     return NONE;
   }
-  const { width, height, rgba } = decoded;
-  if (!width || !height) {
-    return NONE;
-  }
-
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-
-  const context = canvas.getContext("2d");
-  if (!context) {
-    throw new Error("context missing");
-  }
-
-  const pixels = new ImageData(new Uint8ClampedArray(rgba), width, height);
-  context.putImageData(pixels, 0, 0);
-
-  const dataUrl = canvas.toDataURL("image/png");
+  const dataUrl = renderThumbHash(decoded);
   PLACEHOLDER_CACHE.set(hash, dataUrl);
   return dataUrl;
 }

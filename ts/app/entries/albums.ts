@@ -70,49 +70,66 @@ function readTripLabel(trip: string): string {
   return withDefault(readTripName(trip), "Trip");
 }
 
+type AlbumFilters = {
+  selectedCountry: Maybe<string>;
+  selectedTrip: Maybe<string>;
+  tripName: Maybe<string>;
+};
+
+function refreshAlbumsCache(): void {
+  if (state.loaded && cachedAfterLoad) {
+    return;
+  }
+  cachedAlbums = services.readAllAlbums();
+  cachedCountries = services.readAllCountries();
+  cachedAfterLoad = state.loaded;
+}
+
+function readAlbumFilters(): AlbumFilters {
+  const countrySlug = fromNullable<string>(m.route.param("country"));
+  const selectedCountry = mapMaybe(countrySlug, countryUrn);
+  const tripSlug = fromNullable<string>(m.route.param("trip"));
+  const selectedTrip = mapMaybe(tripSlug, tripUrn);
+  const tripName = mapMaybe(selectedTrip, readTripLabel);
+  return { selectedCountry, selectedTrip, tripName };
+}
+
+function hasCountry(selectedCountry: string, album: Album): boolean {
+  return setify(fromNullable(album.country)).has(selectedCountry);
+}
+
+function hasTrip(selectedTrip: string, album: Album): boolean {
+  return album.trip === selectedTrip;
+}
+
+function filterAlbums(filters: AlbumFilters): Album[] {
+  let albums = cachedAlbums;
+  if (isSome(filters.selectedCountry)) {
+    albums = albums.filter(hasCountry.bind(null, filters.selectedCountry));
+  }
+  if (isSome(filters.selectedTrip)) {
+    albums = albums.filter(hasTrip.bind(null, filters.selectedTrip));
+  }
+  return albums;
+}
+
+function resolveAlbumsPage() {
+  refreshAlbumsCache();
+  const filters = readAlbumFilters();
+  const attrs: AlbumsPageAttrs = {
+    albums: filterAlbums(filters),
+    countries: cachedCountries,
+    readAlbumCountries,
+    readYearRecap,
+    tripName: filters.tripName,
+    visible: state.sidebarVisible,
+    selectedCountry: filters.selectedCountry,
+    selectedTrip: filters.selectedTrip,
+  };
+  return { attrs };
+}
+
 export const albumsEntry = pageEntry({
   page: albumsPageComponent,
-  resolve() {
-    const shouldRefreshCache = !state.loaded || !cachedAfterLoad;
-    if (shouldRefreshCache) {
-      cachedAlbums = services.readAllAlbums();
-      cachedCountries = services.readAllCountries();
-      cachedAfterLoad = state.loaded;
-    }
-
-    const countrySlug = fromNullable<string>(m.route.param("country"));
-    const selectedCountry: Maybe<string> = mapMaybe<string, string>(
-      countrySlug,
-      countryUrn,
-    );
-
-    const tripSlug = fromNullable<string>(m.route.param("trip"));
-    const selectedTrip: Maybe<string> = mapMaybe<string, string>(tripSlug, tripUrn);
-    const tripName: Maybe<string> = mapMaybe<string, string>(
-      selectedTrip,
-      readTripLabel,
-    );
-
-    let albums = cachedAlbums;
-    if (isSome(selectedCountry)) {
-      albums = albums.filter((album) => {
-        return setify(fromNullable(album.country)).has(selectedCountry);
-      });
-    }
-    if (isSome(selectedTrip)) {
-      albums = albums.filter((album) => album.trip === selectedTrip);
-    }
-
-    const attrs: AlbumsPageAttrs = {
-      albums,
-      countries: cachedCountries,
-      readAlbumCountries,
-      readYearRecap,
-      tripName,
-      visible: state.sidebarVisible,
-      selectedCountry,
-      selectedTrip,
-    };
-    return { attrs };
-  },
+  resolve: resolveAlbumsPage,
 });

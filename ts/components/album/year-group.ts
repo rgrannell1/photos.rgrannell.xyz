@@ -21,50 +21,58 @@ export type AlbumYearGroupAttrs = {
   startIdx: number;
 };
 
+function drawYearHeading(year: number, showHeading: boolean): m.Children {
+  if (!showHeading) {
+    return null;
+  }
+  return m("h2.year-heading", {
+    key: `year-${year}`,
+    id: `${ALBUM_YEAR_HEADING_ID_PREFIX}${year}`,
+    class: year <= BEFORE_TIMES_FINAL_YEAR ? "before-times" : undefined,
+  }, year.toString());
+}
+
+function drawYearRecap(
+  year: number,
+  recap: Maybe<string>,
+  showHeading: boolean,
+): m.Children {
+  if (!showHeading || !isSome(recap)) {
+    return null;
+  }
+  return m(YearRecap, { key: `year-recap-${year}`, markdown: recap });
+}
+
+function drawAlbumCard(
+  attrs: AlbumYearGroupAttrs,
+  album: Album,
+  albumIdx: number,
+): m.Children {
+  return m(AlbumCard, {
+    key: `album-${album.id}`,
+    album,
+    countries: attrs.readAlbumCountries(album),
+    loading: loadingMode(attrs.startIdx + albumIdx),
+    trip: fromNullable(album.trip),
+    containerAttrs: {
+      "data-testid": "album-row",
+      "data-album-title": album.name,
+    },
+  });
+}
+
 function viewAlbumYearGroup(
   vnode: m.Vnode<AlbumYearGroupAttrs>,
 ): m.Children {
-  const { year, showHeading, recap, albums, readAlbumCountries, startIdx } =
-    vnode.attrs;
-
-  const $components: m.Children[] = [];
-
-  if (showHeading) {
-    $components.push(m(
-      "h2.year-heading",
-      {
-        key: `year-${year}`,
-        id: `${ALBUM_YEAR_HEADING_ID_PREFIX}${year}`,
-        class: year <= BEFORE_TIMES_FINAL_YEAR ? "before-times" : undefined,
-      },
-      year.toString(),
-    ));
-  }
-
-  const showsRecap = showHeading && isSome(recap);
-  if (showsRecap) {
-    $components.push(
-      m(YearRecap, { key: `year-recap-${year}`, markdown: recap }),
-    );
-  }
-
+  const { year, showHeading, recap, albums } = vnode.attrs;
+  const components = [
+    drawYearHeading(year, showHeading),
+    drawYearRecap(year, recap, showHeading),
+  ];
   for (const [albumIdx, album] of albums.entries()) {
-    $components.push(
-      m(AlbumCard, {
-        key: `album-${album.id}`,
-        album,
-        countries: readAlbumCountries(album),
-        loading: loadingMode(startIdx + albumIdx),
-        trip: fromNullable(album.trip),
-        containerAttrs: {
-          "data-testid": "album-row",
-          "data-album-title": album.name,
-        },
-      }),
-    );
+    components.push(drawAlbumCard(vnode.attrs, album, albumIdx));
   }
-
-  return $components;
+  return components;
 }
 
 export function AlbumYearGroup() {

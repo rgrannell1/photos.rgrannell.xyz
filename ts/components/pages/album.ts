@@ -67,41 +67,24 @@ function drawAlbumMetadata(
   countries: Country[],
   tripPreviousAlbums: Album[],
 ): m.Children {
-  const {
-    name,
-    photosCount,
-    description,
-    dateRange,
-    shortDateRange,
-  } = album;
-
   const dateRangeText = isSmallerThan(SMALL_DEVICE_WIDTH)
-    ? shortDateRange
-    : dateRange;
-
-  const photoCountMessage = countLabel(photosCount, "photo");
-
-  const $countryLinks = countryFlagLinks(
-    album.id,
-    countries,
-  );
-
+    ? album.shortDateRange
+    : album.dateRange;
   const { id } = asUrn(album.id);
   const url = sharePhotoUrl(`album/${id}`);
 
   return m("section.photos-metadata", [
-    m("h1", { "data-testid": "album-heading" }, name),
+    m("h1", { "data-testid": "album-heading" }, album.name),
     m("p.photo-album-date", { "data-testid": "album-date" }, m("time", dateRangeText)),
-    m("p.photo-album-count", { "data-testid": "album-count" }, photoCountMessage),
-    m("p.photo-album-countries", { "data-testid": "album-countries" }, $countryLinks),
+    m("p.photo-album-count", { "data-testid": "album-count" },
+      countLabel(album.photosCount, "photo")),
+    m("p.photo-album-countries", { "data-testid": "album-countries" },
+      countryFlagLinks(album.id, countries)),
     m(TripPreviousAlbums, { albums: tripPreviousAlbums }),
-    m(
-      "p.photo-album-description",
-      { "data-testid": "album-description" },
-      m.trust(preprocessDescription(description ?? "") ?? ""),
-    ),
+    m("p.photo-album-description", { "data-testid": "album-description" },
+      m.trust(preprocessDescription(album.description ?? "") ?? "")),
     m("br"),
-    m(ShareButton, { url, name }),
+    m(ShareButton, { url, name: album.name }),
     " ",
     m(AlbumsButton),
     " ",

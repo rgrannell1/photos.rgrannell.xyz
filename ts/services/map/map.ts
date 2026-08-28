@@ -109,39 +109,55 @@ type MapState = {
   markerBounds: Maybe<LatLngBounds>;
 };
 
-function addMarkerBatch(mapState: MapState): void {
-  const { leafletLib, leafletMap, markersLayer, markerBounds } = mapState;
-  const lacksMarkerState = isNone(leafletLib) ||
-    isNone(leafletMap) ||
-    isNone(markersLayer) ||
-    isNone(markerBounds);
-  if (lacksMarkerState) return;
+type ReadyMarkerState = {
+  leafletLib: LeafletLib;
+  leafletMap: LeafletMap;
+  markersLayer: LayerGroup;
+  markerBounds: LatLngBounds;
+};
 
+function readReadyMarkerState(mapState: MapState): ReadyMarkerState | null {
+  const { leafletLib, leafletMap, markersLayer, markerBounds } = mapState;
+  if (
+    isNone(leafletLib) || isNone(leafletMap) ||
+    isNone(markersLayer) || isNone(markerBounds)
+  ) {
+    return null;
+  }
+  return { leafletLib, leafletMap, markersLayer, markerBounds };
+}
+
+function finishMarkerBatch(mapState: MapState, ready: ReadyMarkerState): void {
+  if (mapState.markerBatchIdx < mapState.lastPlaces.length) {
+    setTimeout(addMarkerBatch.bind(null, mapState), MAP_MARKER_BATCH_DELAY_MS);
+    return;
+  }
+  if (ready.markerBounds.isValid()) {
+    const padding: [number, number] = [MAP_BOUNDS_PADDING_PX, MAP_BOUNDS_PADDING_PX];
+    ready.leafletMap.fitBounds(ready.markerBounds, {
+      padding,
+      maxZoom: MAP_BOUNDS_MAX_ZOOM,
+    });
+  }
+}
+
+function addMarkerBatch(mapState: MapState): void {
+  const ready = readReadyMarkerState(mapState);
+  if (ready === null) return;
   const end = Math.min(
     mapState.markerBatchIdx + MAP_MARKER_BATCH_SIZE,
     mapState.lastPlaces.length,
   );
   for (let idx = mapState.markerBatchIdx; idx < end; idx++) {
     addPlaceMarker(
-      leafletLib,
-      markersLayer,
-      markerBounds,
+      ready.leafletLib,
+      ready.markersLayer,
+      ready.markerBounds,
       mapState.lastPlaces[idx],
     );
   }
   mapState.markerBatchIdx = end;
-  if (mapState.markerBatchIdx < mapState.lastPlaces.length) {
-    setTimeout(addMarkerBatch.bind(null, mapState), MAP_MARKER_BATCH_DELAY_MS);
-  } else if (markerBounds.isValid()) {
-    const padding: [number, number] = [
-      MAP_BOUNDS_PADDING_PX,
-      MAP_BOUNDS_PADDING_PX,
-    ];
-    leafletMap.fitBounds(markerBounds, {
-      padding,
-      maxZoom: MAP_BOUNDS_MAX_ZOOM,
-    });
-  }
+  finishMarkerBatch(mapState, ready);
 }
 
 function startPlaceMarkers(

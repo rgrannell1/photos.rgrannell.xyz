@@ -3,7 +3,7 @@ import { ThingSubtitle } from "../thing/thing-subtitle.ts";
 import { ThingTitle } from "../thing/thing-title.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { arrayify, one } from "../../commons/arrays.ts";
+import { one } from "../../commons/arrays.ts";
 import type {
   Album,
   Country,
@@ -14,7 +14,11 @@ import { CountryLink } from "../thing/country-link.ts";
 import { Video } from "../media/video.ts";
 import { AlbumCard } from "../album/album-card.ts";
 import { PhotoGrid } from "../media/photo-grid.ts";
-import { ThingList, type ReadThingList } from "../thing/thing-list.ts";
+import {
+  ThingList,
+  type ReadThingList,
+  type ThingListKind,
+} from "../thing/thing-list.ts";
 import { setify, setOf } from "../../commons/sets.ts";
 import {
   KnownRelations,
@@ -134,47 +138,56 @@ function drawMetadataRow([key, value]: [string, m.Children]): m.Children {
   ]);
 }
 
+function addLocatedInMetadata(
+  metadata: Record<string, m.Children>,
+  attrs: ThingPageAttrs,
+): void {
+  const locatedIn = setOf<string>(KnownRelations.IN, attrs.things);
+  if (locatedIn.size === 0) {
+    return;
+  }
+  metadata["Located In"] = m(ThingList, {
+    kind: "place",
+    readItems: attrs.readThingList,
+    readEmoji: attrs.readThingEmoji,
+    urns: locatedIn,
+  });
+}
+
+function addSeenInMetadata(
+  metadata: Record<string, m.Children>,
+  attrs: ThingPageAttrs,
+  seenInFor: CachedReader<SeenInCountry[]>,
+): void {
+  if (!attrs.isBinomial) {
+    return;
+  }
+  const seenIn = seenInFor(attrs);
+  if (seenIn.length > 0) {
+    metadata["Seen In"] = m(".seen-in-list", seenIn.map(drawSeenInCountry));
+  }
+}
+
 function viewThingDetails(
   seenInFor: CachedReader<SeenInCountry[]>,
   vnode: m.Vnode<ThingPageAttrs>,
 ): m.Children {
   const metadata: Record<string, m.Children> = {};
-  const { urn, things, readThingList, readThingEmoji } = vnode.attrs;
+  const { urn, things } = vnode.attrs;
 
   metadata.Classification = m(ListingLink, { urn });
-
-  const locatedIn = setOf<string>(KnownRelations.IN, things);
-
-  if (locatedIn.size > 0) {
-    metadata["Located In"] = m(ThingList, {
-      kind: "place",
-      readItems: readThingList,
-      readEmoji: readThingEmoji,
-      urns: locatedIn,
-    });
-  }
-
+  addLocatedInMetadata(metadata, vnode.attrs);
   if (things.length === 1) {
     addSingleThingMetadata(metadata, vnode.attrs);
   }
-
-  if (vnode.attrs.isBinomial) {
-    const seenIn = seenInFor(vnode.attrs);
-
-    if (seenIn.length > 0) {
-      metadata["Seen In"] = m(".seen-in-list", seenIn.map(drawSeenInCountry));
-    }
-  }
-
-  const $rows = Object.entries(metadata).map(drawMetadataRow);
-
-  if ($rows.length === 0) {
+  addSeenInMetadata(metadata, vnode.attrs, seenInFor);
+  const rows = Object.entries(metadata).map(drawMetadataRow);
+  if (rows.length === 0) {
     return null;
   }
-
   return m("div", [
     m("h3", "Details"),
-    m("table.metadata-table", $rows),
+    m("table.metadata-table", rows),
   ]);
 }
 
@@ -184,61 +197,45 @@ function ThingDetails() {
   return { view: viewThingDetails.bind(null, seenInFor) };
 }
 
+type ThingMetadata = {
+  label: string;
+  kind: ThingListKind;
+  values: string | string[] | undefined;
+};
+
+function addThingListMetadata(
+  metadata: Record<string, m.Children>,
+  attrs: ThingPageAttrs,
+  item: ThingMetadata,
+): void {
+  if (!item.values) {
+    return;
+  }
+  metadata[item.label] = m(ThingList, {
+    kind: item.kind,
+    urns: setify(item.values),
+    readItems: attrs.readThingList,
+    readEmoji: attrs.readThingEmoji,
+  });
+}
+
 /* Metadata rows for a single thing, not a wildcard listing. */
 function addSingleThingMetadata(
   metadata: Record<string, m.Children>,
   attrs: ThingPageAttrs,
-) {
-  const { things, readThingList, readThingEmoji } = attrs;
-  const [thing] = things;
-
-  if (thing.features) {
-    metadata["Place Type"] = m(ThingList, {
-      kind: "feature",
-      urns: setify(thing.features),
-      readItems: readThingList,
-      readEmoji: readThingEmoji,
-    });
-  }
-
-  if (thing.contains) {
-    metadata["Contains"] = m(ThingList, {
-      kind: "place",
-      readItems: readThingList,
-      readEmoji: readThingEmoji,
-      urns: setify(thing.contains),
-    });
-  }
-
-  if (thing.placesWithFeature) {
-    metadata["Places"] = m(ThingList, {
-      kind: "place",
-      readItems: readThingList,
-      readEmoji: readThingEmoji,
-      urns: setify(thing.placesWithFeature),
-    });
-  }
-
-  if (thing.unescoId) {
-    metadata["UNESCO"] = m(ThingList, {
-      kind: "unesco",
-      urns: new Set(arrayify(thing.unescoId)),
-      readItems: readThingList,
-      readEmoji: readThingEmoji,
-    });
-  }
-
+): void {
+  const [thing] = attrs.things;
+  const items: ThingMetadata[] = [
+    { label: "Place Type", kind: "feature", values: thing.features },
+    { label: "Contains", kind: "place", values: thing.contains },
+    { label: "Places", kind: "place", values: thing.placesWithFeature },
+    { label: "UNESCO", kind: "unesco", values: thing.unescoId },
+  ];
   for (const rank of TAXON_RANKS) {
-    const taxa = thing[rank.relation];
-
-    if (taxa) {
-      metadata[rank.label] = m(ThingList, {
-        kind: "taxon",
-        urns: setify(taxa) as Set<string>,
-        readItems: readThingList,
-        readEmoji: readThingEmoji,
-      });
-    }
+    items.push({ label: rank.label, kind: "taxon", values: thing[rank.relation] });
+  }
+  for (const item of items) {
+    addThingListMetadata(metadata, attrs, item);
   }
 }
 

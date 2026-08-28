@@ -29,42 +29,31 @@ function shouldUpdatePhoto(
   return hasPhotoChanged(vnode.attrs, old.attrs);
 }
 
-function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
-  const { photo, loading, interactive } = vnode.attrs;
-  const id = formatId(photo.id);
-  const {
-    fullImage,
-    thumbnailUrl,
-    mosaicColours,
-  } = photo;
-
-  const thumbnailDataUrl = thumbHashDataUrl(mosaicColours);
-
-  const $mdIcon = m(MetadataIcon, { route: `/photo/${id}`, colour: photo.contrastingGrey });
-  const $imagePair = m(ImagePair, {
+function drawImagePair(attrs: PhotoAttrs): m.Children {
+  const { photo, loading } = attrs;
+  return m(ImagePair, {
     imageUrl: photo.fullImage,
-    thumbnailUrl,
-    thumbnailDataUrl,
+    thumbnailUrl: photo.thumbnailUrl,
+    thumbnailDataUrl: thumbHashDataUrl(photo.mosaicColours),
     loading,
     width: PHOTO_WIDTH,
     height: PHOTO_HEIGHT,
-    onclick: openUrl.bind(null, fullImage),
+    onclick: openUrl.bind(null, photo.fullImage),
   });
+}
+
+function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
+  const { photo, interactive } = vnode.attrs;
+  const imagePair = drawImagePair(vnode.attrs);
+  const metadataIcon = m(MetadataIcon, {
+    route: `/photo/${formatId(photo.id)}`,
+    colour: photo.contrastingGrey,
+  });
+  const content = interactive ? [metadataIcon, imagePair] : [imagePair];
 
   return m(
     "div",
-    m("div.photo", {}, [
-      m(
-        "a",
-        { onclick: block },
-        interactive
-          ? [
-            $mdIcon,
-            $imagePair,
-          ]
-          : [$imagePair],
-      ),
-    ]),
+    m("div.photo", {}, [m("a", { onclick: block }, content)]),
   );
 }
 

@@ -26,68 +26,73 @@ type MediaComponentAttrs = {
   readEmoji: ReadThingEmoji;
 };
 
-function viewMediaInfo(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
-  const { media, readThing, readEmoji } = vnode.attrs;
+function drawRow(label: string, value: m.Children): m.Children {
+  return m("tr", [m(Heading, { text: label }), value]);
+}
 
-  const infoItems = [];
-  const hasDescription = Boolean(media.description || media.summary);
-
-  if (hasDescription) {
-    infoItems.push(m("tr", [
-      m(Heading, { text: "Description" }),
-      m(MediaDescription, {
-        description: fromNullable(media.description),
-        summary: fromNullable(media.summary),
-      }),
-    ]));
+function drawDescriptionRow(media: Media): m.Children {
+  if (!media.description && !media.summary) {
+    return null;
   }
 
-  infoItems.push(
-    m("tr", [
-      m(Heading, { text: "Location" }),
-      m(MediaLocations, {
-        location: fromNullable(media.location),
-        readThing,
-        readEmoji,
-        mode: "geographic",
-      }),
-    ]),
-    m("tr", [
-      m(Heading, { text: "Place Type" }),
-      m(MediaLocations, {
-        location: fromNullable(media.location),
-        readThing,
-        readEmoji,
-        mode: "feature",
-      }),
-    ]),
-    m("tr", [
-      m(Heading, { text: "Rating" }),
-      m(MediaThingLinks, {
-        value: fromNullable(media.rating),
-        readThing,
-        readEmoji,
-      }),
-    ]),
-    m("tr", [
-      m(Heading, { text: "Style" }),
-      m(MediaThingLinks, {
-        value: fromNullable(media.style),
-        readThing,
-        readEmoji,
-      }),
-    ]),
-    m("tr", [
-      m(Heading, { text: "Subject" }),
-      m(MediaSubject, {
-        subject: fromNullable(media.subject),
-        readThing,
-        readEmoji,
-      }),
-    ]),
-  );
+  const description = m(MediaDescription, {
+    description: fromNullable(media.description),
+    summary: fromNullable(media.summary),
+  });
+  return drawRow("Description", description);
+}
 
-  return m("table.metadata-table", infoItems);
+function drawLocationRow(
+  attrs: MediaComponentAttrs,
+  mode: "geographic" | "feature",
+): m.Children {
+  const { media, readThing, readEmoji } = attrs;
+  const label = mode === "geographic" ? "Location" : "Place Type";
+  const locations = m(MediaLocations, {
+    location: fromNullable(media.location),
+    readThing,
+    readEmoji,
+    mode,
+  });
+  return drawRow(label, locations);
+}
+
+function drawThingRow(
+  attrs: MediaComponentAttrs,
+  label: string,
+  value: string | undefined,
+): m.Children {
+  const { readThing, readEmoji } = attrs;
+  const links = m(MediaThingLinks, {
+    value: fromNullable(value),
+    readThing,
+    readEmoji,
+  });
+  return drawRow(label, links);
+}
+
+function drawSubjectRow(attrs: MediaComponentAttrs): m.Children {
+  const { media, readThing, readEmoji } = attrs;
+  const subject = m(MediaSubject, {
+    subject: fromNullable(media.subject),
+    readThing,
+    readEmoji,
+  });
+  return drawRow("Subject", subject);
+}
+
+function viewMediaInfo(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
+  const { attrs } = vnode;
+  const rows = [
+    drawDescriptionRow(attrs.media),
+    drawLocationRow(attrs, "geographic"),
+    drawLocationRow(attrs, "feature"),
+    drawThingRow(attrs, "Rating", attrs.media.rating),
+    drawThingRow(attrs, "Style", attrs.media.style),
+    drawSubjectRow(attrs),
+  ];
+
+  return m("table.metadata-table", rows);
 }
 
 export function MediaInfo() {

@@ -17,39 +17,34 @@ type PhotoPageAttrs = {
   visible: boolean;
 };
 
-function viewPhotoPage(vnode: m.Vnode<PhotoPageAttrs>): m.Children {
-  const { photo, albumHidden, readThing, readEmoji, visible } = vnode.attrs;
-
+function drawPhotoLinks(photo: PhotoType, albumHidden: boolean): m.Children {
   const shareUrl = sharePhotoUrl(`photo/${asUrn(photo.id).id}`);
-
-  const $links = m("ul.link-list", { "data-testid": "photo-links" }, [
+  return m("ul.link-list", { "data-testid": "photo-links" }, [
     m("li", m("a", { href: photo.fullImage, rel: "noreferrer" }, "[webp]")),
     m("li", m("a", { href: photo.previewJpegUrl, rel: "noreferrer" }, "[jpeg]")),
     m("li", m("a", { href: shareUrl, rel: "noreferrer" }, "[share]")),
     m("li", m(AlbumButton, { id: photo.albumId, hidden: albumHidden })),
   ]);
+}
 
-  const $exif = m(ExifData, { photo, readThing, readEmoji });
-  const $photoInfo = m(MediaInfo, { media: photo, readThing, readEmoji });
+function drawPhotoDetails(attrs: PhotoPageAttrs): m.Children {
+  const { photo, readThing, readEmoji, visible } = attrs;
+  return m("div", { class: visible ? "page sidebar-visible" : "page" }, [
+    m("h3", "Photo Information"),
+    m(MediaInfo, { media: photo, readThing, readEmoji }),
+    m("h3", "Exif Data"),
+    m(ExifData, { photo, readThing, readEmoji }),
+  ]);
+}
+
+function viewPhotoPage(vnode: m.Vnode<PhotoPageAttrs>): m.Children {
+  const { photo, albumHidden } = vnode.attrs;
 
   return m("main", { "data-testid": "photo-page" }, [
     m("h1", { "data-testid": "photo-heading" }, "Photo"),
-    m(Photo, {
-      photo,
-      loading: "eager",
-      interactive: false,
-    }),
-    $links,
-    m(
-      "div",
-      {
-        class: visible ? "page sidebar-visible" : "page",
-      },
-      m("h3", "Photo Information"),
-      $photoInfo,
-      m("h3", "Exif Data"),
-      $exif,
-    ),
+    m(Photo, { photo, loading: "eager", interactive: false }),
+    drawPhotoLinks(photo, albumHidden),
+    drawPhotoDetails(vnode.attrs),
   ]);
 }
 

@@ -40,10 +40,42 @@ function listingTitleExtra(
 
 type ReadThingCover = (urn: string) => Maybe<Photo>;
 
+type DrawThingAlbumOptions = {
+  coverCache: Map<string, Maybe<Photo>>;
+  readThingCover: ReadThingCover;
+  listingType: string;
+};
+
+type CoveredThing = {
+  thing: TripleObject;
+  id: string;
+  cover: Photo;
+};
+
+function drawCoveredThing(
+  options: DrawThingAlbumOptions,
+  item: CoveredThing,
+  idx: number,
+): m.Children {
+  const { id: thingId, type } = asUrn(item.id);
+  return m(PhotoAlbum, {
+    key: `thing-${item.id}`,
+    label: withDefault(one(item.thing.name), thingId),
+    imageUrl: item.cover.fullImage,
+    thumbnailUrl: item.cover.thumbnailUrl,
+    thumbnailDataUrl: thumbHashDataUrl(item.cover.mosaicColours),
+    loading: loadingMode(idx),
+    trip: NONE,
+    child: m(ThingCaption, {
+      thing: item.thing,
+      titleExtra: listingTitleExtra(item.thing, options.listingType),
+    }),
+    onclick: navigate(`/thing/${type}:${thingId}`),
+  });
+}
+
 function drawThingAlbum(
-  coverCache: Map<string, Maybe<Photo>>,
-  readThingCover: ReadThingCover,
-  listingType: string,
+  options: DrawThingAlbumOptions,
   thing: TripleObject,
   idx: number,
 ): m.Children[] {
@@ -53,27 +85,11 @@ function drawThingAlbum(
     return [];
   }
 
-  const coverPhoto = readThrough(coverCache, readThingCover, id);
+  const coverPhoto = readThrough(options.coverCache, options.readThingCover, id);
   if (isNone(coverPhoto)) {
     return [];
   }
-
-  const { id: thingId, type } = asUrn(id);
-
-  return [m(PhotoAlbum, {
-    key: `thing-${id}`,
-    label: withDefault(one(thing.name), thingId),
-    imageUrl: coverPhoto.fullImage,
-    thumbnailUrl: coverPhoto.thumbnailUrl,
-    thumbnailDataUrl: thumbHashDataUrl(coverPhoto.mosaicColours),
-    loading: loadingMode(idx),
-    trip: NONE,
-    child: m(ThingCaption, {
-      thing,
-      titleExtra: listingTitleExtra(thing, listingType),
-    }),
-    onclick: navigate(`/thing/${type}:${thingId}`),
-  })];
+  return [drawCoveredThing(options, { thing, id, cover: coverPhoto }, idx)];
 }
 
 type AlbumsListAttrs = {
@@ -105,11 +121,12 @@ function viewAlbumsList(
   vnode: m.Vnode<AlbumsListAttrs>,
 ): m.Children {
   const { readThingCover, things, listingType } = vnode.attrs;
+  const options = { coverCache, readThingCover, listingType };
   return m(
     "section.album-container",
     { "data-testid": "listing-cards" },
     things.slice(0, batch.count())
-      .flatMap(drawThingAlbum.bind(null, coverCache, readThingCover, listingType)),
+      .flatMap(drawThingAlbum.bind(null, options)),
   );
 }
 
@@ -265,39 +282,32 @@ function isIrishThing(thing: TripleObject): boolean {
   return one(thing.irish) === "true";
 }
 
-function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
-  const attrs = vnode.attrs;
-  const { type, things, label, isListable, stats, visible, filter } = attrs;
-
+function drawListingMetadata(attrs: ListingPageAttrs): m.Children {
+  const { type, label, isListable, stats, filter } = attrs;
   const onToggleIreland = toggleIrelandFilter.bind(null, type, filter);
-
-  const showsIrishBirds = type === KnownTypes.BIRD && filter === "ireland";
-  const displayThings = showsIrishBirds
-    ? things.filter(isIrishThing)
-    : things;
-
-  const $md = [
+  const metadata = [
     m(ListingTitle, { type, label }),
     m(ListingDetails, { type, stats, filter, onToggleIreland }),
   ];
-
   // the published listable flag gates the "see all <type> photos" link
   if (isListable) {
-    $md.push(
-      m("section.album-metadata", [
-        m(ListingThingsButton, { type }),
-      ]),
-    );
+    metadata.push(m("section.album-metadata", m(ListingThingsButton, { type })));
   }
+  return m("section.album-metadata", metadata);
+}
 
+function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
+  const { attrs } = vnode;
+  const showsIrishBirds = attrs.type === KnownTypes.BIRD && attrs.filter === "ireland";
+  const displayThings = showsIrishBirds ? attrs.things.filter(isIrishThing) : attrs.things;
   return m("main", {
-    class: visible ? "page sidebar-visible" : "page",
+    class: attrs.visible ? "page sidebar-visible" : "page",
   }, [
-    m("section.album-metadata", $md),
+    drawListingMetadata(attrs),
     m(AlbumsList, {
       readThingCover: attrs.readThingCover,
       things: displayThings,
-      listingType: type,
+      listingType: attrs.type,
     }),
   ]);
 }

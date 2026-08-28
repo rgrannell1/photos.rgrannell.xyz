@@ -65,6 +65,30 @@ export type FlagIconAttrs = {
   big?: boolean;
 };
 
+function drawLargeFlag(
+  asset: string,
+  label: string,
+  big: boolean | undefined,
+): m.Children {
+  const largeAsset = flagManifest().big[asset];
+  if (big !== true || largeAsset === undefined) {
+    return null;
+  }
+  return m("img.flag-icon", { src: largeAsset, alt: label, loading: "lazy" });
+}
+
+function drawSpriteFlag(asset: string, label: string): m.Children {
+  const position = flagManifest().positions[asset];
+  if (position === undefined) {
+    return null;
+  }
+  return m("span.flag-icon", {
+    role: "img",
+    "aria-label": label,
+    style: spriteCellStyle(position),
+  });
+}
+
 function viewFlagIcon(vnode: m.Vnode<FlagIconAttrs>): m.Children {
   const { name, big } = vnode.attrs;
   const asset = customFlagAsset(name);
@@ -72,30 +96,13 @@ function viewFlagIcon(vnode: m.Vnode<FlagIconAttrs>): m.Children {
     return null;
   }
 
-  const manifest = flagManifest();
   const label = `${name} flag`;
-  const largeAsset = manifest.big[asset];
-  const hasLargeFlagAsset = big === true && largeAsset !== undefined;
-
   // big flags over the byte budget fall back to the sprite cell
-  if (hasLargeFlagAsset) {
-    return m("img.flag-icon", {
-      src: largeAsset,
-      alt: label,
-      loading: "lazy",
-    });
+  const largeFlag = drawLargeFlag(asset, label, big);
+  if (largeFlag !== null) {
+    return largeFlag;
   }
-
-  const position = manifest.positions[asset];
-  if (position === undefined) {
-    return null;
-  }
-
-  return m("span.flag-icon", {
-    role: "img",
-    "aria-label": label,
-    style: spriteCellStyle(position),
-  });
+  return drawSpriteFlag(asset, label);
 }
 
 /*

@@ -7,6 +7,25 @@ import type { TargetValidator, Triple } from "@rgrannell1/tribbledb";
 import { TribbleParser } from "@rgrannell1/tribbledb";
 import { isNone, type Maybe, NONE } from "../commons/maybe.ts";
 
+async function* streamLines(
+  reader: ReadableStreamDefaultReader<string>,
+): AsyncGenerator<string> {
+  let buffer = "";
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) {
+      break;
+    }
+    buffer += value;
+    const lines = buffer.split("\n");
+    buffer = lines.pop() ?? "";
+    yield* lines;
+  }
+  if (buffer.length > 0) {
+    yield buffer;
+  }
+}
+
 export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
   const parser = new TribbleParser();
   const res = await fetch(url);
@@ -16,39 +35,18 @@ export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
 
   const decoder = new TextDecoderStream();
   const reader = res.body.pipeThrough(decoder).getReader();
-  let buffer = "";
-
   // batch the yields; 20k single yields is too slow. 500 measured about right
   const tripleBuffer: Triple[] = [];
-
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) {
-      break;
-    }
-    buffer += value;
-    const lines = buffer.split("\n");
-    buffer = lines.pop() ?? "";
-    for (const line of lines) {
-      const triple = parser.parse(line);
-      if (triple !== undefined) {
-        tripleBuffer.push(triple);
-      }
-
-      if (tripleBuffer.length >= 500) {
-        yield [...tripleBuffer];
-        tripleBuffer.length = 0;
-      }
-    }
-  }
-
-  if (buffer.length > 0) {
-    const triple = parser.parse(buffer);
+  for await (const line of streamLines(reader)) {
+    const triple = parser.parse(line);
     if (triple !== undefined) {
       tripleBuffer.push(triple);
     }
+    if (tripleBuffer.length >= 500) {
+      yield [...tripleBuffer];
+      tripleBuffer.length = 0;
+    }
   }
-
   if (tripleBuffer.length > 0) {
     yield [...tripleBuffer];
   }
