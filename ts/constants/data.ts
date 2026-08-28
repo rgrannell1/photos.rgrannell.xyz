@@ -73,6 +73,17 @@ export class KnownTypes {
   static ORDER = "order";
 }
 
+// Boolean true as stored in published triples.
+export const DATA_TRUE = "true";
+
+// Thing-list render modes.
+export const THING_LIST_KINDS = {
+  PLACE: KnownTypes.PLACE,
+  FEATURE: "feature",
+  UNESCO: KnownTypes.UNESCO,
+  TAXON: "taxon",
+} as const;
+
 /*
  * Taxonomic ranks shown as details-table row headings.
  */
@@ -131,4 +142,3 @@ export const CURIE_REGEX = /^\[([a-z]*):(.*)\]$/;
 
 // CDN base URL for expanding relative paths in triples.
 export const ENDPOINT = "https://photos-cdn.rgrannell.xyz";
-

@@ -1,5 +1,6 @@
 import m from "mithril";
-import { KnownTypes } from "../../constants/data.ts";
+import { DATA_TRUE, KnownTypes } from "../../constants/data.ts";
+import { LIFE_LIST_FILTERS } from "../../constants/display.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import { broadcast, navigate } from "../../services/browser/events.ts";
 import type { Photo } from "../../types/domain.ts";
@@ -31,7 +32,7 @@ function listingTitleExtra(
   listingType: string,
 ): m.Children {
   const showsIrishFlag = listingType === KnownTypes.BIRD &&
-    one(thing.irish) === "true";
+    one(thing.irish) === DATA_TRUE;
   if (showsIrishFlag) {
     return m(FlagIcon, { name: "Ireland" });
   }
@@ -156,7 +157,7 @@ function viewBirdListingDetails(
 ): m.Children {
   const { stats, filter, onToggleIreland } = vnode.attrs;
   const { wildSpecies, totalSpecies, irishWildSpecies } = stats;
-  const irelandActive = filter === "ireland";
+  const irelandActive = filter === LIFE_LIST_FILTERS.IRELAND;
 
   return m(
     "p.listing-details",
@@ -272,14 +273,16 @@ export type ListingPageAttrs = {
 };
 
 function toggleIrelandFilter(type: string, filter: Maybe<string>): void {
-  const isActive = filter === "ireland";
+  const isActive = filter === LIFE_LIST_FILTERS.IRELAND;
   broadcast("navigate", {
-    route: isActive ? `/listing/${type}` : `/listing/${type}/ireland`,
+    route: isActive
+      ? `/listing/${type}`
+      : `/listing/${type}/${LIFE_LIST_FILTERS.IRELAND}`,
   });
 }
 
 function isIrishThing(thing: TripleObject): boolean {
-  return one(thing.irish) === "true";
+  return one(thing.irish) === DATA_TRUE;
 }
 
 function drawListingMetadata(attrs: ListingPageAttrs): m.Children {
@@ -298,7 +301,8 @@ function drawListingMetadata(attrs: ListingPageAttrs): m.Children {
 
 function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
   const { attrs } = vnode;
-  const showsIrishBirds = attrs.type === KnownTypes.BIRD && attrs.filter === "ireland";
+  const showsIrishBirds = attrs.type === KnownTypes.BIRD &&
+    attrs.filter === LIFE_LIST_FILTERS.IRELAND;
   const displayThings = showsIrishBirds ? attrs.things.filter(isIrishThing) : attrs.things;
   return m("main", {
     class: attrs.visible ? "page sidebar-visible" : "page",

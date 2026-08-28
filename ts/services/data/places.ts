@@ -50,7 +50,7 @@ export function readGeocodedPlaces(tdb: TribbleDB): GeocodedPlace[] {
 export function readGeocodedPlacesWithCovers(
   tdb: TribbleDB,
 ): GeocodedPlaceWithCover[] {
-  const covers = readThingCovers(tdb, "place");
+  const covers = readThingCovers(tdb, KnownTypes.PLACE);
 
   return readGeocodedPlaces(tdb).map((place) => {
     const cover = covers.get(asUrn(place.id).id);

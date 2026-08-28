@@ -3,7 +3,7 @@ import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { one } from "../../commons/arrays.ts";
 import { capitalise, pluralise } from "../../commons/strings.ts";
-import { KnownTypes } from "../../constants/data.ts";
+import { DATA_TRUE, KnownTypes } from "../../constants/data.ts";
 import { isNone, type Maybe, NONE, withDefault } from "../../commons/maybe.ts";
 import { taxonLabel } from "../../domain/things.ts";
 
@@ -163,5 +163,5 @@ export function listingLabel(tdb: TribbleDB, type: string): string {
 export function isBinomialType(tdb: TribbleDB, type: string): boolean {
   const listing = readThing(tdb, `urn:ró:${KnownTypes.LISTING}:${type}`);
 
-  return !isNone(listing) && one(listing.binomial) === "true";
+  return !isNone(listing) && one(listing.binomial) === DATA_TRUE;
 }

@@ -12,8 +12,10 @@ import { ThingLink } from "./thing-link.ts";
 import { UnescoLink } from "./unesco-link.ts";
 import type { ReadThingEmoji } from "./thing-link.ts";
 import { fromNullable, isNone, withDefault } from "../../commons/maybe.ts";
+import { THING_LIST_KINDS } from "../../constants/data.ts";
 
-export type ThingListKind = "place" | "feature" | "unesco" | "taxon";
+export type ThingListKind =
+  typeof THING_LIST_KINDS[keyof typeof THING_LIST_KINDS];
 
 function comparePlaceNames(
   loca: ThingListItem,
@@ -89,13 +91,13 @@ function drawThingListItem(
   readEmoji: ReadThingEmoji,
   item: ThingListItem,
 ): m.Children {
-  if (kind === "place") {
+  if (kind === THING_LIST_KINDS.PLACE) {
     return drawPlaceItem(readEmoji, item as Place | Unesco);
   }
-  if (kind === "feature") {
+  if (kind === THING_LIST_KINDS.FEATURE) {
     return drawFeatureItem(item as Feature);
   }
-  if (kind === "unesco") {
+  if (kind === THING_LIST_KINDS.UNESCO) {
     return drawUnescoItem(item as Unesco);
   }
   return drawTaxonItem(readEmoji, item as TripleObject);
@@ -112,7 +114,7 @@ function viewThingList(vnode: m.Vnode<ThingListAttrs>): m.Children {
   const { kind, urns, readItems, readEmoji } = vnode.attrs;
   const items = readItems(kind, urns);
 
-  if (kind === "place") {
+  if (kind === THING_LIST_KINDS.PLACE) {
     items.sort(comparePlaceNames);
   }
 

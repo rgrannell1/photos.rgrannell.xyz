@@ -6,10 +6,14 @@ import { navigate } from "../../services/browser/events.ts";
 import { urnToUrl } from "../../commons/urn.ts";
 import type { Country } from "../../types/domain.ts";
 import { FlagIcon } from "../flag.ts";
+import { COUNTRY_LINK_MODES } from "../../constants/display.ts";
+
+type CountryLinkMode =
+  typeof COUNTRY_LINK_MODES[keyof typeof COUNTRY_LINK_MODES];
 
 export type CountryLinkAttrs = {
   country: Country;
-  mode: "flag" | "name";
+  mode: CountryLinkMode;
 };
 
 function drawCountryFlagLink(
@@ -19,7 +23,7 @@ function drawCountryFlagLink(
   return m(CountryLink, {
     country,
     key: `album-country-${albumId}-${country.id}`,
-    mode: "flag",
+    mode: COUNTRY_LINK_MODES.FLAG,
   });
 }
 
@@ -43,7 +47,7 @@ function viewCountryLink(vnode: m.Vnode<CountryLinkAttrs>): m.Children {
   const parsed = asUrn(id);
   const onclick = navigate(`/thing/${parsed.type}:${parsed.id}`);
 
-  if (mode === "flag") {
+  if (mode === COUNTRY_LINK_MODES.FLAG) {
     return m("a.country-link-short", { href: urnToUrl(id), onclick }, flag);
   }
 

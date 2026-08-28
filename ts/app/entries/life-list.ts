@@ -11,6 +11,7 @@ import {
   NONE,
   withDefault,
 } from "../../commons/maybe.ts";
+import { LIFE_LIST_FILTERS } from "../../constants/display.ts";
 
 const checklistPageComponent = ChecklistPage();
 
@@ -40,7 +41,7 @@ export const checklistEntry = pageEntry({
       cachedModel = readLifeListModel();
     }
     const routeFilter = fromNullable<string>(m.route.param("filter"));
-    const filter = withDefault(routeFilter, "ireland");
+    const filter = withDefault(routeFilter, LIFE_LIST_FILTERS.IRELAND);
 
     return {
       attrs: {

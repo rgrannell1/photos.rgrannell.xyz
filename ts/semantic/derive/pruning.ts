@@ -3,7 +3,7 @@
 import { asUrn, type Triple } from "@rgrannell1/tribbledb";
 import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { one } from "../../commons/arrays.ts";
-import { KnownTypes } from "../../constants/data.ts";
+import { DATA_TRUE, KnownTypes } from "../../constants/data.ts";
 import { baseUrn } from "./urns.ts";
 
 function collectMediaReferencedUrns(tdb: TribbleDB): Set<string> {
@@ -25,7 +25,7 @@ export function browseableEntityTypes(tdb: TribbleDB): Set<string> {
     .objects();
 
   for (const listing of listings) {
-    if (one(listing.browseable) !== "true") {
+    if (one(listing.browseable) !== DATA_TRUE) {
       continue;
     }
 

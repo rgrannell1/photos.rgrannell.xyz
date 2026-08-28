@@ -4,11 +4,15 @@ import m from "mithril";
 import type { ReadThing } from "../thing/thing-links.ts";
 import type { ReadThingEmoji } from "../thing/thing-link.ts";
 import { MediaDescription } from "./media-description.ts";
-import { MediaLocations } from "./media-locations.ts";
+import {
+  MediaLocations,
+  type MediaLocationMode,
+} from "./media-locations.ts";
 import { MediaSubject } from "./media-subject.ts";
 import { MediaThingLinks } from "./media-thing-links.ts";
 import { Heading } from "./heading.ts";
 import { fromNullable } from "../../commons/maybe.ts";
+import { MEDIA_LOCATION_MODES } from "../../constants/display.ts";
 
 // the structural overlap of Photo and Video that the table reads
 type Media = {
@@ -44,10 +48,10 @@ function drawDescriptionRow(media: Media): m.Children {
 
 function drawLocationRow(
   attrs: MediaComponentAttrs,
-  mode: "geographic" | "feature",
+  mode: MediaLocationMode,
 ): m.Children {
   const { media, readThing, readEmoji } = attrs;
-  const label = mode === "geographic" ? "Location" : "Place Type";
+  const label = mode === MEDIA_LOCATION_MODES.GEOGRAPHIC ? "Location" : "Place Type";
   const locations = m(MediaLocations, {
     location: fromNullable(media.location),
     readThing,
@@ -85,8 +89,8 @@ function viewMediaInfo(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   const { attrs } = vnode;
   const rows = [
     drawDescriptionRow(attrs.media),
-    drawLocationRow(attrs, "geographic"),
-    drawLocationRow(attrs, "feature"),
+    drawLocationRow(attrs, MEDIA_LOCATION_MODES.GEOGRAPHIC),
+    drawLocationRow(attrs, MEDIA_LOCATION_MODES.FEATURE),
     drawThingRow(attrs, "Rating", attrs.media.rating),
     drawThingRow(attrs, "Style", attrs.media.style),
     drawSubjectRow(attrs),

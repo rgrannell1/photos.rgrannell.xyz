@@ -3,7 +3,7 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import { one } from "../../commons/arrays.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { KnownRelations, KnownTypes } from "../../constants/data.ts";
+import { DATA_TRUE, KnownRelations, KnownTypes } from "../../constants/data.ts";
 import {
   fromNullable,
   isSome,
@@ -140,7 +140,7 @@ export function collectUnphotographedNemesis(
   const nemesisTriples = tdb.search({
     source: { type: speciesType },
     relation: KnownRelations.NEMESIS,
-    target: "true",
+    target: DATA_TRUE,
   }).triples();
 
   const species: NemesisSpecies[] = [];
@@ -223,11 +223,11 @@ function readChecklistEntry(
     speciesType,
     name,
     firstSeen,
-    isIrish: one(fromNullable(speciesThing?.irish)) === "true",
+    isIrish: one(fromNullable(speciesThing?.irish)) === DATA_TRUE,
     isWild: wildSpeciesIds.has(speciesId),
     scarce: isScarce,
-    nemesis: one(fromNullable(speciesThing?.nemesis)) === "true",
-    target: one(fromNullable(speciesThing?.target)) === "true",
+    nemesis: one(fromNullable(speciesThing?.nemesis)) === DATA_TRUE,
+    target: one(fromNullable(speciesThing?.target)) === DATA_TRUE,
   };
 }
 
@@ -244,6 +244,6 @@ export function countIrishMammalSpecies(tdb: TribbleDB): number {
   return tdb.search({
     source: { type: KnownTypes.MAMMAL },
     relation: KnownRelations.IRISH,
-    target: "true",
+    target: DATA_TRUE,
   }).triples().length;
 }

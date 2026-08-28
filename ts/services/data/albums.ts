@@ -3,7 +3,7 @@ import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Album } from "../../types/domain.ts";
 import type { Photo, Video } from "../../types/domain.ts";
 import { readPhotos } from "./readers.ts";
-import { KnownRelations, KnownTypes } from "../../constants/data.ts";
+import { DATA_TRUE, KnownRelations, KnownTypes } from "../../constants/data.ts";
 import { readAlbums, readVideos } from "./readers.ts";
 import { albumUrn } from "../../commons/urn.ts";
 import { one } from "../../commons/arrays.ts";
@@ -14,7 +14,7 @@ export function isAlbumHidden(tdb: TribbleDB, id: string): boolean {
     .filter({ type: KnownTypes.ALBUM })
     .objects()[0];
 
-  return one(album?.hidden) === "true";
+  return one(album?.hidden) === DATA_TRUE;
 }
 
 /* Published by mirror as urn:ró:year:<YYYY>  recap  <markdown>. */

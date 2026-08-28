@@ -19,6 +19,7 @@ import type {
 import type { Album, Country } from "../../types/domain.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
+import { THING_LIST_KINDS } from "../../constants/data.ts";
 
 const thingPageComponent = ThingPage();
 
@@ -42,13 +43,13 @@ function readAlbumEntries(urns: Set<string>): AlbumEntry[] {
 }
 
 function readThingList(kind: ThingListKind, urns: Set<string>): ThingListItem[] {
-  if (kind === "place") {
+  if (kind === THING_LIST_KINDS.PLACE) {
     return services.readLocations(urns);
   }
-  if (kind === "feature") {
+  if (kind === THING_LIST_KINDS.FEATURE) {
     return services.readFeatures(urns);
   }
-  if (kind === "unesco") {
+  if (kind === THING_LIST_KINDS.UNESCO) {
     return services.readUnescos(urns);
   }
   return services.readTaxons(urns);

@@ -5,6 +5,7 @@ import { thumbHashDataUrl } from "../../services/rendering/photos.ts";
 import type { Photo } from "../../types/domain.ts";
 import type { ChecklistEntry, NemesisSpecies } from "../../domain/stats.ts";
 import { PHOTO_WIDTH } from "../../constants/layout.ts";
+import { LIFE_LIST_FILTERS } from "../../constants/display.ts";
 import { FlagIcon } from "../flag.ts";
 import {
   fromNullable,
@@ -71,13 +72,17 @@ type FilterDrawOptions = {
 
 const FILTER_DEFINITIONS: FilterDefinition[] = [
   {
-    value: "ireland",
+    value: LIFE_LIST_FILTERS.IRELAND,
     title: "Irish wild species",
     label: "",
     flag: "Ireland",
   },
-  { value: "wild", title: "All wild species", label: "🗺️" },
-  { value: "all", title: "All species including captive", label: "all" },
+  { value: LIFE_LIST_FILTERS.WILD, title: "All wild species", label: "🗺️" },
+  {
+    value: LIFE_LIST_FILTERS.ALL,
+    title: "All species including captive",
+    label: "all",
+  },
 ];
 
 function drawFilterControl(control: FilterControl): m.Children {
@@ -112,10 +117,10 @@ function readChecklistDisplayCount(
   entries: ChecklistEntry[],
   filter: string,
 ): number {
-  if (filter === "ireland") {
+  if (filter === LIFE_LIST_FILTERS.IRELAND) {
     return entries.filter(isIrishWild).length;
   }
-  if (filter === "all") {
+  if (filter === LIFE_LIST_FILTERS.ALL) {
     return entries.length;
   }
   return entries.filter(isWild).length;
@@ -317,13 +322,13 @@ function viewChecklistGrid(vnode: m.Vnode<ChecklistGridAttrs>): m.Children {
   const { entries, covers, nemesisSpecies, mysteryGlyph, filter } = vnode.attrs;
 
   // scarce tags and "yet to see" birds show in the Irish view only
-  const irishView = filter === "ireland";
+  const irishView = filter === LIFE_LIST_FILTERS.IRELAND;
 
   // position numbers come from the full unfiltered list
   const withPositions = entries.map(toPositionedEntry);
-  const displayed = filter === "ireland"
+  const displayed = filter === LIFE_LIST_FILTERS.IRELAND
     ? withPositions.filter(positionedIsIrishWild)
-    : filter === "all"
+    : filter === LIFE_LIST_FILTERS.ALL
     ? withPositions
     : withPositions.filter(positionedIsWild);
 
@@ -411,7 +416,7 @@ function viewMammalSection(vnode: m.Vnode<MammalSectionAttrs>): m.Children {
         covers: mammalCovers,
         nemesisSpecies: nemesisMammals,
         mysteryGlyph: "🐾",
-        filter: "ireland",
+        filter: LIFE_LIST_FILTERS.IRELAND,
       }),
     ]),
   ];
@@ -454,7 +459,7 @@ function drawBirdSection(attrs: ChecklistPageAttrs): m.Children[] {
 function viewChecklistPage(vnode: m.Vnode<ChecklistPageAttrs>): m.Children {
   const { attrs } = vnode;
   // the mammal section shows in the Irish view only. Other views stay birds-only
-  const mammalSection = attrs.filter === "ireland"
+  const mammalSection = attrs.filter === LIFE_LIST_FILTERS.IRELAND
     ? m(MammalSection, {
       mammalEntries: attrs.mammalEntries,
       mammalCovers: attrs.mammalCovers,

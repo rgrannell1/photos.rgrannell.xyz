@@ -16,7 +16,7 @@ import {
   type ListingPageAttrs,
 } from "../../components/pages/listing.ts";
 import { ListingsPage } from "../../components/pages/listings.ts";
-import { KnownTypes } from "../../constants/data.ts";
+import { DATA_TRUE, KnownTypes } from "../../constants/data.ts";
 import { COUNTRY_LISTING_TYPE } from "../../constants/display.ts";
 import type { SubjectStats } from "../../domain/stats.ts";
 import type { Photo } from "../../types/domain.ts";
@@ -80,7 +80,7 @@ function readListingModel(type: string): ListingModel {
     label: isNone(listing)
       ? capitalise(pluralise(type))
       : withDefault(one(listing.name), capitalise(pluralise(type))),
-    isListable: !isNone(listing) && one(listing.listable) === "true",
+    isListable: !isNone(listing) && one(listing.listable) === DATA_TRUE,
     stats,
   };
 }

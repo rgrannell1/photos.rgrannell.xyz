@@ -22,8 +22,10 @@ import {
 import { setify, setOf } from "../../commons/sets.ts";
 import {
   KnownRelations,
+  KnownTypes,
   TAXON_RANKS,
   TAXON_TYPES,
+  THING_LIST_KINDS,
 } from "../../constants/data.ts";
 import { ListingLink } from "../thing/listing-link.ts";
 import { ThingUrls } from "../thing/thing-urls.ts";
@@ -147,7 +149,7 @@ function addLocatedInMetadata(
     return;
   }
   metadata["Located In"] = m(ThingList, {
-    kind: "place",
+    kind: THING_LIST_KINDS.PLACE,
     readItems: attrs.readThingList,
     readEmoji: attrs.readThingEmoji,
     urns: locatedIn,
@@ -226,13 +228,17 @@ function addSingleThingMetadata(
 ): void {
   const [thing] = attrs.things;
   const items: ThingMetadata[] = [
-    { label: "Place Type", kind: "feature", values: thing.features },
-    { label: "Contains", kind: "place", values: thing.contains },
-    { label: "Places", kind: "place", values: thing.placesWithFeature },
-    { label: "UNESCO", kind: "unesco", values: thing.unescoId },
+    { label: "Place Type", kind: THING_LIST_KINDS.FEATURE, values: thing.features },
+    { label: "Contains", kind: THING_LIST_KINDS.PLACE, values: thing.contains },
+    { label: "Places", kind: THING_LIST_KINDS.PLACE, values: thing.placesWithFeature },
+    { label: "UNESCO", kind: THING_LIST_KINDS.UNESCO, values: thing.unescoId },
   ];
   for (const rank of TAXON_RANKS) {
-    items.push({ label: rank.label, kind: "taxon", values: thing[rank.relation] });
+    items.push({
+      label: rank.label,
+      kind: THING_LIST_KINDS.TAXON,
+      values: thing[rank.relation],
+    });
   }
   for (const item of items) {
     addThingListMetadata(metadata, attrs, item);
@@ -427,7 +433,7 @@ function drawShareButton(urn: string, things: TripleObject[]): m.Children {
 
 function isOlm(urn: string): boolean {
   const parsed = asUrn(urn);
-  return parsed.type === "amphibian" && parsed.id === "proteus-anguinus";
+  return parsed.type === KnownTypes.AMPHIBIAN && parsed.id === "proteus-anguinus";
 }
 
 function viewThingPage(vnode: m.Vnode<ThingPageAttrs>): m.Children {
