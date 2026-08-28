@@ -23,7 +23,7 @@ export type AlbumYearGroupAttrs = {
 
 function drawYearHeading(year: number, showHeading: boolean): m.Children {
   if (!showHeading) {
-    return null;
+    return m.fragment({ key: `year-${year}` }, []);
   }
   return m("h2.year-heading", {
     key: `year-${year}`,
@@ -38,7 +38,7 @@ function drawYearRecap(
   showHeading: boolean,
 ): m.Children {
   if (!showHeading || !isSome(recap)) {
-    return null;
+    return m.fragment({ key: `year-recap-${year}` }, []);
   }
   return m(YearRecap, { key: `year-recap-${year}`, markdown: recap });
 }
