@@ -11,6 +11,7 @@ const MOBILE_VIEWPORT = { width: 390, height: 844 };
  * @property {string} readySelector css selector that marks the page as loaded
  * @property {string | null} headingSelector heading that must be visible
  * @property {string | null} captionSelector caption that must start on-screen
+ * @property {string | null} captionText caption that must stay inside its image
  */
 
 /** @type {MobileLayoutCase[]} */
@@ -20,18 +21,21 @@ const CASES = [
     readySelector: ".checklist-grid",
     headingSelector: "h1.albums-header",
     captionSelector: null,
+    captionText: null,
   },
   {
     route: "#!/listing/bird",
     readySelector: "[data-testid='listing-cards'] .photo-album",
     headingSelector: "[data-testid='listing-title']",
     captionSelector: ".photo-album-title",
+    captionText: "Black-crowned Night Heron",
   },
   {
     route: "#!/listings",
     readySelector: "[data-testid='listings-grid'] .photo-album",
     headingSelector: "[data-testid='listings-heading']",
     captionSelector: "[data-testid='listing-card-label']",
+    captionText: null,
   },
 ];
 
@@ -43,6 +47,12 @@ const isVisible = (page, selector) =>
 
 const leftEdge = (page, selector) =>
   page.$eval(selector, (el) => el.getBoundingClientRect().left);
+
+const captionOverflow = (page, selector, captionText) =>
+  page.$$eval(selector, (elements, text) => {
+    const caption = elements.find((element) => element.textContent.includes(text));
+    return caption.scrollWidth - caption.clientWidth;
+  }, captionText);
 
 /** @type {import('../types').BrowserCheck} */
 module.exports = {
@@ -74,6 +84,23 @@ module.exports = {
           left >= 0,
           `${testCase.route} caption starts on-screen (left ${left})`,
         );
+
+        if (testCase.captionText) {
+          await page.waitForFunction(
+            (captionText) => document.body.textContent.includes(captionText),
+            {},
+            testCase.captionText,
+          );
+          const overflow = await captionOverflow(
+            page,
+            testCase.captionSelector,
+            testCase.captionText,
+          );
+          tst.ok(
+            overflow <= 0,
+            `${testCase.route} caption text fits its box (overflow ${overflow})`,
+          );
+        }
       }
     }
   },

@@ -1101,7 +1101,14 @@ button:disabled {
   .photo-album-metadata {
     position: absolute;
     transform: translate(10px, -100px);
+    max-width: calc(100% - 20px);
     z-index: 1;
+  }
+
+  .photo-album-title {
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
   .thumbnail-image {
@@ -1343,6 +1350,11 @@ button:disabled {
   .checklist-container {
     margin: 0;
     margin-bottom: 40px;
+  }
+
+  .checklist-card--mystery {
+    width: max(180px, min(80vw, 400px));
+    max-width: max(180px, 80vw);
   }
 
   .checklist-card-metadata {

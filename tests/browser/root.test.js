@@ -16,6 +16,7 @@ const checks = [
   require("./checks/listing-page"),
   require("./checks/about-page"),
   require("./checks/mobile-layout"),
+  require("./checks/life-list-sizing"),
 ];
 
 for (const check of checks) {
