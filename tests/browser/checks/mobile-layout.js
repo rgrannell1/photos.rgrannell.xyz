@@ -3,7 +3,11 @@
 
 const { BASE_URL } = require("../helpers");
 
-const MOBILE_VIEWPORT = { width: 390, height: 844 };
+const MOBILE_VIEWPORT = { width: 330, height: 844 };
+const RESIZE_WIDTHS = Array.from(
+  { length: 13 },
+  (_unused, idx) => 260 + idx * 20,
+);
 
 /**
  * @typedef {Object} MobileLayoutCase
@@ -20,8 +24,8 @@ const CASES = [
     route: "#!/life-list",
     readySelector: ".checklist-grid",
     headingSelector: "h1.albums-header",
-    captionSelector: null,
-    captionText: null,
+    captionSelector: ".checklist-card-name",
+    captionText: "Black-crowned Night Heron",
   },
   {
     route: "#!/listing/bird",
@@ -51,7 +55,23 @@ const leftEdge = (page, selector) =>
 const captionOverflow = (page, selector, captionText) =>
   page.$$eval(selector, (elements, text) => {
     const caption = elements.find((element) => element.textContent.includes(text));
-    return caption.scrollWidth - caption.clientWidth;
+    const card = caption.closest(".photo-album, .checklist-card");
+    const image = card.querySelector(".thumbnail-image");
+    const metadata = caption.closest(
+      ".photo-album-metadata, .checklist-card-metadata",
+    );
+    const metadataElements = [metadata, ...metadata.querySelectorAll("*")];
+    const rightmost = metadataElements.reduce((current, element) =>
+      element.getBoundingClientRect().right > current.getBoundingClientRect().right
+        ? element
+        : current
+    );
+    const imageRight = image.getBoundingClientRect().right;
+
+    return {
+      amount: rightmost.getBoundingClientRect().right - imageRight,
+      element: rightmost.className,
+    };
   }, captionText);
 
 /** @type {import('../types').BrowserCheck} */
@@ -97,11 +117,34 @@ module.exports = {
             testCase.captionText,
           );
           tst.ok(
-            overflow <= 0,
-            `${testCase.route} caption text fits its box (overflow ${overflow})`,
+            overflow.amount <= 0,
+            `${testCase.route} caption fits its image ` +
+              `(overflow ${overflow.amount} from ${overflow.element})`,
           );
         }
       }
+    }
+
+    await page.goto(`${BASE_URL}/#!/life-list`, { waitUntil: "load" });
+    await page.waitForSelector(".checklist-grid", { timeout: 15_000 });
+    await page.waitForFunction(
+      (captionText) => document.body.textContent.includes(captionText),
+      {},
+      "Black-crowned Night Heron",
+    );
+
+    for (const width of RESIZE_WIDTHS) {
+      await page.setViewport({ width, height: MOBILE_VIEWPORT.height });
+      const overflow = await captionOverflow(
+        page,
+        ".checklist-card-name",
+        "Black-crowned Night Heron",
+      );
+      tst.ok(
+        overflow.amount <= 0,
+        `life-list caption fits at ${width}px ` +
+          `(overflow ${overflow.amount} from ${overflow.element})`,
+      );
     }
   },
 };

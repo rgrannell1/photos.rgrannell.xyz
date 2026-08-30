@@ -1352,7 +1352,7 @@ button:disabled {
     margin-bottom: 40px;
   }
 
-  .checklist-card--mystery {
+  .checklist-card {
     width: max(180px, min(80vw, 400px));
     max-width: max(180px, 80vw);
   }
@@ -1375,9 +1375,18 @@ button:disabled {
   }
 
   .checklist-card-name {
-    display: block;
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
     margin-right: auto;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     width: fit-content;
+  }
+
+  .checklist-name-link {
+    min-width: 0;
   }
 
   .checklist-first-seen {
