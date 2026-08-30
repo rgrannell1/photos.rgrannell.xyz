@@ -2,8 +2,8 @@
 
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Triple } from "@rgrannell1/tribbledb";
-import { readThingCover } from "../ts/services/data/photos.ts";
-import { isNone, NONE } from "../ts/commons/maybe.ts";
+import { readThingCover } from "../ts/services/data/media/photos.ts";
+import { isNone, NONE } from "../ts/commons/collections/maybe.ts";
 
 const PHOTO = "urn:ró:photo:cover";
 const BIRD = "urn:ró:bird:robin";

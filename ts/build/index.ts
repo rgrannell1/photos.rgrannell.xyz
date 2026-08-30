@@ -7,7 +7,7 @@ import {
   buildSW,
   buildTS,
   buildVersion,
-} from "./builders.ts";
+} from "./builders/builders.ts";
 
 console.log("Building");
 

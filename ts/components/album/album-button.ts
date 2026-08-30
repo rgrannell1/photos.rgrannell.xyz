@@ -9,6 +9,14 @@ type AlbumButtonAttrs = {
   hidden: boolean;
 };
 
+function drawAlbumButton(id: string): m.Children {
+  const href = albumRoute(id);
+  const onclick = onAlbumClick.bind(null, id);
+  const linkAttrs = { href, onclick };
+  const link = m("a", linkAttrs, "[album]");
+  return link;
+}
+
 function viewAlbumButton(vnode: m.Vnode<AlbumButtonAttrs>): m.Children {
   const { id, hidden } = vnode.attrs;
 
@@ -16,10 +24,7 @@ function viewAlbumButton(vnode: m.Vnode<AlbumButtonAttrs>): m.Children {
     return null;
   }
 
-  return m("a", {
-    href: albumRoute(id),
-    onclick: onAlbumClick.bind(null, id),
-  }, "[album]");
+  return drawAlbumButton(id);
 }
 
 export function AlbumButton() {

@@ -2,25 +2,21 @@
  * Loads the triple store and binds the service registry to it.
  */
 
-import type { AppWindow } from "./types/browser.ts";
-import { getTribbleDB, loadTriples } from "./semantic/data.ts";
-import {
-  createTripleDeriver,
-  runFinalPasses,
-  runStreamPasses,
-} from "./semantic/derive/mod.ts";
+import { getTribbleDB } from "./semantic/data.ts";
+
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { SERVICE_READERS } from "./services/data/mod.ts";
+
+import type { NemesisSpecies } from "./domain/media/stats.ts";
 import {
-  collectUnphotographedNemesis,
-  countIrishMammalSpecies,
-  countRegularBirdSpecies,
-} from "./services/data/stats.ts";
-import { KnownTypes } from "./constants/data.ts";
-import type { NemesisSpecies } from "./domain/stats.ts";
+  bindReaders,
+  finishLoad,
+  readEmptyCatalogueFacts,
+  streamTriples,
+} from "./state-helpers.ts";
 
 // minimum time between redraws while the tribble stream loads
-const REDRAW_INTERVAL_MS = 100;
+export const REDRAW_INTERVAL_MS = 100;
 
 export type Services = ReturnType<typeof loadServices>;
 
@@ -39,30 +35,11 @@ export type State = {
   sidebarVisible: boolean;
 };
 
-type LoadProgress = {
+export type LoadProgress = {
   tdb: TribbleDB;
   onProgress: () => void;
   lastProgress: number;
 };
-
-function reportLoadProgress(progress: LoadProgress): void {
-  const now = performance.now();
-  if (now - progress.lastProgress < REDRAW_INTERVAL_MS) {
-    return;
-  }
-  progress.lastProgress = now;
-  runStreamPasses(progress.tdb);
-  progress.onProgress();
-}
-
-function readCatalogueFacts(tdb: TribbleDB): CatalogueFacts {
-  return {
-    regularBirdSpecies: countRegularBirdSpecies(tdb),
-    irishMammalSpecies: countIrishMammalSpecies(tdb),
-    nemesisBirds: collectUnphotographedNemesis(tdb, KnownTypes.BIRD),
-    nemesisMammals: collectUnphotographedNemesis(tdb, KnownTypes.MAMMAL),
-  };
-}
 
 /*
  * Stream the tribbles file into the shared TribbleDB. Cheap derivations re-run
@@ -74,53 +51,26 @@ export async function completeLoad(
   onProgress: () => void,
 ): Promise<void> {
   const tdb = state.data;
-  const deriveTriples = createTripleDeriver();
   const progress = { tdb, onProgress, lastProgress: 0 };
-
-  await loadTriples(
-    `/manifest/tribbles.${(window as AppWindow).envConfig.publication_id}.txt`,
-    {},
-    deriveTriples,
-    reportLoadProgress.bind(null, progress),
-  );
-
-  // a final stream-pass run, so the joins below see complete inverses
-  runStreamPasses(tdb);
-
-  // Read catalogue facts before pruning drops unphotographed species.
-  state.catalogue = readCatalogueFacts(tdb);
-
-  runFinalPasses(tdb);
-
-  state.loaded = true;
-  onProgress();
+  await streamTriples(progress);
+  finishLoad(state, onProgress);
 }
 
 // any reader taking the TribbleDB as its first argument
-type TdbReader = (tdb: TribbleDB, ...args: never[]) => unknown;
+export type TdbReader = (tdb: TribbleDB, ...args: never[]) => unknown;
 
 // the same reader with the TribbleDB argument already applied
 type BoundReader<Reader> = Reader extends
   (tdb: TribbleDB, ...args: infer Args) => infer Ret ? (...args: Args) => Ret
   : never;
 
-type BoundReaders<Readers> = { [Name in keyof Readers]: BoundReader<Readers[Name]> };
+export type BoundReaders<Readers> = {
+  [Name in keyof Readers]: BoundReader<Readers[Name]>;
+};
 
-/*
- * Bind every reader in a record to one TribbleDB instance.
- */
-function bindReaders<Readers extends Record<string, TdbReader>>(
-  tdb: TribbleDB,
-  readers: Readers,
-): BoundReaders<Readers> {
-  const bound = Object.fromEntries(
-    Object.entries(readers).map((
-      [name, reader],
-    ) => [name, reader.bind(null, tdb)]),
-  );
+export type ReaderEntry = [string, TdbReader];
 
-  return bound as BoundReaders<Readers>;
-}
+export type BoundReaderEntry = [string, (...args: never[]) => unknown];
 
 export function loadServices(tdb: TribbleDB) {
   return bindReaders(tdb, SERVICE_READERS);
@@ -139,16 +89,12 @@ export function toggleSidebar(state: State): void {
  */
 export function initState(): State {
   const tdb = getTribbleDB();
+  const catalogue = readEmptyCatalogueFacts();
 
   return {
     data: tdb,
     loaded: false,
-    catalogue: {
-      regularBirdSpecies: 0,
-      irishMammalSpecies: 0,
-      nemesisBirds: [],
-      nemesisMammals: [],
-    },
+    catalogue,
     sidebarVisible: false,
     services: loadServices(tdb),
   };

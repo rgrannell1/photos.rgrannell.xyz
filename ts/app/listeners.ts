@@ -7,16 +7,21 @@ import { listen } from "../services/browser/events.ts";
 import { hideSidebar, toggleSidebar } from "../state.ts";
 import { state } from "./context.ts";
 
+function handleNavigate(event: CustomEvent<{ route: string }>): void {
+  const { route } = event.detail;
+  const message = `navigating to route: ${route}`;
+  console.info(message);
+
+  hideSidebar(state);
+  m.route.set(route);
+}
+
+function handleBurgerMenu(): void {
+  toggleSidebar(state);
+}
+
 export function bindGlobalListeners() {
-  listen("navigate", (event) => {
-    const { route } = event.detail;
-    console.info(`navigating to route: ${route}`);
-
-    hideSidebar(state);
-    m.route.set(route);
-  });
-
-  listen("click_burger_menu", () => {
-    toggleSidebar(state);
-  });
+  const navigationListener = listen("navigate", handleNavigate);
+  const burgerListener = listen("click_burger_menu", handleBurgerMenu);
+  return { navigationListener, burgerListener };
 }

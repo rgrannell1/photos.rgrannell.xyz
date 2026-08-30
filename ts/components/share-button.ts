@@ -19,6 +19,20 @@ function buttonText(localState: { sharing: boolean }) {
   return localState.sharing ? "[sharing...]" : "[share]";
 }
 
+function drawShareLink(url: string): m.Children {
+  return m("a.photo-share-button", { href: url, rel: "noreferrer" }, "[share]");
+}
+
+function drawNativeShareButton(
+  localState: { sharing: boolean },
+  url: string,
+  name: string,
+): m.Children {
+  const onclick = share.bind(null, localState, url, name);
+  const text = buttonText(localState);
+  return m("button.photo-share-button", { onclick }, text);
+}
+
 function viewShareButton(
   localState: { sharing: boolean },
   vnode: m.Vnode<ShareButtonAttrs>,
@@ -27,12 +41,10 @@ function viewShareButton(
 
   // without the share API (desktop), link straight to the sharephoto domain
   if (!canNativeShare()) {
-    return m("a.photo-share-button", { href: url, rel: "noreferrer" }, "[share]");
+    return drawShareLink(url);
   }
 
-  return m("button.photo-share-button", {
-    onclick: share.bind(null, localState, url, name),
-  }, buttonText(localState));
+  return drawNativeShareButton(localState, url, name);
 }
 
 /* The [share] control used by album, trip, and thing pages. */

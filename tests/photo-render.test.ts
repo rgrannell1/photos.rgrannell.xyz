@@ -1,6 +1,6 @@
 /* Photo component redraw boundary tests. */
 
-import { hasPhotoChanged, type PhotoAttrs } from "../ts/components/media/photo.ts";
+import { hasPhotoChanged, type PhotoAttrs } from "../ts/components/media/images/photo.ts";
 import type { Photo } from "../ts/types/domain.ts";
 
 const photo = {} as Photo;

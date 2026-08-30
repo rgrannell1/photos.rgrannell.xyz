@@ -6,6 +6,31 @@ export type TripPreviousAlbumsAttrs = {
   albums: Album[];
 };
 
+function drawPreviousAlbumLink(album: Album): m.Children {
+  const albumId = asUrn(album.id).id;
+  const linkAttrs = { href: `/album/${albumId}` };
+  return m(m.route.Link, linkAttrs, album.name);
+}
+
+function appendPreviousAlbum(
+  parts: m.Children[],
+  album: Album,
+  albumIdx: number,
+): void {
+  const separator = albumIdx > 0 ? ", " : null;
+  const link = drawPreviousAlbumLink(album);
+  parts.push(separator, link);
+}
+
+function drawPreviousAlbumParts(albums: Album[]): m.Children[] {
+  const introduction = "...after travelling from ";
+  const parts: m.Children[] = [introduction];
+  for (const [albumIdx, album] of albums.entries()) {
+    appendPreviousAlbum(parts, album, albumIdx);
+  }
+  return parts;
+}
+
 function viewTripPreviousAlbums(
   vnode: m.Vnode<TripPreviousAlbumsAttrs>,
 ): m.Children {
@@ -15,19 +40,7 @@ function viewTripPreviousAlbums(
     return null;
   }
 
-  const parts: m.Child[] = ["...after travelling from "];
-  for (const [idx, prev] of albums.entries()) {
-    if (idx > 0) {
-      parts.push(", ");
-    }
-    const prevId = asUrn(prev.id).id;
-    parts.push(
-      m(m.route.Link, {
-        href: `/album/${prevId}`,
-      }, prev.name),
-    );
-  }
-
+  const parts = drawPreviousAlbumParts(albums);
   return m("p.photo-album-trip-previous", parts);
 }
 

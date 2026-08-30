@@ -7,18 +7,18 @@ import {
   type Maybe,
   NONE,
   withDefault,
-} from "../../commons/maybe.ts";
+} from "../../commons/collections/maybe.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../../commons/arrays.ts";
+import { one } from "../../commons/collections/arrays.ts";
 import { capitalise, pluralise } from "../../commons/strings.ts";
 import {
   ListingPage,
   type ListingPageAttrs,
-} from "../../components/pages/listing.ts";
-import { ListingsPage } from "../../components/pages/listings.ts";
+} from "../../components/pages/listing/listing.ts";
+import { ListingsPage } from "../../components/pages/listing/listings.ts";
 import { DATA_TRUE, KnownTypes } from "../../constants/data.ts";
 import { COUNTRY_LISTING_TYPE } from "../../constants/display.ts";
-import type { SubjectStats } from "../../domain/stats.ts";
+import type { SubjectStats } from "../../domain/media/stats.ts";
 import type { Photo } from "../../types/domain.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
@@ -53,14 +53,12 @@ function readCategoryModels(): CategoryModel[] {
 
     const type = asUrn(id).id;
     const cover = services.readCategoryCover(type);
-    return isNone(cover)
-      ? []
-      : [{
-        type,
-        label: withDefault(one(listing.name), type),
-        route: `/listing/${type}`,
-        cover,
-      }];
+    return isNone(cover) ? [] : [{
+      type,
+      label: withDefault(one(listing.name), type),
+      route: `/listing/${type}`,
+      cover,
+    }];
   });
 }
 

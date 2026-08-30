@@ -8,17 +8,17 @@ import { loadTribbles } from "../ts/build/loaders.ts";
 import {
   readAlbumPhotosByAlbumId,
   readAllAlbums,
-} from "../ts/services/data/albums.ts";
+} from "../ts/services/data/albums/albums.ts";
 import { readCountries } from "../ts/services/data/readers.ts";
 import {
   readMammalStats,
   readWildBirdChecklist,
 } from "../ts/services/data/stats.ts";
-import { readThingCover } from "../ts/services/data/photos.ts";
-import { readGeocodedPlacesWithCovers } from "../ts/services/data/places.ts";
+import { readThingCover } from "../ts/services/data/media/photos.ts";
+import { readGeocodedPlacesWithCovers } from "../ts/services/data/entities/places.ts";
 import { KnownRelations, KnownTypes } from "../ts/constants/data.ts";
 import { browseableEntityTypes } from "../ts/semantic/derive/mod.ts";
-import { isNone } from "../ts/commons/maybe.ts";
+import { isNone } from "../ts/commons/collections/maybe.ts";
 
 const tdb = await loadTribbles();
 

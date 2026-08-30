@@ -3,13 +3,13 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { Triple, TripleObject } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { one } from "../ts/commons/arrays.ts";
-import { fromNullable } from "../ts/commons/maybe.ts";
+import { one } from "../ts/commons/collections/arrays.ts";
+import { fromNullable } from "../ts/commons/collections/maybe.ts";
 import {
   isBinomialType,
   listingLabel,
   readThing,
-} from "../ts/services/data/things.ts";
+} from "../ts/services/data/entities/things.ts";
 
 const BIRD = "urn:ró:bird:robin";
 const BIRD_VARIANT = `${BIRD}?sex=male`;

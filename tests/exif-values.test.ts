@@ -5,8 +5,8 @@ import {
   formatDimensions,
   formatFocalLength,
   formatShutterSpeed,
-} from "../ts/components/media/exif-values.ts";
-import { type Maybe, NONE } from "../ts/commons/maybe.ts";
+} from "../ts/components/media/metadata/exif-values.ts";
+import { type Maybe, NONE } from "../ts/commons/collections/maybe.ts";
 
 function assertEquals(actual: unknown, expected: unknown): void {
   if (actual !== expected) {

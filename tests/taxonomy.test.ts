@@ -6,10 +6,10 @@
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Triple } from "@rgrannell1/tribbledb";
 import { addTaxonSubjects } from "../ts/semantic/derive/mod.ts";
-import { readTaxonMembers, readTaxons } from "../ts/services/data/things.ts";
+import { readTaxonMembers, readTaxons } from "../ts/services/data/entities/things.ts";
 import { tdb as realTdb } from "../ts/build/loaders.ts";
 import { KnownRelations, TAXON_RANKS } from "../ts/constants/data.ts";
-import { one } from "../ts/commons/arrays.ts";
+import { one } from "../ts/commons/collections/arrays.ts";
 
 const PUFFIN = "urn:ró:bird:fratercula-arctica";
 const ALCIDAE = "urn:ró:family:alcidae";

@@ -1,0 +1,82 @@
+/* Location rendering for photos and videos, in geographic or feature mode. */
+
+import m from "mithril";
+import { type ReadThing, toThingLinks } from "../../thing/navigation/thing-links.ts";
+import type { ReadThingEmoji } from "../../thing/navigation/thing-link.ts";
+import { asUrn } from "@rgrannell1/tribbledb";
+import { arrayify, one } from "../../../commons/collections/arrays.ts";
+import { DATA_TRUE, KnownTypes } from "../../../constants/data.ts";
+import { MEDIA_LOCATION_MODES } from "../../../constants/display.ts";
+import { isNone, type Maybe } from "../../../commons/collections/maybe.ts";
+
+export type MediaLocationMode =
+  typeof MEDIA_LOCATION_MODES[keyof typeof MEDIA_LOCATION_MODES];
+
+function isPlaceFeature(urn: string): boolean {
+  return asUrn(urn).type === KnownTypes.PLACE_FEATURE;
+}
+
+/* A place feature worth showing as a "place type". Features published as
+   generic (country, continent) apply to every photo, so they are excluded. */
+export function isVisiblePlaceFeature(
+  readThing: ReadThing,
+  urn: string,
+): boolean {
+  if (!isPlaceFeature(urn)) {
+    return false;
+  }
+
+  const feature = readThing(urn);
+  const isVisible = isNone(feature) || one(feature.generic) !== DATA_TRUE;
+  return isVisible;
+}
+
+/* geographic locations exclude country/continent — only concrete places are shown */
+export function isPlace(urn: string): boolean {
+  return asUrn(urn).type === KnownTypes.PLACE;
+}
+
+type MediaLocationsAttrs = {
+  location: Maybe<string | string[]>;
+  readThing: ReadThing;
+  readEmoji: ReadThingEmoji;
+  mode: MediaLocationMode;
+};
+
+function listLocationUrns(location: Maybe<string | string[]>): string[] {
+  const urns = isNone(location) ? [] : arrayify(location);
+  return urns;
+}
+
+function selectLocationUrns(attrs: MediaLocationsAttrs): string[] {
+  const { location, readThing, mode } = attrs;
+  const allUrns = listLocationUrns(location);
+  if (mode === MEDIA_LOCATION_MODES.FEATURE) {
+    return allUrns.filter(isVisiblePlaceFeature.bind(null, readThing));
+  }
+  return allUrns.filter(isPlace);
+}
+
+function drawLocationLinks(
+  attrs: MediaLocationsAttrs,
+  urns: string[],
+): m.Children[] {
+  const links = toThingLinks(attrs.readThing, attrs.readEmoji, urns);
+  return links;
+}
+
+function locationContent(links: m.Children[]): m.Children {
+  const hasLinks = links.length > 0;
+  return hasLinks ? links : "—";
+}
+
+function viewMediaLocations(vnode: m.Vnode<MediaLocationsAttrs>): m.Children {
+  const urns = selectLocationUrns(vnode.attrs);
+  const $links = drawLocationLinks(vnode.attrs, urns);
+  const content = locationContent($links);
+  return m("td", content);
+}
+
+export function MediaLocations() {
+  return { view: viewMediaLocations };
+}

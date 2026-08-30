@@ -1,7 +1,7 @@
 /* Lazy reader cache tests. */
 
 import { readPrefix, readThrough } from "../ts/commons/cache.ts";
-import { NONE } from "../ts/commons/maybe.ts";
+import { NONE } from "../ts/commons/collections/maybe.ts";
 
 Deno.test("readThrough: reads each requested key once", () => {
   const cache = new Map<string, string | typeof NONE>();

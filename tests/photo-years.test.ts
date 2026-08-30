@@ -3,7 +3,7 @@
  */
 
 import type { Photo } from "../ts/types/domain.ts";
-import { groupPhotosByYear } from "../ts/domain/photos.ts";
+import { groupPhotosByYear } from "../ts/domain/media/photos.ts";
 
 function assertEquals(actual: unknown, expected: unknown) {
   const actualJson = JSON.stringify(actual);

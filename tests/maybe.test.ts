@@ -9,9 +9,9 @@ import {
   some,
   toUndefined,
   withDefault,
-} from "../ts/commons/maybe.ts";
-import { arrayify, one } from "../ts/commons/arrays.ts";
-import { setify } from "../ts/commons/sets.ts";
+} from "../ts/commons/collections/maybe.ts";
+import { arrayify, one } from "../ts/commons/collections/arrays.ts";
+import { setify } from "../ts/commons/collections/sets.ts";
 
 Deno.test("Maybe identifies present and missing values", () => {
   if (!isSome(some("bird")) || isSome(NONE)) throw new Error("wrong some result");

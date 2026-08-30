@@ -7,7 +7,9 @@ export type YearRecapAttrs = {
 
 function viewYearRecap(vnode: m.Vnode<YearRecapAttrs>): m.Children {
   const { markdown } = vnode.attrs;
-  return m("div.year-recap", m.trust(snarkdown(markdown)));
+  const html = snarkdown(markdown);
+  const trustedHtml = m.trust(html);
+  return m("div.year-recap", trustedHtml);
 }
 
 /*

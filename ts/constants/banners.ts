@@ -4,10 +4,12 @@
  */
 
 // High-res banner rendition. Update if the source photo is re-encoded.
-export const ALBUMS_BANNER_URL = "https://photos-cdn.rgrannell.xyz/d6cf0f7cc7.webp";
+export const ALBUMS_BANNER_URL =
+  "https://photos-cdn.rgrannell.xyz/d6cf0f7cc7.webp";
 
 // High-res banner rendition. Update if the source photo is re-encoded.
-export const ABOUT_BANNER_URL = "https://photos-cdn.rgrannell.xyz/6744c802d1.webp";
+export const ABOUT_BANNER_URL =
+  "https://photos-cdn.rgrannell.xyz/6744c802d1.webp";
 
 // /albums hero — photo:548d64a50a (mirror: 2022/Cranes/Published/79_535.JPG)
 export const ALBUMS_BANNER_MOSAIC = "28gFJYIMZnhWeHaBiqd5iHBi6Ppj";

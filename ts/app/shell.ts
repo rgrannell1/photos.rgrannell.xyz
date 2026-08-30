@@ -4,10 +4,10 @@
 
 import m from "mithril";
 import { Header } from "../components/shell/header.ts";
-import { Sidebar } from "../components/shell/sidebar.ts";
+import { Sidebar } from "../components/shell/sidebar/sidebar.ts";
 import { state } from "./context.ts";
-import { isNone, type Maybe, NONE } from "../commons/maybe.ts";
-import type { Result } from "../commons/result.ts";
+import { isNone, type Maybe, NONE } from "../commons/collections/maybe.ts";
+import type { Result } from "../commons/collections/result.ts";
 
 const headerComponent = Header();
 const sidebarComponent = Sidebar();
@@ -31,20 +31,18 @@ type PageResolution<PageAttrs> = Maybe<
 
 type PageResolver<PageAttrs> = () => PageResolution<PageAttrs>;
 
-export type PageEntry<PageAttrs> = Omit<PageDefinition<PageAttrs>, "resolve"> & {
-  resolve: PageResolver<PageAttrs>;
-};
+export type PageEntry<PageAttrs> =
+  & Omit<PageDefinition<PageAttrs>, "resolve">
+  & {
+    resolve: PageResolver<PageAttrs>;
+  };
 
 function resolvePageDefinition<PageAttrs>(
   definition: PageDefinition<PageAttrs>,
 ): PageResolution<PageAttrs> {
   const resolved = definition.resolve();
-  if (resolved === "") {
-    return NONE;
-  }
-  if (typeof resolved === "string") {
-    return { ok: false, error: resolved };
-  }
+  if (resolved === "") return NONE;
+  if (typeof resolved === "string") return { ok: false, error: resolved };
   return { ok: true, value: resolved };
 }
 
@@ -65,7 +63,9 @@ export function pageEntry<PageAttrs>(
  * Wrap a page in the shell. A RouteResolver render keeps the header and sidebar
  * mounted across navigation.
  */
-export function routeResolver<PageAttrs>(entry: PageEntry<PageAttrs>): m.RouteResolver {
+export function routeResolver<PageAttrs>(
+  entry: PageEntry<PageAttrs>,
+): m.RouteResolver {
   return {
     onmatch(params: m.Params) {
       entry.onmatch?.(params);

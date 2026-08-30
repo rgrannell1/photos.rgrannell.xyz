@@ -1,5 +1,6 @@
 /* Resolve the map route and retain its completed map model. */
 
+/* Resolve the map route and retain its completed map model. */
 import { MapPage } from "../../components/pages/map.ts";
 import type { TripPolyline } from "../../domain/map.ts";
 import type { GeocodedPlaceWithCover } from "../../domain/places.ts";

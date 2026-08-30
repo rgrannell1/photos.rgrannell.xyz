@@ -1,6 +1,6 @@
 /* Characterise the trip line geometry used by the Leaflet map. */
 
-import { curveTripLine } from "../ts/services/map/map-lines.ts";
+import { curveTripLine } from "../ts/services/map/map-lines/map-lines.ts";
 
 function assertEquals(actual: unknown, expected: unknown): void {
   const actualJson = JSON.stringify(actual);

@@ -1,17 +1,16 @@
 import type { BaseIssue } from "valibot";
 
-export function logParseWarning(issues: BaseIssue<unknown>[]): void {
-  const message: string[] = [];
+function formatParseWarning(issue: BaseIssue<unknown>): string {
+  const path = JSON.stringify(issue.path, null, 2);
+  const message = `Parse warning @\n${path}\n: ${issue.message}`;
+  return message;
+}
 
-  for (const issue of issues) {
-    message.push(
-      `Parse warning @\n${
-        JSON.stringify(issue.path, null, 2)
-      }\n: ${issue.message}`,
-    );
-  }
+export function logParseWarning(issues: BaseIssue<unknown>[]): void {
+  const messages = issues.map(formatParseWarning);
+  const output = messages.join("\n");
 
   // TODO; error out instead
-  console.warn(message.join("\n"));
+  console.warn(output);
   console.trace();
 }

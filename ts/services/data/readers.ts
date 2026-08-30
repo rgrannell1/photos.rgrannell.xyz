@@ -1,5 +1,6 @@
 /* Parser-to-reader registry. */
 
+/* Parser-to-reader registry. */
 import { readers } from "./parser.ts";
 import type {
   Album,

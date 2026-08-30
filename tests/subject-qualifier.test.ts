@@ -5,7 +5,7 @@
  */
 
 import { subjectQualifier, urnContext } from "../ts/commons/urn.ts";
-import { NONE } from "../ts/commons/maybe.ts";
+import { NONE } from "../ts/commons/collections/maybe.ts";
 
 function assertEquals(actual: unknown, expected: unknown) {
   const actualJson = JSON.stringify(actual);

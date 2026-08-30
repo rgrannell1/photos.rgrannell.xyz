@@ -11,26 +11,34 @@ export type ThingSubtitleAttrs = {
   isBinomial: boolean;
 };
 
+function drawBinomial(type: string, id: string): m.Children {
+  const attrs = { class: `thing-binomial ${type}-binomial` };
+  const label = binomial(id);
+  return m("span", attrs, label);
+}
+
+function drawOptionalBinomial(
+  attrs: ThingSubtitleAttrs,
+  type: string,
+  id: string,
+): m.Children {
+  const showsBinomial = attrs.isBinomial && id !== "*";
+  if (showsBinomial) {
+    return drawBinomial(type, id);
+  }
+  const emptySubtitle = m("span");
+  return emptySubtitle;
+}
+
 function viewThingSubtitle(vnode: m.Vnode<ThingSubtitleAttrs>): m.Children {
   const parsed = asUrn(vnode.attrs.urn);
+  const isTaxon = TAXON_TYPES.has(parsed.type);
 
   // Taxon ids are lowercase Latin names, so they always show as subtitles.
-  if (TAXON_TYPES.has(parsed.type)) {
-    return m(
-      "span",
-      { class: `thing-binomial ${parsed.type}-binomial` },
-      binomial(parsed.id),
-    );
+  if (isTaxon) {
+    return drawBinomial(parsed.type, parsed.id);
   }
-
-  const showsBinomial = vnode.attrs.isBinomial && parsed.id !== "*";
-  return showsBinomial
-    ? m(
-      "span",
-      { class: `thing-binomial ${parsed.type}-binomial` },
-      binomial(parsed.id),
-    )
-    : m("span");
+  return drawOptionalBinomial(vnode.attrs, parsed.type, parsed.id);
 }
 
 export const ThingSubtitle = Component<ThingSubtitleAttrs>({

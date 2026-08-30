@@ -1,0 +1,133 @@
+/* Resolve thing routes and retain their completed base model. */
+
+import m from "mithril";
+import {
+  fromNullable,
+  isNone,
+  type Maybe,
+  NONE,
+  some,
+} from "../../../commons/collections/maybe.ts";
+import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
+import { thingUrn } from "../../../commons/urn.ts";
+import { setify } from "../../../commons/collections/sets.ts";
+import {
+  ThingPage,
+  type ThingPageAttrs,
+} from "../../../components/pages/thing/view/thing.ts";
+import type {
+  ThingListItem,
+  ThingListKind,
+} from "../../../components/thing/thing-list/thing-list.ts";
+import type { Album, Country } from "../../../types/domain.ts";
+import { services, state } from "../../context.ts";
+import { pageEntry } from "../../shell.ts";
+import { THING_LIST_KINDS } from "../../../constants/data.ts";
+
+const thingPageComponent = ThingPage();
+
+let cachedUrn: Maybe<string> = NONE;
+let cachedThings: TripleObject[] = [];
+let cachedListingTitle: Maybe<string> = NONE;
+let cachedIsBinomial = false;
+let cachedTitleEmoji = "";
+
+type AlbumEntry = { album: Album; countries: Country[] };
+
+type ThingListReader = (urns: Set<string>) => ThingListItem[];
+
+const THING_LIST_READERS: Partial<Record<ThingListKind, ThingListReader>> = {
+  [THING_LIST_KINDS.PLACE]: services.readLocations,
+  [THING_LIST_KINDS.FEATURE]: services.readFeatures,
+  [THING_LIST_KINDS.UNESCO]: services.readUnescos,
+};
+
+const THING_PAGE_READERS = {
+  readSeenInCountries: services.readSeenInCountries,
+  readAlbumEntries,
+  readVideos: services.readVideosByThingIds,
+  readPhotos: services.readPhotosByThingIds,
+  readThingList,
+  readThingEmoji: services.readThingEmoji,
+  readTaxonMembers: services.readTaxonMembers,
+  readThingCover: services.readThingCover,
+};
+
+function toAlbumEntry(album: Album): AlbumEntry {
+  return {
+    album,
+    countries: services.readCountries(setify(fromNullable(album.country))),
+  };
+}
+
+function readAlbumEntries(urns: Set<string>): AlbumEntry[] {
+  return services.readAlbumsByThingIds(urns).map(toAlbumEntry);
+}
+
+function readThingList(
+  kind: ThingListKind,
+  urns: Set<string>,
+): ThingListItem[] {
+  const readList = THING_LIST_READERS[kind] ?? services.readTaxons;
+  const items = readList(urns);
+  return items;
+}
+
+function readSingleThing(urn: string): TripleObject[] {
+  const thing = services.readThing(urn);
+  if (isNone(thing)) return [];
+  const things = [thing];
+  return things;
+}
+
+function readThings(urn: string): TripleObject[] {
+  const parsed = asUrn(urn);
+  if (parsed.id === "*") return services.readNamedTypeThings(parsed.type);
+  const things = readSingleThing(urn);
+  return things;
+}
+
+function refreshThingCache(urn: string): void {
+  if (urn === cachedUrn) {
+    return;
+  }
+  const parsed = asUrn(urn);
+  cachedUrn = urn;
+  cachedThings = readThings(urn);
+  cachedListingTitle = parsed.id === "*"
+    ? some(services.readListingLabel(parsed.type))
+    : NONE;
+  cachedIsBinomial = services.isBinomialType(parsed.type);
+  const [thing] = cachedThings;
+  cachedTitleEmoji = thing ? services.readThingEmoji(urn, "", thing) : "";
+}
+
+function readThingPageAttrs(urn: string): ThingPageAttrs {
+  return {
+    urn,
+    things: cachedThings,
+    listingTitle: cachedListingTitle,
+    isBinomial: cachedIsBinomial,
+    titleEmoji: cachedTitleEmoji,
+    ...THING_PAGE_READERS,
+    visible: state.sidebarVisible,
+  };
+}
+
+function resolveThingPage() {
+  if (!state.loaded) {
+    return "";
+  }
+  const pair = m.route.param("pair");
+  if (typeof pair !== "string") {
+    return "No thing selected";
+  }
+  const urn = thingUrn(pair);
+  refreshThingCache(urn);
+  return { attrs: readThingPageAttrs(urn) };
+}
+
+export const thingEntry = pageEntry({
+  page: thingPageComponent,
+  resolve: resolveThingPage,
+});

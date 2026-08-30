@@ -1,7 +1,7 @@
 /* Page resolution state tests. */
 
 import m from "mithril";
-import { isNone } from "../ts/commons/maybe.ts";
+import { isNone } from "../ts/commons/collections/maybe.ts";
 import { pageEntry } from "../ts/app/shell.ts";
 
 const TestPage: m.Component<{ label: string }> = {

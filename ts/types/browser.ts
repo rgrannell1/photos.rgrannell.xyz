@@ -1,5 +1,6 @@
 /* Values injected by the built page and exposed through window. */
 
+/* Values injected by the built page and exposed through window. */
 import type { InferOutput } from "valibot";
 import type { StatsSchema } from "../schemas/stats.ts";
 

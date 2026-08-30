@@ -1,7 +1,7 @@
 /* Album year group fragment tests. */
 
 import m from "mithril";
-import { NONE } from "../ts/commons/maybe.ts";
+import { NONE } from "../ts/commons/collections/maybe.ts";
 import {
   AlbumYearGroup,
   type AlbumYearGroupAttrs,

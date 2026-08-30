@@ -1,6 +1,7 @@
 /* Small cache helpers for lazy data readers. */
 
-import { isSome, type Maybe } from "./maybe.ts";
+/* Small cache helpers for lazy data readers. */
+import { isSome, type Maybe } from "./collections/maybe.ts";
 
 export type Reader<Key, Value> = (key: Key) => Value;
 

@@ -17,23 +17,27 @@ type BatchState = {
 };
 
 function growBatch(batchState: BatchState, total: number): void {
-  batchState.rendered = Math.min(
-    batchState.rendered + batchState.batchSize,
-    total,
-  );
+  const batchSize = batchState.batchSize;
+  const rendered = Math.min(batchState.rendered + batchSize, total);
+  batchState.rendered = rendered;
   batchState.batchScheduled = false;
   m.redraw();
 }
 
-function scheduleBatch(batchState: BatchState, total: number): void {
+function canScheduleBatch(batchState: BatchState, total: number): boolean {
   const hasRenderedAll = batchState.rendered >= total;
-  const cannotScheduleBatch = hasRenderedAll || batchState.batchScheduled;
-  if (cannotScheduleBatch) {
+  return !hasRenderedAll && !batchState.batchScheduled;
+}
+
+function scheduleBatch(batchState: BatchState, total: number): void {
+  const isReady = canScheduleBatch(batchState, total);
+  if (!isReady) {
     return;
   }
 
   batchState.batchScheduled = true;
-  setTimeout(growBatch.bind(null, batchState, total), 1);
+  const grow = growBatch.bind(null, batchState, total);
+  setTimeout(grow, 1);
 }
 
 function resetBatch(batchState: BatchState): void {
@@ -47,15 +51,22 @@ function countBatch(batchState: BatchState): number {
 
 /* Call `schedule` from oncreate/onupdate with the list total, slice to `count()` in the view. */
 export function createBatchRenderer(batchSize: number): BatchRenderer {
-  const batchState: BatchState = {
+  const batchState = createBatchState(batchSize);
+  return bindBatchRenderer(batchState);
+}
+
+function bindBatchRenderer(batchState: BatchState): BatchRenderer {
+  const count = countBatch.bind(null, batchState);
+  const schedule = scheduleBatch.bind(null, batchState);
+  const reset = resetBatch.bind(null, batchState);
+  return { count, schedule, reset };
+}
+
+function createBatchState(batchSize: number): BatchState {
+  const state: BatchState = {
     rendered: batchSize,
     batchScheduled: false,
     batchSize,
   };
-
-  return {
-    count: countBatch.bind(null, batchState),
-    schedule: scheduleBatch.bind(null, batchState),
-    reset: resetBatch.bind(null, batchState),
-  };
+  return state;
 }

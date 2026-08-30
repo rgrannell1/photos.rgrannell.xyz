@@ -1,0 +1,27 @@
+/* Support listing operations. */
+
+import m from "mithril";
+import { KnownTypes } from "../../../constants/data.ts";
+import { LIFE_LIST_FILTERS } from "../../../constants/display.ts";
+import type { ListingPageAttrs } from "./listing.ts";
+import { AlbumsList } from "./cards.ts";
+import { drawListingMetadata, isIrishThing } from "./details.ts";
+
+export function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
+  const { attrs } = vnode;
+  const showsIrishBirds = attrs.type === KnownTypes.BIRD &&
+    attrs.filter === LIFE_LIST_FILTERS.IRELAND;
+  const displayThings = showsIrishBirds
+    ? attrs.things.filter(isIrishThing)
+    : attrs.things;
+  return m("main", {
+    class: attrs.visible ? "page sidebar-visible" : "page",
+  }, [
+    drawListingMetadata(attrs),
+    m(AlbumsList, {
+      readThingCover: attrs.readThingCover,
+      things: displayThings,
+      listingType: attrs.type,
+    }),
+  ]);
+}

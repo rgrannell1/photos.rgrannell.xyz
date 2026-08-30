@@ -1,7 +1,7 @@
 import m from "mithril";
 import { HEART_RAIN_OVERLAY_SELECTOR } from "../../constants/selectors.ts";
 import { mountHeartRain } from "../../services/rendering/heart-rain.ts";
-import { isSome, type Maybe, NONE } from "../../commons/maybe.ts";
+import { isSome, type Maybe, NONE } from "../../commons/collections/maybe.ts";
 
 type HeartRainState = {
   // teardown for the heart spawner, set on mount
@@ -28,10 +28,10 @@ function viewHeartRain(): m.Children {
 
 export function HeartRain() {
   const heartState: HeartRainState = { teardown: NONE };
-
-  return {
+  const component = {
     oncreate: mountHeartRainOverlay.bind(null, heartState),
     onremove: unmountHeartRainOverlay.bind(null, heartState),
     view: viewHeartRain,
   };
+  return component;
 }

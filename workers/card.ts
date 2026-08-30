@@ -1,13 +1,14 @@
 /// <reference types="@cloudflare/workers-types" />
 
+/// <reference types="@cloudflare/workers-types" />
 import {
   fromNullable,
   isSome,
   type Maybe,
   NONE,
   withDefault,
-} from "../ts/commons/maybe.ts";
-import type { Result } from "../ts/commons/result.ts";
+} from "../ts/commons/collections/maybe.ts";
+import type { Result } from "../ts/commons/collections/result.ts";
 
 /*
  * Social-card redirect worker
@@ -65,7 +66,10 @@ function extractPathFromUrl(url: string): string {
 }
 
 function getPageTitle(card: Maybe<SocialCard>, request: Request): string {
-  const host = new URL(request.url).hostname.replace(/^sharephoto\./, "photos.");
+  const host = new URL(request.url).hostname.replace(
+    /^sharephoto\./,
+    "photos.",
+  );
   return isSome(card) && card.title ? card.title : host;
 }
 
@@ -93,7 +97,10 @@ function readSocialCardView(
   };
 }
 
-function renderSocialMetadata(view: SocialCardView, description: string): string {
+function renderSocialMetadata(
+  view: SocialCardView,
+  description: string,
+): string {
   return `  <!-- Social Cards -->
   <meta property="og:title" content="${view.title}">
   <meta property="og:description" content="${description}">

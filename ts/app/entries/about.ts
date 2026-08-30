@@ -1,6 +1,7 @@
 /* Resolve the static about route. */
 
-import { AboutPage } from "../../components/pages/about.ts";
+/* Resolve the static about route. */
+import { AboutPage } from "../../components/pages/about/about.ts";
 import { state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
 

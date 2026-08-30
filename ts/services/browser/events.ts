@@ -11,29 +11,39 @@ export function broadcast<Label extends ApplicationEvents>(
   label: Label,
   detail: ApplicationEventPayloads[Label],
 ): void {
-  console.info(`broadcasting event: ${label}`, detail);
-  document.dispatchEvent(new CustomEvent(label, { detail }));
+  const message = `broadcasting event: ${label}`;
+  console.info(message, detail);
+  const event = new CustomEvent(label, { detail });
+  document.dispatchEvent(event);
 }
 
 export function listen<Label extends ApplicationEvents>(
   label: Label,
   callback: (event: CustomEvent<ApplicationEventPayloads[Label]>) => void,
 ): void {
-  document.addEventListener(label, callback as EventListener);
+  const listener = callback as EventListener;
+  document.addEventListener(label, listener);
 }
 
 export function block(event: Event): void {
   event.preventDefault();
 }
 
+function hasKeyboardModifier(event: MouseEvent): boolean {
+  return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
+}
+
 export function isModifiedClick(event: MouseEvent): boolean {
-  return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey ||
-    event.button !== 0;
+  const hasModifier = hasKeyboardModifier(event);
+  const isAuxiliaryClick = event.button !== 0;
+  return hasModifier || isAuxiliaryClick;
+}
+
+function broadcastNavigation(route: string, event: Event): void {
+  broadcast("navigate", { route });
+  block(event);
 }
 
 export function navigate(route: string): (event: Event) => void {
-  return (event: Event) => {
-    broadcast("navigate", { route });
-    block(event);
-  };
+  return broadcastNavigation.bind(null, route);
 }

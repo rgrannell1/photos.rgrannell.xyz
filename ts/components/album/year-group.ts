@@ -3,11 +3,11 @@
 import m from "mithril";
 import type { Album, Country } from "../../types/domain.ts";
 import { YearRecap } from "./year-recap.ts";
-import { AlbumCard } from "./album-card.ts";
-import { loadingMode } from "../../services/rendering/photos.ts";
+import { AlbumCard, type AlbumCardAttrs } from "./cards/album-card.ts";
+import { loadingMode } from "../../services/rendering/year-scroll/photos.ts";
 import { BEFORE_TIMES_FINAL_YEAR } from "../../constants/display.ts";
 import { ALBUM_YEAR_HEADING_ID_PREFIX } from "../../constants/selectors.ts";
-import { fromNullable, isSome, type Maybe } from "../../commons/maybe.ts";
+import { fromNullable, isSome, type Maybe } from "../../commons/collections/maybe.ts";
 
 export type AlbumYearGroupAttrs = {
   year: number;
@@ -21,15 +21,20 @@ export type AlbumYearGroupAttrs = {
   startIdx: number;
 };
 
+function yearHeadingClass(year: number): string | undefined {
+  return year <= BEFORE_TIMES_FINAL_YEAR ? "before-times" : undefined;
+}
+
 function drawYearHeading(year: number, showHeading: boolean): m.Children {
   if (!showHeading) {
     return m.fragment({ key: `year-${year}` }, []);
   }
-  return m("h2.year-heading", {
+  const headingAttrs = {
     key: `year-${year}`,
     id: `${ALBUM_YEAR_HEADING_ID_PREFIX}${year}`,
-    class: year <= BEFORE_TIMES_FINAL_YEAR ? "before-times" : undefined,
-  }, year.toString());
+    class: yearHeadingClass(year),
+  };
+  return m("h2.year-heading", headingAttrs, year.toString());
 }
 
 function drawYearRecap(
@@ -37,10 +42,35 @@ function drawYearRecap(
   recap: Maybe<string>,
   showHeading: boolean,
 ): m.Children {
-  if (!showHeading || !isSome(recap)) {
+  const hasRecap = showHeading && isSome(recap);
+  if (!hasRecap) {
     return m.fragment({ key: `year-recap-${year}` }, []);
   }
-  return m(YearRecap, { key: `year-recap-${year}`, markdown: recap });
+  const recapAttrs = { key: `year-recap-${year}`, markdown: recap };
+  return m(YearRecap, recapAttrs);
+}
+
+function albumContainerAttrs(album: Album): m.Attributes {
+  return {
+    "data-testid": "album-row",
+    "data-album-title": album.name,
+  };
+}
+
+function albumCardAttrs(
+  attrs: AlbumYearGroupAttrs,
+  album: Album,
+  albumIdx: number,
+): AlbumCardAttrs & m.Attributes {
+  const loadingIdx = attrs.startIdx + albumIdx;
+  return {
+    key: `album-${album.id}`,
+    album,
+    countries: attrs.readAlbumCountries(album),
+    loading: loadingMode(loadingIdx),
+    trip: fromNullable(album.trip),
+    containerAttrs: albumContainerAttrs(album),
+  };
 }
 
 function drawAlbumCard(
@@ -48,17 +78,8 @@ function drawAlbumCard(
   album: Album,
   albumIdx: number,
 ): m.Children {
-  return m(AlbumCard, {
-    key: `album-${album.id}`,
-    album,
-    countries: attrs.readAlbumCountries(album),
-    loading: loadingMode(attrs.startIdx + albumIdx),
-    trip: fromNullable(album.trip),
-    containerAttrs: {
-      "data-testid": "album-row",
-      "data-album-title": album.name,
-    },
-  });
+  const cardAttrs = albumCardAttrs(attrs, album, albumIdx);
+  return m(AlbumCard, cardAttrs);
 }
 
 function viewAlbumYearGroup(

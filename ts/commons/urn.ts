@@ -4,7 +4,7 @@ import {
   TAXON_TYPES,
   UNQUALIFIED_SUBJECT_CONTEXTS,
 } from "../constants/data.ts";
-import { fromNullable, isNone, type Maybe, NONE } from "./maybe.ts";
+import { fromNullable, isNone, type Maybe, NONE } from "./collections/maybe.ts";
 
 const URN_PREFIX = "urn:ró";
 

@@ -1,5 +1,6 @@
 /* Heart-rain effect for the olm page. Spawns falling hearts on an interval. */
 
+/* Heart-rain effect for the olm page. Spawns falling hearts on an interval. */
 import { HEART_RAIN_HEART_CLASS } from "../../constants/selectors.ts";
 
 // ms between heart spawns
@@ -11,19 +12,48 @@ const HEART_LIFETIME_MS = 5000;
 const HEARTS = ["❤️", "🩷", "🧡", "💛", "💚", "💙", "💜"];
 
 function randomItem<Item>(items: Item[]): Item {
-  return items[Math.floor(Math.random() * items.length)];
+  const randomIdx = Math.floor(Math.random() * items.length);
+  return items[randomIdx];
+}
+
+function createHeart(): HTMLDivElement {
+  const heart = document.createElement("div");
+  const heartText = randomItem(HEARTS);
+  heart.className = HEART_RAIN_HEART_CLASS;
+  heart.textContent = heartText;
+  return heart;
+}
+
+function setHeartPosition(heart: HTMLDivElement): void {
+  const style = heart.style;
+  const left = Math.random() * 100;
+  style.left = `${left}vw`;
+}
+
+function setHeartSize(heart: HTMLDivElement): void {
+  const style = heart.style;
+  const fontSize = Math.random() * 20 + 10;
+  style.fontSize = `${fontSize}px`;
+}
+
+function setHeartDuration(heart: HTMLDivElement): void {
+  const style = heart.style;
+  const duration = Math.random() * 3 + 2;
+  style.animationDuration = `${duration}s`;
+}
+
+function styleHeart(heart: HTMLDivElement): void {
+  setHeartPosition(heart);
+  setHeartSize(heart);
+  setHeartDuration(heart);
 }
 
 function spawnHeart(container: HTMLElement): void {
-  const heart = document.createElement("div");
-  heart.className = HEART_RAIN_HEART_CLASS;
-  heart.textContent = randomItem(HEARTS);
-  heart.style.left = `${Math.random() * 100}vw`;
-  heart.style.fontSize = `${Math.random() * 20 + 10}px`;
-  heart.style.animationDuration = `${Math.random() * 3 + 2}s`;
-
+  const heart = createHeart();
+  styleHeart(heart);
   container.appendChild(heart);
-  setTimeout(heart.remove.bind(heart), HEART_LIFETIME_MS);
+  const removeHeart = heart.remove.bind(heart);
+  setTimeout(removeHeart, HEART_LIFETIME_MS);
 }
 
 function stopHeartRain(intervalId: number): void {
@@ -32,9 +62,7 @@ function stopHeartRain(intervalId: number): void {
 
 /* Returns a teardown function. */
 export function mountHeartRain(container: HTMLElement): () => void {
-  const intervalId = setInterval(
-    spawnHeart.bind(null, container),
-    SPAWN_INTERVAL_MS,
-  );
+  const spawn = spawnHeart.bind(null, container);
+  const intervalId = setInterval(spawn, SPAWN_INTERVAL_MS);
   return stopHeartRain.bind(null, intervalId);
 }

@@ -1,8 +1,9 @@
 /* Pure labels for raw domain entities. */
 
+/* Pure labels for raw domain entities. */
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../commons/arrays.ts";
-import { isNone, withDefault } from "../commons/maybe.ts";
+import { one } from "../commons/collections/arrays.ts";
+import { isNone, withDefault } from "../commons/collections/maybe.ts";
 import { titleCase } from "../commons/strings.ts";
 
 export function taxonLabel(taxon: TripleObject): string {

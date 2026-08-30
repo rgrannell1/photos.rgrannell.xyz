@@ -10,9 +10,9 @@ import {
   readTripAlbums,
   readTripName,
   readYearRecap,
-} from "../ts/services/data/albums.ts";
+} from "../ts/services/data/albums/albums.ts";
 import { KnownRelations, KnownTypes } from "../ts/constants/data.ts";
-import { NONE } from "../ts/commons/maybe.ts";
+import { NONE } from "../ts/commons/collections/maybe.ts";
 
 const ALBUM = "urn:ró:album:test";
 const TRIP = "urn:ró:trip:test";

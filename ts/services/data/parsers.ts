@@ -1,8 +1,5 @@
 import { KnownTypes } from "../../constants/data.ts";
-import type {
-  Place,
-  Unesco,
-} from "../../types/domain.ts";
+import type { Place, Unesco } from "../../types/domain.ts";
 import { parseByType, parseObject } from "./parser.ts";
 import { AlbumSchema } from "../../schemas/album.ts";
 import { PhotoSchema } from "../../schemas/photo.ts";

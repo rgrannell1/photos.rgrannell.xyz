@@ -76,7 +76,8 @@ export function thumbHashToRGBA(hash: Uint8Array): DecodedThumbHash {
       let coeffX = coeffY ? 0 : 1;
 
       while (coeffX * countY < countX * (countY - coeffY)) {
-        const nibble = (hash[acStart + (acIndex >> 1)] >> ((acIndex & 1) << 2)) & 15;
+        const nibble =
+          (hash[acStart + (acIndex >> 1)] >> ((acIndex & 1) << 2)) & 15;
         coefficients.push((nibble / 7.5 - 1) * scale);
         acIndex += 1;
         coeffX += 1;
@@ -111,10 +112,14 @@ export function thumbHashToRGBA(hash: Uint8Array): DecodedThumbHash {
       let alpha = alphaDc;
 
       for (let coeffX = 0; coeffX < cosineCountX; coeffX++) {
-        cosinesX[coeffX] = Math.cos((Math.PI / width) * (pixelX + 0.5) * coeffX);
+        cosinesX[coeffX] = Math.cos(
+          (Math.PI / width) * (pixelX + 0.5) * coeffX,
+        );
       }
       for (let coeffY = 0; coeffY < cosineCountY; coeffY++) {
-        cosinesY[coeffY] = Math.cos((Math.PI / height) * (pixelY + 0.5) * coeffY);
+        cosinesY[coeffY] = Math.cos(
+          (Math.PI / height) * (pixelY + 0.5) * coeffY,
+        );
       }
 
       let lumaIdx = 0;

@@ -1,17 +1,28 @@
 import * as path from "jsr:@std/path";
 import { createTripleDeriver, postIndexing } from "../semantic/derive/mod.ts";
 import { loadTriples } from "../semantic/data.ts";
-import { readAllAlbums } from "../services/data/albums.ts";
+import { readAllAlbums } from "../services/data/albums/albums.ts";
 import { HOMEPAGE_PRELOAD_COUNT } from "../constants/layout.ts";
-import { isNone, type Maybe, NONE } from "../commons/maybe.ts";
+import { isNone, type Maybe, NONE } from "../commons/collections/maybe.ts";
+
+function hasFilePrefix(entryName: string, prefix: string): boolean {
+  const filePrefix = `${prefix}.`;
+  return entryName.startsWith(filePrefix);
+}
+
+function joinFilePath(dpath: string, entryName: string): string {
+  return path.join(dpath, entryName);
+}
 
 async function findFile(
   prefix: string,
   dpath: string,
 ): Promise<Maybe<string>> {
-  for await (const dirEntry of Deno.readDir(dpath)) {
-    if (dirEntry.name.startsWith(`${prefix}.`)) {
-      return path.join(dpath, dirEntry.name);
+  const entries = Deno.readDir(dpath);
+  for await (const dirEntry of entries) {
+    const matchesPrefix = hasFilePrefix(dirEntry.name, prefix);
+    if (matchesPrefix) {
+      return joinFilePath(dpath, dirEntry.name);
     }
   }
 
@@ -24,7 +35,8 @@ async function findFileUrl(
 ): Promise<Maybe<string>> {
   const filePath = await findFile(prefix, dpath);
   if (!isNone(filePath)) {
-    return (new URL(`file://${filePath}`)).href;
+    const fileUrl = new URL(`file://${filePath}`);
+    return fileUrl.href;
   }
 
   return NONE;
@@ -50,7 +62,8 @@ export async function loadTribbles() {
   if (isNone(tribblesFile)) {
     throw new Error("No tribbles file found");
   }
-  const tdb = await loadTriples(tribblesFile, {}, createTripleDeriver());
+  const tripleDeriver = createTripleDeriver();
+  const tdb = await loadTriples(tribblesFile, {}, tripleDeriver);
   postIndexing(tdb);
   return tdb;
 }
@@ -70,13 +83,21 @@ export const [
 
 export const env = JSON.parse(envText);
 
+function readThumbnailUrl(album: { thumbnailUrl: string }): string {
+  return album.thumbnailUrl;
+}
+
+function readThumbnailPath(album: { thumbnailUrl: string }): string {
+  return new URL(album.thumbnailUrl).pathname;
+}
+
 export function findPrefetchTargets() {
   const albums = readAllAlbums(tdb);
-  return albums.slice(0, HOMEPAGE_PRELOAD_COUNT).map((album) => album.thumbnailUrl);
+  const homepageAlbums = albums.slice(0, HOMEPAGE_PRELOAD_COUNT);
+  return homepageAlbums.map(readThumbnailUrl);
 }
 
 export function findHomepageThumbnails() {
-  return readAllAlbums(tdb).map((album) => {
-    return new URL(album.thumbnailUrl).pathname;
-  });
+  const albums = readAllAlbums(tdb);
+  return albums.map(readThumbnailPath);
 }
