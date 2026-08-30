@@ -53,16 +53,6 @@ export function positionedIsWild(positioned: PositionedEntry): boolean {
   return isWild(positioned.entry);
 }
 
-export function drawChecklistCard(
-  covers: Map<string, Photo>,
-  irishView: boolean,
-  positioned: PositionedEntry,
-): m.Children {
-  const { entry, position } = positioned;
-  const attrs = readChecklistCardAttrs(covers, irishView, entry, position);
-  return m(ChecklistCard, attrs);
-}
-
 export function readChecklistCardAttrs(
   covers: Map<string, Photo>,
   irishView: boolean,
@@ -80,6 +70,16 @@ export function readChecklistCardAttrs(
   };
 }
 
+export function drawChecklistCard(
+  covers: Map<string, Photo>,
+  irishView: boolean,
+  positioned: PositionedEntry,
+): m.Children {
+  const { entry, position } = positioned;
+  const attrs = readChecklistCardAttrs(covers, irishView, entry, position);
+  return m(ChecklistCard, attrs);
+}
+
 export function drawMysteryCard(
   mysteryGlyph: string,
   species: NemesisSpecies,
@@ -89,6 +89,21 @@ export function drawMysteryCard(
     species,
     glyph: mysteryGlyph,
   });
+}
+
+export function filterPositionedEntries(
+  entries: PositionedEntry[],
+  filter: string,
+): PositionedEntry[] {
+  const isIrishFilter = filterIsIrish(filter);
+  const isAllFilter = filterIsAll(filter);
+  if (isIrishFilter) {
+    return entries.filter(positionedIsIrishWild);
+  }
+  if (isAllFilter) {
+    return entries;
+  }
+  return entries.filter(positionedIsWild);
 }
 
 export function viewChecklistGrid(
@@ -105,19 +120,4 @@ export function viewChecklistGrid(
   const cards = drawChecklistCards(displayed, covers, irishView);
   const mysteries = drawMysteryCards(nemesisSpecies, mysteryGlyph, irishView);
   return m("div.checklist-grid", [...cards, ...mysteries]);
-}
-
-export function filterPositionedEntries(
-  entries: PositionedEntry[],
-  filter: string,
-): PositionedEntry[] {
-  const isIrishFilter = filterIsIrish(filter);
-  const isAllFilter = filterIsAll(filter);
-  if (isIrishFilter) {
-    return entries.filter(positionedIsIrishWild);
-  }
-  if (isAllFilter) {
-    return entries;
-  }
-  return entries.filter(positionedIsWild);
 }

@@ -48,20 +48,6 @@ export function isNationFlag(country: Country): boolean {
   return isSome(asset) && !asset.includes("-");
 }
 
-/*
- * Places vexilla does not cover show no flag, so they are dropped here.
- */
-export function groupByNation(countries: Country[]): FlagGroup[] {
-  const groups = new Map<string, FlagGroup>();
-
-  for (const country of countries) {
-    addCountryToGroups(groups, country);
-  }
-
-  const groupedCountries = Array.from(groups.values());
-  return groupedCountries;
-}
-
 export function appendCountry(
   groups: Map<string, FlagGroup>,
   nation: string,
@@ -82,6 +68,20 @@ export function addCountryToGroups(
   }
   const groupKey = nation;
   appendCountry(groups, groupKey, country);
+}
+
+/*
+ * Places vexilla does not cover show no flag, so they are dropped here.
+ */
+export function groupByNation(countries: Country[]): FlagGroup[] {
+  const groups = new Map<string, FlagGroup>();
+
+  for (const country of countries) {
+    addCountryToGroups(groups, country);
+  }
+
+  const groupedCountries = Array.from(groups.values());
+  return groupedCountries;
 }
 
 /*

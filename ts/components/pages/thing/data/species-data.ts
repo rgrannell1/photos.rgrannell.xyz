@@ -13,6 +13,17 @@ import { cachedByUrn, readThingPhotos } from "./cache.ts";
 import { slicePhotos } from "../view/media.ts";
 import { drawCoveredMember } from "../view/species-view.ts";
 
+export function drawPhotoGrid(photos: PhotoType[], urn: string): m.Children {
+  const attrs = {
+    total: photos.length,
+    getPhotos: slicePhotos.bind(null, photos),
+    resetKey: urn,
+  };
+  const grid = m(PhotoGrid, attrs);
+  const heading = m("h3", "Photos");
+  return m("div", [heading, grid]);
+}
+
 export function viewPhotoSection(
   photosFor: CachedReader<PhotoType[]>,
   vnode: m.Vnode<ThingPageAttrs>,
@@ -26,21 +37,26 @@ export function viewPhotoSection(
   return grid;
 }
 
-export function drawPhotoGrid(photos: PhotoType[], urn: string): m.Children {
-  const attrs = {
-    total: photos.length,
-    getPhotos: slicePhotos.bind(null, photos),
-    resetKey: urn,
-  };
-  const grid = m(PhotoGrid, attrs);
-  const heading = m("h3", "Photos");
-  return m("div", [heading, grid]);
-}
-
 export function PhotoSection() {
   const photosFor = cachedByUrn(readThingPhotos);
 
   return { view: viewPhotoSection.bind(null, photosFor) };
+}
+
+export function isTaxonUrn(urn: string): boolean {
+  return TAXON_TYPES.has(asUrn(urn).type);
+}
+
+export function hasTaxonUrn(urn: Maybe<string>): urn is string {
+  if (isNone(urn)) {
+    return false;
+  }
+  return isTaxonUrn(urn);
+}
+
+export function readThingUrn(thing: TripleObject | undefined): Maybe<string> {
+  const urn = thing ? one(thing.id) : NONE;
+  return urn;
 }
 
 /* Member species of the page's taxon. Empty for non-taxon things. */
@@ -56,33 +72,14 @@ export function readMemberSpecies(
   return attrs.readTaxonMembers(urn);
 }
 
-export function hasTaxonUrn(urn: Maybe<string>): urn is string {
-  if (isNone(urn)) {
-    return false;
-  }
-  return isTaxonUrn(urn);
-}
-
-export function isTaxonUrn(urn: string): boolean {
-  return TAXON_TYPES.has(asUrn(urn).type);
-}
-
-export function readThingUrn(thing: TripleObject | undefined): Maybe<string> {
-  const urn = thing ? one(thing.id) : NONE;
-  return urn;
-}
-
-export function drawMemberCard(
-  readThingCover: (urn: string) => Maybe<PhotoType>,
+export function drawMemberCardFromUrn(
   member: TripleObject,
+  cover: PhotoType,
+  id: string,
   idx: number,
-): m.Children[] {
-  const id = one(member.id);
-  if (isNone(id)) {
-    return [];
-  }
-  const card = drawMemberCardWithId(readThingCover, member, id, idx);
-  return card;
+): m.Children {
+  const { type, id: thingId } = asUrn(id);
+  return drawCoveredMember(member, cover, id, thingId, type, idx);
 }
 
 export function drawMemberCardWithId(
@@ -99,12 +96,15 @@ export function drawMemberCardWithId(
   return [card];
 }
 
-export function drawMemberCardFromUrn(
+export function drawMemberCard(
+  readThingCover: (urn: string) => Maybe<PhotoType>,
   member: TripleObject,
-  cover: PhotoType,
-  id: string,
   idx: number,
-): m.Children {
-  const { type, id: thingId } = asUrn(id);
-  return drawCoveredMember(member, cover, id, thingId, type, idx);
+): m.Children[] {
+  const id = one(member.id);
+  if (isNone(id)) {
+    return [];
+  }
+  const card = drawMemberCardWithId(readThingCover, member, id, idx);
+  return card;
 }

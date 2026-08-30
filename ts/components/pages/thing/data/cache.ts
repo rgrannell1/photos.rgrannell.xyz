@@ -18,6 +18,17 @@ import type {
   UrnCache,
 } from "../view/thing.ts";
 
+export function computeCached<Value extends object>(
+  cache: UrnCache<Value>,
+  attrs: ThingPageAttrs,
+): Value {
+  const urn = attrs.urn;
+  cache.lastUrn = urn;
+  const value = cache.compute(attrs);
+  cache.value = some(value);
+  return value;
+}
+
 export function readCached<Value extends object>(
   cache: UrnCache<Value>,
   attrs: ThingPageAttrs,
@@ -28,17 +39,6 @@ export function readCached<Value extends object>(
     return cachedValue;
   }
   return computeCached(cache, attrs);
-}
-
-export function computeCached<Value extends object>(
-  cache: UrnCache<Value>,
-  attrs: ThingPageAttrs,
-): Value {
-  const urn = attrs.urn;
-  cache.lastUrn = urn;
-  const value = cache.compute(attrs);
-  cache.value = some(value);
-  return value;
 }
 
 /*

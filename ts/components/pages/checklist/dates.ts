@@ -41,14 +41,6 @@ export function isIrishWild(entry: ChecklistEntry): boolean {
   return entry.isIrish && entry.isWild;
 }
 
-export function drawFilterControl(control: FilterControl): m.Children {
-  const selectedClass = control.current === control.value
-    ? "listing-filter-flag--selected"
-    : undefined;
-  const attrs = readFilterControlAttrs(control, selectedClass);
-  return m("span.listing-filter-flag", attrs, control.label);
-}
-
 export function readFilterControlAttrs(
   control: FilterControl,
   selectedClass: string | undefined,
@@ -62,10 +54,25 @@ export function readFilterControlAttrs(
   };
 }
 
+export function drawFilterControl(control: FilterControl): m.Children {
+  const selectedClass = control.current === control.value
+    ? "listing-filter-flag--selected"
+    : undefined;
+  const attrs = readFilterControlAttrs(control, selectedClass);
+  return m("span.listing-filter-flag", attrs, control.label);
+}
+
 export function drawFilterLabel(definition: FilterDefinition): m.Children {
   return definition.flag
     ? m(FlagIcon, { name: definition.flag })
     : definition.label;
+}
+
+export function placeFilterControl(
+  control: m.Children,
+  idx: number,
+): m.Children[] {
+  return idx === 0 ? [control] : [" ", control];
 }
 
 export function drawFilterDefinition(
@@ -82,11 +89,4 @@ export function drawFilterDefinition(
   };
   const control = drawFilterControl(controlAttrs);
   return placeFilterControl(control, idx);
-}
-
-export function placeFilterControl(
-  control: m.Children,
-  idx: number,
-): m.Children[] {
-  return idx === 0 ? [control] : [" ", control];
 }

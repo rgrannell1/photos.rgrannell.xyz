@@ -44,6 +44,11 @@ function drawFlagTitle(thing: TripleObject, label: string): m.Children {
   return [flag, ` ${label}`];
 }
 
+function drawFeatureTitle(thing: TripleObject, label: string): string {
+  const emoji = featureEmoji(thing);
+  return `${emoji} ${label}`;
+}
+
 function drawCaptionTitle(
   thing: TripleObject,
   id: Maybe<string>,
@@ -60,9 +65,12 @@ function drawCaptionTitle(
   return label;
 }
 
-function drawFeatureTitle(thing: TripleObject, label: string): string {
-  const emoji = featureEmoji(thing);
-  return `${emoji} ${label}`;
+function readCaptionLabel(
+  thing: TripleObject,
+  urnType: Maybe<string>,
+): string {
+  const name = readCaptionName(thing, urnType);
+  return withDefault(name, "");
 }
 
 function readCaptionTitle(thing: TripleObject): m.Children {
@@ -70,14 +78,6 @@ function readCaptionTitle(thing: TripleObject): m.Children {
   const urnType = readUrnType(id);
   const label = readCaptionLabel(thing, urnType);
   return drawCaptionTitle(thing, id, urnType, label);
-}
-
-function readCaptionLabel(
-  thing: TripleObject,
-  urnType: Maybe<string>,
-): string {
-  const name = readCaptionName(thing, urnType);
-  return withDefault(name, "");
 }
 
 function drawCaptionLayout(

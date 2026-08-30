@@ -49,12 +49,6 @@ export function drawSidebarItem(
   return m(SidebarItem, attrs);
 }
 
-export function drawSidebarItems(): m.Vnode<SidebarItemAttrs>[] {
-  const mediaItems = drawMediaSidebarItems();
-  const pageItems = drawPageSidebarItems();
-  return [...mediaItems, ...pageItems];
-}
-
 export function drawMediaSidebarItems(): m.Vnode<SidebarItemAttrs>[] {
   const photos = drawSidebarItem("PHOTOS", "/photos");
   const videos = drawSidebarItem("VIDEOS", "/videos");
@@ -67,4 +61,10 @@ export function drawPageSidebarItems(): m.Vnode<SidebarItemAttrs>[] {
   const lifeList = drawSidebarItem("LIFE LIST", "/life-list");
   const primaryItems = [listings, lifeList];
   return [...primaryItems, ...drawUtilitySidebarItems()];
+}
+
+export function drawSidebarItems(): m.Vnode<SidebarItemAttrs>[] {
+  const mediaItems = drawMediaSidebarItems();
+  const pageItems = drawPageSidebarItems();
+  return [...mediaItems, ...pageItems];
 }

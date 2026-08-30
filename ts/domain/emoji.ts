@@ -9,6 +9,10 @@ import type { Feature, Place, Thing, Unesco } from "../types/domain.ts";
 
 export type EmojiThing = Thing | Feature | Unesco | TripleObject;
 
+export function featureEmoji(feature: EmojiThing): string {
+  return withDefault(one((feature as TripleObject).emoji), "📍");
+}
+
 export function placeEmoji(thing: Place | TripleObject): string {
   const flag = one(fromNullable(thing.flag));
   if (isSome(flag)) {
@@ -17,10 +21,6 @@ export function placeEmoji(thing: Place | TripleObject): string {
 
   const fallback = featureEmoji(thing);
   return fallback;
-}
-
-export function featureEmoji(feature: EmojiThing): string {
-  return withDefault(one((feature as TripleObject).emoji), "📍");
 }
 
 function cameraEmoji(thing: EmojiThing): string {

@@ -75,6 +75,10 @@ export function readLocationSources(
   return sourceUrns;
 }
 
+export function readSubjectId(subjectUrn: string): string {
+  return asUrn(subjectUrn).id;
+}
+
 export function addMammalPhoto(
   grouped: Map<string, Set<string>>,
   photoUrn: string,
@@ -84,8 +88,4 @@ export function addMammalPhoto(
   const mammalId = readSubjectId(targetUrn);
   mammalIds.add(mammalId);
   grouped.set(photoUrn, mammalIds);
-}
-
-export function readSubjectId(subjectUrn: string): string {
-  return asUrn(subjectUrn).id;
 }

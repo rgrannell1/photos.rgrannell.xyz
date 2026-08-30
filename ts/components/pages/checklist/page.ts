@@ -9,11 +9,15 @@ export function readChecklistPageClass(visible: boolean): string {
   return visible ? "page sidebar-visible" : "page";
 }
 
-export function drawChecklistPageChildren(
+export function readMammalSectionAttrs(
   attrs: ChecklistPageAttrs,
-): m.Children[] {
-  const mammalSection = drawOptionalMammalSection(attrs);
-  return [...drawBirdSection(attrs), mammalSection];
+): MammalSectionAttrs {
+  return {
+    mammalEntries: attrs.mammalEntries,
+    mammalCovers: attrs.mammalCovers,
+    irishMammalCount: attrs.irishMammalCount,
+    nemesisMammals: attrs.nemesisMammals,
+  };
 }
 
 // The mammal section shows in the Irish view only. Other views stay birds-only.
@@ -28,13 +32,9 @@ export function drawOptionalMammalSection(
   return m(MammalSection, sectionAttrs);
 }
 
-export function readMammalSectionAttrs(
+export function drawChecklistPageChildren(
   attrs: ChecklistPageAttrs,
-): MammalSectionAttrs {
-  return {
-    mammalEntries: attrs.mammalEntries,
-    mammalCovers: attrs.mammalCovers,
-    irishMammalCount: attrs.irishMammalCount,
-    nemesisMammals: attrs.nemesisMammals,
-  };
+): m.Children[] {
+  const mammalSection = drawOptionalMammalSection(attrs);
+  return [...drawBirdSection(attrs), mammalSection];
 }

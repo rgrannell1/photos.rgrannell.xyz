@@ -48,23 +48,6 @@ export function ChecklistGrid() {
   return { view: viewChecklistGrid };
 }
 
-/*
- * Bird intro line. Null until there is an Irish wild sighting.
- */
-export function lifeListPreamble(
-  entries: ChecklistEntry[],
-  regularCount: number,
-): Maybe<string> {
-  const irishWild = entries.filter(isIrishWild);
-  if (hasNoEntries(irishWild)) {
-    return NONE;
-  }
-
-  // entries are sorted earliest-first, so the first Irish entry is the earliest
-  const sinceYear = readFirstEntryYear(irishWild);
-  return formatBirdPreamble(irishWild.length, sinceYear, regularCount);
-}
-
 export function readFirstEntryYear(entries: ChecklistEntry[]): number {
   const firstEntry = entries[0];
   return firstSeenYear(firstEntry.firstSeen);
@@ -81,6 +64,23 @@ export function formatBirdPreamble(
 ): string {
   return `I've photographed ${count} wild species in Ireland since ` +
     `${sinceYear}; Ireland regularly records about ${regularCount}.`;
+}
+
+/*
+ * Bird intro line. Null until there is an Irish wild sighting.
+ */
+export function lifeListPreamble(
+  entries: ChecklistEntry[],
+  regularCount: number,
+): Maybe<string> {
+  const irishWild = entries.filter(isIrishWild);
+  if (hasNoEntries(irishWild)) {
+    return NONE;
+  }
+
+  // entries are sorted earliest-first, so the first Irish entry is the earliest
+  const sinceYear = readFirstEntryYear(irishWild);
+  return formatBirdPreamble(irishWild.length, sinceYear, regularCount);
 }
 
 /*

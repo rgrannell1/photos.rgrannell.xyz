@@ -55,12 +55,6 @@ export function readThingMetadataItem(
   return { label, kind, values };
 }
 
-export function readBaseThingMetadata(thing: TripleObject): ThingMetadata[] {
-  const locationItems = readLocationMetadata(thing);
-  const relationItems = readRelationMetadata(thing);
-  return [...locationItems, ...relationItems];
-}
-
 export function readLocationMetadata(thing: TripleObject): ThingMetadata[] {
   const feature = readThingMetadataItem(
     "Place Type",
@@ -87,6 +81,12 @@ export function readRelationMetadata(thing: TripleObject): ThingMetadata[] {
     thing.unescoId,
   );
   return [contains, unesco];
+}
+
+export function readBaseThingMetadata(thing: TripleObject): ThingMetadata[] {
+  const locationItems = readLocationMetadata(thing);
+  const relationItems = readRelationMetadata(thing);
+  return [...locationItems, ...relationItems];
 }
 
 export function toRankMetadata(

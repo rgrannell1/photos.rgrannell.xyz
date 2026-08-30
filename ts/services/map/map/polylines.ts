@@ -42,17 +42,6 @@ export function readReadyMarkerState(
   return { leafletLib, leafletMap, markersLayer, markerBounds };
 }
 
-export function finishMarkerBatch(
-  mapState: MapState,
-  ready: ReadyMarkerState,
-): void {
-  if (mapState.markerBatchIdx < mapState.lastPlaces.length) {
-    setTimeout(addMarkerBatch.bind(null, mapState), MAP_MARKER_BATCH_DELAY_MS);
-    return;
-  }
-  fitMarkerBounds(ready);
-}
-
 export function fitMarkerBounds(ready: ReadyMarkerState): void {
   if (!ready.markerBounds.isValid()) {
     return;
@@ -64,6 +53,17 @@ export function fitMarkerBounds(ready: ReadyMarkerState): void {
   ];
   const options = { padding, maxZoom: MAP_BOUNDS_MAX_ZOOM };
   ready.leafletMap.fitBounds(ready.markerBounds, options);
+}
+
+export function finishMarkerBatch(
+  mapState: MapState,
+  ready: ReadyMarkerState,
+): void {
+  if (mapState.markerBatchIdx < mapState.lastPlaces.length) {
+    setTimeout(addMarkerBatch.bind(null, mapState), MAP_MARKER_BATCH_DELAY_MS);
+    return;
+  }
+  fitMarkerBounds(ready);
 }
 
 export function addMarkersThrough(

@@ -49,12 +49,6 @@ function countBatch(batchState: BatchState): number {
   return batchState.rendered;
 }
 
-/* Call `schedule` from oncreate/onupdate with the list total, slice to `count()` in the view. */
-export function createBatchRenderer(batchSize: number): BatchRenderer {
-  const batchState = createBatchState(batchSize);
-  return bindBatchRenderer(batchState);
-}
-
 function bindBatchRenderer(batchState: BatchState): BatchRenderer {
   const count = countBatch.bind(null, batchState);
   const schedule = scheduleBatch.bind(null, batchState);
@@ -69,4 +63,10 @@ function createBatchState(batchSize: number): BatchState {
     batchSize,
   };
   return state;
+}
+
+/* Call `schedule` from oncreate/onupdate with the list total, slice to `count()` in the view. */
+export function createBatchRenderer(batchSize: number): BatchRenderer {
+  const batchState = createBatchState(batchSize);
+  return bindBatchRenderer(batchState);
 }

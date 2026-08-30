@@ -19,20 +19,6 @@ export function formatMammalPreamble(
     `the island has about ${totalCount}.`;
 }
 
-export function viewMammalSection(
-  vnode: m.Vnode<MammalSectionAttrs>,
-): m.Children {
-  const { mammalEntries, mammalCovers, irishMammalCount, nemesisMammals } =
-    vnode.attrs;
-
-  const preamble = mammalPreamble(mammalEntries, irishMammalCount);
-  const heading = m("section.album-metadata", m("h2.albums-header", "Mammals"));
-  const description = drawOptionalPreamble(preamble);
-  const grid = drawMammalGrid(mammalEntries, mammalCovers, nemesisMammals);
-
-  return [heading, description, grid];
-}
-
 export function drawOptionalPreamble(preamble: Maybe<string>): m.Children {
   return isSome(preamble) ? m("p.photo-album-description", preamble) : null;
 }
@@ -53,6 +39,20 @@ export function drawMammalGrid(
   return section;
 }
 
+export function viewMammalSection(
+  vnode: m.Vnode<MammalSectionAttrs>,
+): m.Children {
+  const { mammalEntries, mammalCovers, irishMammalCount, nemesisMammals } =
+    vnode.attrs;
+
+  const preamble = mammalPreamble(mammalEntries, irishMammalCount);
+  const heading = m("section.album-metadata", m("h2.albums-header", "Mammals"));
+  const description = drawOptionalPreamble(preamble);
+  const grid = drawMammalGrid(mammalEntries, mammalCovers, nemesisMammals);
+
+  return [heading, description, grid];
+}
+
 /*
  * The Irish mammal section, below the bird table in the Irish view.
  */
@@ -62,19 +62,6 @@ export function MammalSection() {
 
 export function selectLifeListFilter(newFilter: string): void {
   broadcast("navigate", { route: `/life-list/${newFilter}` });
-}
-
-export function drawBirdSection(attrs: ChecklistPageAttrs): m.Children[] {
-  const { entries, covers, regularCount, nemesisBirds, filter } = attrs;
-  const preamble = lifeListPreamble(entries, regularCount);
-  const description = "I am not a very committed birder, but I do like " +
-    "photographing the different species I see. Here's my life list.";
-  const heading = drawBirdHeading(entries, filter);
-  const preambleNode = drawOptionalPreamble(preamble);
-  const descriptionNode = m("p.photo-album-description", description);
-  const grid = drawBirdGrid(entries, covers, nemesisBirds, filter);
-
-  return [heading, preambleNode, descriptionNode, grid];
 }
 
 export function drawBirdHeading(
@@ -105,6 +92,19 @@ export function drawBirdGrid(
   });
   const section = m("section.checklist-container", grid);
   return section;
+}
+
+export function drawBirdSection(attrs: ChecklistPageAttrs): m.Children[] {
+  const { entries, covers, regularCount, nemesisBirds, filter } = attrs;
+  const preamble = lifeListPreamble(entries, regularCount);
+  const description = "I am not a very committed birder, but I do like " +
+    "photographing the different species I see. Here's my life list.";
+  const heading = drawBirdHeading(entries, filter);
+  const preambleNode = drawOptionalPreamble(preamble);
+  const descriptionNode = m("p.photo-album-description", description);
+  const grid = drawBirdGrid(entries, covers, nemesisBirds, filter);
+
+  return [heading, preambleNode, descriptionNode, grid];
 }
 
 export function viewChecklistPage(

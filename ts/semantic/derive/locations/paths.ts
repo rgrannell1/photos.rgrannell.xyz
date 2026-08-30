@@ -4,6 +4,17 @@ import type { Triple } from "@rgrannell1/tribbledb";
 import { KnownRelations } from "../../../constants/data.ts";
 import type { LocationTree } from "./locations.ts";
 
+export function addPathRelations(
+  triples: Triple[],
+  sourceUrn: string,
+  targetUrn: string,
+): void {
+  const forward: Triple = [sourceUrn, KnownRelations.IN, targetUrn];
+  const reverse: Triple = [targetUrn, KnownRelations.CONTAINS, sourceUrn];
+  triples.push(forward);
+  triples.push(reverse);
+}
+
 export function addRelationsFromSource(
   path: string[],
   sourceIdx: number,
@@ -16,17 +27,6 @@ export function addRelationsFromSource(
   }
 }
 
-export function addPathRelations(
-  triples: Triple[],
-  sourceUrn: string,
-  targetUrn: string,
-): void {
-  const forward: Triple = [sourceUrn, KnownRelations.IN, targetUrn];
-  const reverse: Triple = [targetUrn, KnownRelations.CONTAINS, sourceUrn];
-  triples.push(forward);
-  triples.push(reverse);
-}
-
 export function collectPathRelations(path: string[]): Triple[] {
   const triples: Triple[] = [];
 
@@ -34,19 +34,6 @@ export function collectPathRelations(path: string[]): Triple[] {
     addRelationsFromSource(path, idx, triples);
   }
 
-  return triples;
-}
-
-export function collectParentRelations(
-  tree: LocationTree,
-  path: string[],
-  parents: Set<string>,
-): Triple[] {
-  const triples: Triple[] = [];
-  for (const parentUrn of parents) {
-    const parentTriples = traceLocationPath(tree, path, parentUrn);
-    triples.push(...parentTriples);
-  }
   return triples;
 }
 
@@ -68,7 +55,12 @@ export function traceLocationPath(
     return collectPathRelations(nextPath);
   }
 
-  return collectParentRelations(tree, nextPath, node.parents);
+  const triples: Triple[] = [];
+  for (const parentUrn of node.parents) {
+    const parentTriples = traceLocationPath(tree, nextPath, parentUrn);
+    triples.push(...parentTriples);
+  }
+  return triples;
 }
 
 export function collectNestedLocationTriples(tree: LocationTree): Triple[] {

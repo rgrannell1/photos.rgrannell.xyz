@@ -48,6 +48,14 @@ export function drawChecklistDetails(
   return m("p.listing-details", [...controls, count]);
 }
 
+export function readFilterControls(
+  filter: string,
+  onSelect: (filter: string) => void,
+): m.Children[] {
+  const drawDefinition = drawFilterDefinition.bind(null, { filter, onSelect });
+  return FILTER_DEFINITIONS.flatMap(drawDefinition);
+}
+
 export function viewChecklistDetails(
   vnode: m.Vnode<ChecklistDetailsAttrs>,
 ): m.Children {
@@ -57,42 +65,12 @@ export function viewChecklistDetails(
   return drawChecklistDetails(controls, displayCount);
 }
 
-export function readFilterControls(
-  filter: string,
-  onSelect: (filter: string) => void,
-): m.Children[] {
-  const drawDefinition = drawFilterDefinition.bind(null, { filter, onSelect });
-  return FILTER_DEFINITIONS.flatMap(drawDefinition);
-}
-
 /*
  * Details line above the checklist. Filters to Irish wild, all wild, or all
  * species including captive ones.
  */
 export function ChecklistDetails() {
   return { view: viewChecklistDetails };
-}
-
-export function viewChecklistPhoto(
-  vnode: m.Vnode<ChecklistPhotoAttrs>,
-): m.Children {
-  const { cover, href, label } = vnode.attrs;
-
-  if (isNone(cover)) {
-    const emptyPhoto = m("div.checklist-card-empty");
-    return emptyPhoto;
-  }
-  return drawChecklistPhoto(cover, href, label);
-}
-
-export function drawChecklistPhoto(
-  cover: Photo,
-  href: string,
-  label: string,
-): m.Children {
-  const imageAttrs = readChecklistImageAttrs(cover);
-  const attrs: ImagePairAttrs = { href, label, ...imageAttrs };
-  return m(ImagePair, attrs);
 }
 
 export function readChecklistImageAttrs(
@@ -108,4 +86,26 @@ export function readChecklistImageAttrs(
     width: PHOTO_WIDTH,
     height: PHOTO_WIDTH,
   };
+}
+
+export function drawChecklistPhoto(
+  cover: Photo,
+  href: string,
+  label: string,
+): m.Children {
+  const imageAttrs = readChecklistImageAttrs(cover);
+  const attrs: ImagePairAttrs = { href, label, ...imageAttrs };
+  return m(ImagePair, attrs);
+}
+
+export function viewChecklistPhoto(
+  vnode: m.Vnode<ChecklistPhotoAttrs>,
+): m.Children {
+  const { cover, href, label } = vnode.attrs;
+
+  if (isNone(cover)) {
+    const emptyPhoto = m("div.checklist-card-empty");
+    return emptyPhoto;
+  }
+  return drawChecklistPhoto(cover, href, label);
 }

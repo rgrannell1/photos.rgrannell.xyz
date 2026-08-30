@@ -26,18 +26,6 @@ export function canNativeShare(): boolean {
   return Boolean(navigator.share);
 }
 
-/* State flag drives button label while sheet is open. */
-export async function nativeShare(
-  state: ShareState,
-  url: string,
-  name: string,
-): Promise<void> {
-  state.sharing = true;
-  const share = shareNativeUrl(url, name);
-  const stopSharing = setSharing.bind(null, state, false);
-  await share.catch(logShareError).finally(stopSharing);
-}
-
 function logShareError(err: unknown): void {
   console.error("Error sharing:", err);
 }
@@ -50,4 +38,16 @@ async function shareNativeUrl(url: string, name: string): Promise<void> {
   const title = `${name} - ${window.location.hostname}`;
   const shareData = { title, url };
   await navigator.share(shareData);
+}
+
+/* State flag drives button label while sheet is open. */
+export async function nativeShare(
+  state: ShareState,
+  url: string,
+  name: string,
+): Promise<void> {
+  state.sharing = true;
+  const share = shareNativeUrl(url, name);
+  const stopSharing = setSharing.bind(null, state, false);
+  await share.catch(logShareError).finally(stopSharing);
 }

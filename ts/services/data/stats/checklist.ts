@@ -29,6 +29,10 @@ export function readOriginFlags(
   return { isIrish, isWild };
 }
 
+export function hasDataFlag(value: string | string[] | undefined): boolean {
+  return one(fromNullable(value)) === DATA_TRUE;
+}
+
 export function readStatusFlags(
   speciesThing: TripleObject | undefined,
 ): Pick<ChecklistFlags, "scarce" | "nemesis" | "target"> {
@@ -36,10 +40,6 @@ export function readStatusFlags(
   const nemesis = hasDataFlag(speciesThing?.nemesis);
   const target = hasDataFlag(speciesThing?.target);
   return { scarce, nemesis, target };
-}
-
-export function hasDataFlag(value: string | string[] | undefined): boolean {
-  return one(fromNullable(value)) === DATA_TRUE;
 }
 
 export function readChecklistName(

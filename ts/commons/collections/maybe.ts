@@ -16,14 +16,14 @@ export function fromNullable<Value>(
   return value === null || value === undefined ? NONE : value;
 }
 
+export function isNone<Value>(value: Maybe<Value>): value is None {
+  return value === NONE;
+}
+
 export function toUndefined<Value>(
   value: Maybe<Value>,
 ): Exclude<Value, undefined> | undefined {
   return isNone(value) ? undefined : value;
-}
-
-export function isNone<Value>(value: Maybe<Value>): value is None {
-  return value === NONE;
 }
 
 export function isSome<Value>(

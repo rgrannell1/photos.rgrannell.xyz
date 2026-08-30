@@ -43,43 +43,6 @@ export function readFirstSeenTriples(tdb: TribbleDB, speciesType: string) {
   return triples;
 }
 
-/* Sorted chronologically by first sighting. Includes wild and captive sightings. */
-export function readWildlifeChecklist(
-  tdb: TribbleDB,
-  speciesType: string,
-): ChecklistEntry[] {
-  const firstSeenTriples = readFirstSeenTriples(tdb, speciesType);
-  const wildSpeciesIds = readWildSpeciesIds(tdb, speciesType);
-
-  const entries = collectChecklistEntries(
-    tdb,
-    speciesType,
-    firstSeenTriples,
-    wildSpeciesIds,
-  );
-  return entries.sort(compareFirstSeen);
-}
-
-export function collectChecklistEntries(
-  tdb: TribbleDB,
-  speciesType: string,
-  firstSeenTriples: SubjectTriples,
-  wildSpeciesIds: Set<string>,
-): ChecklistEntry[] {
-  const entries: ChecklistEntry[] = [];
-  for (const [speciesUrn, , firstSeen] of firstSeenTriples) {
-    const entry = readChecklistEntryMaybe(
-      tdb,
-      speciesType,
-      speciesUrn,
-      firstSeen,
-      wildSpeciesIds,
-    );
-    addChecklistResult(entries, entry);
-  }
-  return entries;
-}
-
 export function addChecklistResult(
   entries: ChecklistEntry[],
   entry: Maybe<ChecklistEntry>,
@@ -106,6 +69,26 @@ export function readChecklistEntryMaybe(
   return entry;
 }
 
+export function collectChecklistEntries(
+  tdb: TribbleDB,
+  speciesType: string,
+  firstSeenTriples: SubjectTriples,
+  wildSpeciesIds: Set<string>,
+): ChecklistEntry[] {
+  const entries: ChecklistEntry[] = [];
+  for (const [speciesUrn, , firstSeen] of firstSeenTriples) {
+    const entry = readChecklistEntryMaybe(
+      tdb,
+      speciesType,
+      speciesUrn,
+      firstSeen,
+      wildSpeciesIds,
+    );
+    addChecklistResult(entries, entry);
+  }
+  return entries;
+}
+
 export function compareFirstSeen(
   entryA: ChecklistEntry,
   entryB: ChecklistEntry,
@@ -123,6 +106,23 @@ export function readWildSpeciesIds(
   };
   const subjectIds = readSubjectIds(tdb, query);
   return subjectIds;
+}
+
+/* Sorted chronologically by first sighting. Includes wild and captive sightings. */
+export function readWildlifeChecklist(
+  tdb: TribbleDB,
+  speciesType: string,
+): ChecklistEntry[] {
+  const firstSeenTriples = readFirstSeenTriples(tdb, speciesType);
+  const wildSpeciesIds = readWildSpeciesIds(tdb, speciesType);
+
+  const entries = collectChecklistEntries(
+    tdb,
+    speciesType,
+    firstSeenTriples,
+    wildSpeciesIds,
+  );
+  return entries.sort(compareFirstSeen);
 }
 
 export function hasRareStatus(speciesThing: TripleObject | undefined): boolean {

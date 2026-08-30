@@ -13,6 +13,21 @@ import {
 import { taxonLabel } from "../../../domain/things.ts";
 import { readThing } from "./things.ts";
 
+export function normaliseThingIds(thingIds: string[]): string | string[] {
+  const uniqueIds = [...new Set(thingIds)];
+  return uniqueIds.length === 1 ? uniqueIds[0] : uniqueIds;
+}
+
+export function normaliseThingId(thing: TripleObject): TripleObject {
+  const thingIds = thing.id;
+  if (!Array.isArray(thingIds)) {
+    return thing;
+  }
+
+  const thingId = normaliseThingIds(thingIds);
+  return { ...thing, id: thingId };
+}
+
 export function readExactThing(
   tdb: TribbleDB,
   urn: string,
@@ -32,21 +47,6 @@ export function readThingVariant(
     if (!isNone(thing)) return thing;
   }
   return NONE;
-}
-
-export function normaliseThingIds(thingIds: string[]): string | string[] {
-  const uniqueIds = [...new Set(thingIds)];
-  return uniqueIds.length === 1 ? uniqueIds[0] : uniqueIds;
-}
-
-export function normaliseThingId(thing: TripleObject): TripleObject {
-  const thingIds = thing.id;
-  if (!Array.isArray(thingIds)) {
-    return thing;
-  }
-
-  const thingId = normaliseThingIds(thingIds);
-  return { ...thing, id: thingId };
 }
 
 export function readUnqualifiedThing(

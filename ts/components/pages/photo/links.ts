@@ -36,6 +36,10 @@ export function readPhotoShareUrl(photo: PhotoType): string {
   return sharePhotoUrl(`photo/${asUrn(photo.id).id}`);
 }
 
+export function drawPhotoLinkList(links: m.Children[]): m.Children {
+  return m("ul.link-list", { "data-testid": "photo-links" }, links);
+}
+
 export function drawPhotoLinks(
   photo: PhotoType,
   albumHidden: boolean,
@@ -44,10 +48,6 @@ export function drawPhotoLinks(
   const links = drawPhotoResourceLinks(photo, shareUrl);
   links.push(drawPhotoAlbumLink(photo, albumHidden));
   return drawPhotoLinkList(links);
-}
-
-export function drawPhotoLinkList(links: m.Children[]): m.Children {
-  return m("ul.link-list", { "data-testid": "photo-links" }, links);
 }
 
 export function drawPhotoInformation(attrs: PhotoPageAttrs): m.Children {
@@ -66,12 +66,6 @@ export function drawExifInformation(attrs: PhotoPageAttrs): m.Children {
   });
 }
 
-export function drawPhotoDetails(attrs: PhotoPageAttrs): m.Children {
-  const className = attrs.visible ? "page sidebar-visible" : "page";
-  const details = drawPhotoDetailSections(attrs);
-  return m("div", { class: className }, details);
-}
-
 export function drawPhotoDetailSections(attrs: PhotoPageAttrs): m.Children[] {
   const photoDetails = [
     m("h3", "Photo Information"),
@@ -79,4 +73,10 @@ export function drawPhotoDetailSections(attrs: PhotoPageAttrs): m.Children[] {
   ];
   const exifDetails = [m("h3", "Exif Data"), drawExifInformation(attrs)];
   return [...photoDetails, ...exifDetails];
+}
+
+export function drawPhotoDetails(attrs: PhotoPageAttrs): m.Children {
+  const className = attrs.visible ? "page sidebar-visible" : "page";
+  const details = drawPhotoDetailSections(attrs);
+  return m("div", { class: className }, details);
 }

@@ -21,25 +21,6 @@ import { drawMediaSection } from "./media.ts";
 import { drawMemberCard, readMemberSpecies } from "../data/species-data.ts";
 import { readShareName } from "./share.ts";
 
-export function drawCoveredMember(
-  member: TripleObject,
-  cover: PhotoType,
-  id: string,
-  thingId: string,
-  type: string,
-  idx: number,
-): m.Children {
-  const imageAttrs = readMemberImageAttrs(cover, idx);
-  const identityAttrs = readMemberIdentityAttrs(member, id, thingId);
-  const interactionAttrs = readMemberInteractionAttrs(member, thingId, type);
-  const attrs = readMemberAlbumAttrs(
-    imageAttrs,
-    identityAttrs,
-    interactionAttrs,
-  );
-  return m(PhotoAlbum, attrs);
-}
-
 export function readMemberAlbumAttrs(
   imageAttrs: Pick<
     PhotoAlbumAttrs,
@@ -94,17 +75,23 @@ export function readMemberImageAttrs(
   return attrs;
 }
 
-export function viewSpeciesSection(
-  membersFor: CachedReader<TripleObject[]>,
-  vnode: m.Vnode<ThingPageAttrs>,
+export function drawCoveredMember(
+  member: TripleObject,
+  cover: PhotoType,
+  id: string,
+  thingId: string,
+  type: string,
+  idx: number,
 ): m.Children {
-  const members = membersFor(vnode.attrs);
-
-  if (members.length === 0) {
-    return null;
-  }
-  const section = drawMemberCards(members, vnode.attrs.readThingCover);
-  return section;
+  const imageAttrs = readMemberImageAttrs(cover, idx);
+  const identityAttrs = readMemberIdentityAttrs(member, id, thingId);
+  const interactionAttrs = readMemberInteractionAttrs(member, thingId, type);
+  const attrs = readMemberAlbumAttrs(
+    imageAttrs,
+    identityAttrs,
+    interactionAttrs,
+  );
+  return m(PhotoAlbum, attrs);
 }
 
 export function drawMemberCards(
@@ -121,10 +108,34 @@ export function drawMemberCards(
   return section;
 }
 
+export function viewSpeciesSection(
+  membersFor: CachedReader<TripleObject[]>,
+  vnode: m.Vnode<ThingPageAttrs>,
+): m.Children {
+  const members = membersFor(vnode.attrs);
+
+  if (members.length === 0) {
+    return null;
+  }
+  const section = drawMemberCards(members, vnode.attrs.readThingCover);
+  return section;
+}
+
 export function SpeciesSection() {
   const membersFor = cachedByUrn(readMemberSpecies);
 
   return { view: viewSpeciesSection.bind(null, membersFor) };
+}
+
+export function drawKnownShareButton(
+  type: string,
+  id: string,
+  things: TripleObject[],
+): m.Children {
+  const name = readShareName(things, id);
+  const url = sharePhotoUrl(`thing/${type}:${id}`);
+  const attrs = { url, name };
+  return m(ShareButton, attrs);
 }
 
 /* Wildcard listings have no prebaked social card, so they get no share link. */
@@ -139,15 +150,4 @@ export function drawShareButton(
   }
   const button = drawKnownShareButton(type, id, things);
   return button;
-}
-
-export function drawKnownShareButton(
-  type: string,
-  id: string,
-  things: TripleObject[],
-): m.Children {
-  const name = readShareName(things, id);
-  const url = sharePhotoUrl(`thing/${type}:${id}`);
-  const attrs = { url, name };
-  return m(ShareButton, attrs);
 }

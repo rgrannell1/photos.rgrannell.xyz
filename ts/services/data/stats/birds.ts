@@ -79,18 +79,6 @@ export function countIrishWildMammals(
   return mammalIds.size;
 }
 
-export function addUnphotographedNemesis(
-  species: NemesisSpecies[],
-  tdb: TribbleDB,
-  speciesType: string,
-  speciesUrn: string,
-): void {
-  const speciesId = asUrn(speciesUrn).id;
-  const photographed = isSpeciesPhotographed(tdb, speciesType, speciesId);
-  if (photographed) return;
-  species.push(readNemesisSpecies(tdb, speciesType, speciesId));
-}
-
 export function readNemesisTriples(tdb: TribbleDB, speciesType: string) {
   const query = {
     source: { type: speciesType },
@@ -112,6 +100,18 @@ export function isSpeciesPhotographed(
   };
   const triples = tdb.search(query).triples();
   return triples.length > 0;
+}
+
+export function addUnphotographedNemesis(
+  species: NemesisSpecies[],
+  tdb: TribbleDB,
+  speciesType: string,
+  speciesUrn: string,
+): void {
+  const speciesId = asUrn(speciesUrn).id;
+  const photographed = isSpeciesPhotographed(tdb, speciesType, speciesId);
+  if (photographed) return;
+  species.push(readNemesisSpecies(tdb, speciesType, speciesId));
 }
 
 export function readSpeciesThing(

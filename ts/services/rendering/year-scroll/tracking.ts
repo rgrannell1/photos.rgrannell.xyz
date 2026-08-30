@@ -48,23 +48,17 @@ export function currentYearInView(): Maybe<string> {
   return current;
 }
 
+export function replaceYearRoute(yearRoute: string): void {
+  const currentState = history.state;
+  history.replaceState(currentState, "", yearRoute);
+}
+
 /* Use replaceState to keep scroll position while making URL shareable. */
 export function reflectYearInUrl(year: string): void {
   const route = m.route.get();
   const base = route.split("?")[0];
   const yearRoute = `#!${base}?year=${year}`;
   replaceYearRoute(yearRoute);
-}
-
-export function replaceYearRoute(yearRoute: string): void {
-  const currentState = history.state;
-  history.replaceState(currentState, "", yearRoute);
-}
-
-export function reflectCurrentYear(scrollState: YearScrollState): void {
-  scrollState.scrollFrame = NONE;
-  const year = currentYearInView();
-  reflectVisibleYear(scrollState, year);
 }
 
 export function reflectVisibleYear(
@@ -77,6 +71,12 @@ export function reflectVisibleYear(
     scrollState.reflectedYear = year;
     reflectYearInUrl(year);
   }
+}
+
+export function reflectCurrentYear(scrollState: YearScrollState): void {
+  scrollState.scrollFrame = NONE;
+  const year = currentYearInView();
+  reflectVisibleYear(scrollState, year);
 }
 
 export function trackScroll(scrollState: YearScrollState): void {

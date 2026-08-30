@@ -11,18 +11,18 @@ import {
 const PLACEHOLDER_CACHE: Map<string, string> = new Map();
 type DecodedThumbHash = ReturnType<typeof thumbHashToRGBA>;
 
-export function loadingMode(idx: number): "eager" | "lazy" {
-  const imagesInFold = visibleImageCapacity();
-  const isBelowFold = idx > imagesInFold + 1;
-  return isBelowFold ? "lazy" : "eager";
-}
-
 function visibleImageCapacity(): number {
   const viewportWidth = globalThis.innerWidth;
   const viewportHeight = globalThis.innerHeight;
   const maxImagesPerRow = Math.floor(viewportWidth / PHOTO_WIDTH);
   const maxRowsInFold = Math.floor(viewportHeight / PHOTO_WIDTH);
   return maxImagesPerRow * maxRowsInFold;
+}
+
+export function loadingMode(idx: number): "eager" | "lazy" {
+  const imagesInFold = visibleImageCapacity();
+  const isBelowFold = idx > imagesInFold + 1;
+  return isBelowFold ? "lazy" : "eager";
 }
 
 function decodeThumbHash(hash: string): Maybe<DecodedThumbHash> {
@@ -33,13 +33,6 @@ function decodeThumbHash(hash: string): Maybe<DecodedThumbHash> {
   }
 }
 
-function renderThumbHash(decoded: DecodedThumbHash): string {
-  const { width, height } = decoded;
-  const canvas = createThumbHashCanvas(width, height);
-  drawThumbHash(canvas, decoded);
-  return canvas.toDataURL("image/png");
-}
-
 function createThumbHashCanvas(
   width: number,
   height: number,
@@ -48,6 +41,12 @@ function createThumbHashCanvas(
   const dimensions = { width, height };
   Object.assign(canvas, dimensions);
   return canvas;
+}
+
+function createThumbHashPixels(decoded: DecodedThumbHash): ImageData {
+  const { width, height, rgba } = decoded;
+  const bytes = new Uint8ClampedArray(rgba);
+  return new ImageData(bytes, width, height);
 }
 
 function drawThumbHash(
@@ -62,10 +61,11 @@ function drawThumbHash(
   context.putImageData(pixels, 0, 0);
 }
 
-function createThumbHashPixels(decoded: DecodedThumbHash): ImageData {
-  const { width, height, rgba } = decoded;
-  const bytes = new Uint8ClampedArray(rgba);
-  return new ImageData(bytes, width, height);
+function renderThumbHash(decoded: DecodedThumbHash): string {
+  const { width, height } = decoded;
+  const canvas = createThumbHashCanvas(width, height);
+  drawThumbHash(canvas, decoded);
+  return canvas.toDataURL("image/png");
 }
 
 function isValidThumbHash(

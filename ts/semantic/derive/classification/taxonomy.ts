@@ -15,6 +15,14 @@ type TaxonIndex = {
   taxonUrns: Set<string>;
 };
 
+function readSpeciesTaxa(
+  taxaBySpecies: Map<string, string[]>,
+  speciesUrn: string,
+): string[] {
+  const taxa = taxaBySpecies.get(speciesUrn) ?? [];
+  return taxa;
+}
+
 function addSpeciesTaxon(
   taxaBySpecies: Map<string, string[]>,
   speciesUrn: string,
@@ -23,14 +31,6 @@ function addSpeciesTaxon(
   const taxa = readSpeciesTaxa(taxaBySpecies, speciesUrn);
   taxa.push(taxonUrn);
   taxaBySpecies.set(speciesUrn, taxa);
-}
-
-function readSpeciesTaxa(
-  taxaBySpecies: Map<string, string[]>,
-  speciesUrn: string,
-): string[] {
-  const taxa = taxaBySpecies.get(speciesUrn) ?? [];
-  return taxa;
 }
 
 function indexRankTriple(

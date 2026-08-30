@@ -10,6 +10,14 @@ import {
   addSingleMetadataWhenPresent,
 } from "./metadata.ts";
 
+export function drawLocatedInList(
+  attrs: ThingPageAttrs,
+  urns: Set<string>,
+): m.Children {
+  const kind = THING_LIST_KINDS.PLACE;
+  return drawThingList(attrs, kind, urns);
+}
+
 export function addLocatedInMetadata(
   metadata: Record<string, m.Children>,
   attrs: ThingPageAttrs,
@@ -22,12 +30,13 @@ export function addLocatedInMetadata(
   metadata["Located In"] = list;
 }
 
-export function drawLocatedInList(
-  attrs: ThingPageAttrs,
-  urns: Set<string>,
-): m.Children {
-  const kind = THING_LIST_KINDS.PLACE;
-  return drawThingList(attrs, kind, urns);
+export function hasItems(items: unknown[]): boolean {
+  return items.length > 0;
+}
+
+export function drawSeenInList(countries: SeenInCountry[]): m.Children {
+  const children = countries.map(drawSeenInCountry);
+  return m(".seen-in-list", children);
 }
 
 export function addSeenInMetadata(
@@ -46,28 +55,6 @@ export function addSeenInMetadata(
   metadata["Seen In"] = drawSeenInList(seenIn);
 }
 
-export function hasItems(items: unknown[]): boolean {
-  return items.length > 0;
-}
-
-export function drawSeenInList(countries: SeenInCountry[]): m.Children {
-  const children = countries.map(drawSeenInCountry);
-  return m(".seen-in-list", children);
-}
-
-export function viewThingDetails(
-  seenInFor: CachedReader<SeenInCountry[]>,
-  vnode: m.Vnode<ThingPageAttrs>,
-): m.Children {
-  const attrs = vnode.attrs;
-  const metadata = readThingMetadata(seenInFor, attrs);
-  const rows = readMetadataRows(metadata);
-  if (!rows.length) {
-    return null;
-  }
-  return drawThingDetails(rows);
-}
-
 export function readMetadataRows(
   metadata: Record<string, m.Children>,
 ): m.Children[] {
@@ -81,6 +68,16 @@ export function drawThingDetails(rows: m.Children[]): m.Children {
   return m("div", [heading, table]);
 }
 
+export function addRelatedMetadata(
+  metadata: Record<string, m.Children>,
+  attrs: ThingPageAttrs,
+  seenInFor: CachedReader<SeenInCountry[]>,
+): void {
+  addLocatedInMetadata(metadata, attrs);
+  addSingleMetadataWhenPresent(metadata, attrs);
+  addSeenInMetadata(metadata, attrs, seenInFor);
+}
+
 export function readThingMetadata(
   seenInFor: CachedReader<SeenInCountry[]>,
   attrs: ThingPageAttrs,
@@ -92,12 +89,15 @@ export function readThingMetadata(
   return metadata;
 }
 
-export function addRelatedMetadata(
-  metadata: Record<string, m.Children>,
-  attrs: ThingPageAttrs,
+export function viewThingDetails(
   seenInFor: CachedReader<SeenInCountry[]>,
-): void {
-  addLocatedInMetadata(metadata, attrs);
-  addSingleMetadataWhenPresent(metadata, attrs);
-  addSeenInMetadata(metadata, attrs, seenInFor);
+  vnode: m.Vnode<ThingPageAttrs>,
+): m.Children {
+  const attrs = vnode.attrs;
+  const metadata = readThingMetadata(seenInFor, attrs);
+  const rows = readMetadataRows(metadata);
+  if (!rows.length) {
+    return null;
+  }
+  return drawThingDetails(rows);
 }

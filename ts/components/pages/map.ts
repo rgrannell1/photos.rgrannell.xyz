@@ -46,18 +46,6 @@ function unmountMapPage(pageState: MapPageState): void {
   pageState.handle = NONE;
 }
 
-function viewMapPage(vnode: m.Vnode<MapPageAttrs>): m.Children {
-  const { visible: sidebarVisible } = vnode.attrs;
-  const metadata = drawMapMetadata();
-  const map = drawMapContainer();
-  const attrs = readMapPageAttrs(sidebarVisible);
-
-  return m("div", attrs, [
-    metadata,
-    map,
-  ]);
-}
-
 function readMapPageAttrs(sidebarVisible: boolean): m.Attributes {
   const className = sidebarVisible ? "page sidebar-visible" : "page";
   return { class: className };
@@ -73,6 +61,18 @@ function drawMapContainer(): m.Children {
   const attrs = { role: "application", "aria-label": "Map" };
   const map = m("div.leaflet-map", attrs);
   return m("section.no-margin", [map]);
+}
+
+function viewMapPage(vnode: m.Vnode<MapPageAttrs>): m.Children {
+  const { visible: sidebarVisible } = vnode.attrs;
+  const metadata = drawMapMetadata();
+  const map = drawMapContainer();
+  const attrs = readMapPageAttrs(sidebarVisible);
+
+  return m("div", attrs, [
+    metadata,
+    map,
+  ]);
 }
 
 function createMapPageState(): MapPageState {

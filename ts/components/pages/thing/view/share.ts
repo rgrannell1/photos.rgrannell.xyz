@@ -30,13 +30,6 @@ export function isOlm(urn: string): boolean {
   return isAmphibian && parsed.id === "proteus-anguinus";
 }
 
-export function drawThingHeading(attrs: ThingPageAttrs): m.Children[] {
-  const title = drawThingTitle(attrs);
-  const subtitle = drawThingSubtitle(attrs);
-  const urls = m(ThingUrls, { things: attrs.things });
-  return [title, subtitle, m("br"), urls];
-}
-
 export function drawThingTitle(attrs: ThingPageAttrs): m.Children {
   const titleAttrs: ThingTitleAttrs = {
     urn: attrs.urn,
@@ -56,18 +49,11 @@ export function drawThingSubtitle(attrs: ThingPageAttrs): m.Children {
   return m(ThingSubtitle, subtitleAttrs);
 }
 
-export function drawThingSections(attrs: ThingPageAttrs): m.Children[] {
-  const details = m(ThingDetails, attrs);
-  const share = drawShareButton(attrs.urn, attrs.things);
-  const media = readMediaSections(attrs);
-  const sections = [details, share, ...media];
-  return sections;
-}
-
-export function readMediaSections(attrs: ThingPageAttrs): m.Children[] {
-  const photos = drawPhotoSections(attrs);
-  const videos = drawVideoSections(attrs);
-  return [...photos, ...videos];
+export function drawThingHeading(attrs: ThingPageAttrs): m.Children[] {
+  const title = drawThingTitle(attrs);
+  const subtitle = drawThingSubtitle(attrs);
+  const urls = m(ThingUrls, { things: attrs.things });
+  return [title, subtitle, m("br"), urls];
 }
 
 export function drawPhotoSections(attrs: ThingPageAttrs): m.Children[] {
@@ -80,6 +66,20 @@ export function drawVideoSections(attrs: ThingPageAttrs): m.Children[] {
   const videos = m(VideoSection, attrs);
   const albums = m(AlbumSection, attrs);
   return [videos, albums];
+}
+
+export function readMediaSections(attrs: ThingPageAttrs): m.Children[] {
+  const photos = drawPhotoSections(attrs);
+  const videos = drawVideoSections(attrs);
+  return [...photos, ...videos];
+}
+
+export function drawThingSections(attrs: ThingPageAttrs): m.Children[] {
+  const details = m(ThingDetails, attrs);
+  const share = drawShareButton(attrs.urn, attrs.things);
+  const media = readMediaSections(attrs);
+  const sections = [details, share, ...media];
+  return sections;
 }
 
 export function drawThingBody(attrs: ThingPageAttrs): m.Children {

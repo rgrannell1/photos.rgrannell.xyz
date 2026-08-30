@@ -16,6 +16,11 @@ import { fromNullable, isNone, withDefault } from "../../../commons/collections/
 import type { ThingListItem } from "./thing-list.ts";
 import { drawTaxonLink } from "./render.ts";
 
+export function compareNames(firstName: string, secondName: string): number {
+  const comparison = firstName.localeCompare(secondName);
+  return comparison;
+}
+
 export function comparePlaceNames(
   loca: ThingListItem,
   locb: ThingListItem,
@@ -25,27 +30,9 @@ export function comparePlaceNames(
   return compareNames(firstName, secondName);
 }
 
-export function compareNames(firstName: string, secondName: string): number {
-  const comparison = firstName.localeCompare(secondName);
-  return comparison;
-}
-
 export function drawListItem(key: string, content: m.Children): m.Children {
   const attrs = { key };
   return m("li", attrs, content);
-}
-
-export function drawPlaceItem(
-  readEmoji: ReadThingEmoji,
-  location: Place | Unesco,
-): m.Children {
-  const urn = one(location.id);
-  if (isNone(urn)) {
-    return null;
-  }
-
-  const item = drawPlaceLink(readEmoji, location, urn);
-  return item;
 }
 
 export function drawPlaceLink(
@@ -62,6 +49,24 @@ export function drawPlaceLink(
   return drawListItem(`place-${location.id}`, link);
 }
 
+export function drawPlaceItem(
+  readEmoji: ReadThingEmoji,
+  location: Place | Unesco,
+): m.Children {
+  const urn = one(location.id);
+  if (isNone(urn)) {
+    return null;
+  }
+
+  const item = drawPlaceLink(readEmoji, location, urn);
+  return item;
+}
+
+export function drawFeatureLink(feature: Feature, id: string): m.Children {
+  const link = m(FeatureLabel, { urn: id, thing: feature });
+  return drawListItem(`feature-${id}`, link);
+}
+
 export function drawFeatureItem(feature: Feature): m.Children {
   const id = one(feature.id);
   if (isNone(id)) {
@@ -72,9 +77,9 @@ export function drawFeatureItem(feature: Feature): m.Children {
   return item;
 }
 
-export function drawFeatureLink(feature: Feature, id: string): m.Children {
-  const link = m(FeatureLabel, { urn: id, thing: feature });
-  return drawListItem(`feature-${id}`, link);
+export function drawUnescoLink(unesco: Unesco, urn: string): m.Children {
+  const link = m(UnescoLink, { urn, thing: unesco });
+  return drawListItem(`unesco-${urn}`, link);
 }
 
 export function drawUnescoItem(unesco: Unesco): m.Children {
@@ -85,11 +90,6 @@ export function drawUnescoItem(unesco: Unesco): m.Children {
 
   const item = drawUnescoLink(unesco, urn);
   return item;
-}
-
-export function drawUnescoLink(unesco: Unesco, urn: string): m.Children {
-  const link = m(UnescoLink, { urn, thing: unesco });
-  return drawListItem(`unesco-${urn}`, link);
 }
 
 export function drawTaxonItem(
