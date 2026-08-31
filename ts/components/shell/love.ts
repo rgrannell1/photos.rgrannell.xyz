@@ -8,6 +8,7 @@ type HeartRainState = {
   teardown: Maybe<() => void>;
 };
 
+/** Mount heart rain and retain its teardown callback. */
 function mountHeartRainOverlay(
   heartState: HeartRainState,
   vnode: m.VnodeDOM<Record<never, never>>,
@@ -15,6 +16,7 @@ function mountHeartRainOverlay(
   heartState.teardown = mountHeartRain(vnode.dom as HTMLElement);
 }
 
+/** Stop heart rain when mounted and clear its teardown callback. */
 function unmountHeartRainOverlay(heartState: HeartRainState): void {
   if (isSome(heartState.teardown)) {
     heartState.teardown();
@@ -22,10 +24,12 @@ function unmountHeartRainOverlay(heartState: HeartRainState): void {
   heartState.teardown = NONE;
 }
 
+/** Draw the overlay that contains animated hearts. */
 function viewHeartRain(): m.Children {
   return m(`div${HEART_RAIN_OVERLAY_SELECTOR}`);
 }
 
+/** Create the heart-rain overlay with managed mount lifecycle. */
 export function HeartRain() {
   const heartState: HeartRainState = { teardown: NONE };
   const component = {

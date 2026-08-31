@@ -6,12 +6,14 @@ export type TripPreviousAlbumsAttrs = {
   albums: Album[];
 };
 
+/** Draws a route link to an earlier album in the trip. */
 function drawPreviousAlbumLink(album: Album): m.Children {
   const albumId = asUrn(album.id).id;
   const linkAttrs = { href: `/album/${albumId}` };
   return m(m.route.Link, linkAttrs, album.name);
 }
 
+/** Appends an earlier album link with its required separator. */
 function appendPreviousAlbum(
   parts: m.Children[],
   album: Album,
@@ -22,6 +24,7 @@ function appendPreviousAlbum(
   parts.push(separator, link);
 }
 
+/** Builds the prose and links for the earlier trip stops. */
 function drawPreviousAlbumParts(albums: Album[]): m.Children[] {
   const introduction = "...after travelling from ";
   const parts: m.Children[] = [introduction];
@@ -31,6 +34,7 @@ function drawPreviousAlbumParts(albums: Album[]): m.Children[] {
   return parts;
 }
 
+/** Draws the earlier trip stops, or nothing when none exist. */
 function viewTripPreviousAlbums(
   vnode: m.Vnode<TripPreviousAlbumsAttrs>,
 ): m.Children {

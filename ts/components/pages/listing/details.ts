@@ -10,13 +10,14 @@ import { isSome, type Maybe } from "../../../commons/collections/maybe.ts";
 import type { ListingDetailsAttrs, ListingPageAttrs } from "./listing.ts";
 import { BirdListingDetails, viewMammalListingDetails } from "./cards.ts";
 
-/*
+/**
  * Mammal species counts, by wild, total, and Irish wild.
  */
 export function MammalListingDetails() {
   return { view: viewMammalListingDetails };
 }
 
+/** Render the details card for a supported listing type with available statistics. */
 export function viewListingDetails(
   vnode: m.Vnode<ListingDetailsAttrs>,
 ): m.Children {
@@ -35,10 +36,12 @@ export function viewListingDetails(
   return null;
 }
 
+/** Create the listing details component. */
 export function ListingDetails() {
   return { view: viewListingDetails };
 }
 
+/** Render a listing label as the page heading with its type metadata. */
 export function viewListingTitle(
   vnode: m.Vnode<{ type: string; label: string }>,
 ): m.Children {
@@ -51,13 +54,14 @@ export function viewListingTitle(
   );
 }
 
-/*
+/**
  * The listing's plural label as the page title, e.g "Countries"
  */
 export function ListingTitle() {
   return { view: viewListingTitle };
 }
 
+/** Render a link to all photos for a listing type. */
 export function viewListingThingsButton(
   vnode: m.Vnode<{ type: string }>,
 ): m.Children {
@@ -71,13 +75,14 @@ export function viewListingThingsButton(
   return m("a", attrs, `See all ${type} photos`);
 }
 
-/*
+/**
  * Link to the things page for this type (wildcard)
  */
 export function ListingThingsButton() {
   return { view: viewListingThingsButton };
 }
 
+/** Toggle the Ireland life-list filter through a route change. */
 export function toggleIrelandFilter(type: string, filter: Maybe<string>): void {
   const isActive = filter === LIFE_LIST_FILTERS.IRELAND;
   const route = isActive
@@ -88,10 +93,12 @@ export function toggleIrelandFilter(type: string, filter: Maybe<string>): void {
   });
 }
 
+/** Test whether a thing carries the published Irish marker. */
 export function isIrishThing(thing: TripleObject): boolean {
   return one(thing.irish) === DATA_TRUE;
 }
 
+/** Render a listing's title, statistics, and optional all-photos link. */
 export function drawListingMetadata(attrs: ListingPageAttrs): m.Children {
   const { type, label, isListable, stats, filter } = attrs;
   const onToggleIreland = toggleIrelandFilter.bind(null, type, filter);

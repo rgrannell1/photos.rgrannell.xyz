@@ -6,6 +6,7 @@ type ExternalLinkAttrs = {
   text: string;
 };
 
+/** Renders text as a safe new-tab external link. */
 function viewExternalLink(
   vnode: m.Vnode<ExternalLinkAttrs>,
 ): m.Children {

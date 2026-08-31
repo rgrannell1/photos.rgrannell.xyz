@@ -15,6 +15,7 @@ import { LIFE_LIST_FILTERS } from "../../../constants/display.ts";
 
 const checklistPageComponent = ChecklistPage();
 
+/** Read the complete bird and mammal catalogue model for the life list. */
 function readLifeListModel() {
   return {
     entries: services.readWildBirdChecklist(),
@@ -32,6 +33,7 @@ let cachedModel: Maybe<ReturnType<typeof readLifeListModel>> = NONE;
 
 export const checklistEntry = pageEntry({
   page: checklistPageComponent,
+  /** Resolve cached life-list data and the active route filter after loading. */
   resolve() {
     if (!state.loaded) {
       return "";

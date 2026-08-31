@@ -15,14 +15,17 @@ import {
   refreshAlbumsCache,
 } from "./cache.ts";
 
+/** Reports whether an album belongs to the selected country. */
 export function hasCountry(selectedCountry: string, album: Album): boolean {
   return setify(fromNullable(album.country)).has(selectedCountry);
 }
 
+/** Reports whether an album belongs to the selected trip. */
 export function hasTrip(selectedTrip: string, album: Album): boolean {
   return album.trip === selectedTrip;
 }
 
+/** Applies the selected country filter when one exists. */
 export function filterAlbumsByCountry(
   albums: Album[],
   filters: AlbumFilters,
@@ -35,6 +38,7 @@ export function filterAlbumsByCountry(
   return albums;
 }
 
+/** Applies the selected trip filter when one exists. */
 export function filterAlbumsByTrip(
   albums: Album[],
   filters: AlbumFilters,
@@ -47,12 +51,14 @@ export function filterAlbumsByTrip(
   return albums;
 }
 
+/** Applies active album filters to the cached album list. */
 export function filterAlbums(filters: AlbumFilters): Album[] {
   const countryAlbums = filterAlbumsByCountry(albumsCacheState.albums, filters);
   const tripAlbums = filterAlbumsByTrip(countryAlbums, filters);
   return tripAlbums;
 }
 
+/** Refreshes album data and resolves attributes for the albums page. */
 export function resolveAlbumsPage() {
   refreshAlbumsCache();
   const filters = readAlbumFilters();

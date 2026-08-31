@@ -15,6 +15,7 @@ import { AlbumSection, VideoSection } from "./media.ts";
 import { PhotoSection } from "../data/species-data.ts";
 import { drawShareButton, SpeciesSection } from "./species-view.ts";
 
+/** Reads the first thing name or returns the supplied fallback. */
 export function readShareName(
   things: TripleObject[],
   fallback: string,
@@ -24,12 +25,14 @@ export function readShareName(
   return withDefault(name, fallback);
 }
 
+/** Reports whether a URN identifies the olm amphibian species. */
 export function isOlm(urn: string): boolean {
   const parsed = asUrn(urn);
   const isAmphibian = parsed.type === KnownTypes.AMPHIBIAN;
   return isAmphibian && parsed.id === "proteus-anguinus";
 }
 
+/** Renders the thing title from page data. */
 export function drawThingTitle(attrs: ThingPageAttrs): m.Children {
   const titleAttrs: ThingTitleAttrs = {
     urn: attrs.urn,
@@ -41,6 +44,7 @@ export function drawThingTitle(attrs: ThingPageAttrs): m.Children {
   return title;
 }
 
+/** Renders the thing subtitle from its URN and naming mode. */
 export function drawThingSubtitle(attrs: ThingPageAttrs): m.Children {
   const subtitleAttrs = {
     urn: attrs.urn,
@@ -49,6 +53,7 @@ export function drawThingSubtitle(attrs: ThingPageAttrs): m.Children {
   return m(ThingSubtitle, subtitleAttrs);
 }
 
+/** Renders the title, subtitle, and external references. */
 export function drawThingHeading(attrs: ThingPageAttrs): m.Children[] {
   const title = drawThingTitle(attrs);
   const subtitle = drawThingSubtitle(attrs);
@@ -56,24 +61,28 @@ export function drawThingHeading(attrs: ThingPageAttrs): m.Children[] {
   return [title, subtitle, m("br"), urls];
 }
 
+/** Renders the photo and species sections. */
 export function drawPhotoSections(attrs: ThingPageAttrs): m.Children[] {
   const photos = m(PhotoSection, attrs);
   const species = m(SpeciesSection, attrs);
   return [photos, species];
 }
 
+/** Renders the video and album sections. */
 export function drawVideoSections(attrs: ThingPageAttrs): m.Children[] {
   const videos = m(VideoSection, attrs);
   const albums = m(AlbumSection, attrs);
   return [videos, albums];
 }
 
+/** Returns all photo and video media sections in display order. */
 export function readMediaSections(attrs: ThingPageAttrs): m.Children[] {
   const photos = drawPhotoSections(attrs);
   const videos = drawVideoSections(attrs);
   return [...photos, ...videos];
 }
 
+/** Renders the details, share control, and media sections. */
 export function drawThingSections(attrs: ThingPageAttrs): m.Children[] {
   const details = m(ThingDetails, attrs);
   const share = drawShareButton(attrs.urn, attrs.things);
@@ -82,6 +91,7 @@ export function drawThingSections(attrs: ThingPageAttrs): m.Children[] {
   return sections;
 }
 
+/** Renders the complete thing page body. */
 export function drawThingBody(attrs: ThingPageAttrs): m.Children {
   const content = [...drawThingHeading(attrs), ...drawThingSections(attrs)];
   return m("section.thing-page", content);

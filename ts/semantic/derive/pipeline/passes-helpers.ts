@@ -3,11 +3,13 @@
 /* Support passes operations. */
 import type { DerivationPass, PassOrderState } from "./passes.ts";
 
+/** Collects the unique names declared by derivation passes. */
 export function collectPassNames(passes: DerivationPass[]): Set<string> {
   const names = passes.map(readPassName);
   return new Set(names);
 }
 
+/** Rejects a pass that names an unknown dependency. */
 export function validatePassDependencies(
   pass: DerivationPass,
   passNames: Set<string>,
@@ -23,6 +25,7 @@ export function validatePassDependencies(
   }
 }
 
+/** Validates every dependency name before pass ordering starts. */
 export function validatePasses(passes: DerivationPass[]): void {
   const passNames = collectPassNames(passes);
   for (const pass of passes) {
@@ -30,6 +33,7 @@ export function validatePasses(passes: DerivationPass[]): void {
   }
 }
 
+/** Reports whether all dependencies for a pass have completed. */
 export function isPassReady(
   pass: DerivationPass,
   completed: Set<string>,
@@ -38,6 +42,7 @@ export function isPassReady(
   return dependenciesComplete;
 }
 
+/** Finds the first pass whose dependencies have completed. */
 export function findReadyPassIndex(state: PassOrderState): number {
   for (let idx = 0; idx < state.remaining.length; idx++) {
     const pass = state.remaining[idx];
@@ -48,16 +53,19 @@ export function findReadyPassIndex(state: PassOrderState): number {
   return -1;
 }
 
+/** Reads a derivation pass name for collection operations. */
 export function readPassName(pass: DerivationPass): string {
   return pass.name;
 }
 
+/** Reports the passes trapped in a dependency cycle. */
 export function throwCyclicPassError(remaining: DerivationPass[]): never {
   const names = remaining.map(readPassName);
   const stuck = names.join(", ");
   throw new Error(`cyclic pass dependencies among: ${stuck}`);
 }
 
+/** Removes and returns the ready pass, or rejects a dependency cycle. */
 export function takeReadyPass(
   state: PassOrderState,
   readyIdx: number,
@@ -70,6 +78,7 @@ export function takeReadyPass(
   return ready;
 }
 
+/** Creates mutable state for dependency-based pass ordering. */
 export function createPassOrderState(passes: DerivationPass[]): PassOrderState {
   const ordered: DerivationPass[] = [];
   const completed = new Set<string>();
@@ -81,6 +90,7 @@ export function createPassOrderState(passes: DerivationPass[]): PassOrderState {
   };
 }
 
+/** Moves the next ready pass into the completed order. */
 export function orderNextPass(state: PassOrderState): void {
   const readyIdx = findReadyPassIndex(state);
   const ready = takeReadyPass(state, readyIdx);

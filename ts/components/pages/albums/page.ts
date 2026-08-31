@@ -16,6 +16,7 @@ import { isNone, withDefault } from "../../../commons/collections/maybe.ts";
 import type { AlbumsPageAttrs } from "./albums.ts";
 import { AlbumsList, selectCountry } from "./grouping.ts";
 
+/** Omits sharing unless the page has a selected trip. */
 export function drawTripShare(attrs: AlbumsPageAttrs): m.Children {
   if (isNone(attrs.selectedTrip)) {
     return null;
@@ -30,6 +31,7 @@ export function drawTripShare(attrs: AlbumsPageAttrs): m.Children {
   ]);
 }
 
+/** Renders album statistics, country filtering, and optional trip sharing. */
 export function drawAlbumsMetadata(attrs: AlbumsPageAttrs): m.Children {
   return m("section.album-metadata", [
     m(AlbumStats),
@@ -42,6 +44,7 @@ export function drawAlbumsMetadata(attrs: AlbumsPageAttrs): m.Children {
   ]);
 }
 
+/** Renders the albums banner, controls, and filtered album list. */
 export function viewAlbumsPage(vnode: m.Vnode<AlbumsPageAttrs>): m.Children {
   const { attrs } = vnode;
 

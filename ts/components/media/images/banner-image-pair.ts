@@ -10,6 +10,7 @@ export type BannerImagePairAttrs = {
   alt: string;
 };
 
+/** Draw the low-resolution placeholder when thumbnail data exists. */
 function drawBannerPlaceholder(thumbnailDataUrl: Maybe<string>): m.Children {
   if (!isSome(thumbnailDataUrl)) {
     return null;
@@ -19,6 +20,7 @@ function drawBannerPlaceholder(thumbnailDataUrl: Maybe<string>): m.Children {
   return placeholder;
 }
 
+/** Draw the eager, high-priority banner image. */
 function drawBannerImage(attrs: BannerImagePairAttrs): m.Children {
   const imageAttrs = {
     src: attrs.thumbnailUrl,
@@ -31,6 +33,7 @@ function drawBannerImage(attrs: BannerImagePairAttrs): m.Children {
   return image;
 }
 
+/** Layer a banner image above its optional placeholder. */
 function viewBannerImagePair(
   vnode: m.Vnode<BannerImagePairAttrs>,
 ): m.Children {
@@ -40,7 +43,7 @@ function viewBannerImagePair(
   return m("div", containerAttrs, [placeholder, image]);
 }
 
-/* Full-bleed banner variant of ImagePair. */
+/** Full-bleed banner variant of ImagePair. */
 export function BannerImagePair() {
   return { view: viewBannerImagePair };
 }

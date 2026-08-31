@@ -17,6 +17,7 @@ import {
   startPlaceMarkers,
 } from "./polylines.ts";
 
+/** Creates the Leaflet map when the state has a container but no map. */
 export function ensureMountedMap(
   mapState: MapState,
   leaflet: LeafletLib,
@@ -28,6 +29,7 @@ export function ensureMountedMap(
   );
 }
 
+/** Draws the initial trip lines and records their source array. */
 export function syncInitialTripLines(
   mapState: MapState,
   leaflet: LeafletLib,
@@ -42,6 +44,7 @@ export function syncInitialTripLines(
   mapState.lastTripPolylines = tripPolylines;
 }
 
+/** Initialises the map, layers, trip lines, and place markers. */
 export function initMap(
   mapState: MapState,
   root: HTMLElement,
@@ -61,6 +64,7 @@ export function initMap(
   invalidateMapSizeSoon(mapState.leafletMap);
 }
 
+/** Resizes the map after a sidebar visibility change. */
 export function syncSidebarVisibility(
   mapState: MapState,
   visible: boolean,
@@ -71,6 +75,7 @@ export function syncSidebarVisibility(
   mapState.lastSidebarVisible = visible;
 }
 
+/** Replaces trip lines when their source array changes. */
 export function syncChangedTripLines(
   mapState: MapState,
   tripPolylines: TripPolyline[],
@@ -90,6 +95,7 @@ export function syncChangedTripLines(
   mapState.lastTripPolylines = tripPolylines;
 }
 
+/** Synchronises sidebar layout, trip lines, and place markers. */
 export function updateMap(
   mapState: MapState,
   visible: boolean,
@@ -104,6 +110,7 @@ export function updateMap(
   }
 }
 
+/** Destroys the Leaflet map and clears all layer references. */
 export function clearMapLayers(mapState: MapState): void {
   mapState.leafletMap = destroyLeafletMap(mapState.leafletMap);
   mapState.mapContainer = NONE;
@@ -111,17 +118,20 @@ export function clearMapLayers(mapState: MapState): void {
   mapState.tripLinesLayer = NONE;
 }
 
+/** Clears the source data and Leaflet library reference. */
 export function clearMapData(mapState: MapState): void {
   mapState.lastPlaces = [];
   mapState.lastTripPolylines = [];
   mapState.leafletLib = NONE;
 }
 
+/** Releases all map resources and cached source data. */
 export function unmountMap(mapState: MapState): void {
   clearMapLayers(mapState);
   clearMapData(mapState);
 }
 
+/** Resets all external map references before initialisation. */
 export function initialiseMapStateReferences(mapState: MapState): void {
   mapState.leafletLib = NONE;
   mapState.leafletMap = NONE;

@@ -18,6 +18,7 @@ export type ImagePairAttrs = {
   label?: string;
 };
 
+/** Renders a placeholder only when thumbnail data is available. */
 function drawPlaceholder(attrs: ImagePairAttrs): m.Children {
   if (!isSome(attrs.thumbnailDataUrl)) {
     return null;
@@ -30,6 +31,7 @@ function drawPlaceholder(attrs: ImagePairAttrs): m.Children {
   return m(PlaceholderImage, placeholderAttrs);
 }
 
+/** Renders the placeholder and thumbnail with one effective click target. */
 function drawImageChildren(attrs: ImagePairAttrs): m.Children[] {
   const {
     imageUrl,
@@ -57,6 +59,7 @@ function drawImageChildren(attrs: ImagePairAttrs): m.Children[] {
   return [placeholder, image];
 }
 
+/** Builds attributes for a new-tab link to the full image. */
 function fullImageLinkAttrs(imageUrl: string, label?: string): m.Attributes {
   return {
     href: imageUrl,
@@ -66,6 +69,7 @@ function fullImageLinkAttrs(imageUrl: string, label?: string): m.Attributes {
   };
 }
 
+/** Builds attributes for a route link around an image pair. */
 function routeLinkAttrs(
   href: string,
   onclick?: (event: Event) => void,
@@ -74,6 +78,7 @@ function routeLinkAttrs(
   return { href, onclick, "aria-label": label };
 }
 
+/** Renders an image pair with a full-image link, route link, or plain wrapper. */
 function viewImagePair(vnode: m.Vnode<ImagePairAttrs>): m.Children {
   const { imageUrl, href, onclick, label } = vnode.attrs;
   const children = drawImageChildren(vnode.attrs);
@@ -91,10 +96,7 @@ function viewImagePair(vnode: m.Vnode<ImagePairAttrs>): m.Children {
   return m("div", children);
 }
 
-/*
- * A thumbnail paired with its placeholder. imageUrl opens the image in a new
- * tab. href navigates in-app, leaving modified clicks to the browser.
- */
+/** Modified image-link clicks remain browser-managed. */
 export function ImagePair() {
   return { view: viewImagePair };
 }

@@ -10,19 +10,23 @@ import { ENDPOINT, KnownRelations, KnownTypes } from "../../../constants/data.ts
 import { type TripleProcessor } from "../classification/curies.ts";
 import { URN_ALIASES } from "./stream.ts";
 
+/** Expands a CDN-relative target against the configured endpoint. */
 export function expandCdnTarget(target: Thing): string {
   return `${ENDPOINT}${target}`;
 }
 
+/** Replaces a known URN alias with its canonical value. */
 export function canonicaliseUrn(value: Thing): Thing {
   return URN_ALIASES.get(value) ?? value;
 }
 
+/** Expands the short local URN syntax and preserves other values. */
 export function expandUrn(value: Thing): Thing {
   const hasShortUrn = value.startsWith("::");
   return hasShortUrn ? `urn:ró:${value.slice(2)}` : value;
 }
 
+/** Derives a UTC year triple when the source target is a valid date. */
 export function createYearTriple(triple: Triple): Triple[] {
   const [source, , target] = triple;
   const date = new Date(target);
@@ -33,6 +37,7 @@ export function createYearTriple(triple: Triple): Triple[] {
   return [[source, KnownRelations.YEAR, year]];
 }
 
+/** Applies triple processors in sequence to each prior processor's output. */
 export function applyTripleProcessors(
   processors: TripleProcessor[],
   triple: Triple,
@@ -44,6 +49,7 @@ export function applyTripleProcessors(
   return outputTriples;
 }
 
+/** Collects place-feature URNs referenced by feature relations. */
 export function collectPlaceFeatureUrns(tdb: TribbleDB): Set<string> {
   const results = tdb.search({ relation: KnownRelations.FEATURES }).triples();
   const featureUrns = new Set<string>();
@@ -55,6 +61,7 @@ export function collectPlaceFeatureUrns(tdb: TribbleDB): Set<string> {
   return featureUrns;
 }
 
+/** Creates identity and human-readable name triples for place features. */
 export function createPlaceFeatureTriples(featureUrns: Set<string>): Triple[] {
   const triples: Triple[] = [];
   for (const urn of featureUrns) {
@@ -64,6 +71,7 @@ export function createPlaceFeatureTriples(featureUrns: Set<string>): Triple[] {
   return triples;
 }
 
+/** Appends reversed triples for every match of the given relation. */
 export function addInverseRelationTriples(
   tdb: TribbleDB,
   relation: string,

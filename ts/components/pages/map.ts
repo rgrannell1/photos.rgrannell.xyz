@@ -15,6 +15,7 @@ type MapPageState = {
   handle: Maybe<MapHandle>;
 };
 
+/** Mount the Leaflet map and retain its handle for later updates. */
 function mountMapPage(
   pageState: MapPageState,
   vnode: m.VnodeDOM<MapPageAttrs>,
@@ -28,6 +29,7 @@ function mountMapPage(
   );
 }
 
+/** Sync visible map data when the map has mounted. */
 function updateMapPage(
   pageState: MapPageState,
   vnode: m.VnodeDOM<MapPageAttrs>,
@@ -39,6 +41,7 @@ function updateMapPage(
   }
 }
 
+/** Tear down the mounted map and clear its handle. */
 function unmountMapPage(pageState: MapPageState): void {
   if (isSome(pageState.handle)) {
     pageState.handle.teardown();
@@ -46,23 +49,27 @@ function unmountMapPage(pageState: MapPageState): void {
   pageState.handle = NONE;
 }
 
+/** Set the page class from the sidebar visibility state. */
 function readMapPageAttrs(sidebarVisible: boolean): m.Attributes {
   const className = sidebarVisible ? "page sidebar-visible" : "page";
   return { class: className };
 }
 
+/** Draw the map page heading and summary. */
 function drawMapMetadata(): m.Children {
   const heading = m("h1", "Map");
   const description = m("p.photo-album-count", "Places I've visited");
   return m("section.photos-metadata", [heading, description]);
 }
 
+/** Draw the accessible container that Leaflet mounts into. */
 function drawMapContainer(): m.Children {
   const attrs = { role: "application", "aria-label": "Map" };
   const map = m("div.leaflet-map", attrs);
   return m("section.no-margin", [map]);
 }
 
+/** Render the map page from its current sidebar and map data. */
 function viewMapPage(vnode: m.Vnode<MapPageAttrs>): m.Children {
   const { visible: sidebarVisible } = vnode.attrs;
   const metadata = drawMapMetadata();
@@ -75,21 +82,25 @@ function viewMapPage(vnode: m.Vnode<MapPageAttrs>): m.Children {
   ]);
 }
 
+/** Create map page state with no mounted map. */
 function createMapPageState(): MapPageState {
   return { handle: NONE };
 }
 
+/** Bind map mount and update hooks to shared page state. */
 function bindMapPageChanges(pageState: MapPageState) {
   const oncreate = mountMapPage.bind(null, pageState);
   const onupdate = updateMapPage.bind(null, pageState);
   return { oncreate, onupdate };
 }
 
+/** Bind map removal to shared page state. */
 function bindMapPageRemoval(pageState: MapPageState) {
   const onremove = unmountMapPage.bind(null, pageState);
   return { onremove };
 }
 
+/** Create a map page with stateful Leaflet lifecycle hooks. */
 export function MapPage(): m.Component<MapPageAttrs> {
   const pageState = createMapPageState();
   const changeHooks = bindMapPageChanges(pageState);

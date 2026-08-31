@@ -10,6 +10,7 @@ import {
   addSingleMetadataWhenPresent,
 } from "./metadata.ts";
 
+/** Render place URNs with the place-specific thing-list rules. */
 export function drawLocatedInList(
   attrs: ThingPageAttrs,
   urns: Set<string>,
@@ -18,6 +19,7 @@ export function drawLocatedInList(
   return drawThingList(attrs, kind, urns);
 }
 
+/** Add the containing places when the thing has `in` relations. */
 export function addLocatedInMetadata(
   metadata: Record<string, m.Children>,
   attrs: ThingPageAttrs,
@@ -30,15 +32,18 @@ export function addLocatedInMetadata(
   metadata["Located In"] = list;
 }
 
+/** Report whether a collection contains at least one item. */
 export function hasItems(items: unknown[]): boolean {
   return items.length > 0;
 }
 
+/** Render countries where the thing has appeared. */
 export function drawSeenInList(countries: SeenInCountry[]): m.Children {
   const children = countries.map(drawSeenInCountry);
   return m(".seen-in-list", children);
 }
 
+/** Add country sightings for binomial things that have sighting data. */
 export function addSeenInMetadata(
   metadata: Record<string, m.Children>,
   attrs: ThingPageAttrs,
@@ -55,6 +60,7 @@ export function addSeenInMetadata(
   metadata["Seen In"] = drawSeenInList(seenIn);
 }
 
+/** Convert metadata entries to rows in their insertion order. */
 export function readMetadataRows(
   metadata: Record<string, m.Children>,
 ): m.Children[] {
@@ -62,12 +68,14 @@ export function readMetadataRows(
   return entries.map(drawMetadataRow);
 }
 
+/** Render non-empty thing metadata as a details table. */
 export function drawThingDetails(rows: m.Children[]): m.Children {
   const heading = m("h3", "Details");
   const table = m("table.metadata-table", rows);
   return m("div", [heading, table]);
 }
 
+/** Add relation-based metadata to a thing's metadata map. */
 export function addRelatedMetadata(
   metadata: Record<string, m.Children>,
   attrs: ThingPageAttrs,
@@ -78,6 +86,7 @@ export function addRelatedMetadata(
   addSeenInMetadata(metadata, attrs, seenInFor);
 }
 
+/** Build the classification and relation metadata for one thing. */
 export function readThingMetadata(
   seenInFor: CachedReader<SeenInCountry[]>,
   attrs: ThingPageAttrs,
@@ -89,6 +98,7 @@ export function readThingMetadata(
   return metadata;
 }
 
+/** Render thing details, or nothing when no metadata rows exist. */
 export function viewThingDetails(
   seenInFor: CachedReader<SeenInCountry[]>,
   vnode: m.Vnode<ThingPageAttrs>,

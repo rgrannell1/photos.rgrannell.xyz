@@ -8,6 +8,7 @@ import type {
   Coordinate,
 } from "./map-lines.ts";
 
+/** Calculates quadratic Bezier weights for a curve position. */
 export function bezierWeights(progress: number): BezierValues {
   const inverse = 1 - progress;
   const startWeight = inverse * inverse;
@@ -15,6 +16,7 @@ export function bezierWeights(progress: number): BezierValues {
   return [startWeight, controlWeight, progress * progress];
 }
 
+/** Interpolates one coordinate axis along a quadratic Bezier curve. */
 export function bezierCoordinate(
   values: BezierValues,
   progress: number,
@@ -24,12 +26,14 @@ export function bezierCoordinate(
   return startWeight * start + controlWeight * control + endWeight * end;
 }
 
+/** Interpolates the latitude for a Bezier point. */
 export function bezierLatitude(options: BezierPointOptions): number {
   const { start, control, end, progress } = options;
   const values: BezierValues = [start[0], control[0], end[0]];
   return bezierCoordinate(values, progress);
 }
 
+/** Interpolates the longitude for a Bezier point. */
 export function bezierLongitude(options: BezierPointOptions): number {
   const { start, control, end, progress } = options;
   const values: BezierValues = [start[1], control[1], end[1]];
@@ -37,6 +41,7 @@ export function bezierLongitude(options: BezierPointOptions): number {
 }
 
 /* Calculate a point on a quadratic Bezier curve. */
+/** Calculates a coordinate on a quadratic Bezier curve. */
 export function bezierPoint(
   start: Coordinate,
   control: Coordinate,
@@ -49,18 +54,21 @@ export function bezierPoint(
   return [latitude, longitude];
 }
 
+/** Measures a coordinate vector with a non-zero minimum length. */
 export function coordinateLength(coordinate: Coordinate): number {
   const [latitude, longitude] = coordinate;
   const squaredLength = latitude * latitude + longitude * longitude;
   return Math.sqrt(squaredLength) || MAP_MIN_LEG_LENGTH;
 }
 
+/** Flips a vector when needed so its latitude points north. */
 export function orientNorth(coordinate: Coordinate): Coordinate {
   const [latitude, longitude] = coordinate;
   return latitude < 0 ? [-latitude, -longitude] : coordinate;
 }
 
 /* Find the north-facing unit vector perpendicular to a trip leg. */
+/** Finds the north-facing unit vector perpendicular to a trip leg. */
 export function northPerpendicular(
   latitudeDelta: number,
   longitudeDelta: number,
@@ -71,6 +79,7 @@ export function northPerpendicular(
   return [latitude / length, longitude / length];
 }
 
+/** Calculates the vector from one coordinate to another. */
 export function coordinateDelta(
   start: Coordinate,
   end: Coordinate,
@@ -78,6 +87,7 @@ export function coordinateDelta(
   return [end[0] - start[0], end[1] - start[1]];
 }
 
+/** Calculates the midpoint between two coordinates. */
 export function coordinateMidpoint(
   start: Coordinate,
   end: Coordinate,

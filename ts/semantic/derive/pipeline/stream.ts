@@ -23,6 +23,7 @@ import {
 
 export const URN_ALIASES = new Map<string, string>();
 
+/** Expand CDN targets only for relations that contain CDN URLs. */
 export function expandCdnUrls(triple: Triple): Triple[] {
   const [source, relation, target] = triple;
   if (!CDN_RELATIONS.has(relation)) {
@@ -32,6 +33,7 @@ export function expandCdnUrls(triple: Triple): Triple[] {
   return [[source, relation, expandedTarget]];
 }
 
+/** Replace aliased source and target URNs with their canonical forms. */
 export function canonicaliseUrns(triple: Triple): Triple[] {
   if (URN_ALIASES.size === 0) {
     return [triple];
@@ -43,6 +45,7 @@ export function canonicaliseUrns(triple: Triple): Triple[] {
   return [[canonicalSource, relation, canonicalTarget]];
 }
 
+/** Expand compact source and target URNs in a triple. */
 export function expandUrns(triple: Triple): Triple[] {
   const [source, relation, target] = triple;
   const expandedSource = expandUrn(source);
@@ -50,6 +53,7 @@ export function expandUrns(triple: Triple): Triple[] {
   return [[expandedSource, relation, expandedTarget]];
 }
 
+/** Create the ordered processor that normalises each streamed triple. */
 export function createTripleDeriver(): TripleProcessor {
   const [registerCuries, expandCuries] = createCurieProcessors();
   const processors: TripleProcessor[] = [
@@ -62,6 +66,7 @@ export function createTripleDeriver(): TripleProcessor {
   return applyTripleProcessors.bind(null, processors);
 }
 
+/** Derive and store year triples from creation dates. */
 export function addYear(tdb: TribbleDB): void {
   const results = tdb.search({ relation: KnownRelations.CREATED_AT });
   const years = results.triples().flatMap(createYearTriple);
@@ -69,12 +74,14 @@ export function addYear(tdb: TribbleDB): void {
   tdb.add(years);
 }
 
+/** Derive subject triples for all referenced place features. */
 export function addPlaceFeatureSubjects(tdb: TribbleDB): void {
   const featureUrns = collectPlaceFeatureUrns(tdb);
   const triples = createPlaceFeatureTriples(featureUrns);
   tdb.add(triples);
 }
 
+/** Add inverse triples for every configured relation symmetry. */
 export function addInverseRelations(tdb: TribbleDB): void {
   const triples: Triple[] = [];
   const symmetries = RelationSymmetries;

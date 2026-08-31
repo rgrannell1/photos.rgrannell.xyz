@@ -7,6 +7,7 @@ const INFO_GLYPH_PATH =
   "-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-10a1 1 0 0 1 1 1v5a1 1 0 0 1 " +
   "-2 0v-5a1 1 0 0 1 1-1zm0-1a1 1 0 1 1 0-2 1 1 0 0 1 0 2z";
 
+/** Render the information glyph with the requested fill colour. */
 function viewInfoSVG(vnode: m.Vnode<{ colour: string }>): m.Children {
   const { colour } = vnode.attrs;
   const svgAttrs = {
@@ -21,6 +22,7 @@ function viewInfoSVG(vnode: m.Vnode<{ colour: string }>): m.Children {
   return m("svg.photo-icon", svgAttrs, [path]);
 }
 
+/** Create the information-glyph component. */
 function InfoSVG() {
   return { view: viewInfoSVG };
 }
@@ -30,10 +32,12 @@ type MetadataIconAttrs = {
   colour: string;
 };
 
+/** Broadcast navigation to the metadata route. */
 function clickMetadataIcon(route: string): void {
   broadcast("navigate", { route });
 }
 
+/** Render a metadata icon that navigates to its route when selected. */
 function viewMetadataIcon(vnode: m.Vnode<MetadataIconAttrs>): m.Children {
   const { route, colour } = vnode.attrs;
   const popoverAttrs = {
@@ -43,6 +47,7 @@ function viewMetadataIcon(vnode: m.Vnode<MetadataIconAttrs>): m.Children {
   return m("div.photo-metadata-popover", popoverAttrs, icon);
 }
 
+/** Create the metadata navigation icon component. */
 export function MetadataIcon() {
   return { view: viewMetadataIcon };
 }

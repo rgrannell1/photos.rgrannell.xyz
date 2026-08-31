@@ -25,6 +25,7 @@ import {
   drawUnescoItem,
 } from "./items.ts";
 
+/** Draw a taxon link inside a keyed list item. */
 export function drawTaxonLink(
   readEmoji: ReadThingEmoji,
   taxon: TripleObject,
@@ -39,6 +40,7 @@ export function drawTaxonLink(
   return drawListItem(`taxon-${urn}`, link);
 }
 
+/** Draw a place or Unesco item with its emoji reader. */
 export function drawPlaceListItem(
   readEmoji: ReadThingEmoji,
   item: ThingListItem,
@@ -46,6 +48,7 @@ export function drawPlaceListItem(
   return drawPlaceItem(readEmoji, item as Place | Unesco);
 }
 
+/** Draw a feature item without an emoji lookup. */
 export function drawFeatureListItem(
   _readEmoji: ReadThingEmoji,
   item: ThingListItem,
@@ -53,6 +56,7 @@ export function drawFeatureListItem(
   return drawFeatureItem(item as Feature);
 }
 
+/** Draw a Unesco item without an emoji lookup. */
 export function drawUnescoListItem(
   _readEmoji: ReadThingEmoji,
   item: ThingListItem,
@@ -60,6 +64,7 @@ export function drawUnescoListItem(
   return drawUnescoItem(item as Unesco);
 }
 
+/** Draw a taxon item with its emoji reader. */
 export function drawTaxonListItem(
   readEmoji: ReadThingEmoji,
   item: ThingListItem,
@@ -67,6 +72,7 @@ export function drawTaxonListItem(
   return drawTaxonItem(readEmoji, item as TripleObject);
 }
 
+/** Dispatch a thing list item to the drawer for its kind. */
 export function drawThingListItem(
   kind: ThingListKind,
   readEmoji: ReadThingEmoji,
@@ -76,6 +82,7 @@ export function drawThingListItem(
   return drawItem(readEmoji, item);
 }
 
+/** Apply the ordering required by a thing list kind. */
 export function sortThingList(
   kind: ThingListKind,
   items: ThingListItem[],
@@ -85,6 +92,7 @@ export function sortThingList(
   }
 }
 
+/** Draw thing list items as an unordered list. */
 export function drawThingList(
   kind: ThingListKind,
   readEmoji: ReadThingEmoji,
@@ -95,6 +103,7 @@ export function drawThingList(
   return m("ul", children);
 }
 
+/** Read, sort, and draw the items for a thing list component. */
 export function viewThingList(vnode: m.Vnode<ThingListAttrs>): m.Children {
   const { kind, urns, readItems, readEmoji } = vnode.attrs;
   const items = readItems(kind, urns);

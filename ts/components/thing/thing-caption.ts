@@ -19,6 +19,7 @@ type ThingCaptionAttrs = {
   titleExtra?: m.Children;
 };
 
+/** Reads the type from an available thing URN. */
 function readUrnType(id: Maybe<string>): Maybe<string> {
   if (isSome(id)) {
     return some(asUrn(id).type);
@@ -26,6 +27,7 @@ function readUrnType(id: Maybe<string>): Maybe<string> {
   return NONE;
 }
 
+/** Selects the taxon label or stored name for a caption. */
 function readCaptionName(
   thing: TripleObject,
   urnType: Maybe<string>,
@@ -38,17 +40,20 @@ function readCaptionName(
   return name;
 }
 
+/** Adds a country flag before a caption label. */
 function drawFlagTitle(thing: TripleObject, label: string): m.Children {
   const name = readCaptionName(thing, NONE);
   const flag = m(FlagIcon, { name });
   return [flag, ` ${label}`];
 }
 
+/** Adds the feature emoji before a caption label. */
 function drawFeatureTitle(thing: TripleObject, label: string): string {
   const emoji = featureEmoji(thing);
   return `${emoji} ${label}`;
 }
 
+/** Selects the flag, feature, or plain caption title. */
 function drawCaptionTitle(
   thing: TripleObject,
   id: Maybe<string>,
@@ -65,6 +70,7 @@ function drawCaptionTitle(
   return label;
 }
 
+/** Reads the caption label with an empty fallback. */
 function readCaptionLabel(
   thing: TripleObject,
   urnType: Maybe<string>,
@@ -73,6 +79,7 @@ function readCaptionLabel(
   return withDefault(name, "");
 }
 
+/** Builds the display title for a thing caption. */
 function readCaptionTitle(thing: TripleObject): m.Children {
   const id = one(thing.id);
   const urnType = readUrnType(id);
@@ -80,6 +87,7 @@ function readCaptionTitle(thing: TripleObject): m.Children {
   return drawCaptionTitle(thing, id, urnType, label);
 }
 
+/** Places a title and its links in the caption layout. */
 function drawCaptionLayout(
   titleContent: m.Children,
   links: m.Children,
@@ -88,6 +96,7 @@ function drawCaptionLayout(
   return m("div.photo-album-metadata", [titleNode, links]);
 }
 
+/** Draws a thing caption with optional title content. */
 function drawCaption(thing: TripleObject, titleExtra?: m.Children): m.Children {
   const links = m(ThingUrls, { things: [thing] });
   const title = readCaptionTitle(thing);
@@ -95,11 +104,13 @@ function drawCaption(thing: TripleObject, titleExtra?: m.Children): m.Children {
   return drawCaptionLayout(titleContent, links);
 }
 
+/** Draws the caption from component attributes. */
 function viewThingCaption(vnode: m.Vnode<ThingCaptionAttrs>): m.Children {
   const { thing, titleExtra } = vnode.attrs;
   return drawCaption(thing, titleExtra);
 }
 
+/** Creates the thing caption component. */
 export function ThingCaption() {
   return { view: viewThingCaption };
 }

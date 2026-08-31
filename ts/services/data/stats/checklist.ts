@@ -13,12 +13,14 @@ import type { ChecklistFlags } from "../stats.ts";
 import { readSpeciesThing } from "./birds.ts";
 import { hasRareStatus, hasScarceRarity } from "./mammals.ts";
 
+/** Reports whether species data marks a species as rare or scarce. */
 export function isScarceSpecies(
   speciesThing: TripleObject | undefined,
 ): boolean {
   return hasRareStatus(speciesThing) || hasScarceRarity(speciesThing);
 }
 
+/** Reads Irish and wild-origin flags for a checklist species. */
 export function readOriginFlags(
   speciesThing: TripleObject | undefined,
   speciesId: string,
@@ -29,10 +31,12 @@ export function readOriginFlags(
   return { isIrish, isWild };
 }
 
+/** Reports whether a triple value contains the canonical true marker. */
 export function hasDataFlag(value: string | string[] | undefined): boolean {
   return one(fromNullable(value)) === DATA_TRUE;
 }
 
+/** Reads scarcity, nemesis, and target flags from species data. */
 export function readStatusFlags(
   speciesThing: TripleObject | undefined,
 ): Pick<ChecklistFlags, "scarce" | "nemesis" | "target"> {
@@ -42,6 +46,7 @@ export function readStatusFlags(
   return { scarce, nemesis, target };
 }
 
+/** Reads the species name, with its ID as the fallback. */
 export function readChecklistName(
   speciesThing: TripleObject | undefined,
   speciesId: string,
@@ -49,6 +54,7 @@ export function readChecklistName(
   return withDefault(one(fromNullable(speciesThing?.name)), speciesId);
 }
 
+/** Combines origin and status flags for a checklist species. */
 export function readChecklistFlags(
   speciesThing: TripleObject | undefined,
   speciesId: string,
@@ -59,6 +65,7 @@ export function readChecklistFlags(
   return { ...originFlags, ...statusFlags };
 }
 
+/** Builds a checklist entry from species data and its first sighting. */
 export function readChecklistEntry(
   tdb: TribbleDB,
   speciesType: string,

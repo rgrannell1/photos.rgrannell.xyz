@@ -31,6 +31,7 @@ export type TripLegOptions = {
   segmentsPerLeg: number;
 };
 
+/** Select the map line style for the current display mode. */
 export function tripLineOptions(mode: Maybe<string>): PolylineOptions {
   const usesLightLine = isSome(mode) && MAP_LIGHT_LINE_MODES.has(mode);
   const color = usesLightLine
@@ -50,6 +51,7 @@ export type CurveInteriorOptions = {
   segmentsPerLeg: number;
 };
 
+/** Add curved points for each trip leg, or preserve a line with fewer than two points. */
 export function curveTripLine(
   coordinates: Coordinate[],
   segmentsPerLeg = MAP_SEGMENTS_PER_LEG,

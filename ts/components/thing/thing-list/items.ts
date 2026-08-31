@@ -16,11 +16,13 @@ import { fromNullable, isNone, withDefault } from "../../../commons/collections/
 import type { ThingListItem } from "./thing-list.ts";
 import { drawTaxonLink } from "./render.ts";
 
+/** Compare two names with locale-aware ordering. */
 export function compareNames(firstName: string, secondName: string): number {
   const comparison = firstName.localeCompare(secondName);
   return comparison;
 }
 
+/** Compare thing list items by their first name, with missing names first. */
 export function comparePlaceNames(
   loca: ThingListItem,
   locb: ThingListItem,
@@ -30,11 +32,13 @@ export function comparePlaceNames(
   return compareNames(firstName, secondName);
 }
 
+/** Wrap content in a keyed list item. */
 export function drawListItem(key: string, content: m.Children): m.Children {
   const attrs = { key };
   return m("li", attrs, content);
 }
 
+/** Draw a keyed place link for a known URN. */
 export function drawPlaceLink(
   readEmoji: ReadThingEmoji,
   location: Place | Unesco,
@@ -49,6 +53,7 @@ export function drawPlaceLink(
   return drawListItem(`place-${location.id}`, link);
 }
 
+/** Draw a place item, or nothing when its ID is missing. */
 export function drawPlaceItem(
   readEmoji: ReadThingEmoji,
   location: Place | Unesco,
@@ -62,11 +67,13 @@ export function drawPlaceItem(
   return item;
 }
 
+/** Draw a keyed feature link for a known ID. */
 export function drawFeatureLink(feature: Feature, id: string): m.Children {
   const link = m(FeatureLabel, { urn: id, thing: feature });
   return drawListItem(`feature-${id}`, link);
 }
 
+/** Draw a feature item, or nothing when its ID is missing. */
 export function drawFeatureItem(feature: Feature): m.Children {
   const id = one(feature.id);
   if (isNone(id)) {
@@ -77,11 +84,13 @@ export function drawFeatureItem(feature: Feature): m.Children {
   return item;
 }
 
+/** Draw a keyed UNESCO link for a known URN. */
 export function drawUnescoLink(unesco: Unesco, urn: string): m.Children {
   const link = m(UnescoLink, { urn, thing: unesco });
   return drawListItem(`unesco-${urn}`, link);
 }
 
+/** Draw a UNESCO item, or nothing when its ID is missing. */
 export function drawUnescoItem(unesco: Unesco): m.Children {
   const urn = one(unesco.id);
   if (isNone(urn)) {
@@ -92,6 +101,7 @@ export function drawUnescoItem(unesco: Unesco): m.Children {
   return item;
 }
 
+/** Draw a taxon item, or nothing when its ID is missing. */
 export function drawTaxonItem(
   readEmoji: ReadThingEmoji,
   taxon: TripleObject,

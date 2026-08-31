@@ -62,6 +62,7 @@ export type Thing =
   | Country
   | Subject;
 
+/** Narrow a place to a country when it has a flag. */
 export function isACountry(place: Place | Country): place is Country {
   return !!place.flag;
 }

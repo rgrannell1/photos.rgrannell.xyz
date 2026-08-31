@@ -25,6 +25,9 @@ let cachedId: Maybe<string> = NONE;
 let cachedModel: Maybe<Result<AlbumPageModel, string>> = NONE;
 let cachedAfterLoad = false;
 
+/**
+ * Build the complete album view model or report a missing album.
+ */
 function readAlbumPageModel(id: string): Result<AlbumPageModel, string> {
   const urn = albumUrn(id);
 
@@ -56,6 +59,7 @@ function readAlbumPageModel(id: string): Result<AlbumPageModel, string> {
 
 export const albumEntry = pageEntry({
   page: albumPageComponent,
+  /** Resolves the current route into cached album page data. */
   resolve() {
     const id = m.route.param("id");
     if (typeof id !== "string") {

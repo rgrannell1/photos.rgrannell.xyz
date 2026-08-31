@@ -23,6 +23,7 @@ export type AlbumCardAttrs = {
   containerAttrs?: m.Attributes;
 };
 
+/** Render an album metadata block with dates, count, and country links. */
 function drawAlbumMetadata(album: Album, countries: Country[]): m.Children {
   const metadataAttrs = {
     title: album.name,
@@ -36,6 +37,7 @@ function drawAlbumMetadata(album: Album, countries: Country[]): m.Children {
   return m(PhotoAlbumMetadata, metadataAttrs);
 }
 
+/** Render a linked album cover with its thumbnail placeholder. */
 function drawAlbum(attrs: AlbumCardAttrs): m.Children {
   const { album, trip, loading, child } = attrs;
   const albumAttrs: PhotoAlbumAttrs = {
@@ -52,6 +54,7 @@ function drawAlbum(attrs: AlbumCardAttrs): m.Children {
   return m(PhotoAlbum, albumAttrs);
 }
 
+/** Render one album cover and its metadata inside optional container attributes. */
 function viewAlbumCard(vnode: m.Vnode<AlbumCardAttrs>): m.Children {
   const { album, countries, containerAttrs } = vnode.attrs;
   const albumImage = drawAlbum(vnode.attrs);
@@ -60,6 +63,7 @@ function viewAlbumCard(vnode: m.Vnode<AlbumCardAttrs>): m.Children {
   return m("div", containerAttrs ?? {}, [albumImage, albumMetadata]);
 }
 
+/** Create the component for one album card. */
 export function AlbumCard() {
   return { view: viewAlbumCard };
 }

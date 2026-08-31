@@ -21,6 +21,7 @@ import {
   readRankMetadata,
 } from "../data/metadata.ts";
 
+/** Add each metadata item to the thing metadata rows. */
 export function addMetadataItems(
   metadata: Record<string, m.Children>,
   attrs: ThingPageAttrs,
@@ -31,7 +32,7 @@ export function addMetadataItems(
   }
 }
 
-/* Metadata rows for a single thing, not a wildcard listing. */
+/** Metadata rows for a single thing, not a wildcard listing. */
 export function addSingleThingMetadata(
   metadata: Record<string, m.Children>,
   attrs: ThingPageAttrs,
@@ -43,6 +44,7 @@ export function addSingleThingMetadata(
   addMetadataItems(metadata, attrs, items);
 }
 
+/** Draw an album card for a thing reference. */
 export function drawThingAlbumCard(entry: AlbumEntry): m.Children {
   const attrs: AlbumCardAttrs = {
     album: entry.album,
@@ -55,6 +57,7 @@ export function drawThingAlbumCard(entry: AlbumEntry): m.Children {
   return card;
 }
 
+/** Wrap media content in a titled section. */
 export function drawMediaSection(
   title: string,
   className: string,
@@ -65,6 +68,7 @@ export function drawMediaSection(
   return m("div", [heading, content]);
 }
 
+/** Draw referenced albums when the thing has album entries. */
 export function viewAlbumSection(
   entriesFor: CachedReader<AlbumEntry[]>,
   vnode: m.Vnode<ThingPageAttrs>,
@@ -83,12 +87,14 @@ export function viewAlbumSection(
   return section;
 }
 
+/** Create an album section with a reader cached by thing URN. */
 export function AlbumSection() {
   const entriesFor = cachedByUrn(readAlbumEntries);
 
   return { view: viewAlbumSection.bind(null, entriesFor) };
 }
 
+/** Draw an interactive video without eager media loading. */
 export function drawThingVideo(video: VideoType): m.Children {
   return m(Video, {
     key: `video-${video.id}`,
@@ -98,6 +104,7 @@ export function drawThingVideo(video: VideoType): m.Children {
   });
 }
 
+/** Draw the video section when the thing has videos. */
 export function viewVideoSection(
   videosFor: CachedReader<VideoType[]>,
   vnode: m.Vnode<ThingPageAttrs>,
@@ -112,12 +119,14 @@ export function viewVideoSection(
   return drawMediaSection("Videos", "section.photo-container", children);
 }
 
+/** Create a video section with a reader cached by thing URN. */
 export function VideoSection() {
   const videosFor = cachedByUrn(readThingVideos);
 
   return { view: viewVideoSection.bind(null, videosFor) };
 }
 
+/** Limit photos while preserving their current order. */
 export function slicePhotos(photos: PhotoType[], limit: number): PhotoType[] {
   return photos.slice(0, limit);
 }

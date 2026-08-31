@@ -18,6 +18,7 @@ import {
 import { fromNullable, isNone, some } from "../../../commons/collections/maybe.ts";
 import type { LeafletLib, MapState, ReadyMarkerState } from "../map.ts";
 
+/** Add a mode-styled curved trip line to the line layer. */
 export function addTripPolyline(
   leaflet: LeafletLib,
   linesLayer: LayerGroup,
@@ -29,6 +30,7 @@ export function addTripPolyline(
   leaflet.polyline(curved, options).addTo(linesLayer);
 }
 
+/** Read the marker dependencies only when every dependency is ready. */
 export function readReadyMarkerState(
   mapState: MapState,
 ): ReadyMarkerState | null {
@@ -42,6 +44,7 @@ export function readReadyMarkerState(
   return { leafletLib, leafletMap, markersLayer, markerBounds };
 }
 
+/** Fit valid marker bounds without zooming past the configured limit. */
 export function fitMarkerBounds(ready: ReadyMarkerState): void {
   if (!ready.markerBounds.isValid()) {
     return;
@@ -55,6 +58,7 @@ export function fitMarkerBounds(ready: ReadyMarkerState): void {
   ready.leafletMap.fitBounds(ready.markerBounds, options);
 }
 
+/** Schedule the next marker batch, or fit bounds after the final batch. */
 export function finishMarkerBatch(
   mapState: MapState,
   ready: ReadyMarkerState,
@@ -66,6 +70,7 @@ export function finishMarkerBatch(
   fitMarkerBounds(ready);
 }
 
+/** Add markers from the current batch index up to an exclusive end index. */
 export function addMarkersThrough(
   mapState: MapState,
   ready: ReadyMarkerState,
@@ -82,6 +87,7 @@ export function addMarkersThrough(
   }
 }
 
+/** Add one marker batch when the map dependencies are ready. */
 export function addMarkerBatch(mapState: MapState): void {
   const ready = readReadyMarkerState(mapState);
   if (ready === null) return;
@@ -94,6 +100,7 @@ export function addMarkerBatch(mapState: MapState): void {
   finishMarkerBatch(mapState, ready);
 }
 
+/** Reset marker progress for a new place list and bounds object. */
 export function resetMarkerBatch(
   mapState: MapState,
   places: GeocodedPlaceWithCover[],
@@ -104,6 +111,7 @@ export function resetMarkerBatch(
   mapState.markerBounds = some(markerBounds);
 }
 
+/** Clear existing markers and start batched rendering for new places. */
 export function startPlaceMarkers(
   mapState: MapState,
   places: GeocodedPlaceWithCover[],
@@ -116,6 +124,7 @@ export function startPlaceMarkers(
   addMarkerBatch(mapState);
 }
 
+/** Create and retain the marker layer after the Leaflet map exists. */
 export function createMapLayers(mapState: MapState, leaflet: LeafletLib): void {
   if (isNone(mapState.leafletMap)) {
     return;
@@ -125,6 +134,7 @@ export function createMapLayers(mapState: MapState, leaflet: LeafletLib): void {
   mapState.markersLayer = some(markersLayer);
 }
 
+/** Store the map container found under the supplied root. */
 export function setMapContainer(mapState: MapState, root: HTMLElement): void {
   const container = root.querySelector(LEAFLET_MAP_SELECTOR) as
     | HTMLElement

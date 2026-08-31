@@ -15,6 +15,7 @@ type CategoryDef = {
   cover: Photo;
 };
 
+/** Renders a category label with stable listing identifiers. */
 function drawCategoryLabel(category: CategoryDef): m.Children {
   const attrs = {
     "data-testid": "listing-card-label",
@@ -24,6 +25,7 @@ function drawCategoryLabel(category: CategoryDef): m.Children {
   return label;
 }
 
+/** Builds the image, placeholder, and loading attributes for a category cover. */
 function readCategoryImageAttrs(
   category: CategoryDef,
   idx: number,
@@ -42,6 +44,7 @@ function readCategoryImageAttrs(
   };
 }
 
+/** Builds the identity and navigation attributes for a category card. */
 function readCategoryCardAttrs(
   category: CategoryDef,
 ):
@@ -59,7 +62,7 @@ function readCategoryCardAttrs(
   };
 }
 
-/*
+/**
  * Returns an empty array when the category has no cover photo.
  */
 function drawCategoryAlbum(
@@ -77,6 +80,7 @@ type ListingsPageAttrs = {
   categories: CategoryDef[];
 };
 
+/** Renders the heading and description for the listings page. */
 function drawListingsMetadata(): m.Children {
   const heading = m(
     "h1.albums-header",
@@ -87,6 +91,7 @@ function drawListingsMetadata(): m.Children {
   return m("section.album-metadata", [heading, description]);
 }
 
+/** Renders category albums in the listings grid. */
 function drawListingsGrid(albums: m.Children[]): m.Children {
   return m(
     "section.album-container",
@@ -95,18 +100,22 @@ function drawListingsGrid(albums: m.Children[]): m.Children {
   );
 }
 
+/** Orders the metadata and category grid within the page. */
 function drawListingsPageContent(albums: m.Children[]): m.Children[] {
   return [drawListingsMetadata(), drawListingsGrid(albums)];
 }
 
+/** Adds the sidebar class when the sidebar is visible. */
 function readListingsPageClass(visible: boolean): string {
   return visible ? "page sidebar-visible" : "page";
 }
 
+/** Renders the listings page with its resolved class and albums. */
 function drawListingsPage(className: string, albums: m.Children[]): m.Children {
   return m("main", { class: className }, drawListingsPageContent(albums));
 }
 
+/** Resolves category cards and visibility for the listings page. */
 function viewListingsPage(vnode: m.Vnode<ListingsPageAttrs>): m.Children {
   const { categories } = vnode.attrs;
   const $albums = categories.flatMap(drawCategoryAlbum);
@@ -115,6 +124,7 @@ function viewListingsPage(vnode: m.Vnode<ListingsPageAttrs>): m.Children {
   return drawListingsPage(className, $albums);
 }
 
+/** Creates the listings page component. */
 export function ListingsPage() {
   return { view: viewListingsPage };
 }

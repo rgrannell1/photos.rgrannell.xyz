@@ -15,6 +15,7 @@ import {
   northPerpendicular,
 } from "./bezier.ts";
 
+/** Multiplies both coordinate axes by a scale. */
 export function scaleCoordinate(
   coordinate: Coordinate,
   scale: number,
@@ -23,6 +24,7 @@ export function scaleCoordinate(
   return [scale * latitude, scale * longitude];
 }
 
+/** Calculates a northward arc offset proportional to leg length. */
 export function arcOffset(start: Coordinate, end: Coordinate): Coordinate {
   const [latitudeDelta, longitudeDelta] = coordinateDelta(start, end);
   const legLength = coordinateLength([latitudeDelta, longitudeDelta]);
@@ -35,6 +37,7 @@ export function arcOffset(start: Coordinate, end: Coordinate): Coordinate {
 }
 
 /* Place the Bezier control point north of a trip leg. */
+/** Places a Bezier control point north of a trip leg. */
 export function arcControlPoint(
   start: Coordinate,
   end: Coordinate,
@@ -44,6 +47,7 @@ export function arcControlPoint(
   return [middleLatitude + offsetLatitude, middleLongitude + offsetLongitude];
 }
 
+/** Reads one interior curve point by segment index. */
 export function readInteriorPoint(
   options: CurveInteriorOptions,
   segmentIdx: number,
@@ -53,6 +57,7 @@ export function readInteriorPoint(
   return bezierPoint(start, control, end, progress);
 }
 
+/** Calculates all interior points for a segmented curve. */
 export function curveInteriorPoints(
   options: CurveInteriorOptions,
 ): Coordinate[] {
@@ -64,6 +69,7 @@ export function curveInteriorPoints(
   return coordinates;
 }
 
+/** Curves one trip leg while retaining both endpoints. */
 export function curveTripLeg(
   start: Coordinate,
   end: Coordinate,
@@ -75,6 +81,7 @@ export function curveTripLeg(
   return [start, ...coordinates, end];
 }
 
+/** Reads and curves the selected leg from trip coordinates. */
 export function readTripLeg(options: TripLegOptions): Coordinate[] {
   const { coordinates, legIdx, segmentsPerLeg } = options;
   const start = coordinates[legIdx];
@@ -82,12 +89,14 @@ export function readTripLeg(options: TripLegOptions): Coordinate[] {
   return curveTripLeg(start, end, segmentsPerLeg);
 }
 
+/** Appends one curved leg without duplicating a shared endpoint. */
 export function appendTripLeg(options: TripLegOptions): void {
   const leg = readTripLeg(options);
   const coordinates = options.legIdx === 0 ? leg : leg.slice(1);
   options.curvedCoordinates.push(...coordinates);
 }
 
+/** Appends all curved legs and advances the mutable leg index. */
 export function appendTripLegs(options: TripLegOptions): void {
   const legCount = options.coordinates.length - 1;
   for (let legIdx = 0; legIdx < legCount; legIdx++) {

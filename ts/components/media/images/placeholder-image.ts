@@ -8,6 +8,7 @@ export type PlaceholderImageAttrs = {
   height?: number;
 };
 
+/** Render an inert thumbnail placeholder with optional intrinsic dimensions. */
 function viewPlaceholderImage(
   vnode: m.Vnode<PlaceholderImageAttrs>,
 ): m.Children {
@@ -21,6 +22,7 @@ function viewPlaceholderImage(
   return m("img.u-photo.thumbnail-image.thumbnail-placeholder", imageAttrs);
 }
 
+/** Create the thumbnail placeholder component. */
 export function PlaceholderImage() {
   return { view: viewPlaceholderImage };
 }

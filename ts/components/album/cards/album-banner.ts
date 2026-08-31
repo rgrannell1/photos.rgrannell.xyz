@@ -24,6 +24,7 @@ type BannerState = {
   teardownParallax: Maybe<() => void>;
 };
 
+/** Applies the bounded vertical offset for the current scroll position. */
 function applyParallax(image: HTMLImageElement): void {
   const offsetY = Math.min(
     window.scrollY * PARALLAX_RATE,
@@ -33,6 +34,7 @@ function applyParallax(image: HTMLImageElement): void {
   image.style.transform = transform;
 }
 
+/** Applies one animation frame and releases the pending-frame guard. */
 function stepParallax(
   bannerState: BannerState,
   image: HTMLImageElement,
@@ -41,6 +43,7 @@ function stepParallax(
   bannerState.rafId = NONE;
 }
 
+/** Schedules one parallax update unless a frame is already pending. */
 function trackBannerScroll(
   bannerState: BannerState,
   image: HTMLImageElement,
@@ -53,6 +56,7 @@ function trackBannerScroll(
   bannerState.rafId = rafId;
 }
 
+/** Removes scroll tracking and cancels any pending animation frame. */
 function stopParallax(
   bannerState: BannerState,
   onScroll: () => void,
@@ -65,6 +69,7 @@ function stopParallax(
   }
 }
 
+/** Enables native scroll-driven parallax when the browser supports it. */
 function enableCssParallax(section: HTMLElement): boolean {
   const isSupported = supportsCSSScrollDrivenAnimations();
   if (!isSupported) {
@@ -76,6 +81,7 @@ function enableCssParallax(section: HTMLElement): boolean {
   return true;
 }
 
+/** Enables the JavaScript parallax fallback when the banner image exists. */
 function enableJsParallax(
   bannerState: BannerState,
   section: HTMLElement,
@@ -97,6 +103,7 @@ function enableJsParallax(
   bannerState.teardownParallax = teardown;
 }
 
+/** Selects and starts the supported parallax implementation after mount. */
 function mountAlbumBanner(
   bannerState: BannerState,
   vnode: m.Vnode<AlbumBannerAttrs>,
@@ -109,6 +116,7 @@ function mountAlbumBanner(
   enableJsParallax(bannerState, section);
 }
 
+/** Stops active parallax work when the banner leaves the document. */
 function unmountAlbumBanner(bannerState: BannerState): void {
   if (isSome(bannerState.teardownParallax)) {
     bannerState.teardownParallax();
@@ -116,6 +124,7 @@ function unmountAlbumBanner(bannerState: BannerState): void {
   bannerState.teardownParallax = NONE;
 }
 
+/** Builds the banner image pair with an optional mosaic placeholder. */
 function drawBannerImage(attrs: AlbumBannerAttrs): m.Children {
   const thumbnailDataUrl = attrs.thumbnailDataUrl ?? NONE;
   const imageAttrs: BannerImagePairAttrs = {
@@ -126,6 +135,7 @@ function drawBannerImage(attrs: AlbumBannerAttrs): m.Children {
   return m(BannerImagePair, imageAttrs);
 }
 
+/** Renders the accessible album banner structure. */
 function viewAlbumBanner(vnode: m.Vnode<AlbumBannerAttrs>): m.Children {
   const image = drawBannerImage(vnode.attrs);
   const inner = m("div.album-banner-inner", image);
@@ -133,10 +143,12 @@ function viewAlbumBanner(vnode: m.Vnode<AlbumBannerAttrs>): m.Children {
   return m("section.album-banner", sectionAttrs, inner);
 }
 
+/** Creates empty scheduling and teardown state for one banner. */
 function createBannerState(): BannerState {
   return { rafId: NONE, teardownParallax: NONE };
 }
 
+/** Creates an album banner component with isolated parallax state. */
 export function AlbumBanner(): m.Component<AlbumBannerAttrs> {
   const bannerState = createBannerState();
   const oncreate = mountAlbumBanner.bind(null, bannerState);

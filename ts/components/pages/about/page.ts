@@ -10,6 +10,7 @@ import {
 import type { AboutPageAttrs } from "./about.ts";
 import { drawAboutContent } from "./content.ts";
 
+/** Draws the about banner with its mosaic placeholder. */
 export function drawAboutBanner(): m.Children {
   const thumbnailDataUrl = thumbHashDataUrl(ABOUT_BANNER_MOSAIC);
   return m(AlbumBanner, {
@@ -19,6 +20,7 @@ export function drawAboutBanner(): m.Children {
   });
 }
 
+/** Draws the about page with sidebar-aware layout. */
 export function viewAboutPage(vnode: m.Vnode<AboutPageAttrs>): m.Children {
   const className = vnode.attrs.visible ? "page sidebar-visible" : "page";
   const banner = drawAboutBanner();

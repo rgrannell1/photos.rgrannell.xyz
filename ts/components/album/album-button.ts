@@ -9,6 +9,7 @@ type AlbumButtonAttrs = {
   hidden: boolean;
 };
 
+/** Draw a browser-compatible link to an album. */
 function drawAlbumButton(id: string): m.Children {
   const href = albumRoute(id);
   const onclick = onAlbumClick.bind(null, id);
@@ -17,6 +18,7 @@ function drawAlbumButton(id: string): m.Children {
   return link;
 }
 
+/** Draw the album link unless the caller hides it. */
 function viewAlbumButton(vnode: m.Vnode<AlbumButtonAttrs>): m.Children {
   const { id, hidden } = vnode.attrs;
 
@@ -27,6 +29,7 @@ function viewAlbumButton(vnode: m.Vnode<AlbumButtonAttrs>): m.Children {
   return drawAlbumButton(id);
 }
 
+/** Create the optional album link component. */
 export function AlbumButton() {
   return { view: viewAlbumButton };
 }

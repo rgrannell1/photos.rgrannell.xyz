@@ -11,6 +11,7 @@ import { isNone, type Maybe } from "../../../commons/collections/maybe.ts";
 
 export type ReadThing = (urn: string) => Maybe<TripleObject>;
 
+/** Draws one known thing as a link. */
 function drawThingLink(
   urn: string,
   thing: TripleObject,
@@ -20,6 +21,7 @@ function drawThingLink(
   return [m(ThingLink, attrs)];
 }
 
+/** Converts an available named thing into a link. */
 function toThingLink(
   readThing: ReadThing,
   readEmoji: ReadThingEmoji,
@@ -37,6 +39,7 @@ function toThingLink(
   return drawThingLink(urn, thing, readEmoji);
 }
 
+/** Converts URNs to links and omits missing or unnamed things. */
 export function toThingLinks(
   readThing: ReadThing,
   readEmoji: ReadThingEmoji,

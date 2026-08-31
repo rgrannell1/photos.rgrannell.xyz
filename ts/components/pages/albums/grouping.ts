@@ -21,7 +21,7 @@ import {
 } from "../../../commons/collections/maybe.ts";
 import type { AlbumsListAttrs, AlbumsPageState, YearGroup } from "./albums.ts";
 
-/*
+/**
  * Split a date-sorted album list into consecutive year runs.
  */
 export function groupAlbumsByYear(
@@ -51,6 +51,7 @@ export function groupAlbumsByYear(
   return groups;
 }
 
+/** Schedules the next album batch against the filtered album count. */
 export function scheduleListBatch(
   batch: BatchRenderer,
   vnode: m.VnodeDOM<AlbumsListAttrs>,
@@ -58,6 +59,7 @@ export function scheduleListBatch(
   batch.schedule(vnode.attrs.albums.length);
 }
 
+/** Restarts batch rendering after either album filter changes. */
 export function resetListBatchOnFilterChange(
   batch: BatchRenderer,
   vnode: m.Vnode<AlbumsListAttrs>,
@@ -71,6 +73,7 @@ export function resetListBatchOnFilterChange(
   }
 }
 
+/** Reads the visible year groups and omits recaps from filtered views. */
 export function readVisibleAlbumGroups(
   batch: BatchRenderer,
   attrs: AlbumsListAttrs,
@@ -84,6 +87,7 @@ export function readVisibleAlbumGroups(
   );
 }
 
+/** Renders visible album groups while preserving their global positions. */
 export function viewAlbumsList(
   batch: BatchRenderer,
   vnode: m.Vnode<AlbumsListAttrs>,
@@ -104,6 +108,7 @@ export function viewAlbumsList(
   return m("section.album-container", albumComponents);
 }
 
+/** Creates an album list with progressive batch rendering. */
 export function AlbumsList() {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
 
@@ -115,16 +120,19 @@ export function AlbumsList() {
   };
 }
 
+/** Sets the browser title for the albums page. */
 export function initAlbumsPage(): void {
   setTitle("Albums - photos");
 }
 
+/** Starts year-based scrolling and stores its teardown callback. */
 export function mountAlbumsPage(pageState: AlbumsPageState): void {
   pageState.teardownYearScroll = mountYearScroll(
     fromNullable(m.route.param("year")),
   );
 }
 
+/** Stops year-based scrolling when it is active. */
 export function unmountAlbumsPage(pageState: AlbumsPageState): void {
   if (isSome(pageState.teardownYearScroll)) {
     pageState.teardownYearScroll();
@@ -132,6 +140,7 @@ export function unmountAlbumsPage(pageState: AlbumsPageState): void {
   pageState.teardownYearScroll = NONE;
 }
 
+/** Navigates to the albums route for the selected country. */
 export function selectCountry(slug: Maybe<string>): void {
   const route = isSome(slug) ? `/albums/${slug}` : "/albums";
   broadcast("navigate", { route });

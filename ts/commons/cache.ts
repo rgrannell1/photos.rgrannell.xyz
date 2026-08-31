@@ -5,6 +5,7 @@ import { isSome, type Maybe } from "./collections/maybe.ts";
 
 export type Reader<Key, Value> = (key: Key) => Value;
 
+/** Reads a cached value or stores the reader result for its key. */
 export function readThrough<Key, Value>(
   cache: Map<Key, Value>,
   reader: Reader<Key, Value>,
@@ -19,6 +20,7 @@ export function readThrough<Key, Value>(
   return value;
 }
 
+/** Reads up to the limit and omits missing values from the result. */
 export function readPrefix<Key, Value>(
   keys: Key[],
   limit: number,

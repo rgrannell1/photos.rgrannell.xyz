@@ -11,12 +11,14 @@ export type ThingSubtitleAttrs = {
   isBinomial: boolean;
 };
 
+/** Renders a binomial label with a taxon-specific class. */
 function drawBinomial(type: string, id: string): m.Children {
   const attrs = { class: `thing-binomial ${type}-binomial` };
   const label = binomial(id);
   return m("span", attrs, label);
 }
 
+/** Renders an allowed binomial, or an empty subtitle for hidden and wildcard IDs. */
 function drawOptionalBinomial(
   attrs: ThingSubtitleAttrs,
   type: string,
@@ -30,6 +32,7 @@ function drawOptionalBinomial(
   return emptySubtitle;
 }
 
+/** Renders mandatory taxon binomials and optional subtitles for other things. */
 function viewThingSubtitle(vnode: m.Vnode<ThingSubtitleAttrs>): m.Children {
   const parsed = asUrn(vnode.attrs.urn);
   const isTaxon = TAXON_TYPES.has(parsed.type);

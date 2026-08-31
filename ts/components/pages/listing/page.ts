@@ -7,6 +7,7 @@ import type { ListingPageAttrs } from "./listing.ts";
 import { AlbumsList } from "./cards.ts";
 import { drawListingMetadata, isIrishThing } from "./details.ts";
 
+/** Render a listing page and apply its supported life-list filter. */
 export function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
   const { attrs } = vnode;
   const showsIrishBirds = attrs.type === KnownTypes.BIRD &&

@@ -34,7 +34,7 @@ import type {
   DrawThingAlbumOptions,
 } from "./listing.ts";
 
-/*
+/**
  * Inline badge for the listing card title. Irish birds get the Ireland flag.
  */
 export function listingTitleExtra(
@@ -50,6 +50,7 @@ export function listingTitleExtra(
   return undefined;
 }
 
+/** Render a covered subject as a linked photo album card. */
 export function drawCoveredThing(
   options: DrawThingAlbumOptions,
   item: CoveredThing,
@@ -72,6 +73,7 @@ export function drawCoveredThing(
   });
 }
 
+/** Render a subject card when the subject and its cover photo exist. */
 export function drawThingAlbum(
   options: DrawThingAlbumOptions,
   thing: TripleObject,
@@ -94,6 +96,7 @@ export function drawThingAlbum(
   return [drawCoveredThing(options, { thing, id, cover: coverPhoto }, idx)];
 }
 
+/** Reset progressive card rendering when the listing type changes. */
 export function resetListingBatchOnTypeChange(
   batch: BatchRenderer,
   vnode: m.Vnode<AlbumsListAttrs>,
@@ -104,6 +107,7 @@ export function resetListingBatchOnTypeChange(
   }
 }
 
+/** Schedule enough render batches for the current subject count. */
 export function scheduleListingBatch(
   batch: BatchRenderer,
   vnode: m.VnodeDOM<AlbumsListAttrs>,
@@ -111,6 +115,7 @@ export function scheduleListingBatch(
   batch.schedule(vnode.attrs.things.length);
 }
 
+/** Render the currently available batch of subject cards. */
 export function viewAlbumsList(
   batch: BatchRenderer,
   coverCache: Map<string, Maybe<Photo>>,
@@ -126,7 +131,7 @@ export function viewAlbumsList(
   );
 }
 
-/*
+/**
  * Render the albums in batches, so the browser can paint between each one.
  */
 export function AlbumsList() {
@@ -141,6 +146,7 @@ export function AlbumsList() {
   };
 }
 
+/** Render bird totals and the Ireland filter control. */
 export function viewBirdListingDetails(
   vnode: m.Vnode<BirdListingDetailsAttrs>,
 ): m.Children {
@@ -160,13 +166,14 @@ export function viewBirdListingDetails(
   );
 }
 
-/*
+/**
  * Bird species counts. Clicking the Ireland flag filters to Irish species.
  */
 export function BirdListingDetails() {
   return { view: viewBirdListingDetails };
 }
 
+/** Render Irish and worldwide mammal species totals. */
 export function viewMammalListingDetails(
   vnode: m.Vnode<{ stats: SubjectStats }>,
 ): m.Children {

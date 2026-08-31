@@ -3,6 +3,7 @@ import m from "mithril";
 import { capitalise } from "../../../commons/strings.ts";
 import { block, broadcast } from "../../../services/browser/events.ts";
 
+/** Routes a listing link through the application navigation event. */
 function onListingClick(type: string, event: Event) {
   broadcast("navigate", {
     route: `/listing/${type}`,
@@ -12,6 +13,7 @@ function onListingClick(type: string, event: Event) {
 
 type ListingLinkAttrs = { urn: string } | { type: string };
 
+/** Reads the listing type directly or derives it from a URN. */
 function readListingType(attrs: ListingLinkAttrs): string {
   if ("type" in attrs) {
     return attrs.type;
@@ -19,6 +21,7 @@ function readListingType(attrs: ListingLinkAttrs): string {
   return asUrn(attrs.urn).type;
 }
 
+/** Draws an application link to a typed listing. */
 function drawListingLink(type: string): m.Children {
   const attrs = {
     href: `#/listing/${type}`,
@@ -28,11 +31,13 @@ function drawListingLink(type: string): m.Children {
   return m("a", attrs, label);
 }
 
+/** Renders the listing link for the supplied type or URN. */
 function viewListingLink(vnode: m.Vnode<ListingLinkAttrs>): m.Children {
   const type = readListingType(vnode.attrs);
   return drawListingLink(type);
 }
 
+/** Defines a link to a type listing. */
 export function ListingLink() {
   return { view: viewListingLink };
 }

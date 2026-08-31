@@ -50,7 +50,7 @@ export type SubjectQuery = {
 
 export type SubjectTriples = ReturnType<typeof readSubjectTriples>;
 
-/* Wild = ?context=wild. Irish = irish marker. */
+/** Wild = ?context=wild. Irish = irish marker. */
 export function readBirdStats(tdb: TribbleDB): SubjectStats {
   const wildBirdIds = readSubjectIds(tdb, WILD_BIRD_QUERY);
   const allBirdIds = readSubjectIds(tdb, ALL_BIRD_QUERY);
@@ -67,7 +67,7 @@ export const IRELAND_QUERY = {
   target: IRELAND_NAME,
 } as const;
 
-/* Wild = ?context=wild. Irish = location relation to Ireland (transitive). */
+/** Wild = ?context=wild. Irish = location relation to Ireland (transitive). */
 export function readMammalStats(tdb: TribbleDB): SubjectStats {
   const wildMammalTriples = readSubjectTriples(tdb, WILD_MAMMAL_QUERY);
   const wildMammalIds = collectSubjectIds(wildMammalTriples);
@@ -77,7 +77,7 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
   return makeMammalStats(wildMammalIds, allMammalIds, irishWildSpecies);
 }
 
-/* Must read before medialess-species pruning. */
+/** Must read before medialess-species pruning. */
 export function countRegularBirdSpecies(tdb: TribbleDB): number {
   return tdb.search({
     relation: KnownRelations.STATUS,
@@ -85,7 +85,7 @@ export function countRegularBirdSpecies(tdb: TribbleDB): number {
   }).triples().length;
 }
 
-/* Must read before medialess-species pruning. */
+/** Must read before medialess-species pruning. */
 export function collectUnphotographedNemesis(
   tdb: TribbleDB,
   speciesType: string,
@@ -106,15 +106,17 @@ export type ChecklistFlags = Pick<
   "isIrish" | "isWild" | "scarce" | "nemesis" | "target"
 >;
 
+/** Read photographed wild birds as life-list entries. */
 export function readWildBirdChecklist(tdb: TribbleDB): ChecklistEntry[] {
   return readWildlifeChecklist(tdb, KnownTypes.BIRD);
 }
 
+/** Read photographed wild mammals as life-list entries. */
 export function readWildMammalChecklist(tdb: TribbleDB): ChecklistEntry[] {
   return readWildlifeChecklist(tdb, KnownTypes.MAMMAL);
 }
 
-/* Must read before medialess-species pruning. */
+/** Must read before medialess-species pruning. */
 export function countIrishMammalSpecies(tdb: TribbleDB): number {
   const query = {
     source: { type: KnownTypes.MAMMAL },

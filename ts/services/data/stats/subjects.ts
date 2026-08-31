@@ -11,10 +11,12 @@ import type { SubjectStats } from "../../../domain/media/stats.ts";
 import type { SubjectQuery, SubjectTriples } from "../stats.ts";
 import { IRELAND_QUERY } from "../stats.ts";
 
+/** Read all triples that match a subject statistics query. */
 export function readSubjectTriples(tdb: TribbleDB, query: SubjectQuery) {
   return tdb.search(query).triples();
 }
 
+/** Collect unique target identifiers from subject triples. */
 export function collectSubjectIds(subjects: SubjectTriples): Set<string> {
   const subjectIds = new Set<string>();
   for (const [, , targetUrn] of subjects) {
@@ -24,6 +26,7 @@ export function collectSubjectIds(subjects: SubjectTriples): Set<string> {
   return subjectIds;
 }
 
+/** Read the unique subject identifiers selected by a query. */
 export function readSubjectIds(
   tdb: TribbleDB,
   query: SubjectQuery,
@@ -32,10 +35,12 @@ export function readSubjectIds(
   return collectSubjectIds(subjects);
 }
 
+/** Read bird nodes whose identifiers occur in the supplied set. */
 export function readBirdNodes(tdb: TribbleDB, birdIds: Set<string>) {
   return tdb.nodes({ type: KnownTypes.BIRD, id: [...birdIds] });
 }
 
+/** Count photographed wild bird species that have an Irish classification. */
 export function countIrishWildSpecies(
   tdb: TribbleDB,
   wildBirdIds: Set<string>,
@@ -46,6 +51,7 @@ export function countIrishWildSpecies(
   return irishWildBirdIds.size;
 }
 
+/** Build bird species statistics from wild, total, and Irish counts. */
 export function makeBirdStats(
   wildBirdIds: Set<string>,
   allBirdIds: Set<string>,
@@ -58,11 +64,13 @@ export function makeBirdStats(
   };
 }
 
+/** Find Ireland's URN when the catalogue defines it. */
 export function findIrelandUrn(tdb: TribbleDB): Maybe<string> {
   const urn = tdb.search(IRELAND_QUERY).firstSource();
   return fromNullable(urn);
 }
 
+/** Read photo sources whose location matches the supplied URN. */
 export function readLocationSources(
   tdb: TribbleDB,
   locationUrn: string,
@@ -75,10 +83,12 @@ export function readLocationSources(
   return sourceUrns;
 }
 
+/** Extract the identifier from a subject URN. */
 export function readSubjectId(subjectUrn: string): string {
   return asUrn(subjectUrn).id;
 }
 
+/** Add a mammal subject to the set grouped under its photo URN. */
 export function addMammalPhoto(
   grouped: Map<string, Set<string>>,
   photoUrn: string,

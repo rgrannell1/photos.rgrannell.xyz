@@ -27,10 +27,12 @@ type MediaComponentAttrs = {
   readEmoji: ReadThingEmoji;
 };
 
+/** Renders one labelled metadata table row. */
 function drawRow(label: string, value: m.Children): m.Children {
   return m("tr", [m(Heading, { text: label }), value]);
 }
 
+/** Omits the description row when both description fields are absent. */
 function drawDescriptionRow(media: Media): m.Children {
   if (!media.description && !media.summary) {
     return null;
@@ -43,6 +45,7 @@ function drawDescriptionRow(media: Media): m.Children {
   return drawRow("Description", description);
 }
 
+/** Renders geographic or feature locations with the matching label. */
 function drawLocationRow(
   attrs: MediaComponentAttrs,
   mode: MediaLocationMode,
@@ -60,6 +63,7 @@ function drawLocationRow(
   return drawRow(label, locations);
 }
 
+/** Renders optional thing links for one labelled metadata field. */
 function drawThingRow(
   attrs: MediaComponentAttrs,
   label: string,
@@ -74,6 +78,7 @@ function drawThingRow(
   return drawRow(label, links);
 }
 
+/** Renders linked subjects for a media item. */
 function drawSubjectRow(attrs: MediaComponentAttrs): m.Children {
   const { media, readThing, readEmoji } = attrs;
   const subject = m(MediaSubject, {
@@ -84,6 +89,7 @@ function drawSubjectRow(attrs: MediaComponentAttrs): m.Children {
   return drawRow("Subject", subject);
 }
 
+/** Renders the shared photo and video metadata table. */
 function viewMediaInfo(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   const { attrs } = vnode;
   const descriptionRows = [
@@ -101,6 +107,7 @@ function viewMediaInfo(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   return m("table.metadata-table", rows);
 }
 
+/** Creates the shared media metadata component. */
 export function MediaInfo() {
   return { view: viewMediaInfo };
 }

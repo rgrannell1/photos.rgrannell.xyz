@@ -21,6 +21,7 @@ export type LocationTree = {
   branchIds: Set<string>;
 };
 
+/** Builds location ancestry from direct location relations. */
 export function buildLocationTrees(tdb: TribbleDB): LocationTree {
   const tree = createLocationTree();
   const results = tdb.search({ relation: KnownRelations.IN }).triples();
@@ -32,17 +33,20 @@ export function buildLocationTrees(tdb: TribbleDB): LocationTree {
   return tree;
 }
 
+/** Adds implied ancestor location triples to the database. */
 export function addNestedLocations(tdb: TribbleDB): void {
   const tree = buildLocationTrees(tdb);
   const triples = collectNestedLocationTriples(tree);
   tdb.add(triples);
 }
 
+/** Adds feature-derived locations for photos and videos. */
 export function addFeatureMediaLocations(tdb: TribbleDB): void {
   addFeatureLocationsForType(tdb, KnownTypes.PHOTO);
   addFeatureLocationsForType(tdb, KnownTypes.VIDEO);
 }
 
+/** Adds transitive locations for photos and videos. */
 export function addTransitiveMediaLocations(tdb: TribbleDB): void {
   addTransitiveLocationsForType(tdb, KnownTypes.PHOTO);
   addTransitiveLocationsForType(tdb, KnownTypes.VIDEO);

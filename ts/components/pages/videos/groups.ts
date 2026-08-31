@@ -15,6 +15,7 @@ import { BEFORE_TIMES_FINAL_YEAR } from "../../../constants/display.ts";
 import { RENDER_BATCH_SIZE } from "../../../constants/layout.ts";
 import type { VideosPageAttrs } from "./videos.ts";
 
+/** Build keyed heading attributes and mark historical year groups. */
 export function readYearHeadingAttrs(group: VideoYearGroup) {
   const key = `year-${group.year}`;
   const className = group.year <= BEFORE_TIMES_FINAL_YEAR
@@ -23,16 +24,19 @@ export function readYearHeadingAttrs(group: VideoYearGroup) {
   return { key, class: className };
 }
 
+/** Draw the heading for a video year group. */
 export function drawYearHeading(group: VideoYearGroup): m.Children {
   const attrs = readYearHeadingAttrs(group);
   const year = group.year.toString();
   return m("h2.year-heading", attrs, year);
 }
 
+/** Draw every video item in a year group. */
 export function drawGroupVideos(group: VideoYearGroup): m.Children[] {
   return group.videos.map(drawVideoItem);
 }
 
+/** Append a year heading when the group requires one. */
 export function appendYearHeading(
   components: m.Children[],
   group: VideoYearGroup,
@@ -42,6 +46,7 @@ export function appendYearHeading(
   }
 }
 
+/** Draw a year group with its optional heading before its videos. */
 export function drawYearGroup(group: VideoYearGroup): m.Children[] {
   const $components: m.Children[] = [];
   const videos = drawGroupVideos(group);
@@ -51,6 +56,7 @@ export function drawYearGroup(group: VideoYearGroup): m.Children[] {
   return $components;
 }
 
+/** Schedule enough batched rows for the current video collection. */
 export function scheduleVideosBatch(
   batch: BatchRenderer,
   vnode: m.VnodeDOM<VideosPageAttrs>,
@@ -58,6 +64,7 @@ export function scheduleVideosBatch(
   batch.schedule(vnode.attrs.videos.length);
 }
 
+/** Group the currently revealed video slice by year. */
 export function readVisibleVideoGroups(
   batch: BatchRenderer,
   videos: DatedVideo[],
@@ -67,6 +74,7 @@ export function readVisibleVideoGroups(
   return groupVideosByYear(videos.slice(0, limit), currentYear);
 }
 
+/** Render the visible video batches as ordered year groups. */
 export function viewVideosList(
   batch: BatchRenderer,
   vnode: m.Vnode<VideosPageAttrs>,
@@ -77,12 +85,14 @@ export function viewVideosList(
   return m("section.video-container", $videoComponents);
 }
 
+/** Bind batch scheduling to list creation and updates. */
 export function bindVideosListHooks(batch: BatchRenderer) {
   const oncreate = scheduleVideosBatch.bind(null, batch);
   const onupdate = scheduleVideosBatch.bind(null, batch);
   return { oncreate, onupdate };
 }
 
+/** Create a video list with incremental batch rendering. */
 export function VideosList() {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
   const hooks = bindVideosListHooks(batch);

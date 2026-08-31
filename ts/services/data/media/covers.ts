@@ -9,6 +9,7 @@ import { parsePhoto } from "../parsers.ts";
 import { fromNullable, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
 import type { CoverReferences, CoverTarget } from "./photos.ts";
 
+/** Find the first photo source assigned as a cover for a target. */
 export function readCoverSource(
   tdb: TribbleDB,
   target: CoverTarget,
@@ -22,6 +23,7 @@ export function readCoverSource(
   return source;
 }
 
+/** Find the cover photo source for a listing type. */
 export function readListingCoverSource(
   tdb: TribbleDB,
   type: string,
@@ -30,6 +32,7 @@ export function readListingCoverSource(
   return readCoverSource(tdb, target);
 }
 
+/** Find the cover photo source for an entity type. */
 export function readEntityCoverSource(
   tdb: TribbleDB,
   type: string,
@@ -37,12 +40,14 @@ export function readEntityCoverSource(
   return readCoverSource(tdb, { type });
 }
 
+/** Read nodes that reference an entity as their cover target. */
 export function readCoverReferences(tdb: TribbleDB, type: string, id: string) {
   const thing = tdb.nodes({ type, id });
   const references = thing.referencedBy(KnownRelations.COVER);
   return references;
 }
 
+/** Select the first photo URN from cover references. */
 export function readFirstCoverUrn(
   references: CoverReferences,
 ): string | undefined {
@@ -51,6 +56,7 @@ export function readFirstCoverUrn(
   return photoUrn;
 }
 
+/** Parse a cover photo when its referenced thing exists. */
 export function parseCoverPhoto(
   tdb: TribbleDB,
   photoUrn: string,
@@ -60,6 +66,7 @@ export function parseCoverPhoto(
   return parsePhoto(tdb, photo);
 }
 
+/** Add every country attached to a photo into a shared set. */
 export function addPhotoCountries(
   countryUrns: Set<string>,
   photo: Photo,
@@ -68,12 +75,14 @@ export function addPhotoCountries(
   for (const countryUrn of photoCountries) countryUrns.add(countryUrn);
 }
 
+/** Collect unique country URNs across a photo collection. */
 export function collectCountryUrns(photos: Photo[]): Set<string> {
   const countryUrns = new Set<string>();
   for (const photo of photos) addPhotoCountries(countryUrns, photo);
   return countryUrns;
 }
 
+/** Compare countries by their display names. */
 export function compareCountryNames(
   countryA: Country,
   countryB: Country,

@@ -14,14 +14,17 @@ import {
 } from "./cards.ts";
 import { formatMammalPreamble } from "./copy.ts";
 
+/** Reports whether the life-list filter selects Irish sightings. */
 export function filterIsIrish(filter: string): boolean {
   return filter === LIFE_LIST_FILTERS.IRELAND;
 }
 
+/** Reports whether the life-list filter selects all sightings. */
 export function filterIsAll(filter: string): boolean {
   return filter === LIFE_LIST_FILTERS.ALL;
 }
 
+/** Draws one checklist card for each positioned entry. */
 export function drawChecklistCards(
   entries: PositionedEntry[],
   covers: Map<string, Photo>,
@@ -31,6 +34,7 @@ export function drawChecklistCards(
   return entries.map(drawCard);
 }
 
+/** Draws nemesis mystery cards only when the caller enables them. */
 export function drawMysteryCards(
   species: NemesisSpecies[],
   glyph: string,
@@ -44,19 +48,23 @@ export function drawMysteryCards(
   return cards;
 }
 
+/** Creates the checklist grid component. */
 export function ChecklistGrid() {
   return { view: viewChecklistGrid };
 }
 
+/** Reads the first-seen year from the earliest sorted entry. */
 export function readFirstEntryYear(entries: ChecklistEntry[]): number {
   const firstEntry = entries[0];
   return firstSeenYear(firstEntry.firstSeen);
 }
 
+/** Reports whether a checklist has no entries. */
 export function hasNoEntries(entries: ChecklistEntry[]): boolean {
   return entries.length === 0;
 }
 
+/** Formats the Irish wild-bird summary with its coverage period. */
 export function formatBirdPreamble(
   count: number,
   sinceYear: number,
@@ -66,7 +74,7 @@ export function formatBirdPreamble(
     `${sinceYear}; Ireland regularly records about ${regularCount}.`;
 }
 
-/*
+/**
  * Bird intro line. Null until there is an Irish wild sighting.
  */
 export function lifeListPreamble(
@@ -83,7 +91,7 @@ export function lifeListPreamble(
   return formatBirdPreamble(irishWild.length, sinceYear, regularCount);
 }
 
-/*
+/**
  * Mammal intro line. Null until there is an Irish wild sighting.
  */
 export function mammalPreamble(

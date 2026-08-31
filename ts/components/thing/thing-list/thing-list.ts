@@ -48,6 +48,7 @@ export type ThingListAttrs = {
   readEmoji: ReadThingEmoji;
 };
 
+/** Create the shared thing-list component. */
 export function ThingList() {
   return { view: viewThingList };
 }

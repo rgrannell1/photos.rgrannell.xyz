@@ -9,10 +9,12 @@ import { ExifData } from "../../media/metadata/exif-data.ts";
 import { MediaInfo } from "../../media/metadata/media-info.ts";
 import type { PhotoPageAttrs } from "./photo.ts";
 
+/** Draws one external photo resource link as a list item. */
 export function drawPhotoLink(href: string, label: string): m.Children {
   return m("li", m("a", { href, rel: "noreferrer" }, label));
 }
 
+/** Draws links to photo encodings and the share URL. */
 export function drawPhotoResourceLinks(
   photo: PhotoType,
   shareUrl: string,
@@ -23,6 +25,7 @@ export function drawPhotoResourceLinks(
   return [webpLink, jpegLink, shareLink];
 }
 
+/** Draws the album link unless the caller marks the album as hidden. */
 export function drawPhotoAlbumLink(
   photo: PhotoType,
   albumHidden: boolean,
@@ -32,14 +35,17 @@ export function drawPhotoAlbumLink(
   return m("li", button);
 }
 
+/** Builds the public share URL for a photo. */
 export function readPhotoShareUrl(photo: PhotoType): string {
   return sharePhotoUrl(`photo/${asUrn(photo.id).id}`);
 }
 
+/** Draws the photo action links in their list container. */
 export function drawPhotoLinkList(links: m.Children[]): m.Children {
   return m("ul.link-list", { "data-testid": "photo-links" }, links);
 }
 
+/** Draws all resource, share, and album links for a photo. */
 export function drawPhotoLinks(
   photo: PhotoType,
   albumHidden: boolean,
@@ -50,6 +56,7 @@ export function drawPhotoLinks(
   return drawPhotoLinkList(links);
 }
 
+/** Draws the photo's semantic media information. */
 export function drawPhotoInformation(attrs: PhotoPageAttrs): m.Children {
   return m(MediaInfo, {
     media: attrs.photo,
@@ -58,6 +65,7 @@ export function drawPhotoInformation(attrs: PhotoPageAttrs): m.Children {
   });
 }
 
+/** Draws the photo's EXIF information. */
 export function drawExifInformation(attrs: PhotoPageAttrs): m.Children {
   return m(ExifData, {
     photo: attrs.photo,
@@ -66,6 +74,7 @@ export function drawExifInformation(attrs: PhotoPageAttrs): m.Children {
   });
 }
 
+/** Draws the labelled information and EXIF sections. */
 export function drawPhotoDetailSections(attrs: PhotoPageAttrs): m.Children[] {
   const photoDetails = [
     m("h3", "Photo Information"),
@@ -75,6 +84,7 @@ export function drawPhotoDetailSections(attrs: PhotoPageAttrs): m.Children[] {
   return [...photoDetails, ...exifDetails];
 }
 
+/** Draws the photo detail page with sidebar visibility state. */
 export function drawPhotoDetails(attrs: PhotoPageAttrs): m.Children {
   const className = attrs.visible ? "page sidebar-visible" : "page";
   const details = drawPhotoDetailSections(attrs);

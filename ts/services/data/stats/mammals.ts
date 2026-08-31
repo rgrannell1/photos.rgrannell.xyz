@@ -21,6 +21,7 @@ import { readSubjectIds } from "./subjects.ts";
 import { readSpeciesThing } from "./birds.ts";
 import { readChecklistEntry } from "./checklist.ts";
 
+/** Resolves the display name for an unphotographed nemesis species. */
 export function readNemesisSpecies(
   tdb: TribbleDB,
   speciesType: string,
@@ -34,6 +35,7 @@ export function readNemesisSpecies(
   };
 }
 
+/** Reads first-sighting triples for one species type. */
 export function readFirstSeenTriples(tdb: TribbleDB, speciesType: string) {
   const query = {
     source: { type: speciesType },
@@ -43,6 +45,7 @@ export function readFirstSeenTriples(tdb: TribbleDB, speciesType: string) {
   return triples;
 }
 
+/** Appends a checklist entry only when one exists. */
 export function addChecklistResult(
   entries: ChecklistEntry[],
   entry: Maybe<ChecklistEntry>,
@@ -50,6 +53,7 @@ export function addChecklistResult(
   if (isSome(entry)) entries.push(entry);
 }
 
+/** Omits unknown species and resolves other first sightings as checklist entries. */
 export function readChecklistEntryMaybe(
   tdb: TribbleDB,
   speciesType: string,
@@ -69,6 +73,7 @@ export function readChecklistEntryMaybe(
   return entry;
 }
 
+/** Converts first-sighting triples into known checklist entries. */
 export function collectChecklistEntries(
   tdb: TribbleDB,
   speciesType: string,
@@ -89,6 +94,7 @@ export function collectChecklistEntries(
   return entries;
 }
 
+/** Orders checklist entries by their numeric first-sighting year. */
 export function compareFirstSeen(
   entryA: ChecklistEntry,
   entryB: ChecklistEntry,
@@ -96,6 +102,7 @@ export function compareFirstSeen(
   return parseInt(entryA.firstSeen) - parseInt(entryB.firstSeen);
 }
 
+/** Reads species identifiers recorded in a wild subject context. */
 export function readWildSpeciesIds(
   tdb: TribbleDB,
   speciesType: string,
@@ -108,7 +115,7 @@ export function readWildSpeciesIds(
   return subjectIds;
 }
 
-/* Sorted chronologically by first sighting. Includes wild and captive sightings. */
+/** Sorted chronologically by first sighting. Includes wild and captive sightings. */
 export function readWildlifeChecklist(
   tdb: TribbleDB,
   speciesType: string,
@@ -125,11 +132,13 @@ export function readWildlifeChecklist(
   return entries.sort(compareFirstSeen);
 }
 
+/** Tests whether a species has the explicit rare status. */
 export function hasRareStatus(speciesThing: TripleObject | undefined): boolean {
   const status = one(fromNullable(speciesThing?.status));
   return status === "rare";
 }
 
+/** Tests whether a species rarity belongs to a scarce display band. */
 export function hasScarceRarity(
   speciesThing: TripleObject | undefined,
 ): boolean {

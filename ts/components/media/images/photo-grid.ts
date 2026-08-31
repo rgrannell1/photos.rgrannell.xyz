@@ -23,6 +23,7 @@ export type PhotoGridAttrs = {
   groupByYear?: boolean;
 };
 
+/** Schedules the next grid batch against the latest photo total. */
 function scheduleGridBatch(
   batch: BatchRenderer,
   vnode: m.VnodeDOM<PhotoGridAttrs>,
@@ -30,6 +31,7 @@ function scheduleGridBatch(
   batch.schedule(vnode.attrs.total);
 }
 
+/** Restarts batch rendering when the grid identity changes. */
 function resetGridBatchOnKeyChange(
   batch: BatchRenderer,
   vnode: m.Vnode<PhotoGridAttrs>,
@@ -43,6 +45,7 @@ function resetGridBatchOnKeyChange(
   }
 }
 
+/** Renders one photo with a loading mode based on its full-list position. */
 export function drawGridPhoto(photo: PhotoType, idx: number): m.Children {
   const key = `photo-${photo.id}`;
   const photoAttrs = {
@@ -54,11 +57,13 @@ export function drawGridPhoto(photo: PhotoType, idx: number): m.Children {
   return m(Photo, photoAttrs);
 }
 
+/** Marks headings for years in the historical before-times range. */
 function yearHeadingClass(year: number): string | undefined {
   const isBeforeTimes = year <= BEFORE_TIMES_FINAL_YEAR;
   return isBeforeTimes ? "before-times" : undefined;
 }
 
+/** Renders a year heading with its historical style when applicable. */
 function drawYearHeading(group: PhotoYearGroup): m.Children {
   const headingAttrs = {
     key: `year-${group.year}`,
@@ -68,7 +73,7 @@ function drawYearHeading(group: PhotoYearGroup): m.Children {
   return heading;
 }
 
-/* startIdx is the first photo's position in the full list, used for the loading mode. */
+/** startIdx is the first photo's position in the full list, used for the loading mode. */
 function drawYearGroup(
   group: PhotoYearGroup,
   startIdx: number,
@@ -87,7 +92,7 @@ function drawYearGroup(
   return $components;
 }
 
-/* Photos split into year runs, newest first. */
+/** Photos split into year runs, newest first. */
 function drawYearGroups(photos: PhotoType[]): m.Children[] {
   const currentYear = new Date().getFullYear();
   const groups = groupPhotosByYear(photos, currentYear);
@@ -103,6 +108,7 @@ function drawYearGroups(photos: PhotoType[]): m.Children[] {
   return $components;
 }
 
+/** Renders photos either as one grid or as year-labelled runs. */
 function drawGridPhotos(
   photos: PhotoType[],
   groupByYear: boolean,
@@ -113,6 +119,7 @@ function drawGridPhotos(
   return components;
 }
 
+/** Reads the photo prefix allowed by the current batch count. */
 function readGridPhotos(
   batch: BatchRenderer,
   attrs: PhotoGridAttrs,
@@ -122,6 +129,7 @@ function readGridPhotos(
   return photos;
 }
 
+/** Renders the currently visible photo grid. */
 function viewPhotoGrid(
   batch: BatchRenderer,
   vnode: m.Vnode<PhotoGridAttrs>,
@@ -132,6 +140,7 @@ function viewPhotoGrid(
   return m("section.photo-container", $photos);
 }
 
+/** Creates a photo grid with progressive batch rendering. */
 export function PhotoGrid() {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
   const oncreate = scheduleGridBatch.bind(null, batch);

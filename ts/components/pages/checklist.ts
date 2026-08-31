@@ -103,6 +103,7 @@ export type MammalSectionAttrs = {
 /*
  * The life-list page. Birds first, then Irish mammals in the Irish view.
  */
+/** Create the life-list page component. */
 export function ChecklistPage() {
   return { view: viewChecklistPage };
 }

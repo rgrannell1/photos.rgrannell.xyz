@@ -13,6 +13,7 @@ type MediaSubjectAttrs = {
   readEmoji: ReadThingEmoji;
 };
 
+/** Draw the observation qualifier when the subject has one. */
 function drawQualifier(urn: string): m.Children {
   const qualifier = subjectQualifier(urn);
   if (isNone(qualifier)) {
@@ -22,7 +23,7 @@ function drawQualifier(urn: string): m.Children {
   return chip;
 }
 
-/* One subject, with a qualifier chip when it was not seen in the wild. */
+/** One subject, with a qualifier chip when it was not seen in the wild. */
 function drawSubject(
   readThing: ReadThing,
   readEmoji: ReadThingEmoji,
@@ -37,6 +38,7 @@ function drawSubject(
   return [m(".subject-entry", [$links, $qualifier])];
 }
 
+/** Keep explicit subjects and exclude derived taxon subjects. */
 function selectSubjects(subject: Maybe<string | string[]>): string[] {
   if (isNone(subject)) {
     return [];
@@ -46,6 +48,7 @@ function selectSubjects(subject: Maybe<string | string[]>): string[] {
   return subjects;
 }
 
+/** Draw all linked subject entries. */
 function drawSubjects(
   attrs: MediaSubjectAttrs,
   subjects: string[],
@@ -55,11 +58,13 @@ function drawSubjects(
   return components;
 }
 
+/** Use an em dash when media has no displayable subjects. */
 function subjectContent(subjects: m.Children[]): m.Children {
   const hasSubjects = subjects.length > 0;
   return hasSubjects ? subjects : "—";
 }
 
+/** Draw the subject metadata cell for a photo or video. */
 function viewMediaSubject(vnode: m.Vnode<MediaSubjectAttrs>): m.Children {
   // derived taxon subjects stay out of the subject row
   const subjects = selectSubjects(vnode.attrs.subject);
@@ -68,6 +73,7 @@ function viewMediaSubject(vnode: m.Vnode<MediaSubjectAttrs>): m.Children {
   return m("td", content);
 }
 
+/** Create the media subject cell component. */
 export function MediaSubject() {
   return { view: viewMediaSubject };
 }

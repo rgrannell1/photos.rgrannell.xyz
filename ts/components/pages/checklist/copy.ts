@@ -11,6 +11,7 @@ import { ChecklistDetails } from "./filters.ts";
 import { ChecklistGrid, lifeListPreamble, mammalPreamble } from "./grid.ts";
 import { drawChecklistPageChildren, readChecklistPageClass } from "./page.ts";
 
+/** Summarise photographed and recorded Irish mammal species counts. */
 export function formatMammalPreamble(
   photographedCount: number,
   totalCount: number,
@@ -19,10 +20,12 @@ export function formatMammalPreamble(
     `the island has about ${totalCount}.`;
 }
 
+/** Draw a preamble only when one is available. */
 export function drawOptionalPreamble(preamble: Maybe<string>): m.Children {
   return isSome(preamble) ? m("p.photo-album-description", preamble) : null;
 }
 
+/** Draw the Irish mammal entries with mammal-specific mystery markers. */
 export function drawMammalGrid(
   entries: ChecklistEntry[],
   covers: Map<string, Photo>,
@@ -39,6 +42,7 @@ export function drawMammalGrid(
   return section;
 }
 
+/** Render the mammal heading, optional summary, and species grid. */
 export function viewMammalSection(
   vnode: m.Vnode<MammalSectionAttrs>,
 ): m.Children {
@@ -53,17 +57,19 @@ export function viewMammalSection(
   return [heading, description, grid];
 }
 
-/*
+/**
  * The Irish mammal section, below the bird table in the Irish view.
  */
 export function MammalSection() {
   return { view: viewMammalSection };
 }
 
+/** Navigate to the selected life-list filter route. */
 export function selectLifeListFilter(newFilter: string): void {
   broadcast("navigate", { route: `/life-list/${newFilter}` });
 }
 
+/** Draw the life-list title and filter controls. */
 export function drawBirdHeading(
   entries: ChecklistEntry[],
   filter: string,
@@ -77,6 +83,7 @@ export function drawBirdHeading(
   return m("section.album-metadata", [title, details]);
 }
 
+/** Draw bird entries for the active life-list filter. */
 export function drawBirdGrid(
   entries: ChecklistEntry[],
   covers: Map<string, Photo>,
@@ -94,6 +101,7 @@ export function drawBirdGrid(
   return section;
 }
 
+/** Compose the bird heading, narrative text, and species grid. */
 export function drawBirdSection(attrs: ChecklistPageAttrs): m.Children[] {
   const { entries, covers, regularCount, nemesisBirds, filter } = attrs;
   const preamble = lifeListPreamble(entries, regularCount);
@@ -107,6 +115,7 @@ export function drawBirdSection(attrs: ChecklistPageAttrs): m.Children[] {
   return [heading, preambleNode, descriptionNode, grid];
 }
 
+/** Render the life-list page with its sidebar-aware class. */
 export function viewChecklistPage(
   vnode: m.Vnode<ChecklistPageAttrs>,
 ): m.Children {

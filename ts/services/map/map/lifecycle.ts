@@ -10,6 +10,7 @@ import {
   updateMap,
 } from "./markers.ts";
 
+/** Reset map data that tracks rendered places, routes, and marker bounds. */
 export function initialiseMapStateData(mapState: MapState): void {
   mapState.lastSidebarVisible = NONE;
   mapState.lastPlaces = [];
@@ -18,6 +19,7 @@ export function initialiseMapStateData(mapState: MapState): void {
   mapState.markerBounds = NONE;
 }
 
+/** Create map state with empty data and unset Leaflet references. */
 export function createMapState(): MapState {
   const mapState = {} as MapState;
   initialiseMapStateReferences(mapState);
@@ -25,6 +27,7 @@ export function createMapState(): MapState {
   return mapState;
 }
 
+/** Load Leaflet on demand and initialise the map with mount options. */
 export function loadLeaflet(
   mapState: MapState,
   options: MountMapOptions,
@@ -40,6 +43,7 @@ export function loadLeaflet(
   import("leaflet").then(initialiseMap);
 }
 
+/** Expose state-bound map update and teardown operations. */
 export function createMapHandle(mapState: MapState): MapHandle {
   const update = updateMap.bind(null, mapState);
   const teardown = unmountMap.bind(null, mapState);

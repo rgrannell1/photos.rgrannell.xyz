@@ -16,6 +16,7 @@ import {
 } from "./subjects.ts";
 import { readNemesisSpecies } from "./mammals.ts";
 
+/** Groups wild mammal identifiers by the photo that records them. */
 export function groupWildMammalsByPhoto(
   triples: SubjectTriples,
 ): Map<string, Set<string>> {
@@ -27,6 +28,7 @@ export function groupWildMammalsByPhoto(
   return mammalsByPhoto;
 }
 
+/** Reads photo URNs located in Ireland, or an empty set when Ireland is absent. */
 export function readIrelandPhotoUrns(tdb: TribbleDB): Set<string> {
   const irelandUrn = findIrelandUrn(tdb);
   if (!isSome(irelandUrn)) {
@@ -36,6 +38,7 @@ export function readIrelandPhotoUrns(tdb: TribbleDB): Set<string> {
   return photoUrns;
 }
 
+/** Adds mammal identifiers only when their photo was taken in Ireland. */
 export function addIrishMammalIds(
   mammalIds: Set<string>,
   irelandPhotos: Set<string>,
@@ -46,6 +49,7 @@ export function addIrishMammalIds(
   for (const mammalId of photoMammalIds) mammalIds.add(mammalId);
 }
 
+/** Reads distinct wild mammal identifiers photographed in Ireland. */
 export function readIrishWildMammalIds(
   tdb: TribbleDB,
   triples: SubjectTriples,
@@ -59,6 +63,7 @@ export function readIrishWildMammalIds(
   return mammalIds;
 }
 
+/** Builds photographed and total mammal species counts. */
 export function makeMammalStats(
   wildMammalIds: Set<string>,
   allMammalIds: Set<string>,
@@ -71,6 +76,7 @@ export function makeMammalStats(
   };
 }
 
+/** Counts distinct wild mammal species photographed in Ireland. */
 export function countIrishWildMammals(
   tdb: TribbleDB,
   triples: SubjectTriples,
@@ -79,6 +85,7 @@ export function countIrishWildMammals(
   return mammalIds.size;
 }
 
+/** Reads nemesis triples for one species type. */
 export function readNemesisTriples(tdb: TribbleDB, speciesType: string) {
   const query = {
     source: { type: speciesType },
@@ -89,6 +96,7 @@ export function readNemesisTriples(tdb: TribbleDB, speciesType: string) {
   return triples;
 }
 
+/** Reports whether the species has a first-seen record. */
 export function isSpeciesPhotographed(
   tdb: TribbleDB,
   speciesType: string,
@@ -102,6 +110,7 @@ export function isSpeciesPhotographed(
   return triples.length > 0;
 }
 
+/** Adds a nemesis species only when no photograph records it. */
 export function addUnphotographedNemesis(
   species: NemesisSpecies[],
   tdb: TribbleDB,
@@ -114,6 +123,7 @@ export function addUnphotographedNemesis(
   species.push(readNemesisSpecies(tdb, speciesType, speciesId));
 }
 
+/** Reads the first object for a species identifier. */
 export function readSpeciesThing(
   tdb: TribbleDB,
   speciesType: string,

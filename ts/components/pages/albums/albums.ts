@@ -42,6 +42,7 @@ export type AlbumsPageState = {
   teardownYearScroll: Maybe<() => void>;
 };
 
+/** Creates an albums page component with isolated year-scroll state. */
 export function AlbumsPage() {
   const pageState: AlbumsPageState = {
     teardownYearScroll: NONE,

@@ -21,6 +21,7 @@ import { drawMediaSection } from "./media.ts";
 import { drawMemberCard, readMemberSpecies } from "../data/species-data.ts";
 import { readShareName } from "./share.ts";
 
+/** Combines image, identity, and interaction attributes for a member album. */
 export function readMemberAlbumAttrs(
   imageAttrs: Pick<
     PhotoAlbumAttrs,
@@ -32,6 +33,7 @@ export function readMemberAlbumAttrs(
   return { ...imageAttrs, ...identityAttrs, ...interactionAttrs };
 }
 
+/** Builds stable identity attributes for a taxon member card. */
 export function readMemberIdentityAttrs(
   member: TripleObject,
   id: string,
@@ -44,6 +46,7 @@ export function readMemberIdentityAttrs(
   };
 }
 
+/** Builds the caption and thing-page navigation for a taxon member. */
 export function readMemberInteractionAttrs(
   member: TripleObject,
   thingId: string,
@@ -54,6 +57,7 @@ export function readMemberInteractionAttrs(
   return { child, onclick };
 }
 
+/** Builds cover image attributes with the indexed loading policy. */
 export function readMemberImageAttrs(
   cover: PhotoType,
   idx: number,
@@ -75,6 +79,7 @@ export function readMemberImageAttrs(
   return attrs;
 }
 
+/** Renders a taxon member that has a cover photo. */
 export function drawCoveredMember(
   member: TripleObject,
   cover: PhotoType,
@@ -94,6 +99,7 @@ export function drawCoveredMember(
   return m(PhotoAlbum, attrs);
 }
 
+/** Renders taxon members as a species album section. */
 export function drawMemberCards(
   members: TripleObject[],
   readThingCover: (urn: string) => Maybe<PhotoType>,
@@ -108,6 +114,7 @@ export function drawMemberCards(
   return section;
 }
 
+/** Omits the species section when the thing has no taxon members. */
 export function viewSpeciesSection(
   membersFor: CachedReader<TripleObject[]>,
   vnode: m.Vnode<ThingPageAttrs>,
@@ -121,12 +128,14 @@ export function viewSpeciesSection(
   return section;
 }
 
+/** Creates a species section with a URN-keyed member cache. */
 export function SpeciesSection() {
   const membersFor = cachedByUrn(readMemberSpecies);
 
   return { view: viewSpeciesSection.bind(null, membersFor) };
 }
 
+/** Renders a share control for a concrete thing identifier. */
 export function drawKnownShareButton(
   type: string,
   id: string,
@@ -138,7 +147,7 @@ export function drawKnownShareButton(
   return m(ShareButton, attrs);
 }
 
-/* Wildcard listings have no prebaked social card, so they get no share link. */
+/** Wildcard listings have no prebaked social card, so they get no share link. */
 export function drawShareButton(
   urn: string,
   things: TripleObject[],

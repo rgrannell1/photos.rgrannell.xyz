@@ -15,12 +15,14 @@ type LineBatch = {
   remainder: string;
 };
 
+/** Split a decoded stream chunk into complete lines and one remainder. */
 function splitLines(buffer: string, chunk: string): LineBatch {
   const lines = `${buffer}${chunk}`.split("\n");
   const remainder = lines.pop() ?? "";
   return { lines, remainder };
 }
 
+/** Yield complete lines from a text stream, including its final partial line. */
 async function* streamLines(
   reader: ReadableStreamDefaultReader<string>,
 ): AsyncGenerator<string> {
@@ -39,12 +41,14 @@ async function* streamLines(
   }
 }
 
+/** Copy and clear a mutable triple batch. */
 function drainTriples(triples: Triple[]): Triple[] {
   const batch = [...triples];
   triples.length = 0;
   return batch;
 }
 
+/** Parse one line and append its triple when the parser produces one. */
 function collectTriple(
   parser: TribbleParser,
   line: string,
@@ -56,10 +60,12 @@ function collectTriple(
   }
 }
 
+/** Report whether a triple batch reached its stream yield threshold. */
 function hasFullTripleBatch(triples: Triple[]): boolean {
   return triples.length >= 500;
 }
 
+/** Fetch Tribble data and yield parsed triples in bounded batches. */
 export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
   const parser = new TribbleParser();
   const res = await fetch(url);
@@ -87,6 +93,7 @@ let tdb: Maybe<TribbleDB> = NONE;
 /*
  * Shared TribbleDB. Starts empty so the app can mount before the stream fills it.
  */
+/** Return the shared database, creating it with the first supplied schema. */
 export function getTribbleDB(
   schema: Record<string, TargetValidator> = {},
 ): TribbleDB {
@@ -101,6 +108,7 @@ export function getTribbleDB(
  * Load triples from a URL into the shared TribbleDB. onBatch fires after each
  * batch, so the caller can derive and redraw during the load.
  */
+/** Load streamed triples into the shared database and report each added batch. */
 export async function loadTriples(
   url: string,
   schema: Record<string, TargetValidator> = {},

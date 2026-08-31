@@ -14,16 +14,19 @@ type VideoState = {
   controlsVisible: boolean;
 };
 
+/** Reveals native controls after the user selects a video. */
 function showControls(videoState: VideoState): void {
   videoState.controlsVisible = true;
   m.redraw();
 }
 
+/** Draws the 480p MP4 source for a video. */
 function drawVideoSource(video: Video): m.Children {
   const sourceAttrs = { src: video.videoUrl480p, type: "video/mp4" };
   return m("source", sourceAttrs);
 }
 
+/** Builds native video attributes from component state and input. */
 function videoElementAttrs(
   videoState: VideoState,
   attrs: VideoAttrs,
@@ -38,6 +41,7 @@ function videoElementAttrs(
   return elementAttrs;
 }
 
+/** Draws the video element and its source. */
 function drawVideoElement(
   videoState: VideoState,
   attrs: VideoAttrs,
@@ -47,6 +51,7 @@ function drawVideoElement(
   return m("video.thumbnail-video", videoAttrs, source);
 }
 
+/** Draws a metadata route for interactive videos. */
 function drawVideoMetadata(video: Video, interactive: boolean): m.Children {
   if (!interactive) {
     return null;
@@ -57,6 +62,7 @@ function drawVideoMetadata(video: Video, interactive: boolean): m.Children {
   return icon;
 }
 
+/** Draws the video with its optional metadata control. */
 function drawVideoContent(
   videoState: VideoState,
   attrs: VideoAttrs,
@@ -69,6 +75,7 @@ function drawVideoContent(
   return m("div", [m("div.photo", [metadataIcon, videoElement])]);
 }
 
+/** Draws an available video or a clear fallback message. */
 function viewVideo(
   videoState: VideoState,
   vnode: m.Vnode<VideoAttrs>,
@@ -89,6 +96,7 @@ function viewVideo(
   return drawVideoContent(videoState, { ...vnode.attrs, interactive });
 }
 
+/** Creates a video component whose controls start hidden. */
 export function Video() {
   const videoState: VideoState = { controlsVisible: false };
 
@@ -96,6 +104,7 @@ export function Video() {
 }
 
 /* Preload is "none" so lists fetch only the poster, not the video data. */
+/** Draws an interactive list video that initially loads only its poster. */
 export function drawVideoItem(video: Video): m.Children {
   const videoAttrs = {
     key: `video-${video.id}`,

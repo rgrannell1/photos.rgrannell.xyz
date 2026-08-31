@@ -8,16 +8,19 @@ import type { Stats } from "../../types/browser.ts";
 
 export type StatsParseResult = Result<Stats, BaseIssue<unknown>[]>;
 
+/** Wrap statistics validation issues in a failed parse result. */
 function invalidStats(error: BaseIssue<unknown>[]): StatsParseResult {
   const result: StatsParseResult = { ok: false, error };
   return result;
 }
 
+/** Wrap validated statistics in a successful parse result. */
 function validStats(value: Stats): StatsParseResult {
   const result: StatsParseResult = { ok: true, value };
   return result;
 }
 
+/** Validate unknown page statistics without throwing. */
 export function parseStats(stats: unknown): StatsParseResult {
   const result = safeParse(StatsSchema, stats);
   if (!result.success) {

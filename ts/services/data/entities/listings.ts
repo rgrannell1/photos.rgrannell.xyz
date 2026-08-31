@@ -8,11 +8,13 @@ import { KnownTypes } from "../../../constants/data.ts";
 import { type Maybe } from "../../../commons/collections/maybe.ts";
 import { readThing } from "./things.ts";
 
+/** Builds the default capitalised plural label for a listing type. */
 export function defaultListingLabel(type: string): string {
   const plural = pluralise(type);
   return capitalise(plural);
 }
 
+/** Reads the listing entity published for a type. */
 export function readListingThing(
   tdb: TribbleDB,
   type: string,

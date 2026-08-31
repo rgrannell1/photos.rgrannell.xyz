@@ -13,6 +13,7 @@ import { cachedByUrn, readThingPhotos } from "./cache.ts";
 import { slicePhotos } from "../view/media.ts";
 import { drawCoveredMember } from "../view/species-view.ts";
 
+/** Draw the complete photo grid for a thing page. */
 export function drawPhotoGrid(photos: PhotoType[], urn: string): m.Children {
   const attrs = {
     total: photos.length,
@@ -24,6 +25,7 @@ export function drawPhotoGrid(photos: PhotoType[], urn: string): m.Children {
   return m("div", [heading, grid]);
 }
 
+/** Draw a thing's photo section when it has photos. */
 export function viewPhotoSection(
   photosFor: CachedReader<PhotoType[]>,
   vnode: m.Vnode<ThingPageAttrs>,
@@ -37,16 +39,19 @@ export function viewPhotoSection(
   return grid;
 }
 
+/** Create a photo section with a reader cached by thing URN. */
 export function PhotoSection() {
   const photosFor = cachedByUrn(readThingPhotos);
 
   return { view: viewPhotoSection.bind(null, photosFor) };
 }
 
+/** Test whether a URN identifies a taxon. */
 export function isTaxonUrn(urn: string): boolean {
   return TAXON_TYPES.has(asUrn(urn).type);
 }
 
+/** Narrow an optional URN to a taxon URN. */
 export function hasTaxonUrn(urn: Maybe<string>): urn is string {
   if (isNone(urn)) {
     return false;
@@ -54,12 +59,13 @@ export function hasTaxonUrn(urn: Maybe<string>): urn is string {
   return isTaxonUrn(urn);
 }
 
+/** Read a thing's single URN when the thing exists. */
 export function readThingUrn(thing: TripleObject | undefined): Maybe<string> {
   const urn = thing ? one(thing.id) : NONE;
   return urn;
 }
 
-/* Member species of the page's taxon. Empty for non-taxon things. */
+/** Member species of the page's taxon. Empty for non-taxon things. */
 export function readMemberSpecies(
   attrs: ThingPageAttrs,
 ): TripleObject[] {
@@ -72,6 +78,7 @@ export function readMemberSpecies(
   return attrs.readTaxonMembers(urn);
 }
 
+/** Draw a covered member card from its parsed URN parts. */
 export function drawMemberCardFromUrn(
   member: TripleObject,
   cover: PhotoType,
@@ -82,6 +89,7 @@ export function drawMemberCardFromUrn(
   return drawCoveredMember(member, cover, id, thingId, type, idx);
 }
 
+/** Draw a member card when its URN has a cover photo. */
 export function drawMemberCardWithId(
   readThingCover: (urn: string) => Maybe<PhotoType>,
   member: TripleObject,
@@ -96,6 +104,7 @@ export function drawMemberCardWithId(
   return [card];
 }
 
+/** Draw a member card when the member has a URN and cover photo. */
 export function drawMemberCard(
   readThingCover: (urn: string) => Maybe<PhotoType>,
   member: TripleObject,

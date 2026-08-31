@@ -19,6 +19,7 @@ import {
   filterIsIrish,
 } from "./grid.ts";
 
+/** Renders the name and pending status for an unphotographed species. */
 export function drawMysteryMetadata(species: NemesisSpecies): m.Children {
   const name = m("span.checklist-mystery-name", species.name);
   const tag = m("span.checklist-tag.checklist-tag--nemesis", "nemesis");
@@ -30,7 +31,7 @@ export function drawMysteryMetadata(species: NemesisSpecies): m.Children {
   return m("div.checklist-card-metadata", [title, status]);
 }
 
-/*
+/**
  * A "yet to see" card for an unphotographed nemesis species. A mystery
  * silhouette stands in for the photo.
  */
@@ -38,6 +39,7 @@ export function ChecklistMysteryCard() {
   return { view: viewChecklistMysteryCard };
 }
 
+/** Adds a one-based life-list position to a checklist entry. */
 export function toPositionedEntry(
   entry: ChecklistEntry,
   idx: number,
@@ -45,14 +47,17 @@ export function toPositionedEntry(
   return { entry, position: idx + 1 };
 }
 
+/** Tests whether an entry records a wild sighting in Ireland. */
 export function positionedIsIrishWild(positioned: PositionedEntry): boolean {
   return isIrishWild(positioned.entry);
 }
 
+/** Tests whether an entry records any wild sighting. */
 export function positionedIsWild(positioned: PositionedEntry): boolean {
   return isWild(positioned.entry);
 }
 
+/** Builds card attributes from a checklist entry and its optional cover. */
 export function readChecklistCardAttrs(
   covers: Map<string, Photo>,
   irishView: boolean,
@@ -70,6 +75,7 @@ export function readChecklistCardAttrs(
   };
 }
 
+/** Renders a photographed checklist entry at its life-list position. */
 export function drawChecklistCard(
   covers: Map<string, Photo>,
   irishView: boolean,
@@ -80,6 +86,7 @@ export function drawChecklistCard(
   return m(ChecklistCard, attrs);
 }
 
+/** Renders a placeholder card for an unphotographed nemesis species. */
 export function drawMysteryCard(
   mysteryGlyph: string,
   species: NemesisSpecies,
@@ -91,6 +98,7 @@ export function drawMysteryCard(
   });
 }
 
+/** Applies the Ireland, wild, or unfiltered checklist view. */
 export function filterPositionedEntries(
   entries: PositionedEntry[],
   filter: string,
@@ -106,6 +114,7 @@ export function filterPositionedEntries(
   return entries.filter(positionedIsWild);
 }
 
+/** Renders photographed entries and Irish nemesis placeholders as one grid. */
 export function viewChecklistGrid(
   vnode: m.Vnode<ChecklistGridAttrs>,
 ): m.Children {

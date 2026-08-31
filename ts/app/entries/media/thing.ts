@@ -53,6 +53,7 @@ const THING_PAGE_READERS = {
   readThingCover: services.readThingCover,
 };
 
+/** Adds the countries associated with an album. */
 function toAlbumEntry(album: Album): AlbumEntry {
   return {
     album,
@@ -60,10 +61,12 @@ function toAlbumEntry(album: Album): AlbumEntry {
   };
 }
 
+/** Reads albums for the requested things and attaches their countries. */
 function readAlbumEntries(urns: Set<string>): AlbumEntry[] {
   return services.readAlbumsByThingIds(urns).map(toAlbumEntry);
 }
 
+/** Reads list items with the reader for their thing kind. */
 function readThingList(
   kind: ThingListKind,
   urns: Set<string>,
@@ -73,6 +76,7 @@ function readThingList(
   return items;
 }
 
+/** Returns the requested thing as a zero-or-one-item array. */
 function readSingleThing(urn: string): TripleObject[] {
   const thing = services.readThing(urn);
   if (isNone(thing)) return [];
@@ -80,6 +84,7 @@ function readSingleThing(urn: string): TripleObject[] {
   return things;
 }
 
+/** Expands a wildcard URN or reads one exact thing. */
 function readThings(urn: string): TripleObject[] {
   const parsed = asUrn(urn);
   if (parsed.id === "*") return services.readNamedTypeThings(parsed.type);
@@ -87,6 +92,7 @@ function readThings(urn: string): TripleObject[] {
   return things;
 }
 
+/** Refreshes cached page data only when the requested URN changes. */
 function refreshThingCache(urn: string): void {
   if (urn === cachedUrn) {
     return;
@@ -102,6 +108,7 @@ function refreshThingCache(urn: string): void {
   cachedTitleEmoji = thing ? services.readThingEmoji(urn, "", thing) : "";
 }
 
+/** Builds page attributes from the current thing cache and services. */
 function readThingPageAttrs(urn: string): ThingPageAttrs {
   return {
     urn,
@@ -114,6 +121,7 @@ function readThingPageAttrs(urn: string): ThingPageAttrs {
   };
 }
 
+/** Resolves the current route to loaded thing-page attributes or a status message. */
 function resolveThingPage() {
   if (!state.loaded) {
     return "";

@@ -11,11 +11,13 @@ import { FlagIcon } from "../flag.ts";
 import { setTitle } from "../../services/browser/window.ts";
 import { isSome, type Maybe, withDefault } from "../../commons/collections/maybe.ts";
 
+/** Read a thing name, with its identifier as the fallback. */
 function readTitleName(thing: TripleObject, fallback: string): string {
   const name = one(thing.name);
   return withDefault(name, fallback);
 }
 
+/** Format a known thing name for place and taxon title rules. */
 function readNamedTitle(
   type: string,
   id: string,
@@ -32,6 +34,7 @@ function readNamedTitle(
   return name;
 }
 
+/** Read a page title, with the URN as the fallback for a missing thing. */
 function readThingTitle(
   urn: string,
   type: string,
@@ -45,6 +48,7 @@ function readThingTitle(
   return readNamedTitle(type, id, thing, emoji);
 }
 
+/** Compute the title for a listing wildcard or one concrete thing. */
 function computeTitle(
   listingTitle: Maybe<string>,
   urn: string,
@@ -69,24 +73,29 @@ export type ThingTitleAttrs = {
   emoji: string;
 };
 
-// the document-title write is an effect, so it lives in lifecycle hooks,
-// not in the pure view
+/**
+ * The document-title write is an effect, so it lives in lifecycle hooks,
+ * not in the pure view.
+ */
 function reflectThingTitle(vnode: m.Vnode<ThingTitleAttrs>): void {
   const { listingTitle, urn, things, emoji } = vnode.attrs;
   const title = computeTitle(listingTitle, urn, things, emoji);
   setTitle(title);
 }
 
+/** Report whether a thing defines a flag value. */
 function hasFlag(thing: TripleObject | undefined): boolean {
   return thing !== undefined && isSome(one(thing.flag));
 }
 
+/** Render a place heading with its flag. */
 function drawPlaceTitle(thing: TripleObject, id: string): m.Children {
   const name = readTitleName(thing, id);
   const flag = m(FlagIcon, { name, big: true });
   return m("h1", [flag, ` ${name}`]);
 }
 
+/** Render a place flag heading when available, or a plain thing heading. */
 function drawThingTitle(
   title: string,
   type: string,
@@ -101,6 +110,7 @@ function drawThingTitle(
   return heading;
 }
 
+/** Render the heading for the current thing or listing wildcard. */
 function viewThingTitle(vnode: m.Vnode<ThingTitleAttrs>): m.Children {
   const { urn, things, listingTitle, emoji } = vnode.attrs;
   const title = computeTitle(listingTitle, urn, things, emoji);
@@ -109,6 +119,7 @@ function viewThingTitle(vnode: m.Vnode<ThingTitleAttrs>): m.Children {
   return drawThingTitle(title, parsed.type, parsed.id, thing);
 }
 
+/** Create the thing title component and reflect title changes to the document. */
 export function ThingTitle() {
   return {
     oncreate: reflectThingTitle,

@@ -11,6 +11,7 @@ import {
 const PLACEHOLDER_CACHE: Map<string, string> = new Map();
 type DecodedThumbHash = ReturnType<typeof thumbHashToRGBA>;
 
+/** Estimates how many square photos fit within the current viewport. */
 function visibleImageCapacity(): number {
   const viewportWidth = globalThis.innerWidth;
   const viewportHeight = globalThis.innerHeight;
@@ -19,12 +20,14 @@ function visibleImageCapacity(): number {
   return maxImagesPerRow * maxRowsInFold;
 }
 
+/** Selects eager loading for images within or just beyond the initial fold. */
 export function loadingMode(idx: number): "eager" | "lazy" {
   const imagesInFold = visibleImageCapacity();
   const isBelowFold = idx > imagesInFold + 1;
   return isBelowFold ? "lazy" : "eager";
 }
 
+/** Decodes a ThumbHash, or returns NONE when the hash is malformed. */
 function decodeThumbHash(hash: string): Maybe<DecodedThumbHash> {
   try {
     return thumbHashToRGBA(thumbHashFromBase64(hash));
@@ -33,6 +36,7 @@ function decodeThumbHash(hash: string): Maybe<DecodedThumbHash> {
   }
 }
 
+/** Creates a canvas with the decoded ThumbHash dimensions. */
 function createThumbHashCanvas(
   width: number,
   height: number,
@@ -43,12 +47,14 @@ function createThumbHashCanvas(
   return canvas;
 }
 
+/** Converts decoded RGBA bytes into browser image data. */
 function createThumbHashPixels(decoded: DecodedThumbHash): ImageData {
   const { width, height, rgba } = decoded;
   const bytes = new Uint8ClampedArray(rgba);
   return new ImageData(bytes, width, height);
 }
 
+/** Draws decoded ThumbHash pixels onto a canvas. */
 function drawThumbHash(
   canvas: HTMLCanvasElement,
   decoded: DecodedThumbHash,
@@ -61,6 +67,7 @@ function drawThumbHash(
   context.putImageData(pixels, 0, 0);
 }
 
+/** Renders a decoded ThumbHash as a PNG data URL. */
 function renderThumbHash(decoded: DecodedThumbHash): string {
   const { width, height } = decoded;
   const canvas = createThumbHashCanvas(width, height);
@@ -68,12 +75,14 @@ function renderThumbHash(decoded: DecodedThumbHash): string {
   return canvas.toDataURL("image/png");
 }
 
+/** Checks that a decoded ThumbHash has non-zero dimensions. */
 function isValidThumbHash(
   decoded: Maybe<DecodedThumbHash>,
 ): decoded is DecodedThumbHash {
   return isSome(decoded) && Boolean(decoded.width) && Boolean(decoded.height);
 }
 
+/** Renders a ThumbHash and caches its PNG data URL by hash. */
 function renderAndCacheThumbHash(
   hash: string,
   decoded: DecodedThumbHash,
@@ -83,10 +92,12 @@ function renderAndCacheThumbHash(
   return dataUrl;
 }
 
+/** Accepts current ThumbHashes and rejects missing, empty, or legacy values. */
 function isSupportedThumbHash(hash: Maybe<string>): hash is string {
   return isSome(hash) && Boolean(hash) && !hash.startsWith("#");
 }
 
+/** Returns a rendered placeholder, or NONE when decoding produces no image. */
 function renderDecodedThumbHash(hash: string): Maybe<string> {
   const decoded = decodeThumbHash(hash);
   if (!isValidThumbHash(decoded)) {
@@ -96,6 +107,7 @@ function renderDecodedThumbHash(hash: string): Maybe<string> {
 }
 
 /* ThumbHash to placeholder PNG. NONE for missing, legacy, or malformed hashes. */
+/** Returns a cached PNG placeholder for a supported ThumbHash. */
 export function thumbHashDataUrl(hash: Maybe<string>): Maybe<string> {
   if (!isSupportedThumbHash(hash)) {
     return NONE;

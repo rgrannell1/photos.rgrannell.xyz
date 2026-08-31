@@ -1,3 +1,4 @@
+/** Formats a millisecond timestamp as an American date and time. */
 export function formatCreatedAt(dateTime: string): string {
   const date = new Date(parseInt(dateTime));
   const options: Intl.DateTimeFormatOptions = {

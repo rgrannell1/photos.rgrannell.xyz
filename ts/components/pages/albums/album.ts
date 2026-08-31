@@ -34,10 +34,12 @@ type AlbumAttrs = {
   tripPreviousAlbums: Album[];
 };
 
+/** Set the browser title for an album page. */
 function initAlbumPage(): void {
   setTitle("Album - photos");
 }
 
+/** Draw an album banner when a banner photo has a usable source. */
 function drawAlbumBanner(
   album: Album,
   bannerPhoto: Maybe<PhotoType>,
@@ -61,6 +63,7 @@ function drawAlbumBanner(
   });
 }
 
+/** Draw album identity, counts, places, description, and controls. */
 function drawAlbumMetadata(
   album: Album,
   countries: Country[],
@@ -103,6 +106,7 @@ function drawAlbumMetadata(
   ]);
 }
 
+/** Draw the album page with its media grids and sidebar layout. */
 function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
   const {
     album,
@@ -133,6 +137,7 @@ function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
   );
 }
 
+/** Create the album page component and its title hook. */
 export function AlbumPage() {
   return {
     oninit: initAlbumPage,

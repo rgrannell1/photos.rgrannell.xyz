@@ -15,10 +15,12 @@ import { drawMysteryMetadata } from "./cards.ts";
  * The per-species cover image. Renders an empty block when a species has no
  * cover photo.
  */
+/** Create the per-species cover image component. */
 export function ChecklistPhoto() {
   return { view: viewChecklistPhoto };
 }
 
+/** Append a species tag when its condition is true. */
 export function addSpeciesTag(
   tags: m.Children[],
   shown: boolean,
@@ -32,10 +34,8 @@ export function addSpeciesTag(
   tags.push(tag);
 }
 
-/*
- * Inline status tags after a species name. Target and nemesis always show.
- * Scarce shows in the Irish view only.
- */
+/* Scarce tags appear only in Irish view. Target and nemesis always appear. */
+/** Collect the visible status tags for a checklist entry. */
 export function speciesTags(
   entry: { scarce: boolean; nemesis: boolean; target: boolean },
   showScarce: boolean,
@@ -48,10 +48,12 @@ export function speciesTags(
   return tags;
 }
 
+/** Draw a species name link. */
 export function drawChecklistNameLink(name: string, href: string): m.Children {
   return m("a.checklist-name-link", { href }, name);
 }
 
+/** Draw an Irish flag prefix for an Irish species. */
 export function drawIrishFlag(isIrish: boolean): m.Children {
   if (!isIrish) {
     return null;
@@ -61,6 +63,7 @@ export function drawIrishFlag(isIrish: boolean): m.Children {
   return m("span.checklist-irish-flag", [flag, " "]);
 }
 
+/** Draw a checklist name with its flag and status tags. */
 export function drawChecklistCardName(
   entry: ChecklistEntry,
   href: string,
@@ -72,6 +75,7 @@ export function drawChecklistCardName(
   return m("p.checklist-card-name", [irishFlag, name, ...tags]);
 }
 
+/** Draw a checklist entry's name and first-seen date. */
 export function drawChecklistCardMetadata(
   entry: ChecklistEntry,
   href: string,
@@ -85,6 +89,7 @@ export function drawChecklistCardMetadata(
   return m("div.checklist-card-metadata", [name, firstSeen]);
 }
 
+/** Draw a ranked checklist card for a recorded species. */
 export function viewChecklistCard(
   vnode: m.Vnode<ChecklistCardAttrs>,
 ): m.Children {
@@ -97,10 +102,12 @@ export function viewChecklistCard(
   return m("div.checklist-card", children);
 }
 
+/** Create the recorded-species checklist card component. */
 export function ChecklistCard() {
   return { view: viewChecklistCard };
 }
 
+/** Draw a mystery card for a species without a record. */
 export function viewChecklistMysteryCard(
   vnode: m.Vnode<ChecklistMysteryCardAttrs>,
 ): m.Children {

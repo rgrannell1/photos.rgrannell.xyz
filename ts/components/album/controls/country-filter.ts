@@ -12,7 +12,7 @@ export type CountryFilterAttrs = {
 // A nation and the sub-territories photographed within it
 export type FlagGroup = Country[];
 
-/*
+/**
  * Country flags grouped by nation. Clicking the active flag deselects it.
  */
 export function CountryFilter() {

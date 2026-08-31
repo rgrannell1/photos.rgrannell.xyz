@@ -40,6 +40,7 @@ const TS_BUILD_OPTIONS: esbuild.BuildOptions = {
   },
 };
 
+/** Write the current publication version identifier. */
 export async function buildVersion() {
   console.info("🌐 Rendering version");
   const outputPath = "version";
@@ -47,6 +48,7 @@ export async function buildVersion() {
   await Deno.writeTextFile(outputPath, content);
 }
 
+/** Write the expanded TribbleDB data manifest for the current publication. */
 export async function buildExpandedTribbles() {
   console.info("🌐 Rendering expanded tribbles");
   const outputPath = `manifest/tribbles-expanded.${env.publication_id}.txt`;
@@ -54,6 +56,7 @@ export async function buildExpandedTribbles() {
   await Deno.writeTextFile(outputPath, content);
 }
 
+/** Render and write the root-scoped service worker. */
 export async function buildSW() {
   console.info("🌐 Rendering service-worker");
 
@@ -63,12 +66,13 @@ export async function buildSW() {
   await Deno.writeTextFile("sw.js", content);
 }
 
+/** Bundle and minify the browser TypeScript application. */
 export async function buildTS() {
   console.info("🌐 Rendering app");
   await esbuild.build(TS_BUILD_OPTIONS);
 }
 
-/*
+/**
  * Minify CSS for inlining. Inline CSS removes a render-blocking request and cannot go stale.
  */
 export async function buildCSS(): Promise<string> {
@@ -94,7 +98,7 @@ export type PublishedBigFlag = {
   url: string;
 };
 
-/*
+/**
  * Publish vexilla assets with content-hashed names. Hash busts immutable /flags/* cache on changes.
  */
 export async function buildFlagAssets(): Promise<FlagManifest> {
@@ -106,6 +110,7 @@ export async function buildFlagAssets(): Promise<FlagManifest> {
   return createFlagManifest(sprite, big);
 }
 
+/** Render and write the index page with its flag manifest and inline CSS. */
 export async function buildHTML(flags: FlagManifest, css: string) {
   console.info("🌐 Rendering index.html");
   const outputPath = "index.html";

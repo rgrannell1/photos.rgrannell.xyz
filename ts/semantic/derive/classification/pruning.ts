@@ -7,6 +7,7 @@ import { one } from "../../../commons/collections/arrays.ts";
 import { DATA_TRUE, KnownTypes } from "../../../constants/data.ts";
 import { baseUrn } from "./urns.ts";
 
+/** Add the base URNs referenced by media triples to a shared set. */
 function addReferencedUrns(
   tdb: TribbleDB,
   mediaType: string,
@@ -19,6 +20,7 @@ function addReferencedUrns(
   }
 }
 
+/** Collect every entity base URN referenced by a photo or video. */
 function collectMediaReferencedUrns(tdb: TribbleDB): Set<string> {
   const referenced = new Set<string>();
   const mediaTypes = [KnownTypes.PHOTO, KnownTypes.VIDEO];
@@ -30,6 +32,7 @@ function collectMediaReferencedUrns(tdb: TribbleDB): Set<string> {
   return referenced;
 }
 
+/** Read the entity type from a listing URN, or return undefined for invalid input. */
 function readListingType(listingUrn: unknown): string | undefined {
   const isString = typeof listingUrn === "string";
   if (!isString) {
@@ -39,6 +42,7 @@ function readListingType(listingUrn: unknown): string | undefined {
   return urn.id;
 }
 
+/** Read a listing's entity type only when the listing is browseable. */
 function readBrowseableType(listing: TripleObject): string | undefined {
   const isBrowseable = one(listing.browseable) === DATA_TRUE;
   if (!isBrowseable) {
@@ -48,6 +52,7 @@ function readBrowseableType(listing: TripleObject): string | undefined {
   return readListingType(listingUrn);
 }
 
+/** Collect the entity types published as browseable listings. */
 export function browseableEntityTypes(tdb: TribbleDB): Set<string> {
   const types = new Set<string>();
   const listings = tdb.search({ source: { type: KnownTypes.LISTING } })
@@ -63,6 +68,7 @@ export function browseableEntityTypes(tdb: TribbleDB): Set<string> {
   return types;
 }
 
+/** Add unreferenced entities of one browseable type to the medialess set. */
 function addMedialessThings(
   tdb: TribbleDB,
   type: string,
@@ -78,6 +84,7 @@ function addMedialessThings(
   }
 }
 
+/** Collect browseable entities that no photo or video references. */
 function collectMedialessThings(tdb: TribbleDB): Set<string> {
   const referenced = collectMediaReferencedUrns(tdb);
   const medialess = new Set<string>();
@@ -89,6 +96,7 @@ function collectMedialessThings(tdb: TribbleDB): Set<string> {
   return medialess;
 }
 
+/** Test whether either endpoint of a triple is a medialess entity. */
 function isMedialessTriple(triple: Triple, medialess: Set<string>): boolean {
   const [sourceUrn, , targetUrn] = triple;
   const sourceIsMedialess = medialess.has(baseUrn(sourceUrn));
@@ -96,6 +104,7 @@ function isMedialessTriple(triple: Triple, medialess: Set<string>): boolean {
   return sourceIsMedialess || targetIsMedialess;
 }
 
+/** Collect every triple connected to a medialess entity. */
 function collectStaleTriples(tdb: TribbleDB, medialess: Set<string>): Triple[] {
   const staleTriples: Triple[] = [];
   const triples = tdb.triples();
@@ -107,6 +116,7 @@ function collectStaleTriples(tdb: TribbleDB, medialess: Set<string>): Triple[] {
   return staleTriples;
 }
 
+/** Delete browseable entities and relationships that have no linked media. */
 export function pruneMedialessThings(tdb: TribbleDB): void {
   const medialess = collectMedialessThings(tdb);
   if (medialess.size === 0) {

@@ -5,10 +5,12 @@ import { LIFE_LIST_FILTERS } from "../../../constants/display.ts";
 import type { ChecklistPageAttrs, MammalSectionAttrs } from "../checklist.ts";
 import { drawBirdSection, MammalSection } from "./copy.ts";
 
+/** Add the sidebar class when the life list sidebar is visible. */
 export function readChecklistPageClass(visible: boolean): string {
   return visible ? "page sidebar-visible" : "page";
 }
 
+/** Select the mammal data needed by the mammal section. */
 export function readMammalSectionAttrs(
   attrs: ChecklistPageAttrs,
 ): MammalSectionAttrs {
@@ -20,7 +22,7 @@ export function readMammalSectionAttrs(
   };
 }
 
-// The mammal section shows in the Irish view only. Other views stay birds-only.
+/** The mammal section shows in the Irish view only. Other views stay birds-only. */
 export function drawOptionalMammalSection(
   attrs: ChecklistPageAttrs,
 ): m.Children {
@@ -32,6 +34,7 @@ export function drawOptionalMammalSection(
   return m(MammalSection, sectionAttrs);
 }
 
+/** Combine the bird section with the optional Irish mammal section. */
 export function drawChecklistPageChildren(
   attrs: ChecklistPageAttrs,
 ): m.Children[] {

@@ -17,10 +17,12 @@ const photosPageComponent = PhotosPage();
 let photoUrns: string[] = [];
 const photoCache = new Map<string, Maybe<Photo>>();
 
+/** Reads one photo while preserving the missing-value result. */
 function readPhotoMaybe(urn: string): Maybe<Photo> {
   return services.readPhoto(urn);
 }
 
+/** Reads a limited photo prefix through the navigation cache. */
 function readPhotosByLimit(limit: number): Photo[] {
   const cache = state.loaded ? photoCache : new Map<string, Maybe<Photo>>();
   const photos = readPrefix(photoUrns, limit, cache, readPhotoMaybe);
@@ -29,9 +31,11 @@ function readPhotosByLimit(limit: number): Photo[] {
 
 export const photosEntry = pageEntry({
   page: photosPageComponent,
+  /** Captures the photo URN index once for the new navigation. */
   onmatch() {
     photoUrns = services.readAllPhotoUrns();
   },
+  /** Resolves the photo collection page from the current streamed index. */
   resolve() {
     if (!state.loaded) {
       photoUrns = services.readAllPhotoUrns();
@@ -49,6 +53,7 @@ export const photosEntry = pageEntry({
 
 export const photoEntry = pageEntry({
   page: photoPageComponent,
+  /** Resolves one photo route and its page services. */
   resolve() {
     const id = m.route.param("id");
     if (typeof id !== "string") {

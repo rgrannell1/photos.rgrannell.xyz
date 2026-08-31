@@ -10,6 +10,7 @@ export const USAGE_TERMS =
   "only. For example, using photos as a desktop wallpaper is fine, selling these " +
   "photos is not.";
 
+/** Creates the about page component with title setup and page rendering hooks. */
 export function AboutPage() {
   return {
     oninit: initAboutPage,

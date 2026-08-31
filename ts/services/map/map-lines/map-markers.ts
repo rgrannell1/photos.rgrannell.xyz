@@ -17,18 +17,21 @@ export type PlaceMarkerTarget = {
   bounds: LatLngBounds;
 };
 
+/** Builds lazy-loaded thumbnail markup for a place popup. */
 function coverThumbnailHtml(place: GeocodedPlaceWithCover): string {
   const source = place.coverThumbnailUrl;
   return `<img src="${source}" alt="" class="${MAP_POPUP_THUMBNAIL_CLASS}" ` +
     `loading="lazy" />`;
 }
 
+/** Builds a place link with a fallback label. */
 function placeLinkHtml(place: GeocodedPlaceWithCover): string {
   const href = urnToUrl(place.id);
   const label = place.name || MAP_UNKNOWN_PLACE_LABEL;
   return `<a href="${href}">${label}</a>`;
 }
 
+/** Builds popup markup with an optional cover thumbnail. */
 export function placePopupHtml(place: GeocodedPlaceWithCover): string {
   const link = placeLinkHtml(place);
   if (!place.coverThumbnailUrl) {
@@ -39,10 +42,12 @@ export function placePopupHtml(place: GeocodedPlaceWithCover): string {
   return `${image}<br />${link}`;
 }
 
+/** Reports whether a place has finite latitude and longitude values. */
 function hasValidCoordinates(place: GeocodedPlaceWithCover): boolean {
   return Number.isFinite(place.latitude) && Number.isFinite(place.longitude);
 }
 
+/** Adds one place marker and extends the shared map bounds. */
 function mountPlaceMarker(
   target: PlaceMarkerTarget,
   place: GeocodedPlaceWithCover,
@@ -54,6 +59,7 @@ function mountPlaceMarker(
   target.bounds.extend(coordinates);
 }
 
+/** Adds a place marker when its coordinates are valid. */
 export function addPlaceMarker(
   target: PlaceMarkerTarget,
   place: GeocodedPlaceWithCover,

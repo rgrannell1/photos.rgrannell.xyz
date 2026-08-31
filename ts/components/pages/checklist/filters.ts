@@ -15,16 +15,19 @@ import type {
 import { FILTER_DEFINITIONS } from "../checklist.ts";
 import { drawFilterDefinition, isIrishWild, isWild } from "./dates.ts";
 
+/** Counts wild checklist entries recorded in Ireland. */
 export function countIrishEntries(entries: ChecklistEntry[]): number {
   const matchingEntries = entries.filter(isIrishWild);
   return matchingEntries.length;
 }
 
+/** Counts wild checklist entries from all countries. */
 export function countWildEntries(entries: ChecklistEntry[]): number {
   const matchingEntries = entries.filter(isWild);
   return matchingEntries.length;
 }
 
+/** Counts entries included by the selected life-list filter. */
 export function readChecklistDisplayCount(
   entries: ChecklistEntry[],
   filter: string,
@@ -40,6 +43,7 @@ export function readChecklistDisplayCount(
   return countWildEntries(entries);
 }
 
+/** Draws checklist controls with the displayed species count. */
 export function drawChecklistDetails(
   controls: m.Children[],
   displayCount: number,
@@ -48,6 +52,7 @@ export function drawChecklistDetails(
   return m("p.listing-details", [...controls, count]);
 }
 
+/** Draws each checklist filter with the current selection handler. */
 export function readFilterControls(
   filter: string,
   onSelect: (filter: string) => void,
@@ -56,6 +61,7 @@ export function readFilterControls(
   return FILTER_DEFINITIONS.flatMap(drawDefinition);
 }
 
+/** Renders the filter controls and matching checklist count. */
 export function viewChecklistDetails(
   vnode: m.Vnode<ChecklistDetailsAttrs>,
 ): m.Children {
@@ -65,7 +71,7 @@ export function viewChecklistDetails(
   return drawChecklistDetails(controls, displayCount);
 }
 
-/*
+/**
  * Details line above the checklist. Filters to Irish wild, all wild, or all
  * species including captive ones.
  */
@@ -73,6 +79,7 @@ export function ChecklistDetails() {
   return { view: viewChecklistDetails };
 }
 
+/** Builds thumbnail attributes for a checklist cover photo. */
 export function readChecklistImageAttrs(
   cover: Photo,
 ): Omit<ImagePairAttrs, "href" | "label"> {
@@ -88,6 +95,7 @@ export function readChecklistImageAttrs(
   };
 }
 
+/** Draws a linked checklist cover photo. */
 export function drawChecklistPhoto(
   cover: Photo,
   href: string,
@@ -98,6 +106,7 @@ export function drawChecklistPhoto(
   return m(ImagePair, attrs);
 }
 
+/** Renders a checklist photo or an empty placeholder when absent. */
 export function viewChecklistPhoto(
   vnode: m.Vnode<ChecklistPhotoAttrs>,
 ): m.Children {

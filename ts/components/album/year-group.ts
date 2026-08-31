@@ -21,10 +21,12 @@ export type AlbumYearGroupAttrs = {
   startIdx: number;
 };
 
+/** Mark years in the site's early-history range for distinct styling. */
 function yearHeadingClass(year: number): string | undefined {
   return year <= BEFORE_TIMES_FINAL_YEAR ? "before-times" : undefined;
 }
 
+/** Draw a keyed year heading, or a keyed placeholder when hidden. */
 function drawYearHeading(year: number, showHeading: boolean): m.Children {
   if (!showHeading) {
     return m.fragment({ key: `year-${year}` }, []);
@@ -37,6 +39,7 @@ function drawYearHeading(year: number, showHeading: boolean): m.Children {
   return m("h2.year-heading", headingAttrs, year.toString());
 }
 
+/** Draw a keyed recap only when the year heading and recap both exist. */
 function drawYearRecap(
   year: number,
   recap: Maybe<string>,
@@ -50,6 +53,7 @@ function drawYearRecap(
   return m(YearRecap, recapAttrs);
 }
 
+/** Build test metadata for an album card container. */
 function albumContainerAttrs(album: Album): m.Attributes {
   return {
     "data-testid": "album-row",
@@ -57,6 +61,7 @@ function albumContainerAttrs(album: Album): m.Attributes {
   };
 }
 
+/** Build album card attributes with the list-relative loading mode. */
 function albumCardAttrs(
   attrs: AlbumYearGroupAttrs,
   album: Album,
@@ -73,6 +78,7 @@ function albumCardAttrs(
   };
 }
 
+/** Draw one album card within its year group. */
 function drawAlbumCard(
   attrs: AlbumYearGroupAttrs,
   album: Album,
@@ -82,6 +88,7 @@ function drawAlbumCard(
   return m(AlbumCard, cardAttrs);
 }
 
+/** Draw a year heading, optional recap, and its album cards. */
 function viewAlbumYearGroup(
   vnode: m.Vnode<AlbumYearGroupAttrs>,
 ): m.Children {
@@ -96,6 +103,7 @@ function viewAlbumYearGroup(
   return components;
 }
 
+/** Create the album year group component. */
 export function AlbumYearGroup() {
   return { view: viewAlbumYearGroup };
 }

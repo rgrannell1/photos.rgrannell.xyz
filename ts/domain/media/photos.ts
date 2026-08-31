@@ -3,6 +3,7 @@
 /* Pure photo grouping and date calculations. */
 import type { Photo } from "../../types/domain.ts";
 
+/** Read a photo year from its millisecond timestamp. */
 export function photoYear(photo: Photo): number {
   return new Date(parseInt(photo.createdAt)).getFullYear();
 }
@@ -13,7 +14,7 @@ export type PhotoYearGroup = {
   photos: Photo[];
 };
 
-/* Undated photos join the run above. They do not start one. */
+/** Undated photos join the run above. They do not start one. */
 export function groupPhotosByYear(
   photos: Photo[],
   currentYear: number,

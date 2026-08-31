@@ -7,6 +7,7 @@ export type VideosPageAttrs = {
   visible: boolean;
 };
 
+/** Create the videos page component. */
 export function VideosPage() {
   return { view: viewVideosPage };
 }

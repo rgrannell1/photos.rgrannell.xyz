@@ -20,6 +20,9 @@ import {
   yearRecaps,
 } from "./albums.ts";
 
+/**
+ * Store a computed value only after the shared data load completes.
+ */
 export function cacheWhenLoaded<Key, Value>(
   cache: Map<Key, Value>,
   key: Key,
@@ -31,12 +34,18 @@ export function cacheWhenLoaded<Key, Value>(
   target.set(key, value);
 }
 
+/**
+ * Resolve every country reference attached to an album.
+ */
 export function readCountriesForAlbum(album: Album): Country[] {
   const countryUrns = setify(fromNullable(album.country));
   const countries = services.readCountries(countryUrns);
   return countries;
 }
 
+/**
+ * Read an album's countries through the stable-data cache.
+ */
 export function readAlbumCountries(album: Album): Country[] {
   const cached = albumCountries.get(album.id);
   if (cached) return cached;
@@ -46,6 +55,9 @@ export function readAlbumCountries(album: Album): Country[] {
   return countries;
 }
 
+/**
+ * Read a year recap through the stable-data cache.
+ */
 export function readYearRecap(year: number): Maybe<string> {
   const cached = yearRecaps.get(year);
   if (cached !== undefined) return cached;
@@ -55,6 +67,9 @@ export function readYearRecap(year: number): Maybe<string> {
   return recap;
 }
 
+/**
+ * Read a trip name through the stable-data cache.
+ */
 export function readTripName(trip: string): Maybe<string> {
   const cached = tripNames.get(trip);
   if (cached !== undefined) return cached;
@@ -64,10 +79,16 @@ export function readTripName(trip: string): Maybe<string> {
   return name;
 }
 
+/**
+ * Use the generic trip label when the trip has no name.
+ */
 export function readTripLabel(trip: string): string {
   return withDefault(readTripName(trip), "Trip");
 }
 
+/**
+ * Refresh album-list data until the shared load completes.
+ */
 export function refreshAlbumsCache(): void {
   const hasLoadedData = state.loaded && albumsCacheState.loaded;
   if (hasLoadedData) {
@@ -80,16 +101,25 @@ export function refreshAlbumsCache(): void {
   albumsCacheState.loaded = state.loaded;
 }
 
+/**
+ * Decode the selected country route parameter to its URN.
+ */
 export function readSelectedCountry(): Maybe<string> {
   const countrySlug = fromNullable<string>(m.route.param("country"));
   return mapMaybe(countrySlug, countryUrn);
 }
 
+/**
+ * Decode the selected trip route parameter to its URN.
+ */
 export function readSelectedTrip(): Maybe<string> {
   const tripSlug = fromNullable<string>(m.route.param("trip"));
   return mapMaybe(tripSlug, tripUrn);
 }
 
+/**
+ * Collect the current album filters and their display label.
+ */
 export function readAlbumFilters(): AlbumFilters {
   const selectedCountry = readSelectedCountry();
   const selectedTrip = readSelectedTrip();

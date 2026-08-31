@@ -2,6 +2,7 @@ import m from "mithril";
 import type { AppWindow, Stats } from "../../../types/browser.ts";
 import { parseStats } from "../../../services/browser/stats.ts";
 
+/** Draws a count followed by its linked label. */
 function drawLinkedCount(
   count: number,
   href: string,
@@ -12,12 +13,14 @@ function drawLinkedCount(
   return [countText, link];
 }
 
+/** Draws linked photo and video totals. */
 function drawMediaStats(stats: Stats): m.Children[] {
   const photos = drawLinkedCount(stats.photos, "#/photos", "photos");
   const videos = drawLinkedCount(stats.videos, "#/videos", "videos");
   return [...photos, " · ", ...videos, " · "];
 }
 
+/** Draws linked bird and mammal species totals. */
 function drawSpeciesStats(stats: Stats): m.Children[] {
   const birds = drawLinkedCount(
     stats.bird_species,
@@ -32,6 +35,7 @@ function drawSpeciesStats(stats: Stats): m.Children[] {
   return [...birds, " · ", ...mammals, " · "];
 }
 
+/** Renders parsed album statistics or an empty paragraph when invalid. */
 function viewAlbumStats(result: ReturnType<typeof parseStats>): m.Children {
   if (!result.ok) {
     return m("p");
@@ -61,6 +65,7 @@ function viewAlbumStats(result: ReturnType<typeof parseStats>): m.Children {
   ]);
 }
 
+/** Defines the album statistics component from embedded window data. */
 export function AlbumStats() {
   const stats = parseStats((window as AppWindow).stats);
 

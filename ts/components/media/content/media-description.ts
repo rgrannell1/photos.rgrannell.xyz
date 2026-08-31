@@ -9,11 +9,13 @@ type MediaDescriptionAttrs = {
   summary: Maybe<string>;
 };
 
+/** Selects the description, with the summary as its fallback. */
 function selectDescription(attrs: MediaDescriptionAttrs): string {
   const summary = withDefault(attrs.summary, "");
   return withDefault(attrs.description, summary);
 }
 
+/** Renders preprocessed media text or an empty-value marker. */
 function viewMediaDescription(
   vnode: m.Vnode<MediaDescriptionAttrs>,
 ): m.Children {
@@ -23,6 +25,7 @@ function viewMediaDescription(
   return m("td", content);
 }
 
+/** Creates the shared media description table cell. */
 export function MediaDescription() {
   return { view: viewMediaDescription };
 }

@@ -24,6 +24,7 @@ import {
   readListingCoverSource,
 } from "./covers.ts";
 
+/** Reads every photo in newest-first order. */
 export function readAllPhotos(tdb: TribbleDB): Photo[] {
   const photos = tdb.search({
     source: { type: KnownTypes.PHOTO },
@@ -33,7 +34,7 @@ export function readAllPhotos(tdb: TribbleDB): Photo[] {
   return sortedPhotos;
 }
 
-/* Sorting on raw TripleObjects avoids valibot validation overhead. */
+/** Sorting on raw TripleObjects avoids valibot validation overhead. */
 export function readAllPhotoUrns(tdb: TribbleDB): string[] {
   const photoObjects = tdb.search({
     source: { type: KnownTypes.PHOTO },
@@ -47,6 +48,7 @@ export function readAllPhotoUrns(tdb: TribbleDB): string[] {
 
 export type ThingNodes = ReturnType<typeof collectThingNodes>;
 
+/** Reads newest-first photos which refer to any supplied thing URN. */
 export function readPhotosByThingIds(
   tdb: TribbleDB,
   thingsUrns: Set<string>,
@@ -58,7 +60,7 @@ export function readPhotosByThingIds(
   return photos;
 }
 
-/* Bulk equivalent of readThingCover. Single search avoids per-row blocking. */
+/** Bulk equivalent of readThingCover. Single search avoids per-row blocking. */
 export function readThingCovers(
   tdb: TribbleDB,
   type: string,
@@ -76,6 +78,7 @@ export type CoverTarget = { type: string; id?: string };
 
 export type CoverReferences = ReturnType<typeof readCoverReferences>;
 
+/** Reads a thing's first cover photo when one exists. */
 export function readThingCover(
   tdb: TribbleDB,
   thingUrn: string,
@@ -87,6 +90,7 @@ export function readThingCover(
   return parseCoverPhoto(tdb, photoUrn);
 }
 
+/** Reads countries which contain photos of the supplied things. */
 export function readSeenInCountries(
   tdb: TribbleDB,
   thingUrns: Set<string>,
@@ -97,7 +101,7 @@ export function readSeenInCountries(
   return countries;
 }
 
-/* Pre-computed by mirror. Falls back to entity cover if no listing cover. */
+/** Pre-computed by mirror. Falls back to entity cover if no listing cover. */
 export function readCategoryCover(
   tdb: TribbleDB,
   type: string,

@@ -50,6 +50,7 @@ export type MountMapOptions = {
 };
 
 /* Lazy-loads Leaflet. Pre-load updates are dropped. */
+/** Mounts a lazy Leaflet map and returns its update and teardown handle. */
 export function mountMap(
   root: HTMLElement,
   places: GeocodedPlaceWithCover[],

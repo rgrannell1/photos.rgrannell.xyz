@@ -4,6 +4,7 @@ import { one } from "../../../commons/collections/arrays.ts";
 import { ExternalLink } from "./external-link.ts";
 import { isNone, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
 
+/** Draws a labelled external link when its URL exists. */
 function drawExternalLink(href: Maybe<string>, text: string): m.Vnode | null {
   if (isNone(href)) {
     return null;
@@ -11,16 +12,19 @@ function drawExternalLink(href: Maybe<string>, text: string): m.Vnode | null {
   return m("li", m(ExternalLink, { href, text }));
 }
 
+/** Reports whether an optional link produced visible content. */
 function isVisibleLink(link: m.Vnode | null): boolean {
   return link !== null;
 }
 
+/** Encodes a latitude and longitude for a map query. */
 function encodeCoordinates(latitude: string, longitude: string): string {
   const encodedLatitude = encodeURIComponent(latitude);
   const encodedLongitude = encodeURIComponent(longitude);
   return `${encodedLatitude},${encodedLongitude}`;
 }
 
+/** Builds a Google Maps URL for valid, non-zero coordinates. */
 function readMapHref(thing: TripleObject): Maybe<string> {
   const latitude = one(thing.latitude);
   const longitude = one(thing.longitude);
@@ -35,6 +39,7 @@ function readMapHref(thing: TripleObject): Maybe<string> {
   return `https://www.google.com/maps?q=${coordinates}`;
 }
 
+/** Reads the supported external links for one thing. */
 function readThingUrlLinks(thing: TripleObject): (m.Vnode | null)[] {
   const wikipedia = drawExternalLink(one(thing.wikipedia), "[wikipedia]");
   const birdwatch = drawExternalLink(one(thing.birdwatchUrl), "[birdwatch]");
@@ -42,6 +47,7 @@ function readThingUrlLinks(thing: TripleObject): (m.Vnode | null)[] {
   return [wikipedia, birdwatch, map];
 }
 
+/** Draws a link list when a thing has at least one supported URL. */
 function drawThingUrls(thing: TripleObject): m.Children {
   const links = readThingUrlLinks(thing);
   if (!links.some(isVisibleLink)) {
@@ -51,12 +57,14 @@ function drawThingUrls(thing: TripleObject): m.Children {
   return list;
 }
 
+/** Returns the sole thing, or NONE unless the list has exactly one item. */
 function readOnlyThing(things: TripleObject[]): Maybe<TripleObject> {
   const [thing] = things;
   const hasOneThing = things.length === 1 && thing !== undefined;
   return hasOneThing ? thing : NONE;
 }
 
+/** Draws URLs only when the page represents one thing. */
 function viewThingUrls(
   vnode: m.Vnode<{ things: TripleObject[] }>,
 ): m.Children {
@@ -69,6 +77,7 @@ function viewThingUrls(
   return drawThingUrls(thing);
 }
 
+/** Creates the external URL list for a single-thing page. */
 export function ThingUrls() {
   return { view: viewThingUrls };
 }

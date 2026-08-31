@@ -14,6 +14,7 @@ import type {
 } from "../../../domain/places.ts";
 import type { PlaceCovers } from "./places.ts";
 
+/** Tests whether both coordinates are finite numbers. */
 export function hasFiniteCoordinates(
   latitude: number,
   longitude: number,
@@ -21,18 +22,21 @@ export function hasFiniteCoordinates(
   return Number.isFinite(latitude) && Number.isFinite(longitude);
 }
 
+/** Rejects coordinates within the site's null-island tolerance. */
 export function isNearNullIsland(latitude: number, longitude: number): boolean {
   const latitudeIsNearZero = Math.abs(latitude) < 1e-4;
   const longitudeIsNearZero = Math.abs(longitude) < 1e-4;
   return latitudeIsNearZero && longitudeIsNearZero;
 }
 
+/** Narrows a place to one with both coordinate values. */
 export function hasCoordinates(
   place: Place,
 ): place is Place & { latitude: number; longitude: number } {
   return place.latitude !== undefined && place.longitude !== undefined;
 }
 
+/** Accepts finite coordinates outside the null-island tolerance. */
 export function hasUsableCoordinates(
   latitude: number,
   longitude: number,
@@ -45,11 +49,13 @@ export function hasUsableCoordinates(
   return !isNearNull;
 }
 
+/** Reads every place URN present as a triple source. */
 export function readPlaceUrns(tdb: TribbleDB): Set<string> {
   const query = { source: { type: KnownTypes.PLACE } };
   return tdb.search(query).sources();
 }
 
+/** Reads place URNs that have a country flag relation. */
 export function readCountryUrns(tdb: TribbleDB): Set<string> {
   const query = {
     source: { type: KnownTypes.PLACE },
@@ -59,6 +65,7 @@ export function readCountryUrns(tdb: TribbleDB): Set<string> {
   return urns;
 }
 
+/** Adds a matching cover thumbnail URL to a geocoded place. */
 export function addPlaceCover(
   covers: PlaceCovers,
   place: GeocodedPlace,
@@ -68,10 +75,12 @@ export function addPlaceCover(
   return { ...place, coverThumbnailUrl: cover?.thumbnailUrl };
 }
 
+/** Orders countries by their display names. */
 export function compareCountries(countryA: Country, countryB: Country): number {
   return countryA.name.localeCompare(countryB.name);
 }
 
+/** Orders country triple objects by their first names. */
 export function compareCountryThings(
   countryA: TripleObject,
   countryB: TripleObject,

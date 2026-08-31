@@ -27,6 +27,7 @@ type CameraModelAttrs = {
   readEmoji: ReadThingEmoji;
 };
 
+/** Render a camera model as thing links, with an unknown-value fallback. */
 function viewCameraModel(vnode: m.Vnode<CameraModelAttrs>): m.Children {
   const { model, readThing, readEmoji } = vnode.attrs;
 
@@ -38,16 +39,19 @@ function viewCameraModel(vnode: m.Vnode<CameraModelAttrs>): m.Children {
   return UNKNOWN_EXIF_VALUE;
 }
 
+/** Create the camera-model component. */
 function CameraModel() {
   return { view: viewCameraModel };
 }
 
+/** Render the photo creation date metadata row. */
 function drawDateRow(photo: PhotoType): m.Children {
   const date = m("time", Dates.formatCreatedAt(photo.createdAt));
   const row = m(MetadataRow, { label: "Date-Time" }, date);
   return row;
 }
 
+/** Render camera model and image dimension metadata rows. */
 function drawCameraDetailRows(attrs: ExifDataAttrs): m.Children[] {
   const { photo, readThing, readEmoji } = attrs;
   const model = m(CameraModel, {
@@ -64,18 +68,21 @@ function drawCameraDetailRows(attrs: ExifDataAttrs): m.Children[] {
   return [modelRow, dimensionsRow];
 }
 
+/** Render all camera metadata rows in display order. */
 function drawCameraRows(attrs: ExifDataAttrs): m.Children[] {
   const dateRow = drawDateRow(attrs.photo);
   const detailRows = drawCameraDetailRows(attrs);
   return [dateRow, ...detailRows];
 }
 
+/** Render the focal-length metadata row. */
 function drawLensRows(photo: PhotoType): m.Children[] {
   const focalLength = formatFocalLength(fromNullable(photo.focalLength));
   const focalRow = m(MetadataRow, { label: "Focal Length" }, focalLength);
   return [focalRow];
 }
 
+/** Render shutter speed, aperture, and ISO metadata rows. */
 function drawExposureRows(photo: PhotoType): m.Children[] {
   const shutterSpeed = formatShutterSpeed(fromNullable(photo.exposureTime));
   const aperture = formatAperture(fromNullable(photo.fStop));
@@ -86,6 +93,7 @@ function drawExposureRows(photo: PhotoType): m.Children[] {
   return [shutterRow, apertureRow, isoRow];
 }
 
+/** Render the complete EXIF metadata table for a photo. */
 function viewExifData(vnode: m.Vnode<ExifDataAttrs>): m.Children {
   const cameraRows = drawCameraRows(vnode.attrs);
   const lensRows = drawLensRows(vnode.attrs.photo);
@@ -94,6 +102,7 @@ function viewExifData(vnode: m.Vnode<ExifDataAttrs>): m.Children {
   return m("table.metadata-table", rows);
 }
 
+/** Create the photo EXIF metadata component. */
 export function ExifData() {
   return { view: viewExifData };
 }

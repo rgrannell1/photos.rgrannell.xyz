@@ -1,5 +1,6 @@
 import { fromNullable, type Maybe, NONE } from "./maybe.ts";
 
+/** Convert an optional scalar or array into a set. */
 export function setify<Value>(value: Maybe<Value | Value[]>): Set<Value> {
   if (value === NONE) {
     return new Set();
@@ -8,6 +9,7 @@ export function setify<Value>(value: Maybe<Value | Value[]>): Set<Value> {
   return new Set(Array.isArray(value) ? value : [value]);
 }
 
+/** Collect unique values from one property across multiple objects. */
 export function setOf<Value>(
   property: string,
   objects: Record<string, unknown>[],

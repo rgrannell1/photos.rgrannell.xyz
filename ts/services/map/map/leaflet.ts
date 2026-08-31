@@ -22,6 +22,7 @@ import {
 import type { LeafletLib } from "../map.ts";
 import { addTripPolyline } from "./polylines.ts";
 
+/** Creates a Leaflet map with the configured initial viewport. */
 export function createBaseMap(
   leaflet: LeafletLib,
   container: HTMLElement,
@@ -34,6 +35,7 @@ export function createBaseMap(
   });
 }
 
+/** Adds the configured tile source and attribution to a map. */
 export function addTileLayer(
   leaflet: LeafletLib,
   leafletMap: LeafletMap,
@@ -46,6 +48,7 @@ export function addTileLayer(
   tileLayer.addTo(leafletMap);
 }
 
+/** Creates a Leaflet map with its base tile layer. */
 export function createLeafletMap(
   leaflet: LeafletLib,
   container: HTMLElement,
@@ -55,6 +58,7 @@ export function createLeafletMap(
   return leafletMap;
 }
 
+/** Creates a map only when no map exists and a container is available. */
 export function ensureLeafletMap(
   leaflet: LeafletLib,
   existingMap: Maybe<LeafletMap>,
@@ -66,6 +70,7 @@ export function ensureLeafletMap(
   return some(createLeafletMap(leaflet, container));
 }
 
+/** Removes an existing map and returns the empty map state. */
 export function destroyLeafletMap(
   existingMap: Maybe<LeafletMap>,
 ): Maybe<LeafletMap> {
@@ -76,10 +81,12 @@ export function destroyLeafletMap(
   return NONE;
 }
 
+/** Recalculates a Leaflet map's container dimensions immediately. */
 export function invalidateNow(existingMap: LeafletMap): void {
   existingMap.invalidateSize();
 }
 
+/** Schedules a map size recalculation for the next animation frame. */
 export function invalidateMapSizeSoon(existingMap: Maybe<LeafletMap>) {
   if (isNone(existingMap)) {
     return;
@@ -87,6 +94,7 @@ export function invalidateMapSizeSoon(existingMap: Maybe<LeafletMap>) {
   requestAnimationFrame(invalidateNow.bind(null, existingMap));
 }
 
+/** Reuses the trip layer or adds a new layer to the map. */
 export function readTripLinesLayer(
   leaflet: LeafletLib,
   leafletMap: LeafletMap,
@@ -97,6 +105,7 @@ export function readTripLinesLayer(
     : leaflet.layerGroup().addTo(leafletMap);
 }
 
+/** Adds all trip polylines to the supplied layer. */
 export function drawTripPolylines(
   leaflet: LeafletLib,
   linesLayer: LayerGroup,
@@ -107,6 +116,7 @@ export function drawTripPolylines(
   }
 }
 
+/** Replaces the map's trip polylines while preserving its layer. */
 export function syncTripPolylines(
   leaflet: LeafletLib,
   existingMap: Maybe<LeafletMap>,

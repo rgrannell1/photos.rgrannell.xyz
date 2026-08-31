@@ -54,6 +54,7 @@ export type ThingMetadata = {
   values: string | string[] | undefined;
 };
 
+/** Creates the thing page component. */
 export function ThingPage() {
   return { view: viewThingPage };
 }

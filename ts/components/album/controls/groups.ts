@@ -7,6 +7,7 @@ import { customFlagAsset, FlagIcon } from "../../flag.ts";
 import { isNone, isSome, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
 import type { FlagGroup } from "./country-filter.ts";
 
+/** Build the selection and click attributes for one country flag. */
 export function countryFlagAttrs(
   selectedCountry: Maybe<string>,
   onSelect: (slug: Maybe<string>) => void,
@@ -23,6 +24,7 @@ export function countryFlagAttrs(
   };
 }
 
+/** Draw one selectable country flag. */
 export function drawCountryFlag(
   selectedCountry: Maybe<string>,
   onSelect: (slug: Maybe<string>) => void,
@@ -33,7 +35,7 @@ export function drawCountryFlag(
   return m("span.country-filter-flag", flagAttrs, icon);
 }
 
-/*
+/**
  * Sub-territory ids carry their nation as a prefix, so es-galicia and es both
  * group under es.
  */
@@ -43,11 +45,13 @@ export function flagNation(country: Country): Maybe<string> {
   return nation;
 }
 
+/** Test whether a country uses a nation-level flag asset. */
 export function isNationFlag(country: Country): boolean {
   const asset = customFlagAsset(country.name);
   return isSome(asset) && !asset.includes("-");
 }
 
+/** Append a country to its nation group, creating the group when absent. */
 export function appendCountry(
   groups: Map<string, FlagGroup>,
   nation: string,
@@ -58,6 +62,7 @@ export function appendCountry(
   groups.set(nation, group);
 }
 
+/** Add a country with a supported flag asset to its nation group. */
 export function addCountryToGroups(
   groups: Map<string, FlagGroup>,
   country: Country,
@@ -70,7 +75,7 @@ export function addCountryToGroups(
   appendCountry(groups, groupKey, country);
 }
 
-/*
+/**
  * Places vexilla does not cover show no flag, so they are dropped here.
  */
 export function groupByNation(countries: Country[]): FlagGroup[] {
@@ -84,7 +89,7 @@ export function groupByNation(countries: Country[]): FlagGroup[] {
   return groupedCountries;
 }
 
-/*
+/**
  * Nation flag first, then its sub-territories in the order they arrived
  */
 export function compareWithinGroup(left: Country, right: Country): number {
@@ -93,11 +98,12 @@ export function compareWithinGroup(left: Country, right: Country): number {
   return rightRank - leftRank;
 }
 
-// Longest group first, so the richest nation leads
+/** Longest group first, so the richest nation leads. */
 export function compareGroupLength(left: FlagGroup, right: FlagGroup): number {
   return right.length - left.length;
 }
 
+/** Partition a flag group into lone flags or grouped nations. */
 export function appendFlagGroup(
   lone: FlagGroup,
   nations: FlagGroup[],

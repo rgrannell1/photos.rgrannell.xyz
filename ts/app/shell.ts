@@ -37,6 +37,7 @@ export type PageEntry<PageAttrs> =
     resolve: PageResolver<PageAttrs>;
   };
 
+/** Convert a page definition's raw result into its loading, error, or ready state. */
 function resolvePageDefinition<PageAttrs>(
   definition: PageDefinition<PageAttrs>,
 ): PageResolution<PageAttrs> {
@@ -46,7 +47,7 @@ function resolvePageDefinition<PageAttrs>(
   return { ok: true, value: resolved };
 }
 
-/*
+/**
  * Normalise loading, error, and ready page states.
  */
 export function pageEntry<PageAttrs>(
@@ -59,7 +60,7 @@ export function pageEntry<PageAttrs>(
   };
 }
 
-/*
+/**
  * Wrap a page in the shell. A RouteResolver render keeps the header and sidebar
  * mounted across navigation.
  */
@@ -67,9 +68,11 @@ export function routeResolver<PageAttrs>(
   entry: PageEntry<PageAttrs>,
 ): m.RouteResolver {
   return {
+    /** Run a page's optional navigation hook with the route parameters. */
     onmatch(params: m.Params) {
       entry.onmatch?.(params);
     },
+    /** Render the page's loading, error, or ready state inside the shared shell. */
     render() {
       const result = entry.resolve();
 

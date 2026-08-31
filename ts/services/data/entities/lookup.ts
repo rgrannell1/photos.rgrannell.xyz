@@ -13,11 +13,13 @@ import {
 import { taxonLabel } from "../../../domain/things.ts";
 import { readThing } from "./things.ts";
 
+/** Deduplicates thing IDs and unwraps the result when only one remains. */
 export function normaliseThingIds(thingIds: string[]): string | string[] {
   const uniqueIds = [...new Set(thingIds)];
   return uniqueIds.length === 1 ? uniqueIds[0] : uniqueIds;
 }
 
+/** Normalises an array-valued thing ID without changing other properties. */
 export function normaliseThingId(thing: TripleObject): TripleObject {
   const thingIds = thing.id;
   if (!Array.isArray(thingIds)) {
@@ -28,6 +30,7 @@ export function normaliseThingId(thing: TripleObject): TripleObject {
   return { ...thing, id: thingId };
 }
 
+/** Reads an exact URN and returns NONE when the database has no match. */
 export function readExactThing(
   tdb: TribbleDB,
   urn: string,
@@ -36,6 +39,7 @@ export function readExactThing(
   return thing === undefined ? NONE : normaliseThingId(thing);
 }
 
+/** Returns the first thing that matches an ID and type, or NONE. */
 export function readThingVariant(
   tdb: TribbleDB,
   id: string,
@@ -49,6 +53,7 @@ export function readThingVariant(
   return NONE;
 }
 
+/** Reads an exact thing only when no qualifying query fields are present. */
 export function readUnqualifiedThing(
   tdb: TribbleDB,
   urn: string,
@@ -58,6 +63,7 @@ export function readUnqualifiedThing(
   return readExactThing(tdb, urn);
 }
 
+/** Parses an existing thing and appends only a successful parse result. */
 export function addParsedThing<Parsed>(
   parsedThings: Parsed[],
   parser: (tdb: TribbleDB, thing: TripleObject) => Maybe<Parsed>,
@@ -70,10 +76,12 @@ export function addParsedThing<Parsed>(
   if (!isNone(parsed)) parsedThings.push(parsed);
 }
 
+/** Returns a taxon copy with its display name derived from taxonomic data. */
 export function labelTaxon(taxon: TripleObject): TripleObject {
   return { ...taxon, name: taxonLabel(taxon) };
 }
 
+/** Compares thing names in locale order and treats an absent name as empty. */
 export function compareThingNames(
   thingA: TripleObject,
   thingB: TripleObject,
@@ -83,6 +91,7 @@ export function compareThingNames(
   return nameA.localeCompare(nameB);
 }
 
+/** Returns URNs whose relation links them to the requested taxon. */
 export function readTaxonMemberUrns(
   tdb: TribbleDB,
   type: string,
@@ -96,6 +105,7 @@ export function readTaxonMemberUrns(
   return new Set(speciesUrns);
 }
 
+/** Tests whether a thing defines its own name property. */
 export function hasName(thing: TripleObject): boolean {
   return Object.prototype.hasOwnProperty.call(thing, "name");
 }

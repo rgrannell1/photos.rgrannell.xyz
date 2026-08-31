@@ -5,6 +5,7 @@ export type YearRecapAttrs = {
   markdown: string;
 };
 
+/** Converts first-party recap markdown into trusted Mithril content. */
 function viewYearRecap(vnode: m.Vnode<YearRecapAttrs>): m.Children {
   const { markdown } = vnode.attrs;
   const html = snarkdown(markdown);
@@ -12,7 +13,7 @@ function viewYearRecap(vnode: m.Vnode<YearRecapAttrs>): m.Children {
   return m("div.year-recap", trustedHtml);
 }
 
-/*
+/**
  * The recap markdown is first-party prose published by mirror, so trusting
  * the rendered HTML is safe.
  */

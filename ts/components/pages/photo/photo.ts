@@ -12,6 +12,7 @@ export type PhotoPageAttrs = {
   visible: boolean;
 };
 
+/** Creates the photo page component. */
 export function PhotoPage() {
   return { view: viewPhotoPage };
 }

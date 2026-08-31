@@ -15,6 +15,7 @@ import type { FlagManifest } from "../../types/browser.ts";
 import type { PublishedSprite } from "./builders.ts";
 import { buildId } from "./builders.ts";
 
+/** Build the browser flag manifest from a published sprite. */
 export function createFlagManifest(
   sprite: PublishedSprite,
   big: Record<string, string>,
@@ -31,10 +32,12 @@ export function createFlagManifest(
   };
 }
 
+/** Remove a terminal WebP extension from an asset URL. */
 export function stripWebpExtension(url: string): string {
   return url.replace(/\.webp$/, "");
 }
 
+/** Build template data sourced from generated files and styles. */
 export function createHtmlSourceData(flags: FlagManifest, css: string) {
   return {
     stats: statsText,
@@ -45,6 +48,7 @@ export function createHtmlSourceData(flags: FlagManifest, css: string) {
   };
 }
 
+/** Build template data for deployed assets and cache identifiers. */
 export function createHtmlAssetData() {
   const thumbnails = findHomepageThumbnails().map(stripWebpExtension);
   const prefetched = findPrefetchTargets();
@@ -57,6 +61,7 @@ export function createHtmlAssetData() {
   };
 }
 
+/** Build template data that identifies the published site. */
 export function createHtmlSiteData() {
   const siteUrl = env.photos_url.replace("photos-cdn.", "photos.");
   const siteHostname = new URL(siteUrl).hostname;
@@ -67,6 +72,7 @@ export function createHtmlSiteData() {
   };
 }
 
+/** Render the site HTML with source, asset, and publication data. */
 export function renderHtml(flags: FlagManifest, css: string): string {
   const sourceData = createHtmlSourceData(flags, css);
   const assetData = createHtmlAssetData();

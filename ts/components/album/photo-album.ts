@@ -9,16 +9,18 @@ import {
 } from "../../services/browser/events.ts";
 import { isNone, type Maybe } from "../../commons/collections/maybe.ts";
 
+/** Mix one character into a stable trip hash. */
 function mixTripHash(hash: number, characterCode: number): number {
   const mixed = (hash * 31 + characterCode) | 0;
   return mixed;
 }
 
+/** Map a trip hash to an available colour index. */
 function normaliseTripHash(hash: number): number {
   return Math.abs(hash) % 2;
 }
 
-// hash the trip so its colour never changes with render order or history
+/** Hash the trip so its colour never changes with render order or history. */
 function tripColourIndex(trip: string): number {
   let hash = 0;
   for (let idx = 0; idx < trip.length; idx++) {
@@ -27,6 +29,7 @@ function tripColourIndex(trip: string): number {
   return normaliseTripHash(hash);
 }
 
+/** Navigate within the app unless the browser owns the click. */
 function onTripClick(tripId: string, event: Event) {
   // let modified/middle clicks fall through to the browser so the trip route
   // opens in a new tab
@@ -40,6 +43,7 @@ function onTripClick(tripId: string, event: Event) {
   block(event);
 }
 
+/** Build accessible link attributes for a trip tag. */
 function tripTagAttrs(trip: string) {
   const tripId = asUrn(trip).id;
   const href = `#!/trip/${tripId}`;
@@ -52,12 +56,14 @@ function tripTagAttrs(trip: string) {
   return linkAttrs;
 }
 
+/** Select the stable colour class for a trip tag. */
 function tripTagSelector(trip: string): string {
   const colourIndex = tripColourIndex(trip);
   const selector = `a.trip-tag .trip-color-${colourIndex}`;
   return selector;
 }
 
+/** Draw a trip tag when the album belongs to a trip. */
 function viewTripTag(vnode: m.Vnode<{ trip: Maybe<string> }>): m.Children {
   const { trip } = vnode.attrs;
 
@@ -70,6 +76,7 @@ function viewTripTag(vnode: m.Vnode<{ trip: Maybe<string> }>): m.Children {
   return m(selector, linkAttrs);
 }
 
+/** Create the trip tag component. */
 function TripTag() {
   return { view: viewTripTag };
 }
@@ -88,6 +95,7 @@ export type PhotoAlbumAttrs = {
   minDate?: number;
 };
 
+/** Map album attributes to the image pair contract. */
 function photoAlbumImageAttrs(attrs: PhotoAlbumAttrs): ImagePairAttrs {
   const imageAttrs: ImagePairAttrs = {
     thumbnailUrl: attrs.thumbnailUrl,
@@ -109,6 +117,7 @@ function photoAlbumImageAttrs(attrs: PhotoAlbumAttrs): ImagePairAttrs {
   return imageAttrs;
 }
 
+/** Draw an album cover with its trip tag and optional child content. */
 function viewPhotoAlbum(vnode: m.Vnode<PhotoAlbumAttrs>): m.Children {
   const attrs = vnode.attrs;
   const tripTag = m(TripTag, { trip: attrs.trip });
@@ -117,6 +126,7 @@ function viewPhotoAlbum(vnode: m.Vnode<PhotoAlbumAttrs>): m.Children {
   return m("div.photo-album", containerAttrs, [tripTag, image, attrs.child]);
 }
 
+/** Create an album cover component. */
 export function PhotoAlbum() {
   return { view: viewPhotoAlbum };
 }

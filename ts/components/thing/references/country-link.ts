@@ -16,6 +16,7 @@ export type CountryLinkAttrs = {
   mode: CountryLinkMode;
 };
 
+/** Render one album country as a keyed flag-only link. */
 function drawCountryFlagLink(
   albumId: string,
   country: Country,
@@ -29,7 +30,7 @@ function drawCountryFlagLink(
   return m(CountryLink, attrs);
 }
 
-/* Keyed by album and country so Mithril can diff them. */
+/** Keyed by album and country so Mithril can diff them. */
 export function countryFlagLinks(
   albumId: string,
   countries: Country[],
@@ -37,12 +38,14 @@ export function countryFlagLinks(
   return countries.map(drawCountryFlagLink.bind(null, albumId));
 }
 
+/** Build the URL and navigation handler for a country URN. */
 function readCountryLinkAttrs(id: string) {
   const parsed = asUrn(id);
   const route = `/thing/${parsed.type}:${parsed.id}`;
   return { href: urnToUrl(id), onclick: navigate(route) };
 }
 
+/** Render a compact country link that contains only its flag. */
 function drawShortCountryLink(
   attrs: Record<string, unknown>,
   flag: m.Children,
@@ -50,6 +53,7 @@ function drawShortCountryLink(
   return m("a.country-link-short", attrs, flag);
 }
 
+/** Render a country link with its flag and display name. */
 function drawNamedCountryLink(
   attrs: Record<string, unknown>,
   flag: m.Children,
@@ -59,6 +63,7 @@ function drawNamedCountryLink(
   return m("a.country-link", attrs, label);
 }
 
+/** Render a country link in the requested display mode. */
 function drawCountryLink(
   id: string,
   name: string,
@@ -72,6 +77,7 @@ function drawCountryLink(
   return drawNamedCountryLink(attrs, flag, name);
 }
 
+/** Render a country link, or an empty paragraph when its identifier is absent. */
 function viewCountryLink(vnode: m.Vnode<CountryLinkAttrs>): m.Children {
   const { country, mode } = vnode.attrs;
   const { id, name } = country;
@@ -83,6 +89,7 @@ function viewCountryLink(vnode: m.Vnode<CountryLinkAttrs>): m.Children {
   return drawCountryLink(id, name, mode);
 }
 
+/** Create the country link component. */
 export function CountryLink() {
   return { view: viewCountryLink };
 }

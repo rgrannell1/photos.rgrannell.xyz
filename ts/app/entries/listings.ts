@@ -44,6 +44,7 @@ type CategoryModel = {
 
 let categoryModels: Maybe<CategoryModel[]> = NONE;
 
+/** Reads listable categories that have a usable cover photo. */
 function readCategoryModels(): CategoryModel[] {
   return services.readListings().flatMap((listing) => {
     const id = one(listing.id);
@@ -62,6 +63,7 @@ function readCategoryModels(): CategoryModel[] {
   });
 }
 
+/** Reads the listing data and optional wildlife statistics for one type. */
 function readListingModel(type: string): ListingModel {
   const listing = services.readThing(`urn:ró:listing:${type}`);
   const things = type === COUNTRY_LISTING_TYPE
@@ -85,6 +87,7 @@ function readListingModel(type: string): ListingModel {
 
 export const listingEntry = pageEntry({
   page: listingPageComponent,
+  /** Resolves one listing route after source data loads. */
   resolve() {
     if (!state.loaded) {
       return "";
@@ -112,6 +115,7 @@ export const listingEntry = pageEntry({
 
 export const listingsEntry = pageEntry({
   page: listingsPageComponent,
+  /** Resolves and caches the category listing page after source data loads. */
   resolve() {
     if (!state.loaded) {
       return "";

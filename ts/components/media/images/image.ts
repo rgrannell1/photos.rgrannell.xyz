@@ -12,6 +12,7 @@ export type ImageAttrs = {
   alt?: string;
 };
 
+/** Renders a thumbnail and hides its placeholder after load. */
 function viewImage(vnode: m.Vnode<ImageAttrs>): m.Children {
   const { thumbnailUrl, loading, onclick, width, height, alt } = vnode.attrs;
   const imageAttrs = {
@@ -26,6 +27,7 @@ function viewImage(vnode: m.Vnode<ImageAttrs>): m.Children {
   return m("img.thumbnail-image", imageAttrs);
 }
 
+/** Defines the thumbnail image component. */
 export function Image() {
   return { view: viewImage };
 }

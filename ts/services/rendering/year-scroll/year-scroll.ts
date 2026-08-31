@@ -21,6 +21,7 @@ export type YearScrollSpy = {
 };
 
 /* Scrolls to initialYear on ?year= deep link. Returns teardown. */
+/** Starts year-scroll tracking and returns its teardown function. */
 export function mountYearScroll(
   initialYear: Maybe<string>,
 ): () => void {

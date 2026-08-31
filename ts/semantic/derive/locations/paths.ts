@@ -4,6 +4,7 @@ import type { Triple } from "@rgrannell1/tribbledb";
 import { KnownRelations } from "../../../constants/data.ts";
 import type { LocationTree } from "./locations.ts";
 
+/** Adds reciprocal containment relations between two nodes in a location path. */
 export function addPathRelations(
   triples: Triple[],
   sourceUrn: string,
@@ -15,6 +16,7 @@ export function addPathRelations(
   triples.push(reverse);
 }
 
+/** Links one path node to every ancestor that follows it. */
 export function addRelationsFromSource(
   path: string[],
   sourceIdx: number,
@@ -27,6 +29,7 @@ export function addRelationsFromSource(
   }
 }
 
+/** Derives all reciprocal transitive relations for one location path. */
 export function collectPathRelations(path: string[]): Triple[] {
   const triples: Triple[] = [];
 
@@ -37,6 +40,7 @@ export function collectPathRelations(path: string[]): Triple[] {
   return triples;
 }
 
+/** Traces all parent branches and fails on missing nodes or likely cycles. */
 export function traceLocationPath(
   tree: LocationTree,
   path: string[],
@@ -63,6 +67,7 @@ export function traceLocationPath(
   return triples;
 }
 
+/** Derives transitive location triples from every leaf in the tree. */
 export function collectNestedLocationTriples(tree: LocationTree): Triple[] {
   const triples: Triple[] = [];
   for (const nodeId of tree.nodes.keys()) {

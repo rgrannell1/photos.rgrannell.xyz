@@ -2,11 +2,13 @@
 
 import m from "mithril";
 
+/** Build the shared and type-specific class names for a thing link. */
 function thingLinkClasses(type: string): string {
   const classes = ["thing-link", `${type}-link`];
   return classes.join(" ");
 }
 
+/** Draw a thing link element while applying the shared class contract. */
 export function drawThingLink(
   tag: string,
   type: string,

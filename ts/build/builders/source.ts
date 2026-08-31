@@ -14,16 +14,19 @@ import {
 import { TribbleStringifier } from "@rgrannell1/tribbledb";
 import { buildId, buildTime } from "./builders.ts";
 
+/** Format one digest byte as two lowercase hexadecimal digits. */
 export function formatHashByte(byte: number): string {
   return byte.toString(16).padStart(2, "0");
 }
 
+/** Convert a binary digest to its eight-character hexadecimal build ID. */
 export function formatDigest(digest: ArrayBuffer): string {
   const bytes = Array.from(new Uint8Array(digest));
   const hex = bytes.map(formatHashByte).join("");
   return hex.slice(0, 8);
 }
 
+/** Read all TypeScript source text used to derive the build ID. */
 export async function readTypeScriptContents(): Promise<string[]> {
   const contents: string[] = [];
   for await (const entry of walk("ts", { exts: [".ts"] })) {
@@ -33,6 +36,7 @@ export async function readTypeScriptContents(): Promise<string[]> {
   return contents;
 }
 
+/** Read static source text whose changes must invalidate cached assets. */
 export async function readStaticSourceContents(): Promise<string[]> {
   const style = await Deno.readTextFile("css/style.css");
   // The worker template must bust cache too. An unchanged name serves stale entries.
@@ -40,12 +44,14 @@ export async function readStaticSourceContents(): Promise<string[]> {
   return [style, worker];
 }
 
+/** Return the shortened SHA-256 digest for source text. */
 export async function hashSource(source: string): Promise<string> {
   const encoded = new TextEncoder().encode(source);
   const digest = await crypto.subtle.digest("SHA-256", encoded);
   return formatDigest(digest);
 }
 
+/** Compute one build ID from all TypeScript and cache-sensitive static source. */
 export async function computeSourceHash(): Promise<string> {
   const typeScriptContents = await readTypeScriptContents();
   const staticContents = await readStaticSourceContents();
@@ -53,18 +59,21 @@ export async function computeSourceHash(): Promise<string> {
   return hashSource(source);
 }
 
+/** Serialise the current build identity as newline-terminated JSON. */
 export function createVersionContent(): string {
   const version = { version: buildId, buildTime };
   const metadata = JSON.stringify(version, null, 2);
   return `${metadata}\n`;
 }
 
+/** Serialise every database triple as newline-delimited Tribble data. */
 export function stringifyTribbles(): string {
   const stringifier = new TribbleStringifier();
   const stringifyTriple = stringifier.stringify.bind(stringifier);
   return tdb.triples().map(stringifyTriple).join("\n");
 }
 
+/** Collect template data for the generated service worker. */
 export function createServiceWorkerData() {
   const prefetched = findPrefetchTargets();
   const thumbnails = findHomepageThumbnails();
@@ -78,6 +87,7 @@ export function createServiceWorkerData() {
   };
 }
 
+/** Compile CSS through esbuild and return the generated code. */
 export async function transformCss(css: string): Promise<string> {
   const result = await esbuild.transform(css, { loader: "css" });
   return result.code;

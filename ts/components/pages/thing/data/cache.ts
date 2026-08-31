@@ -18,6 +18,7 @@ import type {
   UrnCache,
 } from "../view/thing.ts";
 
+/** Computes a value and replaces the cache entry for the page URN. */
 export function computeCached<Value extends object>(
   cache: UrnCache<Value>,
   attrs: ThingPageAttrs,
@@ -29,6 +30,7 @@ export function computeCached<Value extends object>(
   return value;
 }
 
+/** Reuses a value for the same page URN, or computes a fresh value. */
 export function readCached<Value extends object>(
   cache: UrnCache<Value>,
   attrs: ThingPageAttrs,
@@ -45,6 +47,7 @@ export function readCached<Value extends object>(
  * Memoise a read against the page URN. Reads are pure over loaded data, so
  * they must not run on every batched redraw.
  */
+/** Wraps a page reader with a one-entry cache keyed by URN. */
 export function cachedByUrn<Value extends object>(
   compute: (attrs: ThingPageAttrs) => Value,
 ): CachedReader<Value> {
@@ -57,22 +60,27 @@ export function cachedByUrn<Value extends object>(
   return reader;
 }
 
+/** Reads countries linked to the distinct things on the page. */
 export function readSeenIn(attrs: ThingPageAttrs): Country[] {
   return attrs.readSeenInCountries(setOf<string>("id", attrs.things));
 }
 
+/** Reads album entries linked to the distinct things on the page. */
 export function readAlbumEntries(attrs: ThingPageAttrs): AlbumEntry[] {
   return attrs.readAlbumEntries(setOf<string>("id", attrs.things));
 }
 
+/** Reads videos linked to the distinct things on the page. */
 export function readThingVideos(attrs: ThingPageAttrs): VideoType[] {
   return attrs.readVideos(setOf<string>("id", attrs.things));
 }
 
+/** Reads photos linked to the distinct things on the page. */
 export function readThingPhotos(attrs: ThingPageAttrs): PhotoType[] {
   return attrs.readPhotos(setOf<string>("id", attrs.things));
 }
 
+/** Draws one country link for a seen-in list. */
 export function drawSeenInCountry(country: SeenInCountry): m.Children {
   return m(CountryLink, {
     country,
@@ -81,6 +89,7 @@ export function drawSeenInCountry(country: SeenInCountry): m.Children {
   });
 }
 
+/** Draws a metadata key and value as a table row. */
 export function drawMetadataRow(
   [key, value]: [string, m.Children],
 ): m.Children {
@@ -90,6 +99,7 @@ export function drawMetadataRow(
   ]);
 }
 
+/** Draws a typed thing list for the supplied URNs. */
 export function drawThingList(
   attrs: ThingPageAttrs,
   kind: ThingListKind,

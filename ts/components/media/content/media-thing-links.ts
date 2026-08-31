@@ -11,6 +11,7 @@ type MediaThingLinksAttrs = {
   readEmoji: ReadThingEmoji;
 };
 
+/** Draws a metadata value as links or an empty-value mark. */
 function viewMediaThingLinks(vnode: m.Vnode<MediaThingLinksAttrs>): m.Children {
   const { value, readThing, readEmoji } = vnode.attrs;
   const $links = toThingLinks(readThing, readEmoji, [value]);
@@ -18,6 +19,7 @@ function viewMediaThingLinks(vnode: m.Vnode<MediaThingLinksAttrs>): m.Children {
   return m("td", content);
 }
 
+/** Creates the media thing links component. */
 export function MediaThingLinks() {
   return { view: viewMediaThingLinks };
 }

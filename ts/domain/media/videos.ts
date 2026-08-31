@@ -11,12 +11,14 @@ export type VideoYearGroup = {
   videos: DatedVideo[];
 };
 
+/** Return the most recently created year group, if one exists. */
 function readLastVideoGroup(
   groups: VideoYearGroup[],
 ): VideoYearGroup | undefined {
   return groups[groups.length - 1];
 }
 
+/** Append a video when it continues the current year group. */
 function appendToVideoYearGroup(
   groups: VideoYearGroup[],
   video: DatedVideo,
@@ -30,6 +32,7 @@ function appendToVideoYearGroup(
   return true;
 }
 
+/** Start a year group and hide its heading for the current year. */
 function addVideoYearGroup(
   groups: VideoYearGroup[],
   video: DatedVideo,
@@ -40,6 +43,7 @@ function addVideoYearGroup(
   groups.push(group);
 }
 
+/** Append a video to its current group or start its next group. */
 function addVideoToYearGroups(
   groups: VideoYearGroup[],
   currentYear: number,
@@ -51,6 +55,7 @@ function addVideoToYearGroups(
   }
 }
 
+/** Group ordered videos into consecutive years for display. */
 export function groupVideosByYear(
   videos: DatedVideo[],
   currentYear: number,

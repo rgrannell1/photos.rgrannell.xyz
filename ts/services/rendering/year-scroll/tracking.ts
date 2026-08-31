@@ -16,16 +16,19 @@ import {
 import type { YearScrollSpy, YearScrollState } from "./year-scroll.ts";
 import { settleYearScroll } from "./settling.ts";
 
+/** Test whether a year heading starts below the scroll tracking offset. */
 export function isHeadingBelowOffset(heading: HTMLElement): boolean {
   const headingTop = heading.getBoundingClientRect().top;
   return headingTop > YEAR_SCROLL_OFFSET;
 }
 
+/** Read and trim a heading's year text, or return none when absent. */
 export function readHeadingYear(heading: HTMLElement): Maybe<string> {
   const headingText = heading.textContent?.trim();
   return fromNullable(headingText);
 }
 
+/** Read all year headings from the current document in document order. */
 export function readYearHeadings(): HTMLElement[] {
   const nodes = document.querySelectorAll<HTMLElement>(
     ALBUM_YEAR_HEADINGS_SELECTOR,
@@ -34,7 +37,7 @@ export function readYearHeadings(): HTMLElement[] {
   return headings;
 }
 
-/* Newest year first. Last heading above offset wins. Null if banner in view. */
+/** Return null while the banner remains visible. */
 export function currentYearInView(): Maybe<string> {
   const headings = readYearHeadings();
 
@@ -48,12 +51,13 @@ export function currentYearInView(): Maybe<string> {
   return current;
 }
 
+/** Replace the current history URL without adding a navigation entry. */
 export function replaceYearRoute(yearRoute: string): void {
   const currentState = history.state;
   history.replaceState(currentState, "", yearRoute);
 }
 
-/* Use replaceState to keep scroll position while making URL shareable. */
+/** Use replaceState to keep scroll position while making URL shareable. */
 export function reflectYearInUrl(year: string): void {
   const route = m.route.get();
   const base = route.split("?")[0];
@@ -61,6 +65,7 @@ export function reflectYearInUrl(year: string): void {
   replaceYearRoute(yearRoute);
 }
 
+/** Reflect a changed visible year in state and the URL. */
 export function reflectVisibleYear(
   scrollState: YearScrollState,
   year: Maybe<string>,
@@ -73,12 +78,14 @@ export function reflectVisibleYear(
   }
 }
 
+/** Finish a queued frame and reflect the currently visible year. */
 export function reflectCurrentYear(scrollState: YearScrollState): void {
   scrollState.scrollFrame = NONE;
   const year = currentYearInView();
   reflectVisibleYear(scrollState, year);
 }
 
+/** Queue at most one animation frame to reflect the visible year. */
 export function trackScroll(scrollState: YearScrollState): void {
   if (isSome(scrollState.scrollFrame)) {
     return;
@@ -88,6 +95,7 @@ export function trackScroll(scrollState: YearScrollState): void {
   scrollState.scrollFrame = frame;
 }
 
+/** Retry year-scroll settling until the configured pass limit is reached. */
 export function retryYearScroll(year: string, spy: YearScrollSpy): void {
   if (spy.passes >= YEAR_SCROLL_MAX_PASSES) {
     return;

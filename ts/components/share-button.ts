@@ -6,6 +6,7 @@ type ShareButtonAttrs = {
   name: string;
 };
 
+/** Runs native sharing and redraws after its state changes. */
 async function share(
   localState: { sharing: boolean },
   url: string,
@@ -15,14 +16,17 @@ async function share(
   m.redraw();
 }
 
+/** Shows progress while a native share request is active. */
 function buttonText(localState: { sharing: boolean }) {
   return localState.sharing ? "[sharing...]" : "[share]";
 }
 
+/** Renders the desktop fallback as a direct share link. */
 function drawShareLink(url: string): m.Children {
   return m("a.photo-share-button", { href: url, rel: "noreferrer" }, "[share]");
 }
 
+/** Renders a native share control bound to local progress state. */
 function drawNativeShareButton(
   localState: { sharing: boolean },
   url: string,
@@ -33,6 +37,7 @@ function drawNativeShareButton(
   return m("button.photo-share-button", { onclick }, text);
 }
 
+/** Selects native sharing when the browser supports it. */
 function viewShareButton(
   localState: { sharing: boolean },
   vnode: m.Vnode<ShareButtonAttrs>,
@@ -47,7 +52,7 @@ function viewShareButton(
   return drawNativeShareButton(localState, url, name);
 }
 
-/* The [share] control used by album, trip, and thing pages. */
+/** The [share] control used by album, trip, and thing pages. */
 export function ShareButton() {
   const localState = {
     sharing: false,

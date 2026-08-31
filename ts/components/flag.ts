@@ -33,7 +33,7 @@ const CUSTOM_FLAGS: Record<string, string> = {
   "United Kingdom": "gb",
 };
 
-/*
+/**
  * Find the vexilla flag id for a place name, if one exists
  */
 export function customFlagAsset(name: Maybe<string>): Maybe<string> {
@@ -46,11 +46,12 @@ export function customFlagAsset(name: Maybe<string>): Maybe<string> {
   return NONE;
 }
 
+/** Convert a sprite cell index to its horizontal percentage offset. */
 function spriteOffset(position: number, count: number): number {
   return count > 1 ? (position / (count - 1)) * 100 : 0;
 }
 
-/*
+/**
  * Percentage positioning scales the icon with the font size, without a known
  * pixel cell width.
  */
@@ -65,6 +66,7 @@ function spriteCellStyle(position: number): Record<string, string> {
   };
 }
 
+/** Draw a labelled flag from a standalone image asset. */
 function drawFlagImage(src: string, label: string): m.Children {
   return m("img.flag-icon", { src, alt: label, loading: "lazy" });
 }
@@ -74,6 +76,7 @@ export type FlagIconAttrs = {
   big?: boolean;
 };
 
+/** Draw the large flag asset when the caller requests one and it exists. */
 function drawLargeFlag(
   asset: string,
   label: string,
@@ -86,12 +89,14 @@ function drawLargeFlag(
   return drawFlagImage(largeAsset, label);
 }
 
+/** Draw an accessible flag from one sprite cell. */
 function drawFlagSprite(position: number, label: string): m.Children {
   const style = spriteCellStyle(position);
   const attrs = { role: "img", "aria-label": label, style };
   return m("span.flag-icon", attrs);
 }
 
+/** Resolve and draw a flag from the sprite manifest. */
 function drawSpriteFlag(asset: string, label: string): m.Children {
   const position = flagManifest().positions[asset];
   if (position === undefined) {
@@ -100,6 +105,7 @@ function drawSpriteFlag(asset: string, label: string): m.Children {
   return drawFlagSprite(position, label);
 }
 
+/** Prefer a requested large asset, then fall back to the sprite. */
 function drawFlag(asset: string, label: string, big?: boolean): m.Children {
   const largeFlag = drawLargeFlag(asset, label, big);
   if (largeFlag !== null) {
@@ -109,6 +115,7 @@ function drawFlag(asset: string, label: string, big?: boolean): m.Children {
   return spriteFlag;
 }
 
+/** Draw the flag for a known place, or no content for an unknown place. */
 function viewFlagIcon(vnode: m.Vnode<FlagIconAttrs>): m.Children {
   const { name, big } = vnode.attrs;
   const asset = customFlagAsset(name);
@@ -120,7 +127,7 @@ function viewFlagIcon(vnode: m.Vnode<FlagIconAttrs>): m.Children {
   return drawFlag(asset, label, big);
 }
 
-/*
+/**
  * CSS sizes the element, so the layout never shifts on load.
  */
 export function FlagIcon() {

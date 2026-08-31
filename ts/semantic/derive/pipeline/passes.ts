@@ -32,6 +32,7 @@ export type PassOrderState = {
   remaining: DerivationPass[];
 };
 
+/** Orders passes so every declared dependency runs first. */
 export function orderPasses(passes: DerivationPass[]): DerivationPass[] {
   validatePasses(passes);
   const state = createPassOrderState(passes);
@@ -72,18 +73,21 @@ const FINAL_PASSES: DerivationPass[] = [
   },
 ];
 
+/** Runs derivations that must update the streaming index. */
 export function runStreamPasses(tdb: TribbleDB): void {
   for (const pass of orderPasses(STREAM_PASSES)) {
     pass.run(tdb);
   }
 }
 
+/** Runs derivations that require the complete source catalogue. */
 export function runFinalPasses(tdb: TribbleDB): void {
   for (const pass of orderPasses(FINAL_PASSES)) {
     pass.run(tdb);
   }
 }
 
+/** Runs all semantic derivation phases after source indexing. */
 export function postIndexing(tdb: TribbleDB): void {
   runStreamPasses(tdb);
   runFinalPasses(tdb);

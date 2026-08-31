@@ -14,11 +14,13 @@ export type FeatureLabelAttrs = {
   thing: Feature;
 };
 
+/** Read a feature's first name, or use its identifier as a fallback. */
 function readFeatureName(thing: Feature, fallback: string): string {
   const candidate = one(fromNullable(thing.name));
   return withDefault(candidate, fallback);
 }
 
+/** Render a non-navigable feature label with its type and emoji. */
 function drawFeatureLabel(
   type: string,
   emoji: string,
@@ -28,6 +30,7 @@ function drawFeatureLabel(
   return drawThingLink("p", type, {}, label);
 }
 
+/** Resolve and render the label for one feature. */
 function viewFeatureLabel(vnode: m.Vnode<FeatureLabelAttrs>): m.Children {
   const { urn, thing } = vnode.attrs;
   const { type, id } = asUrn(urn);

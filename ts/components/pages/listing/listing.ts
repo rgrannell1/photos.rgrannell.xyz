@@ -51,7 +51,7 @@ export type ListingPageAttrs = {
   filter: Maybe<string>;
 };
 
-/*
+/**
  * Each member of a category, e.g countries.
  */
 export function ListingPage() {

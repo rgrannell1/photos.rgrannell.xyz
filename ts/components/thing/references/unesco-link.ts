@@ -13,16 +13,19 @@ export type UnescoLinkAttrs = {
   thing: Unesco;
 };
 
+/** Reads a UNESCO name, with the URN ID as fallback. */
 function readUnescoName(thing: Unesco, fallback: string): string {
   const candidate = one(fromNullable(thing.name));
   return withDefault(candidate, fallback);
 }
 
+/** Builds safe new-tab attributes for a UNESCO listing. */
 function readUnescoLinkAttrs(id: string) {
   const href = `https://whc.unesco.org/en/list/${id}`;
   return { href, target: "_blank", rel: "noopener noreferrer" };
 }
 
+/** Renders a UNESCO site's external listing link. */
 function viewUnescoLink(vnode: m.Vnode<UnescoLinkAttrs>): m.Children {
   const { urn, thing } = vnode.attrs;
   const { type, id } = asUrn(urn);

@@ -12,12 +12,14 @@ import { isNone, type Maybe } from "../../../commons/collections/maybe.ts";
 export type MediaLocationMode =
   typeof MEDIA_LOCATION_MODES[keyof typeof MEDIA_LOCATION_MODES];
 
+/** Reports whether a URN identifies a place feature. */
 function isPlaceFeature(urn: string): boolean {
   return asUrn(urn).type === KnownTypes.PLACE_FEATURE;
 }
 
 /* A place feature worth showing as a "place type". Features published as
    generic (country, continent) apply to every photo, so they are excluded. */
+/** Reports whether a place feature is specific enough to show. */
 export function isVisiblePlaceFeature(
   readThing: ReadThing,
   urn: string,
@@ -32,6 +34,7 @@ export function isVisiblePlaceFeature(
 }
 
 /* geographic locations exclude country/continent — only concrete places are shown */
+/** Reports whether a URN identifies a concrete place. */
 export function isPlace(urn: string): boolean {
   return asUrn(urn).type === KnownTypes.PLACE;
 }
@@ -43,11 +46,13 @@ type MediaLocationsAttrs = {
   mode: MediaLocationMode;
 };
 
+/** Normalises an optional single or plural location into a URN list. */
 function listLocationUrns(location: Maybe<string | string[]>): string[] {
   const urns = isNone(location) ? [] : arrayify(location);
   return urns;
 }
 
+/** Selects concrete places or visible features for the requested mode. */
 function selectLocationUrns(attrs: MediaLocationsAttrs): string[] {
   const { location, readThing, mode } = attrs;
   const allUrns = listLocationUrns(location);
@@ -57,6 +62,7 @@ function selectLocationUrns(attrs: MediaLocationsAttrs): string[] {
   return allUrns.filter(isPlace);
 }
 
+/** Converts location URNs into internal thing links. */
 function drawLocationLinks(
   attrs: MediaLocationsAttrs,
   urns: string[],
@@ -65,11 +71,13 @@ function drawLocationLinks(
   return links;
 }
 
+/** Uses an em dash when no location links exist. */
 function locationContent(links: m.Children[]): m.Children {
   const hasLinks = links.length > 0;
   return hasLinks ? links : "—";
 }
 
+/** Draws the selected media locations as a table cell. */
 function viewMediaLocations(vnode: m.Vnode<MediaLocationsAttrs>): m.Children {
   const urns = selectLocationUrns(vnode.attrs);
   const $links = drawLocationLinks(vnode.attrs, urns);
@@ -77,6 +85,7 @@ function viewMediaLocations(vnode: m.Vnode<MediaLocationsAttrs>): m.Children {
   return m("td", content);
 }
 
+/** Creates the media locations table-cell component. */
 export function MediaLocations() {
   return { view: viewMediaLocations };
 }

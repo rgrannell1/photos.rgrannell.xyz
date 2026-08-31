@@ -12,6 +12,7 @@ import {
   groupByNation,
 } from "./groups.ts";
 
+/** Split flag groups into lone flags and multi-flag nations. */
 export function partitionFlagGroups(
   groups: FlagGroup[],
 ): [FlagGroup, FlagGroup[]] {
@@ -23,6 +24,7 @@ export function partitionFlagGroups(
   return [lone, nations];
 }
 
+/** Order flag groups into the visual runs used by the filter. */
 export function buildFlagRuns(groups: FlagGroup[]): FlagGroup[] {
   const [lone, nations] = partitionFlagGroups(groups);
   const runs: FlagGroup[] = lone.length > 0 ? [lone] : [];
@@ -34,11 +36,13 @@ export function buildFlagRuns(groups: FlagGroup[]): FlagGroup[] {
   return runs;
 }
 
+/** Draw the separator between adjacent flag runs. */
 export function drawSeparator(): m.Children {
   const attrs = { key: "separator" };
   return m("span.country-filter-separator", attrs, "·");
 }
 
+/** Prepend a separator to every flag run after the first. */
 export function prependSeparator(children: m.Children[], runIdx: number): void {
   const isFirstRun = runIdx === 0;
   if (isFirstRun) {
@@ -48,6 +52,7 @@ export function prependSeparator(children: m.Children[], runIdx: number): void {
   children.unshift(separator);
 }
 
+/** Draw one flag run with its optional leading separator. */
 export function drawFlagRun(
   drawFlag: (country: Country) => m.Children,
   run: FlagGroup,
@@ -59,7 +64,7 @@ export function drawFlagRun(
   return m("span.country-filter-run", attrs, children);
 }
 
-/*
+/**
  * One run of lone nations, then one run per nation with sub-territories.
  * A dot separates the runs.
  */
@@ -78,6 +83,7 @@ export function drawFlagRuns(
   return runs.map(drawRun);
 }
 
+/** Draw the country filter from grouped flag assets. */
 export function viewCountryFilter(
   vnode: m.Vnode<CountryFilterAttrs>,
 ): m.Children {

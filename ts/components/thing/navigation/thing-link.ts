@@ -25,6 +25,7 @@ export type ThingLinkAttrs = {
   readEmoji: ReadThingEmoji;
 };
 
+/** Reads a thing's optional name without assuming the field exists. */
 function readNameCandidate(thing: ThingLinkAttrs["thing"]): Maybe<string> {
   const hasName = Object.prototype.hasOwnProperty.call(thing, "name");
   if (!hasName) {
@@ -33,6 +34,7 @@ function readNameCandidate(thing: ThingLinkAttrs["thing"]): Maybe<string> {
   return one((thing as { name: string | string[] }).name);
 }
 
+/** Reads a thing name, with its URN ID as the fallback. */
 function readThingName(
   thing: ThingLinkAttrs["thing"],
   fallback: string,
@@ -41,12 +43,14 @@ function readThingName(
   return isSome(candidate) ? candidate : fallback;
 }
 
+/** Reports whether a place declares a flag. */
 function hasThingFlag(type: string, thing: ThingLinkAttrs["thing"]): boolean {
   const isPlace = type === KnownTypes.PLACE;
   const flag = one((thing as TripleObject).flag);
   return isPlace && isSome(flag);
 }
 
+/** Reads the fallback emoji for a thing. */
 function drawFallbackIcon(
   urn: string,
   name: string,
@@ -57,6 +61,7 @@ function drawFallbackIcon(
   return emoji || null;
 }
 
+/** Draws a custom place flag or the thing's fallback emoji. */
 function drawThingIcon(
   urn: string,
   type: string,
@@ -75,11 +80,13 @@ function drawThingIcon(
   return drawFallbackIcon(urn, name, thing, readEmoji);
 }
 
+/** Joins an optional icon and name with the expected alignment. */
 function drawThingLabel(icon: m.Children, name: string): m.Children {
   // no icon means no separator, or the name sits one space off-column
   return icon ? [icon, `\t${name}`] : name;
 }
 
+/** Draws an internal thing link that routes without a page load. */
 function drawLinkedThing(
   urn: string,
   type: string,
@@ -91,6 +98,7 @@ function drawLinkedThing(
   return drawThingLink("a", type, attrs, label);
 }
 
+/** Resolves a thing's name and icon, then draws its internal link. */
 function viewThingLink(vnode: m.Vnode<ThingLinkAttrs>): m.Children {
   const { urn, thing, readEmoji } = vnode.attrs;
   const { type, id } = asUrn(urn);
@@ -100,6 +108,7 @@ function viewThingLink(vnode: m.Vnode<ThingLinkAttrs>): m.Children {
   return drawLinkedThing(urn, type, id, label);
 }
 
+/** Creates the component for one linked thing. */
 export function ThingLink() {
   return { view: viewThingLink };
 }

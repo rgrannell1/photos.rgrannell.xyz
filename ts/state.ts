@@ -41,11 +41,8 @@ export type LoadProgress = {
   lastProgress: number;
 };
 
-/*
- * Stream the tribbles file into the shared TribbleDB. Cheap derivations re-run
- * during the stream, so partial renders see derived triples. The heavy joins,
- * the prune, and the catalogue stats run once at the end.
- */
+/* Run cheap derivations during streaming, then run heavy joins and statistics once. */
+/** Stream all triples, then finish catalogue derivation and report progress. */
 export async function completeLoad(
   state: State,
   onProgress: () => void,
@@ -72,14 +69,17 @@ export type ReaderEntry = [string, TdbReader];
 
 export type BoundReaderEntry = [string, (...args: never[]) => unknown];
 
+/** Bind every registered data reader to one triple database. */
 export function loadServices(tdb: TribbleDB) {
   return bindReaders(tdb, SERVICE_READERS);
 }
 
+/** Hide the global sidebar. */
 export function hideSidebar(state: State): void {
   state.sidebarVisible = false;
 }
 
+/** Toggle the global sidebar visibility. */
 export function toggleSidebar(state: State): void {
   state.sidebarVisible = !state.sidebarVisible;
 }
@@ -87,6 +87,7 @@ export function toggleSidebar(state: State): void {
 /*
  * Build the initial state. completeLoad fills the database and catalogue later.
  */
+/** Create unloaded application state with bound readers and an empty catalogue. */
 export function initState(): State {
   const tdb = getTribbleDB();
   const catalogue = readEmptyCatalogueFacts();

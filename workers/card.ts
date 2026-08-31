@@ -31,6 +31,7 @@ interface SocialCardView {
   imageUrl: string;
 }
 
+/** Reads the social card for a path and returns database failures as errors. */
 async function getSocialCard(
   db: D1Database,
   path: string,
@@ -52,6 +53,7 @@ async function getSocialCard(
   }
 }
 
+/** Extracts a URL pathname and falls back to the root path for invalid URLs. */
 function extractPathFromUrl(url: string): string {
   try {
     const urlObj = new URL(url);
@@ -65,6 +67,7 @@ function extractPathFromUrl(url: string): string {
   }
 }
 
+/** Selects the card title or falls back to the public photos host. */
 function getPageTitle(card: Maybe<SocialCard>, request: Request): string {
   const host = new URL(request.url).hostname.replace(
     /^sharephoto\./,
@@ -73,6 +76,7 @@ function getPageTitle(card: Maybe<SocialCard>, request: Request): string {
   return isSome(card) && card.title ? card.title : host;
 }
 
+/** Converts a share host request into its hash-routed photos page URL. */
 function getPageUrl(request: Request): string {
   const url = new URL(request.url);
   const pathname = url.pathname;
@@ -82,10 +86,12 @@ function getPageUrl(request: Request): string {
   return `https://${host}/#!${pathname}`;
 }
 
+/** Returns the card image URL when a card and image value exist. */
 function getImageUrl(card: Maybe<SocialCard>): Maybe<string> {
   return isSome(card) ? fromNullable(card.image_url) : NONE;
 }
 
+/** Builds the social card view from optional card data and the request. */
 function readSocialCardView(
   card: Maybe<SocialCard>,
   request: Request,
@@ -97,6 +103,7 @@ function readSocialCardView(
   };
 }
 
+/** Renders Open Graph metadata for a social card. */
 function renderSocialMetadata(
   view: SocialCardView,
   description: string,
@@ -109,6 +116,7 @@ function renderSocialMetadata(
   <meta property="og:type" content="website">`;
 }
 
+/** Renders redirect HTML with social metadata when card data exists. */
 function renderSocialCardHtml(
   view: SocialCardView,
   card: Maybe<SocialCard>,
@@ -135,6 +143,7 @@ ${socialMetadata}
 </html>`;
 }
 
+/** Creates the cacheable HTML response for a social card request. */
 function createSocialCardResponse(
   view: SocialCardView,
   card: Maybe<SocialCard>,
@@ -147,6 +156,7 @@ function createSocialCardResponse(
   });
 }
 
+/** Creates a non-cacheable response for a database failure. */
 function createUnavailableResponse(): Response {
   return new Response(null, {
     status: 503,
@@ -155,6 +165,7 @@ function createUnavailableResponse(): Response {
 }
 
 export default {
+  /** Resolves card data and returns redirect HTML or a service error. */
   async fetch(
     request: Request,
     env: Env,
