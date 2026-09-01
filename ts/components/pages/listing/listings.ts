@@ -123,6 +123,6 @@ function viewListingsPage(vnode: m.Vnode<ListingsPageAttrs>): m.Children {
 }
 
 /** Creates the listings page component. */
-export function ListingsPage() {
+export function ListingsPage(): m.Component<ListingsPageAttrs> {
   return { view: viewListingsPage };
 }

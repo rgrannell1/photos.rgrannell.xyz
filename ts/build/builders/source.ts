@@ -14,6 +14,14 @@ import {
 import { TribbleStringifier } from "@rgrannell1/tribbledb";
 import { buildId, buildTime } from "./builders.ts";
 
+export type ServiceWorkerData = {
+  prefetched: string[];
+  homepageThumbnails: string;
+  buildId: string;
+  albumsBanner: string;
+  aboutBanner: string;
+};
+
 /** Format one digest byte as two lowercase hexadecimal digits. */
 export function formatHashByte(byte: number): string {
   return byte.toString(16).padStart(2, "0");
@@ -74,7 +82,7 @@ export function stringifyTribbles(): string {
 }
 
 /** Collect template data for the generated service worker. */
-export function createServiceWorkerData() {
+export function createServiceWorkerData(): ServiceWorkerData {
   const prefetched = findPrefetchTargets();
   const thumbnails = findHomepageThumbnails();
   const homepageThumbnails = JSON.stringify(thumbnails);

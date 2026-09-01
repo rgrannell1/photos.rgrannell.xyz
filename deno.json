@@ -12,6 +12,18 @@
     "include": ["ts/", "tests/", "workers/", "lint-plugins/"],
     "exclude": ["node_modules/", "dist/", "search-engine/"],
     "rules": {
+      "include": [
+        "explicit-module-boundary-types",
+        "guard-for-in",
+        "no-eval",
+        "no-non-null-asserted-optional-chain",
+        "no-self-compare",
+        "no-sparse-arrays",
+        "no-sync-fn-in-async-fn",
+        "no-throw-literal",
+        "no-useless-rename",
+        "verbatim-module-syntax"
+      ],
       "exclude": [
         "no-window",
         "no-window-prefix",

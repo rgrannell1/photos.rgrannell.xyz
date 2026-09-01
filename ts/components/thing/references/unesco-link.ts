@@ -1,12 +1,15 @@
 /* Link a UNESCO site to its external listing. */
 
-import m from "mithril";
+import type m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { Component } from "../../component.ts";
 import type { Unesco } from "../../../types/domain.ts";
 import { drawThingLink } from "../navigation/thing-link-layout.ts";
-import { fromNullable, withDefault } from "../../../commons/collections/maybe.ts";
+import {
+  fromNullable,
+  withDefault,
+} from "../../../commons/collections/maybe.ts";
 
 export type UnescoLinkAttrs = {
   urn: string;

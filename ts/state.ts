@@ -4,7 +4,7 @@
 
 import { getTribbleDB } from "./semantic/data.ts";
 
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { SERVICE_READERS } from "./services/data/mod.ts";
 
 import type { NemesisSpecies } from "./domain/media/stats.ts";
@@ -70,7 +70,9 @@ export type ReaderEntry = [string, TdbReader];
 export type BoundReaderEntry = [string, (...args: never[]) => unknown];
 
 /** Bind every registered data reader to one triple database. */
-export function loadServices(tdb: TribbleDB) {
+export function loadServices(
+  tdb: TribbleDB,
+): BoundReaders<typeof SERVICE_READERS> {
   return bindReaders(tdb, SERVICE_READERS);
 }
 

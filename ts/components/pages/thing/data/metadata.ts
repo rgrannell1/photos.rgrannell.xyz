@@ -5,7 +5,11 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 import { setify } from "../../../../commons/collections/sets.ts";
 import { TAXON_RANKS, ThingListKind } from "../../../../constants/data.ts";
 import { ListingLink } from "../../../thing/navigation/listing-link.ts";
-import type { ThingMetadata, ThingPageAttrs } from "../view/thing.ts";
+import type {
+  ThingMetadata,
+  ThingPageAttrs,
+  ThingSectionComponent,
+} from "../view/thing.ts";
 import { cachedByUrn, drawThingList, readSeenIn } from "./cache.ts";
 import { viewThingDetails } from "./details.ts";
 import { addSingleThingMetadata } from "../view/media.ts";
@@ -30,7 +34,7 @@ export function addSingleMetadataWhenPresent(
 }
 
 /** Creates thing details with a URN-scoped cache for observation data. */
-export function ThingDetails() {
+export function ThingDetails(): ThingSectionComponent {
   const seenInFor = cachedByUrn(readSeenIn);
 
   return { view: viewThingDetails.bind(null, seenInFor) };

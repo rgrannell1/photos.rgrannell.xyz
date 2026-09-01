@@ -1,11 +1,10 @@
 /* Properties of the thing-page photo component over generated media. */
 
-import * as Peach from "@rgrannell1/peach";
 import type m from "mithril";
 import { PhotoSection } from "../ts/components/pages/thing/data/species-data.ts";
 import {
   MAX_COMPONENT_MEDIA_COUNT,
-  PROPERTY_SEEDS,
+  PROPERTY_RUN_COUNT,
   THING_TRANSITION_COUNT,
 } from "./data/properties.ts";
 import {
@@ -44,8 +43,7 @@ Deno.test("PhotoSection is present exactly when generated photos exist", () => {
 });
 
 Deno.test("PhotoSection reads once per consecutive thing state", () => {
-  for (const seed of PROPERTY_SEEDS) {
-    Peach.setSeed(seed);
+  for (let runIdx = 0; runIdx < PROPERTY_RUN_COUNT; runIdx++) {
     const urns = generateThingUrns(THING_TRANSITION_COUNT);
     const uniqueUrns = [...new Set(urns)];
     const photosByUrn = new Map<string, ReturnType<typeof generatePhotos>>();
@@ -71,6 +69,6 @@ Deno.test("PhotoSection reads once per consecutive thing state", () => {
       }
     }
 
-    expectOneReadPerRun(reader.calls.value, urns, `seed ${seed}`);
+    expectOneReadPerRun(reader.calls.value, urns, `run ${runIdx + 1}`);
   }
 });

@@ -1,12 +1,18 @@
 /* Support checklist operations. */
 
 import m from "mithril";
-import { ImagePair, type ImagePairAttrs } from "../../media/images/image-pair.ts";
+import {
+  ImagePair,
+  type ImagePairAttrs,
+} from "../../media/images/image-pair.ts";
 import { thumbHashDataUrl } from "../../../services/rendering/year-scroll/photos.ts";
 import type { Photo } from "../../../types/domain.ts";
 import type { ChecklistEntry } from "../../../domain/media/stats.ts";
 import { PHOTO_WIDTH } from "../../../constants/layout.ts";
-import { ImageLoadingMode, LifeListFilter } from "../../../constants/display.ts";
+import {
+  ImageLoadingMode,
+  LifeListFilter,
+} from "../../../constants/display.ts";
 import { isNone, type Maybe } from "../../../commons/collections/maybe.ts";
 import type {
   ChecklistDetailsAttrs,
@@ -75,7 +81,7 @@ export function viewChecklistDetails(
  * Details line above the checklist. Filters to Irish wild, all wild, or all
  * species including captive ones.
  */
-export function ChecklistDetails() {
+export function ChecklistDetails(): m.Component<ChecklistDetailsAttrs> {
   return { view: viewChecklistDetails };
 }
 

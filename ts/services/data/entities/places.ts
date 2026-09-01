@@ -1,4 +1,4 @@
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Country, Place } from "../../../types/domain.ts";
 import { KnownTypes } from "../../../constants/data.ts";

@@ -14,7 +14,7 @@ import {
   runFinalPasses,
   runStreamPasses,
 } from "./semantic/derive/mod.ts";
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import {
   collectUnphotographedNemesis,
   countIrishMammalSpecies,

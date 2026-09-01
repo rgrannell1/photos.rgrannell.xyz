@@ -3,7 +3,7 @@
  * function, link component, ordering, and key behaviour.
  */
 
-import m from "mithril";
+import type m from "mithril";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 
 import type { Feature, Place, Unesco } from "../../../types/domain.ts";
@@ -46,6 +46,6 @@ export type ThingListAttrs = {
 };
 
 /** Create the shared thing-list component. */
-export function ThingList() {
+export function ThingList(): m.Component<ThingListAttrs> {
   return { view: viewThingList };
 }

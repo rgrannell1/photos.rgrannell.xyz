@@ -29,6 +29,6 @@ function viewImage(vnode: m.Vnode<ImageAttrs>): m.Children {
 }
 
 /** Defines the thumbnail image component. */
-export function Image() {
+export function Image(): m.Component<ImageAttrs> {
   return { view: viewImage };
 }

@@ -1,6 +1,7 @@
+import type m from "mithril";
 import type { Country } from "../../../types/domain.ts";
 
-import { type Maybe } from "../../../commons/collections/maybe.ts";
+import type { Maybe } from "../../../commons/collections/maybe.ts";
 import { viewCountryFilter } from "./render.ts";
 
 export type CountryFilterAttrs = {
@@ -15,6 +16,6 @@ export type FlagGroup = Country[];
 /**
  * Country flags grouped by nation. Clicking the active flag deselects it.
  */
-export function CountryFilter() {
+export function CountryFilter(): m.Component<CountryFilterAttrs> {
   return { view: viewCountryFilter };
 }

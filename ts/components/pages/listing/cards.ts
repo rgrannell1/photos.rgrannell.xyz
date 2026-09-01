@@ -133,7 +133,7 @@ export function viewAlbumsList(
 /**
  * Render the albums in batches, so the browser can paint between each one.
  */
-export function AlbumsList() {
+export function AlbumsList(): m.Component<AlbumsListAttrs> {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
   const coverCache = new Map<string, Maybe<Photo>>();
 
@@ -168,7 +168,7 @@ export function viewBirdListingDetails(
 /**
  * Bird species counts. Clicking the Ireland flag filters to Irish species.
  */
-export function BirdListingDetails() {
+export function BirdListingDetails(): m.Component<BirdListingDetailsAttrs> {
   return { view: viewBirdListingDetails };
 }
 

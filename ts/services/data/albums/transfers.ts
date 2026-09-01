@@ -1,7 +1,7 @@
 /* Read trip transfer lines from the triple store. */
 
 /* Read trip transfer lines from the triple store. */
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { KnownTypes } from "../../../constants/data.ts";
 import { isNone } from "../../../commons/collections/maybe.ts";
 import { hasValidCoordinates } from "../entities/places.ts";

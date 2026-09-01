@@ -3,11 +3,15 @@
 /* Support photos operations. */
 import { KnownRelations, KnownTypes } from "../../../constants/data.ts";
 import { asUrn, type Triple, type TripleObject } from "@rgrannell1/tribbledb";
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { NodeView, TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Photo } from "../../../types/domain.ts";
 import { readPhoto } from "../readers.ts";
 import { selectFirst } from "../../../commons/collections/arrays.ts";
-import { isNone, type Maybe, withDefault } from "../../../commons/collections/maybe.ts";
+import {
+  isNone,
+  type Maybe,
+  withDefault,
+} from "../../../commons/collections/maybe.ts";
 import type { ThingNodes } from "./photos.ts";
 
 /** Order photos from newest to oldest by creation timestamp. */
@@ -33,13 +37,16 @@ export function readObjectId(object: TripleObject): Maybe<string> {
 }
 
 /** Select the database node identified by a thing URN. */
-export function readThingNode(tdb: TribbleDB, thingUrn: string) {
+export function readThingNode(tdb: TribbleDB, thingUrn: string): NodeView {
   const { type, id } = asUrn(thingUrn);
   return tdb.nodes({ type, id });
 }
 
 /** Union the nodes for all supplied thing URNs. */
-export function collectThingNodes(tdb: TribbleDB, thingUrns: Set<string>) {
+export function collectThingNodes(
+  tdb: TribbleDB,
+  thingUrns: Set<string>,
+): NodeView {
   let things = tdb.nodes([]);
   for (const thingUrn of thingUrns) {
     const thing = readThingNode(tdb, thingUrn);
@@ -56,7 +63,7 @@ export function readPhotoIdsForThings(things: ThingNodes): Set<string> {
 }
 
 /** Read cover relations from photos to the requested target type. */
-export function readCoverTriples(tdb: TribbleDB, type: string) {
+export function readCoverTriples(tdb: TribbleDB, type: string): Triple[] {
   const query = {
     source: { type: KnownTypes.PHOTO },
     relation: KnownRelations.COVER,

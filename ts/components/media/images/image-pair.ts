@@ -90,6 +90,6 @@ function viewImagePair(vnode: m.Vnode<ImagePairAttrs>): m.Children {
 }
 
 /** Modified image-link clicks remain browser-managed. */
-export function ImagePair() {
+export function ImagePair(): m.Component<ImagePairAttrs> {
   return { view: viewImagePair };
 }

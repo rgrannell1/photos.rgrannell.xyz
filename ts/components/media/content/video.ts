@@ -101,7 +101,7 @@ function viewVideo(
 }
 
 /** Creates a video component whose controls start hidden. */
-export function Video() {
+export function Video(): m.Component<VideoAttrs> {
   const videoState: VideoState = { controlsVisible: false };
 
   return { view: viewVideo.bind(null, videoState) };

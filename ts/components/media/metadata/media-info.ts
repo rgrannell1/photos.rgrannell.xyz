@@ -108,6 +108,6 @@ function viewMediaInfo(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
 }
 
 /** Creates the shared media metadata component. */
-export function MediaInfo() {
+export function MediaInfo(): m.Component<MediaComponentAttrs> {
   return { view: viewMediaInfo };
 }

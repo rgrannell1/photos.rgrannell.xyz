@@ -68,3 +68,24 @@ test("photo details preserve browser history", async ({ page }) => {
   await page.goForward();
   await expect(page.getByTestId("photo-heading")).toHaveText("Photo");
 });
+
+for (const width of [390, 1280]) {
+  test(`photo details stay at the top right at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await openAlbums(page);
+    await openFirstAlbum(page);
+
+    const photo = page.getByTestId("album-photo-grid").locator(".photo").first();
+    const details = photo.locator(".photo-metadata-popover");
+    await photo.hover();
+
+    const photoBox = await photo.boundingBox();
+    const detailsBox = await details.boundingBox();
+    expect(photoBox).not.toBeNull();
+    expect(detailsBox).not.toBeNull();
+    expect(detailsBox.width).toBeLessThan(60);
+    expect(Math.abs(detailsBox.x + detailsBox.width - photoBox.x - photoBox.width))
+      .toBeLessThan(1);
+    expect(Math.abs(detailsBox.y - photoBox.y)).toBeLessThan(1);
+  });
+}

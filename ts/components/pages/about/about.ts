@@ -1,3 +1,4 @@
+import type m from "mithril";
 import { initAboutPage } from "./content.ts";
 import { viewAboutPage } from "./page.ts";
 
@@ -11,7 +12,7 @@ export const USAGE_TERMS =
   "photos is not.";
 
 /** Creates the about page component with title setup and page rendering hooks. */
-export function AboutPage() {
+export function AboutPage(): m.Component<AboutPageAttrs> {
   return {
     oninit: initAboutPage,
     view: viewAboutPage,

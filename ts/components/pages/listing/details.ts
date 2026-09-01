@@ -3,7 +3,8 @@
 import m from "mithril";
 import { DATA_TRUE, KnownTypes } from "../../../constants/data.ts";
 import { LifeListFilter } from "../../../constants/display.ts";
-import { type TripleObject } from "@rgrannell1/tribbledb";
+import type { TripleObject } from "@rgrannell1/tribbledb";
+import type { SubjectStats } from "../../../domain/media/stats.ts";
 import { routeLinkAttrs, setRoute } from "../../../services/browser/routes.ts";
 import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { isSome, type Maybe } from "../../../commons/collections/maybe.ts";
@@ -13,7 +14,7 @@ import { BirdListingDetails, viewMammalListingDetails } from "./cards.ts";
 /**
  * Mammal species counts, by wild, total, and Irish wild.
  */
-export function MammalListingDetails() {
+export function MammalListingDetails(): m.Component<{ stats: SubjectStats }> {
   return { view: viewMammalListingDetails };
 }
 
@@ -37,7 +38,7 @@ export function viewListingDetails(
 }
 
 /** Create the listing details component. */
-export function ListingDetails() {
+export function ListingDetails(): m.Component<ListingDetailsAttrs> {
   return { view: viewListingDetails };
 }
 
@@ -57,7 +58,7 @@ export function viewListingTitle(
 /**
  * The listing's plural label as the page title, e.g "Countries"
  */
-export function ListingTitle() {
+export function ListingTitle(): m.Component<{ type: string; label: string }> {
   return { view: viewListingTitle };
 }
 
@@ -75,7 +76,7 @@ export function viewListingThingsButton(
 /**
  * Link to the things page for this type (wildcard)
  */
-export function ListingThingsButton() {
+export function ListingThingsButton(): m.Component<{ type: string }> {
   return { view: viewListingThingsButton };
 }
 

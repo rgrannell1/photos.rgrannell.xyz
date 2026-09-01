@@ -1,3 +1,4 @@
+import type m from "mithril";
 import { viewSidebar } from "./layout.ts";
 
 export type SidebarItemAttrs = {
@@ -10,6 +11,6 @@ export type SidebarAttrs = {
 };
 
 /** Creates the sidebar component with the shared layout view. */
-export function Sidebar() {
+export function Sidebar(): m.Component<SidebarAttrs> {
   return { view: viewSidebar };
 }

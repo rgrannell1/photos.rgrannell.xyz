@@ -67,7 +67,7 @@ function viewAlbumStats(result: ReturnType<typeof parseStats>): m.Children {
 }
 
 /** Defines the album statistics component from embedded window data. */
-export function AlbumStats() {
+export function AlbumStats(): m.Component {
   const stats = parseStats((window as AppWindow).stats);
 
   return { view: viewAlbumStats.bind(null, stats) };

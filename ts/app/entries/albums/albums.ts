@@ -4,7 +4,7 @@ import { AlbumsPage } from "../../../components/pages/albums/albums.ts";
 import type { Country } from "../../../types/domain.ts";
 import { services } from "../../context.ts";
 import { pageEntry } from "../../shell.ts";
-import { type Maybe } from "../../../commons/collections/maybe.ts";
+import type { Maybe } from "../../../commons/collections/maybe.ts";
 import { resolveAlbumsPage } from "./filters.ts";
 
 export const albumsCacheState = {

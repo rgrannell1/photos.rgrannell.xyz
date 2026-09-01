@@ -64,6 +64,6 @@ function viewPhotosPage(vnode: m.Vnode<PhotosPageAttrs>): m.Children {
 }
 
 /** Creates the Mithril photos page component. */
-export function PhotosPage() {
+export function PhotosPage(): m.Component<PhotosPageAttrs> {
   return { view: viewPhotosPage };
 }

@@ -2,12 +2,16 @@
 
 import m from "mithril";
 import type { Photo } from "../../../types/domain.ts";
-import type { ChecklistEntry, NemesisSpecies } from "../../../domain/media/stats.ts";
+import type {
+  ChecklistEntry,
+  NemesisSpecies,
+} from "../../../domain/media/stats.ts";
 import { LifeListFilter } from "../../../constants/display.ts";
 import { fromNullable } from "../../../commons/collections/maybe.ts";
 import type {
   ChecklistCardAttrs,
   ChecklistGridAttrs,
+  ChecklistMysteryCardAttrs,
   PositionedEntry,
 } from "../checklist.ts";
 import { isIrishWild, isWild } from "./dates.ts";
@@ -35,7 +39,7 @@ export function drawMysteryMetadata(species: NemesisSpecies): m.Children {
  * A "yet to see" card for an unphotographed nemesis species. A mystery
  * silhouette stands in for the photo.
  */
-export function ChecklistMysteryCard() {
+export function ChecklistMysteryCard(): m.Component<ChecklistMysteryCardAttrs> {
   return { view: viewChecklistMysteryCard };
 }
 

@@ -2,7 +2,7 @@
 
 /* Support places operations. */
 import { asUrn } from "@rgrannell1/tribbledb";
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Country, Place } from "../../../types/domain.ts";
 import { KnownRelations, KnownTypes } from "../../../constants/data.ts";

@@ -1,7 +1,10 @@
 /* Location rendering for photos and videos, in geographic or feature mode. */
 
 import m from "mithril";
-import { type ReadThing, toThingLinks } from "../../thing/navigation/thing-links.ts";
+import {
+  type ReadThing,
+  toThingLinks,
+} from "../../thing/navigation/thing-links.ts";
 import type { ReadThingEmoji } from "../../thing/navigation/thing-link.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { arrayify, selectFirst } from "../../../commons/collections/arrays.ts";
@@ -26,7 +29,8 @@ export function isVisiblePlaceFeature(
   }
 
   const feature = readThing(urn);
-  const isVisible = isNone(feature) || selectFirst(feature.generic) !== DATA_TRUE;
+  const isVisible = isNone(feature) ||
+    selectFirst(feature.generic) !== DATA_TRUE;
   return isVisible;
 }
 
@@ -83,6 +87,6 @@ function viewMediaLocations(vnode: m.Vnode<MediaLocationsAttrs>): m.Children {
 }
 
 /** Creates the media locations table-cell component. */
-export function MediaLocations() {
+export function MediaLocations(): m.Component<MediaLocationsAttrs> {
   return { view: viewMediaLocations };
 }

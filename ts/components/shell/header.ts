@@ -63,6 +63,6 @@ function viewHeader(): m.Children {
 }
 
 /** Creates the application header component. */
-export function Header() {
+export function Header(): m.Component {
   return { view: viewHeader };
 }

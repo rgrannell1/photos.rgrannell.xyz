@@ -5,7 +5,10 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { selectFirst } from "../../../../commons/collections/arrays.ts";
 import type { Photo as PhotoType } from "../../../../types/domain.ts";
-import { PhotoAlbum, type PhotoAlbumAttrs } from "../../../album/photo-album.ts";
+import {
+  PhotoAlbum,
+  type PhotoAlbumAttrs,
+} from "../../../album/photo-album.ts";
 import { ThingCaption } from "../../../thing/thing-caption.ts";
 import {
   selectLoadingMode,
@@ -13,8 +16,16 @@ import {
 } from "../../../../services/rendering/year-scroll/photos.ts";
 import { ShareButton } from "../../../share-button.ts";
 import { sharePhotoUrl } from "../../../../services/browser/window.ts";
-import { type Maybe, NONE, withDefault } from "../../../../commons/collections/maybe.ts";
-import type { CachedReader, ThingPageAttrs } from "./thing.ts";
+import {
+  type Maybe,
+  NONE,
+  withDefault,
+} from "../../../../commons/collections/maybe.ts";
+import type {
+  CachedReader,
+  ThingPageAttrs,
+  ThingSectionComponent,
+} from "./thing.ts";
 import { cachedByUrn } from "../data/cache.ts";
 import { drawMediaSection } from "./media.ts";
 import { drawMemberCard, readMemberSpecies } from "../data/species-data.ts";
@@ -128,7 +139,7 @@ export function viewSpeciesSection(
 }
 
 /** Creates a species section with a URN-keyed member cache. */
-export function SpeciesSection() {
+export function SpeciesSection(): ThingSectionComponent {
   const membersFor = cachedByUrn(readMemberSpecies);
 
   return { view: viewSpeciesSection.bind(null, membersFor) };

@@ -8,6 +8,6 @@ function viewAlbumsButton(): m.Children {
 }
 
 /** Creates the albums navigation control. */
-export function AlbumsButton() {
+export function AlbumsButton(): m.Component {
   return { view: viewAlbumsButton };
 }

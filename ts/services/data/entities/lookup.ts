@@ -1,7 +1,7 @@
 /* Support things operations. */
 
 /* Support things operations. */
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { selectFirst } from "../../../commons/collections/arrays.ts";
 import {

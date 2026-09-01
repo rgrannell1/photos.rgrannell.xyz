@@ -1,4 +1,5 @@
-import { type DatedVideo } from "../../../domain/media/videos.ts";
+import type m from "mithril";
+import type { DatedVideo } from "../../../domain/media/videos.ts";
 
 import { viewVideosPage } from "./page.ts";
 
@@ -8,6 +9,6 @@ export type VideosPageAttrs = {
 };
 
 /** Create the videos page component. */
-export function VideosPage() {
+export function VideosPage(): m.Component<VideosPageAttrs> {
   return { view: viewVideosPage };
 }

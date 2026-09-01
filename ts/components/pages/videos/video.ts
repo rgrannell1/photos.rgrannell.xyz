@@ -102,6 +102,6 @@ function viewVideoPage(vnode: m.Vnode<VideoPageAttrs>): m.Children {
 }
 
 /** Create the video page component. */
-export function VideoPage() {
+export function VideoPage(): m.Component<VideoPageAttrs> {
   return { view: viewVideoPage };
 }

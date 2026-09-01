@@ -7,9 +7,7 @@ import {
   TRIP_COLOUR_COUNT,
   TRIP_HASH_MULTIPLIER,
 } from "../../constants/display.ts";
-import {
-  routeLinkAttrs,
-} from "../../services/browser/routes.ts";
+import { routeLinkAttrs } from "../../services/browser/routes.ts";
 import { isNone, type Maybe } from "../../commons/collections/maybe.ts";
 
 /** Mix one character into a stable trip hash. */
@@ -110,6 +108,6 @@ function viewPhotoAlbum(vnode: m.Vnode<PhotoAlbumAttrs>): m.Children {
 }
 
 /** Create an album cover component. */
-export function PhotoAlbum() {
+export function PhotoAlbum(): m.Component<PhotoAlbumAttrs> {
   return { view: viewPhotoAlbum };
 }

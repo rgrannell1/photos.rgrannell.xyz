@@ -84,6 +84,6 @@ function viewCountryLink(vnode: m.Vnode<CountryLinkAttrs>): m.Children {
 }
 
 /** Create the country link component. */
-export function CountryLink() {
+export function CountryLink(): m.Component<CountryLinkAttrs> {
   return { view: viewCountryLink };
 }

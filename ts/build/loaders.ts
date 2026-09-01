@@ -1,4 +1,5 @@
 import * as path from "jsr:@std/path";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { createTripleDeriver, postIndexing } from "../semantic/derive/mod.ts";
 import { loadTriples } from "../semantic/data.ts";
 import { readAllAlbums } from "../services/data/albums/albums.ts";
@@ -64,7 +65,7 @@ export const [
 ]);
 
 /** Loads, derives, and indexes the build-time triple database. */
-export async function loadTribbles() {
+export async function loadTribbles(): Promise<TribbleDB> {
   if (isNone(tribblesFile)) {
     throw new Error("No tribbles file found");
   }
@@ -100,14 +101,14 @@ function readThumbnailPath(album: { thumbnailUrl: string }): string {
 }
 
 /** Returns thumbnail URLs for albums preloaded on the home page. */
-export function findPrefetchTargets() {
+export function findPrefetchTargets(): string[] {
   const albums = readAllAlbums(tdb);
   const homepageAlbums = albums.slice(0, HOMEPAGE_PRELOAD_COUNT);
   return homepageAlbums.map(readThumbnailUrl);
 }
 
 /** Returns request paths for every album thumbnail used by the home page. */
-export function findHomepageThumbnails() {
+export function findHomepageThumbnails(): string[] {
   const albums = readAllAlbums(tdb);
   return albums.map(readThumbnailPath);
 }

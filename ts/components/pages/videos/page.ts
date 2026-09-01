@@ -1,7 +1,7 @@
 /* Support videos operations. */
 
 import m from "mithril";
-import { type DatedVideo } from "../../../domain/media/videos.ts";
+import type { DatedVideo } from "../../../domain/media/videos.ts";
 import { countLabel } from "../../../commons/strings.ts";
 import type { VideosPageAttrs } from "./videos.ts";
 import { VideosList } from "./groups.ts";

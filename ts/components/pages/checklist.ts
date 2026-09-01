@@ -1,11 +1,14 @@
-import m from "mithril";
+import type m from "mithril";
 
 import type { Photo } from "../../types/domain.ts";
-import type { ChecklistEntry, NemesisSpecies } from "../../domain/media/stats.ts";
+import type {
+  ChecklistEntry,
+  NemesisSpecies,
+} from "../../domain/media/stats.ts";
 
 import { LifeListFilter } from "../../constants/display.ts";
 
-import { type Maybe } from "../../commons/collections/maybe.ts";
+import type { Maybe } from "../../commons/collections/maybe.ts";
 import { viewChecklistPage } from "./checklist/copy.ts";
 
 export type ChecklistDetailsAttrs = {
@@ -104,6 +107,6 @@ export type MammalSectionAttrs = {
  * The life-list page. Birds first, then Irish mammals in the Irish view.
  */
 /** Create the life-list page component. */
-export function ChecklistPage() {
+export function ChecklistPage(): m.Component<ChecklistPageAttrs> {
   return { view: viewChecklistPage };
 }

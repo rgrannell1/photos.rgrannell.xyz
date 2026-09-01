@@ -12,7 +12,10 @@ export function selectSidebarItemClass(isActive: boolean): string {
 }
 
 /** Builds navigation attributes for a sidebar item. */
-export function buildSidebarItemAttrs(route: string, isActive: boolean) {
+export function buildSidebarItemAttrs(
+  route: string,
+  isActive: boolean,
+): { class: string; route: string } {
   const className = selectSidebarItemClass(isActive);
   return { class: className, route };
 }
@@ -35,7 +38,7 @@ export function viewSidebarItem(vnode: m.Vnode<SidebarItemAttrs>): m.Children {
 }
 
 /** Defines a sidebar item component. */
-export function SidebarItem() {
+export function SidebarItem(): m.Component<SidebarItemAttrs> {
   return { view: viewSidebarItem };
 }
 

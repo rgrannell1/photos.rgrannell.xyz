@@ -1,11 +1,11 @@
 /* Support things operations. */
 
 /* Support things operations. */
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { capitalise, pluralise } from "../../../commons/strings.ts";
 import { KnownTypes } from "../../../constants/data.ts";
-import { type Maybe } from "../../../commons/collections/maybe.ts";
+import type { Maybe } from "../../../commons/collections/maybe.ts";
 import { readThing } from "./things.ts";
 
 /** Builds the default capitalised plural label for a listing type. */

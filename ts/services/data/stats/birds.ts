@@ -3,11 +3,14 @@
 /* Wildlife statistics and bird life-list from subject triples. */
 /* Support stats operations. */
 /* Wildlife statistics and bird life-list from subject triples. */
-import { asUrn } from "@rgrannell1/tribbledb";
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import { asUrn, type Triple, type TripleObject } from "@rgrannell1/tribbledb";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { DATA_TRUE, KnownRelations } from "../../../constants/data.ts";
 import { isSome } from "../../../commons/collections/maybe.ts";
-import type { NemesisSpecies, SubjectStats } from "../../../domain/media/stats.ts";
+import type {
+  NemesisSpecies,
+  SubjectStats,
+} from "../../../domain/media/stats.ts";
 import type { SubjectTriples } from "../stats.ts";
 import {
   addMammalPhoto,
@@ -86,7 +89,10 @@ export function countIrishWildMammals(
 }
 
 /** Reads nemesis triples for one species type. */
-export function readNemesisTriples(tdb: TribbleDB, speciesType: string) {
+export function readNemesisTriples(
+  tdb: TribbleDB,
+  speciesType: string,
+): Triple[] {
   const query = {
     source: { type: speciesType },
     relation: KnownRelations.NEMESIS,
@@ -101,7 +107,7 @@ export function isSpeciesPhotographed(
   tdb: TribbleDB,
   speciesType: string,
   speciesId: string,
-) {
+): boolean {
   const query = {
     source: { type: speciesType, id: speciesId },
     relation: KnownRelations.FIRST_SEEN,
@@ -128,7 +134,7 @@ export function readSpeciesThing(
   tdb: TribbleDB,
   speciesType: string,
   speciesId: string,
-) {
+): TripleObject | undefined {
   return tdb.search({
     source: { type: speciesType, id: speciesId },
   }).firstObject();

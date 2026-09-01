@@ -7,7 +7,11 @@ import { AlbumCard, type AlbumCardAttrs } from "./cards/album-card.ts";
 import { selectLoadingMode } from "../../services/rendering/year-scroll/photos.ts";
 import { BEFORE_TIMES_FINAL_YEAR } from "../../constants/display.ts";
 import { ALBUM_YEAR_HEADING_ID_PREFIX } from "../../constants/selectors.ts";
-import { fromNullable, isSome, type Maybe } from "../../commons/collections/maybe.ts";
+import {
+  fromNullable,
+  isSome,
+  type Maybe,
+} from "../../commons/collections/maybe.ts";
 
 export type AlbumYearGroupAttrs = {
   year: number;
@@ -104,6 +108,6 @@ function viewAlbumYearGroup(
 }
 
 /** Create the album year group component. */
-export function AlbumYearGroup() {
+export function AlbumYearGroup(): m.Component<AlbumYearGroupAttrs> {
   return { view: viewAlbumYearGroup };
 }

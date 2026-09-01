@@ -45,6 +45,6 @@ function viewBannerImagePair(
 }
 
 /** Full-bleed banner variant of ImagePair. */
-export function BannerImagePair() {
+export function BannerImagePair(): m.Component<BannerImagePairAttrs> {
   return { view: viewBannerImagePair };
 }

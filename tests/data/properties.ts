@@ -1,7 +1,7 @@
-/* Shared bounds and seeds for deterministic property tests. */
+/* Shared bounds for property tests. */
 
-// Exercise low, recognisable, and maximum unsigned 32-bit seeds.
-export const PROPERTY_SEEDS = [0, 1, 0x50484f54, 0xffffffff];
+// Repeat random property checks enough times to vary generated values.
+export const PROPERTY_RUN_COUNT = 4;
 
 // Cover empty through populated component states without large virtual trees.
 export const MAX_COMPONENT_MEDIA_COUNT = 8;

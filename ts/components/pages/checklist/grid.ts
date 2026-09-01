@@ -1,11 +1,14 @@
 /* Support checklist operations. */
 
-import m from "mithril";
+import type m from "mithril";
 import type { Photo } from "../../../types/domain.ts";
-import type { ChecklistEntry, NemesisSpecies } from "../../../domain/media/stats.ts";
+import type {
+  ChecklistEntry,
+  NemesisSpecies,
+} from "../../../domain/media/stats.ts";
 import { LifeListFilter } from "../../../constants/display.ts";
 import { type Maybe, NONE } from "../../../commons/collections/maybe.ts";
-import type { PositionedEntry } from "../checklist.ts";
+import type { ChecklistGridAttrs, PositionedEntry } from "../checklist.ts";
 import { firstSeenYear, isIrishWild } from "./dates.ts";
 import {
   drawChecklistCard,
@@ -49,7 +52,7 @@ export function drawMysteryCards(
 }
 
 /** Creates the checklist grid component. */
-export function ChecklistGrid() {
+export function ChecklistGrid(): m.Component<ChecklistGridAttrs> {
   return { view: viewChecklistGrid };
 }
 

@@ -41,7 +41,7 @@ const TS_BUILD_OPTIONS: esbuild.BuildOptions = {
 };
 
 /** Write the current publication version identifier. */
-export async function buildVersion() {
+export async function buildVersion(): Promise<void> {
   console.info("🌐 Rendering version");
   const outputPath = "version";
   const content = createVersionContent();
@@ -49,7 +49,7 @@ export async function buildVersion() {
 }
 
 /** Write the expanded TribbleDB data manifest for the current publication. */
-export async function buildExpandedTribbles() {
+export async function buildExpandedTribbles(): Promise<void> {
   console.info("🌐 Rendering expanded tribbles");
   const outputPath = `manifest/tribbles-expanded.${env.publication_id}.txt`;
   const content = stringifyTribbles();
@@ -57,7 +57,7 @@ export async function buildExpandedTribbles() {
 }
 
 /** Render and write the root-scoped service worker. */
-export async function buildSW() {
+export async function buildSW(): Promise<void> {
   console.info("🌐 Rendering service-worker");
 
   // served from the root so the worker's default scope covers every page
@@ -67,7 +67,7 @@ export async function buildSW() {
 }
 
 /** Bundle and minify the browser TypeScript application. */
-export async function buildTS() {
+export async function buildTS(): Promise<void> {
   console.info("🌐 Rendering app");
   await esbuild.build(TS_BUILD_OPTIONS);
 }
@@ -111,7 +111,10 @@ export async function buildFlagAssets(): Promise<FlagManifest> {
 }
 
 /** Render and write the index page with its flag manifest and inline CSS. */
-export async function buildHTML(flags: FlagManifest, css: string) {
+export async function buildHTML(
+  flags: FlagManifest,
+  css: string,
+): Promise<void> {
   console.info("🌐 Rendering index.html");
   const outputPath = "index.html";
   const content = renderHtml(flags, css);

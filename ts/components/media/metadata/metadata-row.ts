@@ -15,6 +15,6 @@ function viewMetadataRow(vnode: m.Vnode<MetadataRowAttrs>): m.Children {
 }
 
 /** Creates the Mithril metadata row component. */
-export function MetadataRow() {
+export function MetadataRow(): m.Component<MetadataRowAttrs> {
   return { view: viewMetadataRow };
 }

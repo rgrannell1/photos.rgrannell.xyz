@@ -23,6 +23,6 @@ function viewPlaceholderImage(
 }
 
 /** Create the thumbnail placeholder component. */
-export function PlaceholderImage() {
+export function PlaceholderImage(): m.Component<PlaceholderImageAttrs> {
   return { view: viewPlaceholderImage };
 }

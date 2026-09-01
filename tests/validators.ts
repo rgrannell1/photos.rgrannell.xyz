@@ -1,4 +1,4 @@
-import { Expectations, ValidationError, Validator } from "./types.ts";
+import type { Expectations, ValidationError, Validator } from "./types.ts";
 
 export function relations(expectations: Expectations): Validator {
   return function (object: unknown): ValidationError[] {

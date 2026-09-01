@@ -26,6 +26,6 @@ function viewMediaDescription(
 }
 
 /** Creates the shared media description table cell. */
-export function MediaDescription() {
+export function MediaDescription(): m.Component<MediaDescriptionAttrs> {
   return { view: viewMediaDescription };
 }

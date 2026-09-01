@@ -2,7 +2,7 @@
 
 import m from "mithril";
 import type { Country } from "../../../types/domain.ts";
-import { type Maybe } from "../../../commons/collections/maybe.ts";
+import type { Maybe } from "../../../commons/collections/maybe.ts";
 import type { CountryFilterAttrs, FlagGroup } from "./country-filter.ts";
 import {
   appendFlagGroup,

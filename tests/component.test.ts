@@ -1,6 +1,6 @@
 /* Mithril component factory tests. */
 
-import m from "mithril";
+import type m from "mithril";
 import { Component } from "../ts/components/component.ts";
 
 Deno.test("Component keeps hooks and creates fresh instances", () => {

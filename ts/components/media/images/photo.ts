@@ -83,6 +83,6 @@ function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
 }
 
 /** Create an interactive photo component with selective redraws. */
-export function Photo() {
+export function Photo(): m.Component<PhotoAttrs> {
   return { onbeforeupdate: shouldUpdatePhoto, view: viewPhoto };
 }

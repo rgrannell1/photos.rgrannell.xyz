@@ -17,7 +17,10 @@ function handleBurgerMenu(): void {
 }
 
 /** Binds global navigation and burger-menu listeners and returns their handles. */
-export function bindGlobalListeners() {
+export function bindGlobalListeners(): {
+  sidebarListener: void;
+  burgerListener: void;
+} {
   const sidebarListener = listen(
     ApplicationEvent.CloseSidebar,
     handleCloseSidebar,

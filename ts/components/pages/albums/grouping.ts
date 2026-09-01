@@ -109,7 +109,7 @@ export function viewAlbumsList(
 }
 
 /** Creates an album list with progressive batch rendering. */
-export function AlbumsList() {
+export function AlbumsList(): m.Component<AlbumsListAttrs> {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
 
   return {

@@ -30,7 +30,7 @@ function viewHeartRain(): m.Children {
 }
 
 /** Create the heart-rain overlay with managed mount lifecycle. */
-export function HeartRain() {
+export function HeartRain(): m.Component {
   const heartState: HeartRainState = { teardown: NONE };
   const component = {
     oncreate: mountHeartRainOverlay.bind(null, heartState),

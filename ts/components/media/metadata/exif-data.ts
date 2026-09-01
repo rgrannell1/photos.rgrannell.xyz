@@ -1,7 +1,10 @@
 /* Render the photo EXIF metadata table. */
 
 import m from "mithril";
-import { type ReadThing, toThingLinks } from "../../thing/navigation/thing-links.ts";
+import {
+  type ReadThing,
+  toThingLinks,
+} from "../../thing/navigation/thing-links.ts";
 import type { ReadThingEmoji } from "../../thing/navigation/thing-link.ts";
 import * as Dates from "../../../commons/dates.ts";
 import type { Photo as PhotoType } from "../../../types/domain.ts";
@@ -13,7 +16,11 @@ import {
   formatShutterSpeed,
 } from "./exif-values.ts";
 import { UNKNOWN_EXIF_VALUE } from "../../../constants/display.ts";
-import { fromNullable, type Maybe, withDefault } from "../../../commons/collections/maybe.ts";
+import {
+  fromNullable,
+  type Maybe,
+  withDefault,
+} from "../../../commons/collections/maybe.ts";
 
 type ExifDataAttrs = {
   photo: PhotoType;
@@ -103,6 +110,6 @@ function viewExifData(vnode: m.Vnode<ExifDataAttrs>): m.Children {
 }
 
 /** Create the photo EXIF metadata component. */
-export function ExifData() {
+export function ExifData(): m.Component<ExifDataAttrs> {
   return { view: viewExifData };
 }

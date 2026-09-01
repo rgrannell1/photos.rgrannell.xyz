@@ -1,10 +1,14 @@
 import { KnownTypes } from "../../../constants/data.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Country, Photo } from "../../../types/domain.ts";
 import { readCountries, readPhoto, readPhotos } from "../readers.ts";
 
-import { isSome, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
+import {
+  isSome,
+  type Maybe,
+  NONE,
+} from "../../../commons/collections/maybe.ts";
 import {
   addThingCover,
   collectThingNodes,

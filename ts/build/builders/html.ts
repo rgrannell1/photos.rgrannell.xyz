@@ -15,6 +15,28 @@ import type { FlagManifest } from "../../types/browser.ts";
 import type { PublishedSprite } from "./builders.ts";
 import { buildId } from "./builders.ts";
 
+export type HtmlSourceData = {
+  stats: string;
+  env: string;
+  flags: string;
+  flagSprite: string;
+  css: string;
+};
+
+export type HtmlAssetData = {
+  prefetched: string[];
+  homepageThumbnails: string;
+  cdnUrl: string;
+  buildId: string;
+  albumsBanner: string;
+};
+
+export type HtmlSiteData = {
+  publicationId: string;
+  siteUrl: string;
+  siteHostname: string;
+};
+
 /** Build the browser flag manifest from a published sprite. */
 export function createFlagManifest(
   sprite: PublishedSprite,
@@ -38,7 +60,10 @@ export function stripWebpExtension(url: string): string {
 }
 
 /** Build template data sourced from generated files and styles. */
-export function createHtmlSourceData(flags: FlagManifest, css: string) {
+export function createHtmlSourceData(
+  flags: FlagManifest,
+  css: string,
+): HtmlSourceData {
   return {
     stats: statsText,
     env: envText,
@@ -49,7 +74,7 @@ export function createHtmlSourceData(flags: FlagManifest, css: string) {
 }
 
 /** Build template data for deployed assets and cache identifiers. */
-export function createHtmlAssetData() {
+export function createHtmlAssetData(): HtmlAssetData {
   const thumbnails = findHomepageThumbnails().map(stripWebpExtension);
   const prefetched = findPrefetchTargets();
   return {
@@ -62,7 +87,7 @@ export function createHtmlAssetData() {
 }
 
 /** Build template data that identifies the published site. */
-export function createHtmlSiteData() {
+export function createHtmlSiteData(): HtmlSiteData {
   const siteUrl = env.photos_url.replace("photos-cdn.", "photos.");
   const siteHostname = new URL(siteUrl).hostname;
   return {

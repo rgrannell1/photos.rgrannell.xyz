@@ -27,6 +27,6 @@ function viewListingLink(vnode: m.Vnode<ListingLinkAttrs>): m.Children {
 }
 
 /** Defines a link to a type listing. */
-export function ListingLink() {
+export function ListingLink(): m.Component<ListingLinkAttrs> {
   return { view: viewListingLink };
 }

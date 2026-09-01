@@ -1,6 +1,6 @@
 /* Page resolution state tests. */
 
-import m from "mithril";
+import type m from "mithril";
 import { isNone } from "../ts/commons/collections/maybe.ts";
 import { pageEntry } from "../ts/app/shell.ts";
 

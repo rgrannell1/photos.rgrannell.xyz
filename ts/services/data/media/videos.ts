@@ -1,5 +1,5 @@
 import { asUrn } from "@rgrannell1/tribbledb";
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Video } from "../../../types/domain.ts";
 import { readAlbum, readVideos } from "../readers.ts";
 import { buildAlbumUrn } from "../../../commons/urn.ts";

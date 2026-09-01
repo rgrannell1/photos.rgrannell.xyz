@@ -16,7 +16,7 @@ export function countLabel(count: number, noun: string): string {
 }
 
 /** Converts a hyphenated binomial name into display text. */
-export function formatBinomial(binomial: string) {
+export function formatBinomial(binomial: string): string {
   const pretty = binomial.replace(/-/g, " ");
   return capitalise(pretty);
 }

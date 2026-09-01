@@ -2,11 +2,15 @@
 
 /* Support photos operations. */
 import { KnownRelations, KnownTypes } from "../../../constants/data.ts";
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { NodeView, TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Country, Photo } from "../../../types/domain.ts";
 import { arrayify } from "../../../commons/collections/arrays.ts";
 import { parsePhoto } from "../parsers.ts";
-import { fromNullable, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
+import {
+  fromNullable,
+  type Maybe,
+  NONE,
+} from "../../../commons/collections/maybe.ts";
 import type { CoverReferences, CoverTarget } from "./photos.ts";
 
 /** Find the first photo source assigned as a cover for a target. */
@@ -41,7 +45,11 @@ export function readEntityCoverSource(
 }
 
 /** Read nodes that reference an entity as their cover target. */
-export function readCoverReferences(tdb: TribbleDB, type: string, id: string) {
+export function readCoverReferences(
+  tdb: TribbleDB,
+  type: string,
+  id: string,
+): NodeView {
   const thing = tdb.nodes({ type, id });
   const references = thing.referencedBy(KnownRelations.COVER);
   return references;

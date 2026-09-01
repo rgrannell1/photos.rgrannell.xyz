@@ -2,7 +2,7 @@
 
 /* Support albums operations. */
 import { asUrn } from "@rgrannell1/tribbledb";
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Album } from "../../../types/domain.ts";
 import { KnownRelations, KnownTypes } from "../../../constants/data.ts";
 import type { NodeSelection } from "./albums.ts";

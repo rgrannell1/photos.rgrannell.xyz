@@ -27,6 +27,6 @@ function viewAlbumButton(vnode: m.Vnode<AlbumButtonAttrs>): m.Children {
 }
 
 /** Create the optional album link component. */
-export function AlbumButton() {
+export function AlbumButton(): m.Component<AlbumButtonAttrs> {
   return { view: viewAlbumButton };
 }

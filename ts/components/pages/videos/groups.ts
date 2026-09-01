@@ -16,7 +16,9 @@ import { RENDER_BATCH_SIZE } from "../../../constants/layout.ts";
 import type { VideosPageAttrs } from "./videos.ts";
 
 /** Build keyed heading attributes and mark historical year groups. */
-export function buildYearHeadingAttrs(group: VideoYearGroup) {
+export function buildYearHeadingAttrs(
+  group: VideoYearGroup,
+): { key: string; class: string | undefined } {
   const key = `year-${group.year}`;
   const className = group.year <= BEFORE_TIMES_FINAL_YEAR
     ? "before-times"
@@ -86,14 +88,19 @@ export function viewVideosList(
 }
 
 /** Bind batch scheduling to list creation and updates. */
-export function bindVideosListHooks(batch: BatchRenderer) {
+export function bindVideosListHooks(
+  batch: BatchRenderer,
+): {
+  oncreate: (vnode: m.VnodeDOM<VideosPageAttrs>) => void;
+  onupdate: (vnode: m.VnodeDOM<VideosPageAttrs>) => void;
+} {
   const oncreate = scheduleVideosBatch.bind(null, batch);
   const onupdate = scheduleVideosBatch.bind(null, batch);
   return { oncreate, onupdate };
 }
 
 /** Create a video list with incremental batch rendering. */
-export function VideosList() {
+export function VideosList(): m.Component<VideosPageAttrs> {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
   const hooks = bindVideosListHooks(batch);
 

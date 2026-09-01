@@ -6,8 +6,12 @@
 import { asUrn, type Thing, type Triple } from "@rgrannell1/tribbledb";
 import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { humanise } from "../../../commons/strings.ts";
-import { ENDPOINT, KnownRelations, KnownTypes } from "../../../constants/data.ts";
-import { type TripleProcessor } from "../classification/curies.ts";
+import {
+  ENDPOINT,
+  KnownRelations,
+  KnownTypes,
+} from "../../../constants/data.ts";
+import type { TripleProcessor } from "../classification/curies.ts";
 import { URN_ALIASES } from "./stream.ts";
 
 /** Expands a CDN-relative target against the configured endpoint. */

@@ -50,6 +50,6 @@ function viewTripPreviousAlbums(
 }
 
 /** Shown on album pages when the album is part of a trip and has earlier stops. */
-export function TripPreviousAlbums() {
+export function TripPreviousAlbums(): m.Component<TripPreviousAlbumsAttrs> {
   return { view: viewTripPreviousAlbums };
 }

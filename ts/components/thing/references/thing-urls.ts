@@ -2,7 +2,11 @@ import m from "mithril";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { ExternalLink } from "./external-link.ts";
-import { isNone, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
+import {
+  isNone,
+  type Maybe,
+  NONE,
+} from "../../../commons/collections/maybe.ts";
 
 /** Draws a labelled external link when its URL exists. */
 function drawExternalLink(href: Maybe<string>, text: string): m.Vnode | null {
@@ -41,8 +45,14 @@ function readMapHref(thing: TripleObject): Maybe<string> {
 
 /** Reads the supported external links for one thing. */
 function readThingUrlLinks(thing: TripleObject): (m.Vnode | null)[] {
-  const wikipedia = drawExternalLink(selectFirst(thing.wikipedia), "[wikipedia]");
-  const birdwatch = drawExternalLink(selectFirst(thing.birdwatchUrl), "[birdwatch]");
+  const wikipedia = drawExternalLink(
+    selectFirst(thing.wikipedia),
+    "[wikipedia]",
+  );
+  const birdwatch = drawExternalLink(
+    selectFirst(thing.birdwatchUrl),
+    "[birdwatch]",
+  );
   const map = drawExternalLink(readMapHref(thing), "[map]");
   return [wikipedia, birdwatch, map];
 }
@@ -78,6 +88,6 @@ function viewThingUrls(
 }
 
 /** Creates the external URL list for a single-thing page. */
-export function ThingUrls() {
+export function ThingUrls(): m.Component<{ things: TripleObject[] }> {
   return { view: viewThingUrls };
 }

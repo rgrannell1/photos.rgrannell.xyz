@@ -61,6 +61,6 @@ function viewAlbumCard(vnode: m.Vnode<AlbumCardAttrs>): m.Children {
 }
 
 /** Create the component for one album card. */
-export function AlbumCard() {
+export function AlbumCard(): m.Component<AlbumCardAttrs> {
   return { view: viewAlbumCard };
 }

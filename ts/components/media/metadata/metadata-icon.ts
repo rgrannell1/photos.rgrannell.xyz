@@ -43,6 +43,6 @@ function viewMetadataIcon(vnode: m.Vnode<MetadataIconAttrs>): m.Children {
 }
 
 /** Create the metadata navigation icon component. */
-export function MetadataIcon() {
+export function MetadataIcon(): m.Component<MetadataIconAttrs> {
   return { view: viewMetadataIcon };
 }

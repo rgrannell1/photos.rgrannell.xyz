@@ -5,7 +5,10 @@ import { arrayify } from "../../../commons/collections/arrays.ts";
 import { isNone, type Maybe } from "../../../commons/collections/maybe.ts";
 import { isTaxonUrn, readSubjectQualifier } from "../../../commons/urn.ts";
 import type { ReadThingEmoji } from "../../thing/navigation/thing-link.ts";
-import { type ReadThing, toThingLinks } from "../../thing/navigation/thing-links.ts";
+import {
+  type ReadThing,
+  toThingLinks,
+} from "../../thing/navigation/thing-links.ts";
 
 type MediaSubjectAttrs = {
   subject: Maybe<string | string[]>;
@@ -74,6 +77,6 @@ function viewMediaSubject(vnode: m.Vnode<MediaSubjectAttrs>): m.Children {
 }
 
 /** Create the media subject cell component. */
-export function MediaSubject() {
+export function MediaSubject(): m.Component<MediaSubjectAttrs> {
   return { view: viewMediaSubject };
 }

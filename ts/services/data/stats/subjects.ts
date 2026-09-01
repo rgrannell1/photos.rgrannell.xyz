@@ -3,16 +3,22 @@
 /* Wildlife statistics and bird life-list from subject triples. */
 /* Support stats operations. */
 /* Wildlife statistics and bird life-list from subject triples. */
-import { asUrn } from "@rgrannell1/tribbledb";
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import { asUrn, type Triple } from "@rgrannell1/tribbledb";
+import type { NodeView, TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { KnownRelations, KnownTypes } from "../../../constants/data.ts";
-import { fromNullable, type Maybe } from "../../../commons/collections/maybe.ts";
+import {
+  fromNullable,
+  type Maybe,
+} from "../../../commons/collections/maybe.ts";
 import type { SubjectStats } from "../../../domain/media/stats.ts";
 import type { SubjectQuery, SubjectTriples } from "../stats.ts";
 import { IRELAND_QUERY } from "../stats.ts";
 
 /** Read all triples that match a subject statistics query. */
-export function readSubjectTriples(tdb: TribbleDB, query: SubjectQuery) {
+export function readSubjectTriples(
+  tdb: TribbleDB,
+  query: SubjectQuery,
+): Triple[] {
   return tdb.search(query).triples();
 }
 
@@ -36,7 +42,7 @@ export function readSubjectIds(
 }
 
 /** Read bird nodes whose identifiers occur in the supplied set. */
-export function readBirdNodes(tdb: TribbleDB, birdIds: Set<string>) {
+export function readBirdNodes(tdb: TribbleDB, birdIds: Set<string>): NodeView {
   return tdb.nodes({ type: KnownTypes.BIRD, id: [...birdIds] });
 }
 

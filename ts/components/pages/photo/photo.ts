@@ -1,3 +1,4 @@
+import type m from "mithril";
 import type { Photo as PhotoType } from "../../../types/domain.ts";
 
 import type { ReadThing } from "../../thing/navigation/thing-links.ts";
@@ -13,6 +14,6 @@ export type PhotoPageAttrs = {
 };
 
 /** Creates the photo page component. */
-export function PhotoPage() {
+export function PhotoPage(): m.Component<PhotoPageAttrs> {
   return { view: viewPhotoPage };
 }

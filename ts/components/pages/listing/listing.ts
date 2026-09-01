@@ -1,10 +1,11 @@
-import { type TripleObject } from "@rgrannell1/tribbledb";
+import type m from "mithril";
+import type { TripleObject } from "@rgrannell1/tribbledb";
 
 import type { Photo } from "../../../types/domain.ts";
 
 import type { SubjectStats } from "../../../domain/media/stats.ts";
 
-import { type Maybe } from "../../../commons/collections/maybe.ts";
+import type { Maybe } from "../../../commons/collections/maybe.ts";
 import { viewListingPage } from "./page.ts";
 
 type ReadThingCover = (urn: string) => Maybe<Photo>;
@@ -54,6 +55,6 @@ export type ListingPageAttrs = {
 /**
  * Each member of a category, e.g countries.
  */
-export function ListingPage() {
+export function ListingPage(): m.Component<ListingPageAttrs> {
   return { view: viewListingPage };
 }

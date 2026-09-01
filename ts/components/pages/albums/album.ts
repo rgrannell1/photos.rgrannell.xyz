@@ -22,7 +22,12 @@ import { countLabel, preprocessDescription } from "../../../commons/strings.ts";
 import { SMALL_DEVICE_WIDTH } from "../../../constants/layout.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TripPreviousAlbums } from "../../album/trip-previous-albums.ts";
-import { fromNullable, isNone, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
+import {
+  fromNullable,
+  isNone,
+  type Maybe,
+  NONE,
+} from "../../../commons/collections/maybe.ts";
 
 type AlbumAttrs = {
   album: Album;
@@ -138,7 +143,7 @@ function viewAlbumPage(vnode: m.Vnode<AlbumAttrs>): m.Children {
 }
 
 /** Create the album page component and its title hook. */
-export function AlbumPage() {
+export function AlbumPage(): m.Component<AlbumAttrs> {
   return {
     oninit: initAlbumPage,
     view: viewAlbumPage,

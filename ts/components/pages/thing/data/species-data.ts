@@ -7,8 +7,16 @@ import { selectFirst } from "../../../../commons/collections/arrays.ts";
 import type { Photo as PhotoType } from "../../../../types/domain.ts";
 import { PhotoGrid } from "../../../media/images/photo-grid.ts";
 import { TAXON_TYPES } from "../../../../constants/data.ts";
-import { isNone, type Maybe, NONE } from "../../../../commons/collections/maybe.ts";
-import type { CachedReader, ThingPageAttrs } from "../view/thing.ts";
+import {
+  isNone,
+  type Maybe,
+  NONE,
+} from "../../../../commons/collections/maybe.ts";
+import type {
+  CachedReader,
+  ThingPageAttrs,
+  ThingSectionComponent,
+} from "../view/thing.ts";
 import { cachedByUrn, readThingPhotos } from "./cache.ts";
 import { slicePhotos } from "../view/media.ts";
 import { drawCoveredMember } from "../view/species-view.ts";
@@ -40,7 +48,7 @@ export function viewPhotoSection(
 }
 
 /** Create a photo section with a reader cached by thing URN. */
-export function PhotoSection() {
+export function PhotoSection(): ThingSectionComponent {
   const photosFor = cachedByUrn(readThingPhotos);
 
   return { view: viewPhotoSection.bind(null, photosFor) };

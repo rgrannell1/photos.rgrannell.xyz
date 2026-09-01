@@ -5,7 +5,11 @@ import { asUrn } from "@rgrannell1/tribbledb";
 
 import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { customFlagAsset, FlagIcon } from "../../flag.ts";
-import { isSome, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
+import {
+  isSome,
+  type Maybe,
+  NONE,
+} from "../../../commons/collections/maybe.ts";
 import { KnownTypes } from "../../../constants/data.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Thing, Unesco } from "../../../types/domain.ts";
@@ -106,6 +110,6 @@ function viewThingLink(vnode: m.Vnode<ThingLinkAttrs>): m.Children {
 }
 
 /** Creates the component for one linked thing. */
-export function ThingLink() {
+export function ThingLink(): m.Component<ThingLinkAttrs> {
   return { view: viewThingLink };
 }

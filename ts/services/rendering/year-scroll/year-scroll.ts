@@ -1,6 +1,6 @@
 /* Year-scroll tracking: reflect viewport year to URL and scroll on deep link. */
 
-import { type Maybe } from "../../../commons/collections/maybe.ts";
+import type { Maybe } from "../../../commons/collections/maybe.ts";
 import {
   createYearScrollState,
   listenForYearScroll,

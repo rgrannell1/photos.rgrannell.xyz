@@ -135,6 +135,6 @@ function viewFlagIcon(vnode: m.Vnode<FlagIconAttrs>): m.Children {
 /**
  * CSS sizes the element, so the layout never shifts on load.
  */
-export function FlagIcon() {
+export function FlagIcon(): m.Component<FlagIconAttrs> {
   return { view: viewFlagIcon };
 }

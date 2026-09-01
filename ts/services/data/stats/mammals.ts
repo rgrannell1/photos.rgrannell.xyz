@@ -3,9 +3,9 @@
 /* Wildlife statistics and bird life-list from subject triples. */
 /* Support stats operations. */
 /* Wildlife statistics and bird life-list from subject triples. */
-import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
+import { asUrn, type Triple, type TripleObject } from "@rgrannell1/tribbledb";
 import { selectFirst } from "../../../commons/collections/arrays.ts";
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import {
   KnownRelations,
   SpeciesStatus,
@@ -18,7 +18,10 @@ import {
   NONE,
   withDefault,
 } from "../../../commons/collections/maybe.ts";
-import type { ChecklistEntry, NemesisSpecies } from "../../../domain/media/stats.ts";
+import type {
+  ChecklistEntry,
+  NemesisSpecies,
+} from "../../../domain/media/stats.ts";
 import type { SubjectTriples } from "../stats.ts";
 import { SCARCE_RARITY_BANDS } from "../stats.ts";
 import { readSubjectIds } from "./subjects.ts";
@@ -32,7 +35,10 @@ export function readNemesisSpecies(
   speciesId: string,
 ): NemesisSpecies {
   const speciesThing = readSpeciesThing(tdb, speciesType, speciesId);
-  const name = withDefault(selectFirst(fromNullable(speciesThing?.name)), speciesId);
+  const name = withDefault(
+    selectFirst(fromNullable(speciesThing?.name)),
+    speciesId,
+  );
   return {
     speciesId,
     name,
@@ -40,7 +46,10 @@ export function readNemesisSpecies(
 }
 
 /** Reads first-sighting triples for one species type. */
-export function readFirstSeenTriples(tdb: TribbleDB, speciesType: string) {
+export function readFirstSeenTriples(
+  tdb: TribbleDB,
+  speciesType: string,
+): Triple[] {
   const query = {
     source: { type: speciesType },
     relation: KnownRelations.FIRST_SEEN,
@@ -146,7 +155,10 @@ export function hasRareStatus(speciesThing: TripleObject | undefined): boolean {
 export function hasScarceRarity(
   speciesThing: TripleObject | undefined,
 ): boolean {
-  const rarity = withDefault(selectFirst(fromNullable(speciesThing?.rarity)), "");
+  const rarity = withDefault(
+    selectFirst(fromNullable(speciesThing?.rarity)),
+    "",
+  );
   const isScarce = SCARCE_RARITY_BANDS.has(rarity);
   return isScarce;
 }

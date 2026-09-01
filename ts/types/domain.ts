@@ -20,7 +20,7 @@ import type {
 } from "../schemas/subject.ts";
 import type { TransferSchema } from "../schemas/transfer.ts";
 import type { VideoSchema } from "../schemas/video.ts";
-import { KnownTypes, ThingListKind } from "../constants/data.ts";
+import type { KnownTypes, ThingListKind } from "../constants/data.ts";
 
 export type Album = InferOutput<typeof AlbumSchema> & {
   type: `${KnownTypes.ALBUM}`;

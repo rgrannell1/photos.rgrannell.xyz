@@ -5,7 +5,7 @@ import type { LatLngBounds, LayerGroup, Map as LeafletMap } from "leaflet";
 import type { TripPolyline } from "../../domain/map.ts";
 import type { GeocodedPlaceWithCover } from "../../domain/places.ts";
 
-import { type Maybe } from "../../commons/collections/maybe.ts";
+import type { Maybe } from "../../commons/collections/maybe.ts";
 import {
   createMapHandle,
   createMapState,

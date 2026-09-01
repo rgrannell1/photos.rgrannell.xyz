@@ -87,7 +87,7 @@ export function invalidateNow(existingMap: LeafletMap): void {
 }
 
 /** Schedules a map size recalculation for the next animation frame. */
-export function invalidateMapSizeSoon(existingMap: Maybe<LeafletMap>) {
+export function invalidateMapSizeSoon(existingMap: Maybe<LeafletMap>): void {
   if (isNone(existingMap)) {
     return;
   }

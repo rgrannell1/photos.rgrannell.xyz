@@ -5,7 +5,10 @@ import { RENDER_BATCH_SIZE } from "../../../constants/layout.ts";
 import { BEFORE_TIMES_FINAL_YEAR } from "../../../constants/display.ts";
 import type { Photo as PhotoType } from "../../../types/domain.ts";
 import { Photo } from "./photo.ts";
-import { groupPhotosByYear, type PhotoYearGroup } from "../../../domain/media/photos.ts";
+import {
+  groupPhotosByYear,
+  type PhotoYearGroup,
+} from "../../../domain/media/photos.ts";
 import { selectLoadingMode } from "../../../services/rendering/year-scroll/photos.ts";
 import {
   type BatchRenderer,
@@ -141,7 +144,7 @@ function viewPhotoGrid(
 }
 
 /** Creates a photo grid with progressive batch rendering. */
-export function PhotoGrid() {
+export function PhotoGrid(): m.Component<PhotoGridAttrs> {
   const batch = createBatchRenderer(RENDER_BATCH_SIZE);
   const oncreate = scheduleGridBatch.bind(null, batch);
   const onbeforeupdate = resetGridBatchOnKeyChange.bind(null, batch);

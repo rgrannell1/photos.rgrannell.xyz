@@ -6,6 +6,7 @@ import { FlagIcon } from "../../flag.ts";
 import type {
   ChecklistCardAttrs,
   ChecklistMysteryCardAttrs,
+  ChecklistPhotoAttrs,
 } from "../checklist.ts";
 import { formatFirstSeen } from "./dates.ts";
 import { viewChecklistPhoto } from "./filters.ts";
@@ -17,7 +18,7 @@ import { routeLinkAttrs } from "../../../services/browser/routes.ts";
  * cover photo.
  */
 /** Create the per-species cover image component. */
-export function ChecklistPhoto() {
+export function ChecklistPhoto(): m.Component<ChecklistPhotoAttrs> {
   return { view: viewChecklistPhoto };
 }
 
@@ -105,7 +106,7 @@ export function viewChecklistCard(
 }
 
 /** Create the recorded-species checklist card component. */
-export function ChecklistCard() {
+export function ChecklistCard(): m.Component<ChecklistCardAttrs> {
   return { view: viewChecklistCard };
 }
 

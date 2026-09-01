@@ -1,7 +1,7 @@
 /* Transform streamed triples and add cheap indexed relations. */
 
 /* Transform streamed triples and add cheap indexed relations. */
-import { type Triple } from "@rgrannell1/tribbledb";
+import type { Triple } from "@rgrannell1/tribbledb";
 import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 
 import {
@@ -9,7 +9,10 @@ import {
   KnownRelations,
   RelationSymmetries,
 } from "../../../constants/data.ts";
-import { createCurieProcessors, type TripleProcessor } from "../classification/curies.ts";
+import {
+  createCurieProcessors,
+  type TripleProcessor,
+} from "../classification/curies.ts";
 import {
   addInverseRelationTriples,
   applyTripleProcessors,

@@ -1,3 +1,4 @@
+import type m from "mithril";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 
 import type {
@@ -7,12 +8,12 @@ import type {
   Video as VideoType,
 } from "../../../../types/domain.ts";
 
-import { type ReadThingList } from "../../../thing/thing-list/thing-list.ts";
+import type { ReadThingList } from "../../../thing/thing-list/thing-list.ts";
 import type { ThingListKind } from "../../../../constants/data.ts";
 
 import type { ReadThingEmoji } from "../../../thing/navigation/thing-link.ts";
-import { type Maybe } from "../../../../commons/collections/maybe.ts";
-import { readSeenIn } from "../data/cache.ts";
+import type { Maybe } from "../../../../commons/collections/maybe.ts";
+import type { readSeenIn } from "../data/cache.ts";
 import { viewThingPage } from "./page.ts";
 
 export type ThingPageAttrs = {
@@ -30,6 +31,10 @@ export type ThingPageAttrs = {
   readTaxonMembers: (urn: string) => TripleObject[];
   readThingCover: (urn: string) => Maybe<PhotoType>;
   visible: boolean;
+};
+
+export type ThingSectionComponent = {
+  view: (vnode: m.Vnode<ThingPageAttrs>) => m.Children;
 };
 
 export type UrnCache<Value extends object> = {
@@ -56,6 +61,6 @@ export type ThingMetadata = {
 };
 
 /** Creates the thing page component. */
-export function ThingPage() {
+export function ThingPage(): m.Component<ThingPageAttrs> {
   return { view: viewThingPage };
 }

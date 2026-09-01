@@ -16,6 +16,6 @@ function viewHeading(vnode: m.Vnode<HeadingAttrs>): m.Children {
 }
 
 /** Create the shared metadata table heading component. */
-export function Heading() {
+export function Heading(): m.Component<HeadingAttrs> {
   return { view: viewHeading };
 }

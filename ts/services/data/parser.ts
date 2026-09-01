@@ -1,5 +1,5 @@
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { type TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { logParseWarning } from "./logger.ts";
 import {
   type BaseIssue,
@@ -141,14 +141,18 @@ export function parseByType<Parsed>(
 }
 
 /** Creates a reader for one parsed entity by ID. */
-export function readOne<Parsed>(parser: Parser<Parsed>) {
+export function readOne<Parsed>(
+  parser: Parser<Parsed>,
+): (tdb: TribbleDB, id: string) => Maybe<Parsed> {
   return (tdb: TribbleDB, id: string) => {
     return readParsedThing(parser, tdb, id);
   };
 }
 
 /** Creates a reader for multiple parsed entities by URN. */
-export function readMany<Parsed>(parser: Parser<Parsed>) {
+export function readMany<Parsed>(
+  parser: Parser<Parsed>,
+): (tdb: TribbleDB, urns: Set<string>) => Parsed[] {
   const checkedParser = parser;
   assertParser(checkedParser);
   const reader = readManyParsed.bind(null, checkedParser);
@@ -156,7 +160,12 @@ export function readMany<Parsed>(parser: Parser<Parsed>) {
 }
 
 /** Creates matching single-entity and multi-entity readers for a parser. */
-export function createReaders<Parsed>(parser: Parser<Parsed>) {
+export function createReaders<Parsed>(
+  parser: Parser<Parsed>,
+): {
+  one: (tdb: TribbleDB, id: string) => Maybe<Parsed>;
+  many: (tdb: TribbleDB, urns: Set<string>) => Parsed[];
+} {
   return {
     one: readOne(parser),
     many: readMany(parser),

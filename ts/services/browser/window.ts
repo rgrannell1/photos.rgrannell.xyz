@@ -8,7 +8,7 @@ export function isSmallerThan(width: number = SMALL_DEVICE_WIDTH): boolean {
 }
 
 /** Set the browser document title. */
-export function setTitle(title: string) {
+export function setTitle(title: string): void {
   document.title = title;
 }
 

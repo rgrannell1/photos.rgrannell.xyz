@@ -1,6 +1,6 @@
 /* Wildlife statistics and bird life-list from subject triples. */
 
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import {
   DATA_TRUE,
   KnownRelations,

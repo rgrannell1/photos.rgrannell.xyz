@@ -288,7 +288,7 @@ button:disabled {
   width: 100%;
 }
 
-.photo-container .photo a,
+.photo-container .photo > a,
 .album-container .photo-album a {
   display: block;
   width: 100%;
@@ -587,10 +587,6 @@ button:disabled {
     font-size: 2em;
   }
 
-  h1, h2, h3 {
-    overflow-wrap: anywhere;
-  }
-
   .year-heading {
     font-size: 2em;
   }
@@ -677,7 +673,7 @@ button:disabled {
   }
 
   /* the a wrapping ImagePair is inline by default, which clips both image and absolute icon */
-  .photo-container .photo a {
+  .photo-container .photo > a {
     display: block;
     width: 100%;
   }
@@ -832,8 +828,6 @@ button:disabled {
 .app-container > section, .app-container > main, .app-container > .page {
   grid-row: 1;
   grid-column: 2;
-  /* Let the content track shrink below its intrinsic width on narrow screens. */
-  min-width: 0;
 }
 
 /*
@@ -899,8 +893,6 @@ button:disabled {
 /* EXIF information about an image */
 .metadata-table {
   margin: 10px 0;
-  table-layout: fixed;
-  width: 100%;
 }
 
 /* the global ul rule is !important with (0,1,2) specificity; match both */
@@ -916,7 +908,6 @@ button:disabled {
 .metadata-table th, .metadata-table td {
   text-align: left;
   padding: 4px 8px;
-  overflow-wrap: anywhere;
 }
 
 .metadata-table th {

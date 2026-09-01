@@ -3,7 +3,10 @@
 import m from "mithril";
 import type { Maybe } from "../../../commons/collections/maybe.ts";
 import type { ReadThingEmoji } from "../../thing/navigation/thing-link.ts";
-import { type ReadThing, toThingLinks } from "../../thing/navigation/thing-links.ts";
+import {
+  type ReadThing,
+  toThingLinks,
+} from "../../thing/navigation/thing-links.ts";
 
 type MediaThingLinksAttrs = {
   value: Maybe<string>;
@@ -20,6 +23,6 @@ function viewMediaThingLinks(vnode: m.Vnode<MediaThingLinksAttrs>): m.Children {
 }
 
 /** Creates the media thing links component. */
-export function MediaThingLinks() {
+export function MediaThingLinks(): m.Component<MediaThingLinksAttrs> {
   return { view: viewMediaThingLinks };
 }

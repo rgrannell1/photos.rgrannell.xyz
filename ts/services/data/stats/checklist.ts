@@ -3,11 +3,14 @@
 /* Wildlife statistics and bird life-list from subject triples. */
 /* Support stats operations. */
 /* Wildlife statistics and bird life-list from subject triples. */
-import { type TripleObject } from "@rgrannell1/tribbledb";
+import type { TripleObject } from "@rgrannell1/tribbledb";
 import { selectFirst } from "../../../commons/collections/arrays.ts";
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { DATA_TRUE } from "../../../constants/data.ts";
-import { fromNullable, withDefault } from "../../../commons/collections/maybe.ts";
+import {
+  fromNullable,
+  withDefault,
+} from "../../../commons/collections/maybe.ts";
 import type { ChecklistEntry } from "../../../domain/media/stats.ts";
 import type { ChecklistFlags } from "../stats.ts";
 import { readSpeciesThing } from "./birds.ts";

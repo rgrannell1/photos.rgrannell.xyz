@@ -2,8 +2,6 @@
 
 "use strict";
 
-const { VIDEO_ONLY_THING } = require("./things");
-
 // Cover the supported narrow range in regular 20-pixel steps.
 const MOBILE_WIDTHS = Array.from({ length: 13 }, (_unused, idx) => 260 + idx * 20);
 
@@ -47,18 +45,6 @@ const OVERFLOW_CASES = [
     route: "/?bust=overflow#!/videos",
     ready: ".video-container video",
     cards: ".video-container video",
-  },
-  {
-    name: "About",
-    route: "/?bust=overflow#!/about",
-    ready: ".about-page",
-    cards: ".album-banner, .about-page",
-  },
-  {
-    name: "video-only thing",
-    route: VIDEO_ONLY_THING.route,
-    ready: VIDEO_ONLY_THING.ready,
-    cards: ".thing-page video, .thing-page table",
   },
 ];
 

@@ -68,6 +68,6 @@ function viewPhotoAlbumMetadata(
 }
 
 /** Create the album metadata component. */
-export function PhotoAlbumMetadata() {
+export function PhotoAlbumMetadata(): m.Component<PhotoAlbumMetadataAttrs> {
   return { view: viewPhotoAlbumMetadata };
 }

@@ -1,3 +1,4 @@
+import type m from "mithril";
 import type { Album, Country } from "../../../types/domain.ts";
 
 import { type Maybe, NONE } from "../../../commons/collections/maybe.ts";
@@ -43,7 +44,7 @@ export type AlbumsPageState = {
 };
 
 /** Creates an albums page component with isolated year-scroll state. */
-export function AlbumsPage() {
+export function AlbumsPage(): m.Component<AlbumsPageAttrs> {
   const pageState: AlbumsPageState = {
     teardownYearScroll: NONE,
   };

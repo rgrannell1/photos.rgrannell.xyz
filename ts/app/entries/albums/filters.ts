@@ -2,7 +2,7 @@
 
 /* Support albums operations. */
 import { setify } from "../../../commons/collections/sets.ts";
-import { type AlbumsPageAttrs } from "../../../components/pages/albums/albums.ts";
+import type { AlbumsPageAttrs } from "../../../components/pages/albums/albums.ts";
 import type { Album } from "../../../types/domain.ts";
 import { state } from "../../context.ts";
 import { fromNullable, isSome } from "../../../commons/collections/maybe.ts";
@@ -59,7 +59,7 @@ export function filterAlbums(filters: AlbumFilters): Album[] {
 }
 
 /** Refreshes album data and resolves attributes for the albums page. */
-export function resolveAlbumsPage() {
+export function resolveAlbumsPage(): { attrs: AlbumsPageAttrs } {
   refreshAlbumsCache();
   const filters = readAlbumFilters();
   const attrs: AlbumsPageAttrs = {

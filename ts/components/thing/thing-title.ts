@@ -9,7 +9,11 @@ import { selectFirst } from "../../commons/collections/arrays.ts";
 import { formatTaxonLabel } from "../../domain/things.ts";
 import { FlagIcon } from "../flag.ts";
 import { setTitle } from "../../services/browser/window.ts";
-import { isSome, type Maybe, withDefault } from "../../commons/collections/maybe.ts";
+import {
+  isSome,
+  type Maybe,
+  withDefault,
+} from "../../commons/collections/maybe.ts";
 
 /** Read a thing name, with its identifier as the fallback. */
 function readTitleName(thing: TripleObject, fallback: string): string {
@@ -120,7 +124,7 @@ function viewThingTitle(vnode: m.Vnode<ThingTitleAttrs>): m.Children {
 }
 
 /** Create the thing title component and reflect title changes to the document. */
-export function ThingTitle() {
+export function ThingTitle(): m.Component<ThingTitleAttrs> {
   return {
     oncreate: reflectThingTitle,
     onupdate: reflectThingTitle,

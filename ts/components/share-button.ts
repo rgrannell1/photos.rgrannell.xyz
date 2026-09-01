@@ -53,7 +53,7 @@ function viewShareButton(
 }
 
 /** The [share] control used by album, trip, and thing pages. */
-export function ShareButton() {
+export function ShareButton(): m.Component<ShareButtonAttrs> {
   const localState = {
     sharing: false,
   };

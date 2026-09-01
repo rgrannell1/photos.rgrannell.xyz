@@ -55,7 +55,7 @@ export function isIrishWild(entry: ChecklistEntry): boolean {
 export function buildFilterControlAttrs(
   control: FilterControl,
   selectedClass: string | undefined,
-) {
+): { title: string; class: string | undefined; onclick: () => void } {
   const onclick = control.onSelect.bind(null, control.value);
   const { title } = control;
   return {

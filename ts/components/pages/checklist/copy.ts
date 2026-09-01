@@ -3,12 +3,19 @@
 import m from "mithril";
 import { setRoute } from "../../../services/browser/routes.ts";
 import type { Photo } from "../../../types/domain.ts";
-import type { ChecklistEntry, NemesisSpecies } from "../../../domain/media/stats.ts";
+import type {
+  ChecklistEntry,
+  NemesisSpecies,
+} from "../../../domain/media/stats.ts";
 import { LifeListFilter } from "../../../constants/display.ts";
 import { isSome, type Maybe } from "../../../commons/collections/maybe.ts";
 import type { ChecklistPageAttrs, MammalSectionAttrs } from "../checklist.ts";
 import { ChecklistDetails } from "./filters.ts";
-import { ChecklistGrid, buildLifeListPreamble, buildMammalPreamble } from "./grid.ts";
+import {
+  buildLifeListPreamble,
+  buildMammalPreamble,
+  ChecklistGrid,
+} from "./grid.ts";
 import { drawChecklistPageChildren, selectChecklistPageClass } from "./page.ts";
 
 /** Summarise photographed and recorded Irish mammal species counts. */
@@ -63,7 +70,7 @@ export function viewMammalSection(
 /**
  * The Irish mammal section, below the bird table in the Irish view.
  */
-export function MammalSection() {
+export function MammalSection(): m.Component<MammalSectionAttrs> {
   return { view: viewMammalSection };
 }
 

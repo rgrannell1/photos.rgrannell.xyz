@@ -111,6 +111,6 @@ function viewThingCaption(vnode: m.Vnode<ThingCaptionAttrs>): m.Children {
 }
 
 /** Creates the thing caption component. */
-export function ThingCaption() {
+export function ThingCaption(): m.Component<ThingCaptionAttrs> {
   return { view: viewThingCaption };
 }

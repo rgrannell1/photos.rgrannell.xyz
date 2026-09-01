@@ -1,12 +1,19 @@
-import { TribbleDB } from "@rgrannell1/tribbledb/v2";
+import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Album } from "../../../types/domain.ts";
 import type { Photo, Video } from "../../../types/domain.ts";
 import { readPhotos } from "../readers.ts";
-import { DATA_TRUE, KnownRelations, KnownTypes } from "../../../constants/data.ts";
+import {
+  DATA_TRUE,
+  KnownRelations,
+  KnownTypes,
+} from "../../../constants/data.ts";
 import { readAlbums, readVideos } from "../readers.ts";
 import { buildAlbumUrn } from "../../../commons/urn.ts";
 import { selectFirst } from "../../../commons/collections/arrays.ts";
-import { fromNullable, type Maybe } from "../../../commons/collections/maybe.ts";
+import {
+  fromNullable,
+  type Maybe,
+} from "../../../commons/collections/maybe.ts";
 import {
   compareNewestAlbum,
   compareOldestAlbum,
@@ -103,7 +110,7 @@ export function readTripName(tdb: TribbleDB, tripUrn: string): Maybe<string> {
 export function readAlbumsByThingIds(
   tdb: TribbleDB,
   thingsUrns: Set<string>,
-) {
+): Album[] {
   const things = selectThings(tdb, thingsUrns);
   const albumIds = readReferencedAlbumIds(things);
   const albumUrns = new Set([...albumIds].map(buildAlbumUrn));

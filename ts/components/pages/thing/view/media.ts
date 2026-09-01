@@ -6,15 +6,23 @@ import type {
   Video as VideoType,
 } from "../../../../types/domain.ts";
 import { Video } from "../../../media/content/video.ts";
-import { AlbumCard, type AlbumCardAttrs } from "../../../album/cards/album-card.ts";
+import {
+  AlbumCard,
+  type AlbumCardAttrs,
+} from "../../../album/cards/album-card.ts";
 import { NONE } from "../../../../commons/collections/maybe.ts";
 import type {
   AlbumEntry,
   CachedReader,
   ThingMetadata,
   ThingPageAttrs,
+  ThingSectionComponent,
 } from "./thing.ts";
-import { cachedByUrn, readAlbumEntries, readThingVideos } from "../data/cache.ts";
+import {
+  cachedByUrn,
+  readAlbumEntries,
+  readThingVideos,
+} from "../data/cache.ts";
 import {
   addThingListMetadata,
   readBaseThingMetadata,
@@ -92,7 +100,7 @@ export function viewAlbumSection(
 }
 
 /** Create an album section with a reader cached by thing URN. */
-export function AlbumSection() {
+export function AlbumSection(): ThingSectionComponent {
   const entriesFor = cachedByUrn(readAlbumEntries);
 
   return { view: viewAlbumSection.bind(null, entriesFor) };
@@ -124,7 +132,7 @@ export function viewVideoSection(
 }
 
 /** Create a video section with a reader cached by thing URN. */
-export function VideoSection() {
+export function VideoSection(): ThingSectionComponent {
   const videosFor = cachedByUrn(readThingVideos);
 
   return { view: viewVideoSection.bind(null, videosFor) };
