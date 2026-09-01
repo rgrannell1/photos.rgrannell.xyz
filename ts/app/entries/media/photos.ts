@@ -1,7 +1,7 @@
 /* Resolve photo routes and retain the streamed photo index. */
 
 import m from "mithril";
-import { photoUrn } from "../../../commons/urn.ts";
+import { buildPhotoUrn } from "../../../commons/urn.ts";
 import { PhotoPage } from "../../../components/pages/photo/photo.ts";
 import { PhotosPage } from "../../../components/pages/photo/photos.ts";
 import type { Photo } from "../../../types/domain.ts";
@@ -9,9 +9,6 @@ import { services, state } from "../../context.ts";
 import { pageEntry } from "../../shell.ts";
 import { readPrefix } from "../../../commons/cache.ts";
 import { isNone, type Maybe } from "../../../commons/collections/maybe.ts";
-
-const photoPageComponent = PhotoPage();
-const photosPageComponent = PhotosPage();
 
 // Photo URNs loaded per navigation, not redraw. Re-read until stream completes.
 let photoUrns: string[] = [];
@@ -30,7 +27,7 @@ function readPhotosByLimit(limit: number): Photo[] {
 }
 
 export const photosEntry = pageEntry({
-  page: photosPageComponent,
+  page: PhotosPage,
   /** Captures the photo URN index once for the new navigation. */
   onmatch() {
     photoUrns = services.readAllPhotoUrns();
@@ -52,7 +49,7 @@ export const photosEntry = pageEntry({
 });
 
 export const photoEntry = pageEntry({
-  page: photoPageComponent,
+  page: PhotoPage,
   /** Resolves one photo route and its page services. */
   resolve() {
     const id = m.route.param("id");
@@ -60,7 +57,7 @@ export const photoEntry = pageEntry({
       return "No photo selected";
     }
 
-    const photo = services.readPhoto(photoUrn(id));
+    const photo = services.readPhoto(buildPhotoUrn(id));
     if (isNone(photo)) {
       return "Photo not found";
     }

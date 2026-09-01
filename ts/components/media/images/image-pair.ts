@@ -4,13 +4,15 @@ import m from "mithril";
 import { Image } from "./image.ts";
 import { PlaceholderImage } from "./placeholder-image.ts";
 import { isSome, type Maybe } from "../../../commons/collections/maybe.ts";
+import { routeLinkAttrs } from "../../../services/browser/routes.ts";
+import type { ImageLoading } from "../../../constants/display.ts";
 
 export type ImagePairAttrs = {
   imageUrl?: string;
   href?: string;
   thumbnailUrl: string;
   thumbnailDataUrl: Maybe<string>;
-  loading: "eager" | "lazy";
+  loading: ImageLoading;
   onclick?: (event: Event) => void;
   width?: number;
   height?: number;
@@ -54,9 +56,9 @@ function drawImageChildren(attrs: ImagePairAttrs): m.Children[] {
     width,
     height,
   };
-  const image = m(Image, imageAttrs);
+  const $image = m(Image, imageAttrs);
 
-  return [placeholder, image];
+  return [placeholder, $image];
 }
 
 /** Builds attributes for a new-tab link to the full image. */
@@ -69,27 +71,18 @@ function fullImageLinkAttrs(imageUrl: string, label?: string): m.Attributes {
   };
 }
 
-/** Builds attributes for a route link around an image pair. */
-function routeLinkAttrs(
-  href: string,
-  onclick?: (event: Event) => void,
-  label?: string,
-): m.Attributes {
-  return { href, onclick, "aria-label": label };
-}
-
 /** Renders an image pair with a full-image link, route link, or plain wrapper. */
 function viewImagePair(vnode: m.Vnode<ImagePairAttrs>): m.Children {
-  const { imageUrl, href, onclick, label } = vnode.attrs;
+  const { imageUrl, href, label } = vnode.attrs;
   const children = drawImageChildren(vnode.attrs);
+
+  if (href) {
+    const linkAttrs = routeLinkAttrs(href, { "aria-label": label });
+    return m(m.route.Link, linkAttrs, children);
+  }
 
   if (imageUrl) {
     const linkAttrs = fullImageLinkAttrs(imageUrl, label);
-    return m("a", linkAttrs, children);
-  }
-
-  if (href) {
-    const linkAttrs = routeLinkAttrs(href, onclick, label);
     return m("a", linkAttrs, children);
   }
 

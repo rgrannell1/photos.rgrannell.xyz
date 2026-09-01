@@ -10,7 +10,7 @@ import type { Feature, Place, Unesco } from "../../../types/domain.ts";
 
 import type { ReadThingEmoji } from "../navigation/thing-link.ts";
 
-import { THING_LIST_KINDS } from "../../../constants/data.ts";
+import { ThingListKind } from "../../../constants/data.ts";
 import {
   drawFeatureListItem,
   drawPlaceListItem,
@@ -18,9 +18,6 @@ import {
   drawUnescoListItem,
   viewThingList,
 } from "./render.ts";
-
-export type ThingListKind =
-  typeof THING_LIST_KINDS[keyof typeof THING_LIST_KINDS];
 
 export type ThingListItem = Place | Feature | Unesco | TripleObject;
 
@@ -35,10 +32,10 @@ type DrawThingListItem = (
 ) => m.Children;
 
 export const THING_LIST_DRAWERS: Record<ThingListKind, DrawThingListItem> = {
-  [THING_LIST_KINDS.FEATURE]: drawFeatureListItem,
-  [THING_LIST_KINDS.PLACE]: drawPlaceListItem,
-  [THING_LIST_KINDS.TAXON]: drawTaxonListItem,
-  [THING_LIST_KINDS.UNESCO]: drawUnescoListItem,
+  [ThingListKind.FEATURE]: drawFeatureListItem,
+  [ThingListKind.PLACE]: drawPlaceListItem,
+  [ThingListKind.TAXON]: drawTaxonListItem,
+  [ThingListKind.UNESCO]: drawUnescoListItem,
 };
 
 export type ThingListAttrs = {

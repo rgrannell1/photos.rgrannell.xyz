@@ -1,9 +1,8 @@
 import m from "mithril";
-import { navigate } from "../../../services/browser/events.ts";
 import type { Photo } from "../../../types/domain.ts";
 import { PhotoAlbum, type PhotoAlbumAttrs } from "../../album/photo-album.ts";
 import {
-  loadingMode,
+  selectLoadingMode,
   thumbHashDataUrl,
 } from "../../../services/rendering/year-scroll/photos.ts";
 import { NONE } from "../../../commons/collections/maybe.ts";
@@ -21,12 +20,12 @@ function drawCategoryLabel(category: CategoryDef): m.Children {
     "data-testid": "listing-card-label",
     "data-listing-type": category.type,
   };
-  const label = m("p.album-title", attrs, category.label);
-  return label;
+  const $label = m("p.album-title", attrs, category.label);
+  return $label;
 }
 
 /** Builds the image, placeholder, and loading attributes for a category cover. */
-function readCategoryImageAttrs(
+function buildCategoryImageAttrs(
   category: CategoryDef,
   idx: number,
 ): Pick<
@@ -35,7 +34,7 @@ function readCategoryImageAttrs(
 > {
   const { cover } = category;
   const thumbnailDataUrl = thumbHashDataUrl(cover.mosaicColours);
-  const loading = loadingMode(idx);
+  const loading = selectLoadingMode(idx);
   return {
     imageUrl: cover.fullImage,
     thumbnailUrl: cover.thumbnailUrl,
@@ -45,20 +44,19 @@ function readCategoryImageAttrs(
 }
 
 /** Builds the identity and navigation attributes for a category card. */
-function readCategoryCardAttrs(
+function buildCategoryCardAttrs(
   category: CategoryDef,
 ):
-  & Pick<PhotoAlbumAttrs, "label" | "trip" | "child" | "onclick">
+  & Pick<PhotoAlbumAttrs, "label" | "trip" | "child" | "href">
   & m.Attributes {
   const key = `category-${category.type}`;
-  const child = drawCategoryLabel(category);
-  const onclick = navigate(category.route);
+  const $child = drawCategoryLabel(category);
   return {
     key,
     label: category.type,
     trip: NONE,
-    child,
-    onclick,
+    child: $child,
+    href: category.route,
   };
 }
 
@@ -69,8 +67,8 @@ function drawCategoryAlbum(
   category: CategoryDef,
   idx: number,
 ): m.Children[] {
-  const imageAttrs = readCategoryImageAttrs(category, idx);
-  const cardAttrs = readCategoryCardAttrs(category);
+  const imageAttrs = buildCategoryImageAttrs(category, idx);
+  const cardAttrs = buildCategoryCardAttrs(category);
   const attrs: PhotoAlbumAttrs & m.Attributes = { ...imageAttrs, ...cardAttrs };
   return [m(PhotoAlbum, attrs)];
 }
@@ -82,13 +80,13 @@ type ListingsPageAttrs = {
 
 /** Renders the heading and description for the listings page. */
 function drawListingsMetadata(): m.Children {
-  const heading = m(
+  const $heading = m(
     "h1.albums-header",
     { "data-testid": "listings-heading" },
     "Listings",
   );
-  const description = m("p", "Collections of all places and animals");
-  return m("section.album-metadata", [heading, description]);
+  const $description = m("p", "Collections of all places and animals");
+  return m("section.album-metadata", [$heading, $description]);
 }
 
 /** Renders category albums in the listings grid. */
@@ -105,8 +103,8 @@ function drawListingsPageContent(albums: m.Children[]): m.Children[] {
   return [drawListingsMetadata(), drawListingsGrid(albums)];
 }
 
-/** Adds the sidebar class when the sidebar is visible. */
-function readListingsPageClass(visible: boolean): string {
+/** Selects the page class for the current sidebar visibility. */
+function selectListingsPageClass(visible: boolean): string {
   return visible ? "page sidebar-visible" : "page";
 }
 
@@ -119,7 +117,7 @@ function drawListingsPage(className: string, albums: m.Children[]): m.Children {
 function viewListingsPage(vnode: m.Vnode<ListingsPageAttrs>): m.Children {
   const { categories } = vnode.attrs;
   const $albums = categories.flatMap(drawCategoryAlbum);
-  const className = readListingsPageClass(vnode.attrs.visible);
+  const className = selectListingsPageClass(vnode.attrs.visible);
 
   return drawListingsPage(className, $albums);
 }

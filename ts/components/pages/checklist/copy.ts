@@ -1,15 +1,15 @@
 /* Support checklist operations. */
 
 import m from "mithril";
-import { broadcast } from "../../../services/browser/events.ts";
+import { setRoute } from "../../../services/browser/routes.ts";
 import type { Photo } from "../../../types/domain.ts";
 import type { ChecklistEntry, NemesisSpecies } from "../../../domain/media/stats.ts";
-import { LIFE_LIST_FILTERS } from "../../../constants/display.ts";
+import { LifeListFilter } from "../../../constants/display.ts";
 import { isSome, type Maybe } from "../../../commons/collections/maybe.ts";
 import type { ChecklistPageAttrs, MammalSectionAttrs } from "../checklist.ts";
 import { ChecklistDetails } from "./filters.ts";
-import { ChecklistGrid, lifeListPreamble, mammalPreamble } from "./grid.ts";
-import { drawChecklistPageChildren, readChecklistPageClass } from "./page.ts";
+import { ChecklistGrid, buildLifeListPreamble, buildMammalPreamble } from "./grid.ts";
+import { drawChecklistPageChildren, selectChecklistPageClass } from "./page.ts";
 
 /** Summarise photographed and recorded Irish mammal species counts. */
 export function formatMammalPreamble(
@@ -31,15 +31,15 @@ export function drawMammalGrid(
   covers: Map<string, Photo>,
   nemesisSpecies: NemesisSpecies[],
 ): m.Children {
-  const grid = m(ChecklistGrid, {
+  const $grid = m(ChecklistGrid, {
     entries,
     covers,
     nemesisSpecies,
     mysteryGlyph: "🐾",
-    filter: LIFE_LIST_FILTERS.IRELAND,
+    filter: LifeListFilter.Ireland,
   });
-  const section = m("section.checklist-container", grid);
-  return section;
+  const $section = m("section.checklist-container", $grid);
+  return $section;
 }
 
 /** Render the mammal heading, optional summary, and species grid. */
@@ -49,12 +49,15 @@ export function viewMammalSection(
   const { mammalEntries, mammalCovers, irishMammalCount, nemesisMammals } =
     vnode.attrs;
 
-  const preamble = mammalPreamble(mammalEntries, irishMammalCount);
-  const heading = m("section.album-metadata", m("h2.albums-header", "Mammals"));
+  const preamble = buildMammalPreamble(mammalEntries, irishMammalCount);
+  const $heading = m(
+    "section.album-metadata",
+    m("h2.albums-header", "Mammals"),
+  );
   const description = drawOptionalPreamble(preamble);
-  const grid = drawMammalGrid(mammalEntries, mammalCovers, nemesisMammals);
+  const $grid = drawMammalGrid(mammalEntries, mammalCovers, nemesisMammals);
 
-  return [heading, description, grid];
+  return [$heading, description, $grid];
 }
 
 /**
@@ -66,7 +69,7 @@ export function MammalSection() {
 
 /** Navigate to the selected life-list filter route. */
 export function selectLifeListFilter(newFilter: string): void {
-  broadcast("navigate", { route: `/life-list/${newFilter}` });
+  setRoute(`/life-list/${newFilter}`);
 }
 
 /** Draw the life-list title and filter controls. */
@@ -74,13 +77,13 @@ export function drawBirdHeading(
   entries: ChecklistEntry[],
   filter: string,
 ): m.Children {
-  const title = m("h1.albums-header", "Life List");
-  const details = m(ChecklistDetails, {
+  const $title = m("h1.albums-header", "Life List");
+  const $details = m(ChecklistDetails, {
     entries,
     filter,
     onSelect: selectLifeListFilter,
   });
-  return m("section.album-metadata", [title, details]);
+  return m("section.album-metadata", [$title, $details]);
 }
 
 /** Draw bird entries for the active life-list filter. */
@@ -90,29 +93,29 @@ export function drawBirdGrid(
   nemesisSpecies: NemesisSpecies[],
   filter: string,
 ): m.Children {
-  const grid = m(ChecklistGrid, {
+  const $grid = m(ChecklistGrid, {
     entries,
     covers,
     nemesisSpecies,
     mysteryGlyph: "🐦",
     filter,
   });
-  const section = m("section.checklist-container", grid);
-  return section;
+  const $section = m("section.checklist-container", $grid);
+  return $section;
 }
 
 /** Compose the bird heading, narrative text, and species grid. */
 export function drawBirdSection(attrs: ChecklistPageAttrs): m.Children[] {
   const { entries, covers, regularCount, nemesisBirds, filter } = attrs;
-  const preamble = lifeListPreamble(entries, regularCount);
+  const preamble = buildLifeListPreamble(entries, regularCount);
   const description = "I am not a very committed birder, but I do like " +
     "photographing the different species I see. Here's my life list.";
   const heading = drawBirdHeading(entries, filter);
   const preambleNode = drawOptionalPreamble(preamble);
-  const descriptionNode = m("p.photo-album-description", description);
-  const grid = drawBirdGrid(entries, covers, nemesisBirds, filter);
+  const $description = m("p.photo-album-description", description);
+  const $grid = drawBirdGrid(entries, covers, nemesisBirds, filter);
 
-  return [heading, preambleNode, descriptionNode, grid];
+  return [heading, preambleNode, $description, $grid];
 }
 
 /** Render the life-list page with its sidebar-aware class. */
@@ -120,7 +123,7 @@ export function viewChecklistPage(
   vnode: m.Vnode<ChecklistPageAttrs>,
 ): m.Children {
   const { attrs } = vnode;
-  const pageClass = readChecklistPageClass(attrs.visible);
+  const pageClass = selectChecklistPageClass(attrs.visible);
   const children = drawChecklistPageChildren(attrs);
   const pageAttrs = { class: pageClass };
   return m("main", pageAttrs, children);

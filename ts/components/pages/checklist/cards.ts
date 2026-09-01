@@ -3,7 +3,7 @@
 import m from "mithril";
 import type { Photo } from "../../../types/domain.ts";
 import type { ChecklistEntry, NemesisSpecies } from "../../../domain/media/stats.ts";
-import { LIFE_LIST_FILTERS } from "../../../constants/display.ts";
+import { LifeListFilter } from "../../../constants/display.ts";
 import { fromNullable } from "../../../commons/collections/maybe.ts";
 import type {
   ChecklistCardAttrs,
@@ -15,20 +15,20 @@ import { ChecklistCard, viewChecklistMysteryCard } from "./photos.ts";
 import {
   drawChecklistCards,
   drawMysteryCards,
-  filterIsAll,
-  filterIsIrish,
+  isAllFilter,
+  isIrishFilter,
 } from "./grid.ts";
 
 /** Renders the name and pending status for an unphotographed species. */
 export function drawMysteryMetadata(species: NemesisSpecies): m.Children {
-  const name = m("span.checklist-mystery-name", species.name);
-  const tag = m("span.checklist-tag.checklist-tag--nemesis", "nemesis");
-  const title = m("p.checklist-card-name", [name, tag]);
-  const status = m(
+  const $name = m("span.checklist-mystery-name", species.name);
+  const $tag = m("span.checklist-tag.checklist-tag--nemesis", "nemesis");
+  const $title = m("p.checklist-card-name", [$name, $tag]);
+  const $status = m(
     "p.checklist-first-seen.checklist-first-seen--pending",
     "yet to photograph",
   );
-  return m("div.checklist-card-metadata", [title, status]);
+  return m("div.checklist-card-metadata", [$title, $status]);
 }
 
 /**
@@ -48,17 +48,19 @@ export function toPositionedEntry(
 }
 
 /** Tests whether an entry records a wild sighting in Ireland. */
-export function positionedIsIrishWild(positioned: PositionedEntry): boolean {
+export function isPositionedEntryIrishWild(
+  positioned: PositionedEntry,
+): boolean {
   return isIrishWild(positioned.entry);
 }
 
 /** Tests whether an entry records any wild sighting. */
-export function positionedIsWild(positioned: PositionedEntry): boolean {
+export function isPositionedEntryWild(positioned: PositionedEntry): boolean {
   return isWild(positioned.entry);
 }
 
 /** Builds card attributes from a checklist entry and its optional cover. */
-export function readChecklistCardAttrs(
+export function buildChecklistCardAttrs(
   covers: Map<string, Photo>,
   irishView: boolean,
   entry: ChecklistEntry,
@@ -82,7 +84,7 @@ export function drawChecklistCard(
   positioned: PositionedEntry,
 ): m.Children {
   const { entry, position } = positioned;
-  const attrs = readChecklistCardAttrs(covers, irishView, entry, position);
+  const attrs = buildChecklistCardAttrs(covers, irishView, entry, position);
   return m(ChecklistCard, attrs);
 }
 
@@ -103,15 +105,15 @@ export function filterPositionedEntries(
   entries: PositionedEntry[],
   filter: string,
 ): PositionedEntry[] {
-  const isIrishFilter = filterIsIrish(filter);
-  const isAllFilter = filterIsAll(filter);
-  if (isIrishFilter) {
-    return entries.filter(positionedIsIrishWild);
+  const showsIrishEntries = isIrishFilter(filter);
+  const showsAllEntries = isAllFilter(filter);
+  if (showsIrishEntries) {
+    return entries.filter(isPositionedEntryIrishWild);
   }
-  if (isAllFilter) {
+  if (showsAllEntries) {
     return entries;
   }
-  return entries.filter(positionedIsWild);
+  return entries.filter(isPositionedEntryWild);
 }
 
 /** Renders photographed entries and Irish nemesis placeholders as one grid. */
@@ -121,7 +123,7 @@ export function viewChecklistGrid(
   const { entries, covers, nemesisSpecies, mysteryGlyph, filter } = vnode.attrs;
 
   // scarce tags and "yet to see" birds show in the Irish view only
-  const irishView = filter === LIFE_LIST_FILTERS.IRELAND;
+  const irishView = filter === LifeListFilter.Ireland;
 
   // position numbers come from the full unfiltered list
   const withPositions = entries.map(toPositionedEntry);

@@ -3,7 +3,7 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import { Component } from "../component.ts";
-import { binomial } from "../../commons/strings.ts";
+import { formatBinomial } from "../../commons/strings.ts";
 import { TAXON_TYPES } from "../../constants/data.ts";
 
 export type ThingSubtitleAttrs = {
@@ -14,7 +14,7 @@ export type ThingSubtitleAttrs = {
 /** Renders a binomial label with a taxon-specific class. */
 function drawBinomial(type: string, id: string): m.Children {
   const attrs = { class: `thing-binomial ${type}-binomial` };
-  const label = binomial(id);
+  const label = formatBinomial(id);
   return m("span", attrs, label);
 }
 
@@ -28,8 +28,8 @@ function drawOptionalBinomial(
   if (showsBinomial) {
     return drawBinomial(type, id);
   }
-  const emptySubtitle = m("span");
-  return emptySubtitle;
+  const $emptySubtitle = m("span");
+  return $emptySubtitle;
 }
 
 /** Renders mandatory taxon binomials and optional subtitles for other things. */

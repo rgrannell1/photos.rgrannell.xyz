@@ -1,6 +1,7 @@
 /* Render lists in timed batches so the browser can paint between updates. */
 
 import m from "mithril";
+import { RENDER_BATCH_DELAY_MS } from "../../constants/layout.ts";
 
 export type BatchRenderer = {
   count: () => number;
@@ -39,7 +40,7 @@ function scheduleBatch(batchState: BatchState, total: number): void {
 
   batchState.batchScheduled = true;
   const grow = growBatch.bind(null, batchState, total);
-  setTimeout(grow, 1);
+  setTimeout(grow, RENDER_BATCH_DELAY_MS);
 }
 
 /** Restore the initial visible batch and clear pending state. */

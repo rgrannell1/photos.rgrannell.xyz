@@ -31,6 +31,9 @@ interface SocialCardView {
   imageUrl: string;
 }
 
+// Browser and edge cache lifetime for successful social cards.
+const SOCIAL_CARD_CACHE_MAX_AGE_SECONDS = 1200;
+
 /** Reads the social card for a path and returns database failures as errors. */
 async function getSocialCard(
   db: D1Database,
@@ -148,10 +151,11 @@ function createSocialCardResponse(
   view: SocialCardView,
   card: Maybe<SocialCard>,
 ): Response {
+  const cacheControl = `public, max-age=${SOCIAL_CARD_CACHE_MAX_AGE_SECONDS}`;
   return new Response(renderSocialCardHtml(view, card), {
     headers: {
       "Content-Type": "text/html;charset=UTF-8",
-      "Cache-Control": "public, max-age=1200",
+      "Cache-Control": cacheControl,
     },
   });
 }

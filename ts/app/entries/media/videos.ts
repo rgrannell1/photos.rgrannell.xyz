@@ -1,21 +1,18 @@
 /* Resolve video routes and retain the streamed video index. */
 
 import m from "mithril";
-import { videoUrn } from "../../../commons/urn.ts";
+import { buildVideoUrn } from "../../../commons/urn.ts";
 import { VideoPage } from "../../../components/pages/videos/video.ts";
 import { VideosPage } from "../../../components/pages/videos/videos.ts";
 import { services, state } from "../../context.ts";
 import { pageEntry } from "../../shell.ts";
 import { isNone } from "../../../commons/collections/maybe.ts";
 
-const videoPageComponent = VideoPage();
-const videosPageComponent = VideosPage();
-
 let videos = services.readAllVideos();
 let cachedAfterLoad = false;
 
 export const videosEntry = pageEntry({
-  page: videosPageComponent,
+  page: VideosPage,
   onmatch() {
     videos = services.readAllVideos();
     cachedAfterLoad = state.loaded;
@@ -34,14 +31,14 @@ export const videosEntry = pageEntry({
 });
 
 export const videoEntry = pageEntry({
-  page: videoPageComponent,
+  page: VideoPage,
   resolve() {
     const id = m.route.param("id");
     if (typeof id !== "string") {
       return "No video selected";
     }
 
-    const video = services.readVideo(videoUrn(id));
+    const video = services.readVideo(buildVideoUrn(id));
     if (isNone(video)) {
       return "Video not found";
     }

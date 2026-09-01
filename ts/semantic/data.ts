@@ -9,6 +9,7 @@ import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TargetValidator, Triple } from "@rgrannell1/tribbledb";
 import { TribbleParser } from "@rgrannell1/tribbledb";
 import { isNone, type Maybe, NONE } from "../commons/collections/maybe.ts";
+import { TRIBBLE_STREAM_BATCH_SIZE } from "../constants/data.ts";
 
 type LineBatch = {
   lines: string[];
@@ -62,7 +63,7 @@ function collectTriple(
 
 /** Report whether a triple batch reached its stream yield threshold. */
 function hasFullTripleBatch(triples: Triple[]): boolean {
-  return triples.length >= 500;
+  return triples.length >= TRIBBLE_STREAM_BATCH_SIZE;
 }
 
 /** Fetch Tribble data and yield parsed triples in bounded batches. */
@@ -75,7 +76,6 @@ export async function* streamTribbles(url: string): AsyncGenerator<Triple[]> {
 
   const decoder = new TextDecoderStream();
   const reader = res.body.pipeThrough(decoder).getReader();
-  // batch the yields; 20k single yields is too slow. 500 measured about right
   const tripleBuffer: Triple[] = [];
   for await (const line of streamLines(reader)) {
     collectTriple(parser, line, tripleBuffer);

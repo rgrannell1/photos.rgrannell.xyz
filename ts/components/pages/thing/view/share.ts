@@ -5,7 +5,7 @@ import { ThingSubtitle } from "../../../thing/thing-subtitle.ts";
 import { ThingTitle, type ThingTitleAttrs } from "../../../thing/thing-title.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../../commons/collections/arrays.ts";
 import { KnownTypes } from "../../../../constants/data.ts";
 import { ThingUrls } from "../../../thing/references/thing-urls.ts";
 import { NONE, withDefault } from "../../../../commons/collections/maybe.ts";
@@ -21,7 +21,7 @@ export function readShareName(
   fallback: string,
 ): string {
   const [thing] = things;
-  const name = thing ? one(thing.name) : NONE;
+  const name = thing ? selectFirst(thing.name) : NONE;
   return withDefault(name, fallback);
 }
 
@@ -40,8 +40,8 @@ export function drawThingTitle(attrs: ThingPageAttrs): m.Children {
     listingTitle: attrs.listingTitle,
     emoji: attrs.titleEmoji,
   };
-  const title = m(ThingTitle, titleAttrs);
-  return title;
+  const $title = m(ThingTitle, titleAttrs);
+  return $title;
 }
 
 /** Renders the thing subtitle from its URN and naming mode. */
@@ -55,39 +55,39 @@ export function drawThingSubtitle(attrs: ThingPageAttrs): m.Children {
 
 /** Renders the title, subtitle, and external references. */
 export function drawThingHeading(attrs: ThingPageAttrs): m.Children[] {
-  const title = drawThingTitle(attrs);
-  const subtitle = drawThingSubtitle(attrs);
-  const urls = m(ThingUrls, { things: attrs.things });
-  return [title, subtitle, m("br"), urls];
+  const $title = drawThingTitle(attrs);
+  const $subtitle = drawThingSubtitle(attrs);
+  const $urls = m(ThingUrls, { things: attrs.things });
+  return [$title, $subtitle, m("br"), $urls];
 }
 
 /** Renders the photo and species sections. */
 export function drawPhotoSections(attrs: ThingPageAttrs): m.Children[] {
-  const photos = m(PhotoSection, attrs);
-  const species = m(SpeciesSection, attrs);
-  return [photos, species];
+  const $photos = m(PhotoSection, attrs);
+  const $species = m(SpeciesSection, attrs);
+  return [$photos, $species];
 }
 
 /** Renders the video and album sections. */
 export function drawVideoSections(attrs: ThingPageAttrs): m.Children[] {
-  const videos = m(VideoSection, attrs);
-  const albums = m(AlbumSection, attrs);
-  return [videos, albums];
+  const $videos = m(VideoSection, attrs);
+  const $albums = m(AlbumSection, attrs);
+  return [$videos, $albums];
 }
 
-/** Returns all photo and video media sections in display order. */
-export function readMediaSections(attrs: ThingPageAttrs): m.Children[] {
-  const photos = drawPhotoSections(attrs);
-  const videos = drawVideoSections(attrs);
-  return [...photos, ...videos];
+/** Draws all photo and video media sections in display order. */
+export function drawMediaSections(attrs: ThingPageAttrs): m.Children[] {
+  const $photos = drawPhotoSections(attrs);
+  const $videos = drawVideoSections(attrs);
+  return [...$photos, ...$videos];
 }
 
 /** Renders the details, share control, and media sections. */
 export function drawThingSections(attrs: ThingPageAttrs): m.Children[] {
-  const details = m(ThingDetails, attrs);
-  const share = drawShareButton(attrs.urn, attrs.things);
-  const media = readMediaSections(attrs);
-  const sections = [details, share, ...media];
+  const $details = m(ThingDetails, attrs);
+  const $share = drawShareButton(attrs.urn, attrs.things);
+  const $media = drawMediaSections(attrs);
+  const sections = [$details, $share, ...$media];
   return sections;
 }
 

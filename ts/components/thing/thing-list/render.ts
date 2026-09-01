@@ -9,11 +9,10 @@ import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Feature, Place, Unesco } from "../../../types/domain.ts";
 import { ThingLink } from "../navigation/thing-link.ts";
 import type { ReadThingEmoji } from "../navigation/thing-link.ts";
-import { THING_LIST_KINDS } from "../../../constants/data.ts";
+import { ThingListKind } from "../../../constants/data.ts";
 import type {
   ThingListAttrs,
   ThingListItem,
-  ThingListKind,
 } from "./thing-list.ts";
 import { THING_LIST_DRAWERS } from "./thing-list.ts";
 import {
@@ -36,8 +35,8 @@ export function drawTaxonLink(
     thing: taxon,
     readEmoji,
   };
-  const link = m(ThingLink, attrs);
-  return drawListItem(`taxon-${urn}`, link);
+  const $link = m(ThingLink, attrs);
+  return drawListItem(`taxon-${urn}`, $link);
 }
 
 /** Draw a place or Unesco item with its emoji reader. */
@@ -87,7 +86,7 @@ export function sortThingList(
   kind: ThingListKind,
   items: ThingListItem[],
 ): void {
-  if (kind === THING_LIST_KINDS.PLACE) {
+  if (kind === ThingListKind.PLACE) {
     items.sort(comparePlaceNames);
   }
 }

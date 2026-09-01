@@ -9,13 +9,13 @@ import type { Stats } from "../../types/browser.ts";
 export type StatsParseResult = Result<Stats, BaseIssue<unknown>[]>;
 
 /** Wrap statistics validation issues in a failed parse result. */
-function invalidStats(error: BaseIssue<unknown>[]): StatsParseResult {
+function createFailedStatsResult(error: BaseIssue<unknown>[]): StatsParseResult {
   const result: StatsParseResult = { ok: false, error };
   return result;
 }
 
 /** Wrap validated statistics in a successful parse result. */
-function validStats(value: Stats): StatsParseResult {
+function createValidStatsResult(value: Stats): StatsParseResult {
   const result: StatsParseResult = { ok: true, value };
   return result;
 }
@@ -25,8 +25,8 @@ export function parseStats(stats: unknown): StatsParseResult {
   const result = safeParse(StatsSchema, stats);
   if (!result.success) {
     const error = result.issues;
-    return invalidStats(error);
+    return createFailedStatsResult(error);
   }
 
-  return validStats(result.output);
+  return createValidStatsResult(result.output);
 }

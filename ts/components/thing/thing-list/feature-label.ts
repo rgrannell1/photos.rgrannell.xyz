@@ -2,9 +2,9 @@
 
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { one } from "../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { Component } from "../../component.ts";
-import { thingEmoji } from "../../../domain/emoji.ts";
+import { selectThingEmoji } from "../../../domain/emoji.ts";
 import type { Feature } from "../../../types/domain.ts";
 import { drawThingLink } from "../navigation/thing-link-layout.ts";
 import { fromNullable, withDefault } from "../../../commons/collections/maybe.ts";
@@ -16,7 +16,7 @@ export type FeatureLabelAttrs = {
 
 /** Read a feature's first name, or use its identifier as a fallback. */
 function readFeatureName(thing: Feature, fallback: string): string {
-  const candidate = one(fromNullable(thing.name));
+  const candidate = selectFirst(fromNullable(thing.name));
   return withDefault(candidate, fallback);
 }
 
@@ -35,7 +35,7 @@ function viewFeatureLabel(vnode: m.Vnode<FeatureLabelAttrs>): m.Children {
   const { urn, thing } = vnode.attrs;
   const { type, id } = asUrn(urn);
   const name = readFeatureName(thing, id);
-  const emoji = thingEmoji(urn, name, thing);
+  const emoji = selectThingEmoji(urn, name, thing);
   return drawFeatureLabel(type, emoji, name);
 }
 

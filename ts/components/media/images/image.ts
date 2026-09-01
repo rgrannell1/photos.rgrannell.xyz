@@ -2,10 +2,11 @@
 
 import m from "mithril";
 import { hidePlaceholderOnLoad } from "../../../services/browser/images.ts";
+import type { ImageLoading } from "../../../constants/display.ts";
 
 export type ImageAttrs = {
   thumbnailUrl: string;
-  loading: "eager" | "lazy";
+  loading: ImageLoading;
   onclick?: (event: Event) => void;
   width?: number;
   height?: number;

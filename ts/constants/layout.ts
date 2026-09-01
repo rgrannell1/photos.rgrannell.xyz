@@ -13,11 +13,17 @@ export const HOMEPAGE_PRELOAD_COUNT = 4;
 // Items rendered per animation-frame batch in media and listing grids.
 export const RENDER_BATCH_SIZE = 10;
 
+// Delay before the browser renders the next item batch.
+export const RENDER_BATCH_DELAY_MS = 1;
+
 // Pixels below viewport top where year heading becomes current.
 export const YEAR_SCROLL_OFFSET = 140;
 
 // Max correction passes for deep-link scroll during lazy-image loads.
 export const YEAR_SCROLL_MAX_PASSES = 20;
+
+// Delay between deep-link scroll correction passes.
+export const YEAR_SCROLL_RETRY_DELAY_MS = 120;
 
 // Fraction of scroll distance the banner moves in parallax fallback.
 export const PARALLAX_RATE = 0.15;

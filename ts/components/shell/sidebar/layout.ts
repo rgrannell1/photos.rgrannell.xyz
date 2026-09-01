@@ -2,7 +2,7 @@
 
 import m from "mithril";
 import type { SidebarAttrs, SidebarItemAttrs } from "./sidebar.ts";
-import { drawSidebarItem, drawSidebarItems, sidebarClasses } from "./items.ts";
+import { drawSidebarItem, drawSidebarItems, selectSidebarClasses } from "./items.ts";
 
 /** Draw the map and about utility links. */
 export function drawUtilitySidebarItems(): m.Vnode<SidebarItemAttrs>[] {
@@ -15,14 +15,14 @@ export function drawUtilitySidebarItems(): m.Vnode<SidebarItemAttrs>[] {
 export function drawSidebarLayout(
   items: m.Vnode<SidebarItemAttrs>[],
 ): m.Children {
-  const list = m("ul", items);
-  return m("nav", [list]);
+  const $list = m("ul", items);
+  return m("nav", [$list]);
 }
 
 /** Render the sidebar with classes for its visibility state. */
 export function viewSidebar(vnode: m.Vnode<SidebarAttrs>): m.Children {
   const items = drawSidebarItems();
   const nav = drawSidebarLayout(items);
-  const attrs = { class: sidebarClasses(vnode.attrs.visible) };
+  const attrs = { class: selectSidebarClasses(vnode.attrs.visible) };
   return m("aside", attrs, [nav]);
 }

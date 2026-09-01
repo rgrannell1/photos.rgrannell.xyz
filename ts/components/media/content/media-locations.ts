@@ -4,13 +4,10 @@ import m from "mithril";
 import { type ReadThing, toThingLinks } from "../../thing/navigation/thing-links.ts";
 import type { ReadThingEmoji } from "../../thing/navigation/thing-link.ts";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { arrayify, one } from "../../../commons/collections/arrays.ts";
+import { arrayify, selectFirst } from "../../../commons/collections/arrays.ts";
 import { DATA_TRUE, KnownTypes } from "../../../constants/data.ts";
-import { MEDIA_LOCATION_MODES } from "../../../constants/display.ts";
+import { MediaLocationMode } from "../../../constants/display.ts";
 import { isNone, type Maybe } from "../../../commons/collections/maybe.ts";
-
-export type MediaLocationMode =
-  typeof MEDIA_LOCATION_MODES[keyof typeof MEDIA_LOCATION_MODES];
 
 /** Reports whether a URN identifies a place feature. */
 function isPlaceFeature(urn: string): boolean {
@@ -29,7 +26,7 @@ export function isVisiblePlaceFeature(
   }
 
   const feature = readThing(urn);
-  const isVisible = isNone(feature) || one(feature.generic) !== DATA_TRUE;
+  const isVisible = isNone(feature) || selectFirst(feature.generic) !== DATA_TRUE;
   return isVisible;
 }
 
@@ -56,7 +53,7 @@ function listLocationUrns(location: Maybe<string | string[]>): string[] {
 function selectLocationUrns(attrs: MediaLocationsAttrs): string[] {
   const { location, readThing, mode } = attrs;
   const allUrns = listLocationUrns(location);
-  if (mode === MEDIA_LOCATION_MODES.FEATURE) {
+  if (mode === MediaLocationMode.Feature) {
     return allUrns.filter(isVisiblePlaceFeature.bind(null, readThing));
   }
   return allUrns.filter(isPlace);

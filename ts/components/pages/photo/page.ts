@@ -5,10 +5,15 @@ import { Photo } from "../../media/images/photo.ts";
 import type { Photo as PhotoType } from "../../../types/domain.ts";
 import type { PhotoPageAttrs } from "./photo.ts";
 import { drawPhotoDetails, drawPhotoLinks } from "./links.ts";
+import { ImageLoadingMode } from "../../../constants/display.ts";
 
 /** Renders the selected photo eagerly without grid interaction. */
 export function drawPhoto(photo: PhotoType): m.Children {
-  return m(Photo, { photo, loading: "eager", interactive: false });
+  return m(Photo, {
+    photo,
+    loading: ImageLoadingMode.Eager,
+    interactive: false,
+  });
 }
 
 /** Renders the photo page heading. */

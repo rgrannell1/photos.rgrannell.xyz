@@ -6,7 +6,7 @@ import { thumbHashDataUrl } from "../../../services/rendering/year-scroll/photos
 import type { Photo } from "../../../types/domain.ts";
 import type { ChecklistEntry } from "../../../domain/media/stats.ts";
 import { PHOTO_WIDTH } from "../../../constants/layout.ts";
-import { LIFE_LIST_FILTERS } from "../../../constants/display.ts";
+import { ImageLoadingMode, LifeListFilter } from "../../../constants/display.ts";
 import { isNone, type Maybe } from "../../../commons/collections/maybe.ts";
 import type {
   ChecklistDetailsAttrs,
@@ -28,12 +28,12 @@ export function countWildEntries(entries: ChecklistEntry[]): number {
 }
 
 /** Counts entries included by the selected life-list filter. */
-export function readChecklistDisplayCount(
+export function countDisplayedChecklistEntries(
   entries: ChecklistEntry[],
   filter: string,
 ): number {
-  const isIrishFilter = filter === LIFE_LIST_FILTERS.IRELAND;
-  const isAllFilter = filter === LIFE_LIST_FILTERS.ALL;
+  const isIrishFilter = filter === LifeListFilter.Ireland;
+  const isAllFilter = filter === LifeListFilter.All;
   if (isIrishFilter) {
     return countIrishEntries(entries);
   }
@@ -53,7 +53,7 @@ export function drawChecklistDetails(
 }
 
 /** Draws each checklist filter with the current selection handler. */
-export function readFilterControls(
+export function drawFilterControls(
   filter: string,
   onSelect: (filter: string) => void,
 ): m.Children[] {
@@ -66,9 +66,9 @@ export function viewChecklistDetails(
   vnode: m.Vnode<ChecklistDetailsAttrs>,
 ): m.Children {
   const { entries, filter, onSelect } = vnode.attrs;
-  const controls = readFilterControls(filter, onSelect);
-  const displayCount = readChecklistDisplayCount(entries, filter);
-  return drawChecklistDetails(controls, displayCount);
+  const $controls = drawFilterControls(filter, onSelect);
+  const displayCount = countDisplayedChecklistEntries(entries, filter);
+  return drawChecklistDetails($controls, displayCount);
 }
 
 /**
@@ -80,7 +80,7 @@ export function ChecklistDetails() {
 }
 
 /** Builds thumbnail attributes for a checklist cover photo. */
-export function readChecklistImageAttrs(
+export function buildChecklistImageAttrs(
   cover: Photo,
 ): Omit<ImagePairAttrs, "href" | "label"> {
   const thumbnailDataUrl: Maybe<string> = thumbHashDataUrl(cover.mosaicColours);
@@ -88,7 +88,7 @@ export function readChecklistImageAttrs(
   return {
     thumbnailUrl,
     thumbnailDataUrl,
-    loading: "lazy",
+    loading: ImageLoadingMode.Lazy,
     onclick: undefined,
     width: PHOTO_WIDTH,
     height: PHOTO_WIDTH,
@@ -101,7 +101,7 @@ export function drawChecklistPhoto(
   href: string,
   label: string,
 ): m.Children {
-  const imageAttrs = readChecklistImageAttrs(cover);
+  const imageAttrs = buildChecklistImageAttrs(cover);
   const attrs: ImagePairAttrs = { href, label, ...imageAttrs };
   return m(ImagePair, attrs);
 }
@@ -113,8 +113,8 @@ export function viewChecklistPhoto(
   const { cover, href, label } = vnode.attrs;
 
   if (isNone(cover)) {
-    const emptyPhoto = m("div.checklist-card-empty");
-    return emptyPhoto;
+    const $emptyPhoto = m("div.checklist-card-empty");
+    return $emptyPhoto;
   }
   return drawChecklistPhoto(cover, href, label);
 }

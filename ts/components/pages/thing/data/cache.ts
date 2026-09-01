@@ -6,8 +6,10 @@ import type {
   Photo as PhotoType,
   Video as VideoType,
 } from "../../../../types/domain.ts";
+import { CountryLinkMode } from "../../../../constants/display.ts";
 import { CountryLink } from "../../../thing/references/country-link.ts";
-import { ThingList, type ThingListKind } from "../../../thing/thing-list/thing-list.ts";
+import { ThingList } from "../../../thing/thing-list/thing-list.ts";
+import type { ThingListKind } from "../../../../constants/data.ts";
 import { setOf } from "../../../../commons/collections/sets.ts";
 import { isSome, NONE, some } from "../../../../commons/collections/maybe.ts";
 import type {
@@ -84,7 +86,7 @@ export function readThingPhotos(attrs: ThingPageAttrs): PhotoType[] {
 export function drawSeenInCountry(country: SeenInCountry): m.Children {
   return m(CountryLink, {
     country,
-    mode: "name",
+    mode: CountryLinkMode.Name,
     key: `seen-in-${country.id}`,
   });
 }
@@ -106,11 +108,11 @@ export function drawThingList(
   urns: Set<string>,
 ): m.Children {
   const component = ThingList;
-  const list = m(component, {
+  const $list = m(component, {
     kind,
     readItems: attrs.readThingList,
     readEmoji: attrs.readThingEmoji,
     urns,
   });
-  return list;
+  return $list;
 }

@@ -40,7 +40,7 @@ function drawPhotosPageContent(
 }
 
 /** Selects the page class that reserves space for a visible sidebar. */
-function readPhotosPageClass(visible: boolean): string {
+function selectPhotosPageClass(visible: boolean): string {
   return visible ? "page sidebar-visible" : "page";
 }
 
@@ -50,17 +50,17 @@ function drawPhotosPage(className: string, content: m.Children[]): m.Children {
 }
 
 /** Formats the total with the correct singular or plural photo label. */
-function readPhotosCountText(attrs: PhotosPageAttrs): string {
+function formatPhotosCountText(attrs: PhotosPageAttrs): string {
   return countLabel(attrs.total, "photo");
 }
 
 /** Renders the photos page from its count, source, and sidebar state. */
 function viewPhotosPage(vnode: m.Vnode<PhotosPageAttrs>): m.Children {
-  const countText = readPhotosCountText(vnode.attrs);
-  const content = drawPhotosPageContent(vnode.attrs, countText);
-  const className = readPhotosPageClass(vnode.attrs.visible);
+  const countText = formatPhotosCountText(vnode.attrs);
+  const $content = drawPhotosPageContent(vnode.attrs, countText);
+  const className = selectPhotosPageClass(vnode.attrs.visible);
 
-  return drawPhotosPage(className, content);
+  return drawPhotosPage(className, $content);
 }
 
 /** Creates the Mithril photos page component. */

@@ -23,6 +23,6 @@ export function drawAboutBanner(): m.Children {
 /** Draws the about page with sidebar-aware layout. */
 export function viewAboutPage(vnode: m.Vnode<AboutPageAttrs>): m.Children {
   const className = vnode.attrs.visible ? "page sidebar-visible" : "page";
-  const banner = drawAboutBanner();
-  return m("main", { class: className }, [banner, drawAboutContent()]);
+  const $banner = drawAboutBanner();
+  return m("main", { class: className }, [$banner, drawAboutContent()]);
 }

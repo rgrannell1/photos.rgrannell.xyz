@@ -25,12 +25,11 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251128.0",
+    "@playwright/test": "^1.62.1",
     "@types/csso": "^5.0.4",
     "@types/leaflet": "^1.9.20",
     "@types/mithril": "^2.2.7",
     "csso": "^5.0.5",
-    "esbuild": "^0.25.9",
-    "puppeteer-core": "^22.12.0",
-    "tap": "^21.1.0"
+    "esbuild": "^0.25.9"
   }
 }

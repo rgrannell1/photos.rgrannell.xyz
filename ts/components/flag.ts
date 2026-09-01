@@ -5,6 +5,7 @@
 import m from "mithril";
 import { flagManifest } from "../services/browser/flags.ts";
 import { isNone, type Maybe, NONE } from "../commons/collections/maybe.ts";
+import { ImageLoadingMode } from "../constants/display.ts";
 
 // Place name to vexilla flag asset. See /flags
 const CUSTOM_FLAGS: Record<string, string> = {
@@ -68,7 +69,11 @@ function spriteCellStyle(position: number): Record<string, string> {
 
 /** Draw a labelled flag from a standalone image asset. */
 function drawFlagImage(src: string, label: string): m.Children {
-  return m("img.flag-icon", { src, alt: label, loading: "lazy" });
+  return m("img.flag-icon", {
+    src,
+    alt: label,
+    loading: ImageLoadingMode.Lazy,
+  });
 }
 
 export type FlagIconAttrs = {
@@ -107,12 +112,12 @@ function drawSpriteFlag(asset: string, label: string): m.Children {
 
 /** Prefer a requested large asset, then fall back to the sprite. */
 function drawFlag(asset: string, label: string, big?: boolean): m.Children {
-  const largeFlag = drawLargeFlag(asset, label, big);
-  if (largeFlag !== null) {
-    return largeFlag;
+  const $largeFlag = drawLargeFlag(asset, label, big);
+  if ($largeFlag !== null) {
+    return $largeFlag;
   }
-  const spriteFlag = drawSpriteFlag(asset, label);
-  return spriteFlag;
+  const $spriteFlag = drawSpriteFlag(asset, label);
+  return $spriteFlag;
 }
 
 /** Draw the flag for a known place, or no content for an unknown place. */

@@ -3,7 +3,7 @@ import m from "mithril";
 import type { Photo } from "../../types/domain.ts";
 import type { ChecklistEntry, NemesisSpecies } from "../../domain/media/stats.ts";
 
-import { LIFE_LIST_FILTERS } from "../../constants/display.ts";
+import { LifeListFilter } from "../../constants/display.ts";
 
 import { type Maybe } from "../../commons/collections/maybe.ts";
 import { viewChecklistPage } from "./checklist/copy.ts";
@@ -36,14 +36,14 @@ export type FilterDrawOptions = {
 
 export const FILTER_DEFINITIONS: FilterDefinition[] = [
   {
-    value: LIFE_LIST_FILTERS.IRELAND,
+    value: LifeListFilter.Ireland,
     title: "Irish wild species",
     label: "",
     flag: "Ireland",
   },
-  { value: LIFE_LIST_FILTERS.WILD, title: "All wild species", label: "🗺️" },
+  { value: LifeListFilter.Wild, title: "All wild species", label: "🗺️" },
   {
-    value: LIFE_LIST_FILTERS.ALL,
+    value: LifeListFilter.All,
     title: "All species including captive",
     label: "all",
   },

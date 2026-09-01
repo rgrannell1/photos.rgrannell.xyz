@@ -11,8 +11,8 @@ type HeadingAttrs = {
 /** Render a metadata table heading cell. */
 function viewHeading(vnode: m.Vnode<HeadingAttrs>): m.Children {
   const { text } = vnode.attrs;
-  const heading = m("th.exif-heading", text);
-  return heading;
+  const $heading = m("th.exif-heading", text);
+  return $heading;
 }
 
 /** Create the shared metadata table heading component. */

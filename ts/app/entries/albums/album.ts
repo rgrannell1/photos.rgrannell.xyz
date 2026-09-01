@@ -2,15 +2,13 @@
 
 import m from "mithril";
 import { setify } from "../../../commons/collections/sets.ts";
-import { albumUrn } from "../../../commons/urn.ts";
+import { buildAlbumUrn } from "../../../commons/urn.ts";
 import { AlbumPage } from "../../../components/pages/albums/album.ts";
 import type { Album, Country, Photo, Video } from "../../../types/domain.ts";
 import { services, state } from "../../context.ts";
 import { pageEntry } from "../../shell.ts";
 import { fromNullable, isNone, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
 import type { Result } from "../../../commons/collections/result.ts";
-
-const albumPageComponent = AlbumPage();
 
 type AlbumPageModel = {
   album: Album;
@@ -29,7 +27,7 @@ let cachedAfterLoad = false;
  * Build the complete album view model or report a missing album.
  */
 function readAlbumPageModel(id: string): Result<AlbumPageModel, string> {
-  const urn = albumUrn(id);
+  const urn = buildAlbumUrn(id);
 
   const album = services.readAlbum(urn);
   if (isNone(album)) {
@@ -58,7 +56,7 @@ function readAlbumPageModel(id: string): Result<AlbumPageModel, string> {
 }
 
 export const albumEntry = pageEntry({
-  page: albumPageComponent,
+  page: AlbumPage,
   /** Resolves the current route into cached album page data. */
   resolve() {
     const id = m.route.param("id");

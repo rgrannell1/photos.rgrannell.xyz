@@ -11,7 +11,6 @@
     "npm:csso@*": "5.0.5",
     "npm:esbuild@~0.25.9": "0.25.12",
     "npm:mithril@^2.3.7": "2.3.7",
-    "npm:tap@^21.1.0": "21.1.3_@tapjs+core@4.0.4",
     "npm:valibot@^1.1.0": "1.1.0"
   },
   "jsr": {
@@ -2816,6 +2815,7 @@
     "packageJson": {
       "dependencies": [
         "npm:@cloudflare/workers-types@^4.20251128.0",
+        "npm:@playwright/test@^1.62.1",
         "npm:@rgrannell1/tribbledb@^0.0.33",
         "npm:@types/csso@^5.0.4",
         "npm:@types/leaflet@^1.9.20",
@@ -2824,9 +2824,7 @@
         "npm:esbuild@~0.25.9",
         "npm:leaflet@^1.9.4",
         "npm:mithril@^2.3.7",
-        "npm:puppeteer-core@^22.12.0",
         "npm:snarkdown@2",
-        "npm:tap@^21.1.0",
         "npm:valibot@^1.1.0"
       ]
     }

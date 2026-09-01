@@ -9,7 +9,7 @@ import { addTaxonSubjects } from "../ts/semantic/derive/mod.ts";
 import { readTaxonMembers, readTaxons } from "../ts/services/data/entities/things.ts";
 import { tdb as realTdb } from "../ts/build/loaders.ts";
 import { KnownRelations, TAXON_RANKS } from "../ts/constants/data.ts";
-import { one } from "../ts/commons/collections/arrays.ts";
+import { selectFirst } from "../ts/commons/collections/arrays.ts";
 
 const PUFFIN = "urn:ró:bird:fratercula-arctica";
 const ALCIDAE = "urn:ró:family:alcidae";
@@ -130,7 +130,7 @@ for (const testCase of TAXON_NAME_CASES) {
     const tdb = new TribbleDB(testCase.triples);
     const [taxon] = readTaxons(tdb, new Set([testCase.urn]));
 
-    const label = one(taxon?.name);
+    const label = selectFirst(taxon?.name);
     if (label !== testCase.expected) {
       throw new Error(`expected "${testCase.expected}", got "${String(label)}"`);
     }
@@ -149,7 +149,7 @@ Deno.test("readTaxonMembers returns member species sorted by name", () => {
   ]);
 
   const names = readTaxonMembers(tdb, ALCIDAE)
-    .map((member) => one(member.name));
+    .map((member) => selectFirst(member.name));
 
   const expected = ["Atlantic Puffin", "Razorbill"];
   if (JSON.stringify(names) !== JSON.stringify(expected)) {

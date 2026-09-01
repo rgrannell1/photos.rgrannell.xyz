@@ -5,15 +5,15 @@ import { parseUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import m from "mithril";
 import { KnownTypes, TAXON_TYPES } from "../../constants/data.ts";
-import { one } from "../../commons/collections/arrays.ts";
-import { taxonLabel } from "../../domain/things.ts";
+import { selectFirst } from "../../commons/collections/arrays.ts";
+import { formatTaxonLabel } from "../../domain/things.ts";
 import { FlagIcon } from "../flag.ts";
 import { setTitle } from "../../services/browser/window.ts";
 import { isSome, type Maybe, withDefault } from "../../commons/collections/maybe.ts";
 
 /** Read a thing name, with its identifier as the fallback. */
 function readTitleName(thing: TripleObject, fallback: string): string {
-  const name = one(thing.name);
+  const name = selectFirst(thing.name);
   return withDefault(name, fallback);
 }
 
@@ -29,7 +29,7 @@ function readNamedTitle(
     return `${emoji} ${name}`;
   }
   if (TAXON_TYPES.has(type)) {
-    return taxonLabel(thing);
+    return formatTaxonLabel(thing);
   }
   return name;
 }
@@ -85,14 +85,14 @@ function reflectThingTitle(vnode: m.Vnode<ThingTitleAttrs>): void {
 
 /** Report whether a thing defines a flag value. */
 function hasFlag(thing: TripleObject | undefined): boolean {
-  return thing !== undefined && isSome(one(thing.flag));
+  return thing !== undefined && isSome(selectFirst(thing.flag));
 }
 
 /** Render a place heading with its flag. */
 function drawPlaceTitle(thing: TripleObject, id: string): m.Children {
   const name = readTitleName(thing, id);
-  const flag = m(FlagIcon, { name, big: true });
-  return m("h1", [flag, ` ${name}`]);
+  const $flag = m(FlagIcon, { name, big: true });
+  return m("h1", [$flag, ` ${name}`]);
 }
 
 /** Render a place flag heading when available, or a plain thing heading. */
@@ -106,8 +106,8 @@ function drawThingTitle(
   if (showsPlaceFlag && thing !== undefined) {
     return drawPlaceTitle(thing, id);
   }
-  const heading = m("h1", title);
-  return heading;
+  const $heading = m("h1", title);
+  return $heading;
 }
 
 /** Render the heading for the current thing or listing wildcard. */

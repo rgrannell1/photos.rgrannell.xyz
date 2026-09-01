@@ -2,6 +2,7 @@
 
 /* Browser helpers for photo loading and ThumbHash placeholders. */
 import { PHOTO_WIDTH } from "../../../constants/layout.ts";
+import { ImageLoadingMode } from "../../../constants/display.ts";
 import { isSome, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
 import {
   thumbHashFromBase64,
@@ -12,7 +13,7 @@ const PLACEHOLDER_CACHE: Map<string, string> = new Map();
 type DecodedThumbHash = ReturnType<typeof thumbHashToRGBA>;
 
 /** Estimates how many square photos fit within the current viewport. */
-function visibleImageCapacity(): number {
+function calculateVisibleImageCapacity(): number {
   const viewportWidth = globalThis.innerWidth;
   const viewportHeight = globalThis.innerHeight;
   const maxImagesPerRow = Math.floor(viewportWidth / PHOTO_WIDTH);
@@ -21,10 +22,10 @@ function visibleImageCapacity(): number {
 }
 
 /** Selects eager loading for images within or just beyond the initial fold. */
-export function loadingMode(idx: number): "eager" | "lazy" {
-  const imagesInFold = visibleImageCapacity();
+export function selectLoadingMode(idx: number): ImageLoadingMode {
+  const imagesInFold = calculateVisibleImageCapacity();
   const isBelowFold = idx > imagesInFold + 1;
-  return isBelowFold ? "lazy" : "eager";
+  return isBelowFold ? ImageLoadingMode.Lazy : ImageLoadingMode.Eager;
 }
 
 /** Decodes a ThumbHash, or returns NONE when the hash is malformed. */

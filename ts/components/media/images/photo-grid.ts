@@ -6,7 +6,7 @@ import { BEFORE_TIMES_FINAL_YEAR } from "../../../constants/display.ts";
 import type { Photo as PhotoType } from "../../../types/domain.ts";
 import { Photo } from "./photo.ts";
 import { groupPhotosByYear, type PhotoYearGroup } from "../../../domain/media/photos.ts";
-import { loadingMode } from "../../../services/rendering/year-scroll/photos.ts";
+import { selectLoadingMode } from "../../../services/rendering/year-scroll/photos.ts";
 import {
   type BatchRenderer,
   createBatchRenderer,
@@ -51,7 +51,7 @@ export function drawGridPhoto(photo: PhotoType, idx: number): m.Children {
   const photoAttrs = {
     key,
     photo,
-    loading: loadingMode(idx),
+    loading: selectLoadingMode(idx),
     interactive: true,
   };
   return m(Photo, photoAttrs);
@@ -69,8 +69,8 @@ function drawYearHeading(group: PhotoYearGroup): m.Children {
     key: `year-${group.year}`,
     class: yearHeadingClass(group.year),
   };
-  const heading = m("h2.year-heading", headingAttrs, group.year.toString());
-  return heading;
+  const $heading = m("h2.year-heading", headingAttrs, group.year.toString());
+  return $heading;
 }
 
 /** startIdx is the first photo's position in the full list, used for the loading mode. */
@@ -81,8 +81,8 @@ function drawYearGroup(
   const $components: m.Children[] = [];
 
   if (group.showHeading) {
-    const heading = drawYearHeading(group);
-    $components.push(heading);
+    const $heading = drawYearHeading(group);
+    $components.push($heading);
   }
 
   for (const [photoIdx, photo] of group.photos.entries()) {

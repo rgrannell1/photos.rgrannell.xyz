@@ -2,7 +2,7 @@
 
 import m from "mithril";
 import { setOf } from "../../../../commons/collections/sets.ts";
-import { KnownRelations, THING_LIST_KINDS } from "../../../../constants/data.ts";
+import { KnownRelations, ThingListKind } from "../../../../constants/data.ts";
 import type { CachedReader, SeenInCountry, ThingPageAttrs } from "../view/thing.ts";
 import { drawMetadataRow, drawSeenInCountry, drawThingList } from "./cache.ts";
 import {
@@ -15,7 +15,7 @@ export function drawLocatedInList(
   attrs: ThingPageAttrs,
   urns: Set<string>,
 ): m.Children {
-  const kind = THING_LIST_KINDS.PLACE;
+  const kind = ThingListKind.PLACE;
   return drawThingList(attrs, kind, urns);
 }
 
@@ -28,8 +28,8 @@ export function addLocatedInMetadata(
   if (locatedIn.size === 0) {
     return;
   }
-  const list = drawLocatedInList(attrs, locatedIn);
-  metadata["Located In"] = list;
+  const $list = drawLocatedInList(attrs, locatedIn);
+  metadata["Located In"] = $list;
 }
 
 /** Report whether a collection contains at least one item. */
@@ -70,9 +70,9 @@ export function readMetadataRows(
 
 /** Render non-empty thing metadata as a details table. */
 export function drawThingDetails(rows: m.Children[]): m.Children {
-  const heading = m("h3", "Details");
-  const table = m("table.metadata-table", rows);
-  return m("div", [heading, table]);
+  const $heading = m("h3", "Details");
+  const $table = m("table.metadata-table", rows);
+  return m("div", [$heading, $table]);
 }
 
 /** Add relation-based metadata to a thing's metadata map. */

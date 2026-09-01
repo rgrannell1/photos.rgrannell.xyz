@@ -8,7 +8,7 @@ import {
   KnownTypes,
   TAXON_RANKS,
 } from "../../../constants/data.ts";
-import { baseUrn } from "./urns.ts";
+import { stripUrnQuery } from "./urns.ts";
 
 type TaxonIndex = {
   taxaBySpecies: Map<string, string[]>;
@@ -41,7 +41,7 @@ function indexRankTriple(
   sourceUrn: string,
   taxonUrn: string,
 ): void {
-  const speciesUrn = baseUrn(sourceUrn);
+  const speciesUrn = stripUrnQuery(sourceUrn);
   const taxaBySpecies = index.taxaBySpecies;
   addSpeciesTaxon(taxaBySpecies, speciesUrn, taxonUrn);
   index.taxonUrns.add(taxonUrn);
@@ -97,7 +97,7 @@ function addTaxonRelations(
   triples: Triple[],
 ): void {
   const [sourceUrn, relation, targetUrn] = mediaTriple;
-  const taxa = taxaBySpecies.get(baseUrn(targetUrn)) ?? [];
+  const taxa = taxaBySpecies.get(stripUrnQuery(targetUrn)) ?? [];
   for (const taxonUrn of taxa) {
     triples.push([sourceUrn, relation, taxonUrn]);
   }

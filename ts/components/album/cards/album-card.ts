@@ -8,16 +8,14 @@ import { PhotoAlbum, type PhotoAlbumAttrs } from "../photo-album.ts";
 import { PhotoAlbumMetadata } from "./photo-album-metadata.ts";
 import { countryFlagLinks } from "../../thing/references/country-link.ts";
 import { thumbHashDataUrl } from "../../../services/rendering/year-scroll/photos.ts";
-import {
-  albumRoute,
-  onAlbumClick,
-} from "../../../services/browser/album-navigation.ts";
+import { albumRoute } from "../../../services/browser/album-navigation.ts";
 import type { Maybe } from "../../../commons/collections/maybe.ts";
+import type { ImageLoading } from "../../../constants/display.ts";
 
 export type AlbumCardAttrs = {
   album: Album;
   countries: Country[];
-  loading: "eager" | "lazy";
+  loading: ImageLoading;
   trip: Maybe<string>;
   child?: m.Children;
   containerAttrs?: m.Attributes;
@@ -48,7 +46,6 @@ function drawAlbum(attrs: AlbumCardAttrs): m.Children {
     thumbnailDataUrl: thumbHashDataUrl(album.mosaic),
     loading,
     minDate: album.minDate,
-    onclick: onAlbumClick.bind(null, album.id),
     child,
   };
   return m(PhotoAlbum, albumAttrs);

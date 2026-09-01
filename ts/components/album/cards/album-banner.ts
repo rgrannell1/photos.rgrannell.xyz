@@ -137,10 +137,10 @@ function drawBannerImage(attrs: AlbumBannerAttrs): m.Children {
 
 /** Renders the accessible album banner structure. */
 function viewAlbumBanner(vnode: m.Vnode<AlbumBannerAttrs>): m.Children {
-  const image = drawBannerImage(vnode.attrs);
-  const inner = m("div.album-banner-inner", image);
+  const $image = drawBannerImage(vnode.attrs);
+  const $inner = m("div.album-banner-inner", $image);
   const sectionAttrs = { "aria-label": vnode.attrs.alt };
-  return m("section.album-banner", sectionAttrs, inner);
+  return m("section.album-banner", sectionAttrs, $inner);
 }
 
 /** Creates empty scheduling and teardown state for one banner. */

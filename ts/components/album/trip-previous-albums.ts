@@ -1,6 +1,7 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { Album } from "../../types/domain.ts";
+import { routeLinkAttrs } from "../../services/browser/routes.ts";
 
 export type TripPreviousAlbumsAttrs = {
   albums: Album[];
@@ -9,7 +10,7 @@ export type TripPreviousAlbumsAttrs = {
 /** Draws a route link to an earlier album in the trip. */
 function drawPreviousAlbumLink(album: Album): m.Children {
   const albumId = asUrn(album.id).id;
-  const linkAttrs = { href: `/album/${albumId}` };
+  const linkAttrs = routeLinkAttrs(`/album/${albumId}`);
   return m(m.route.Link, linkAttrs, album.name);
 }
 
@@ -20,8 +21,8 @@ function appendPreviousAlbum(
   albumIdx: number,
 ): void {
   const separator = albumIdx > 0 ? ", " : null;
-  const link = drawPreviousAlbumLink(album);
-  parts.push(separator, link);
+  const $link = drawPreviousAlbumLink(album);
+  parts.push(separator, $link);
 }
 
 /** Builds the prose and links for the earlier trip stops. */
@@ -44,8 +45,8 @@ function viewTripPreviousAlbums(
     return null;
   }
 
-  const parts = drawPreviousAlbumParts(albums);
-  return m("p.photo-album-trip-previous", parts);
+  const $parts = drawPreviousAlbumParts(albums);
+  return m("p.photo-album-trip-previous", $parts);
 }
 
 /** Shown on album pages when the album is part of a trip and has earlier stops. */

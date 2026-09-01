@@ -3,7 +3,7 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../../commons/collections/arrays.ts";
 import type { Photo as PhotoType } from "../../../../types/domain.ts";
 import { PhotoGrid } from "../../../media/images/photo-grid.ts";
 import { TAXON_TYPES } from "../../../../constants/data.ts";
@@ -20,9 +20,9 @@ export function drawPhotoGrid(photos: PhotoType[], urn: string): m.Children {
     getPhotos: slicePhotos.bind(null, photos),
     resetKey: urn,
   };
-  const grid = m(PhotoGrid, attrs);
-  const heading = m("h3", "Photos");
-  return m("div", [heading, grid]);
+  const $grid = m(PhotoGrid, attrs);
+  const $heading = m("h3", "Photos");
+  return m("div", [$heading, $grid]);
 }
 
 /** Draw a thing's photo section when it has photos. */
@@ -61,7 +61,7 @@ export function hasTaxonUrn(urn: Maybe<string>): urn is string {
 
 /** Read a thing's single URN when the thing exists. */
 export function readThingUrn(thing: TripleObject | undefined): Maybe<string> {
-  const urn = thing ? one(thing.id) : NONE;
+  const urn = thing ? selectFirst(thing.id) : NONE;
   return urn;
 }
 
@@ -110,7 +110,7 @@ export function drawMemberCard(
   member: TripleObject,
   idx: number,
 ): m.Children[] {
-  const id = one(member.id);
+  const id = selectFirst(member.id);
   if (isNone(id)) {
     return [];
   }

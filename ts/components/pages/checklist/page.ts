@@ -1,17 +1,17 @@
 /* Support checklist operations. */
 
 import m from "mithril";
-import { LIFE_LIST_FILTERS } from "../../../constants/display.ts";
+import { LifeListFilter } from "../../../constants/display.ts";
 import type { ChecklistPageAttrs, MammalSectionAttrs } from "../checklist.ts";
 import { drawBirdSection, MammalSection } from "./copy.ts";
 
-/** Add the sidebar class when the life list sidebar is visible. */
-export function readChecklistPageClass(visible: boolean): string {
+/** Selects the page class for the current sidebar visibility. */
+export function selectChecklistPageClass(visible: boolean): string {
   return visible ? "page sidebar-visible" : "page";
 }
 
 /** Select the mammal data needed by the mammal section. */
-export function readMammalSectionAttrs(
+export function buildMammalSectionAttrs(
   attrs: ChecklistPageAttrs,
 ): MammalSectionAttrs {
   return {
@@ -26,11 +26,11 @@ export function readMammalSectionAttrs(
 export function drawOptionalMammalSection(
   attrs: ChecklistPageAttrs,
 ): m.Children {
-  const isIrishFilter = attrs.filter === LIFE_LIST_FILTERS.IRELAND;
+  const isIrishFilter = attrs.filter === LifeListFilter.Ireland;
   if (!isIrishFilter) {
     return null;
   }
-  const sectionAttrs = readMammalSectionAttrs(attrs);
+  const sectionAttrs = buildMammalSectionAttrs(attrs);
   return m(MammalSection, sectionAttrs);
 }
 
@@ -38,6 +38,6 @@ export function drawOptionalMammalSection(
 export function drawChecklistPageChildren(
   attrs: ChecklistPageAttrs,
 ): m.Children[] {
-  const mammalSection = drawOptionalMammalSection(attrs);
-  return [...drawBirdSection(attrs), mammalSection];
+  const $mammalSection = drawOptionalMammalSection(attrs);
+  return [...drawBirdSection(attrs), $mammalSection];
 }

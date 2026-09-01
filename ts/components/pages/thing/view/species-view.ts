@@ -3,15 +3,14 @@
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../../commons/collections/arrays.ts";
 import type { Photo as PhotoType } from "../../../../types/domain.ts";
 import { PhotoAlbum, type PhotoAlbumAttrs } from "../../../album/photo-album.ts";
 import { ThingCaption } from "../../../thing/thing-caption.ts";
 import {
-  loadingMode,
+  selectLoadingMode,
   thumbHashDataUrl,
 } from "../../../../services/rendering/year-scroll/photos.ts";
-import { navigate } from "../../../../services/browser/events.ts";
 import { ShareButton } from "../../../share-button.ts";
 import { sharePhotoUrl } from "../../../../services/browser/window.ts";
 import { type Maybe, NONE, withDefault } from "../../../../commons/collections/maybe.ts";
@@ -22,50 +21,50 @@ import { drawMemberCard, readMemberSpecies } from "../data/species-data.ts";
 import { readShareName } from "./share.ts";
 
 /** Combines image, identity, and interaction attributes for a member album. */
-export function readMemberAlbumAttrs(
+export function buildMemberAlbumAttrs(
   imageAttrs: Pick<
     PhotoAlbumAttrs,
     "imageUrl" | "thumbnailUrl" | "thumbnailDataUrl" | "loading"
   >,
   identityAttrs: Pick<PhotoAlbumAttrs, "trip" | "label"> & m.Attributes,
-  interactionAttrs: Pick<PhotoAlbumAttrs, "child" | "onclick">,
+  interactionAttrs: Pick<PhotoAlbumAttrs, "child" | "href">,
 ): PhotoAlbumAttrs & m.Attributes {
   return { ...imageAttrs, ...identityAttrs, ...interactionAttrs };
 }
 
 /** Builds stable identity attributes for a taxon member card. */
-export function readMemberIdentityAttrs(
+export function buildMemberIdentityAttrs(
   member: TripleObject,
   id: string,
   thingId: string,
 ): Pick<PhotoAlbumAttrs, "trip" | "label"> & m.Attributes {
   return {
     key: `member-${id}`,
-    label: withDefault(one(member.name), thingId),
+    label: withDefault(selectFirst(member.name), thingId),
     trip: NONE,
   };
 }
 
 /** Builds the caption and thing-page navigation for a taxon member. */
-export function readMemberInteractionAttrs(
+export function buildMemberInteractionAttrs(
   member: TripleObject,
   thingId: string,
   type: string,
-): Pick<PhotoAlbumAttrs, "child" | "onclick"> {
-  const child = m(ThingCaption, { thing: member });
-  const onclick = navigate(`/thing/${type}:${thingId}`);
-  return { child, onclick };
+): Pick<PhotoAlbumAttrs, "child" | "href"> {
+  const $child = m(ThingCaption, { thing: member });
+  const href = `/thing/${type}:${thingId}`;
+  return { child: $child, href };
 }
 
 /** Builds cover image attributes with the indexed loading policy. */
-export function readMemberImageAttrs(
+export function buildMemberImageAttrs(
   cover: PhotoType,
   idx: number,
 ): Pick<
   PhotoAlbumAttrs,
   "imageUrl" | "thumbnailUrl" | "thumbnailDataUrl" | "loading"
 > {
-  const loading = loadingMode(idx);
+  const loading = selectLoadingMode(idx);
   const thumbnailDataUrl: Maybe<string> = thumbHashDataUrl(cover.mosaicColours);
   const attrs: Pick<
     PhotoAlbumAttrs,
@@ -88,10 +87,10 @@ export function drawCoveredMember(
   type: string,
   idx: number,
 ): m.Children {
-  const imageAttrs = readMemberImageAttrs(cover, idx);
-  const identityAttrs = readMemberIdentityAttrs(member, id, thingId);
-  const interactionAttrs = readMemberInteractionAttrs(member, thingId, type);
-  const attrs = readMemberAlbumAttrs(
+  const imageAttrs = buildMemberImageAttrs(cover, idx);
+  const identityAttrs = buildMemberIdentityAttrs(member, id, thingId);
+  const interactionAttrs = buildMemberInteractionAttrs(member, thingId, type);
+  const attrs = buildMemberAlbumAttrs(
     imageAttrs,
     identityAttrs,
     interactionAttrs,
@@ -106,12 +105,12 @@ export function drawMemberCards(
 ): m.Children {
   const drawCard = drawMemberCard.bind(null, readThingCover);
   const $cards = members.flatMap(drawCard);
-  const section = drawMediaSection(
+  const $section = drawMediaSection(
     "Species",
     "section.album-container",
     $cards,
   );
-  return section;
+  return $section;
 }
 
 /** Omits the species section when the thing has no taxon members. */
@@ -124,8 +123,8 @@ export function viewSpeciesSection(
   if (members.length === 0) {
     return null;
   }
-  const section = drawMemberCards(members, vnode.attrs.readThingCover);
-  return section;
+  const $section = drawMemberCards(members, vnode.attrs.readThingCover);
+  return $section;
 }
 
 /** Creates a species section with a URN-keyed member cache. */
@@ -157,6 +156,6 @@ export function drawShareButton(
   if (id === "*") {
     return null;
   }
-  const button = drawKnownShareButton(type, id, things);
-  return button;
+  const $button = drawKnownShareButton(type, id, things);
+  return $button;
 }

@@ -1,7 +1,13 @@
 /* Wildlife statistics and bird life-list from subject triples. */
 
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { DATA_TRUE, KnownRelations, KnownTypes } from "../../constants/data.ts";
+import {
+  DATA_TRUE,
+  KnownRelations,
+  KnownTypes,
+  SpeciesStatus,
+  SubjectContext,
+} from "../../constants/data.ts";
 
 import type {
   ChecklistEntry,
@@ -23,25 +29,27 @@ import {
 } from "./stats/birds.ts";
 import { readWildlifeChecklist } from "./stats/mammals.ts";
 
+type SearchQuery = Parameters<TribbleDB["search"]>[0];
+
 const WILD_BIRD_QUERY = {
   relation: KnownRelations.SUBJECT,
-  target: { type: KnownTypes.BIRD, qs: { context: "wild" } },
-} as const;
+  target: { type: KnownTypes.BIRD, qs: { context: SubjectContext.Wild } },
+} satisfies SubjectQuery;
 
 const ALL_BIRD_QUERY = {
   relation: KnownRelations.SUBJECT,
   target: { type: KnownTypes.BIRD },
-} as const;
+} satisfies SubjectQuery;
 
 const WILD_MAMMAL_QUERY = {
   relation: KnownRelations.SUBJECT,
-  target: { type: KnownTypes.MAMMAL, qs: { context: "wild" } },
-} as const;
+  target: { type: KnownTypes.MAMMAL, qs: { context: SubjectContext.Wild } },
+} satisfies SubjectQuery;
 
 const ALL_MAMMAL_QUERY = {
   relation: KnownRelations.SUBJECT,
   target: { type: KnownTypes.MAMMAL },
-} as const;
+} satisfies SubjectQuery;
 
 export type SubjectQuery = {
   relation: string;
@@ -65,7 +73,7 @@ export const IRELAND_QUERY = {
   source: { type: KnownTypes.PLACE },
   relation: KnownRelations.NAME,
   target: IRELAND_NAME,
-} as const;
+} satisfies SearchQuery;
 
 /** Wild = ?context=wild. Irish = location relation to Ireland (transitive). */
 export function readMammalStats(tdb: TribbleDB): SubjectStats {
@@ -81,7 +89,7 @@ export function readMammalStats(tdb: TribbleDB): SubjectStats {
 export function countRegularBirdSpecies(tdb: TribbleDB): number {
   return tdb.search({
     relation: KnownRelations.STATUS,
-    target: "regular",
+    target: SpeciesStatus.Regular,
   }).triples().length;
 }
 
@@ -99,7 +107,11 @@ export function collectUnphotographedNemesis(
 }
 
 // Rarity bands (from wildlife.llm.toml) that count as scarce for the tag.
-export const SCARCE_RARITY_BANDS = new Set(["scarce", "rare", "vagrant"]);
+export const SCARCE_RARITY_BANDS = new Set<string>([
+  SpeciesStatus.Scarce,
+  SpeciesStatus.Rare,
+  SpeciesStatus.Vagrant,
+]);
 
 export type ChecklistFlags = Pick<
   ChecklistEntry,

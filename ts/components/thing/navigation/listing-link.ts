@@ -1,15 +1,7 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import m from "mithril";
 import { capitalise } from "../../../commons/strings.ts";
-import { block, broadcast } from "../../../services/browser/events.ts";
-
-/** Routes a listing link through the application navigation event. */
-function onListingClick(type: string, event: Event) {
-  broadcast("navigate", {
-    route: `/listing/${type}`,
-  });
-  block(event);
-}
+import { routeLinkAttrs } from "../../../services/browser/routes.ts";
 
 type ListingLinkAttrs = { urn: string } | { type: string };
 
@@ -23,12 +15,9 @@ function readListingType(attrs: ListingLinkAttrs): string {
 
 /** Draws an application link to a typed listing. */
 function drawListingLink(type: string): m.Children {
-  const attrs = {
-    href: `#/listing/${type}`,
-    onclick: onListingClick.bind(null, type),
-  };
+  const attrs = routeLinkAttrs(`/listing/${type}`);
   const label = capitalise(type);
-  return m("a", attrs, label);
+  return m(m.route.Link, attrs, label);
 }
 
 /** Renders the listing link for the supplied type or URN. */

@@ -3,14 +3,14 @@
 /* Support things operations. */
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import {
   isNone,
   type Maybe,
   NONE,
   withDefault,
 } from "../../../commons/collections/maybe.ts";
-import { taxonLabel } from "../../../domain/things.ts";
+import { formatTaxonLabel } from "../../../domain/things.ts";
 import { readThing } from "./things.ts";
 
 /** Deduplicates thing IDs and unwraps the result when only one remains. */
@@ -78,7 +78,7 @@ export function addParsedThing<Parsed>(
 
 /** Returns a taxon copy with its display name derived from taxonomic data. */
 export function labelTaxon(taxon: TripleObject): TripleObject {
-  return { ...taxon, name: taxonLabel(taxon) };
+  return { ...taxon, name: formatTaxonLabel(taxon) };
 }
 
 /** Compares thing names in locale order and treats an absent name as empty. */
@@ -86,8 +86,8 @@ export function compareThingNames(
   thingA: TripleObject,
   thingB: TripleObject,
 ): number {
-  const nameA = withDefault(one(thingA.name), "");
-  const nameB = withDefault(one(thingB.name), "");
+  const nameA = withDefault(selectFirst(thingA.name), "");
+  const nameB = withDefault(selectFirst(thingB.name), "");
   return nameA.localeCompare(nameB);
 }
 

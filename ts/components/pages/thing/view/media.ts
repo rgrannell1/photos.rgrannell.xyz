@@ -20,6 +20,10 @@ import {
   readBaseThingMetadata,
   readRankMetadata,
 } from "../data/metadata.ts";
+import {
+  ImageLoadingMode,
+  VideoPreloadMode,
+} from "../../../../constants/display.ts";
 
 /** Add each metadata item to the thing metadata rows. */
 export function addMetadataItems(
@@ -49,12 +53,12 @@ export function drawThingAlbumCard(entry: AlbumEntry): m.Children {
   const attrs: AlbumCardAttrs = {
     album: entry.album,
     countries: entry.countries,
-    loading: "lazy",
+    loading: ImageLoadingMode.Lazy,
     trip: NONE,
     child: m("p"),
   };
-  const card = m(AlbumCard, attrs);
-  return card;
+  const $card = m(AlbumCard, attrs);
+  return $card;
 }
 
 /** Wrap media content in a titled section. */
@@ -63,9 +67,9 @@ export function drawMediaSection(
   className: string,
   children: m.Children,
 ): m.Children {
-  const heading = m("h3", title);
-  const content = m(className, children);
-  return m("div", [heading, content]);
+  const $heading = m("h3", title);
+  const $content = m(className, children);
+  return m("div", [$heading, $content]);
 }
 
 /** Draw referenced albums when the thing has album entries. */
@@ -79,12 +83,12 @@ export function viewAlbumSection(
     return null;
   }
 
-  const section = drawMediaSection(
+  const $section = drawMediaSection(
     "Albums",
     "section.album-container",
     $albums,
   );
-  return section;
+  return $section;
 }
 
 /** Create an album section with a reader cached by thing URN. */
@@ -99,7 +103,7 @@ export function drawThingVideo(video: VideoType): m.Children {
   return m(Video, {
     key: `video-${video.id}`,
     video,
-    preload: "none",
+    preload: VideoPreloadMode.None,
     interactive: true,
   });
 }

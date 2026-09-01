@@ -4,9 +4,13 @@
 /* Support stats operations. */
 /* Wildlife statistics and bird life-list from subject triples. */
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { KnownRelations } from "../../../constants/data.ts";
+import {
+  KnownRelations,
+  SpeciesStatus,
+  SubjectContext,
+} from "../../../constants/data.ts";
 import {
   fromNullable,
   isSome,
@@ -28,7 +32,7 @@ export function readNemesisSpecies(
   speciesId: string,
 ): NemesisSpecies {
   const speciesThing = readSpeciesThing(tdb, speciesType, speciesId);
-  const name = withDefault(one(fromNullable(speciesThing?.name)), speciesId);
+  const name = withDefault(selectFirst(fromNullable(speciesThing?.name)), speciesId);
   return {
     speciesId,
     name,
@@ -109,7 +113,7 @@ export function readWildSpeciesIds(
 ): Set<string> {
   const query = {
     relation: KnownRelations.SUBJECT,
-    target: { type: speciesType, qs: { context: "wild" } },
+    target: { type: speciesType, qs: { context: SubjectContext.Wild } },
   };
   const subjectIds = readSubjectIds(tdb, query);
   return subjectIds;
@@ -134,15 +138,15 @@ export function readWildlifeChecklist(
 
 /** Tests whether a species has the explicit rare status. */
 export function hasRareStatus(speciesThing: TripleObject | undefined): boolean {
-  const status = one(fromNullable(speciesThing?.status));
-  return status === "rare";
+  const status = selectFirst(fromNullable(speciesThing?.status));
+  return status === SpeciesStatus.Rare;
 }
 
 /** Tests whether a species rarity belongs to a scarce display band. */
 export function hasScarceRarity(
   speciesThing: TripleObject | undefined,
 ): boolean {
-  const rarity = withDefault(one(fromNullable(speciesThing?.rarity)), "");
+  const rarity = withDefault(selectFirst(fromNullable(speciesThing?.rarity)), "");
   const isScarce = SCARCE_RARITY_BANDS.has(rarity);
   return isScarce;
 }

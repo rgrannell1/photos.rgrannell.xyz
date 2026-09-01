@@ -1,15 +1,11 @@
 /* Render country links and album country flags. */
 
 import m from "mithril";
-import { asUrn } from "@rgrannell1/tribbledb";
-import { navigate } from "../../../services/browser/events.ts";
-import { urnToUrl } from "../../../commons/urn.ts";
+import { routeLinkAttrs } from "../../../services/browser/routes.ts";
+import { urnToRoute } from "../../../commons/urn.ts";
 import type { Country } from "../../../types/domain.ts";
 import { FlagIcon } from "../../flag.ts";
-import { COUNTRY_LINK_MODES } from "../../../constants/display.ts";
-
-type CountryLinkMode =
-  typeof COUNTRY_LINK_MODES[keyof typeof COUNTRY_LINK_MODES];
+import { CountryLinkMode } from "../../../constants/display.ts";
 
 export type CountryLinkAttrs = {
   country: Country;
@@ -25,7 +21,7 @@ function drawCountryFlagLink(
   const attrs = {
     country,
     key,
-    mode: COUNTRY_LINK_MODES.FLAG,
+    mode: CountryLinkMode.Flag,
   };
   return m(CountryLink, attrs);
 }
@@ -39,28 +35,26 @@ export function countryFlagLinks(
 }
 
 /** Build the URL and navigation handler for a country URN. */
-function readCountryLinkAttrs(id: string) {
-  const parsed = asUrn(id);
-  const route = `/thing/${parsed.type}:${parsed.id}`;
-  return { href: urnToUrl(id), onclick: navigate(route) };
+function buildCountryLinkAttrs(id: string) {
+  return routeLinkAttrs(urnToRoute(id));
 }
 
 /** Render a compact country link that contains only its flag. */
 function drawShortCountryLink(
-  attrs: Record<string, unknown>,
+  attrs: m.RouteLinkAttrs,
   flag: m.Children,
 ): m.Children {
-  return m("a.country-link-short", attrs, flag);
+  return m(m.route.Link, { ...attrs, selector: "a.country-link-short" }, flag);
 }
 
 /** Render a country link with its flag and display name. */
 function drawNamedCountryLink(
-  attrs: Record<string, unknown>,
+  attrs: m.RouteLinkAttrs,
   flag: m.Children,
   name: string,
 ): m.Children {
   const label = [flag, ` ${name}`];
-  return m("a.country-link", attrs, label);
+  return m(m.route.Link, { ...attrs, selector: "a.country-link" }, label);
 }
 
 /** Render a country link in the requested display mode. */
@@ -69,12 +63,12 @@ function drawCountryLink(
   name: string,
   mode: CountryLinkMode,
 ): m.Children {
-  const attrs = readCountryLinkAttrs(id);
-  const flag = m(FlagIcon, { name });
-  if (mode === COUNTRY_LINK_MODES.FLAG) {
-    return drawShortCountryLink(attrs, flag);
+  const attrs = buildCountryLinkAttrs(id);
+  const $flag = m(FlagIcon, { name });
+  if (mode === CountryLinkMode.Flag) {
+    return drawShortCountryLink(attrs, $flag);
   }
-  return drawNamedCountryLink(attrs, flag, name);
+  return drawNamedCountryLink(attrs, $flag, name);
 }
 
 /** Render a country link, or an empty paragraph when its identifier is absent. */

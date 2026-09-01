@@ -4,7 +4,7 @@ import m from "mithril";
 import type { Album, Country } from "../../types/domain.ts";
 import { YearRecap } from "./year-recap.ts";
 import { AlbumCard, type AlbumCardAttrs } from "./cards/album-card.ts";
-import { loadingMode } from "../../services/rendering/year-scroll/photos.ts";
+import { selectLoadingMode } from "../../services/rendering/year-scroll/photos.ts";
 import { BEFORE_TIMES_FINAL_YEAR } from "../../constants/display.ts";
 import { ALBUM_YEAR_HEADING_ID_PREFIX } from "../../constants/selectors.ts";
 import { fromNullable, isSome, type Maybe } from "../../commons/collections/maybe.ts";
@@ -72,7 +72,7 @@ function albumCardAttrs(
     key: `album-${album.id}`,
     album,
     countries: attrs.readAlbumCountries(album),
-    loading: loadingMode(loadingIdx),
+    loading: selectLoadingMode(loadingIdx),
     trip: fromNullable(album.trip),
     containerAttrs: albumContainerAttrs(album),
   };

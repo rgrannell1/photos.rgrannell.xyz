@@ -3,9 +3,9 @@
 /* Remove browseable entities which have no linked media. */
 import { asUrn, type Triple, type TripleObject } from "@rgrannell1/tribbledb";
 import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { one } from "../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { DATA_TRUE, KnownTypes } from "../../../constants/data.ts";
-import { baseUrn } from "./urns.ts";
+import { stripUrnQuery } from "./urns.ts";
 
 /** Add the base URNs referenced by media triples to a shared set. */
 function addReferencedUrns(
@@ -16,7 +16,7 @@ function addReferencedUrns(
   const results = tdb.search({ source: { type: mediaType } });
   const triples = results.triples();
   for (const [, , target] of triples) {
-    referenced.add(baseUrn(target));
+    referenced.add(stripUrnQuery(target));
   }
 }
 
@@ -44,11 +44,11 @@ function readListingType(listingUrn: unknown): string | undefined {
 
 /** Read a listing's entity type only when the listing is browseable. */
 function readBrowseableType(listing: TripleObject): string | undefined {
-  const isBrowseable = one(listing.browseable) === DATA_TRUE;
+  const isBrowseable = selectFirst(listing.browseable) === DATA_TRUE;
   if (!isBrowseable) {
     return undefined;
   }
-  const listingUrn = one(listing.id);
+  const listingUrn = selectFirst(listing.id);
   return readListingType(listingUrn);
 }
 
@@ -77,7 +77,7 @@ function addMedialessThings(
 ): void {
   const entityUrns = tdb.search({ source: { type } }).sources();
   for (const urn of entityUrns) {
-    const entityUrn = baseUrn(urn);
+    const entityUrn = stripUrnQuery(urn);
     if (!referenced.has(entityUrn)) {
       medialess.add(entityUrn);
     }
@@ -99,8 +99,8 @@ function collectMedialessThings(tdb: TribbleDB): Set<string> {
 /** Test whether either endpoint of a triple is a medialess entity. */
 function isMedialessTriple(triple: Triple, medialess: Set<string>): boolean {
   const [sourceUrn, , targetUrn] = triple;
-  const sourceIsMedialess = medialess.has(baseUrn(sourceUrn));
-  const targetIsMedialess = medialess.has(baseUrn(targetUrn));
+  const sourceIsMedialess = medialess.has(stripUrnQuery(sourceUrn));
+  const targetIsMedialess = medialess.has(stripUrnQuery(targetUrn));
   return sourceIsMedialess || targetIsMedialess;
 }
 

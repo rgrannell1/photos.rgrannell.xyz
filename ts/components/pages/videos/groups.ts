@@ -16,7 +16,7 @@ import { RENDER_BATCH_SIZE } from "../../../constants/layout.ts";
 import type { VideosPageAttrs } from "./videos.ts";
 
 /** Build keyed heading attributes and mark historical year groups. */
-export function readYearHeadingAttrs(group: VideoYearGroup) {
+export function buildYearHeadingAttrs(group: VideoYearGroup) {
   const key = `year-${group.year}`;
   const className = group.year <= BEFORE_TIMES_FINAL_YEAR
     ? "before-times"
@@ -26,7 +26,7 @@ export function readYearHeadingAttrs(group: VideoYearGroup) {
 
 /** Draw the heading for a video year group. */
 export function drawYearHeading(group: VideoYearGroup): m.Children {
-  const attrs = readYearHeadingAttrs(group);
+  const attrs = buildYearHeadingAttrs(group);
   const year = group.year.toString();
   return m("h2.year-heading", attrs, year);
 }
@@ -49,9 +49,9 @@ export function appendYearHeading(
 /** Draw a year group with its optional heading before its videos. */
 export function drawYearGroup(group: VideoYearGroup): m.Children[] {
   const $components: m.Children[] = [];
-  const videos = drawGroupVideos(group);
+  const $videos = drawGroupVideos(group);
   appendYearHeading($components, group);
-  $components.push(...videos);
+  $components.push(...$videos);
 
   return $components;
 }

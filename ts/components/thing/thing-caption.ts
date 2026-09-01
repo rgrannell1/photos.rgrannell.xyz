@@ -1,9 +1,9 @@
 import m from "mithril";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../../commons/collections/arrays.ts";
+import { selectFirst } from "../../commons/collections/arrays.ts";
 import { KnownTypes, TAXON_TYPES } from "../../constants/data.ts";
-import { featureEmoji } from "../../domain/emoji.ts";
-import { taxonLabel } from "../../domain/things.ts";
+import { selectFeatureEmoji } from "../../domain/emoji.ts";
+import { formatTaxonLabel } from "../../domain/things.ts";
 import { FlagIcon } from "../flag.ts";
 import { ThingUrls } from "./references/thing-urls.ts";
 import {
@@ -34,22 +34,22 @@ function readCaptionName(
 ): Maybe<string> {
   const isTaxon = isSome(urnType) && TAXON_TYPES.has(urnType);
   if (isTaxon) {
-    return some(taxonLabel(thing));
+    return some(formatTaxonLabel(thing));
   }
-  const name = one(thing.name);
+  const name = selectFirst(thing.name);
   return name;
 }
 
 /** Adds a country flag before a caption label. */
 function drawFlagTitle(thing: TripleObject, label: string): m.Children {
   const name = readCaptionName(thing, NONE);
-  const flag = m(FlagIcon, { name });
-  return [flag, ` ${label}`];
+  const $flag = m(FlagIcon, { name });
+  return [$flag, ` ${label}`];
 }
 
 /** Adds the feature emoji before a caption label. */
 function drawFeatureTitle(thing: TripleObject, label: string): string {
-  const emoji = featureEmoji(thing);
+  const emoji = selectFeatureEmoji(thing);
   return `${emoji} ${label}`;
 }
 
@@ -60,7 +60,7 @@ function drawCaptionTitle(
   urnType: Maybe<string>,
   label: string,
 ): m.Children {
-  const hasFlag = isSome(one(thing.flag));
+  const hasFlag = isSome(selectFirst(thing.flag));
   if (hasFlag) {
     return drawFlagTitle(thing, label);
   }
@@ -81,7 +81,7 @@ function readCaptionLabel(
 
 /** Builds the display title for a thing caption. */
 function readCaptionTitle(thing: TripleObject): m.Children {
-  const id = one(thing.id);
+  const id = selectFirst(thing.id);
   const urnType = readUrnType(id);
   const label = readCaptionLabel(thing, urnType);
   return drawCaptionTitle(thing, id, urnType, label);
@@ -92,16 +92,16 @@ function drawCaptionLayout(
   titleContent: m.Children,
   links: m.Children,
 ): m.Children {
-  const titleNode = m("p.photo-album-title", titleContent);
-  return m("div.photo-album-metadata", [titleNode, links]);
+  const $titleNode = m("p.photo-album-title", titleContent);
+  return m("div.photo-album-metadata", [$titleNode, links]);
 }
 
 /** Draws a thing caption with optional title content. */
 function drawCaption(thing: TripleObject, titleExtra?: m.Children): m.Children {
-  const links = m(ThingUrls, { things: [thing] });
+  const $links = m(ThingUrls, { things: [thing] });
   const title = readCaptionTitle(thing);
   const titleContent = titleExtra ? [title, " ", titleExtra] : title;
-  return drawCaptionLayout(titleContent, links);
+  return drawCaptionLayout(titleContent, $links);
 }
 
 /** Draws the caption from component attributes. */

@@ -9,16 +9,13 @@ import { state } from "./context.ts";
 import { isNone, type Maybe, NONE } from "../commons/collections/maybe.ts";
 import type { Result } from "../commons/collections/result.ts";
 
-const headerComponent = Header();
-const sidebarComponent = Sidebar();
-
 type ResolvedPage<PageAttrs> = {
   attrs: PageAttrs;
   appClass?: string;
 };
 
 type PageDefinition<PageAttrs> = {
-  page: m.Component<PageAttrs>;
+  page: m.ComponentTypes<PageAttrs>;
   // Called once per navigation for param reads and per-visit loads.
   onmatch?: (params: m.Params) => void;
   // Builds page attrs each redraw. Returns string on error.
@@ -85,11 +82,11 @@ export function routeResolver<PageAttrs>(
       const resolved = result.value;
 
       return m("div.photos-app", { class: resolved.appClass }, [
-        m(headerComponent),
+        m(Header),
         m("div.app-container", {
           class: state.sidebarVisible ? "sidebar-visible" : undefined,
         }, [
-          m(sidebarComponent, { visible: state.sidebarVisible }),
+          m(Sidebar, { visible: state.sidebarVisible }),
           // The generic attrs satisfy the page's attrs by construction, but
           // m()'s overloads cannot see through the type parameter
           m(entry.page, resolved.attrs as PageAttrs & m.Attributes),

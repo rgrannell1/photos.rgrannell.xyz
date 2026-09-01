@@ -7,8 +7,6 @@ import { pageEntry } from "../../shell.ts";
 import { type Maybe } from "../../../commons/collections/maybe.ts";
 import { resolveAlbumsPage } from "./filters.ts";
 
-const albumsPageComponent = AlbumsPage();
-
 export const albumsCacheState = {
   albums: services.readAllAlbums(),
   countries: services.readAllCountries(),
@@ -28,6 +26,6 @@ export type AlbumFilters = {
 };
 
 export const albumsEntry = pageEntry({
-  page: albumsPageComponent,
+  page: AlbumsPage,
   resolve: resolveAlbumsPage,
 });

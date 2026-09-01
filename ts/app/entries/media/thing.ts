@@ -9,7 +9,7 @@ import {
   some,
 } from "../../../commons/collections/maybe.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { thingUrn } from "../../../commons/urn.ts";
+import { buildThingUrn } from "../../../commons/urn.ts";
 import { setify } from "../../../commons/collections/sets.ts";
 import {
   ThingPage,
@@ -17,14 +17,11 @@ import {
 } from "../../../components/pages/thing/view/thing.ts";
 import type {
   ThingListItem,
-  ThingListKind,
 } from "../../../components/thing/thing-list/thing-list.ts";
 import type { Album, Country } from "../../../types/domain.ts";
 import { services, state } from "../../context.ts";
 import { pageEntry } from "../../shell.ts";
-import { THING_LIST_KINDS } from "../../../constants/data.ts";
-
-const thingPageComponent = ThingPage();
+import { ThingListKind } from "../../../constants/data.ts";
 
 let cachedUrn: Maybe<string> = NONE;
 let cachedThings: TripleObject[] = [];
@@ -37,9 +34,9 @@ type AlbumEntry = { album: Album; countries: Country[] };
 type ThingListReader = (urns: Set<string>) => ThingListItem[];
 
 const THING_LIST_READERS: Partial<Record<ThingListKind, ThingListReader>> = {
-  [THING_LIST_KINDS.PLACE]: services.readLocations,
-  [THING_LIST_KINDS.FEATURE]: services.readFeatures,
-  [THING_LIST_KINDS.UNESCO]: services.readUnescos,
+  [ThingListKind.PLACE]: services.readLocations,
+  [ThingListKind.FEATURE]: services.readFeatures,
+  [ThingListKind.UNESCO]: services.readUnescos,
 };
 
 const THING_PAGE_READERS = {
@@ -109,7 +106,7 @@ function refreshThingCache(urn: string): void {
 }
 
 /** Builds page attributes from the current thing cache and services. */
-function readThingPageAttrs(urn: string): ThingPageAttrs {
+function buildThingPageAttrs(urn: string): ThingPageAttrs {
   return {
     urn,
     things: cachedThings,
@@ -130,12 +127,12 @@ function resolveThingPage() {
   if (typeof pair !== "string") {
     return "No thing selected";
   }
-  const urn = thingUrn(pair);
+  const urn = buildThingUrn(pair);
   refreshThingCache(urn);
-  return { attrs: readThingPageAttrs(urn) };
+  return { attrs: buildThingPageAttrs(urn) };
 }
 
 export const thingEntry = pageEntry({
-  page: thingPageComponent,
+  page: ThingPage,
   resolve: resolveThingPage,
 });

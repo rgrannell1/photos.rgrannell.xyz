@@ -50,35 +50,35 @@ function unmountMapPage(pageState: MapPageState): void {
 }
 
 /** Set the page class from the sidebar visibility state. */
-function readMapPageAttrs(sidebarVisible: boolean): m.Attributes {
+function buildMapPageAttrs(sidebarVisible: boolean): m.Attributes {
   const className = sidebarVisible ? "page sidebar-visible" : "page";
   return { class: className };
 }
 
 /** Draw the map page heading and summary. */
 function drawMapMetadata(): m.Children {
-  const heading = m("h1", "Map");
-  const description = m("p.photo-album-count", "Places I've visited");
-  return m("section.photos-metadata", [heading, description]);
+  const $heading = m("h1", "Map");
+  const $description = m("p.photo-album-count", "Places I've visited");
+  return m("section.photos-metadata", [$heading, $description]);
 }
 
 /** Draw the accessible container that Leaflet mounts into. */
 function drawMapContainer(): m.Children {
   const attrs = { role: "application", "aria-label": "Map" };
-  const map = m("div.leaflet-map", attrs);
-  return m("section.no-margin", [map]);
+  const $map = m("div.leaflet-map", attrs);
+  return m("section.no-margin", [$map]);
 }
 
 /** Render the map page from its current sidebar and map data. */
 function viewMapPage(vnode: m.Vnode<MapPageAttrs>): m.Children {
   const { visible: sidebarVisible } = vnode.attrs;
-  const metadata = drawMapMetadata();
-  const map = drawMapContainer();
-  const attrs = readMapPageAttrs(sidebarVisible);
+  const $metadata = drawMapMetadata();
+  const $map = drawMapContainer();
+  const attrs = buildMapPageAttrs(sidebarVisible);
 
   return m("div", attrs, [
-    metadata,
-    map,
+    $metadata,
+    $map,
   ]);
 }
 

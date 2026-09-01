@@ -6,7 +6,7 @@ import { asUrn, type Triple, type TripleObject } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Photo } from "../../../types/domain.ts";
 import { readPhoto } from "../readers.ts";
-import { one } from "../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { isNone, type Maybe, withDefault } from "../../../commons/collections/maybe.ts";
 import type { ThingNodes } from "./photos.ts";
 
@@ -22,14 +22,14 @@ export function comparePhotoObjectsNewest(
   objectA: TripleObject,
   objectB: TripleObject,
 ): number {
-  const timestampA = parseInt(withDefault(one(objectA.createdAt), "0"));
-  const timestampB = parseInt(withDefault(one(objectB.createdAt), "0"));
+  const timestampA = parseInt(withDefault(selectFirst(objectA.createdAt), "0"));
+  const timestampB = parseInt(withDefault(selectFirst(objectB.createdAt), "0"));
   return timestampB - timestampA;
 }
 
 /** Read the first object identifier when one exists. */
 export function readObjectId(object: TripleObject): Maybe<string> {
-  return one(object.id);
+  return selectFirst(object.id);
 }
 
 /** Select the database node identified by a thing URN. */

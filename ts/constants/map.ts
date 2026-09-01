@@ -1,5 +1,7 @@
 /* Leaflet map configuration and presentation values. */
 
+import { KnownTypes } from "./data.ts";
+
 // Terrain tile URL template.
 export const MAP_TILE_URL =
   "https://tiles.stadiamaps.com/tiles/stamen_terrain/{z}/{x}/{y}{r}.png";
@@ -44,7 +46,10 @@ export const MAP_TRIP_LINE_COLOUR = "#2563eb";
 export const MAP_LAND_TRIP_LINE_COLOUR = "#60a5fa";
 
 // Transport modes shown with the lighter trip line.
-export const MAP_LIGHT_LINE_MODES = new Set(["car", "train"]);
+export const MAP_LIGHT_LINE_MODES = new Set<string>([
+  KnownTypes.CAR,
+  KnownTypes.TRAIN,
+]);
 
 // Trip line width in pixels.
 export const MAP_TRIP_LINE_WEIGHT = 3;
@@ -60,3 +65,6 @@ export const MAP_ARC_BULGE_FACTOR = 0.25;
 
 // Minimum divisor for zero-length trip legs.
 export const MAP_MIN_LEG_LENGTH = 1e-6;
+
+// Coordinate tolerance around Null Island, in degrees.
+export const NULL_ISLAND_TOLERANCE_DEGREES = 1e-4;

@@ -3,7 +3,7 @@
 import m from "mithril";
 import { arrayify } from "../../../commons/collections/arrays.ts";
 import { isNone, type Maybe } from "../../../commons/collections/maybe.ts";
-import { isTaxonUrn, subjectQualifier } from "../../../commons/urn.ts";
+import { isTaxonUrn, readSubjectQualifier } from "../../../commons/urn.ts";
 import type { ReadThingEmoji } from "../../thing/navigation/thing-link.ts";
 import { type ReadThing, toThingLinks } from "../../thing/navigation/thing-links.ts";
 
@@ -15,12 +15,12 @@ type MediaSubjectAttrs = {
 
 /** Draw the observation qualifier when the subject has one. */
 function drawQualifier(urn: string): m.Children {
-  const qualifier = subjectQualifier(urn);
+  const qualifier = readSubjectQualifier(urn);
   if (isNone(qualifier)) {
     return null;
   }
-  const chip = m("span.subject-qualifier", qualifier);
-  return chip;
+  const $chip = m("span.subject-qualifier", qualifier);
+  return $chip;
 }
 
 /** One subject, with a qualifier chip when it was not seen in the wild. */
@@ -59,7 +59,7 @@ function drawSubjects(
 }
 
 /** Use an em dash when media has no displayable subjects. */
-function subjectContent(subjects: m.Children[]): m.Children {
+function drawSubjectContent(subjects: m.Children[]): m.Children {
   const hasSubjects = subjects.length > 0;
   return hasSubjects ? subjects : "—";
 }
@@ -69,8 +69,8 @@ function viewMediaSubject(vnode: m.Vnode<MediaSubjectAttrs>): m.Children {
   // derived taxon subjects stay out of the subject row
   const subjects = selectSubjects(vnode.attrs.subject);
   const $subject = drawSubjects(vnode.attrs, subjects);
-  const content = subjectContent($subject);
-  return m("td", content);
+  const $content = drawSubjectContent($subject);
+  return m("td", $content);
 }
 
 /** Create the media subject cell component. */

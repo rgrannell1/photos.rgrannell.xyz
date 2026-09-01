@@ -12,6 +12,8 @@ quality.sh
 .claude/
 logs/
 .playwright-mcp/
+playwright-report/
+test-results/
 llms.txt
 *.annotations
 *.md

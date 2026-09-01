@@ -7,7 +7,8 @@ import type {
   Video as VideoType,
 } from "../../../../types/domain.ts";
 
-import { type ReadThingList, type ThingListKind } from "../../../thing/thing-list/thing-list.ts";
+import { type ReadThingList } from "../../../thing/thing-list/thing-list.ts";
+import type { ThingListKind } from "../../../../constants/data.ts";
 
 import type { ReadThingEmoji } from "../../../thing/navigation/thing-link.ts";
 import { type Maybe } from "../../../../commons/collections/maybe.ts";

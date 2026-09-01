@@ -3,25 +3,28 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import { ImagePair, type ImagePairAttrs } from "../media/images/image-pair.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../constants/layout.ts";
 import {
-  block,
-  broadcast,
-  isModifiedClick,
-} from "../../services/browser/events.ts";
+  type ImageLoading,
+  TRIP_COLOUR_COUNT,
+  TRIP_HASH_MULTIPLIER,
+} from "../../constants/display.ts";
+import {
+  routeLinkAttrs,
+} from "../../services/browser/routes.ts";
 import { isNone, type Maybe } from "../../commons/collections/maybe.ts";
 
 /** Mix one character into a stable trip hash. */
 function mixTripHash(hash: number, characterCode: number): number {
-  const mixed = (hash * 31 + characterCode) | 0;
+  const mixed = (hash * TRIP_HASH_MULTIPLIER + characterCode) | 0;
   return mixed;
 }
 
 /** Map a trip hash to an available colour index. */
 function normaliseTripHash(hash: number): number {
-  return Math.abs(hash) % 2;
+  return Math.abs(hash) % TRIP_COLOUR_COUNT;
 }
 
 /** Hash the trip so its colour never changes with render order or history. */
-function tripColourIndex(trip: string): number {
+function calculateTripColourIndex(trip: string): number {
   let hash = 0;
   for (let idx = 0; idx < trip.length; idx++) {
     hash = mixTripHash(hash, trip.charCodeAt(idx));
@@ -29,36 +32,18 @@ function tripColourIndex(trip: string): number {
   return normaliseTripHash(hash);
 }
 
-/** Navigate within the app unless the browser owns the click. */
-function onTripClick(tripId: string, event: Event) {
-  // let modified/middle clicks fall through to the browser so the trip route
-  // opens in a new tab
-  const isBrowserNavigation = isModifiedClick(event as MouseEvent);
-  if (isBrowserNavigation) {
-    return;
-  }
-
-  const route = `/trip/${tripId}`;
-  broadcast("navigate", { route });
-  block(event);
-}
-
 /** Build accessible link attributes for a trip tag. */
-function tripTagAttrs(trip: string) {
+function buildTripTagAttrs(trip: string) {
   const tripId = asUrn(trip).id;
-  const href = `#!/trip/${tripId}`;
-  const onclick = onTripClick.bind(null, tripId);
-  const linkAttrs = {
-    href,
+  const href = `/trip/${tripId}`;
+  return routeLinkAttrs(href, {
     title: "Show albums from this trip",
-    onclick,
-  };
-  return linkAttrs;
+  });
 }
 
 /** Select the stable colour class for a trip tag. */
-function tripTagSelector(trip: string): string {
-  const colourIndex = tripColourIndex(trip);
+function selectTripTagSelector(trip: string): string {
+  const colourIndex = calculateTripColourIndex(trip);
   const selector = `a.trip-tag .trip-color-${colourIndex}`;
   return selector;
 }
@@ -71,9 +56,9 @@ function viewTripTag(vnode: m.Vnode<{ trip: Maybe<string> }>): m.Children {
     return null;
   }
 
-  const selector = tripTagSelector(trip);
-  const linkAttrs = tripTagAttrs(trip);
-  return m(selector, linkAttrs);
+  const selector = selectTripTagSelector(trip);
+  const linkAttrs = buildTripTagAttrs(trip);
+  return m(m.route.Link, { ...linkAttrs, selector });
 }
 
 /** Create the trip tag component. */
@@ -89,9 +74,8 @@ export type PhotoAlbumAttrs = {
   href?: string;
   thumbnailUrl: string;
   thumbnailDataUrl: Maybe<string>;
-  loading: "eager" | "lazy";
+  loading: ImageLoading;
   child?: m.Children;
-  onclick?: (e: Event) => void;
   minDate?: number;
 };
 
@@ -101,7 +85,6 @@ function photoAlbumImageAttrs(attrs: PhotoAlbumAttrs): ImagePairAttrs {
     thumbnailUrl: attrs.thumbnailUrl,
     thumbnailDataUrl: attrs.thumbnailDataUrl,
     loading: attrs.loading,
-    onclick: attrs.onclick,
     width: PHOTO_WIDTH,
     height: PHOTO_HEIGHT,
   };
@@ -120,10 +103,10 @@ function photoAlbumImageAttrs(attrs: PhotoAlbumAttrs): ImagePairAttrs {
 /** Draw an album cover with its trip tag and optional child content. */
 function viewPhotoAlbum(vnode: m.Vnode<PhotoAlbumAttrs>): m.Children {
   const attrs = vnode.attrs;
-  const tripTag = m(TripTag, { trip: attrs.trip });
-  const image = m(ImagePair, photoAlbumImageAttrs(attrs));
+  const $tripTag = m(TripTag, { trip: attrs.trip });
+  const $image = m(ImagePair, photoAlbumImageAttrs(attrs));
   const containerAttrs = { "data-min-date": attrs.minDate };
-  return m("div.photo-album", containerAttrs, [tripTag, image, attrs.child]);
+  return m("div.photo-album", containerAttrs, [$tripTag, $image, attrs.child]);
 }
 
 /** Create an album cover component. */

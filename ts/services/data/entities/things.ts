@@ -1,7 +1,7 @@
 import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 
 import { DATA_TRUE, KnownTypes } from "../../../constants/data.ts";
 import { isNone, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
@@ -120,13 +120,13 @@ export function readListings(tdb: TribbleDB): TripleObject[] {
 /** Published plural label for a type. Falls back to a naive plural. */
 export function listingLabel(tdb: TribbleDB, type: string): string {
   const listing = readListingThing(tdb, type);
-  const label = isNone(listing) ? NONE : one(listing.name);
+  const label = isNone(listing) ? NONE : selectFirst(listing.name);
   return typeof label === "string" ? label : defaultListingLabel(type);
 }
 
 /** Test whether a type's listing marks it as binomial. */
 export function isBinomialType(tdb: TribbleDB, type: string): boolean {
   const listing = readThing(tdb, `urn:ró:${KnownTypes.LISTING}:${type}`);
-  const isBinomial = !isNone(listing) && one(listing.binomial) === DATA_TRUE;
+  const isBinomial = !isNone(listing) && selectFirst(listing.binomial) === DATA_TRUE;
   return isBinomial;
 }

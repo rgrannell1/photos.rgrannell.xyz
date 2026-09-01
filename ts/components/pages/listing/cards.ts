@@ -2,16 +2,15 @@
 
 import m from "mithril";
 import { DATA_TRUE, KnownTypes } from "../../../constants/data.ts";
-import { LIFE_LIST_FILTERS } from "../../../constants/display.ts";
+import { LifeListFilter } from "../../../constants/display.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { navigate } from "../../../services/browser/events.ts";
 import type { Photo } from "../../../types/domain.ts";
 import { PhotoAlbum } from "../../album/photo-album.ts";
 import {
-  loadingMode,
+  selectLoadingMode,
   thumbHashDataUrl,
 } from "../../../services/rendering/year-scroll/photos.ts";
-import { one } from "../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { ThingCaption } from "../../thing/thing-caption.ts";
 import {
   type BatchRenderer,
@@ -37,15 +36,15 @@ import type {
 /**
  * Inline badge for the listing card title. Irish birds get the Ireland flag.
  */
-export function listingTitleExtra(
+export function drawListingTitleExtra(
   thing: TripleObject,
   listingType: string,
 ): m.Children {
   const showsIrishFlag = listingType === KnownTypes.BIRD &&
-    one(thing.irish) === DATA_TRUE;
+    selectFirst(thing.irish) === DATA_TRUE;
   if (showsIrishFlag) {
-    const flag = m(FlagIcon, { name: "Ireland" });
-    return flag;
+    const $flag = m(FlagIcon, { name: "Ireland" });
+    return $flag;
   }
   return undefined;
 }
@@ -59,17 +58,17 @@ export function drawCoveredThing(
   const { id: thingId, type } = asUrn(item.id);
   return m(PhotoAlbum, {
     key: `thing-${item.id}`,
-    label: withDefault(one(item.thing.name), thingId),
+    label: withDefault(selectFirst(item.thing.name), thingId),
     imageUrl: item.cover.fullImage,
     thumbnailUrl: item.cover.thumbnailUrl,
     thumbnailDataUrl: thumbHashDataUrl(item.cover.mosaicColours),
-    loading: loadingMode(idx),
+    loading: selectLoadingMode(idx),
     trip: NONE,
+    href: `/thing/${type}:${thingId}`,
     child: m(ThingCaption, {
       thing: item.thing,
-      titleExtra: listingTitleExtra(item.thing, options.listingType),
+      titleExtra: drawListingTitleExtra(item.thing, options.listingType),
     }),
-    onclick: navigate(`/thing/${type}:${thingId}`),
   });
 }
 
@@ -79,7 +78,7 @@ export function drawThingAlbum(
   thing: TripleObject,
   idx: number,
 ): m.Children[] {
-  const id = one(thing.id);
+  const id = selectFirst(thing.id);
 
   if (isNone(id)) {
     return [];
@@ -152,7 +151,7 @@ export function viewBirdListingDetails(
 ): m.Children {
   const { stats, filter, onToggleIreland } = vnode.attrs;
   const { wildSpecies, totalSpecies, irishWildSpecies } = stats;
-  const irelandActive = filter === LIFE_LIST_FILTERS.IRELAND;
+  const irelandActive = filter === LifeListFilter.Ireland;
 
   return m(
     "p.listing-details",

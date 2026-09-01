@@ -9,17 +9,17 @@ import { fromNullable, isNone, type Maybe, NONE } from "./collections/maybe.ts";
 const URN_PREFIX = "urn:ró";
 
 /** Build an album URN from its identifier. */
-export const albumUrn = (id: string) => `${URN_PREFIX}:album:${id}`;
+export const buildAlbumUrn = (id: string) => `${URN_PREFIX}:album:${id}`;
 /** Build a photo URN from its identifier. */
-export const photoUrn = (id: string) => `${URN_PREFIX}:photo:${id}`;
+export const buildPhotoUrn = (id: string) => `${URN_PREFIX}:photo:${id}`;
 /** Build a video URN from its identifier. */
-export const videoUrn = (id: string) => `${URN_PREFIX}:video:${id}`;
+export const buildVideoUrn = (id: string) => `${URN_PREFIX}:video:${id}`;
 /** Build a place URN from a country identifier. */
-export const countryUrn = (id: string) => `${URN_PREFIX}:place:${id}`;
+export const buildCountryUrn = (id: string) => `${URN_PREFIX}:place:${id}`;
 /** Build a trip URN from its identifier. */
-export const tripUrn = (id: string) => `${URN_PREFIX}:trip:${id}`;
+export const buildTripUrn = (id: string) => `${URN_PREFIX}:trip:${id}`;
 /** Build a thing URN from a type and identifier pair. */
-export const thingUrn = (pair: string) => `${URN_PREFIX}:${pair}`;
+export const buildThingUrn = (pair: string) => `${URN_PREFIX}:${pair}`;
 
 /**
  * Bare id from a URN, or the value unchanged when it is already an id.
@@ -28,10 +28,15 @@ export function formatId(id: string): string {
   return id.startsWith("urn:") ? parseUrn(id).id : id;
 }
 
-/** Convert a thing URN to its hash route. */
-export function urnToUrl(urn: string) {
+/** Convert a thing URN to its application route. */
+export function urnToRoute(urn: string): string {
   const { type, id } = asUrn(urn);
-  return `#/thing/${type}:${id}`;
+  return `/thing/${type}:${id}`;
+}
+
+/** Convert a thing URN to its hash-prefixed browser URL. */
+export function urnToUrl(urn: string): string {
+  return `#${urnToRoute(urn)}`;
 }
 
 /** Taxon subjects are excluded from species-only displays. */
@@ -40,7 +45,7 @@ export function isTaxonUrn(urn: string): boolean {
 }
 
 /** Read the optional context query parameter from a URN. */
-export function urnContext(urn: string): Maybe<string> {
+export function readUrnContext(urn: string): Maybe<string> {
   const [, query] = urn.split("?");
   if (!query) {
     return NONE;
@@ -50,8 +55,8 @@ export function urnContext(urn: string): Maybe<string> {
 }
 
 /** Only mark unusual contexts. Wild and unqualified subjects carry no label. */
-export function subjectQualifier(urn: string): Maybe<string> {
-  const context = urnContext(urn);
+export function readSubjectQualifier(urn: string): Maybe<string> {
+  const context = readUrnContext(urn);
   const isUnqualifiedContext = isNone(context) ||
     UNQUALIFIED_SUBJECT_CONTEXTS.has(context);
   if (isUnqualifiedContext) {

@@ -2,16 +2,15 @@
 
 import m from "mithril";
 import { asUrn } from "@rgrannell1/tribbledb";
-import { navigate } from "../../../services/browser/events.ts";
 
-import { one } from "../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { customFlagAsset, FlagIcon } from "../../flag.ts";
 import { isSome, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
 import { KnownTypes } from "../../../constants/data.ts";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Thing, Unesco } from "../../../types/domain.ts";
 import type { EmojiThing } from "../../../domain/emoji.ts";
-import { drawThingLink } from "./thing-link-layout.ts";
+import { drawThingRouteLink } from "./thing-link-layout.ts";
 
 export type ReadThingEmoji = (
   urn: string,
@@ -31,7 +30,7 @@ function readNameCandidate(thing: ThingLinkAttrs["thing"]): Maybe<string> {
   if (!hasName) {
     return NONE;
   }
-  return one((thing as { name: string | string[] }).name);
+  return selectFirst((thing as { name: string | string[] }).name);
 }
 
 /** Reads a thing name, with its URN ID as the fallback. */
@@ -46,7 +45,7 @@ function readThingName(
 /** Reports whether a place declares a flag. */
 function hasThingFlag(type: string, thing: ThingLinkAttrs["thing"]): boolean {
   const isPlace = type === KnownTypes.PLACE;
-  const flag = one((thing as TripleObject).flag);
+  const flag = selectFirst((thing as TripleObject).flag);
   return isPlace && isSome(flag);
 }
 
@@ -88,14 +87,12 @@ function drawThingLabel(icon: m.Children, name: string): m.Children {
 
 /** Draws an internal thing link that routes without a page load. */
 function drawLinkedThing(
-  urn: string,
   type: string,
   id: string,
   label: m.Children,
 ): m.Children {
   const route = `/thing/${type}:${id}`;
-  const attrs = { href: urn, onclick: navigate(route) };
-  return drawThingLink("a", type, attrs, label);
+  return drawThingRouteLink(type, route, label);
 }
 
 /** Resolves a thing's name and icon, then draws its internal link. */
@@ -105,7 +102,7 @@ function viewThingLink(vnode: m.Vnode<ThingLinkAttrs>): m.Children {
   const name = readThingName(thing, id);
   const icon = drawThingIcon(urn, type, name, thing, readEmoji);
   const label = drawThingLabel(icon, name);
-  return drawLinkedThing(urn, type, id, label);
+  return drawLinkedThing(type, id, label);
 }
 
 /** Creates the component for one linked thing. */

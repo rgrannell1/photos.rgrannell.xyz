@@ -1,5 +1,5 @@
 import m from "mithril";
-import { broadcast } from "../../../services/browser/events.ts";
+import { routeLinkAttrs } from "../../../services/browser/routes.ts";
 
 // The circled "i" glyph.
 const INFO_GLYPH_PATH =
@@ -18,8 +18,8 @@ function viewInfoSVG(vnode: m.Vnode<{ colour: string }>): m.Children {
     xmlns: "http://www.w3.org/2000/svg",
   };
   const pathAttrs = { d: INFO_GLYPH_PATH, fill: colour };
-  const path = m("path", pathAttrs);
-  return m("svg.photo-icon", svgAttrs, [path]);
+  const $path = m("path", pathAttrs);
+  return m("svg.photo-icon", svgAttrs, [$path]);
 }
 
 /** Create the information-glyph component. */
@@ -32,19 +32,14 @@ type MetadataIconAttrs = {
   colour: string;
 };
 
-/** Broadcast navigation to the metadata route. */
-function clickMetadataIcon(route: string): void {
-  broadcast("navigate", { route });
-}
-
 /** Render a metadata icon that navigates to its route when selected. */
 function viewMetadataIcon(vnode: m.Vnode<MetadataIconAttrs>): m.Children {
   const { route, colour } = vnode.attrs;
-  const popoverAttrs = {
-    onclick: clickMetadataIcon.bind(null, route),
-  };
-  const icon = m(InfoSVG, { colour });
-  return m("div.photo-metadata-popover", popoverAttrs, icon);
+  const popoverAttrs = routeLinkAttrs(route, {
+    selector: "a.photo-metadata-popover",
+  });
+  const $icon = m(InfoSVG, { colour });
+  return m(m.route.Link, popoverAttrs, $icon);
 }
 
 /** Create the metadata navigation icon component. */

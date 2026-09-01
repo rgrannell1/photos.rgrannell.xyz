@@ -31,8 +31,8 @@ export function drawCountryFlag(
   country: Country,
 ): m.Children {
   const flagAttrs = countryFlagAttrs(selectedCountry, onSelect, country);
-  const icon = m(FlagIcon, { name: country.name });
-  return m("span.country-filter-flag", flagAttrs, icon);
+  const $icon = m(FlagIcon, { name: country.name });
+  return m("span.country-filter-flag", flagAttrs, $icon);
 }
 
 /**

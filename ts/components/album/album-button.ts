@@ -1,8 +1,6 @@
 import m from "mithril";
-import {
-  albumRoute,
-  onAlbumClick,
-} from "../../services/browser/album-navigation.ts";
+import { albumRoute } from "../../services/browser/album-navigation.ts";
+import { routeLinkAttrs } from "../../services/browser/routes.ts";
 
 type AlbumButtonAttrs = {
   id: string;
@@ -12,10 +10,9 @@ type AlbumButtonAttrs = {
 /** Draw a browser-compatible link to an album. */
 function drawAlbumButton(id: string): m.Children {
   const href = albumRoute(id);
-  const onclick = onAlbumClick.bind(null, id);
-  const linkAttrs = { href, onclick };
-  const link = m("a", linkAttrs, "[album]");
-  return link;
+  const linkAttrs = routeLinkAttrs(href);
+  const $link = m(m.route.Link, linkAttrs, "[album]");
+  return $link;
 }
 
 /** Draw the album link unless the caller hides it. */

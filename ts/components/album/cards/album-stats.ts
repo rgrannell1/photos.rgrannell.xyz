@@ -1,6 +1,7 @@
 import m from "mithril";
 import type { AppWindow, Stats } from "../../../types/browser.ts";
 import { parseStats } from "../../../services/browser/stats.ts";
+import { routeLinkAttrs } from "../../../services/browser/routes.ts";
 
 /** Draws a count followed by its linked label. */
 function drawLinkedCount(
@@ -9,30 +10,30 @@ function drawLinkedCount(
   label: string,
 ): m.Children[] {
   const countText = `${count} `;
-  const link = m("a", { href }, label);
-  return [countText, link];
+  const $link = m(m.route.Link, routeLinkAttrs(href), label);
+  return [countText, $link];
 }
 
 /** Draws linked photo and video totals. */
 function drawMediaStats(stats: Stats): m.Children[] {
-  const photos = drawLinkedCount(stats.photos, "#/photos", "photos");
-  const videos = drawLinkedCount(stats.videos, "#/videos", "videos");
-  return [...photos, " · ", ...videos, " · "];
+  const $photos = drawLinkedCount(stats.photos, "/photos", "photos");
+  const $videos = drawLinkedCount(stats.videos, "/videos", "videos");
+  return [...$photos, " · ", ...$videos, " · "];
 }
 
 /** Draws linked bird and mammal species totals. */
 function drawSpeciesStats(stats: Stats): m.Children[] {
-  const birds = drawLinkedCount(
+  const $birds = drawLinkedCount(
     stats.bird_species,
-    "#/listing/bird",
+    "/listing/bird",
     "bird species",
   );
-  const mammals = drawLinkedCount(
+  const $mammals = drawLinkedCount(
     stats.mammal_species,
-    "#/listing/mammal",
+    "/listing/mammal",
     "mammal species",
   );
-  return [...birds, " · ", ...mammals, " · "];
+  return [...$birds, " · ", ...$mammals, " · "];
 }
 
 /** Renders parsed album statistics or an empty paragraph when invalid. */
@@ -41,27 +42,27 @@ function viewAlbumStats(result: ReturnType<typeof parseStats>): m.Children {
     return m("p");
   }
   const stats = result.value;
-  const mediaStats = drawMediaStats(stats);
+  const $mediaStats = drawMediaStats(stats);
   const timeStats = `${stats.albums} albums · ${stats.years} years · `;
-  const countries = drawLinkedCount(
+  const $countries = drawLinkedCount(
     stats.countries,
-    "#/listing/country",
+    "/listing/country",
     "countries",
   );
-  const speciesStats = drawSpeciesStats(stats);
-  const sites = drawLinkedCount(
+  const $speciesStats = drawSpeciesStats(stats);
+  const $sites = drawLinkedCount(
     stats.unesco_sites,
-    "#/thing/place_feature:unesco",
+    "/thing/place_feature:unesco",
     "UNESCO sites",
   );
 
   return m("p.photo-stats", [
-    mediaStats,
+    $mediaStats,
     timeStats,
-    countries,
+    $countries,
     " · ",
-    speciesStats,
-    sites,
+    $speciesStats,
+    $sites,
   ]);
 }
 

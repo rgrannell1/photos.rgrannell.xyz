@@ -1,6 +1,6 @@
 import m from "mithril";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { ExternalLink } from "./external-link.ts";
 import { isNone, type Maybe, NONE } from "../../../commons/collections/maybe.ts";
 
@@ -26,8 +26,8 @@ function encodeCoordinates(latitude: string, longitude: string): string {
 
 /** Builds a Google Maps URL for valid, non-zero coordinates. */
 function readMapHref(thing: TripleObject): Maybe<string> {
-  const latitude = one(thing.latitude);
-  const longitude = one(thing.longitude);
+  const latitude = selectFirst(thing.latitude);
+  const longitude = selectFirst(thing.longitude);
   if (isNone(latitude) || isNone(longitude)) {
     return NONE;
   }
@@ -41,8 +41,8 @@ function readMapHref(thing: TripleObject): Maybe<string> {
 
 /** Reads the supported external links for one thing. */
 function readThingUrlLinks(thing: TripleObject): (m.Vnode | null)[] {
-  const wikipedia = drawExternalLink(one(thing.wikipedia), "[wikipedia]");
-  const birdwatch = drawExternalLink(one(thing.birdwatchUrl), "[birdwatch]");
+  const wikipedia = drawExternalLink(selectFirst(thing.wikipedia), "[wikipedia]");
+  const birdwatch = drawExternalLink(selectFirst(thing.birdwatchUrl), "[birdwatch]");
   const map = drawExternalLink(readMapHref(thing), "[map]");
   return [wikipedia, birdwatch, map];
 }
@@ -53,8 +53,8 @@ function drawThingUrls(thing: TripleObject): m.Children {
   if (!links.some(isVisibleLink)) {
     return null;
   }
-  const list = m("ul.link-list", links);
-  return list;
+  const $list = m("ul.link-list", links);
+  return $list;
 }
 
 /** Returns the sole thing, or NONE unless the list has exactly one item. */

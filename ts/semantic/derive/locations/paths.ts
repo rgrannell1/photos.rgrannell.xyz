@@ -1,7 +1,10 @@
 /* Derive the transitive relations in a location path. */
 
 import type { Triple } from "@rgrannell1/tribbledb";
-import { KnownRelations } from "../../../constants/data.ts";
+import {
+  KnownRelations,
+  LOCATION_PATH_MAX_DEPTH,
+} from "../../../constants/data.ts";
 import type { LocationTree } from "./locations.ts";
 
 /** Adds reciprocal containment relations between two nodes in a location path. */
@@ -50,7 +53,7 @@ export function traceLocationPath(
   if (!node) {
     throw new Error(`no node in location tree for ${urn}`);
   }
-  if (path.length > 5) {
+  if (path.length > LOCATION_PATH_MAX_DEPTH) {
     throw new Error(`likely cycle; ${JSON.stringify(path)}`);
   }
 

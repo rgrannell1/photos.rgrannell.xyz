@@ -9,9 +9,9 @@ type MetadataRowAttrs = {
 
 /** Renders one metadata table row from a label and child value. */
 function viewMetadataRow(vnode: m.Vnode<MetadataRowAttrs>): m.Children {
-  const heading = m(Heading, { text: vnode.attrs.label });
-  const value = m("td", vnode.children);
-  return m("tr", [heading, value]);
+  const $heading = m(Heading, { text: vnode.attrs.label });
+  const $value = m("td", vnode.children);
+  return m("tr", [$heading, $value]);
 }
 
 /** Creates the Mithril metadata row component. */

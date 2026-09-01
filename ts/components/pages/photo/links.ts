@@ -19,10 +19,10 @@ export function drawPhotoResourceLinks(
   photo: PhotoType,
   shareUrl: string,
 ): m.Children[] {
-  const webpLink = drawPhotoLink(photo.fullImage, "[webp]");
-  const jpegLink = drawPhotoLink(photo.previewJpegUrl, "[jpeg]");
-  const shareLink = drawPhotoLink(shareUrl, "[share]");
-  return [webpLink, jpegLink, shareLink];
+  const $webpLink = drawPhotoLink(photo.fullImage, "[webp]");
+  const $jpegLink = drawPhotoLink(photo.previewJpegUrl, "[jpeg]");
+  const $shareLink = drawPhotoLink(shareUrl, "[share]");
+  return [$webpLink, $jpegLink, $shareLink];
 }
 
 /** Draws the album link unless the caller marks the album as hidden. */
@@ -31,8 +31,8 @@ export function drawPhotoAlbumLink(
   albumHidden: boolean,
 ): m.Children {
   const attrs = { id: photo.albumId, hidden: albumHidden };
-  const button = m(AlbumButton, attrs);
-  return m("li", button);
+  const $button = m(AlbumButton, attrs);
+  return m("li", $button);
 }
 
 /** Builds the public share URL for a photo. */
@@ -51,9 +51,9 @@ export function drawPhotoLinks(
   albumHidden: boolean,
 ): m.Children {
   const shareUrl = readPhotoShareUrl(photo);
-  const links = drawPhotoResourceLinks(photo, shareUrl);
-  links.push(drawPhotoAlbumLink(photo, albumHidden));
-  return drawPhotoLinkList(links);
+  const $links = drawPhotoResourceLinks(photo, shareUrl);
+  $links.push(drawPhotoAlbumLink(photo, albumHidden));
+  return drawPhotoLinkList($links);
 }
 
 /** Draws the photo's semantic media information. */
@@ -87,6 +87,6 @@ export function drawPhotoDetailSections(attrs: PhotoPageAttrs): m.Children[] {
 /** Draws the photo detail page with sidebar visibility state. */
 export function drawPhotoDetails(attrs: PhotoPageAttrs): m.Children {
   const className = attrs.visible ? "page sidebar-visible" : "page";
-  const details = drawPhotoDetailSections(attrs);
-  return m("div", { class: className }, details);
+  const $details = drawPhotoDetailSections(attrs);
+  return m("div", { class: className }, $details);
 }

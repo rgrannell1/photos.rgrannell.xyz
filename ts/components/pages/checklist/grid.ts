@@ -3,7 +3,7 @@
 import m from "mithril";
 import type { Photo } from "../../../types/domain.ts";
 import type { ChecklistEntry, NemesisSpecies } from "../../../domain/media/stats.ts";
-import { LIFE_LIST_FILTERS } from "../../../constants/display.ts";
+import { LifeListFilter } from "../../../constants/display.ts";
 import { type Maybe, NONE } from "../../../commons/collections/maybe.ts";
 import type { PositionedEntry } from "../checklist.ts";
 import { firstSeenYear, isIrishWild } from "./dates.ts";
@@ -15,13 +15,13 @@ import {
 import { formatMammalPreamble } from "./copy.ts";
 
 /** Reports whether the life-list filter selects Irish sightings. */
-export function filterIsIrish(filter: string): boolean {
-  return filter === LIFE_LIST_FILTERS.IRELAND;
+export function isIrishFilter(filter: string): boolean {
+  return filter === LifeListFilter.Ireland;
 }
 
 /** Reports whether the life-list filter selects all sightings. */
-export function filterIsAll(filter: string): boolean {
-  return filter === LIFE_LIST_FILTERS.ALL;
+export function isAllFilter(filter: string): boolean {
+  return filter === LifeListFilter.All;
 }
 
 /** Draws one checklist card for each positioned entry. */
@@ -74,10 +74,8 @@ export function formatBirdPreamble(
     `${sinceYear}; Ireland regularly records about ${regularCount}.`;
 }
 
-/**
- * Bird intro line. Null until there is an Irish wild sighting.
- */
-export function lifeListPreamble(
+/** Builds the bird intro when an Irish wild sighting exists. */
+export function buildLifeListPreamble(
   entries: ChecklistEntry[],
   regularCount: number,
 ): Maybe<string> {
@@ -91,10 +89,8 @@ export function lifeListPreamble(
   return formatBirdPreamble(irishWild.length, sinceYear, regularCount);
 }
 
-/**
- * Mammal intro line. Null until there is an Irish wild sighting.
- */
-export function mammalPreamble(
+/** Builds the mammal intro when an Irish wild sighting exists. */
+export function buildMammalPreamble(
   mammalEntries: ChecklistEntry[],
   irishMammalCount: number,
 ): Maybe<string> {

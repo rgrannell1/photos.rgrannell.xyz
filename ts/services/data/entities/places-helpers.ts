@@ -6,7 +6,8 @@ import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { TripleObject } from "@rgrannell1/tribbledb";
 import type { Country, Place } from "../../../types/domain.ts";
 import { KnownRelations, KnownTypes } from "../../../constants/data.ts";
-import { one } from "../../../commons/collections/arrays.ts";
+import { NULL_ISLAND_TOLERANCE_DEGREES } from "../../../constants/map.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { withDefault } from "../../../commons/collections/maybe.ts";
 import type {
   GeocodedPlace,
@@ -24,8 +25,9 @@ export function hasFiniteCoordinates(
 
 /** Rejects coordinates within the site's null-island tolerance. */
 export function isNearNullIsland(latitude: number, longitude: number): boolean {
-  const latitudeIsNearZero = Math.abs(latitude) < 1e-4;
-  const longitudeIsNearZero = Math.abs(longitude) < 1e-4;
+  const latitudeIsNearZero = Math.abs(latitude) < NULL_ISLAND_TOLERANCE_DEGREES;
+  const longitudeIsNearZero = Math.abs(longitude) <
+    NULL_ISLAND_TOLERANCE_DEGREES;
   return latitudeIsNearZero && longitudeIsNearZero;
 }
 
@@ -85,7 +87,7 @@ export function compareCountryThings(
   countryA: TripleObject,
   countryB: TripleObject,
 ): number {
-  const firstName = withDefault(one(countryA.name), "");
-  const secondName = withDefault(one(countryB.name), "");
+  const firstName = withDefault(selectFirst(countryA.name), "");
+  const secondName = withDefault(selectFirst(countryB.name), "");
   return firstName.localeCompare(secondName);
 }

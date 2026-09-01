@@ -8,13 +8,13 @@ import { VideosList } from "./groups.ts";
 
 /** Render the videos page heading and singular-aware count. */
 export function drawVideosMetadata(videoLengthText: string): m.Children {
-  const heading = m("h1", "Videos");
-  const count = m("p.photo-album-count", videoLengthText);
-  return m("section.photos-metadata", [heading, count]);
+  const $heading = m("h1", "Videos");
+  const $count = m("p.photo-album-count", videoLengthText);
+  return m("section.photos-metadata", [$heading, $count]);
 }
 
-/** Add the sidebar layout class when the videos page is visible. */
-export function readVideosPageClass(visible: boolean): string {
+/** Selects the page class for the current sidebar visibility. */
+export function selectVideosPageClass(visible: boolean): string {
   return visible ? "page sidebar-visible" : "page";
 }
 
@@ -28,15 +28,15 @@ export function drawVideosPage(
 }
 
 /** Format a singular-aware count for the videos collection. */
-export function readVideosCountText(videos: DatedVideo[]): string {
+export function formatVideosCountText(videos: DatedVideo[]): string {
   return countLabel(videos.length, "video");
 }
 
 /** Render the videos page from its current visibility and video data. */
 export function viewVideosPage(vnode: m.Vnode<VideosPageAttrs>): m.Children {
-  const videoLengthText = readVideosCountText(vnode.attrs.videos);
+  const videoLengthText = formatVideosCountText(vnode.attrs.videos);
   const metadata = drawVideosMetadata(videoLengthText);
-  const className = readVideosPageClass(vnode.attrs.visible);
+  const className = selectVideosPageClass(vnode.attrs.visible);
 
   return drawVideosPage(className, metadata, vnode.attrs);
 }

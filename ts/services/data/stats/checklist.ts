@@ -4,7 +4,7 @@
 /* Support stats operations. */
 /* Wildlife statistics and bird life-list from subject triples. */
 import { type TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../../../commons/collections/arrays.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import { DATA_TRUE } from "../../../constants/data.ts";
 import { fromNullable, withDefault } from "../../../commons/collections/maybe.ts";
@@ -26,14 +26,14 @@ export function readOriginFlags(
   speciesId: string,
   wildSpeciesIds: Set<string>,
 ): Pick<ChecklistFlags, "isIrish" | "isWild"> {
-  const isIrish = one(fromNullable(speciesThing?.irish)) === DATA_TRUE;
+  const isIrish = selectFirst(fromNullable(speciesThing?.irish)) === DATA_TRUE;
   const isWild = wildSpeciesIds.has(speciesId);
   return { isIrish, isWild };
 }
 
 /** Reports whether a triple value contains the canonical true marker. */
 export function hasDataFlag(value: string | string[] | undefined): boolean {
-  return one(fromNullable(value)) === DATA_TRUE;
+  return selectFirst(fromNullable(value)) === DATA_TRUE;
 }
 
 /** Reads scarcity, nemesis, and target flags from species data. */
@@ -51,7 +51,7 @@ export function readChecklistName(
   speciesThing: TripleObject | undefined,
   speciesId: string,
 ): string {
-  return withDefault(one(fromNullable(speciesThing?.name)), speciesId);
+  return withDefault(selectFirst(fromNullable(speciesThing?.name)), speciesId);
 }
 
 /** Combines origin and status flags for a checklist species. */

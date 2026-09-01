@@ -7,8 +7,6 @@ import type { GeocodedPlaceWithCover } from "../../domain/places.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
 
-const mapPageComponent = MapPage();
-
 let placesForMap: GeocodedPlaceWithCover[] = [];
 let tripPolylines: TripPolyline[] = [];
 let mapDataRead = false;
@@ -21,7 +19,7 @@ function readMapData() {
 }
 
 export const mapEntry = pageEntry({
-  page: mapPageComponent,
+  page: MapPage,
   /** Refreshes map data when the route opens after application load. */
   onmatch() {
     if (state.loaded) {

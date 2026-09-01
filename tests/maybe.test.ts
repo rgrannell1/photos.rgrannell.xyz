@@ -10,7 +10,7 @@ import {
   toUndefined,
   withDefault,
 } from "../ts/commons/collections/maybe.ts";
-import { arrayify, one } from "../ts/commons/collections/arrays.ts";
+import { arrayify, selectFirst } from "../ts/commons/collections/arrays.ts";
 import { setify } from "../ts/commons/collections/sets.ts";
 
 Deno.test("Maybe identifies present and missing values", () => {
@@ -41,8 +41,8 @@ Deno.test("withDefault unwraps values", () => {
 });
 
 Deno.test("collection helpers preserve Maybe absence", () => {
-  if (one<string>(NONE) !== NONE) throw new Error("one lost NONE");
-  if (one(["bird", "mammal"]) !== "bird") throw new Error("one lost first");
+  if (selectFirst<string>(NONE) !== NONE) throw new Error("selectFirst lost NONE");
+  if (selectFirst(["bird", "mammal"]) !== "bird") throw new Error("selectFirst lost first");
   if (arrayify<string>(NONE).length !== 0) throw new Error("arrayify kept NONE");
   if (setify<string>(NONE).size !== 0) throw new Error("setify kept NONE");
 });

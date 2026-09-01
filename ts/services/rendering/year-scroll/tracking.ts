@@ -5,6 +5,7 @@ import m from "mithril";
 import {
   YEAR_SCROLL_MAX_PASSES,
   YEAR_SCROLL_OFFSET,
+  YEAR_SCROLL_RETRY_DELAY_MS,
 } from "../../../constants/layout.ts";
 import { ALBUM_YEAR_HEADINGS_SELECTOR } from "../../../constants/selectors.ts";
 import {
@@ -38,7 +39,7 @@ export function readYearHeadings(): HTMLElement[] {
 }
 
 /** Return null while the banner remains visible. */
-export function currentYearInView(): Maybe<string> {
+export function readCurrentYearInView(): Maybe<string> {
   const headings = readYearHeadings();
 
   let current: Maybe<string> = NONE;
@@ -81,7 +82,7 @@ export function reflectVisibleYear(
 /** Finish a queued frame and reflect the currently visible year. */
 export function reflectCurrentYear(scrollState: YearScrollState): void {
   scrollState.scrollFrame = NONE;
-  const year = currentYearInView();
+  const year = readCurrentYearInView();
   reflectVisibleYear(scrollState, year);
 }
 
@@ -102,6 +103,5 @@ export function retryYearScroll(year: string, spy: YearScrollSpy): void {
   }
 
   const settleScroll = settleYearScroll.bind(null, year, spy);
-  const retryDelay = 120;
-  setTimeout(settleScroll, retryDelay);
+  setTimeout(settleScroll, YEAR_SCROLL_RETRY_DELAY_MS);
 }

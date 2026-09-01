@@ -4,8 +4,8 @@ import type { Photo, Video } from "../../../types/domain.ts";
 import { readPhotos } from "../readers.ts";
 import { DATA_TRUE, KnownRelations, KnownTypes } from "../../../constants/data.ts";
 import { readAlbums, readVideos } from "../readers.ts";
-import { albumUrn } from "../../../commons/urn.ts";
-import { one } from "../../../commons/collections/arrays.ts";
+import { buildAlbumUrn } from "../../../commons/urn.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { fromNullable, type Maybe } from "../../../commons/collections/maybe.ts";
 import {
   compareNewestAlbum,
@@ -24,7 +24,7 @@ export type NodeSelection = ReturnType<TribbleDB["nodes"]>;
 /** Reports whether an album carries the published hidden flag. */
 export function isAlbumHidden(tdb: TribbleDB, id: string): boolean {
   const album = readAlbumObject(tdb, id);
-  const hidden = one(album?.hidden);
+  const hidden = selectFirst(album?.hidden);
 
   return hidden === DATA_TRUE;
 }
@@ -33,7 +33,7 @@ export function isAlbumHidden(tdb: TribbleDB, id: string): boolean {
 /** Reads the optional published recap for a year. */
 export function readYearRecap(tdb: TribbleDB, year: number): Maybe<string> {
   const yearNode = readYearObject(tdb, year);
-  const recap = one(yearNode?.[KnownRelations.RECAP]);
+  const recap = selectFirst(yearNode?.[KnownRelations.RECAP]);
 
   return fromNullable(recap);
 }
@@ -94,7 +94,7 @@ export function readTripAlbums(tdb: TribbleDB, tripUrn: string): Album[] {
 /** Reads the optional published title for a trip. */
 export function readTripName(tdb: TribbleDB, tripUrn: string): Maybe<string> {
   const trip = selectTrip(tdb, tripUrn).objects()[0];
-  const title = one(trip?.[KnownRelations.TITLE]);
+  const title = selectFirst(trip?.[KnownRelations.TITLE]);
 
   return fromNullable(title);
 }
@@ -106,6 +106,6 @@ export function readAlbumsByThingIds(
 ) {
   const things = selectThings(tdb, thingsUrns);
   const albumIds = readReferencedAlbumIds(things);
-  const albumUrns = new Set([...albumIds].map(albumUrn));
+  const albumUrns = new Set([...albumIds].map(buildAlbumUrn));
   return readAlbums(tdb, albumUrns);
 }

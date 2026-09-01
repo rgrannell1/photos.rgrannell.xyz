@@ -48,8 +48,8 @@ export function prependSeparator(children: m.Children[], runIdx: number): void {
   if (isFirstRun) {
     return;
   }
-  const separator = drawSeparator();
-  children.unshift(separator);
+  const $separator = drawSeparator();
+  children.unshift($separator);
 }
 
 /** Draw one flag run with its optional leading separator. */

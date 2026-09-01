@@ -9,7 +9,7 @@ import {
   withDefault,
 } from "../../commons/collections/maybe.ts";
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
-import { one } from "../../commons/collections/arrays.ts";
+import { selectFirst } from "../../commons/collections/arrays.ts";
 import { capitalise, pluralise } from "../../commons/strings.ts";
 import {
   ListingPage,
@@ -22,9 +22,6 @@ import type { SubjectStats } from "../../domain/media/stats.ts";
 import type { Photo } from "../../types/domain.ts";
 import { services, state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
-
-const listingPageComponent = ListingPage();
-const listingsPageComponent = ListingsPage();
 
 type ListingModel = {
   things: TripleObject[];
@@ -47,7 +44,7 @@ let categoryModels: Maybe<CategoryModel[]> = NONE;
 /** Reads listable categories that have a usable cover photo. */
 function readCategoryModels(): CategoryModel[] {
   return services.readListings().flatMap((listing) => {
-    const id = one(listing.id);
+    const id = selectFirst(listing.id);
     if (isNone(id)) {
       return [];
     }
@@ -56,7 +53,7 @@ function readCategoryModels(): CategoryModel[] {
     const cover = services.readCategoryCover(type);
     return isNone(cover) ? [] : [{
       type,
-      label: withDefault(one(listing.name), type),
+      label: withDefault(selectFirst(listing.name), type),
       route: `/listing/${type}`,
       cover,
     }];
@@ -79,14 +76,14 @@ function readListingModel(type: string): ListingModel {
     things,
     label: isNone(listing)
       ? capitalise(pluralise(type))
-      : withDefault(one(listing.name), capitalise(pluralise(type))),
-    isListable: !isNone(listing) && one(listing.listable) === DATA_TRUE,
+      : withDefault(selectFirst(listing.name), capitalise(pluralise(type))),
+    isListable: !isNone(listing) && selectFirst(listing.listable) === DATA_TRUE,
     stats,
   };
 }
 
 export const listingEntry = pageEntry({
-  page: listingPageComponent,
+  page: ListingPage,
   /** Resolves one listing route after source data loads. */
   resolve() {
     if (!state.loaded) {
@@ -114,7 +111,7 @@ export const listingEntry = pageEntry({
 });
 
 export const listingsEntry = pageEntry({
-  page: listingsPageComponent,
+  page: ListingsPage,
   /** Resolves and caches the category listing page after source data loads. */
   resolve() {
     if (!state.loaded) {

@@ -5,10 +5,8 @@ import { AboutPage } from "../../components/pages/about/about.ts";
 import { state } from "../context.ts";
 import { pageEntry } from "../shell.ts";
 
-const aboutPageComponent = AboutPage();
-
 export const aboutEntry = pageEntry({
-  page: aboutPageComponent,
+  page: AboutPage,
   resolve() {
     return {
       appClass: "album-page",

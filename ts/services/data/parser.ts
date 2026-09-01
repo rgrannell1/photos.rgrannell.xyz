@@ -8,7 +8,7 @@ import {
   safeParse,
 } from "valibot";
 import { readParsedThing, readParsedThings } from "./entities/things.ts";
-import { one } from "../../commons/collections/arrays.ts";
+import { selectFirst } from "../../commons/collections/arrays.ts";
 import { isNone, type Maybe, NONE } from "../../commons/collections/maybe.ts";
 
 type Parser<Parsed> = (tdb: TribbleDB, thing: TripleObject) => Maybe<Parsed>;
@@ -90,7 +90,7 @@ function parseThingByType<Parsed>(
   tdb: TribbleDB,
   thing: TripleObject,
 ): Maybe<Parsed> {
-  const id = one(thing.id);
+  const id = selectFirst(thing.id);
   if (isNone(id)) {
     return NONE;
   }
@@ -156,7 +156,7 @@ export function readMany<Parsed>(parser: Parser<Parsed>) {
 }
 
 /** Creates matching single-entity and multi-entity readers for a parser. */
-export function readers<Parsed>(parser: Parser<Parsed>) {
+export function createReaders<Parsed>(parser: Parser<Parsed>) {
   return {
     one: readOne(parser),
     many: readMany(parser),

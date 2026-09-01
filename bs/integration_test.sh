@@ -1,34 +1,34 @@
 #! /usr/bin/env bash
 
-PORT=3030
+set -e
+
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-REPORTER=base
-SKIP_BUILD=0
 
-for arg in "$@"; do
-  [[ "$arg" == "--quiet" ]] && REPORTER=silent
-  [[ "$arg" == "--skip-build" ]] && SKIP_BUILD=1
-done
+function collect_browser_options() {
+  BROWSER_OPTIONS=()
+  for argument in "$@"; do
+    case "$argument" in
+      --quiet)
+        BROWSER_OPTIONS+=("--reporter=dot")
+        ;;
+      --skip-build)
+        BROWSER_OPTIONS+=("--config=playwright.built.config.js")
+        ;;
+      *)
+        BROWSER_OPTIONS+=("$argument")
+        ;;
+    esac
+  done
+}
 
-if [[ "$SKIP_BUILD" == "0" ]]; then
-  "$PROJECT_ROOT/bs/build.sh"
-fi
+function run_browser_tests() {
+  timeout 180 "$PROJECT_ROOT/bs/test:browser.zsh" "${BROWSER_OPTIONS[@]}"
+}
 
-python3 -m http.server $PORT --directory "$PROJECT_ROOT" &>/dev/null &
-SERVER_PID=$!
+function main() {
+  cd "$PROJECT_ROOT"
+  collect_browser_options "$@"
+  run_browser_tests
+}
 
-trap "kill $SERVER_PID 2>/dev/null" EXIT
-
-for idx in $(seq 1 20); do
-  if nc -z localhost $PORT 2>/dev/null; then
-    break
-  fi
-  sleep 0.25
-done
-
-if ! nc -z localhost $PORT 2>/dev/null; then
-  echo "Error: server did not start on port $PORT"
-  exit 1
-fi
-
-npx tap --reporter=$REPORTER --disable-coverage tests/browser/root.test.js
+main "$@"

@@ -49,6 +49,9 @@
   /* photo width */
   --photo-width: 400px;
 
+  /* page content gutter */
+  --page-gutter: 40px;
+
   --tag-color-0: #0079d6;
   --tag-color-1: #0087ff;
   --tag-color-2: #29b41d;
@@ -210,7 +213,7 @@ button:disabled {
 
 .thumbnail-video {
   background-color: var(--image-placeholder-background-color);
-  height: 400px;
+  height: var(--photo-width);
   object-fit: cover;
 }
 
@@ -315,7 +318,7 @@ button:disabled {
   .photo-container,
   .album-container,
   .video-container {
-    margin-right: 40px;
+    margin-right: var(--page-gutter);
   }
 }
 
@@ -529,7 +532,7 @@ button:disabled {
 }
 
 .about-page {
-  margin-right: 40px;
+  margin-right: var(--page-gutter);
 }
 
 /*
@@ -572,16 +575,20 @@ button:disabled {
     display: block;
     height: 60vh;
     aspect-ratio: unset;
-    /* break out of the app's 40px left padding to reach the viewport left
+    /* break out of the app's page gutter to reach the viewport left
        edge. calc on the padding, not 100vw: vw includes any classic
        scrollbar, which shifts content offscreen */
-    width: calc(100% + 40px);
-    margin-left: -40px;
+    width: calc(100% + var(--page-gutter));
+    margin-left: calc(-1 * var(--page-gutter));
     margin-bottom: 1.5rem;
   }
 
   h1 {
     font-size: 2em;
+  }
+
+  h1, h2, h3 {
+    overflow-wrap: anywhere;
   }
 
   .year-heading {
@@ -593,7 +600,7 @@ button:disabled {
   }
 
   .about-page {
-    margin-right: 40px;
+    margin-right: var(--page-gutter);
 
     h2 {
       font-size: 1.5em;
@@ -601,7 +608,7 @@ button:disabled {
   }
 
   .photos-app {
-    padding-left: 40px;
+    padding-left: var(--page-gutter);
   }
 
   .photo-album {
@@ -610,8 +617,8 @@ button:disabled {
 
   /* break album grid out to full width, same technique as photo-container */
   .album-container {
-    width: calc(100% + 40px);
-    margin-left: -40px;
+    width: calc(100% + var(--page-gutter));
+    margin-left: calc(-1 * var(--page-gutter));
     column-gap: 0;
   }
 
@@ -648,8 +655,8 @@ button:disabled {
 
   /* break photo grid out of the app's left padding so images touch screen edges */
   .photo-container {
-    width: calc(100% + 40px);
-    margin-left: -40px;
+    width: calc(100% + var(--page-gutter));
+    margin-left: calc(-1 * var(--page-gutter));
     column-gap: 0;
   }
 
@@ -684,8 +691,8 @@ button:disabled {
 
   /* break video grid out to full width, same technique as photo-container */
   .video-container {
-    width: calc(100% + 40px);
-    margin-left: -40px;
+    width: calc(100% + var(--page-gutter));
+    margin-left: calc(-1 * var(--page-gutter));
     column-gap: 0;
   }
 
@@ -772,11 +779,16 @@ button:disabled {
  */
 
 .sidebar-item {
-  /* transparent border on every item so the active one's coloured bar doesn't
-     shift the text; padding-left trimmed by the border width to stay aligned */
-  padding: 20px 20px 20px 15px;
   border-left: 5px solid transparent;
   transition: border-left-color 0.15s ease, background-color 0.15s ease;
+}
+
+.sidebar-item > a {
+  /* Trim the link padding so the transparent border does not shift its text. */
+  color: inherit;
+  display: block;
+  padding: 20px 20px 20px 15px;
+  text-decoration: none;
 }
 
 /*
@@ -820,6 +832,8 @@ button:disabled {
 .app-container > section, .app-container > main, .app-container > .page {
   grid-row: 1;
   grid-column: 2;
+  /* Let the content track shrink below its intrinsic width on narrow screens. */
+  min-width: 0;
 }
 
 /*
@@ -885,6 +899,8 @@ button:disabled {
 /* EXIF information about an image */
 .metadata-table {
   margin: 10px 0;
+  table-layout: fixed;
+  width: 100%;
 }
 
 /* the global ul rule is !important with (0,1,2) specificity; match both */
@@ -900,6 +916,7 @@ button:disabled {
 .metadata-table th, .metadata-table td {
   text-align: left;
   padding: 4px 8px;
+  overflow-wrap: anywhere;
 }
 
 .metadata-table th {
@@ -1057,7 +1074,7 @@ button:disabled {
 .photo-album-title {
   margin: 4px 0px;
   font-weight: bolder;
-  max-width: max(180px, min(60vw, 400px));
+  max-width: max(180px, min(60vw, var(--photo-width)));
 }
 
 .photo-album {
@@ -1066,7 +1083,7 @@ button:disabled {
 }
 
 .photo-album-date {
-  max-width: max(180px, min(60vw, 400px));
+  max-width: max(180px, min(60vw, var(--photo-width)));
 }
 
 .photo-album-count {
@@ -1112,7 +1129,7 @@ button:disabled {
   }
 
   .thumbnail-image {
-    width: max(180px, min(80vw, 400px));
+    width: max(180px, min(80vw, var(--photo-width)));
     max-width: max(180px, 80vw);
   }
 }
@@ -1150,15 +1167,15 @@ button:disabled {
   width: 100%;
   height: calc(100vh - 240px);
   min-height: 420px;
-  margin-right: 40px;
+  margin-right: var(--page-gutter);
   border-radius: 8px;
   overflow: hidden;
 }
 
 @media (max-width: 500px) {
   .leaflet-map {
-    width: calc(100% + 40px);
-    margin-left: -40px;
+    width: calc(100% + var(--page-gutter));
+    margin-left: calc(-1 * var(--page-gutter));
     height: calc(100vh - 200px);
     min-height: 320px;
     margin-right: 0;
@@ -1353,7 +1370,7 @@ button:disabled {
   }
 
   .checklist-card {
-    width: max(180px, min(80vw, 400px));
+    width: max(180px, min(80vw, var(--photo-width)));
     max-width: max(180px, 80vw);
   }
 

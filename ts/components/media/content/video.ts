@@ -2,9 +2,13 @@ import m from "mithril";
 import type { Video } from "../../../types/domain.ts";
 import { MetadataIcon } from "../metadata/metadata-icon.ts";
 import { formatId } from "../../../commons/urn.ts";
+import {
+  type VideoPreload,
+  VideoPreloadMode,
+} from "../../../constants/display.ts";
 
 export type VideoAttrs = {
-  preload: string;
+  preload: VideoPreload;
   video: Video;
   interactive?: boolean;
 };
@@ -46,9 +50,9 @@ function drawVideoElement(
   videoState: VideoState,
   attrs: VideoAttrs,
 ): m.Children {
-  const source = drawVideoSource(attrs.video);
+  const $source = drawVideoSource(attrs.video);
   const videoAttrs = videoElementAttrs(videoState, attrs);
-  return m("video.thumbnail-video", videoAttrs, source);
+  return m("video.thumbnail-video", videoAttrs, $source);
 }
 
 /** Draws a metadata route for interactive videos. */
@@ -58,8 +62,8 @@ function drawVideoMetadata(video: Video, interactive: boolean): m.Children {
   }
   const route = `/video/${formatId(video.id)}`;
   const iconAttrs = { route, colour: "white" };
-  const icon = m(MetadataIcon, iconAttrs);
-  return icon;
+  const $icon = m(MetadataIcon, iconAttrs);
+  return $icon;
 }
 
 /** Draws the video with its optional metadata control. */
@@ -67,12 +71,12 @@ function drawVideoContent(
   videoState: VideoState,
   attrs: VideoAttrs,
 ): m.Children {
-  const videoElement = drawVideoElement(videoState, attrs);
-  const metadataIcon = drawVideoMetadata(
+  const $videoElement = drawVideoElement(videoState, attrs);
+  const $metadataIcon = drawVideoMetadata(
     attrs.video,
     attrs.interactive ?? false,
   );
-  return m("div", [m("div.photo", [metadataIcon, videoElement])]);
+  return m("div", [m("div.photo", [$metadataIcon, $videoElement])]);
 }
 
 /** Draws an available video or a clear fallback message. */
@@ -109,9 +113,9 @@ export function drawVideoItem(video: Video): m.Children {
   const videoAttrs = {
     key: `video-${video.id}`,
     video,
-    preload: "none",
+    preload: VideoPreloadMode.None,
     interactive: true,
   };
-  const item = m(Video, videoAttrs);
-  return item;
+  const $item = m(Video, videoAttrs);
+  return $item;
 }

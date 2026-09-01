@@ -6,13 +6,14 @@ import { openUrl } from "../../../services/browser/window.ts";
 import { formatId } from "../../../commons/urn.ts";
 import { MetadataIcon } from "../metadata/metadata-icon.ts";
 import { PHOTO_HEIGHT, PHOTO_WIDTH } from "../../../constants/layout.ts";
+import type { ImageLoading } from "../../../constants/display.ts";
 import { thumbHashDataUrl } from "../../../services/rendering/year-scroll/photos.ts";
 import type { Photo as PhotoType } from "../../../types/domain.ts";
 import { ImagePair, type ImagePairAttrs } from "./image-pair.ts";
 
 export type PhotoAttrs = {
   photo: PhotoType;
-  loading: "eager" | "lazy";
+  loading: ImageLoading;
   interactive?: boolean;
 };
 
@@ -60,12 +61,12 @@ function drawPhotoMetadata(photo: PhotoType): m.Children {
 
 /** Add metadata controls only when the photo is interactive. */
 function drawPhotoContent(attrs: PhotoAttrs): m.Children[] {
-  const imagePair = drawImagePair(attrs);
+  const $imagePair = drawImagePair(attrs);
   if (!attrs.interactive) {
-    return [imagePair];
+    return [$imagePair];
   }
-  const metadataIcon = drawPhotoMetadata(attrs.photo);
-  return [metadataIcon, imagePair];
+  const $metadataIcon = drawPhotoMetadata(attrs.photo);
+  return [$metadataIcon, $imagePair];
 }
 
 /** Wrap photo content in a link whose click uses component actions. */
@@ -75,10 +76,10 @@ function drawPhotoLink(content: m.Children[]): m.Children {
 
 /** Render one photo and its optional metadata control. */
 function viewPhoto(vnode: m.Vnode<PhotoAttrs>): m.Children {
-  const content = drawPhotoContent(vnode.attrs);
-  const link = drawPhotoLink(content);
-  const photo = m("div.photo", [link]);
-  return m("div", photo);
+  const $content = drawPhotoContent(vnode.attrs);
+  const $link = drawPhotoLink($content);
+  const $photo = m("div.photo", [$link]);
+  return m("div", $photo);
 }
 
 /** Create an interactive photo component with selective redraws. */

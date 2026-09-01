@@ -6,7 +6,7 @@ import type { ThingPageAttrs } from "./thing.ts";
 import { drawThingBody, isOlm } from "./share.ts";
 
 /** Adds the sidebar class when the sidebar is visible. */
-export function readPageClass(visible: boolean): string {
+export function selectPageClass(visible: boolean): string {
   return visible ? "page sidebar-visible" : "page";
 }
 
@@ -27,7 +27,7 @@ export function drawThingMain(
 /** Assembles the thing page body and optional olm effect. */
 export function viewThingPage(vnode: m.Vnode<ThingPageAttrs>): m.Children {
   const attrs = vnode.attrs;
-  const pageClass = readPageClass(attrs.visible);
-  const love = drawOlmLove(attrs.urn);
-  return drawThingMain(pageClass, [love, drawThingBody(attrs)]);
+  const pageClass = selectPageClass(attrs.visible);
+  const $love = drawOlmLove(attrs.urn);
+  return drawThingMain(pageClass, [$love, drawThingBody(attrs)]);
 }

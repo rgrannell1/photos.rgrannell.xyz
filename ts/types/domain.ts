@@ -20,28 +20,53 @@ import type {
 } from "../schemas/subject.ts";
 import type { TransferSchema } from "../schemas/transfer.ts";
 import type { VideoSchema } from "../schemas/video.ts";
+import { KnownTypes, ThingListKind } from "../constants/data.ts";
 
-export type Album = InferOutput<typeof AlbumSchema> & { type: "album" };
-export type Transfer = InferOutput<typeof TransferSchema> & {
-  type: "transfer";
+export type Album = InferOutput<typeof AlbumSchema> & {
+  type: `${KnownTypes.ALBUM}`;
 };
-export type Photo = InferOutput<typeof PhotoSchema> & { type: "photo" };
-export type Video = InferOutput<typeof VideoSchema> & { type: "video" };
-export type Place = InferOutput<typeof PlaceSchema> & { type: "place" };
-export type Country = InferOutput<typeof PlaceSchema> & { type: "place" };
-export type Unesco = InferOutput<typeof UnescoSchema> & { type: "unesco" };
-export type Bird = InferOutput<typeof BirdSchema> & { type: "bird" };
-export type Mammal = InferOutput<typeof MammalSchema> & { type: "mammal" };
-export type Reptile = InferOutput<typeof ReptileSchema> & { type: "reptile" };
+export type Transfer = InferOutput<typeof TransferSchema> & {
+  type: `${KnownTypes.TRANSFER}`;
+};
+export type Photo = InferOutput<typeof PhotoSchema> & {
+  type: `${KnownTypes.PHOTO}`;
+};
+export type Video = InferOutput<typeof VideoSchema> & {
+  type: `${KnownTypes.VIDEO}`;
+};
+export type Place = InferOutput<typeof PlaceSchema> & {
+  type: `${KnownTypes.PLACE}`;
+};
+export type Country = InferOutput<typeof PlaceSchema> & {
+  type: `${KnownTypes.PLACE}`;
+};
+export type Unesco = InferOutput<typeof UnescoSchema> & {
+  type: `${KnownTypes.UNESCO}`;
+};
+export type Bird = InferOutput<typeof BirdSchema> & {
+  type: `${KnownTypes.BIRD}`;
+};
+export type Mammal = InferOutput<typeof MammalSchema> & {
+  type: `${KnownTypes.MAMMAL}`;
+};
+export type Reptile = InferOutput<typeof ReptileSchema> & {
+  type: `${KnownTypes.REPTILE}`;
+};
 export type Amphibian = InferOutput<typeof AmphibianSchema> & {
-  type: "amphibian";
+  type: `${KnownTypes.AMPHIBIAN}`;
 };
 export type Arthropod = InferOutput<typeof ArthropodSchema> & {
-  type: "arthropod";
+  type: `${KnownTypes.ARTHROPOD}`;
 };
-export type Fish = InferOutput<typeof FishSchema> & { type: "fish" };
-export type Plane = InferOutput<typeof PlaneSchema> & { type: "plane" };
-export type Feature = InferOutput<typeof FeatureSchema> & { type: "feature" };
+export type Fish = InferOutput<typeof FishSchema> & {
+  type: `${KnownTypes.FISH}`;
+};
+export type Plane = InferOutput<typeof PlaneSchema> & {
+  type: `${KnownTypes.PLANE}`;
+};
+export type Feature = InferOutput<typeof FeatureSchema> & {
+  type: `${ThingListKind.FEATURE}`;
+};
 
 export type Subject =
   | Bird

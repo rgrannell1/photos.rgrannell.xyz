@@ -5,7 +5,7 @@ import { AlbumYearGroup } from "../../album/year-group.ts";
 import type { Album } from "../../../types/domain.ts";
 import { setTitle } from "../../../services/browser/window.ts";
 import { mountYearScroll } from "../../../services/rendering/year-scroll/year-scroll.ts";
-import { broadcast } from "../../../services/browser/events.ts";
+import { setRoute } from "../../../services/browser/routes.ts";
 import { albumYear } from "../../../domain/media/albums.ts";
 import {
   type BatchRenderer,
@@ -96,13 +96,13 @@ export function viewAlbumsList(
   const albumComponents: m.Children[] = [];
   let startIdx = 0;
   for (const group of groups) {
-    const yearGroup = m(AlbumYearGroup, {
+    const $yearGroup = m(AlbumYearGroup, {
       key: `year-group-${group.year}`,
       ...group,
       readAlbumCountries: vnode.attrs.readAlbumCountries,
       startIdx,
     });
-    albumComponents.push(yearGroup);
+    albumComponents.push($yearGroup);
     startIdx += group.albums.length;
   }
   return m("section.album-container", albumComponents);
@@ -143,5 +143,5 @@ export function unmountAlbumsPage(pageState: AlbumsPageState): void {
 /** Navigates to the albums route for the selected country. */
 export function selectCountry(slug: Maybe<string>): void {
   const route = isSome(slug) ? `/albums/${slug}` : "/albums";
-  broadcast("navigate", { route });
+  setRoute(route);
 }

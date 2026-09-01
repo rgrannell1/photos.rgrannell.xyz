@@ -2,6 +2,10 @@
 
 import m from "mithril";
 import type { ChecklistEntry } from "../../../domain/media/stats.ts";
+import {
+  MILLISECONDS_PER_SECOND,
+  UNIX_TIMESTAMP_SECONDS_MAX,
+} from "../../../constants/display.ts";
 import { FlagIcon } from "../../flag.ts";
 import type {
   FilterControl,
@@ -15,8 +19,9 @@ import type {
 /** Parses a Unix timestamp expressed in seconds or milliseconds. */
 export function parseFirstSeen(timestamp: string): Date {
   const numeric = parseInt(timestamp);
-  // timestamps under 10^10 are in seconds, larger are in milliseconds
-  const milliseconds = numeric > 9_999_999_999 ? numeric : numeric * 1000;
+  const milliseconds = numeric > UNIX_TIMESTAMP_SECONDS_MAX
+    ? numeric
+    : numeric * MILLISECONDS_PER_SECOND;
   return new Date(milliseconds);
 }
 
@@ -47,7 +52,7 @@ export function isIrishWild(entry: ChecklistEntry): boolean {
 }
 
 /** Builds event and selection attributes for a filter control. */
-export function readFilterControlAttrs(
+export function buildFilterControlAttrs(
   control: FilterControl,
   selectedClass: string | undefined,
 ) {
@@ -65,7 +70,7 @@ export function drawFilterControl(control: FilterControl): m.Children {
   const selectedClass = control.current === control.value
     ? "listing-filter-flag--selected"
     : undefined;
-  const attrs = readFilterControlAttrs(control, selectedClass);
+  const attrs = buildFilterControlAttrs(control, selectedClass);
   return m("span.listing-filter-flag", attrs, control.label);
 }
 

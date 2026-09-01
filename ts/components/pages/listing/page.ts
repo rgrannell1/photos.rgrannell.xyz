@@ -2,7 +2,7 @@
 
 import m from "mithril";
 import { KnownTypes } from "../../../constants/data.ts";
-import { LIFE_LIST_FILTERS } from "../../../constants/display.ts";
+import { LifeListFilter } from "../../../constants/display.ts";
 import type { ListingPageAttrs } from "./listing.ts";
 import { AlbumsList } from "./cards.ts";
 import { drawListingMetadata, isIrishThing } from "./details.ts";
@@ -11,7 +11,7 @@ import { drawListingMetadata, isIrishThing } from "./details.ts";
 export function viewListingPage(vnode: m.Vnode<ListingPageAttrs>): m.Children {
   const { attrs } = vnode;
   const showsIrishBirds = attrs.type === KnownTypes.BIRD &&
-    attrs.filter === LIFE_LIST_FILTERS.IRELAND;
+    attrs.filter === LifeListFilter.Ireland;
   const displayThings = showsIrishBirds
     ? attrs.things.filter(isIrishThing)
     : attrs.things;

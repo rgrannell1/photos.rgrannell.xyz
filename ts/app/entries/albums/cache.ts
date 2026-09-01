@@ -3,7 +3,7 @@
 /* Resolve album-list routes and retain their streamed source model. */
 import m from "mithril";
 import { setify } from "../../../commons/collections/sets.ts";
-import { countryUrn, tripUrn } from "../../../commons/urn.ts";
+import { buildCountryUrn, buildTripUrn } from "../../../commons/urn.ts";
 import type { Album, Country } from "../../../types/domain.ts";
 import { services, state } from "../../context.ts";
 import {
@@ -106,7 +106,7 @@ export function refreshAlbumsCache(): void {
  */
 export function readSelectedCountry(): Maybe<string> {
   const countrySlug = fromNullable<string>(m.route.param("country"));
-  return mapMaybe(countrySlug, countryUrn);
+  return mapMaybe(countrySlug, buildCountryUrn);
 }
 
 /**
@@ -114,7 +114,7 @@ export function readSelectedCountry(): Maybe<string> {
  */
 export function readSelectedTrip(): Maybe<string> {
   const tripSlug = fromNullable<string>(m.route.param("trip"));
-  return mapMaybe(tripSlug, tripUrn);
+  return mapMaybe(tripSlug, buildTripUrn);
 }
 
 /**

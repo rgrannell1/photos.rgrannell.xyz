@@ -21,8 +21,8 @@ function drawAlbumTitle(title: string): m.Children {
 
 /** Draw the album date range as time content. */
 function drawAlbumDate(dateRangeText: string): m.Children {
-  const time = m("time", { "data-testid": "album-date" }, dateRangeText);
-  return m("p.photo-album-date", time);
+  const $time = m("time", { "data-testid": "album-date" }, dateRangeText);
+  return m("p.photo-album-date", $time);
 }
 
 /** Draw the photo count with the correct noun form. */
@@ -51,19 +51,19 @@ function viewPhotoAlbumMetadata(
   } = vnode.attrs;
   const isSmall = isSmallerThan(SMALL_DEVICE_WIDTH);
   const dateRangeText = isSmall ? shortDateRange : dateRange;
-  const titleNode = drawAlbumTitle(title);
-  const dateNode = drawAlbumDate(dateRangeText);
-  const countNode = drawAlbumCount(count);
-  const countriesNode = drawAlbumCountries(countryLinks);
-  const inlineMetadata = m("div.photo-metadata-inline", [
-    countNode,
-    countriesNode,
+  const $titleNode = drawAlbumTitle(title);
+  const $dateNode = drawAlbumDate(dateRangeText);
+  const $countNode = drawAlbumCount(count);
+  const $countriesNode = drawAlbumCountries(countryLinks);
+  const $inlineMetadata = m("div.photo-metadata-inline", [
+    $countNode,
+    $countriesNode,
   ]);
 
   return m("div.photo-album-metadata", [
-    titleNode,
-    dateNode,
-    inlineMetadata,
+    $titleNode,
+    $dateNode,
+    $inlineMetadata,
   ]);
 }
 

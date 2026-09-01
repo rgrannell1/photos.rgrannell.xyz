@@ -10,6 +10,7 @@ import type {
 import { formatFirstSeen } from "./dates.ts";
 import { viewChecklistPhoto } from "./filters.ts";
 import { drawMysteryMetadata } from "./cards.ts";
+import { routeLinkAttrs } from "../../../services/browser/routes.ts";
 
 /*
  * The per-species cover image. Renders an empty block when a species has no
@@ -30,13 +31,13 @@ export function addSpeciesTag(
     return;
   }
   const className = `span.checklist-tag.checklist-tag--${label}`;
-  const tag = m(className, label);
-  tags.push(tag);
+  const $tag = m(className, label);
+  tags.push($tag);
 }
 
 /* Scarce tags appear only in Irish view. Target and nemesis always appear. */
 /** Collect the visible status tags for a checklist entry. */
-export function speciesTags(
+export function collectSpeciesTags(
   entry: { scarce: boolean; nemesis: boolean; target: boolean },
   showScarce: boolean,
 ): m.Children[] {
@@ -50,7 +51,8 @@ export function speciesTags(
 
 /** Draw a species name link. */
 export function drawChecklistNameLink(name: string, href: string): m.Children {
-  return m("a.checklist-name-link", { href }, name);
+  const attrs = routeLinkAttrs(href, { selector: "a.checklist-name-link" });
+  return m(m.route.Link, attrs, name);
 }
 
 /** Draw an Irish flag prefix for an Irish species. */
@@ -59,8 +61,8 @@ export function drawIrishFlag(isIrish: boolean): m.Children {
     return null;
   }
   const flagName = "Ireland";
-  const flag = m(FlagIcon, { name: flagName });
-  return m("span.checklist-irish-flag", [flag, " "]);
+  const $flag = m(FlagIcon, { name: flagName });
+  return m("span.checklist-irish-flag", [$flag, " "]);
 }
 
 /** Draw a checklist name with its flag and status tags. */
@@ -69,10 +71,10 @@ export function drawChecklistCardName(
   href: string,
   showScarce: boolean,
 ): m.Children {
-  const irishFlag = drawIrishFlag(entry.isIrish);
-  const name = drawChecklistNameLink(entry.name, href);
-  const tags = speciesTags(entry, showScarce);
-  return m("p.checklist-card-name", [irishFlag, name, ...tags]);
+  const $irishFlag = drawIrishFlag(entry.isIrish);
+  const $name = drawChecklistNameLink(entry.name, href);
+  const tags = collectSpeciesTags(entry, showScarce);
+  return m("p.checklist-card-name", [$irishFlag, $name, ...tags]);
 }
 
 /** Draw a checklist entry's name and first-seen date. */
@@ -81,12 +83,12 @@ export function drawChecklistCardMetadata(
   href: string,
   showScarce: boolean,
 ): m.Children {
-  const name = drawChecklistCardName(entry, href, showScarce);
-  const firstSeen = m(
+  const $name = drawChecklistCardName(entry, href, showScarce);
+  const $firstSeen = m(
     "p.checklist-first-seen",
     formatFirstSeen(entry.firstSeen),
   );
-  return m("div.checklist-card-metadata", [name, firstSeen]);
+  return m("div.checklist-card-metadata", [$name, $firstSeen]);
 }
 
 /** Draw a ranked checklist card for a recorded species. */
@@ -94,11 +96,11 @@ export function viewChecklistCard(
   vnode: m.Vnode<ChecklistCardAttrs>,
 ): m.Children {
   const { entry, cover, position, showScarce } = vnode.attrs;
-  const href = `#/thing/${entry.speciesType}:${entry.speciesId}`;
-  const badge = m("span.checklist-card-badge", `#${position}`);
-  const photo = m(ChecklistPhoto, { cover, href, label: entry.name });
-  const metadata = drawChecklistCardMetadata(entry, href, showScarce);
-  const children = [badge, photo, metadata];
+  const href = `/thing/${entry.speciesType}:${entry.speciesId}`;
+  const $badge = m("span.checklist-card-badge", `#${position}`);
+  const $photo = m(ChecklistPhoto, { cover, href, label: entry.name });
+  const $metadata = drawChecklistCardMetadata(entry, href, showScarce);
+  const children = [$badge, $photo, $metadata];
   return m("div.checklist-card", children);
 }
 
@@ -112,13 +114,13 @@ export function viewChecklistMysteryCard(
   vnode: m.Vnode<ChecklistMysteryCardAttrs>,
 ): m.Children {
   const { species, glyph } = vnode.attrs;
-  const mysteryGlyph = m(
+  const $mysteryGlyph = m(
     "div.mystery-bird",
     m("span.mystery-bird-glyph", glyph),
   );
-  const metadata = drawMysteryMetadata(species);
+  const $metadata = drawMysteryMetadata(species);
   return m("div.checklist-card.checklist-card--mystery", [
-    mysteryGlyph,
-    metadata,
+    $mysteryGlyph,
+    $metadata,
   ]);
 }

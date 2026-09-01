@@ -2,7 +2,8 @@
 
 import m from "mithril";
 import { setTitle } from "../../../services/browser/window.ts";
-import { navigate } from "../../../services/browser/events.ts";
+import { routeLinkAttrs } from "../../../services/browser/routes.ts";
+import { PHOTOGRAPHY_START_YEAR } from "../../../constants/display.ts";
 import { drawAboutQuestions } from "./questions.ts";
 
 /** Sets the browser title when the about page starts. */
@@ -13,7 +14,7 @@ export function initAboutPage(): void {
 /** Returns introductory copy with years of photography calculated at runtime. */
 export function introText(): string {
   const currentYear = new Date().getFullYear();
-  const years = currentYear - 2012;
+  const years = currentYear - PHOTOGRAPHY_START_YEAR;
   return `I started taking photos ${years} years ago. It's a fun hobby; it ` +
     "motivates me to get outside and see interesting things and interact with " +
     "nature. I've become, in my opinion, a reasonable wildlife photographer " +
@@ -23,10 +24,8 @@ export function introText(): string {
 
 /** Renders the link to highly rated things with client-side navigation. */
 export function drawFoundThingsLink(): m.Children {
-  return m("a", {
-    href: "/#/thing/rating:4",
-    onclick: navigate(`/thing/rating:4`),
-  }, " I found beautiful in this world.");
+  const attrs = routeLinkAttrs("/thing/rating:4");
+  return m(m.route.Link, attrs, " I found beautiful in this world.");
 }
 
 /** Renders the about-page introduction and its linked closing phrase. */
@@ -40,12 +39,12 @@ export function drawIntro(): m.Children {
 
 /** Renders the about introduction and question sections. */
 export function drawAboutContent(): m.Children {
-  const intro = drawIntro();
-  const questions = drawAboutQuestions();
+  const $intro = drawIntro();
+  const $questions = drawAboutQuestions();
   return m("section.about-page", [
     m("h1", "About"),
     m("br"),
-    intro,
-    ...questions,
+    $intro,
+    ...$questions,
   ]);
 }

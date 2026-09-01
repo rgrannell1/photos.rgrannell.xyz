@@ -2,10 +2,10 @@
 
 import m from "mithril";
 import { DATA_TRUE, KnownTypes } from "../../../constants/data.ts";
-import { LIFE_LIST_FILTERS } from "../../../constants/display.ts";
+import { LifeListFilter } from "../../../constants/display.ts";
 import { type TripleObject } from "@rgrannell1/tribbledb";
-import { broadcast, navigate } from "../../../services/browser/events.ts";
-import { one } from "../../../commons/collections/arrays.ts";
+import { routeLinkAttrs, setRoute } from "../../../services/browser/routes.ts";
+import { selectFirst } from "../../../commons/collections/arrays.ts";
 import { isSome, type Maybe } from "../../../commons/collections/maybe.ts";
 import type { ListingDetailsAttrs, ListingPageAttrs } from "./listing.ts";
 import { BirdListingDetails, viewMammalListingDetails } from "./cards.ts";
@@ -66,13 +66,10 @@ export function viewListingThingsButton(
   vnode: m.Vnode<{ type: string }>,
 ): m.Children {
   const { type } = vnode.attrs;
-  const href = `#/thing/${type}:*`;
-  const attrs = {
-    href,
-    onclick: navigate(`/thing/${type}:*`),
+  const attrs = routeLinkAttrs(`/thing/${type}:*`, {
     "data-testid": "listing-things-link",
-  };
-  return m("a", attrs, `See all ${type} photos`);
+  });
+  return m(m.route.Link, attrs, `See all ${type} photos`);
 }
 
 /**
@@ -84,18 +81,16 @@ export function ListingThingsButton() {
 
 /** Toggle the Ireland life-list filter through a route change. */
 export function toggleIrelandFilter(type: string, filter: Maybe<string>): void {
-  const isActive = filter === LIFE_LIST_FILTERS.IRELAND;
+  const isActive = filter === LifeListFilter.Ireland;
   const route = isActive
     ? `/listing/${type}`
-    : `/listing/${type}/${LIFE_LIST_FILTERS.IRELAND}`;
-  broadcast("navigate", {
-    route,
-  });
+    : `/listing/${type}/${LifeListFilter.Ireland}`;
+  setRoute(route);
 }
 
 /** Test whether a thing carries the published Irish marker. */
 export function isIrishThing(thing: TripleObject): boolean {
-  return one(thing.irish) === DATA_TRUE;
+  return selectFirst(thing.irish) === DATA_TRUE;
 }
 
 /** Render a listing's title, statistics, and optional all-photos link. */

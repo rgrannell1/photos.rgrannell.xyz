@@ -3,10 +3,10 @@
 /* Read entity emoji which need triple-store lookups. */
 import { asUrn, type TripleObject } from "@rgrannell1/tribbledb";
 import type { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { one } from "../../commons/collections/arrays.ts";
+import { selectFirst } from "../../commons/collections/arrays.ts";
 import { fromNullable, isSome, withDefault } from "../../commons/collections/maybe.ts";
 import { KnownTypes } from "../../constants/data.ts";
-import { type EmojiThing, thingEmoji } from "../../domain/emoji.ts";
+import { type EmojiThing, selectThingEmoji } from "../../domain/emoji.ts";
 import type { Place } from "../../types/domain.ts";
 
 const emojiCache = new WeakMap<TribbleDB, Map<string, string>>();
@@ -33,7 +33,7 @@ function readFeature(tdb: TribbleDB, featureUrn: string) {
 /** Reads a feature emoji, with a pin as the missing-value fallback. */
 function readFeatureEmojiValue(tdb: TribbleDB, featureUrn: string): string {
   const feature = readFeature(tdb, featureUrn);
-  const emoji = one(fromNullable(feature?.emoji));
+  const emoji = selectFirst(fromNullable(feature?.emoji));
   return withDefault(emoji, "📍");
 }
 
@@ -62,12 +62,12 @@ function readFeatureEmoji(tdb: TribbleDB, featureUrn: string): string {
 
 /** Reads the first flag assigned to a place. */
 function readPlaceFlag(place: Place | TripleObject) {
-  return one(fromNullable(place.flag));
+  return selectFirst(fromNullable(place.flag));
 }
 
 /** Reads the first feature assigned to a place. */
 function readPlaceFeature(place: Place | TripleObject) {
-  return one(fromNullable(place.features));
+  return selectFirst(fromNullable(place.features));
 }
 
 /** Reads a place feature emoji, with a pin when the feature is absent. */
@@ -106,7 +106,7 @@ export function readThingEmoji(
   thing: EmojiThing,
 ): string {
   if (!isPlaceUrn(urn)) {
-    return thingEmoji(urn, name, thing);
+    return selectThingEmoji(urn, name, thing);
   }
 
   const place = thing as Place | TripleObject;

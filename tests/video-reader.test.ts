@@ -2,7 +2,7 @@
 
 import { asUrn, type Triple } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
-import { albumUrn } from "../ts/commons/urn.ts";
+import { buildAlbumUrn } from "../ts/commons/urn.ts";
 import { KnownTypes } from "../ts/constants/data.ts";
 import { readAlbum, readVideos } from "../ts/services/data/readers.ts";
 import { readVideosByThingIds } from "../ts/services/data/media/videos.ts";
@@ -31,7 +31,7 @@ const TRIPLES: Triple[] = [
 ];
 
 function readAlbumMinDate(tdb: TribbleDB, albumId: string): number {
-  const album = readAlbum(tdb, albumUrn(albumId));
+  const album = readAlbum(tdb, buildAlbumUrn(albumId));
   return isNone(album) ? 0 : album.minDate;
 }
 

@@ -9,7 +9,7 @@ import type {
 } from "./map-lines.ts";
 
 /** Calculates quadratic Bezier weights for a curve position. */
-export function bezierWeights(progress: number): BezierValues {
+export function calculateBezierWeights(progress: number): BezierValues {
   const inverse = 1 - progress;
   const startWeight = inverse * inverse;
   const controlWeight = 2 * inverse * progress;
@@ -17,45 +17,46 @@ export function bezierWeights(progress: number): BezierValues {
 }
 
 /** Interpolates one coordinate axis along a quadratic Bezier curve. */
-export function bezierCoordinate(
+export function interpolateBezierCoordinate(
   values: BezierValues,
   progress: number,
 ): number {
   const [start, control, end] = values;
-  const [startWeight, controlWeight, endWeight] = bezierWeights(progress);
+  const [startWeight, controlWeight, endWeight] =
+    calculateBezierWeights(progress);
   return startWeight * start + controlWeight * control + endWeight * end;
 }
 
 /** Interpolates the latitude for a Bezier point. */
-export function bezierLatitude(options: BezierPointOptions): number {
+export function interpolateBezierLatitude(options: BezierPointOptions): number {
   const { start, control, end, progress } = options;
   const values: BezierValues = [start[0], control[0], end[0]];
-  return bezierCoordinate(values, progress);
+  return interpolateBezierCoordinate(values, progress);
 }
 
 /** Interpolates the longitude for a Bezier point. */
-export function bezierLongitude(options: BezierPointOptions): number {
+export function interpolateBezierLongitude(options: BezierPointOptions): number {
   const { start, control, end, progress } = options;
   const values: BezierValues = [start[1], control[1], end[1]];
-  return bezierCoordinate(values, progress);
+  return interpolateBezierCoordinate(values, progress);
 }
 
 /* Calculate a point on a quadratic Bezier curve. */
 /** Calculates a coordinate on a quadratic Bezier curve. */
-export function bezierPoint(
+export function calculateBezierPoint(
   start: Coordinate,
   control: Coordinate,
   end: Coordinate,
   progress: number,
 ): Coordinate {
   const options = { start, control, end, progress };
-  const latitude = bezierLatitude(options);
-  const longitude = bezierLongitude(options);
+  const latitude = interpolateBezierLatitude(options);
+  const longitude = interpolateBezierLongitude(options);
   return [latitude, longitude];
 }
 
 /** Measures a coordinate vector with a non-zero minimum length. */
-export function coordinateLength(coordinate: Coordinate): number {
+export function calculateCoordinateLength(coordinate: Coordinate): number {
   const [latitude, longitude] = coordinate;
   const squaredLength = latitude * latitude + longitude * longitude;
   return Math.sqrt(squaredLength) || MAP_MIN_LEG_LENGTH;
@@ -69,18 +70,18 @@ export function orientNorth(coordinate: Coordinate): Coordinate {
 
 /* Find the north-facing unit vector perpendicular to a trip leg. */
 /** Finds the north-facing unit vector perpendicular to a trip leg. */
-export function northPerpendicular(
+export function calculateNorthPerpendicular(
   latitudeDelta: number,
   longitudeDelta: number,
 ): Coordinate {
   const perpendicular: Coordinate = [longitudeDelta, -latitudeDelta];
   const [latitude, longitude] = orientNorth(perpendicular);
-  const length = coordinateLength([latitude, longitude]);
+  const length = calculateCoordinateLength([latitude, longitude]);
   return [latitude / length, longitude / length];
 }
 
 /** Calculates the vector from one coordinate to another. */
-export function coordinateDelta(
+export function calculateCoordinateDelta(
   start: Coordinate,
   end: Coordinate,
 ): Coordinate {
@@ -88,7 +89,7 @@ export function coordinateDelta(
 }
 
 /** Calculates the midpoint between two coordinates. */
-export function coordinateMidpoint(
+export function calculateCoordinateMidpoint(
   start: Coordinate,
   end: Coordinate,
 ): Coordinate {

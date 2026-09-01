@@ -4,7 +4,7 @@
  * to one label.
  */
 
-import { subjectQualifier, urnContext } from "../ts/commons/urn.ts";
+import { readSubjectQualifier, readUrnContext } from "../ts/commons/urn.ts";
 import { NONE } from "../ts/commons/collections/maybe.ts";
 
 function assertEquals(actual: unknown, expected: unknown) {
@@ -35,8 +35,8 @@ const CONTEXT_CASES = [
 ];
 
 for (const testCase of CONTEXT_CASES) {
-  Deno.test(`urnContext: ${testCase.name}`, () => {
-    assertEquals(urnContext(testCase.urn), testCase.expected);
+  Deno.test(`readUrnContext: ${testCase.name}`, () => {
+    assertEquals(readUrnContext(testCase.urn), testCase.expected);
   });
 }
 
@@ -74,7 +74,7 @@ const QUALIFIER_CASES = [
 ];
 
 for (const testCase of QUALIFIER_CASES) {
-  Deno.test(`subjectQualifier: ${testCase.name}`, () => {
-    assertEquals(subjectQualifier(testCase.urn), testCase.expected);
+  Deno.test(`readSubjectQualifier: ${testCase.name}`, () => {
+    assertEquals(readSubjectQualifier(testCase.urn), testCase.expected);
   });
 }

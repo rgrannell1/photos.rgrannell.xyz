@@ -2,9 +2,8 @@
 
 import m from "mithril";
 import type { TripleObject } from "@rgrannell1/tribbledb";
-import { type ThingListKind } from "../../../thing/thing-list/thing-list.ts";
 import { setify } from "../../../../commons/collections/sets.ts";
-import { TAXON_RANKS, THING_LIST_KINDS } from "../../../../constants/data.ts";
+import { TAXON_RANKS, ThingListKind } from "../../../../constants/data.ts";
 import { ListingLink } from "../../../thing/navigation/listing-link.ts";
 import type { ThingMetadata, ThingPageAttrs } from "../view/thing.ts";
 import { cachedByUrn, drawThingList, readSeenIn } from "./cache.ts";
@@ -64,12 +63,12 @@ export function readThingMetadataItem(
 export function readLocationMetadata(thing: TripleObject): ThingMetadata[] {
   const feature = readThingMetadataItem(
     "Place Type",
-    THING_LIST_KINDS.FEATURE,
+    ThingListKind.FEATURE,
     thing.features,
   );
   const places = readThingMetadataItem(
     "Places",
-    THING_LIST_KINDS.PLACE,
+    ThingListKind.PLACE,
     thing.placesWithFeature,
   );
   return [feature, places];
@@ -79,12 +78,12 @@ export function readLocationMetadata(thing: TripleObject): ThingMetadata[] {
 export function readRelationMetadata(thing: TripleObject): ThingMetadata[] {
   const contains = readThingMetadataItem(
     "Contains",
-    THING_LIST_KINDS.PLACE,
+    ThingListKind.PLACE,
     thing.contains,
   );
   const unesco = readThingMetadataItem(
     "UNESCO",
-    THING_LIST_KINDS.UNESCO,
+    ThingListKind.UNESCO,
     thing.unescoId,
   );
   return [contains, unesco];
@@ -104,7 +103,7 @@ export function toRankMetadata(
 ): ThingMetadata {
   return readThingMetadataItem(
     rank.label,
-    THING_LIST_KINDS.TAXON,
+    ThingListKind.TAXON,
     thing[rank.relation],
   );
 }

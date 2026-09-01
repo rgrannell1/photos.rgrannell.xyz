@@ -2,7 +2,7 @@ import { asUrn } from "@rgrannell1/tribbledb";
 import { TribbleDB } from "@rgrannell1/tribbledb/v2";
 import type { Video } from "../../../types/domain.ts";
 import { readAlbum, readVideos } from "../readers.ts";
-import { albumUrn } from "../../../commons/urn.ts";
+import { buildAlbumUrn } from "../../../commons/urn.ts";
 import { KnownTypes } from "../../../constants/data.ts";
 import { isNone } from "../../../commons/collections/maybe.ts";
 import type { DatedVideo } from "../../../domain/media/videos.ts";
@@ -11,7 +11,7 @@ type VideoAlbumDate = [string, number];
 
 /** Read a video's album identifier and minimum date for chronological sorting. */
 function readVideoAlbumDate(tdb: TribbleDB, video: Video): VideoAlbumDate {
-  const album = readAlbum(tdb, albumUrn(video.albumId));
+  const album = readAlbum(tdb, buildAlbumUrn(video.albumId));
   const minDate = isNone(album) ? 0 : album.minDate;
   return [video.albumId, minDate];
 }

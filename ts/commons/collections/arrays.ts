@@ -11,8 +11,8 @@ export function arrayify<Value>(value: Maybe<Value | Value[]>): Value[] {
   return Array.isArray(value) ? value : [value];
 }
 
-/** Triple objects may hold multi-valued properties but often carry only one value. */
-export function one<Value>(
+/** Selects the first value from an optional scalar or array. */
+export function selectFirst<Value>(
   value: Maybe<Value | Value[]>,
 ): Maybe<Value> {
   const first = Array.isArray(value) ? value[0] : value;

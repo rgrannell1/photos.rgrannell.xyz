@@ -8,11 +8,11 @@ import type {
   TripLegOptions,
 } from "./map-lines.ts";
 import {
-  bezierPoint,
-  coordinateDelta,
-  coordinateLength,
-  coordinateMidpoint,
-  northPerpendicular,
+  calculateBezierPoint,
+  calculateCoordinateDelta,
+  calculateCoordinateLength,
+  calculateCoordinateMidpoint,
+  calculateNorthPerpendicular,
 } from "./bezier.ts";
 
 /** Multiplies both coordinate axes by a scale. */
@@ -25,10 +25,13 @@ export function scaleCoordinate(
 }
 
 /** Calculates a northward arc offset proportional to leg length. */
-export function arcOffset(start: Coordinate, end: Coordinate): Coordinate {
-  const [latitudeDelta, longitudeDelta] = coordinateDelta(start, end);
-  const legLength = coordinateLength([latitudeDelta, longitudeDelta]);
-  const [northLatitude, northLongitude] = northPerpendicular(
+export function calculateArcOffset(
+  start: Coordinate,
+  end: Coordinate,
+): Coordinate {
+  const [latitudeDelta, longitudeDelta] = calculateCoordinateDelta(start, end);
+  const legLength = calculateCoordinateLength([latitudeDelta, longitudeDelta]);
+  const [northLatitude, northLongitude] = calculateNorthPerpendicular(
     latitudeDelta,
     longitudeDelta,
   );
@@ -38,32 +41,35 @@ export function arcOffset(start: Coordinate, end: Coordinate): Coordinate {
 
 /* Place the Bezier control point north of a trip leg. */
 /** Places a Bezier control point north of a trip leg. */
-export function arcControlPoint(
+export function calculateArcControlPoint(
   start: Coordinate,
   end: Coordinate,
 ): Coordinate {
-  const [middleLatitude, middleLongitude] = coordinateMidpoint(start, end);
-  const [offsetLatitude, offsetLongitude] = arcOffset(start, end);
+  const [middleLatitude, middleLongitude] = calculateCoordinateMidpoint(
+    start,
+    end,
+  );
+  const [offsetLatitude, offsetLongitude] = calculateArcOffset(start, end);
   return [middleLatitude + offsetLatitude, middleLongitude + offsetLongitude];
 }
 
-/** Reads one interior curve point by segment index. */
-export function readInteriorPoint(
+/** Calculates one interior curve point by segment index. */
+export function calculateInteriorPoint(
   options: CurveInteriorOptions,
   segmentIdx: number,
 ): Coordinate {
   const { start, control, end, segmentsPerLeg } = options;
   const progress = segmentIdx / segmentsPerLeg;
-  return bezierPoint(start, control, end, progress);
+  return calculateBezierPoint(start, control, end, progress);
 }
 
 /** Calculates all interior points for a segmented curve. */
-export function curveInteriorPoints(
+export function calculateCurveInteriorPoints(
   options: CurveInteriorOptions,
 ): Coordinate[] {
   const coordinates: Coordinate[] = [];
   for (let segmentIdx = 1; segmentIdx < options.segmentsPerLeg; segmentIdx++) {
-    const point = readInteriorPoint(options, segmentIdx);
+    const point = calculateInteriorPoint(options, segmentIdx);
     coordinates.push(point);
   }
   return coordinates;
@@ -75,14 +81,14 @@ export function curveTripLeg(
   end: Coordinate,
   segmentsPerLeg: number,
 ): Coordinate[] {
-  const control = arcControlPoint(start, end);
+  const control = calculateArcControlPoint(start, end);
   const options = { start, control, end, segmentsPerLeg };
-  const coordinates = curveInteriorPoints(options);
+  const coordinates = calculateCurveInteriorPoints(options);
   return [start, ...coordinates, end];
 }
 
-/** Reads and curves the selected leg from trip coordinates. */
-export function readTripLeg(options: TripLegOptions): Coordinate[] {
+/** Curves the selected leg from trip coordinates. */
+export function curveSelectedTripLeg(options: TripLegOptions): Coordinate[] {
   const { coordinates, legIdx, segmentsPerLeg } = options;
   const start = coordinates[legIdx];
   const end = coordinates[legIdx + 1];
@@ -91,7 +97,7 @@ export function readTripLeg(options: TripLegOptions): Coordinate[] {
 
 /** Appends one curved leg without duplicating a shared endpoint. */
 export function appendTripLeg(options: TripLegOptions): void {
-  const leg = readTripLeg(options);
+  const leg = curveSelectedTripLeg(options);
   const coordinates = options.legIdx === 0 ? leg : leg.slice(1);
   options.curvedCoordinates.push(...coordinates);
 }

@@ -1,11 +1,10 @@
 import m from "mithril";
-import { navigate } from "../../../services/browser/events.ts";
+import { routeLinkAttrs } from "../../../services/browser/routes.ts";
 
 /** Renders a route-aware link to the albums page. */
 function viewAlbumsButton(): m.Children {
-  const onclick = navigate("/albums");
-  const linkAttrs = { href: "#/albums", onclick };
-  return m("a", linkAttrs, "[albums]");
+  const linkAttrs = routeLinkAttrs("/albums");
+  return m(m.route.Link, linkAttrs, "[albums]");
 }
 
 /** Creates the albums navigation control. */

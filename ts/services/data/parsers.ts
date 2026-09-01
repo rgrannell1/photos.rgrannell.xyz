@@ -1,4 +1,4 @@
-import { KnownTypes } from "../../constants/data.ts";
+import { KnownTypes, ThingListKind } from "../../constants/data.ts";
 import type { Place, Unesco } from "../../types/domain.ts";
 import { parseByType, parseObject } from "./parser.ts";
 import { AlbumSchema } from "../../schemas/album.ts";
@@ -20,21 +20,21 @@ import {
 } from "../../schemas/subject.ts";
 import { TransferSchema } from "../../schemas/transfer.ts";
 
-export const parseFeature = parseObject(FeatureSchema, "feature");
-export const parseCountry = parseObject(PlaceSchema, "place");
-export const parseUnesco = parseObject(UnescoSchema, "unesco");
-export const parsePhoto = parseObject(PhotoSchema, "photo");
-export const parseBird = parseObject(BirdSchema, "bird");
-export const parseMammal = parseObject(MammalSchema, "mammal");
-export const parseReptile = parseObject(ReptileSchema, "reptile");
-export const parseAmphibian = parseObject(AmphibianSchema, "amphibian");
-export const parseArthropod = parseObject(ArthropodSchema, "arthropod");
-export const parseFish = parseObject(FishSchema, "fish");
-export const parsePlane = parseObject(PlaneSchema, "plane");
-export const parseVideo = parseObject(VideoSchema, "video");
-export const parsePlace = parseObject(PlaceSchema, "place");
-export const parseAlbum = parseObject(AlbumSchema, "album");
-export const parseTransfer = parseObject(TransferSchema, "transfer");
+export const parseFeature = parseObject(FeatureSchema, ThingListKind.FEATURE);
+export const parseCountry = parseObject(PlaceSchema, KnownTypes.PLACE);
+export const parseUnesco = parseObject(UnescoSchema, KnownTypes.UNESCO);
+export const parsePhoto = parseObject(PhotoSchema, KnownTypes.PHOTO);
+export const parseBird = parseObject(BirdSchema, KnownTypes.BIRD);
+export const parseMammal = parseObject(MammalSchema, KnownTypes.MAMMAL);
+export const parseReptile = parseObject(ReptileSchema, KnownTypes.REPTILE);
+export const parseAmphibian = parseObject(AmphibianSchema, KnownTypes.AMPHIBIAN);
+export const parseArthropod = parseObject(ArthropodSchema, KnownTypes.ARTHROPOD);
+export const parseFish = parseObject(FishSchema, KnownTypes.FISH);
+export const parsePlane = parseObject(PlaneSchema, KnownTypes.PLANE);
+export const parseVideo = parseObject(VideoSchema, KnownTypes.VIDEO);
+export const parsePlace = parseObject(PlaceSchema, KnownTypes.PLACE);
+export const parseAlbum = parseObject(AlbumSchema, KnownTypes.ALBUM);
+export const parseTransfer = parseObject(TransferSchema, KnownTypes.TRANSFER);
 
 export const parseLocation = parseByType<Place | Unesco>({
   [KnownTypes.PLACE]: parsePlace,

@@ -16,27 +16,27 @@ export function drawQuestion(
   question: string,
   answer: m.Children,
 ): m.Children[] {
-  const heading = m("h2", question);
-  const content = [heading, answer];
+  const $heading = m("h2", question);
+  const content = [$heading, answer];
   return content;
 }
 
 /** Draws the AI training question with a robots policy link. */
 export function drawAiTerms(): m.Children[] {
-  const robotsLink = m("a", { href: "/robots.txt" }, "robots.txt");
-  const terms = m("p", [
+  const $robotsLink = m("a", { href: "/robots.txt" }, "robots.txt");
+  const $terms = m("p", [
     "No, absolutely not. The ",
-    robotsLink,
+    $robotsLink,
     " file for this site explicitly prohibits this.",
   ]);
-  return drawQuestion("Can I use data from this site to train AI?", terms);
+  return drawQuestion("Can I use data from this site to train AI?", $terms);
 }
 
 /** Draws the contact question with a link to the personal site. */
 export function drawContactDetails(): m.Children[] {
-  const personalSite = m("a", { href: "https://rho.ie/" }, "my personal site");
-  const details = m("p", ["See ", personalSite, " for contact details."]);
-  return drawQuestion("What is your contact information?", details);
+  const $personalSite = m("a", { href: "https://rho.ie/" }, "my personal site");
+  const $details = m("p", ["See ", $personalSite, " for contact details."]);
+  return drawQuestion("What is your contact information?", $details);
 }
 
 /** Draws all questions shown on the about page. */

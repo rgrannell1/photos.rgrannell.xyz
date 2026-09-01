@@ -1,5 +1,6 @@
 import m from "mithril";
-import { broadcast, navigate } from "../../services/browser/events.ts";
+import { ApplicationEvent, broadcast } from "../../services/browser/events.ts";
+import { routeLinkAttrs } from "../../services/browser/routes.ts";
 
 const BRAND_TEXT = "photos";
 
@@ -7,7 +8,7 @@ type HeaderComponent = () => { view: () => m.Children };
 
 /** Broadcasts a request to toggle the burger menu. */
 function clickBurgerMenu(): void {
-  broadcast("click_burger_menu", {});
+  broadcast(ApplicationEvent.ClickBurgerMenu, {});
 }
 
 /** Draws the burger menu trigger. */
@@ -21,21 +22,18 @@ function BurgerMenu() {
 }
 
 /** Builds home-link attributes for the header brand. */
-function readHeaderBrandAttrs() {
-  const onclick = navigate("/");
-  return {
-    href: "#/",
+function buildHeaderBrandAttrs() {
+  return routeLinkAttrs("/", {
     "aria-label": "photos — home",
-    onclick,
-  };
+  });
 }
 
 /** Draws the header brand as a home link. */
 function viewHeaderBrandText(): m.Children {
   // The label distinguishes this link from the sidebar link for screen readers.
-  const attrs = readHeaderBrandAttrs();
-  const brand = m("span.brand", BRAND_TEXT);
-  return m("a", attrs, brand);
+  const attrs = buildHeaderBrandAttrs();
+  const $brand = m("span.brand", BRAND_TEXT);
+  return m(m.route.Link, attrs, $brand);
 }
 
 /** Creates the header brand component. */
@@ -45,8 +43,8 @@ function HeaderBrandText() {
 
 /** Wraps a header component in a list item. */
 function drawHeaderItem(component: HeaderComponent): m.Children {
-  const child = m(component);
-  return m("li.header-item", {}, child);
+  const $child = m(component);
+  return m("li.header-item", {}, $child);
 }
 
 /** Draws the header items in a horizontal list. */
@@ -58,10 +56,10 @@ function drawHeaderList(burger: m.Children, brand: m.Children): m.Children {
 
 /** Draws the application header navigation. */
 function viewHeader(): m.Children {
-  const burger = drawHeaderItem(BurgerMenu);
-  const brand = drawHeaderItem(HeaderBrandText);
-  const list = drawHeaderList(burger, brand);
-  return m("nav.header", { role: "navigation" }, [list]);
+  const $burger = drawHeaderItem(BurgerMenu);
+  const $brand = drawHeaderItem(HeaderBrandText);
+  const $list = drawHeaderList($burger, $brand);
+  return m("nav.header", { role: "navigation" }, [$list]);
 }
 
 /** Creates the application header component. */

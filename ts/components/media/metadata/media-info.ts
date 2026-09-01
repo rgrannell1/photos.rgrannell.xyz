@@ -4,12 +4,12 @@ import m from "mithril";
 import type { ReadThing } from "../../thing/navigation/thing-links.ts";
 import type { ReadThingEmoji } from "../../thing/navigation/thing-link.ts";
 import { MediaDescription } from "../content/media-description.ts";
-import { type MediaLocationMode, MediaLocations } from "../content/media-locations.ts";
+import { MediaLocations } from "../content/media-locations.ts";
 import { MediaSubject } from "../content/media-subject.ts";
 import { MediaThingLinks } from "../content/media-thing-links.ts";
 import { Heading } from "../content/heading.ts";
 import { fromNullable } from "../../../commons/collections/maybe.ts";
-import { MEDIA_LOCATION_MODES } from "../../../constants/display.ts";
+import { MediaLocationMode } from "../../../constants/display.ts";
 
 // the structural overlap of Photo and Video that the table reads
 type Media = {
@@ -38,11 +38,11 @@ function drawDescriptionRow(media: Media): m.Children {
     return null;
   }
 
-  const description = m(MediaDescription, {
+  const $description = m(MediaDescription, {
     description: fromNullable(media.description),
     summary: fromNullable(media.summary),
   });
-  return drawRow("Description", description);
+  return drawRow("Description", $description);
 }
 
 /** Renders geographic or feature locations with the matching label. */
@@ -51,16 +51,16 @@ function drawLocationRow(
   mode: MediaLocationMode,
 ): m.Children {
   const { media, readThing, readEmoji } = attrs;
-  const label = mode === MEDIA_LOCATION_MODES.GEOGRAPHIC
+  const label = mode === MediaLocationMode.Geographic
     ? "Location"
     : "Place Type";
-  const locations = m(MediaLocations, {
+  const $locations = m(MediaLocations, {
     location: fromNullable(media.location),
     readThing,
     readEmoji,
     mode,
   });
-  return drawRow(label, locations);
+  return drawRow(label, $locations);
 }
 
 /** Renders optional thing links for one labelled metadata field. */
@@ -70,23 +70,23 @@ function drawThingRow(
   value: string | undefined,
 ): m.Children {
   const { readThing, readEmoji } = attrs;
-  const links = m(MediaThingLinks, {
+  const $links = m(MediaThingLinks, {
     value: fromNullable(value),
     readThing,
     readEmoji,
   });
-  return drawRow(label, links);
+  return drawRow(label, $links);
 }
 
 /** Renders linked subjects for a media item. */
 function drawSubjectRow(attrs: MediaComponentAttrs): m.Children {
   const { media, readThing, readEmoji } = attrs;
-  const subject = m(MediaSubject, {
+  const $subject = m(MediaSubject, {
     subject: fromNullable(media.subject),
     readThing,
     readEmoji,
   });
-  return drawRow("Subject", subject);
+  return drawRow("Subject", $subject);
 }
 
 /** Renders the shared photo and video metadata table. */
@@ -94,8 +94,8 @@ function viewMediaInfo(vnode: m.Vnode<MediaComponentAttrs>): m.Children {
   const { attrs } = vnode;
   const descriptionRows = [
     drawDescriptionRow(attrs.media),
-    drawLocationRow(attrs, MEDIA_LOCATION_MODES.GEOGRAPHIC),
-    drawLocationRow(attrs, MEDIA_LOCATION_MODES.FEATURE),
+    drawLocationRow(attrs, MediaLocationMode.Geographic),
+    drawLocationRow(attrs, MediaLocationMode.Feature),
   ];
   const subjectRows = [
     drawThingRow(attrs, "Rating", attrs.media.rating),
