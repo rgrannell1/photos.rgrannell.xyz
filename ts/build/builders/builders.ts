@@ -9,8 +9,8 @@ import {
   computeSourceHash,
   createServiceWorkerData,
   createVersionContent,
+  bundleCss,
   stringifyTribbles,
-  transformCss,
 } from "./source.ts";
 import {
   clearFlagAssets,
@@ -77,9 +77,8 @@ export async function buildTS(): Promise<void> {
  */
 export async function buildCSS(): Promise<string> {
   console.info("🌐 Rendering css");
-  const css = await Deno.readTextFile("css/style.css");
-  const transformed = await transformCss(css);
-  return cssoMinify(transformed).css;
+  const bundled = await bundleCss("css/style.css");
+  return cssoMinify(bundled).css;
 }
 
 export type SpriteMetadata = {

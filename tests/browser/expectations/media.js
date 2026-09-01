@@ -30,8 +30,8 @@ async function collectBrokenVisibleImages(context) {
 }
 
 async function expectVisibleImagesLoaded(context) {
-  const broken = await collectBrokenVisibleImages(context);
-  expect(broken, "broken visible images").toEqual([]);
+  const collectBroken = collectBrokenVisibleImages.bind(null, context);
+  await expect.poll(collectBroken, { message: "broken visible images" }).toEqual([]);
 }
 
 function readMissingVisiblePlaceholders(images) {

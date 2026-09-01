@@ -1,0 +1,168 @@
+/* Define global tokens and element defaults. */
+
+/*
+ * ++++ ++++ ++++ ~~~~ Global Variables ~~~~ ++++ ++++ ++++
+ */
+:root {
+  color-scheme: dark light;
+}
+
+:root {
+  /*
+   * Sidebar accent ramp. This is the site's source palette: it steps from the
+   * brand blue at the top of the sidebar to a soft pink at the bottom. The page
+   * wash, links and brand colour below are all drawn from it.
+   */
+  --accent-1: hsl(208, 100%, 50%);
+  --accent-2: hsl(230, 92%, 60%);
+  --accent-3: hsl(252, 84%, 65%);
+  --accent-4: hsl(274, 78%, 68%);
+  --accent-5: hsl(296, 78%, 72%);
+  --accent-6: hsl(316, 84%, 76%);
+  --accent-7: hsl(334, 90%, 80%);
+}
+
+:root {
+  --secondary-text-color: hsl(0, 0%, 44%);
+  --font-colour: hsla(0, 0%, 0%, 0.8);
+  --navbar-font-colour: hsl(0, 0%, 0%);
+  --background-color: hsl(320, 24%, 97%);
+
+  /* page wash: the ramp's pink end at the top, fading through lilac to its
+     blue end at the foot */
+  --background-gradient: linear-gradient(180deg,
+    hsl(334, 55%, 97%) 0%,
+    hsl(280, 40%, 97%) 46%,
+    hsl(209, 26%, 97%) 100%);
+
+  --link-color: hsl(211, 100%, 35%);
+  --disabled-link-color: hsl(0, 0%, 38%);
+  --brand-color: #0056b3;
+  --link-background-color: hsl(211, 100%, 95%);
+
+  /* hover over sidebar color */
+  --hover-background-color: hsl(210, 100%, 84%);
+
+  /* the colour of list markers */
+  --marker-color: hsl(0, 0%, 56%);
+  --nav-border-color: hsl(0, 0%, 0%);
+  --image-placeholder-background-color: hsl(0, 0%, 69%);
+
+  /* photo width */
+  --photo-width: 400px;
+
+  /* page content gutter */
+  --page-gutter: 40px;
+
+  --tag-color-0: #0079d6;
+  --tag-color-1: #0087ff;
+  --tag-color-2: #29b41d;
+  --tag-color-3: #22c6ce;
+  --tag-color-4: #4c55f7;
+  --tag-color-5: #4cbef7;
+  --tag-color-6: #b371ff;
+  --tag-color-7: #100b2a;
+}
+
+
+@font-face {
+  font-family: "Golos Text";
+  font-style: normal;
+  font-weight: 400;
+  /* absolute path: must match the preload URL in index.html, or the font
+     downloads twice and chains behind the CSS */
+  src: url("/fonts/GolosText-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+
+ul:not(.header ul) {
+  list-style-position: inside;
+  padding-left: 1rem !important;
+}
+
+/*
+ * ++++ ++++ ++++ ~~~~ Basic Styles ~~~~ ++++ ++++ ++++
+ */
+html * {
+  font-family: "Golos Text", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* this spaces the sidebar away from images */
+section {
+  margin-left: 2em;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+a {
+  color: var(--link-color);
+  cursor: pointer;
+}
+
+li {
+  list-style: square;
+}
+
+li.header-item {
+  list-style: none;
+}
+
+li::marker {
+  font-size: 0.75em;
+  color: var(--marker-color);
+}
+
+h1 {
+  font-size: 3em;
+  font-weight: lighter;
+}
+
+.thing-binomial {
+  font-size: 2em;
+  font-weight: lighter;
+  padding-left: 15px;
+}
+
+h2 {
+  font-size: 2em;
+  margin-top: 1.35em;
+  margin-bottom: 0.25em;
+}
+
+h3 {
+  margin-top: 1.35em;
+}
+
+h3, h4, h5, h6 {
+  font-size: 1.5em;
+}
+
+html, body {
+  min-height: 100vh;
+  background-color: var(--background-color);
+  background: var(--background-gradient) fixed;
+}
+
+button {
+  all: unset;
+  color: var(--link-color);
+  cursor: pointer;
+}
+
+button:disabled {
+  color: var(--disabled-link-color);
+}
+
+.photos-app {
+  min-height: 100vh;
+  font-size: 1.2em;
+  color: var(--font-colour);
+  word-spacing: 0.27ex;
+  /* transparent so the body's fixed wash shows through the full page height */
+  background-color: transparent;
+  padding-bottom: 100px;
+}

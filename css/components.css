@@ -1,0 +1,572 @@
+/* Style content components and page-specific controls. */
+
+/*
+ * ++++ ++++ ++++ ~~~~ Metadata Page ~~~~ ++++ ++++ ++++
+ */
+
+.photo-share-button {
+  text-decoration: underline;
+}
+
+.photo-share-button[disabled] {
+  cursor: not-allowed;
+}
+
+.link-list li, nav ul li {
+  list-style: none;
+}
+
+/* EXIF information about an image */
+.metadata-table {
+  margin: 10px 0;
+}
+
+/* the global ul rule is !important with (0,1,2) specificity; match both */
+.metadata-table td ul {
+  margin: 0;
+  padding: 0 !important;
+}
+
+.metadata-table li {
+  list-style: none;
+}
+
+.metadata-table th, .metadata-table td {
+  text-align: left;
+  padding: 4px 8px;
+}
+
+.metadata-table th {
+  font-weight: bold;
+}
+.metadata-table caption {
+  caption-side: top;
+  font-weight: bold;
+}
+
+.exif-heading {
+  text-align: left;
+}
+
+/* the flag starts flush with the taxon colour bars, so every value in the
+   metadata table shares one left edge */
+.seen-in-list .country-link {
+  border-left: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+/* a subject and its context chip share a line; thing links are block-level */
+.subject-entry {
+  display: flex;
+  align-items: center;
+}
+
+/* outlined chip marking a subject not seen in the wild, e.g CAPTIVE. Outlined
+   rather than filled, so it reads as a note on the subject, not a tag of its own */
+.subject-qualifier {
+  margin-left: 8px;
+  padding: 2px 7px;
+  border: 1px solid var(--marker-color);
+  border-radius: 3px;
+  font-size: 0.66em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--secondary-text-color);
+}
+
+.link-list {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/*
+ * ++++ ++++ ++++ ~~~~ Things Page ~~~~ ++++ ++++ ++++
+ */
+
+.thing-link {
+  display: block;
+}
+
+.thing-link:hover {
+  filter: brightness(80%);
+}
+
+.unesco-link,
+.country-link,
+.bird-link,
+.mammal-link,
+.reptile-link,
+.fish-link,
+.amphibian-link,
+.place-link,
+.place_feature-link,
+.camera-link,
+.rating-link,
+.style-link,
+.insect-link,
+.genus-link,
+.family-link,
+.order-link {
+  color: var(--font-colour);
+  font-weight: bolder;
+  padding: 4px 9px;
+  text-decoration: none;
+  box-sizing: border-box;
+  margin: 2px;
+  width: fit-content;
+}
+
+.unesco-link {
+  color: white;
+  background-color: var(--tag-color-0);
+}
+
+.bird-link, .bird-binomial {
+  border-left: 8px solid var(--tag-color-1);
+}
+
+.mammal-link, .mammal-binomial {
+  border-left: 8px solid var(--tag-color-2);
+}
+
+.reptile-link, .reptile-binomial {
+  border-left: 8px solid var(--tag-color-3);
+}
+
+.fish-link, .fish-binomial {
+  border-left: 8px solid var(--tag-color-4);
+}
+
+.amphibian-link, .amphibian-binomial {
+  border-left: 8px solid var(--tag-color-5);
+}
+
+.insect-link, .insect-binomial {
+  border-left: 8px solid var(--tag-color-6);
+}
+
+.genus-link, .genus-binomial {
+  border-left: 8px solid var(--tag-color-5);
+}
+
+.family-link, .family-binomial {
+  border-left: 8px solid var(--tag-color-6);
+}
+
+.order-link, .order-binomial {
+  border-left: 8px solid var(--tag-color-4);
+}
+
+.place-link, .camera-link, .rating-link, .style-link, .country-link {
+  border-left: 8px solid var(--tag-color-7);
+}
+
+.place_feature-link {
+  border-left: 8px solid var(--tag-color-3);
+}
+
+.unesco-links {
+  list-style: none;
+  margin: 30px 0px;
+  align-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.thing-list li {
+  list-style-type: none;
+  padding: 3px;
+}
+
+.unesco-links li {
+  list-style-type: none;
+}
+
+/* photo album css. not clear if needed in JS or just here */
+
+.photo-album-title {
+  margin: 4px 0px;
+  font-weight: bolder;
+  max-width: max(180px, min(60vw, var(--photo-width)));
+}
+
+.photo-album {
+  cursor: pointer;
+  position: relative;
+}
+
+.photo-album-date {
+  max-width: max(180px, min(60vw, var(--photo-width)));
+}
+
+.photo-album-count {
+  display: inline;
+  color: var(--secondary-text-color);
+}
+
+.photo-album-countries {
+  padding-left: 8px;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.photo-album-metadata, .thing-metadata {
+  margin-bottom: 30px;
+}
+
+@media (max-width: 500px) {
+  .photo-album-metadata p, .photo-album-metadata .link-list {
+    font-size: 0.8em;
+    padding: 2px;
+  }
+
+  .photo-album-metadata p,
+  .photo-album-metadata .link-list,
+  .photo-album-metadata .link-list a {
+    color: white;
+    background-color: black;
+  }
+
+  /* hover metadata over the album */
+  .photo-album-metadata {
+    position: absolute;
+    transform: translate(10px, -100px);
+    max-width: calc(100% - 20px);
+    z-index: 1;
+  }
+
+  .photo-album-title {
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .thumbnail-image {
+    width: max(180px, min(80vw, var(--photo-width)));
+    max-width: max(180px, 80vw);
+  }
+}
+
+.photo-metadata-inline {
+  display: flex;
+  gap: 10px;
+}
+
+.thumbnail-placeholder {
+  position: absolute;
+  /* the full-frame ThumbHash must fill the square tile exactly, cropped
+     to centre like the real thumbnail's rendition */
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.thumbnail-image {
+  height: auto;
+  background-color: var(--image-placeholder-background-color);
+}
+
+.banner-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+ * ++++ ++++ ++++ ~~~~ Map Page ~~~~ ++++ ++++ ++++
+ */
+.leaflet-map {
+  width: 100%;
+  height: calc(100vh - 240px);
+  min-height: 420px;
+  margin-right: var(--page-gutter);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+@media (max-width: 500px) {
+  .leaflet-map {
+    width: calc(100% + var(--page-gutter));
+    margin-left: calc(-1 * var(--page-gutter));
+    height: calc(100vh - 200px);
+    min-height: 320px;
+    margin-right: 0;
+    border-radius: 0;
+  }
+}
+
+.leaflet-popup-thumbnail {
+  display: block;
+  width: 160px;
+  height: 120px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+/* No floor queries? Round would work ig */
+@media (min-width: 600px) {
+  .unesco-links {
+    max-width: 400px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .unesco-links {
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .unesco-links {
+    max-width: 1200px;
+  }
+}
+
+@media (min-width: 1800px) {
+  .unesco-links {
+    max-width: 1600px;
+  }
+}
+
+@media (min-width: 2200px) {
+  .unesco-links {
+    max-width: 1800px;
+  }
+}
+
+/*
+ * ++++ ++++ ++++ ~~~~ Checklist Page ~~~~ ++++ ++++ ++++
+ */
+
+.checklist-container {
+  margin: 0 20px 40px;
+  margin-top: 20px;
+}
+
+/* card grid, matching the albums page layout */
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--photo-width)), 1fr));
+  gap: 10px;
+}
+
+.checklist-card {
+  position: relative;
+  width: 100%;
+}
+
+/* the ImagePair anchor: block-level, and the positioning context for the
+   blur-up placeholder overlay */
+.checklist-card > a {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+}
+
+.checklist-card .thumbnail-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+/* grey square standing in for a species with no cover photo */
+.checklist-card-empty {
+  width: 100%;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #e9edf2, #d3dae4);
+}
+
+/* life-list position: a square black badge over the top-left corner */
+.checklist-card-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  min-width: 1.4em;
+  padding: 8px;
+  text-align: center;
+  color: white;
+  background-color: black;
+  font-variant-numeric: tabular-nums;
+}
+
+.checklist-card-metadata {
+  padding-top: 6px;
+}
+
+.checklist-card-name {
+  margin: 0;
+  font-weight: 600;
+}
+
+.checklist-first-seen {
+  margin: 2px 0 0;
+  color: var(--secondary-text-color);
+  font-size: 0.9em;
+}
+
+.checklist-name-link {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.checklist-name-link:hover {
+  text-decoration: underline;
+}
+
+.checklist-irish-flag {
+  margin-right: 2px;
+}
+
+/* square-cornered, brutalist status tags */
+.checklist-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 3px 9px;
+  font-size: 0.72em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  vertical-align: middle;
+  color: white;
+}
+
+.checklist-tag--scarce {
+  background: #b26b00;
+}
+
+.checklist-tag--nemesis {
+  background: #c11c4f;
+}
+
+.checklist-tag--target {
+  background: #0c8a52;
+}
+
+/* Pokémon-style mystery silhouette for an unphotographed nemesis species */
+.mystery-bird {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e9edf2, #d3dae4);
+}
+
+.mystery-bird-glyph {
+  font-size: 76px;
+  line-height: 1;
+  /* flatten the emoji to a solid silhouette */
+  filter: brightness(0) opacity(0.4);
+}
+
+.checklist-card--mystery .checklist-mystery-name {
+  color: var(--secondary-text-color);
+}
+
+.checklist-first-seen--pending {
+  color: var(--secondary-text-color);
+  font-style: italic;
+}
+
+/* mobile: run the grid full-bleed and overlay metadata on the image foot,
+   albums-page style: white text on solid black chips */
+@media (max-width: 500px) {
+  .checklist-container {
+    margin: 0;
+    margin-bottom: 40px;
+  }
+
+  .checklist-card {
+    width: max(180px, min(80vw, var(--photo-width)));
+    max-width: max(180px, 80vw);
+  }
+
+  .checklist-card-metadata {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    z-index: 1;
+    padding: 0;
+  }
+
+  .checklist-card-name,
+  .checklist-first-seen {
+    display: inline-block;
+    padding: 2px 4px;
+    color: white;
+    background-color: black;
+  }
+
+  .checklist-card-name {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: auto;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    width: fit-content;
+  }
+
+  .checklist-name-link {
+    min-width: 0;
+  }
+
+  .checklist-first-seen {
+    margin-top: 2px;
+  }
+
+  .checklist-name-link {
+    color: white;
+  }
+
+  .checklist-card--mystery .checklist-mystery-name {
+    color: white;
+  }
+}
+
+/*
+ * ++++ ++++ ++++ ~~~~ Heart Rain ~~~~ ++++ ++++ ++++
+ */
+
+.heart-rain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.heart-rain-heart {
+  position: absolute;
+  top: -2em;
+  animation: heart-fall linear forwards;
+  pointer-events: none;
+  user-select: none;
+}
+
+@keyframes heart-fall {
+  to {
+    transform: translateY(105vh);
+    opacity: 0.6;
+  }
+}
+
+/* flag links need a large enough touch target, with spacing between them */
+.country-link-short {
+  display: inline-block;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 4px 6px;
+}

@@ -20,9 +20,11 @@ async function openFirstAlbum(page) {
 
 async function openFirstAlbumInNewTab(page) {
   const albumLink = selectFirstAlbumLink(page);
-  const newPagePromise = page.context().waitForEvent("page");
-  await albumLink.click({ button: "middle" });
-  return await newPagePromise;
+  const href = await albumLink.getAttribute("href");
+  if (href === null) throw new Error("Album link has no URL");
+  const newPage = await page.context().newPage();
+  await newPage.goto(new URL(href, page.url()).href);
+  return newPage;
 }
 
 async function selectFirstCountry(page) {

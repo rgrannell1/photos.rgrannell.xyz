@@ -44,12 +44,22 @@ export async function readTypeScriptContents(): Promise<string[]> {
   return contents;
 }
 
+/** Read all CSS source text used to derive the build ID. */
+export async function readCssContents(): Promise<string[]> {
+  const paths: string[] = [];
+  for await (const entry of walk("css", { exts: [".css"] })) {
+    paths.push(entry.path);
+  }
+  paths.sort();
+  return Promise.all(paths.map((filePath) => Deno.readTextFile(filePath)));
+}
+
 /** Read static source text whose changes must invalidate cached assets. */
 export async function readStaticSourceContents(): Promise<string[]> {
-  const style = await Deno.readTextFile("css/style.css");
+  const styles = await readCssContents();
   // The worker template must bust cache too. An unchanged name serves stale entries.
   const worker = await Deno.readTextFile("sw.mustache.js");
-  return [style, worker];
+  return [...styles, worker];
 }
 
 /** Return the shortened SHA-256 digest for source text. */
@@ -95,8 +105,15 @@ export function createServiceWorkerData(): ServiceWorkerData {
   };
 }
 
-/** Compile CSS through esbuild and return the generated code. */
-export async function transformCss(css: string): Promise<string> {
-  const result = await esbuild.transform(css, { loader: "css" });
-  return result.code;
+/** Bundle a CSS entry point and return the generated code. */
+export async function bundleCss(entryPoint: string): Promise<string> {
+  const result = await esbuild.build({
+    entryPoints: [entryPoint],
+    bundle: true,
+    external: ["/fonts/GolosText-Regular.woff2"],
+    write: false,
+  });
+  const output = result.outputFiles?.[0];
+  if (output === undefined) throw new Error("CSS bundle produced no output");
+  return output.text;
 }
