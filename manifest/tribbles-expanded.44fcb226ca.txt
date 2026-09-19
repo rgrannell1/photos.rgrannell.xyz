@@ -29,7 +29,7 @@
 19 "urn:ró:place:148"
 0 18 19
 20 "description"
-21 "<p>Reasons I like revisiting a museum:</p>"
+21 "<p>Reasons I like revisiting a museum:</p>\\n<ul>\\n<li>My tastes change: my appreciation for art changes</li>\\n<li>Noticing new things: I don't alway spot everything the first time</li>\\n</ul>\\n<p>and crucially:</p>\\n<ul>\\n<li>Noticing homumculi I'd missed before</li>\\n</ul>"
 0 20 21
 22 "urn:ró:album:kilmore-quay"
 23 "Kilmore Quay"

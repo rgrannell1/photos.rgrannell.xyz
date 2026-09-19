@@ -42,7 +42,7 @@
 28 "[i:place:148]"
 9 27 28
 29 "description"
-30 "<p>Reasons I like revisiting a museum:</p>"
+30 "<p>Reasons I like revisiting a museum:</p>\n<ul>\n<li>My tastes change: my appreciation for art changes</li>\n<li>Noticing new things: I don't alway spot everything the first time</li>\n</ul>\n<p>and crucially:</p>\n<ul>\n<li>Noticing homumculi I'd missed before</li>\n</ul>"
 9 29 30
 31 "[i:album:kilmore-quay]"
 32 "Kilmore Quay"
