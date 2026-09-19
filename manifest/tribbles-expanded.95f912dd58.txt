@@ -29,7 +29,7 @@
 19 "urn:ró:place:148"
 0 18 19
 20 "description"
-21 "<p>Reasons I like revisiting a museum:</p>\\n<ul>\\n<li>My tastes change: my appreciation for art changes</li>\\n<li>Noticing new things: I don't alway spot everything the first time</li>\\n</ul>\\n<p>and crucially:</p>\\n<ul>\\n<li>Noticing homumculi I'd missed before</li>\\n</ul>"
+21 "<p>Reasons I like revisiting a museum:</p>\n<ul>\n<li>My tastes change: my appreciation for art changes</li>\n<li>Noticing new things: I don't alway spot everything the first time</li>\n</ul>\n<p>and crucially:</p>\n<ul>\n<li>Noticing homumculi I'd missed before</li>\n</ul>"
 0 20 21
 22 "urn:ró:album:kilmore-quay"
 23 "Kilmore Quay"
@@ -243,7 +243,7 @@
 113 "VwgKDYKfiHh3doi+ZZiZnqkicAYX"
 107 16 113
 107 18 19
-114 "<p>I went to see a <a href=\\\"https://www.steamtrainsireland.com/rpsi-collection/1/no171-slieve-gullion\\\">steam train</a>, but something a bit more <a href=\\\"https://en.wikipedia.org/wiki/CI%C3%89_071_Class\\\">industrial</a> showed up in its place</p>"
+114 "<p>I went to see a <a href=\"https://www.steamtrainsireland.com/rpsi-collection/1/no171-slieve-gullion\">steam train</a>, but something a bit more <a href=\"https://en.wikipedia.org/wiki/CI%C3%89_071_Class\">industrial</a> showed up in its place</p>"
 107 20 114
 115 "urn:ró:album:chester-beatty-june-26"
 116 "Chester Beatty"
@@ -516,7 +516,7 @@
 232 "0vcRFYIHeqeaZ4eIiId4d5twtQtX"
 225 16 232
 225 18 183
-233 "<p>Zaragoza has some of the northmost examples of Islamic architecture in Spain. Several buildings in the city are included in the UNESCO heritage site \\\"Mujédar Architecture of Aragon\\\"</p>"
+233 "<p>Zaragoza has some of the northmost examples of Islamic architecture in Spain. Several buildings in the city are included in the UNESCO heritage site \"Mujédar Architecture of Aragon\"</p>"
 225 20 233
 234 "urn:ró:album:madrid-25"
 234 1 186
@@ -594,7 +594,7 @@
 266 "pAgKHYKFh3g+dIhQhYqFhXaQeAYl"
 259 16 266
 259 18 257
-267 "<p>The weather was variable when I visited, and <a href=\\\"https://www.portugalresident.com/over-30000-lightning-strikes-and-150-weather-incidents-as-storm-batters-portugal/\\\">apocalyptic</a> one memorable night.</p>"
+267 "<p>The weather was variable when I visited, and <a href=\"https://www.portugalresident.com/over-30000-lightning-strikes-and-150-weather-incidents-as-storm-batters-portugal/\">apocalyptic</a> one memorable night.</p>"
 259 20 267
 268 "urn:ró:album:dublin-zoo-25"
 268 1 86
@@ -755,7 +755,7 @@
 330 16 338
 339 "urn:ró:place:149"
 330 18 339
-340 "<p>Slovenia is a wonderful, forested country with enormous mountain ranges and beautiful architecture from various eras (a lot of Yugoslav buildings &amp; monuments are still standing in the capital Ljublana). It's also home to the <a href=\\\"/#/thing/amphibian:proteus-anguinus\\\">olm</a>, a blind cave-dwelling neotenous salamander (that was surprisingly difficult to photograph).</p>"
+340 "<p>Slovenia is a wonderful, forested country with enormous mountain ranges and beautiful architecture from various eras (a lot of Yugoslav buildings &amp; monuments are still standing in the capital Ljublana). It's also home to the <a href=\"/#/thing/amphibian:proteus-anguinus\">olm</a>, a blind cave-dwelling neotenous salamander (that was surprisingly difficult to photograph).</p>"
 330 20 340
 341 "urn:ró:album:conwy-25"
 342 "Conwy"
@@ -875,7 +875,7 @@
 393 "1CgODYIGmXeId3eEeYeHhveJiZ+Y"
 385 16 393
 385 18 183
-394 "<p>I visited Granada at the end of a long trip through Spain. The Nasrid palaces are the most beautiful buildings I've ever seen or am likely to see. I really like Islamic tilework (which is obvious from how prevelant pictures of tilework are in this album) and the Alhambra has many beautiful variations (at least <a href=\\\"https://www.ams.org/notices/200606/comm-grunbaum.pdf\\\">twelve of seventeen</a> possible <a href=\\\"https://en.wikipedia.org/wiki/Wallpaper_group\\\">wallpaper symmetry groups</a>)</p>"
+394 "<p>I visited Granada at the end of a long trip through Spain. The Nasrid palaces are the most beautiful buildings I've ever seen or am likely to see. I really like Islamic tilework (which is obvious from how prevelant pictures of tilework are in this album) and the Alhambra has many beautiful variations (at least <a href=\"https://www.ams.org/notices/200606/comm-grunbaum.pdf\">twelve of seventeen</a> possible <a href=\"https://en.wikipedia.org/wiki/Wallpaper_group\">wallpaper symmetry groups</a>)</p>"
 385 20 394
 395 "urn:ró:album:cordoba-24"
 396 "Córdoba"
@@ -895,7 +895,7 @@
 402 "UFkKHYRYaJaPh3d4eHeHimd/d/Z3"
 395 16 402
 395 18 183
-403 "<p>Córdoba is obscenely pretty. The Mosque-Cathedral has striking rows of Moorish Ablaq arches and a beautiful orange grove courtyard. The 331 metre Roman bridge across the Guadalquivir river gave me a great view of the city, and I saw to animals I've been trying to photograph for years; a kingfisher and an <a href=\\\"/#/thing/mammal:lutra-lutra\\\">eurasian otter</a>. I only successfully photographed the latter</p>"
+403 "<p>Córdoba is obscenely pretty. The Mosque-Cathedral has striking rows of Moorish Ablaq arches and a beautiful orange grove courtyard. The 331 metre Roman bridge across the Guadalquivir river gave me a great view of the city, and I saw to animals I've been trying to photograph for years; a kingfisher and an <a href=\"/#/thing/mammal:lutra-lutra\">eurasian otter</a>. I only successfully photographed the latter</p>"
 395 20 403
 404 "urn:ró:album:cadiz-24"
 405 "Cádiz"
@@ -934,7 +934,7 @@
 419 "zlkGFYJAVxd2eIeZeXKHimB3C2TH"
 412 16 419
 412 18 183
-420 "<p>I was lucky enough to photograph hundreds of <a href=\\\"/#/thing/bird:ciconia-ciconia\\\">migratory storks</a> circling on the thermals above the city. I've often spotted them before nested from trains while travelling through the continent, but have never got a decent photo of even one.</p>"
+420 "<p>I was lucky enough to photograph hundreds of <a href=\"/#/thing/bird:ciconia-ciconia\">migratory storks</a> circling on the thermals above the city. I've often spotted them before nested from trains while travelling through the continent, but have never got a decent photo of even one.</p>"
 412 20 420
 421 "urn:ró:album:campania-24"
 422 "Naples & Pompeii"
@@ -1051,7 +1051,7 @@
 470 "5eYJHYJbZ3eQeHhoh3eHhXuQxweJ"
 464 16 470
 464 18 19
-471 "<p>Last year, three <a href=\\\"https://en.wikipedia.org/wiki/Bell_Boeing_V-22_Osprey#Accidents\\\">notoriously unreliable</a> US V-22 Osprey's flew across central Dublin for an American College Football game in the Aviva stadium. This year, presumably for reasons of safety or Irish neutrality, we instead diverted a US-Boston flight which flew about 200m above the stadium. Less dramatic, but it's stil uncanny seeing a place fly so low across the city</p>"
+471 "<p>Last year, three <a href=\"https://en.wikipedia.org/wiki/Bell_Boeing_V-22_Osprey#Accidents\">notoriously unreliable</a> US V-22 Osprey's flew across central Dublin for an American College Football game in the Aviva stadium. This year, presumably for reasons of safety or Irish neutrality, we instead diverted a US-Boston flight which flew about 200m above the stadium. Less dramatic, but it's stil uncanny seeing a place fly so low across the city</p>"
 464 20 471
 472 "urn:ró:album:bray-air-show-24"
 473 "Bray Air Show"
@@ -1109,7 +1109,7 @@
 495 "YQgeFYKHd4h/d3iFh3iHeYFqIKcG"
 488 16 495
 488 18 146
-496 "<p>I didn't see the rainforests near <a href=\\\"/#/thing/geoname:2521768\\\">Anaga</a> this trip, but the wildlife and flora were still amazing. There's swifts and parrots everywhere, and the forests along Mount Teide are really beautiful (though sadly unphotograpphed this time)</p>"
+496 "<p>I didn't see the rainforests near <a href=\"/#/thing/geoname:2521768\">Anaga</a> this trip, but the wildlife and flora were still amazing. There's swifts and parrots everywhere, and the forests along Mount Teide are really beautiful (though sadly unphotograpphed this time)</p>"
 488 20 496
 497 "urn:ró:album:york-24"
 498 "York"
@@ -1148,7 +1148,7 @@
 512 "4/cFDYDUekiPdHeKVFinhQpgtgB2"
 506 16 512
 506 18 19
-513 "<p>Ireland's Eye is a small island off the coast of Howth, underneath the flight path into Dublin. It's the first part of Ireland I'd fly over returning to Ireland, but it took me a long time to actually visit it. Like our other island's (Saltees, Skellig Micheal, etc) it is home to <a href=\\\"/#/thing/bird:fratercula-arctica\\\">puffins</a>, <a href=\\\"/#/thing/bird:morus-bassanus\\\">gannets</a>, and other photogenic sea-birds</p>"
+513 "<p>Ireland's Eye is a small island off the coast of Howth, underneath the flight path into Dublin. It's the first part of Ireland I'd fly over returning to Ireland, but it took me a long time to actually visit it. Like our other island's (Saltees, Skellig Micheal, etc) it is home to <a href=\"/#/thing/bird:fratercula-arctica\">puffins</a>, <a href=\"/#/thing/bird:morus-bassanus\">gannets</a>, and other photogenic sea-birds</p>"
 506 20 513
 514 "urn:ró:album:swifts-and-martins-24"
 515 "Swifts & Martins"
@@ -1190,7 +1190,7 @@
 522 18 530
 531 "urn:ró:place:165"
 522 18 531
-532 "<p>Two beautiful countries. I probably didnt' see the best of Norway staying in Oslo (it's nice, but I really should have went hiking and exploring the countryside). The train-trip from Oslo to Stockholm was nice; the landscape was pretty different between the two countries. Norway seemed more densely forested, Sweden had endless lakes.<br /><br />I was pleasantly surprised to see <a href=\\\"/#/thing/bird:turdus-pilaris\\\">Fieldfares</a> in summer; they migrate to Ireland in winter but I had no idea where they migrated back to.</p>"
+532 "<p>Two beautiful countries. I probably didnt' see the best of Norway staying in Oslo (it's nice, but I really should have went hiking and exploring the countryside). The train-trip from Oslo to Stockholm was nice; the landscape was pretty different between the two countries. Norway seemed more densely forested, Sweden had endless lakes.<br /><br />I was pleasantly surprised to see <a href=\"/#/thing/bird:turdus-pilaris\">Fieldfares</a> in summer; they migrate to Ireland in winter but I had no idea where they migrated back to.</p>"
 522 20 532
 533 "urn:ró:album:dalkey-island-24"
 534 "Dalkey Island"
@@ -1209,7 +1209,7 @@
 539 "2QgGJYInpThId4hAjLXJrIVgRgVS"
 533 16 539
 533 18 19
-540 "<p>Dalkey Island is home to the red-listed <a href=\\\"/#/thing/bird:sterna-dougallii\\\">roseate tern</a>, and a herd of <a href=\\\"/#/thing/mammal:capra-aegagrus\\\">feral goats</a> that I was informed have become more friendly since people started feeding them regularly</p>"
+540 "<p>Dalkey Island is home to the red-listed <a href=\"/#/thing/bird:sterna-dougallii\">roseate tern</a>, and a herd of <a href=\"/#/thing/mammal:capra-aegagrus\">feral goats</a> that I was informed have become more friendly since people started feeding them regularly</p>"
 533 20 540
 541 "urn:ró:album:dalkey-and-dun-laoghaire-24"
 542 "Dalkey & Dun Laoghaire"
@@ -1386,7 +1386,7 @@
 608 16 615
 616 "urn:ró:place:162"
 608 18 616
-617 "<p>I visited to see the Giant Pandas Yang Guang and Tian Tian before they were recalled to China. Sadly, I was only succesful in seeing them turnt away in a corner sleeping. The <a href=\\\"/#/thing/mammal:ailurus-fulgens\\\">red panda</a> was thankfully more photogenic</p>"
+617 "<p>I visited to see the Giant Pandas Yang Guang and Tian Tian before they were recalled to China. Sadly, I was only succesful in seeing them turnt away in a corner sleeping. The <a href=\"/#/thing/mammal:ailurus-fulgens\">red panda</a> was thankfully more photogenic</p>"
 608 20 617
 618 "urn:ró:album:burr-point-23"
 619 "Burr Point"
@@ -1520,7 +1520,7 @@
 672 "XAgGDYKnmpqPqKlelqhzWJOvMgRL"
 666 16 672
 666 18 19
-673 "<p>One of our prettier villages. There was a nice poem enscribed by the gigantic wicker curlew:<br />\\\"Hearing his voice, a god who had made the <a href=\\\"/#/thing/bird:numenius-arquata\\\">curlew</a> would almost instantly want to remake himself as the thing he had made\\\"</p>"
+673 "<p>One of our prettier villages. There was a nice poem enscribed by the gigantic wicker curlew:<br />\"Hearing his voice, a god who had made the <a href=\"/#/thing/bird:numenius-arquata\">curlew</a> would almost instantly want to remake himself as the thing he had made\"</p>"
 666 20 673
 674 "urn:ró:album:birmingham-23"
 675 "Birmingham, England"
@@ -1576,7 +1576,7 @@
 695 "FBkKFYYIaKaZeHZ1iHiHhi5o8FMl"
 689 16 695
 689 18 19
-696 "<p>I visited Dublin Zoo to get a picture of the recently arrived <a href=\\\"/#/thing/mammal:cuon-alpinus\\\">Dhole</a> - a red-brown asian canine. It politely posed for me.</p>"
+696 "<p>I visited Dublin Zoo to get a picture of the recently arrived <a href=\"/#/thing/mammal:cuon-alpinus\">Dhole</a> - a red-brown asian canine. It politely posed for me.</p>"
 689 20 696
 697 "urn:ró:album:kerry-22"
 698 "Killarney National Park"
@@ -1595,7 +1595,7 @@
 703 "3ggOFYBsZ3i/eHd3h4h3d1BBCNGY"
 697 16 703
 697 18 19
-704 "<p>Killarney National Park is one of the easier places to spot <a href=\\\"/#/thing/mammal:cervus-elaphus\\\">Red Deer</a> in Ireland. I'd visited the year before, and taken <a href=\\\"https://photos.rgrannell.xyz/#/album/rutting-season-21\\\">many more photos</a>, but it was nice to get a lucky (if distant) photo of a Kestrel on the trip down</p>"
+704 "<p>Killarney National Park is one of the easier places to spot <a href=\"/#/thing/mammal:cervus-elaphus\">Red Deer</a> in Ireland. I'd visited the year before, and taken <a href=\"https://photos.rgrannell.xyz/#/album/rutting-season-21\">many more photos</a>, but it was nice to get a lucky (if distant) photo of a Kestrel on the trip down</p>"
 697 20 704
 705 "urn:ró:album:dusseldorf-and-amsterdam-22"
 706 "Düsseldorf & Amsterdam"
@@ -1673,7 +1673,7 @@
 736 "a9cNDYJ2ZXZndHdvdreXd5i/X0f5"
 730 16 736
 730 18 729
-737 "<p>The biodiversity and presence of nature in Wisconsin was surprising. Practically every lamp-post had a percehd <a href=\\\"/#/thing/bird:buteo-jamaicensis\\\">red-tailed hawk</a>, vultures were circling over the fields, and there were several osprey over the lakes. The abundance of nature was enviable from an Irish perspective</p>"
+737 "<p>The biodiversity and presence of nature in Wisconsin was surprising. Practically every lamp-post had a percehd <a href=\"/#/thing/bird:buteo-jamaicensis\">red-tailed hawk</a>, vultures were circling over the fields, and there were several osprey over the lakes. The abundance of nature was enviable from an Irish perspective</p>"
 730 20 737
 738 "urn:ró:album:cranes-22"
 739 "International Crane Foundation, Wisconsin"
@@ -1803,7 +1803,7 @@
 789 "TgkKJYJZhniAiIhmiXiIh1aQuFEH"
 784 16 789
 784 18 19
-790 "<p>During this visit to Ballyfin Nature Hide I managed to get some nice photos of our native <a href=\\\"/#/thing/mammal:sciurus-vulgaris\\\">red squirrel</a>. The invasive grey squirrel population is more common in the east, but fortunately it seems that the slower grey squirrels cannot coexist with pine-martens while our red squirrels can</p>"
+790 "<p>During this visit to Ballyfin Nature Hide I managed to get some nice photos of our native <a href=\"/#/thing/mammal:sciurus-vulgaris\">red squirrel</a>. The invasive grey squirrel population is more common in the east, but fortunately it seems that the slower grey squirrels cannot coexist with pine-martens while our red squirrels can</p>"
 784 20 790
 791 "urn:ró:album:lapwings-22"
 792 "Lapwings, Emo, Laois"
@@ -1822,7 +1822,7 @@
 797 "9vcJDYBneXiPaHhxl9eIc2dzX3j5"
 791 16 797
 791 18 19
-798 "<p><a href=\\\"/#/thing/bird:vanellus-vanellus\\\">Lapwings</a> are Ireland's national bird. Their population has declined due to habitat loss and changes in farming practice (they are ground-nesting like curlews). I was lucky enough to see a few lapwings in a ploughed field near Emo, Co. Laois. They are graceful fliers and have an especially beautiful song</p>"
+798 "<p><a href=\"/#/thing/bird:vanellus-vanellus\">Lapwings</a> are Ireland's national bird. Their population has declined due to habitat loss and changes in farming practice (they are ground-nesting like curlews). I was lucky enough to see a few lapwings in a ploughed field near Emo, Co. Laois. They are graceful fliers and have an especially beautiful song</p>"
 791 20 798
 799 "urn:ró:album:london-22"
 799 1 442
@@ -2003,7 +2003,7 @@
 868 "ExkSJYR3eHhwiHd5eKd4hndwegdo"
 862 16 868
 862 18 19
-869 "<p>Killarney is home to the last native red deer in Ireland. In \\\"rutting season\\\", the stags bellow and battle each other for mates. I risked getting close (at some personal risk) to get better photos, until an extremely irritated park ranger caught up to me. But at that point, I had the photos!</p>"
+869 "<p>Killarney is home to the last native red deer in Ireland. In \"rutting season\", the stags bellow and battle each other for mates. I risked getting close (at some personal risk) to get better photos, until an extremely irritated park ranger caught up to me. But at that point, I had the photos!</p>"
 862 20 869
 870 "urn:ró:album:ballyfin-nature-hide-21"
 870 1 659
@@ -38002,7 +38002,7 @@
 12678 1 12679
 12680 "style"
 12667 12680 12678
-12681 "<p>\\\"The Internationale\\\", sung on Labour Day</p>"
+12681 "<p>\"The Internationale\", sung on Labour Day</p>"
 12667 20 12681
 12682 "rating"
 12683 "urn:ró:rating:1"
@@ -45818,7 +45818,7 @@
 8074 12692 13977
 8074 12682 12723
 8074 12680 15850
-15916 "<p>\\\"<em>Life is not light</em>, <em>but refracted colour</em>\\\"</p>"
+15916 "<p>\"<em>Life is not light</em>, <em>but refracted colour</em>\"</p>"
 8074 15886 15916
 8225 12692 13008
 8225 12682 12723
@@ -46415,7 +46415,7 @@
 5372 12692 13891
 5372 12682 12683
 5372 12680 12945
-15942 "<p>I was pleasantly surprised to see an <a href=\\\"https://en.wikipedia.org/wiki/Isotype_(picture_language)\\\">isotype</a> book in the Science Museum. I first came across the technique in the <a href=\\\"https://www.lars-mueller-publishers.com/handbook-tyranny-0\\\">Handbook of Tyranny</a>, it's an underused way of sharing data in an accesible way.</p>"
+15942 "<p>I was pleasantly surprised to see an <a href=\"https://en.wikipedia.org/wiki/Isotype_(picture_language)\">isotype</a> book in the Science Museum. I first came across the technique in the <a href=\"https://www.lars-mueller-publishers.com/handbook-tyranny-0\">Handbook of Tyranny</a>, it's an underused way of sharing data in an accesible way.</p>"
 5372 15886 15942
 5267 12692 13891
 5267 12682 12683
@@ -47211,7 +47211,7 @@
 5726 12692 13823
 5726 12682 12723
 5726 12680 12678
-15986 "<p>Librerea Babel, which I assume is named after the <a href=\\\"https://en.wikipedia.org/wiki/The_Library_of_Babel\\\">Borges' short-story</a></p>"
+15986 "<p>Librerea Babel, which I assume is named after the <a href=\"https://en.wikipedia.org/wiki/The_Library_of_Babel\">Borges' short-story</a></p>"
 5726 15886 15986
 5774 12692 13827
 5774 12682 12723
@@ -48389,7 +48389,7 @@
 8322 12682 12693
 8322 12680 15878
 8322 12721 12981
-16080 "<p>A similar boat <a href=\\\"https://www.youtube.com/watch?v=2vd8Wfk9im0\\\">delivers mail</a> to houses around Lake Geneva</p>"
+16080 "<p>A similar boat <a href=\"https://www.youtube.com/watch?v=2vd8Wfk9im0\">delivers mail</a> to houses around Lake Geneva</p>"
 8322 15886 16080
 8390 12692 13051
 8390 12682 12683
@@ -49386,7 +49386,7 @@
 4347 12692 12827
 4347 12682 12683
 4347 12680 12945
-16128 "<p>I saw a sign in Bath saying \\\"meet the Gorgon\\\", and I did not turn down the chance.</p>"
+16128 "<p>I saw a sign in Bath saying \"meet the Gorgon\", and I did not turn down the chance.</p>"
 4347 15886 16128
 4312 12692 12827
 4312 12682 12723
@@ -49680,7 +49680,7 @@
 3957 12692 14171
 3957 12682 12683
 3957 12680 15850
-16149 "<p><a href=\\\"https://www.lkarno.com/post/yes-the-monument-to-the-discoveries-was-built-as-fascist-propaganda-and-this-is-why-you-should-car\\\">Not my kind of art</a></p>"
+16149 "<p><a href=\"https://www.lkarno.com/post/yes-the-monument-to-the-discoveries-was-built-as-fascist-propaganda-and-this-is-why-you-should-car\">Not my kind of art</a></p>"
 3957 15886 16149
 3964 12692 14165
 3964 12682 12757
@@ -49994,7 +49994,7 @@
 1999 12692 14245
 1999 12682 12683
 1999 12680 12945
-16166 "<p>\\\"Electrum\\\" is incidentally also the name of a project I've lead in work. Sadly electrum jewellry is both rare and expensive (I had to check)</p>"
+16166 "<p>\"Electrum\" is incidentally also the name of a project I've lead in work. Sadly electrum jewellry is both rare and expensive (I had to check)</p>"
 1999 15886 16166
 1978 12692 14245
 1978 12682 12723
@@ -50177,7 +50177,7 @@
 1483 12680 12945
 1691 12682 12683
 1691 12680 15850
-16171 "<p>\\\"Look on my works, ye mighty, and despair\\\"</p>"
+16171 "<p>\"Look on my works, ye mighty, and despair\"</p>"
 1691 15886 16171
 1447 12692 14290
 1447 12682 12723
