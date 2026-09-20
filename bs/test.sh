@@ -7,12 +7,12 @@ function run_deno_tests() {
 }
 
 function run_browser_tests() {
-  timeout 180 ./bs/test:browser.zsh
+  timeout 180 ./bs/test:browser.sh "$@"
 }
 
 function main() {
   run_deno_tests
-  run_browser_tests
+  run_browser_tests "$@"
 }
 
 main "$@"

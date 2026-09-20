@@ -22,7 +22,7 @@ function collect_browser_options() {
 }
 
 function run_browser_tests() {
-  timeout 180 "$PROJECT_ROOT/bs/test:browser.zsh" "${BROWSER_OPTIONS[@]}"
+  timeout 180 "$PROJECT_ROOT/bs/test:browser.sh" "${BROWSER_OPTIONS[@]}"
 }
 
 function main() {

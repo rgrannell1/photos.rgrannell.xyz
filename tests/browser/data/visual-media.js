@@ -5,6 +5,11 @@
 // Match every media request sent to the photo CDN.
 const PHOTO_CDN_PATTERN = "https://photos-cdn.rgrannell.xyz/**";
 
+// Pin the card baselines to one album. Albums list newest first, so
+// screenshotting whichever card leads would go stale every time a new album
+// is published.
+const VISUAL_ALBUM_TITLE = "Kilmore Quay";
+
 // Cover the primary desktop and narrow mobile layouts.
 const VISUAL_VIEWPORTS = [
   { name: "desktop", width: 1280, height: 900 },
@@ -24,4 +29,9 @@ const FIXED_BANNER = [
   "</svg>",
 ].join("");
 
-module.exports = { FIXED_BANNER, PHOTO_CDN_PATTERN, VISUAL_VIEWPORTS };
+module.exports = {
+  FIXED_BANNER,
+  PHOTO_CDN_PATTERN,
+  VISUAL_ALBUM_TITLE,
+  VISUAL_VIEWPORTS,
+};
