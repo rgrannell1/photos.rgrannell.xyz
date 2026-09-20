@@ -27,7 +27,7 @@ module.exports = defineConfig({
     viewport: { width: 1280, height: 800 },
   },
   webServer: {
-    command: "exec ./bs/test:serve.zsh",
+    command: "exec ./bs/test:serve.sh",
     url: BASE_URL,
     reuseExistingServer: false,
     timeout: 120_000,

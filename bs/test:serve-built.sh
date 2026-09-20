@@ -1,9 +1,9 @@
-#! /usr/bin/env zsh
+#! /usr/bin/env bash
 
 set -e
 
 function serve_built_site() {
-  exec timeout 180 uv run python3 -m http.server 3030 >/dev/null 2>&1
+  exec timeout 180 python3 -m http.server 3030 >/dev/null 2>&1
 }
 
 function main() {

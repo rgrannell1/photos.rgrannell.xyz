@@ -9,6 +9,6 @@ module.exports = defineConfig({
   ...config,
   webServer: {
     ...config.webServer,
-    command: "exec ./bs/test:serve-built.zsh",
+    command: "exec ./bs/test:serve-built.sh",
   },
 });
