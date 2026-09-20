@@ -45,7 +45,7 @@ jobs:
 
       - run: timeout 120 ./bs/lint.sh
 
-      - run: timeout 240 ./bs/test.sh
+      - run: timeout 240 ./bs/test.sh --config=playwright.built.config.js
 
       - name: Check built assets
         run: >-
