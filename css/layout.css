@@ -366,6 +366,25 @@
   margin-bottom: 0.5em;
 }
 
+/* non-mobile only: hold the recap to a reading measure and loosen its lines.
+   mobile keeps the full-bleed recap set in the small-device block below.
+   `.album-container > div` zeroes the margin the rule above sets, and the
+   grid's 10px row gap already sits above and below the recap, so these
+   margins make the gaps up to 20px under the year heading and 40px above the
+   albums. the heading's own bottom margin goes, to leave one owner per gap */
+@media (min-width: 501px) {
+  .album-container > .year-heading:has(+ .year-recap) {
+    margin-bottom: 0;
+  }
+
+  .album-container > .year-recap {
+    max-width: 60ch;
+    line-height: 1.6;
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
+}
+
 .about-page {
   margin-right: var(--page-gutter);
 }
