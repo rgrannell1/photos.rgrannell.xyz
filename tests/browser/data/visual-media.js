@@ -5,10 +5,9 @@
 // Match every media request sent to the photo CDN.
 const PHOTO_CDN_PATTERN = "https://photos-cdn.rgrannell.xyz/**";
 
-// Pin the card baselines to one album. Albums list newest first, so
-// screenshotting whichever card leads would go stale every time a new album
-// is published.
-const VISUAL_ALBUM_TITLE = "Kilmore Quay";
+// Pin the album-card baseline to the oldest, settled album. The newest album
+// changes on every publication, so a first-card baseline broke each time.
+const VISUAL_ALBUM_TITLE = "West Ireland";
 
 // Cover the primary desktop and narrow mobile layouts.
 const VISUAL_VIEWPORTS = [

@@ -52,10 +52,22 @@ test("country filtering changes route state and hides year recaps", async ({ pag
   await expect(page).toHaveURL(/#!\/albums$/);
 });
 
+test("an album description shows its full multiline summary", async ({ page }) => {
+  await page.goto("/?bust=playwright#!/album/national-museum-of-ireland-26");
+
+  const description = page.getByTestId("album-description");
+  await expect(description).toContainText("Reasons I like revisiting a museum:");
+  await expect(description).toContainText("and crucially:");
+  await expect(description).toContainText("Noticing homumculi I'd missed before");
+  expect(await description.innerText()).not.toContain("\\n");
+});
+
 test("photo details preserve browser history", async ({ page }) => {
   await openAlbums(page);
   const albumName = await openFirstAlbum(page);
 
+  const photo = page.getByTestId("album-photo-grid").locator(".photo").first();
+  await photo.hover();
   await page.locator('a.photo-metadata-popover[href*="/photo/"]').first().click();
   await expect(page.getByTestId("photo-heading")).toHaveText("Photo");
   await expect(page).toHaveURL(/#!\/photo\//);

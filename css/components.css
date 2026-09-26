@@ -237,6 +237,11 @@
     transform: translate(10px, -100px);
     max-width: calc(100% - 20px);
     z-index: 1;
+    pointer-events: none;
+  }
+
+  .photo-album-metadata a {
+    pointer-events: auto;
   }
 
   .photo-album-title {
