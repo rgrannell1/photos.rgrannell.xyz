@@ -484,6 +484,17 @@
     padding-left: 1rem;
   }
 
+  /* the recap is a plain div, so `.album-container > div` above zeroes the
+     margin its own rule sets and stretches it edge to edge. width: auto lets
+     the margin apply again; the padding matches the year heading, so recap
+     text starts on the same left edge as the year above it */
+  .album-container > .year-recap {
+    width: auto;
+    margin: 0 5px 1.5em;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
   /* break photo grid out of the app's left padding so images touch screen edges */
   .photo-container {
     width: calc(100% + var(--page-gutter));
