@@ -4,7 +4,8 @@
 
 const { defineConfig } = require("@playwright/test");
 
-const BASE_URL = "http://127.0.0.1:3030";
+// Port 3031 keeps browser tests clear of the dev server on 3030.
+const BASE_URL = "http://127.0.0.1:3031";
 const REPORTERS = process.env.CI
   ? [["line"], ["html", { open: "never" }]]
   : "line";

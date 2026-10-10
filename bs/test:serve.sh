@@ -7,7 +7,7 @@ function build_site() {
 }
 
 function serve_site() {
-  exec timeout 180 python3 -m http.server 3030 >/dev/null 2>&1
+  exec timeout 180 python3 -m http.server 3031 >/dev/null 2>&1
 }
 
 function main() {
