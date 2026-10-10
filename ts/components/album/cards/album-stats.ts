@@ -52,7 +52,7 @@ function viewAlbumStats(result: ReturnType<typeof parseStats>): m.Children {
   const $speciesStats = drawSpeciesStats(stats);
   const $sites = drawLinkedCount(
     stats.unesco_sites,
-    "/thing/place_feature:unesco",
+    "/listing/unesco",
     "UNESCO sites",
   );
 
